@@ -1,0 +1,7 @@
+broncode:
+http://widgets.twimg.com/j/2/widget.js
+en http://twitter.com/javascripts/widgets/widget.js
+
+verwijder "!important", dit voorkomt CSS problematiek
+als de social share iconen worden gerenderd op de pagina's, dan doet deze widget het niet
+er volgt dan geen foutmelding, maar er gebeurt ook niets

@@ -1,0 +1,1 @@
+<?php include(NXS_FRAMEWORKPATH . '/footer-admin.php'); ?>

@@ -1,0 +1,290 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Postwizard PDT3 (NXS EXT)\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-02 17:44+0100\n"
+"PO-Revision-Date: 2012-09-02 17:44+0100\n"
+"Last-Translator: Gert-Jan Bark <barkgj@nexusthemes.com>\n"
+"Language-Team: Nexus Themes <info@nexusthemes.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;_e;__\n"
+"X-Poedit-Basepath: H:\\Proj\\Wordpress\\DEV\\!NexusThemes\\themes\\nexus\\nexuscore\\postwizards\\pdt3\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: H:\\Proj\\Wordpress\\DEV\\!NexusThemes\\themes\\nexus\\nexuscore\\postwizards\\pdt3\n"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:13
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:73
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:87
+msgid "Searchresults title[nxs:popup]"
+msgstr "Nieuwe zoekresultaten pagina"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:26
+msgid "Preview[nxs:popup,ddl]"
+msgstr "Via deze wizard voeg je een nieuwe pagina toe aan je weblog waarop zoekresultaten kunnen worden weergegeven."
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:83
+msgid "Wizard[nxs:popup,label]"
+msgstr "Wizard"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:86
+msgid "Other wizard[nxs:popup,button]"
+msgstr "Wijzigen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:96
+msgid "Title[nxs:popup,label]"
+msgstr "Titel"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:99
+msgid "Title of the new searchresults page[nxs:popup,placeholder]"
+msgstr "Titel van de nieuwe zoekpagina"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:122
+msgid "Header[nxs:popup,label]"
+msgstr "Header"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:126
+msgid "Suppress header[nxs:popup,label]"
+msgstr "Header niet tonen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:165
+msgid "Sidebar[nxs:popup,label]"
+msgstr "Sidebar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:169
+msgid "Suppress sidebar[nxs:popup,label]"
+msgstr "Sidebar niet tonen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:208
+msgid "Footer[nxs:popup,label]"
+msgstr "Footer"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:212
+msgid "Suppress footer[nxs:popup,label]"
+msgstr "Footer niet tonen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:255
+msgid "Next time, preselect the chosen header, sidebar and footer[nxs:popup,button]"
+msgstr "Maak defaults van de gekozen header, sidebar en footer"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:268
+msgid "Create page[nxs:popup,button]"
+msgstr "Pagina aanmaken"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:269
+msgid "OK[nxs:popup,button]"
+msgstr "OK"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:270
+msgid "Back[nxs:popup,button]"
+msgstr "Terug"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:306
+msgid "The title is a required field[nxs:negativebounce]"
+msgstr "De titel is verplicht"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:316
+msgid "Creating page[nxs:popup,growl]"
+msgstr "Pagina wordt aangemaakt"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:324
+msgid "Redirecting to page[nxs:popup,growl]"
+msgstr "De nieuwe pagina wordt nu geladen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\postwizards\pdt3/postwizard_pdt3.php:342
+msgid "Saving defaults[nxs:popup,growl]"
+msgstr "Default instellingen worden opgeslagen"
+
+#~ msgid "Text[nxs:title]"
+#~ msgstr "Text"
+
+#~ msgid "Edit[nxs:tooltip]"
+#~ msgstr "Edit"
+
+#~ msgid "Move[nxs:tooltip]"
+#~ msgstr "Move"
+
+#~ msgid "Remove widget[nxs:tooltip]"
+#~ msgstr "Remove widget"
+
+#~ msgid "Documentation[nxs:tooltip]"
+#~ msgstr "Documentation"
+
+#~ msgid "(empty)[nxs:adminonly,ifemptyoutput]"
+#~ msgstr "(empty)"
+
+#~ msgid "Unsupported heading level[nxs:warning]"
+#~ msgstr "Unsupported heading"
+
+#~ msgid "Header[nxs:tooltip]"
+#~ msgstr "Header"
+
+#~ msgid "Edit[nxs:button,editheader]"
+#~ msgstr "Edit"
+
+#~ msgid "Empty header[nxs:popup]"
+#~ msgstr "Empty header"
+
+#~ msgid "Apply liftnote[nxs:popup]"
+#~ msgstr "Apply liftnote"
+
+#~ msgid "Explanation liftnote[nxs:growl,html]"
+#~ msgstr ""
+#~ "When enabled, the liftnote highlights the first paragraph in the text, "
+#~ "which attracts more attention to the reader. The text in the first "
+#~ "paragraph will be emphasized by applying a different style; the fontsize "
+#~ "will be slightly bigger than normal and the text will be bold."
+
+#~ msgid "Apply dropcap[nxs:popup]"
+#~ msgstr "Apply dropcap"
+
+#~ msgid "Explanation dropcap[nxs:growl,html]"
+#~ msgstr ""
+#~ "When enabled, the user will be encouraged to read the text by supersizing "
+#~ "and capitalizing the first character of the text. More information can be "
+#~ "found <a target=&quot;_blank&quot; href=&quot;http://en.wikipedia.org/"
+#~ "wiki/Initial&quot;>here (Wikipedia)</a>"
+
+#~ msgid "Image[nxs:popup]"
+#~ msgstr "Image"
+
+#~ msgid "Image[nxs:popup,heading]"
+#~ msgstr "Image"
+
+#~ msgid "Vertical alignment[nxs:popup,heading]"
+#~ msgstr "Vertical alignment"
+
+#~ msgid "Top[nxs:ddl,verticalalignment]"
+#~ msgstr "Top"
+
+#~ msgid "Middle[nxs:ddl,verticalalignment]"
+#~ msgstr "Middle"
+
+#~ msgid "Bottom[nxs:ddl,verticalalignment]"
+#~ msgstr "Bottom"
+
+#~ msgid "CSS[nxs:button]"
+#~ msgstr "CSS"
+
+#~ msgid "Text &gt; CSS[nxs:popup,title]"
+#~ msgstr "Text &gt; CSS"
+
+#~ msgid "CSS[nxs:popup,heading]"
+#~ msgstr "CSS"
+
+#~ msgid "Text &gt; Header[nxs:popup,title]"
+#~ msgstr "Text &gt; Header"
+
+#~ msgid "Heading 1 (H1)[nxs:]"
+#~ msgstr "Heading 1 (big)"
+
+#~ msgid "Heading 2 (H2)[nxs:]"
+#~ msgstr "Heading 2"
+
+#~ msgid "Heading 3 (H3)[nxs:]"
+#~ msgstr "Heading 3"
+
+#~ msgid "Heading 4 (H4)[nxs:]"
+#~ msgstr "Heading 4 (small)"
+
+#~ msgid "Horizontal alignment[nxs:popup,heading]"
+#~ msgstr "Horizontal alignment"
+
+#~ msgid "Left[nxs:ddl,horizontalalignment]"
+#~ msgstr "Left"
+
+#~ msgid "Center[nxs:ddl,horizontalalignment]"
+#~ msgstr "Center"
+
+#~ msgid "Right[nxs:ddl,horizontalalignment]"
+#~ msgstr "Right"
+
+#~ msgid " of [nxs:popup,paging]"
+#~ msgstr " of "
+
+#~ msgid "Image[nxs:popup,columnhead]"
+#~ msgstr "Image"
+
+#~ msgid "Title:[nxs:popup,imagepicker,list,item]"
+#~ msgstr "Title:"
+
+#~ msgid "Type:[nxs:popup,imagepicker,list,item]"
+#~ msgstr "Type:"
+
+#~ msgid "Link type[nxs:popup,heading]"
+#~ msgstr "Link type"
+
+#~ msgid "Article[nxs:popup,heading]"
+#~ msgstr "Article"
+
+#~ msgid "Url[nxs:popup,heading]"
+#~ msgstr "Url"
+
+#~ msgid "Linktype[nxs:popup,heading]"
+#~ msgstr "Linktype"
+
+#~ msgid "Tekst &gt; Titel[nxs:popup,title]"
+#~ msgstr "Text &gt; Title"
+
+#~ msgid "Text"
+#~ msgstr "Vertaald!"
+
+#~ msgid "Title"
+#~ msgstr "Text"
+
+#~ msgid "Edit"
+#~ msgstr "Edit"
+
+#~ msgid "Move"
+#~ msgstr "Move"
+
+#~ msgid "Delete"
+#~ msgstr "Delete"
+
+#~ msgid "HelpUrl"
+#~ msgstr "http://nexusthemes.com/widget-google-map/"
+
+#~ msgid "Google Map"
+#~ msgstr "Google Map"
+
+#~ msgid "Address"
+#~ msgstr "Address"
+
+#~ msgid "Update map"
+#~ msgstr "Update map"
+
+#~ msgid "Address sample placeholder"
+#~ msgstr "Lombard Street, San Francisco"
+
+#~ msgid "Save"
+#~ msgstr "Save"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancel"
+
+#~ msgid "Address was found; map is updated"
+#~ msgstr "Map was updated succesfully"
+
+#~ msgid "Location was not found"
+#~ msgstr "Unable to locate address"
+
+#~ msgid "Initial location"
+#~ msgstr "Lombard Street, San Francisco"
+
+#~ msgid "Initial latitude"
+#~ msgstr " 37.80"
+
+#~ msgid "Initial longitude"
+#~ msgstr "-122.41"
+
+#~ msgid "Initial maptypeid"
+#~ msgstr "ROADMAP"
+
+#~ msgid "Initial zoom"
+#~ msgstr "4"

@@ -1,0 +1,417 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PageTemplate SearchResults - NXS EXT\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-29 11:05+0100\n"
+"PO-Revision-Date: 2012-08-29 11:05+0100\n"
+"Last-Translator: Gert-Jan Bark <barkgj@nexusthemes.com>\n"
+"Language-Team: Nexus Themes <info@nexusthemes.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: H:\\Proj\\Wordpress\\DEV\\!NexusThemes\\themes\\nexus\\nexuscore\\pagetemplates\\searchresults\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: H:\\Proj\\Wordpress\\DEV\\!NexusThemes\\themes\\nexus\\nexuscore\\pagetemplates\\searchresults\n"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:13
+msgid "Searchresults[nxs:title]"
+msgstr "Zoekresultaten"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:56
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:112
+msgid "Edit sidebar[nxs:button]"
+msgstr "Instellen sidebar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:79
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1375
+msgid "Add row[nxs:button]"
+msgstr "Rij toevoegen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:99
+msgid "Sidebar hover furtherright[nxs:growl]"
+msgstr "Deze sectie representeert een sidebar. Een sidebar staat altijd naast het hoofddeel van een site. Het bevat een verzameling items die kan worden herbruikt over pagina's. Klik op de sectie om de inhoud van de sidebar te wijzigen. Klik op het 'bewerk' icoon om een andere sidebar te kiezen, of om deze uit te zetten."
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:100
+msgid "Sidebar hover furtherright[nxs:tooltip]"
+msgstr "Deze sectie representeert een sidebar."
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:113
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:114
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:115
+msgid "Documentation[nxs:tooltip]"
+msgstr "Documentation"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:122
+msgid "Edit sidebar[nxs:tooltip]"
+msgstr "Bewerk sidebar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:153
+msgid "Description of preview[nxs:preview]"
+msgstr "De zoekresultaten pagina wordt getoond nadat de gebruiker een zoekopdracht uitvoert binnen uw website."
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:210
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:222
+msgid "Template searchresults[nxs:popup,header]"
+msgstr "Zoekresultaten template"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:218
+msgid "Template[nxs:heading]"
+msgstr "Template"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:221
+msgid "Change template[nxs:button]"
+msgstr "Wijzigen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:231
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:475
+msgid "Title[nxs:heading]"
+msgstr "Titel"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:243
+msgid "Internet address (url)[nxs:heading]"
+msgstr "Internet adres (url)"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:258
+msgid "Searchengine title[nxs:heading]"
+msgstr "Zoekmachine titel"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:270
+msgid "Searchengine description[nxs:heading]"
+msgstr "Zoekmachine omschrijving"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:285
+msgid "Excerpt[nxs:heading]"
+msgstr "Samenvatting"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:300
+msgid "Set as resultpage[nxs:heading]"
+msgstr "Instellen als resultaatpagina"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:306
+msgid "Already set[nxs:label]"
+msgstr "Reeds ingesteld"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:333
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:489
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:728
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:963
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1204
+msgid "Save[nxs:button]"
+msgstr "Opslaan"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:334
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:490
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:729
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:964
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1205
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1376
+msgid "OK[nxs:button]"
+msgstr "OK"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:335
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:491
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:730
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:965
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1206
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1377
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1522
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1573
+msgid "Cancel[nxs:button]"
+msgstr "Annuleren"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:467
+msgid "Change title[nxs:popup,header]"
+msgstr "Wijzig titel"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:626
+msgid "Set header[nxs:popup,header]"
+msgstr "Header instellen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:636
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:685
+msgid "Header[nxs:heading]"
+msgstr "Header"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:639
+msgid "Select other header[nxs:button]"
+msgstr "Kies andere header"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:650
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:885
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1127
+msgid "Preview[nxs:popup,preview,heading]"
+msgstr "Preview"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:654
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:889
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1131
+msgid "Not available[nxs:popup,preview]"
+msgstr "Niet beschikbaar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:668
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:903
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1145
+msgid "Edit[nxs:button]"
+msgstr "Bewerken"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:688
+msgid "New header[nxs:button]"
+msgstr "Nieuwe header"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:691
+msgid "Suppress header[nxs:ddl]"
+msgstr "Geen header"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:859
+msgid "Set sidebar[nxs:button]"
+msgstr "Instellen sidebar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:869
+msgid "Sidebar[nxs:label]"
+msgstr "Sidebar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:873
+msgid "Select different sidebar(webpage)[nxs:popup,header]"
+msgstr "Wijzig sidebar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:920
+msgid "Sidebar[nxs:heading]"
+msgstr "Sidebar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:923
+msgid "New sidebar[nxs:popup,button]"
+msgstr "Nieuwe sidebar"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:926
+msgid "Suppress sidebar[nxs:popup,ddl,sidebars]"
+msgstr "Sidebar onderdrukken"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1103
+msgid "Set footer[nxs:popup,header]"
+msgstr "Instellen footer"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1113
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1161
+msgid "Footer[nxs:heading]"
+msgstr "Footer"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1116
+msgid "Select other footer[nxs:button]"
+msgstr "Kies andere footer"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1164
+msgid "New footer[nxs:button]"
+msgstr "Nieuwe footer"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1167
+msgid "Suppress footer[nxs:ddl]"
+msgstr "Geen footer"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1318
+msgid "Add row[nxs:popup,header]"
+msgstr "Rij toevoegen"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1326
+msgid "Select the column layout for the new row[nxs:heading]"
+msgstr "Kies de kolomindeling voor de nieuwe rij"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1394
+msgid "Adding row[nxs:growl]"
+msgstr "Rij wordt toegevoegd"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1443
+msgid "Append rows[nxs:popup,header]"
+msgstr "Rijen importeren"
+
+#: H:\Proj\Wordpress\DEV\!NexusThemes\themes\nexus\nexuscore\pagetemplates\searchresults/nxs_ext_pagetemplate_searchresults.php:1566
+msgid "Export page[nxs:popup,header]"
+msgstr "Pagina exporteren"
+
+#~ msgid "Category removed[nxs:growl]"
+#~ msgstr "Categorie is verwijderd"
+
+#~ msgid "Edit footer[nxs:tooltip]"
+#~ msgstr "Bewerk footer"
+
+#, fuzzy
+#~ msgid "Rij toevoegen[nxs:button]"
+#~ msgstr "Hide image"
+
+#~ msgid "Add[nxs:popup,newrow,button]"
+#~ msgstr "Add"
+
+#~ msgid "Move[nxs:tooltip]"
+#~ msgstr "Move"
+
+#~ msgid "(empty)[nxs:adminonly,ifemptyoutput]"
+#~ msgstr "(empty)"
+
+#~ msgid "Unsupported heading level[nxs:warning]"
+#~ msgstr "Unsupported heading"
+
+#~ msgid "Text[nxs:popup,title]"
+#~ msgstr "Text"
+
+#~ msgid "Header[nxs:tooltip]"
+#~ msgstr "Header"
+
+#~ msgid "Edit[nxs:button,editheader]"
+#~ msgstr "Edit"
+
+#~ msgid "Empty header[nxs:popup]"
+#~ msgstr "Empty header"
+
+#~ msgid "Style[nxs:popup]"
+#~ msgstr "Style"
+
+#~ msgid "Apply liftnote[nxs:popup]"
+#~ msgstr "Apply liftnote"
+
+#~ msgid "Explanation liftnote[nxs:growl,html]"
+#~ msgstr ""
+#~ "When enabled, the liftnote highlights the first paragraph in the text, "
+#~ "which attracts more attention to the reader. The text in the first "
+#~ "paragraph will be emphasized by applying a different style; the fontsize "
+#~ "will be slightly bigger than normal and the text will be bold."
+
+#~ msgid "Apply dropcap[nxs:popup]"
+#~ msgstr "Apply dropcap"
+
+#~ msgid "Explanation dropcap[nxs:growl,html]"
+#~ msgstr ""
+#~ "When enabled, the user will be encouraged to read the text by supersizing "
+#~ "and capitalizing the first character of the text. More information can be "
+#~ "found <a target=&quot;_blank&quot; href=&quot;http://en.wikipedia.org/"
+#~ "wiki/Initial&quot;>here (Wikipedia)</a>"
+
+#~ msgid "Image[nxs:popup]"
+#~ msgstr "Image"
+
+#~ msgid "Vertical alignment[nxs:popup,heading]"
+#~ msgstr "Vertical alignment"
+
+#~ msgid "Top[nxs:ddl,verticalalignment]"
+#~ msgstr "Top"
+
+#~ msgid "Middle[nxs:ddl,verticalalignment]"
+#~ msgstr "Middle"
+
+#~ msgid "Bottom[nxs:ddl,verticalalignment]"
+#~ msgstr "Bottom"
+
+#~ msgid "Save[nxs:popup]"
+#~ msgstr "Save"
+
+#~ msgid "Text &gt; CSS[nxs:popup,title]"
+#~ msgstr "Text &gt; CSS"
+
+#~ msgid "CSS[nxs:popup,heading]"
+#~ msgstr "CSS"
+
+#~ msgid "Text &gt; Header[nxs:popup,title]"
+#~ msgstr "Text &gt; Header"
+
+#~ msgid "Heading 1 (H1)[nxs:]"
+#~ msgstr "Heading 1 (big)"
+
+#~ msgid "Heading 2 (H2)[nxs:]"
+#~ msgstr "Heading 2"
+
+#~ msgid "Heading 3 (H3)[nxs:]"
+#~ msgstr "Heading 3"
+
+#~ msgid "Heading 4 (H4)[nxs:]"
+#~ msgstr "Heading 4 (small)"
+
+#~ msgid "Horizontal alignment[nxs:popup,heading]"
+#~ msgstr "Horizontal alignment"
+
+#~ msgid "Left[nxs:ddl,horizontalalignment]"
+#~ msgstr "Left"
+
+#~ msgid "Center[nxs:ddl,horizontalalignment]"
+#~ msgstr "Center"
+
+#~ msgid "Right[nxs:ddl,horizontalalignment]"
+#~ msgstr "Right"
+
+#~ msgid "Text &gt; Image[nxs:popup,title]"
+#~ msgstr "Text &gt; Image"
+
+#~ msgid "Image[nxs:popup,columnhead]"
+#~ msgstr "Image"
+
+#~ msgid "Title:[nxs:popup,imagepicker,list,item]"
+#~ msgstr "Title:"
+
+#~ msgid "Type:[nxs:popup,imagepicker,list,item]"
+#~ msgstr "Type:"
+
+#~ msgid "Link type[nxs:popup,heading]"
+#~ msgstr "Link type"
+
+#~ msgid "Tekst &gt; Titel[nxs:popup,title]"
+#~ msgstr "Text &gt; Title"
+
+#~ msgid "Text"
+#~ msgstr "Vertaald!"
+
+#~ msgid "Title"
+#~ msgstr "Text"
+
+#~ msgid "Edit"
+#~ msgstr "Edit"
+
+#~ msgid "Move"
+#~ msgstr "Move"
+
+#~ msgid "Delete"
+#~ msgstr "Delete"
+
+#~ msgid "HelpUrl"
+#~ msgstr "http://nexusthemes.com/widget-google-map/"
+
+#~ msgid "Google Map"
+#~ msgstr "Google Map"
+
+#~ msgid "Address"
+#~ msgstr "Address"
+
+#~ msgid "Update map"
+#~ msgstr "Update map"
+
+#~ msgid "Address sample placeholder"
+#~ msgstr "Lombard Street, San Francisco"
+
+#~ msgid "Save"
+#~ msgstr "Save"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancel"
+
+#~ msgid "Address was found; map is updated"
+#~ msgstr "Map was updated succesfully"
+
+#~ msgid "Location was not found"
+#~ msgstr "Unable to locate address"
+
+#~ msgid "Initial location"
+#~ msgstr "Lombard Street, San Francisco"
+
+#~ msgid "Initial latitude"
+#~ msgstr " 37.80"
+
+#~ msgid "Initial longitude"
+#~ msgstr "-122.41"
+
+#~ msgid "Initial maptypeid"
+#~ msgstr "ROADMAP"
+
+#~ msgid "Initial zoom"
+#~ msgstr "4"
