@@ -1536,10 +1536,8 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 
 /* RADIAL
 ------------------------------------------------------------------------------------------ */
-
 .nxs-radial .transition.nxs-default,
 .nxs-radial .radial 										{ height: 100%; }
-
 .nxs-radial .radial {
 	position: absolute;
 	width: 100%;
@@ -1565,7 +1563,7 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-ms-transition: 	all 0.3s;
 	transition: 		all 0.3s;
 }
-.nxs-radial:hover .transition.nxs-default .radial:first-child 		{ opacity: 1; z-index: 20; }
+.nxs-radial:hover .transition.nxs-default .radial:first-child 		{ opacity: 1; z-index: 30; }
 .nxs-radial .nxs-button { 
 	-webkit-transition: none;
 	-moz-transition: 	none;
@@ -1587,6 +1585,13 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-main .nxs-one-whole .nxs-radial .nxs-default				{ height: 580px; }
 
 .nxs-sidebar-container .nxs-one-whole .nxs-radial .nxs-default 	{	height: 272px; }
+
+/* fallback triggers */
+.nxs-vendor-mozilla .nxs-radial .nxs-default,					{ display: none; }
+.nxs-vendor-mozilla .nxs-radial .nxs-fallback 					{ display: block; }
+.nxs-vendor-o .nxs-radial .nxs-default							{ display: none; }
+.nxs-vendor-o .nxs-radial .nxs-fallback 						{ display: block; }
+.nxs-radial .nxs-fallback .nxs-title							{ text-align: left; }
 
 /* SQUEEZEBOX
 ------------------------------------------------------------------------------------------ */
@@ -1845,6 +1850,15 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 }
 .nxs-carousel .logo-wrapper img.left { left: 0; }
 .nxs-carousel .logo-wrapper img.right { right: 0; }
+
+/* BANNER
+---------------------------------------------------------------------------------------------------- */
+.nxs-banner .image-wrapper 									{ width: 11.8em; height: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; float: left; }
+.nxs-banner .image-wrapper .image 							{ width: 100%; height: 100%; }
+.nxs-banner .image-wrapper.placeinrow5,
+.nxs-main .nxs-banner .image-wrapper.placeinrow3,
+.nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow1,
+.nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow3 { border-right: 0; }
 
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
