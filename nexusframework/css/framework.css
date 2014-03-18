@@ -1474,6 +1474,10 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-webkit-transform: 	translateY(-50px);
 }
 
+/* fallback */
+.nxs-ie .nxs-tumbler .nxs-default 						{ display: none; }
+.nxs-ie .nxs-tumbler .nxs-fallback						{ display: block; }
+
 /* BLOG
 ------------------------------------------------------------------------------------------ */
 .nxs-blog													{ overflow: hidden; }
@@ -1587,9 +1591,11 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-sidebar-container .nxs-one-whole .nxs-radial .nxs-default 	{	height: 272px; }
 
 /* fallback triggers */
-.nxs-vendor-mozilla .nxs-radial .nxs-default,					{ display: none; }
-.nxs-vendor-mozilla .nxs-radial .nxs-fallback 					{ display: block; }
+.nxs-ie-lte-10 .nxs-radial .nxs-default,
+.nxs-vendor-mozilla .nxs-radial .nxs-default,
 .nxs-vendor-o .nxs-radial .nxs-default							{ display: none; }
+.nxs-ie-lte-10 .nxs-radial .nxs-fallback,
+.nxs-vendor-mozilla .nxs-radial .nxs-fallback,
 .nxs-vendor-o .nxs-radial .nxs-fallback 						{ display: block; }
 .nxs-radial .nxs-fallback .nxs-title							{ text-align: left; }
 
@@ -1859,6 +1865,8 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .nxs-main .nxs-banner .image-wrapper.placeinrow3,
 .nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow1,
 .nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow3 { border-right: 0; }
+
+
 
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
