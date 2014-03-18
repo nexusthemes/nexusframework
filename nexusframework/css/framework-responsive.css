@@ -122,8 +122,9 @@ Because we're working with ems we set a font-size for each viewport. */
 }
 @media only screen and ( max-width: 719px )	{
 /* removing desktop margins for mobile devices */
-#nxs-header-container												{ margin-top: 0px; }
-#nxs-footer-container												{ margin-bottom: 0px; }
+#nxs-content,
+#nxs-header-container
+#nxs-footer-container												{ margin-bottom: 0px; margin-top: 0px; }
 
 .nxs-main															{ width: 96em; }
 .nxs-sidebar1														{ float: left; width: 88.8em; padding-left: 3.6em; }
@@ -771,6 +772,16 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-target .icon-top .icon											{ width: 295px; }
 #nxs-container .nxs-one-fourth .nxs-target .content 				{ margin-left: 58px; clear: none; }
 #nxs-container .nxs-one-fourth .nxs-target .content.colored			{ margin-left: 83px; clear: none; }
+}
+
+/* TARGET
+------------------------------------------------------------------------------------------ */
+@media only screen and ( max-width: 719px ) {
+.nxs-banner .image-wrapper											{ width: 27.2em; height: 27.2em; }
+.nxs-banner .image-wrapper.placeinrow2								{ border-right: 0; }
+.nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow1,
+.nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow3,		
+.nxs-main .nxs-banner .image-wrapper.placeinrow3					{ border-right: 3.6em solid transparent; }
 }
 
 /* LOGO
