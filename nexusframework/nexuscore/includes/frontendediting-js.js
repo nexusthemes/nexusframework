@@ -53,13 +53,16 @@ function nxs_js_getvendorprefix()
 	{
 		// derive it 1x
 		var browser = jQuery.browser;
-		if (browser.webkit == true)
-		{
-			nxs_js_vendorprefix_internal = "webkit";
-		}
-		else if (browser.opera == true)
+		
+		//nxs_js_log(navigator.userAgent);
+		
+		if (navigator.userAgent.indexOf("Opera") >= 0 || navigator.userAgent.indexOf("OPR") >= 0)
 		{
 			nxs_js_vendorprefix_internal = "o";
+		}
+		else if (browser.webkit == true)
+		{
+			nxs_js_vendorprefix_internal = "webkit";
 		}
 		else if (browser.msie)
 		{
@@ -71,7 +74,7 @@ function nxs_js_getvendorprefix()
 		}
 		else
 		{
-			nxs_js_vendorprefix_internal = "?";
+			nxs_js_vendorprefix_internal = "unknown";
 		}
 	}
 	return nxs_js_vendorprefix_internal;
