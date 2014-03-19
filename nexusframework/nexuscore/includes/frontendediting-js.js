@@ -68,6 +68,11 @@ function nxs_js_getvendorprefix()
 		{
 			nxs_js_vendorprefix_internal = "msie";
 		}
+		else if (navigator.userAgent.indexOf("Trident") > -1)
+    {
+    	// http://stackoverflow.com/questions/20911175/ie-11-browser-recognizes-itself-as-mozilla
+      nxs_js_vendorprefix_internal = "msie";
+    }
 		else if (browser.mozilla)
 		{
 			nxs_js_vendorprefix_internal = "mozilla";
