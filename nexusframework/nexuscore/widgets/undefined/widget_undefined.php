@@ -132,7 +132,10 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	$phtargs["wpposttype"] = $posttype;
 	$phtargs["nxsposttype"] = nxs_getnxsposttype_by_wpposttype($posttype);
 	$phtargs["pagetemplate"] = $pagetemplate;
-	$widgets = nxs_getwidgets($phtargs);
+	$widgets = nxs_getwidgets_v2($phtargs, true);
+	
+	// filter out obsolete widgets
+	
 	?>
 	
 	<div class="nxs-admin-wrap">

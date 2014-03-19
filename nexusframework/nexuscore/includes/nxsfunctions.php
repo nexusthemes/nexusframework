@@ -869,9 +869,23 @@ function nxs_removequeryparameterfromurl($url, $parametertoremove)
 		$result = $url;
 	}
 	return $result;
-}	
+}
+
+function nxs_getobsoletewidgetids()
+{
+	$result = array();
+	
+	$result[] = "contactbox";
+	
+	return $result;
+}
 
 function nxs_getwidgets($widgetargs)
+{
+	return nxs_getwidgets_v2($widgetargs, false);
+}
+
+function nxs_getwidgets_v2($widgetargs, $filterobsoletewidgets)
 {	
 	$stage1result = array();
 	
@@ -889,6 +903,8 @@ function nxs_getwidgets($widgetargs)
 	$result = array();
 	$distinct = array();
 	
+	$obsoletewidgetids = nxs_getobsoletewidgetids();
+	
 	//
 	// enrich the data; lookup the title for each widget added
 	//
@@ -896,7 +912,26 @@ function nxs_getwidgets($widgetargs)
 	foreach ($stage1result as $widgetdata)
 	{
 		$widgetid = $widgetdata["widgetid"];
-		if (!in_array($widgetid, $distinct))
+		$includeitem = true;
+		if ($filterobsoletewidgets)
+		{
+			if (in_array($widgetid, $obsoletewidgetids))
+			{
+				$includeitem = false;
+			}
+		}
+		
+		//
+		if (!$includeitem)
+		{
+			if (in_array($widgetid, $distinct))
+			{
+				// already there
+				$includeitem = false;
+			}
+		}
+		
+		if ($includeitem)
 		{
 			$distinct[] = $widgetid;
 			$title = nxs_getplaceholdertitle($widgetid);
