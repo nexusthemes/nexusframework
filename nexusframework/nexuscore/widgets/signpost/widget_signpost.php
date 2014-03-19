@@ -324,24 +324,8 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 	// Title background color
 	$title_bg_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $title_bg);
 	
-	$height_calculation_script = '
-	<script type="text/javascript">
-		
-		jQuery(window).bind (
-			"nxs_recalculateruntimedimensions_afterclear", 
-			function(e) {
-				
-				var totalheight = '.$container_height.';
-				
-				jQuery("#nxs-widget-'.$placeholderid.' .nxs-default .mask").height(totalheight + "px");
-				jQuery("#nxs-widget-'.$placeholderid.' .nxs-default .mask-color").height(totalheight + "px");
-				jQuery("#nxs-widget-'.$placeholderid.' .nxs-default .image").height(totalheight + "px");
-				jQuery("#nxs-widget-'.$placeholderid.' .nxs-default ").height(totalheight + "px");
-			
-			}
-		);
-	
-	</script>';
+	// Container height
+	$container_height = $container_height . "px";
 	
 	/* FALLBACK & DEFAULT
 	---------------------------------------------------------------------------------------------------- */
@@ -395,51 +379,39 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 		echo '  
 			<!-- DEFAULT SCENARIO -->
 			
-			<div class="transition nxs-default">';
+			<div class="transition nxs-default" style="height: '.$container_height.';">';
 			
 				if($destination_articleid_signpost != ""){
-					echo'
-					<a '.$destination_target_html.' href="'.$destination_articleid_signpost.'">
-						<div class="border '. $image_border_width_cssclass.'"></div>
-					</a>';
+					echo'<a '.$destination_target_html.' href="'.$destination_articleid_signpost.'"><div class="border '. $image_border_width_cssclass.'"></div></a>';
 				} else if ($destination_url != ""){
-					echo '
-					<a '.$destination_target_html.' href="'.$destination_url.'">
-						<div class="border '. $image_border_width_cssclass.'"></div>
-					</a>';
+					echo '<a '.$destination_target_html.' href="'.$destination_url.'"><div class="border '. $image_border_width_cssclass.'"></div></a>';
 				} else {
 					echo '<div class="border '. $image_border_width_cssclass.'"></div>';
 				}
 				
 				echo'
-				<div class="image" style="background: url('.$imageurl.') no-repeat top center;"></div>
-				<div class="mask-color '.$mask_color_cssclass.'">
-					<div class="mask-container">';
+				<div class="image" style="background: url('.$imageurl.') no-repeat top center; height: '.$container_height.';"></div>
+				<div class="mask-color '.$mask_color_cssclass.'" style="height: '.$container_height.';">
+					<div class="mask-container nxs-default-p nxs-padding-bottom0">';
 					
 						echo $htmltext_default;
-							if ($htmlforbutton == "") {
-								echo '<div class="nxs-clear nxs-padding-bottom20"></div>';
+							if ($htmlforbutton != "") {
+								echo '<div class="nxs-clear nxs-padding-bottom10"></div>';
 							}
+							
 						echo $htmlforbutton;
 						
 					echo'
 					</div>
 				</div> 
-				<div class="mask">
+				<div class="mask" style="height: '.$container_height.';">
 					
-					
-						<div class="title-wrapper '.$title_bg_cssclass.'">';
-							echo $htmltitle_default;
-							echo '
-						</div>';						
-						
+					<div class="title-wrapper '.$title_bg_cssclass.'">';
+						echo $htmltitle_default;
 						echo '
-						
-								
-				</div>';
-				
-				echo $height_calculation_script;
-				echo'				
+					</div>
+					
+				</div>				
 				
 			</div> <!-- END default -->
 			
