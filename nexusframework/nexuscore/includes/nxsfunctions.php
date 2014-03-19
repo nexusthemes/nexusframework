@@ -913,22 +913,16 @@ function nxs_getwidgets_v2($widgetargs, $filterobsoletewidgets)
 	{
 		$widgetid = $widgetdata["widgetid"];
 		$includeitem = true;
-		if ($filterobsoletewidgets)
+		if ($includeitem && $filterobsoletewidgets && in_array($widgetid, $obsoletewidgetids))
 		{
-			if (in_array($widgetid, $obsoletewidgetids))
-			{
-				$includeitem = false;
-			}
+			$includeitem = false;
 		}
 		
 		//
-		if (!$includeitem)
+		if ($includeitem && in_array($widgetid, $distinct))
 		{
-			if (in_array($widgetid, $distinct))
-			{
-				// already there
-				$includeitem = false;
-			}
+			// already there
+			$includeitem = false;
 		}
 		
 		if ($includeitem)
