@@ -7,8 +7,8 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 	$value = $$id;	// $id is the parametername, $$id is the value of that parameter
 	
 	$publishedargs = array();
-	$publishedargs["post_status"] 	= "publish";
-	$publishedargs["post_type"] 	= array("post", "page");
+	$publishedargs["post_status"] 	= array("publish", "private");
+	$publishedargs["post_type"] 	= array("post", "page", "product");
 	$publishedargs["orderby"] 		= "post_date";//$order_by;
 	$publishedargs["order"] 		= "DESC"; //$order;
 	$publishedargs["numberposts"] 	= -1;	// allemaal!

@@ -3077,7 +3077,7 @@ function nxs_getrenderedhtmlincontainer($containerpostid, $postid, $rendermode)
 		$result = nxs_getrowswarning(nxs_l18n__("Deleted section. Consider (re)configuring it.", "nxs_td") . $reconfigure);
 		
 	}
-	else if ($poststatus == "draft" || $poststatus == "future")
+	else if ($poststatus == "draft" || $poststatus == "private" || $poststatus == "future")
  		{
  		if (!is_user_logged_in())
  		{
