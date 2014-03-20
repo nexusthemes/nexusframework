@@ -219,6 +219,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "csv");
 		$result[] = array("widgetid" => "search");
 		$result[] = array("widgetid" => "eventsbox");
+		$result[] = array("widgetid" => "carousel");
+		$result[] = array("widgetid" => "banner");
 		
 		// Never
 		$result[] = array("widgetid" => "wordpresssidebar");
@@ -228,6 +230,9 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "squeezebox");
 		$result[] = array("widgetid" => "googlebusinessphoto");		
 		$result[] = array("widgetid" => "rssfeed");
+		
+		
+		
 		
 		// $result[] = array("widgetid" => "wpmenu");
 		// $result[] = array("widgetid" => "fbcomments");
@@ -325,6 +330,17 @@ function nxs_getwidgets_functions_AF($result, $args)
 		// DEFINITION LIST
 		if ($nxssubposttype == "definitionlist") {
 			$result[] = array("widgetid" => "definitionlistitemtext");
+		}
+		
+		// ---
+		// Carousel
+		if ($nxssubposttype == "carousel") {
+			$result[] = array("widgetid" => "carouselitem");
+		} 
+		
+		// Banner
+		if ($nxssubposttype == "banner") {
+			$result[] = array("widgetid" => "banneritem");
 		}
 	}	
 	
@@ -469,6 +485,10 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("csv");
 	nxs_ext_lazyload_widget("wpmenu");
 	nxs_ext_lazyload_widget("target");
+	nxs_ext_lazyload_widget("carousel");
+	nxs_ext_lazyload_widget("carouselitem");
+	nxs_ext_lazyload_widget("banner");
+	nxs_ext_lazyload_widget("banneritem");
 
 	// PAGEDECORATORS
 	nxs_ext_lazyload_widget("pageslider");

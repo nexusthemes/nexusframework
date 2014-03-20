@@ -357,7 +357,7 @@ function nxs_widgets_radial_render_webpart_render_htmlvisualization($args)
 			
 			</div>
 			
-			<div class="radial" style="'.$image_border_width_radial.'; z-index: 25; pointer-events: none;"></div>
+			<div class="radial" style="'.$image_border_width_radial.'; z-index: 25;"></div>
 			
 			<div class="radial" style="background: url('.$imageurl.') no-repeat center;">';
 				
