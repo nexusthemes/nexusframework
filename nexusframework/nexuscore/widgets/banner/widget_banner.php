@@ -99,6 +99,17 @@ function nxs_widgets_banner_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("border_width"),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "image_filter",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Image filter", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"	=>nxs_l18n__("None", "nxs_td"),
+					"grayscale"		=>nxs_l18n__("Grayscale", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
 			
 			array( 
 				"id" 				=> "wrapper_end",
@@ -185,6 +196,10 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 		$image_border_width = 'box-shadow: inset 0 0 0 0 rgba(0,0,0,0.6), inset 0 0 0 '.$image_border_width.'px white, 0 2px 6px rgba(10, 10, 10, 0.3);';
 	}
 	
+	// Grayscale
+	if ($image_filter == "grayscale") { $image_filter = "nxs-grayscale"; }
+	
+	
 	/* banner
 	---------------------------------------------------------------------------------------------------- */
 	
@@ -229,7 +244,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				}				
 				
 				// add image to html
-				$image = '<div class="image image-background" style="background: url('.$banner_imageurl.') no-repeat top center; '.$image_border_width.'"></div>';
+				$image = '<img class="image image-background '.$image_filter.'" src="'.$banner_imageurl.'" style="'.$image_border_width.'">';
 				
 				// add item to banner array
 				if ($destinationurl != "") {
@@ -286,7 +301,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 		// Title
 		if ( $title != "" ) { 
 			echo $htmltitle;
-			echo '<div class="nxs-clear padding"></div>'; 
+			echo '<div class="nxs-clear nxs-padding-bottom20"></div>'; 
 		}
 		
 		// Banners
@@ -303,7 +318,14 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				// Remove border for last item by placing class
 				if ($i == (count($banner)-1)) { $last = "last"; }
 				
-				echo '<li class="image-wrapper '.$placeinrow.' '.$last.'" >'.$banner[$i].'</li>';
+				echo '
+				<li class="image-wrapper '.$placeinrow.' '.$last.'" >
+					<div class="nxs-table">
+						<div class="nxs-table-cell">
+							'.$banner[$i].'
+						</div>
+					</div>				
+				</li>';
 			}
 			/* ------------------------------------------------------------------------------------------------- */
 			
