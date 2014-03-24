@@ -430,7 +430,7 @@ function nxs_action_webmethod_init_recontructmainwploop()
 }
 add_action("nxs_action_webmethod_init", "nxs_action_webmethod_init_recontructmainwploop");
 
-add_action( 'add_meta_boxes', 'nxs_add_metaboxes');
+add_action('add_meta_boxes', 'nxs_add_metaboxes');
 function nxs_add_metaboxes()
 {
 	global $post;
@@ -512,6 +512,11 @@ function nxs_render_postfooterlink()
 	$catitem_themeid = $sitemeta["catitem_themeid"];
 	$lookup = array
 	(
+		"physicaltherapy;" => array
+		(
+			"href"=>"/wordpress-themes/therapy/physical-therapy-wordpress-theme/",
+			"title"=>"Physical therapy WordPress theme",
+		),
 		"movingcompany;" => array
 		(
 			"href"=>"/wordpress-themes/moving-company/moving-company-wordpress-theme/",
@@ -677,7 +682,7 @@ function nxs_addsupportforadditionalimageformats()
 	 //var_dump($i);
 }
 
-add_filter( 'image_size_names_choose', 'nxs_custom_sizes' );
+add_filter('image_size_names_choose', 'nxs_custom_sizes');
 
 function nxs_custom_sizes( $sizes ) {
     return array_merge( $sizes, array(
