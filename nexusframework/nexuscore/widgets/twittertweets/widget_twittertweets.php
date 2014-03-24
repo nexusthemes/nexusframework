@@ -81,18 +81,17 @@ function nxs_widgets_twittertweets_home_getoptions($args)
 			// TITLE
 			
 			array( 
-				"id" 				=> "wrapper_begin",
+				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
 			),
 			
-			array
-			( 
+			array(
 				"id" 				=> "title",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -118,16 +117,35 @@ function nxs_widgets_twittertweets_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
-			array(
-				"id" 				=> "title_heightiq",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
+			array( 
+				"id" 				=> "top_info_color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Top info color", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-		
+			array(
+				"id"     			=> "top_info_padding",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Top info padding", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "icon",
+				"type" 				=> "icon",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array(
+				"id"     			=> "icon_scale",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
-				"id" 				=> "wrapper_end",
+				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 			),
 			
@@ -317,8 +335,41 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
+	// Title heading
+	if ($title_heading != "") 	{ $title_heading = "h" . $title_heading; } else 
+								{ $title_heading = "h1"; }
+
+	// Title alignment
+	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
+	
+	if ($title_alignment == "center") { $top_info_title_alignment = "margin: 0 auto;"; } else
+	if ($title_alignment == "right")  { $top_info_title_alignment = "margin-left: auto;"; } 
+	
+	// Title fontsize
+	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
+	
+	// Top info padding and color
+	$top_info_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $top_info_color);
+	$top_info_padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $top_info_padding);
+	
+	// Icon scale
+	$icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+		
+	// Icon
+	if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span>';}
+	
+	if ($title_schemaorgitemprop != "") {
+		// bijv itemprop="name"
+		$title_schemaorg_attribute = 'itemprop="' . $title_schemaorgitemprop . '"';
+	} else {
+		$title_schemaorg_attribute = "";	
+	}		
+	
 	// Title
-	$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "");
+	$titlehtml = '<'.$title_heading.' ' . $title_schemaorg_attribute . ' class="nxs-title '.$title_alignment_cssclass.' '.$title_fontsize_cssclass.' '.$titlecssclasses.'">'.$title.'</'.$title_heading.'>';
+	
+	
+	
 	
 	// Filler
 	$htmlfiller = nxs_gethtmlforfiller();
@@ -340,10 +391,41 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 			
 			echo '<div ' .$class . '>';
 			
-				echo $htmltitle;
-			
-				if ($htmltitle != "") { echo $htmlfiller; }
-			
+				/* TITLE
+				---------------------------------------------------------------------------------------------------- */
+				if ($icon == "" && $title == "") {
+					// nothing to show
+				} else if (($top_info_padding_cssclass != "") || ($icon != "") || ($top_info_color_cssclass != "")) {
+					 
+					// Icon title
+					echo '
+					<div class="top-wrapper nxs-border-width-1-0 '.$top_info_color_cssclass.' '.$top_info_padding_cssclass.'">
+						<div class="nxs-table" style="'.$top_info_title_alignment.'">';
+						
+							// Icon
+							echo $icon;
+							
+							// Title
+							if ($title != "") {	echo $titlehtml; }
+							
+							echo '
+						</div>
+					</div>';
+				
+				} else {
+				
+					// Default title
+					if ($title != "") {
+						echo $titlehtml;
+					}
+				
+				}
+				
+				echo $htmlfiller; 
+		
+				/* TWEETS
+				---------------------------------------------------------------------------------------------------- */
+				
 				if ($twitteraccount != "" || $twittersearchphrase != "") {
 					
 					echo '<div id="tweets_' . $placeholderid . '">';
