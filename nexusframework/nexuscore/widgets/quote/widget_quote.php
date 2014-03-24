@@ -201,7 +201,7 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	for ($i = 0; $i < $full_star; $i++ )  { $full_star_html .= '<span class="nxs-icon-star2"></span>'; }
 	for ($i = 0; $i < $half_star; $i++ )  { $half_star_html .= '<span class="nxs-icon-star3"></span>'; }
 	
-	$stars = $rating_text . " " . $full_star_html.$half_star_html.$empty_star_html;
+	if ($start != 0) { $stars = $rating_text . " " . $full_star_html.$half_star_html.$empty_star_html; }
 	
 	// Stars and source
 	if ($source != "" && $destination_url == ""){ 
@@ -232,7 +232,8 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 			echo $text;
 			echo '<div class="nxs-clear nxs-padding-bottom10"></div>';
 			echo $source;
-		echo '</div>';			
+		echo '</div>
+		<div class="nxs-clear"></div>';			
 			
 	} 
 				
