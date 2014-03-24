@@ -219,7 +219,7 @@ function nxs_widgets_logo_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Minimum height", "nxs_td"),
 				"dropdown" 			=> array
 				(
-					"@@@nxsempty@@@" => nxs_l18n__("", "nxs_td"),
+					"@@@nxsempty@@@" => nxs_l18n__("-", "nxs_td"),
 					"0px" => nxs_l18n__("0px", "nxs_td"),
 					"100px" => nxs_l18n__("100px", "nxs_td"),
 					"200px" => nxs_l18n__("200px", "nxs_td"),

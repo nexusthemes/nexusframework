@@ -131,7 +131,7 @@ function nxs_widgets_squeezebox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Minimum height", "nxs_td"),
 				"dropdown" 			=> array
 				(
-					"@@@nxsempty@@@" => nxs_l18n__("", "nxs_td"),
+					"@@@nxsempty@@@" => nxs_l18n__("-", "nxs_td"),
 					"200px" => nxs_l18n__("200px", "nxs_td"),
 					"300px" => nxs_l18n__("300px", "nxs_td"),
 					"400px" => nxs_l18n__("400px", "nxs_td"),
