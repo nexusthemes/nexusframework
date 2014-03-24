@@ -777,7 +777,10 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 /* BANNER
 ------------------------------------------------------------------------------------------ */
 @media only screen and ( max-width: 719px ) {
-.nxs-banner .image-wrapper											{ width: 27.2em; height: 27.2em; }
+.nxs-banner .image-wrapper,
+.nxs-banner .image-wrapper .nxs-table								{ min-width: 27.2em; min-height: 27.2em; }
+.nxs-banner .image-wrapper img										{ min-width: 27.2em; }
+.nxs-banner ul.banners-wrapper										{ display: block; }
 .nxs-banner .image-wrapper.placeinrow2								{ border-right: 0; }
 .nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow1,
 .nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow3,		
