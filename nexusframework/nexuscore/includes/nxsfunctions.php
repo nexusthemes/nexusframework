@@ -9678,8 +9678,9 @@ function nxs_ext_feed_img($content)
 function nxs_the_excerpt_rss($content)
 {
 	$content = nxs_the_content_feed($content, $feedtype);
+	$content = str_replace("\n", " ", $content);
 	$content = str_replace("&nbsp;", " ", $content);
-	$content = preg_replace('/[^A-Za-z0-9.\' ]/', '', $content); // Removes special chars.
+	$content = preg_replace('/[^A-Za-z0-9()!:.\' ]/', '', $content); // Removes special chars.
 	
 	// prefix the image
 	
