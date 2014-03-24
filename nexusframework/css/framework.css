@@ -252,6 +252,11 @@ ul.nxs-default-list											{ line-height: 1.625em; font-size: 15px; margin-to
 }
 .nxs-widget	.nxs-title a:hover span 						{ opacity: 0.5; }
 
+/* CLASSIC WP STYLING */
+.alignleft													{ float: left; }
+.alignright													{ float: right; }
+.wp-caption 												{ border: 1px solid #ddd; text-align: center; background-color: #f3f3f3; padding-top: 4px; margin: 10px; max-width: 96.5%; border-radius: 3px; }
+
 /* TRANSITION / TRANSFORM FEATURES
 ---------------------------------------------------------------------------------------------------- */
 
