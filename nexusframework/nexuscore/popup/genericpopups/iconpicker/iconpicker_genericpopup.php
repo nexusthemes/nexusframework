@@ -98,7 +98,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"template", 
 										
 										"books", 
-										"star2", 
+										"star2",
+										"star3", 
 										"quill", 
 										"file2", 
 										"construction", 
@@ -106,8 +107,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"wand", 
 										"phone", 
 										"euro", 
-										"fire", 
 										
+										"fire", 
 										"plunger", 
 										"faucet", 
 										"sewerage", 
@@ -117,8 +118,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"pencil", 
 										"blog", 
 										"droplet", 
-										"music", 
 										
+										"music", 
 										"headphones", 
 										"film", 
 										"dice", 
@@ -128,8 +129,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"diamonds", 
 										"connection", 
 										"book", 
-										"copy", 
 										
+										"copy", 
 										"copy2", 
 										"copy3", 
 										"paste", 
@@ -139,8 +140,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"credit", 
 										"address-book", 
 										"notebook", 
-										"pushpin", 
 										
+										"pushpin", 
 										"compass", 
 										"map", 
 										"alarm", 
@@ -150,8 +151,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"tablet", 
 										"laptop", 
 										"tv", 
-										"keyboard", 
 										
+										"keyboard", 
 										"print", 
 										"cabinet", 
 										"drawer2", 
@@ -161,8 +162,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"binoculars",  
 										"key", 
 										"lock", 
-										"unlocked", 
 										
+										"unlocked", 
 										"hammer", 
 										"bug", 
 										"stats", 
@@ -172,8 +173,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"glass", 
 										"mug", 
 										"food", 
-										"leaf", 
 										
+										"leaf", 
 										"rocket", 
 										"dashboard", 
 										"hammer2", 
@@ -183,8 +184,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"airplane", 
 										"truck", 
 										"road", 
-										"accessibility", 
 										
+										"accessibility", 
 										"target", 
 										"switch", 
 										"signup", 
@@ -194,8 +195,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"earth", 
 										"flag", 
 										"attachment", 
-										"eye", 
 										
+										"eye", 
 										"eye-blocked", 
 										"brightness-medium", 
 										"brightness-contrast", 
@@ -205,8 +206,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"heart-broken", 
 										"thumbs-up", 
 										"thumbs-up2", 
-										"point-up", 
 										
+										"point-up", 
 										"point-right", 
 										"point-down", 
 										"point-left",
@@ -217,8 +218,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"dollar",
 										"bread",
 										"palette",
-										"pound",
 										
+										"pound",
 										"herring",
 										"bell",
 										"lock2",
@@ -229,8 +230,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"sofa",
 										"paw",
 										"vacuum-cleaner",
-										"bus",
 										
+										"bus",
 										"bicycle",
 										"soccer",
 	
