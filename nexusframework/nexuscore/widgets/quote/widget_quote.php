@@ -1,7 +1,6 @@
 <?php
 
-function nxs_widgets_quote_geticonid()
-{
+function nxs_widgets_quote_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
 	return "nxs-icon-" . $widget_name;
 }
@@ -27,19 +26,15 @@ function nxs_widgets_quote_home_getoptions($args)
 {
 	// CORE WIDGET OPTIONS
 	
-	$options = array
-	(
-		"sheettitle" => nxs_widgets_quote_gettitle(),
-		"sheeticonid" => nxs_widgets_quote_geticonid(),
-		"sheethelp" => nxs_l18n__("http://nexusthemes.com/quote-widget/"),
-		"unifiedstyling" => array
-		(
-			"group" => nxs_widgets_quote_getunifiedstylinggroup(),
-		),
-		"fields" => array
-		(
+	$options = array (
+		"sheettitle" 		=> nxs_widgets_quote_gettitle(),
+		"sheeticonid" 		=> nxs_widgets_quote_geticonid(),
+		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/quote-widget/"),
+		"unifiedstyling" 	=> array ("group" => nxs_widgets_quote_getunifiedstylinggroup(),),
+		"fields" 			=> array(
+			
 			array( 
-				"id" 				=> "wrapper_text_begin",
+				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Quote", "nxs_td"),
 			),
@@ -70,6 +65,33 @@ function nxs_widgets_quote_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "stars",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Number of stars", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					""		=>"",
+					"5"		=>"5",
+					"4.5"	=>"4.5",
+					"4"		=>"4",
+					"3.5"	=>"3.5",
+					"3"		=>"3",
+					"2.5"	=>"2.5",
+					"2"		=>"2",
+					"1.5"	=>"1.5",
+					"1"		=>"1",
+					"0.5"	=>"0.5",
+					"0"		=>"0",
+				),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "rating_text",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Text before stars", "nxs_td"),
+				"localizablefield"	=> true
+			),
+			array(
 				"id" 				=> "show_quote_icon",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Show quote icon", "nxs_td"),
@@ -77,7 +99,7 @@ function nxs_widgets_quote_home_getoptions($args)
 			),
 			
 			array( 
-				"id" 				=> "wrapper_button_end",
+				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
 		)
@@ -162,24 +184,39 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	if ($show_quote_icon != "") { $show_quote_icon = '<span class="nxs-icon-quotes-left"></span>'; }
 	
 	// Text
-	if ($text != "") { $text = $show_quote_icon . '<span class="nxs-default-p quote">' . $text . '</span>';	
-	}
+	if ($text != "") { $text = $show_quote_icon . '<span class="nxs-default-p quote">' . $text . '</span>';	}
 	
 	// Quote width
-	if ($quote_width != ""){
+	if ($quote_width != "")	{
 		$quote_width = 'width: ' . $quote_width . ';';
 		$quote_alignment = 'nxs-margin-auto';
 	}
 	
-	// Source
+	// Stars
+	$empty_star = floor(5 - $stars);
+	$full_star = 5 - (ceil(5 - $stars));
+	if ($full_star + $empty_star != 5) { $half_star = 1; }  
+	
+	for ($i = 0; $i < $empty_star; $i++ ) { $empty_star_html .= '<span class="nxs-icon-star"></span>'; }
+	for ($i = 0; $i < $full_star; $i++ )  { $full_star_html .= '<span class="nxs-icon-star2"></span>'; }
+	for ($i = 0; $i < $half_star; $i++ )  { $half_star_html .= '<span class="nxs-icon-star3"></span>'; }
+	
+	$stars = $rating_text . " " . $full_star_html.$half_star_html.$empty_star_html;
+	
+	// Stars and source
 	if ($source != "" && $destination_url == ""){ 
-		$source = '<p class="nxs-default-p source nxs-padding-bottom0 nxs-padding-top10">' . $source . '</p>'; 
-	} else if ($source != "" && $destination_url != ""){
 		$source = '
-			<a href="' . $destination_url . '" target="_new">
-				<p class="nxs-default-p source nxs-padding-bottom0 nxs-padding-top10">' . $source . '</p>
-			</a>'; 
-	}
+			<p class="nxs-default-p source nxs-padding-bottom0">
+				<strong>'.$stars.'</strong>
+				<strong><span class="source">' . $source . '</span></strong>
+			</p>'; 
+	} else if ($source != "" && $destination_url != ""){
+		$source = '		
+			<p class="nxs-default-p source nxs-padding-bottom0">
+				<strong>'.$stars.'</strong>
+				<a href="' . $destination_url . '" target="_new"><strong><span class="source">' . $source . '</span></strong></a>
+			</p>'; 
+}
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -193,6 +230,7 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 		
 		echo '<div class="nxs-applylinkvarcolor nxs-relative ' . $quote_alignment . '" style="' . $quote_width . '">';
 			echo $text;
+			echo '<div class="nxs-clear nxs-padding-bottom10"></div>';
 			echo $source;
 		echo '</div>';			
 			
