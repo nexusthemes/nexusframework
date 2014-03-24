@@ -905,8 +905,11 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 /* QUOTE
 ---------------------------------------------------------------------------------------------------- */
 .nxs-quote .nxs-icon-quotes-left							{ font-size: 80px; top: -20px; left: -10px; position: absolute; opacity: 0.08; }
-.nxs-quote span.quote 										{ font-size: 15px; line-height: 1.625; font-style: italic; padding: 0 25px; text-align: center; }
-.nxs-quote p												{ text-align: right; font-weight: bold; }
+.nxs-quote span.quote 										{ font-size: 15px; line-height: 1.625; font-style: italic; text-align: center; }
+.nxs-quote p span.source									{ float: right; }
+.nxs-quote p span.nxs-icon-star,
+.nxs-quote p span.nxs-icon-star2,
+.nxs-quote p span.nxs-icon-star3							{ font-size: 16px; color: #f3671c; }
 
 /* DEFINITION LISTS 
 ---------------------------------------------------------------------------------------------------- */
@@ -1859,9 +1862,9 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 
 /* BANNER
 ---------------------------------------------------------------------------------------------------- */
-.nxs-banner .image-wrapper 									{ width: 11.8em; height: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; float: left; }
-.nxs-banner .image-wrapper .nxs-table						{ height: 11.8em; }
-.nxs-banner .image-wrapper img	 							{ max-width: 100%; max-height: 100%; }
+.nxs-banner .image-wrapper 									{ height: 11.8em; max-width: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; float: left; }
+.nxs-banner .image-wrapper .nxs-table						{ height: 11.8em; margin: 0 auto; }
+.nxs-banner .image-wrapper img	 							{ max-height: 100%; width: 100%; }
 .nxs-banner .image-wrapper.placeinrow5,
 .nxs-main .nxs-banner .image-wrapper.placeinrow3,
 .nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow1,
@@ -2155,6 +2158,7 @@ h3#order_review_heading,
 .nxs-icon-contrast:before 			{ content: "\e68a"; }
 .nxs-icon-star:before 				{ content: "\e68b"; }
 .nxs-icon-star2:before 				{ content: "\e68c"; }
+.nxs-icon-star3:before 				{ content: "\e731"; }
 .nxs-icon-heart:before 				{ content: "\e68d"; }
 .nxs-icon-heart-broken:before 		{ content: "\e68f"; }
 .nxs-icon-thumbs-up:before 			{ content: "\e690"; }
