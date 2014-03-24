@@ -884,7 +884,7 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 			
 			ob_start();
 			
-			if ($totalpages > 1) { 
+			if (false) { // $totalpages > 1) { 
 				echo'
 				<div class="nxs-pagination nxs-pagination-' . $queryparameter . '">';
 				
