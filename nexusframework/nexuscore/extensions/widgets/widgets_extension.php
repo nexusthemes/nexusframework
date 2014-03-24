@@ -126,6 +126,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "busrulesearch");
 		$result[] = array("widgetid" => "busrulemaintenance");
 		$result[] = array("widgetid" => "busruleposttype");
+		$result[] = array("widgetid" => "busrulehaspostcontent");
 		
 		// WOOCOMMERCE
 		 
@@ -507,7 +508,8 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("busrulearchive");	
 	nxs_ext_lazyload_widget("busrulesearch");	
 	nxs_ext_lazyload_widget("busrulemaintenance");	
-	nxs_ext_lazyload_widget("busruleposttype");	
+	nxs_ext_lazyload_widget("busruleposttype");
+	nxs_ext_lazyload_widget("busrulehaspostcontent");
 	
 	// WOOCOMMERCE
 	global $woocommerce;
