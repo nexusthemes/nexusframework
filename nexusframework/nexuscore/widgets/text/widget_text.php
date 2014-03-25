@@ -388,9 +388,6 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Importing variables
 	extract($args);
 	
-	//echo "jaj3:";
-	//var_dump($args["title"]);
-	
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
@@ -504,9 +501,23 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	$image_title = $image_alt;
 	
 	$wrappingelement = "div";
+	//echo $text;
+	//die();
+
+	// convert video links to embedded videos
+	$wp_embed = $GLOBALS['wp_embed'];
+
+	$text = str_replace("<p>", "<p>\r\n", $text);
+	$text = str_replace("</p>", "\r\n</p>", $text);
+	$text = str_replace("<br />", "\r\n", $text);
+	$text = str_replace("<br>", "\r\n", $text);
+	
+	// trailing </p>
+	$text = $wp_embed->autoembed($text);
 
 	// get html for each part	
 	$htmltext = nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_showdropcap, $wrappingelement, $text_heightiq);
+	
 	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js);
 	$htmlfiller = nxs_gethtmlforfiller();
 	

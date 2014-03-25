@@ -215,12 +215,8 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 				        	(
 				        		function()
 				        		{
-				        			nxs_js_log("DIRTY!!!");
-				        		
 				        			nxs_js_popup_sessiondata_make_dirty();
-				        			
 				        			nxs_js_popup_setsessiondata("nxs_tinymce_invoker_optionid", "<?php echo $id;?>");
-				        			nxs_js_alert("entering the world of optionid <?php echo $id;?>");
 				        		}
 				        	);
 				        	
