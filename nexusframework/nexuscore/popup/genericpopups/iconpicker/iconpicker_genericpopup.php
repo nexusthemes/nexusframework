@@ -234,6 +234,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"bus",
 										"bicycle",
 										"soccer",
+										"flickr",
 	
 									);
 										
