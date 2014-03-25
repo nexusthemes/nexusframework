@@ -43,13 +43,13 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 							// resetting the image to "full" for correct metadata "width" and "height" inclusion 
 							$imagemetadata= wp_get_attachment_image_src($value, 'full', true);
 							
-							if ($imagemetadata[1] > 1999 || $imagemetadata[1] > 1999) {	
+							if ($imagemetadata[1] > 1999 || $imagemetadata[2] > 1999) {	
 								
 								echo '<p>width : <span class="blink" style="color: red; font-weight: bold">'.$imagemetadata[1].'</span> px</p>';
 								echo '<p>height : <span class="blink" style="color: red; font-weight: bold">'.$imagemetadata[2].'</span> px</p>'; 
 								echo '<p>The image you\'ve uploaded exceeds the width and / or height of <span style="font-weight: bold">2000</span> px. Images this size will severely reduce your site\'s performance! Resize it.</p>'; 
 							
-							} else if ($imagemetadata[1] > 1366 || $imagemetadata[1] > 768) {	
+							} else if ($imagemetadata[1] > 1366 || $imagemetadata[2] > 768) {	
 							
 								echo '<p>width : <span class="blink" style="color: orange; font-weight: bold">'.$imagemetadata[1].'</span> px</p>';
 								echo '<p>height : <span class="blink" style="color: orange; font-weight: bold">'.$imagemetadata[2].'</span> px</p>'; 
