@@ -1835,6 +1835,10 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 ---------------------------------------------------------------------------------------------------- */
 .nxs-googledoc > iframe										{ width: 100% !important; }
 
+/* FLICKR
+---------------------------------------------------------------------------------------------------- */
+.nxs-flickr iframe											{ width: 100% !important; }
+
 /* CAROUSEL
 ---------------------------------------------------------------------------------------------------- */
 .nxs-carousel .logo-wrapper									{ width: 100%; height: 100%; overflow: hidden; z-index: 10; pointer-events: none; }
@@ -2258,6 +2262,7 @@ h3#order_review_heading,
 .nxs-icon-google:before 			{ content: "\e720"; }
 .nxs-icon-bell:before 				{ content: "\e725"; }
 .nxs-icon-lock2:before 				{ content: "\e726"; }
+.nxs-icon-flickr:before 			{ content: "\e732"; }
 
 /* CUSTOM ICONS */
 .nxs-icon-blowtorch:before 			{ content: "\e6ef"; }
