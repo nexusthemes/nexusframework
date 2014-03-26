@@ -475,6 +475,9 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	
 	if ($image_background != "") { $image_background_cssclass = 'image-background'; }
 	
+	// Media query class
+	if (($image_imageid != "" && $title != "") || ($image_imageid != "" && $subtitle != "")) { $aligning_content = "aligning-content"; }
+	
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -487,7 +490,7 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 		nxs_renderplaceholderwarning($alternativehint); 
 	} else {
 		echo '	
-		<div class="'.$image_background_cssclass.' '.$table.'" style="'.$image_background.' '.$min_height.'">
+		<div class="'.$image_background_cssclass.' '.$table.' '.$aligning_content.'" style="'.$image_background.' '.$min_height.'">
 			
 			<div class="wrapper nxs-applylinkvarcolor '.$table_cell.' '.$bgcolor_cssclass.'">';
 				
