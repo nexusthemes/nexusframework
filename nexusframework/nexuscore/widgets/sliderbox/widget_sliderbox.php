@@ -375,7 +375,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 	// Default media query display
 	$nxs_global_placeholder_render_statebag["widgetclass"] .= " " . $responsive_display;
 	
-	if ($existingsidebarid != "") {
+	if (false) { // $existingsidebarid != "") {
 		if (nxs_has_adminpermissions()) {
 			nxs_renderplaceholderwarning(nxs_l18n__("Slider can only be used when the sidebar is suppressed[nxs:warning]", "nxs_td"));
 		}
@@ -383,7 +383,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		if (nxs_has_adminpermissions()) {
 			nxs_renderplaceholderwarning(nxs_l18n__("No slides connected[nxs:warning]", "nxs_td"));
 		}
-	} else if ($nxs_global_row_render_statebag["pagerowtemplate"] == "one") {
+	} else if (true) { // $nxs_global_row_render_statebag["pagerowtemplate"] == "one") {
 		
 		// we markeren dat deze regel geen filler moet krijgen (wordt verwerkt door shortcode)
 		

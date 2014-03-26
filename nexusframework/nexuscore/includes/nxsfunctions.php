@@ -124,6 +124,8 @@ function nxs_init_themeboot()
  			}
  		}
  	}
+ 	
+ 	
 }
 
 function nxs_renderplaceholderwarning($message)
@@ -10118,7 +10120,6 @@ function nxs_recursive_copyfolders($source, $dest)
 	  }
 	}
 }
-
 
 function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 {

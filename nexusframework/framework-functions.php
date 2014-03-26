@@ -128,13 +128,13 @@ require_once(NXS_FRAMEWORKPATH . '/nexuscore/extensions/commentsproviders/commen
 
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/webservices/webservices.php'); 
 
+
 // compliance with feeds
 nxs_addfeedsupport();
 
 // compliance with popular third party plugins
 nxs_addyoastseosupport();
 nxs_addwoocommercesupport();
-
 
 // plugins
 nxs_loadplugin_twittertweets();

@@ -1,6 +1,5 @@
 <?php 
 
-add_shortcode('nxspagerow', 'nxs_nxspagerow');
 function nxs_nxspagerow($rowattributes, $content = null, $name='') 
 {
 	extract
@@ -242,8 +241,8 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	
 	return $output;
 }
+add_shortcode('nxspagerow', 'nxs_nxspagerow');
 
-add_shortcode('nxsphcontainer', 'nxs_nxsphcontainer');
 function nxs_nxsphcontainer($atts, $content = null, $name='') 
 {
 	extract(shortcode_atts(array(
@@ -550,8 +549,8 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	
 	return $output;
 }
+add_shortcode('nxsphcontainer', 'nxs_nxsphcontainer');
 
-add_shortcode('nxsplaceholder', 'nxs_nxsplaceholder');
 function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='') 
 {
 	extract(shortcode_atts(array(
@@ -714,5 +713,34 @@ function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='')
 	
 	return $result;	
 }
+add_shortcode('nxsplaceholder', 'nxs_nxsplaceholder');
+
+// Whitelist the TEDTalks oEmbed URL
+wp_oembed_add_provider( 'http://www.ted.com/talks/*', 'http://www.ted.com/talks/oembed.json' );
+
+// kudos to http://wordpress.stackexchange.com/questions/67740/ted-talks-shortcode-not-working
+function nxs_ted_shortcode( $atts ) {
+    // We need to use the WP_Embed class instance
+    global $wp_embed;
+
+    // The "id" parameter is required
+    if ( empty($atts['id']) )
+        return '';
+
+    // Construct the TEDTalk URL
+    $url = 'http://www.ted.com/talks/view/lang/eng/id/' . $atts['id'];
+
+    // Run the URL through the  handler.
+    // This handler handles calling the oEmbed class
+    // and more importantly will also do the caching!
+    return $wp_embed->shortcode( $atts, $url );
+}
+add_shortcode('ted', 'nxs_ted_shortcode');
+
+function nxs_vimeo_shortcode( $atts ) 
+{
+	return "GJTEST";
+}
+add_shortcode('vimeo', 'nxs_vimeo_shortcode');
 
 ?>
