@@ -445,9 +445,11 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 
 /* GALLERY
 ------------------------------------------------------------------------------------------ */
+@media only screen and ( min-width: 0px ) {
 .row-no-border-right .nxs-one-whole					{ border-right: 0; width: 92.4em; }
 .nxs-main .row-no-border-right .nxs-one-whole		{ border-right: 0; width: 65.2em; }
 .nxs-gallery .image-wrapper							{ margin: 0 3.6em 30px 0; }
+}
 
 /*
 @media only screen 	   ( min-width: 0px ) 			{ .nxs-gallery-image { max-width: 120em !important; max-height: 90em !important; } }*/
@@ -460,6 +462,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 
 @media only screen and ( max-width: 719px ) 		{ .multi-step-divider { display: block !important; } }
 
+@media only screen and ( min-width: 0px ) {
 /* default landscape orientation */
 .nxs-gallery .nxs-one-fourth,
 .nxs-gallery .nxs-one-fourth .image-wrapper,
@@ -496,6 +499,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .nxs-one-half .image-border,
 .nxs-main .nxs-gallery .nxs-one-half .image-cropper,
 .nxs-main .nxs-gallery .nxs-one-half img							{ width: 27.2em; height: 16.4em; }
+}
 
 @media only screen and ( max-width: 959px ) {
 .nxs-main .nxs-gallery .nxs-one-fourth,
@@ -569,6 +573,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .nxs-one-fourth img							{ width: 88.8em; height: 53.3em; }
 }
 
+@media only screen and ( min-width: 0px ) {
 /* portrait orientation */
 .nxs-gallery .portrait .nxs-one-fourth,
 .nxs-gallery .portrait .nxs-one-fourth .image-wrapper,
@@ -605,7 +610,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .portrait .nxs-one-half .image-border,
 .nxs-main .nxs-gallery .portrait .nxs-one-half .image-cropper,
 .nxs-main .nxs-gallery .portrait .nxs-one-half img					{ width: 27.2em; height: 43.5em; }
-
+}
 @media only screen and ( max-width: 959px ) {
 .nxs-main .nxs-gallery .portrait .nxs-one-fourth ,
 .nxs-main .nxs-gallery .portrait .nxs-one-fourth .image-wrapper,
@@ -807,6 +812,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 @media only screen and ( max-width: 479px )  { .nxs-logo .stop-absolute480  { position: relative !important; top: 0px !important; left: 0px !important; } }
 /* we only provide support to render the logo for standard placeholders (1/4, 1/3, 1/2, 1) */
 
+@media only screen and ( min-width: 0px ) {
 /* FULLWIDTH */
 .nxs-one-fourth .nxs-logo img										{ max-width: 19.5em !important; }
 .nxs-one-third .nxs-logo img										{ max-width: 27.2em !important; }
@@ -821,6 +827,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-two-third .nxs-logo img								{ max-width: 37.4em !important; }
 /* SIDEBAR */
 .nxs-sidebar1 .nxs-one-whole  .nxs-logo img							{ max-width: 27.2em !important; }
+}
 
 @media only screen and ( max-width: 1199px ) { 
 /* FULLWIDTH */
