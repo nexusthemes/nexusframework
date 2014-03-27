@@ -2359,19 +2359,8 @@ h3#order_review_heading,
 ---------------------------------------------------------------------------------------------------- */
 .entry-content abbr[title] 									{ border-bottom: 1px dotted #2b2b2b; cursor: help; }
 .entry-content hr 											{ background-color: rgba(0, 0, 0, 0.1); border: 0; height: 1px; margin-bottom: 23px; }
-.entry-content p, 
-.entry-content ul, 
-.entry-content ol, 
-.entry-content dd, 
-.entry-content pre, 
-.entry-content hr,
-.entry-content table										{ margin-bottom: 24px; }
-.entry-content h1,
-.entry-content h2,
-.entry-content h3,
-.entry-content h4,
-.entry-content h5,
-.entry-content h6											{ clear: both; font-weight: 700; margin: 36px 0 12px; }
+.entry-content p, .entry-content ul, .entry-content ol, .entry-content dd, .entry-content pre, .entry-content hr, .entry-content table { margin-bottom: 24px; }
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 { clear: both; font-weight: 700; margin: 36px 0 12px; }
 .entry-content h1 											{ font-size: 26px; line-height: 1.3846153846; }
 .entry-content h2 											{ font-size: 24px; line-height: 1; }
 .entry-content h3 											{ font-size: 22px; line-height: 1.0909090909; }
@@ -2380,21 +2369,11 @@ h3#order_review_heading,
 .entry-content h6 											{ font-size: 16px; line-height: 1.5; }
 .entry-content address 										{ font-style: italic; margin-bottom: 24px; }
 .entry-content abbr[title] 									{ border-bottom: 1px dotted #2b2b2b; cursor: help; }
-.entry-content b,
-.entry-content strong 										{ font-weight: 700; }
-.entry-content cite,
-.entry-content dfn,
-.entry-content em,
-.entry-content i											{ font-style: italic; }
-.entry-content mark,
-.entry-content ins											{ background: #fff9c0; text-decoration: none; }
+.entry-content b, .entry-content strong 					{ font-weight: 700; }
+.entry-content cite, .entry-content dfn, .entry-content em, .entry-content i { font-style: italic; } 
+.entry-content mark, .entry-content ins						{ background: #fff9c0; text-decoration: none; }
 .entry-content p 											{ line-height: 24px; font-size: 16px; padding-bottom: 0; margin-bottom: 24px; }
-.entry-content code,
-.entry-content kbd,
-.entry-content tt,
-.entry-content var,
-.entry-content samp,
-.entry-content pre {
+.entry-content code, .entry-content kbd, .entry-content tt, .entry-content var, .entry-content samp, .entry-content pre {
 	font-family: monospace, serif;
 	font-size: 15px;
 	-webkit-hyphens: none;
@@ -2424,18 +2403,11 @@ h3#order_review_heading,
 	hyphens:         none;
 	quotes: none;
 }
-.entry-content blockquote:before,
-.entry-content blockquote:after,
-.entry-content q:before,
-.entry-content q:after										{ content: ""; content: none; }
+.entry-content blockquote:before, .entry-content blockquote:after, .entry-content q:before, .entry-content q:after { content: ""; content: none; }
 .entry-content blockquote 									{ color: #767676; font-size: 19px; font-style: italic; font-weight: 300; line-height: 1.2631578947; margin-bottom: 24px; }
-.entry-content blockquote cite,
-.entry-content blockquote small 							{ color: #2b2b2b; font-size: 16px; font-weight: 400; line-height: 1.5; }
-.entry-content blockquote em,
-.entry-content blockquote i,
-.entry-content blockquote cite 								{ font-style: normal; }
-.entry-content blockquote strong,
-.entry-content blockquote b 								{ font-weight: 400; }
+.entry-content blockquote cite, .entry-content blockquote small { color: #2b2b2b; font-size: 16px; font-weight: 400; line-height: 1.5; }
+.entry-content blockquote em, .entry-content blockquote i, .entry-content blockquote cite { font-style: normal; }
+.entry-content blockquote strong, .entry-content blockquote b { font-weight: 400; }
 .entry-content small 										{ font-size: smaller; }
 .entry-content big 											{ font-size: 125%; }
 .entry-content sup,
