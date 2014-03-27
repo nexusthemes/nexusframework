@@ -219,7 +219,6 @@ function nxs_widgets_logo_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Minimum height", "nxs_td"),
 				"dropdown" 			=> array
 				(
-					"@@@nxsempty@@@" => nxs_l18n__("-", "nxs_td"),
 					"0px" => nxs_l18n__("0px", "nxs_td"),
 					"100px" => nxs_l18n__("100px", "nxs_td"),
 					"200px" => nxs_l18n__("200px", "nxs_td"),
@@ -230,13 +229,6 @@ function nxs_widgets_logo_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
-			/*array(
-				"id"     			=> "logo_padding",
-				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Logo padding", "nxs_td"),
-				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
-				"unistylablefield"	=> true
-			),*/
 			array(
 				"id"     			=> "logo_margin",
 				"type"     			=> "select",
@@ -250,13 +242,6 @@ function nxs_widgets_logo_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Logo wrapper background", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			/*array(
-				"id" 				=> "border_radius",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Border radius example", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("border_radius"),
-				"unistylablefield"	=> true
-			),*/
 			
 			array( 
 				"id" 				=> "wrapper_end",
@@ -434,6 +419,8 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 		$min_height = "min-height: " . $min_height . ";"; 
 		$table = 'nxs-table';
 		$table_cell = 'nxs-table-cell';
+	} else {
+		$min_height	= "min-height: 0px;";
 	}
 	
 	// Logo
