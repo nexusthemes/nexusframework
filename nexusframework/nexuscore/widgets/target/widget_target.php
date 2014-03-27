@@ -439,6 +439,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 					if ($destination_url != "") { echo '<a href="' . $destination_url . '">'; }
 					
 					echo $title;
+					if ($title != "" && $text != "") { echo '<div class="nxs-padding-bottom10"></div>'; } 
 					echo $text;
 					if (
 						($title != "" && $button != "") || 
