@@ -1292,7 +1292,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 							echo $tekst;
 							echo $button;
 							
-							echo '<div class="nxs-clear nxs-padding-top20"></div>';
+							if ($items_filter_maxcount != 1) { echo '<div class="nxs-clear nxs-padding-top20"></div>'; }
 				
 						echo '</div>';
 				
