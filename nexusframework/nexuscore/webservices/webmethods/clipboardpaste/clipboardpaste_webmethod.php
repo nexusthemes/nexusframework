@@ -5,6 +5,7 @@ function nxs_webmethod_clipboardpaste()
  	
  	if ($clipboardcontext == "") { nxs_webmethod_return_nack("clipboardcontext empty?"); }
 
+	nxs_ensure_sessionstarted();
 	$clipboardmeta = $_SESSION["nxs_clipboardmeta"];
  	$serializedmetadata = $clipboardmeta["serializedmetadata"];		
 	

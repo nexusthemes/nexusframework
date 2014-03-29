@@ -229,6 +229,20 @@ function nxs_framework_theme_styles()
 }
 add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');
 
+function nxs_ensure_sessionstarted()
+{
+	// init session
+  if (!session_id()) 
+  {
+  	// 20130329 the next line should fix issue identified by Jessica
+  	// see http://www.php.net/manual/en/session.configuration.php#ini.session.save-handler
+  	// see http://forums.cpanel.net/f5/error-php-fatal-error-session_start-failed-initialize-storage-module-17100-p3.html
+  	// if errors shows Fatal error: session_start() [<a href='function.session-start'>function.session-start</a>]: Failed to initialize storage module: files (path: )
+  	// this means the 
+  	session_start();
+  }
+}
+
 function nxs_framework_authentication_popup_top()
 {
 	?>
@@ -265,14 +279,6 @@ function nxs_validatethemedata()
 add_action('init', 'nxs_init');
 function nxs_init() 
 {
-	// init session
-  if (!session_id()) 
-  {
-  	session_start();
-  }
-  
-  
-  
 	if (nxs_has_adminpermissions())
   {
   	if (isset($_REQUEST["nxs"]))

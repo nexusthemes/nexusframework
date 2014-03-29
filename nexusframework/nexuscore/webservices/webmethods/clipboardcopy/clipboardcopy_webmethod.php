@@ -37,6 +37,7 @@ function nxs_webmethod_clipboardcopy()
 
 	// store metadata in session
  	$clipboardmeta = array("clipboardcontext"=>$clipboardcontext,"serializedmetadata"=>$serializedmetadata);	
+ 	nxs_ensure_sessionstarted();
 	$_SESSION["nxs_clipboardmeta"] = $clipboardmeta;
 	
 	if (!isset($growl))

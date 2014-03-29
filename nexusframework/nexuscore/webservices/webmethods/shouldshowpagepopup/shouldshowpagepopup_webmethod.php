@@ -23,6 +23,7 @@ function nxs_webmethod_shouldshowpagepopup()
 	}
 	else if ($repeatpopup_scope == "eachnewsession")
 	{
+		nxs_ensure_sessionstarted();
 		if (!isset($_SESSION["nxs_pagepopup_shown"]))
 		{
 			$_SESSION["nxs_pagepopup_shown"] = true;

@@ -3916,34 +3916,6 @@ function nxs_has_adminpermissions()
 	return $result;
 }
 
-function nxs_alert_upcomingrequest($message)
-{
-	if (!isset($_SESSION['nxs_alerts']))
-	{
-		$_SESSION['nxs_alerts'] = array();
-	}
-	$_SESSION['nxs_alerts'][] = $message;
-}
-
-function nxs_get_alerts()
-{
-	if (!isset($_SESSION['nxs_alerts']))
-	{
-		$result = array();
-	}
-	else
-	{
-		$result = $_SESSION['nxs_alerts'];
-	}
-	
-	return $result;
-}
-
-function nxs_clear_nxs_alerts()
-{
-	unset($_SESSION['nxs_alerts']);
-}
-
 function nxs_render_popup_header($title)
 {
 	nxs_render_popup_header_v2($title, "", "");

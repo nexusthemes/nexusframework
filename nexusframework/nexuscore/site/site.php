@@ -3847,6 +3847,7 @@ function nxs_site_clipboardcopyselector_getoptions($args){
 ---------------------------------------------------------------------------------------------------- */
 function nxs_site_clipboardpasteselector_customhtml()
 {
+	nxs_ensure_sessionstarted();
 	$clipboardmeta = $_SESSION["nxs_clipboardmeta"];
  	$serializedmetadata = $clipboardmeta["serializedmetadata"];		
  	$clipboardcontext = $clipboardmeta["clipboardcontext"];

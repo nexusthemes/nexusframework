@@ -677,40 +677,8 @@ function nxs_pagetemplate_handleheader()
 	
 	<?php do_action('nxs_bodybegin'); ?>
 
-	<?php 
-		$alerts = nxs_get_alerts();
-		$aantal = count($alerts);
-		if ($aantal == 0)
-		{
-			// nothing to do here
-		}
-		else
-		{
-			?>
-			<script type='text/javascript'>				
-				jQuery(document).ready
-				(
-					function()
-					{
-						
-						<?php
-						foreach ($alerts as $alert)
-						{
-							echo "nxs_js_alert('" . $alert . "');";
-						}
-						?>
-					}
-				);
-			</script>
-			<?php
-			// don't show multiple times...
-			nxs_clear_alerts();
-		}
-	?>
-		
 	<?php include(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsmenu.php'); ?>
 	<?php require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php'); ?>
-
 	
 	<?php global $nxs_global_extendrootclass; ?>
  <div id="nxs-container" class="nxs-containsimmediatehovermenu nxs-no-click-propagation <?php echo $page_cssclass . " " . $nxs_global_extendrootclass; ?>">
