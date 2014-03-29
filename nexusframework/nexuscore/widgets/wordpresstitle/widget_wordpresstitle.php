@@ -196,6 +196,19 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
 		$title = $term->name;
 	}
+	else if (is_archive())
+	{
+		if (is_category())
+		{
+			$cat = get_query_var('cat');
+			$yourcat = get_category($cat);
+			$title = $yourcat->name; 
+		}
+		else
+		{
+			$title = "Archive";//get_the_title(); // $term->name;
+		}
+	}
 	else
 	{
 		$currentpost = get_post($nxs_global_current_containerpostid_being_rendered);

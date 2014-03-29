@@ -509,7 +509,6 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgetype_cssclass);
 		
 		$output .= "<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "'>";
-
 		$output .= $menutopleft;	// will be empty if not allowed, or not needed
 		$output .= $menutopright;	// will be empty if not allowed, or not needed
 		$output .= $placeholdercursors;	// will be empty if not allowed, or not needed
@@ -739,7 +738,20 @@ add_shortcode('ted', 'nxs_ted_shortcode');
 
 function nxs_vimeo_shortcode( $atts ) 
 {
-	return "GJTEST";
+	if (count($atts) == 1)
+	{
+		$videoid = $atts[0];
+		if (nxs_stringstartswith($videoid, "http://vimeo.com/"))
+		{
+			$videoid = str_replace("http://vimeo.com/", "", $videoid);
+		}
+		$result = '<iframe class="nxs-inline-vimeo" src="http://player.vimeo.com/video/'.$videoid.'" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+	}
+	else
+	{
+		$result = "(Unsupported vimeo)";
+	}
+  return $result;
 }
 add_shortcode('vimeo', 'nxs_vimeo_shortcode');
 

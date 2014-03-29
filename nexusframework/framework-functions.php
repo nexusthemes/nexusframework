@@ -512,6 +512,16 @@ function nxs_render_postfooterlink()
 	$catitem_themeid = $sitemeta["catitem_themeid"];
 	$lookup = array
 	(
+		"contractor;" => array
+		(
+			"href"=>"/wordpress-themes/construction/contractor-wordpress-theme/",
+			"title"=>"Contractor WordPress theme",
+		),
+		"weddingplanner;" => array
+		(
+			"href"=>"/wordpress-themes/wedding/wedding-planner-wordpress-theme/",
+			"title"=>"Wedding planner WordPress theme",
+		),
 		"physicaltherapy;" => array
 		(
 			"href"=>"/wordpress-themes/therapy/physical-therapy-wordpress-theme/",

@@ -2248,24 +2248,33 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			var istriggeredbycursor = jQuery(e.target).hasClass("nxs-runtime-autocellsize");
 			var istriggeredbynexusframework = (istriggeredbywidget || istriggeredbycursor);
 			
-			if (istriggeredbynexusframework)
+			if (nxs_js_nxseditoractive)
 			{
-				if (nxs_js_nxseditoractive)
+				if (istriggeredbynexusframework)
 				{
 					// no further propagation of the click event...
 					e.stopPropagation();
 					nxs_js_popup_placeholder_handleclick(placeholderdom); 
 				}
+				else if (e.type == "click")
+				{
+					// no further propagation of the click event...
+					e.stopPropagation();
+					nxs_js_log(placeholderdom);
+					nxs_js_popup_placeholder_handleclick(placeholderdom); 
+				}
 				else
 				{
-					// ignoring... 
+					// we won't act upon this event as we don't know who are what
+					// triggered it. The event wil be logged to help debug problems,
+					// and it will propagate further to be handled by someone else's code
+					nxs_js_log("Widget detect an event that appears to be triggered outside the nxs framework. It propagates further:");
+					nxs_js_log(e);
 				}
 			}
 			else
 			{
-				// we won't act upon this event as we don't know who are what
-				// triggered it. The event wil be logged to help debug problems,
-				// and it will propagate further to be handled by someone else's code
+				//
 				nxs_js_log("Widget detect an event that appears to be triggered outside the nxs framework. It propagates further:");
 				nxs_js_log(e);
 			}
