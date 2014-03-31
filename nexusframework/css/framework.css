@@ -1233,6 +1233,7 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 /* LOGO 
 ------------------------------------------------------------------------------------------ */
 .nxs-logo .image-background									{ overflow: auto; width: 100%; } /* the "overflow: auto; property is necessary to prevent parent div's to move when a margin is set on the child div */
+.nxs-logo .nxs-table,
 .nxs-logo .wrapper											{ width: 100%; }
 .nxs-logo a													{ display: block; z-index: 100; }
 .nxs-logo .logo-image										{ margin: 0 auto; }
