@@ -769,16 +769,23 @@ function nxs_dataconsistency_sanitize_unicontentdata()
 		$contentnames = nxs_unicontent_getunicontentnames($currentgroup);
 		foreach ($contentnames as $currentname)
 		{
-			$unicontentprops = nxs_unicontent_getunicontentproperties($currentgroup, $currentname);
-			$metakeyvaluestoupdate = nxs_getdatarequiringmodificationforglobalidfix($unicontentprops);
-			if (count($metakeyvaluestoupdate) > 0)
+			if ($currentgroup != "")
 			{
-				$newprops = array_merge($unicontentprops, $metakeyvaluestoupdate);
-				nxs_unicontent_persistunicontent($currentgroup, $currentname, $newprops);
-			}
+				$unicontentprops = nxs_unicontent_getunicontentproperties($currentgroup, $currentname);
+				$metakeyvaluestoupdate = nxs_getdatarequiringmodificationforglobalidfix($unicontentprops);
+				if (count($metakeyvaluestoupdate) > 0)
+				{
+					$newprops = array_merge($unicontentprops, $metakeyvaluestoupdate);
+					nxs_unicontent_persistunicontent($currentgroup, $currentname, $newprops);
+				}
+				else
+				{
+					// leave as is
+				}
+			} 
 			else
 			{
-				// leave as is
+				// skip
 			}
 		}
 	}

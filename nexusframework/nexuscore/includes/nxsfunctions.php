@@ -3565,8 +3565,11 @@ function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
 		$widgetname = $result["type"];
 		$unistyle = $result["unistyle"];
 		$unistylegroup = nxs_getunifiedstylinggroup($widgetname);
-		$unistyleproperties = nxs_unistyle_getunistyleproperties($unistylegroup, $unistyle);
-		$result = array_merge($result, $unistyleproperties);
+		if ($unistylegroup != "")
+		{
+			$unistyleproperties = nxs_unistyle_getunistyleproperties($unistylegroup, $unistyle);
+			$result = array_merge($result, $unistyleproperties);
+		}
 	}
 	
 	// optionally process unicontent
@@ -3579,8 +3582,11 @@ function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
 		$widgetname = $result["type"];
 		$unicontent = $result["unicontent"];
 		$unifiedcontentgroup = nxs_unicontent_getunifiedcontentgroup($widgetname);
-		$unicontentproperties = nxs_unicontent_getunicontentproperties($unifiedcontentgroup, $unicontent);
-		$result = array_merge($result, $unicontentproperties);
+		if ($unifiedcontentgroup != "")
+		{
+			$unicontentproperties = nxs_unicontent_getunicontentproperties($unifiedcontentgroup, $unicontent);
+			$result = array_merge($result, $unicontentproperties);
+		}
 	}
 	
 	return $result;
