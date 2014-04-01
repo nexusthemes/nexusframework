@@ -193,7 +193,22 @@ function nxs_widgets_callout_home_getoptions($args)
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
 				"localizablefield"	=> true
-			),	
+			),
+			
+			array( 
+				"id" 				=> "image_vpos",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Vertical position", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"top"=>nxs_l18n__("Top", "nxs_td"),
+					"center"=>nxs_l18n__("Center", "nxs_td"),
+					"bottom"=>nxs_l18n__("Bottom", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "min_height",
 				"type" 				=> "input",
@@ -411,7 +426,21 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$imagewidth 	= $imagemetadata[1] . "px";
 		$imageheight 	= $imagemetadata[2] . "px";	
 		
-		$image_background = 'background: url('.$imageurl.') no-repeat top center;';
+		$verticalalignmentattribute = "top";	// defaults to "top"
+		if ($image_vpos == "top")
+		{
+			$verticalalignmentattribute = "top";
+		}
+		else if ($image_vpos == "center")
+		{
+			$verticalalignmentattribute = "center";
+		}
+		else if ($image_vpos == "bottom")
+		{
+			$verticalalignmentattribute = "bottom";
+		}
+		
+		$image_background = 'background: url('.$imageurl.') no-repeat ' . $verticalalignmentattribute . ' center;';
 	}
 	
 	// Text padding and margin
