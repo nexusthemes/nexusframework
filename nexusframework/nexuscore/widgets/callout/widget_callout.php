@@ -16,6 +16,11 @@ function nxs_widgets_callout_getunifiedstylinggroup() {
 	return "calloutwidget";
 }
 
+// Unicontent
+function nxs_widgets_callout_getunifiedcontentgroup() {
+	return "calloutwidget";
+}
+
 
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
@@ -36,6 +41,10 @@ function nxs_widgets_callout_home_getoptions($args)
 		(
 			"group" => nxs_widgets_callout_getunifiedstylinggroup(),
 		),
+		"unifiedcontent" 	=> array 
+		(
+			"group" => nxs_widgets_callout_getunifiedcontentgroup(),
+		),
 		"fields" => array
 		(
 			// TITLES
@@ -53,6 +62,7 @@ function nxs_widgets_callout_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If your callout has an eye-popping title put it here.", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -75,6 +85,7 @@ function nxs_widgets_callout_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Subtitle", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Subtitle goes here", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Place a descriptive teaser, if available, with this option.", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -126,6 +137,7 @@ function nxs_widgets_callout_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Button title", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Button text goes here", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Put a text on the call-to-action button.", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),	
 			array(
@@ -144,6 +156,7 @@ function nxs_widgets_callout_home_getoptions($args)
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
+				"unicontentablefield" => true,
 				"label" 			=> nxs_l18n__("Button link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the callout button to an article on your site .", "nxs_td")
 			),
@@ -152,6 +165,7 @@ function nxs_widgets_callout_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the callout button to any source.", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -159,7 +173,7 @@ function nxs_widgets_callout_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Javascript", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Apply javascript when the button is pressed.", "nxs_td"),
-				"unistylablefield"	=> true,
+				"unicontentablefield" => true,
 				"requirecapability" => nxs_cap_getdesigncapability(),
 			),			
 			array(
@@ -192,6 +206,7 @@ function nxs_widgets_callout_home_getoptions($args)
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			
@@ -283,13 +298,21 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	// The $postid and $placeholderid are used when building the HTML later on
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
 	
+	// blend unistyle properties
 	$unistyle = $temp_array["unistyle"];
 	if (isset($unistyle) && $unistyle != "")
 	{
-		// blend unistyle properties
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_callout_getunifiedstylinggroup(), $unistyle);
 		$temp_array = array_merge($temp_array, $unistyleproperties);	
 	}
+
+	// Blend unicontent properties
+	$unicontent = $temp_array["unicontent"];
+	if (isset($unicontent) && $unicontent != "") {
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_callout_getunifiedcontentgroup(), $unicontent);
+		$temp_array = array_merge($temp_array, $unicontentproperties);
+	}	
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
@@ -521,10 +544,14 @@ function nxs_widgets_callout_initplaceholderdata($args)
 	$args['subtitle_heading'] = "2";
 	$args['halign'] = "center";
 	$args['button_scale'] = "2-0";
-	
+
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_callout_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
+
+	// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_callout_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
 		
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	

@@ -792,6 +792,10 @@ function nxs_widgets_text_initplaceholderdata($args)
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_text_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
+
+	// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_text_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
 		
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	

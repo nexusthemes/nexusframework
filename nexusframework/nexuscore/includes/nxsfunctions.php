@@ -7695,6 +7695,19 @@ function nxs_unicontent_getunifiedcontentgroup($widgetid)
 	return $result;
 }
 
+function nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup)
+{
+	$unicontent = nxs_unicontent_getdefaultname($unicontentgroup);
+	$args['unicontent'] = $unicontent;
+	if (isset($unicontent) && $unicontent != "") 
+	{
+		// blend unicontent properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties($unicontentgroup, $unicontent);
+		$args = array_merge($args, $unicontentproperties);
+	}
+	return $args;
+}
+
 // -------------
 
 function nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip, $title)
