@@ -8182,7 +8182,7 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
 	      		if ($enable_deleterow === true)
 	      		{
 	      			?>
-		        	<a class='nxs-no-event-bubbling' href='#' onclick='nxs_js_row_remove(this); return false;'>
+		        	<a class='nxs-no-event-bubbling nxs-defaultwidgetdeletehandler' href='#' onclick='nxs_js_row_remove(this); return false;'>
 		           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'><span class='nxs-icon-trash'></span></li>
 		        	</a>		
 		        	<?php

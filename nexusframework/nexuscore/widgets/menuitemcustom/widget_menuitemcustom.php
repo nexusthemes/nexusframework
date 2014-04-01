@@ -1,10 +1,10 @@
 <?php
 
+nxs_requirewidget("menuitemgeneric");
+
 function nxs_widgets_menuitemcustom_geticonid()
 {
-	//$widget_name = basename(dirname(__FILE__));
-	//return "nxs-icon-" . $widget_name;
-	return "nxs-icon-menucontainer";
+	return "nxs-icon-earth";
 }
 
 function nxs_widgets_menuitemcustom_gettitle()
@@ -136,84 +136,6 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
 	return $result;
 }
 
-function nxs_menuitemcustom_menuitemarticletoggle($optionvalues, $args, $runtimeblendeddata)
-{	
-	//extract($runtimeblendeddata);
-	extract($args["clientpopupsessioncontext"]);
-
- 	?>
-	<a href="#" class="nxsbutton nxs-float-left" onclick="nxs_js_switchtocustommenuitem(); return false;">Switch</a>
-	<script type='text/javascript'>
-		function nxs_js_switchtocustommenuitem()
-		{
-    	// wijzig type van deze placeholder naar 'x'
-			// refresh de popup
-			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
-			(
-				{
-					type: 'POST',
-					data: 
-					{
-						"action": "nxs_ajax_webmethods",
-						"webmethod": "initplaceholderdata",
-						"placeholderid": "<?php echo $placeholderid;?>",
-						"postid": "<?php echo $postid;?>",
-						"containerpostid": nxs_js_getcontainerpostid(),
-						"clientpopupsessioncontext": nxs_js_getescaped_popupsession_context(),
-						"placeholdertemplate": 'menuitemarticle',
-						"type": 'menuitemcustom'
-					},
-					dataType: 'JSON',
-					url: ajaxurl, 
-					success: function(response) 
-					{
-						nxs_js_log(response);
-						if (response.result == "OK")
-						{
-							// TODO: make function for the following logic... its used multiple times...
-							// update the DOM
-							var rowindex = response.rowindex;
-							var rowhtml = response.rowhtml;
-							var pagecontainer = jQuery(".nxs-editable")[0];
-							var pagerowscontainer = jQuery(pagecontainer).find(".nxs-postrows")[0];
-							var element = jQuery(pagerowscontainer).children()[rowindex];
-							jQuery(element).replaceWith(rowhtml);
-							
-							// update the GUI step 1
-							// invoke execute_after_clientrefresh_XYZ for each widget in the affected first row, if present
-							var container = jQuery(pagerowscontainer).children()[rowindex];
-							nxs_js_notify_widgets_after_ajaxrefresh(container);
-							// update the GUI step 2
-							nxs_js_reenable_all_window_events();
-							
-							// growl!
-							//nxs_js_alert(response.growl);
-							
-							// ------------
-							nxs_js_popupsession_data_clear();
-							
-							// open new popup
-							nxs_js_popup_placeholder_neweditsession("<?php echo $postid; ?>", "<?php echo $placeholderid; ?>", "<?php echo $rowindex; ?>", "home"); 
-						}
-						else
-						{
-							nxs_js_popup_notifyservererror();
-							nxs_js_log(response);
-						}
-					},
-					error: function(response)
-					{
-						nxs_js_popup_notifyservererror();
-						nxs_js_log(response);
-					}										
-				}
-			);
-		}
-	</script>
-	<?php
-}
-
 // Define the properties of this widget
 function nxs_widgets_menuitemcustom_home_getoptions($args) 
 {
@@ -225,13 +147,6 @@ function nxs_widgets_menuitemcustom_home_getoptions($args)
 		"sheeticonid" => nxs_widgets_menuitemcustom_geticonid(),
 		"fields" => array
 		(
-			array(
-				"id" 					=> "menuitemarticletoggle",
-				"type" 				=> "custom",
-				"customcontenthandler"	=> "nxs_menuitemcustom_menuitemarticletoggle",
-				"label" 			=> nxs_l18n__("Switch to article menu item", "nxs_td"),
-			),
-		
 			// TITLE
 			
 			array( 
@@ -300,6 +215,25 @@ function nxs_widgets_menuitemcustom_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_link_end",
 				"type" 				=> "wrapperend"
+			),
+			
+			// SWITCH TYPE
+			array( 
+				"id" 				=> "wrapper_switch_begin",
+				"type" 				=> "wrapperbegin",
+				"initial_toggle_state" => "closed",
+				"label" 			=> nxs_l18n__("Switch type", "nxs_td"),
+			),
+			array(
+				"id" 					=> "menuitemcustomtoggle",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_menuitemgeneric_switchtype",
+				"label" 			=> nxs_l18n__("Switch type", "nxs_td"),
+				"excludeitem" => "menuitemcustom",
+			),
+			array( 
+				"id" 				=> "wrapper_switch_end",
+				"type" 				=> "wrapperend",
 			),
 		)
 	);

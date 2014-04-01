@@ -280,7 +280,9 @@ function nxs_getwidgets_functions_AF($result, $args)
 	---------------------------------------------------------------------------------------------------- */
 	if ($nxsposttype == "menu")
 	{
+		$result[] = array("widgetid" => "menuitemarticle");
 		$result[] = array("widgetid" => "menuitemcustom");
+		$result[] = array("widgetid" => "menuitemcategory");
 	}
 	
 	/* GENERIC LISTS POSTTYPE
@@ -434,6 +436,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("comments");
 	nxs_ext_lazyload_widget("menucontainer");
 	nxs_ext_lazyload_widget("wordpresssidebar");
+	nxs_ext_lazyload_widget("menuitemgeneric");
 	nxs_ext_lazyload_widget("menuitemarticle");
 	nxs_ext_lazyload_widget("menuitemcustom");
 	nxs_ext_lazyload_widget("menuitemcategory");

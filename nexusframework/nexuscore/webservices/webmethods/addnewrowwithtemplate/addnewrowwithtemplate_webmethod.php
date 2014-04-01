@@ -133,6 +133,9 @@ function nxs_webmethod_addnewrowwithtemplate()
 	$responseargs = $updateresult;
 	$responseargs["template"] = $placeholdertemplate;
 	$responseargs["resultstatus"] = "ok";
+	$responseargs["placeholderids"] = $placeholderids;
+	$responseargs["rowindex"] = $insertafterrowindex + 1;
+	$responseargs["postid"] = $postid;
 	
 	nxs_webmethod_return_ok($responseargs);
 }

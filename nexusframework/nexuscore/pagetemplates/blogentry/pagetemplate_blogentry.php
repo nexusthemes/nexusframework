@@ -226,7 +226,7 @@ function nxs_pagetemplate_handlecontent()
 					//
 					// ---------------------------- BEGIN RENDER BLOG CONTENT
 					//
-					
+										
 					$sitemeta = nxs_getsitemeta();
 					$site_wpcontent_show = $sitemeta["site_wpcontent_show"];
 					

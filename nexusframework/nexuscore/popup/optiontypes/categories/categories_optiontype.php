@@ -3,6 +3,7 @@ function nxs_popup_optiontype_categories_renderhtmlinpopup($optionvalues, $args,
 {
 	// default
 	$taxonomy = "category";
+	$maxselectable = "";
 	
 	extract($optionvalues);
 	extract($args);
@@ -71,14 +72,33 @@ function nxs_popup_optiontype_categories_renderhtmlinpopup($optionvalues, $args,
 			    ?>
 			  </ul>
 			  <div class='nxs-clear nxs-margin-top5'></div>
-			  <a href='#' class='nxsbutton1' onclick='jQuery("#<?php echo $id; ?> input").attr("checked", true); nxs_js_popup_sessiondata_make_dirty(); return false;'><?php nxs_l18n_e("Select all", "nxs_td"); ?></a>
-			  <a href='#' class='nxsbutton1' onclick='jQuery("#<?php echo $id; ?> input").attr("checked", false); nxs_js_popup_sessiondata_make_dirty(); return false;'><?php nxs_l18n_e("Select none", "nxs_td"); ?></a>
       </div>
   	</div>
     <div class="nxs-clear"></div>
 	</div> <!--END content-->
 	
 	<script type='text/javascript'>
+		
+		<?php if ($maxselectable == "1") { ?>
+			jQuery(".selectable_category").on
+			(
+				{
+					click: function(e) 
+					{
+						if (jQuery(this).attr("checked"))
+						{
+							// turn off all checkboxes
+							jQuery("#<?php echo $id; ?> input").attr("checked", false); 
+							// turn on the current one
+							jQuery(this).attr("checked", true);
+        			// nxs_js_log(e);
+        		}
+    			}
+    		}
+			)
+		<?php } ?>
+
+		
 		function nxs_js_startcategorieseditor()
 		{
 			nxs_js_setpopupdatefromcontrols(); 

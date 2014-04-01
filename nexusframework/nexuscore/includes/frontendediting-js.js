@@ -4947,17 +4947,17 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 					cache: false,
 					dataType: 'JSON',
 					url: ajaxurl, 
-					success: function(response) 
+					success: function(insertresponse) 
 					{
-						nxs_js_log(response);
-						if (response.result == "OK")
+						nxs_js_log(insertresponse);
+						if (insertresponse.result == "OK")
 						{
 							// insert render result for pagerow ("row insertafterrowindex + 1")
 							//nxs_js_log("deze?(2)");
 							nxs_js_row_render(postid, insertafterrowindex + 1, 
-								function(postid, rowindex, response)
+								function(postid, rowindex, renderresponse)
 								{
-									var html = response.html;
+									var html = renderresponse.html;
 									
 									// insert the dom element
 									if (insertafterrowindex == -1)
@@ -4995,7 +4995,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 
 									nxs_js_reenable_all_window_events();
 									
-									invokewhenavailable();
+									invokewhenavailable(insertresponse, renderresponse);
 								}
 							);
 						}

@@ -584,6 +584,10 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					{
 						$title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
 						$destination_category = $placeholdermetadata["destination_category"];
+						// for example [92]
+						// remove brackets
+						$destination_category = str_replace("[", "", $destination_category);
+						$destination_category = str_replace("]", "", $destination_category);
 						
 						// derive 'current' classes
 						global $nxs_global_current_containerpostid_being_rendered;
@@ -614,8 +618,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 						}
 						
 				    // Get the URL of this category
-						$category_id = get_cat_ID($destination_category);
-    				$url = get_category_link( $category_id );
+    				$url = get_category_link($destination_category);
 						
 						if ($url == "") {
 							$anchorclass .= " nxs-menuitemnolink";
