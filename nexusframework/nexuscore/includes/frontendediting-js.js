@@ -2454,7 +2454,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 									var widget = nxs_js_getwidgetdom_overwhichwehover();
 									if (widget != null)
 									{
-										nxs_js_popup_wipe_widget(widget);
+										nxs_js_frontendediting_widgethandledelete(widget);
 									}
 									else
 									{
@@ -3139,6 +3139,28 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			var placeholder = jQuery(dom).closest(".nxs-placeholder");
 			var widget = jQuery(placeholder).find(".nxs-widget")[0];
 			nxs_js_popup_wipe_widget(widget);
+		}
+		
+		function nxs_js_frontendediting_widgethandledelete(placeholderdom)
+		{
+			var postid = nxs_js_findclosestpostid_for_dom(placeholderdom);
+			var widget = placeholderdom;
+			var placeholderid = jQuery(widget).attr("id").split("-")[2];
+			var rowindex = nxs_js_getrowindex(widget);
+			var widgetelement = nxs_js_getwidgetelement_forplaceholder(postid, placeholderid);				
+			var placeholderelement = jQuery(placeholderdom).closest(".nxs-placeholder")[0];
+			var defaultelement = jQuery(placeholderelement).find(".nxs-defaultwidgetdeletehandler");
+			if (defaultelement.length >= 1)
+			{
+				// ja, er is een default element gedefinieerd
+				jQuery(defaultelement).click();
+			}
+			else
+			{
+				nxs_js_log("Fallback scenario; no default delete handler found for this widget, explicity deleting this widget instead.");
+				// nee, er is geen default gedrag gedefinieerd; wipe widget
+				nxs_js_popup_wipe_widget(widget);
+			}
 		}
 		
 		function nxs_js_popup_wipe_widget(widget)
