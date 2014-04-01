@@ -3,6 +3,7 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 {
 	$readonly = "false";
 	$visibility = "show";
+	$showlookuphelp = "true";
 	
 	extract($optionvalues);
 	extract($args);
@@ -32,12 +33,26 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 		$content2style = "style='display: none;'";
 	}
 	
+	$lookuphelphtml = "";
+	if ($showlookuphelp == "true")
+	{
+		if (nxs_stringcontains($value, nxs_lookuptable_getprefixtoken()) && (nxs_stringcontains($value, nxs_lookuptable_getpostfixtoken())))
+		{
+			$lookuphelphtml = "";
+			$lookuphelphtml .= "<a href='#' onclick='nxs_js_popup_site_neweditsession(\"lookuptablemanagementhome\"); return false;' class='nxsbutton1 nxs-float-right'>Manage</a>";
+			$lookuphelphtml .= nxs_l18n__("Contains at least one lookup value {{x}}") . " ";
+			$lookuphelphtml .= "<a href='http://nexusthemes.com/support/content-lookup-tables/' target='_blank'>" . nxs_l18n__("Learn more") . "</a>";
+			$lookuphelphtml = '<div class="content" style="font-size: smaller; font-style: italic;">' . $lookuphelphtml . '</div>';
+		}
+	}
+	
 	echo '
 	<div class="content2" ' . $content2style . '>
 	    <div class="box">
 	        ' . nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip) . '
           <div class="box-content">
 						<input type="text" id="'. $id . '" name="'. $id . '" value="' . nxs_render_html_escape_doublequote($value) . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" ' . $readonly . ' />
+						' . $lookuphelphtml . '
           </div>
         </div>
         <div class="nxs-clear"></div>
