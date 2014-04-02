@@ -2406,7 +2406,7 @@ h3#order_review_heading,
 	quotes: none;
 }
 .entry-content blockquote:before, .entry-content blockquote:after, .entry-content q:before, .entry-content q:after { content: ""; content: none; }
-.entry-content blockquote 									{ color: #767676; font-size: 19px; font-style: italic; font-weight: 300; line-height: 1.2631578947; margin-bottom: 24px; }
+.entry-content blockquote 									{ color: #767676; font-size: 19px; font-style: italic; font-weight: 300; line-height: 1.2631578947; margin-bottom: 24px; position: relative; }
 
 .entry-content blockquote cite, .entry-content blockquote small { color: #2b2b2b; font-size: 16px; font-weight: 400; line-height: 1.5; }
 .entry-content blockquote em, .entry-content blockquote i, .entry-content blockquote cite { font-style: normal; }
@@ -2424,5 +2424,5 @@ h3#order_review_heading,
 .entry-content li > ol 										{ margin: 10px 0 0 20px; }
 
 /* custom styling */
-.entry-content blockquote:before 							{ content: "\e64c"; position: absolute; font-family: 'nexus'; font-size: 200%; top: 20px; margin-top: -6px; }
+.entry-content blockquote:before 							{ content: "\e64c"; position: absolute; font-family: 'nexus'; font-size: 200%; top: -6px; }
 .entry-content blockquote p									{ margin-left: 60px; font-style: italic; }
