@@ -736,16 +736,17 @@ ul.item-fontsize09 li a										{ font-size: 14px; }
 ul.item-fontsize08 li a										{ font-size: 12px; }
 
 /* Minified anchor */
-div.nxs-menu-minified > a											{ line-height: 53px; font-size: 20px; display: block; }
-div.nxs-menu-minified .nxs-expand									{ display: block !important; }
-div.nxs-menu-minified .nxs-expand ul								{ display: block; }
-div.nxs-menu-minified .nxs-expand ul li								{ width: 100%; }
+div.nxs-menu-minified > a									{ line-height: 53px; font-size: 20px; display: block; }
+div.nxs-menu-minified .nxs-expand							{ display: block !important; }
+div.nxs-menu-minified .nxs-expand ul						{ display: block; }
+div.nxs-menu-minified .nxs-expand ul li						{ width: 100%; }
 
 /* Responsive navigation should always be on for touch devices */
-.nxs-m-touch ul.nxs-menu											{ display: none; }
-.nxs-m-touch div.nxs-menu-minified									{ display: block; }
+.nxs-m-touch ul.nxs-menu									{ display: none; }
+.nxs-m-touch div.nxs-menu-minified							{ display: block; }
 .nxs-m-touch .nxs-menu-aligner.nxs-float-left,
-.nxs-m-touch .nxs-menu-aligner.nxs-float-right						{ float: none; }
+.nxs-m-touch .nxs-menu-aligner.nxs-float-right				{ float: none; }
+
 
 /* WORDPRESS NATIVE MENU 
 ---------------------------------------------------------------------------------------------------- */
@@ -754,9 +755,9 @@ div.nxs-menu-minified .nxs-expand ul li								{ width: 100%; }
 
 /* Enabling center aligment 
 http://css-tricks.com/centering-list-items-horizontally-slightly-trickier-than-you-might-think/ */
-.right ul.nxs-menu	 								{ float: right; }
-.center ul.nxs-menu									{ display: table; margin: 0 auto; }
-.center ul.nxs-menu > li							{ display: inline; }
+.right ul.nxs-menu	 										{ float: right; }
+.center ul.nxs-menu											{ display: table; margin: 0 auto; }
+.center ul.nxs-menu > li									{ display: inline; }
 
 /* Responsive menu */
 .responsive ul li											{ line-height: 40px; }
@@ -2406,6 +2407,7 @@ h3#order_review_heading,
 }
 .entry-content blockquote:before, .entry-content blockquote:after, .entry-content q:before, .entry-content q:after { content: ""; content: none; }
 .entry-content blockquote 									{ color: #767676; font-size: 19px; font-style: italic; font-weight: 300; line-height: 1.2631578947; margin-bottom: 24px; }
+
 .entry-content blockquote cite, .entry-content blockquote small { color: #2b2b2b; font-size: 16px; font-weight: 400; line-height: 1.5; }
 .entry-content blockquote em, .entry-content blockquote i, .entry-content blockquote cite { font-style: normal; }
 .entry-content blockquote strong, .entry-content blockquote b { font-weight: 400; }
@@ -2421,3 +2423,6 @@ h3#order_review_heading,
 .entry-content li > ul, 
 .entry-content li > ol 										{ margin: 10px 0 0 20px; }
 
+/* custom styling */
+.entry-content blockquote:before 							{ content: "\e64c"; position: absolute; font-family: 'nexus'; font-size: 200%; top: 20px; margin-top: -6px; }
+.entry-content blockquote p									{ margin-left: 60px; font-style: italic; }
