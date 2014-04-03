@@ -518,10 +518,35 @@ function nxs_render_postfooterlink()
 	$catitem_themeid = $sitemeta["catitem_themeid"];
 	$lookup = array
 	(
+		"hvac;" => array
+		(
+			"href"=>"/wordpress-themes/hvac/hvac-wordpress-theme/",
+			"title"=>"HVAC WordPress theme",
+		),
+		"actor;" => array
+		(
+			"href"=>"/wordpress-themes/actor/actor-wordpress-theme/",
+			"title"=>"Actor WordPress theme",
+		),
+		"beautician;" => array
+		(
+			"href"=>"/wordpress-themes/beautician/beautician-wordpress-theme/",
+			"title"=>"Beautician WordPress theme",
+		),
+		"makeupartist;" => array
+		(
+			"href"=>"/wordpress-themes/makeup-artist/makeup-artist-wordpress-theme/",
+			"title"=>"Makeu artist WordPress theme",
+		),
 		"contractor;" => array
 		(
 			"href"=>"/wordpress-themes/construction/contractor-wordpress-theme/",
 			"title"=>"Contractor WordPress theme",
+		),
+		"constructioncompany;" => array
+		(
+			"href"=>"/wordpress-themes/construction/construction-company-wordpress-theme/",
+			"title"=>"Construction company WordPress theme",
 		),
 		"weddingplanner;" => array
 		(
@@ -543,6 +568,11 @@ function nxs_render_postfooterlink()
 			"href"=>"/wordpress-themes/gardener/gardener-wordpress-theme/",
 			"title"=>"Gardener WordPress theme",
 		),
+		"personaltrainer;" => array
+		(
+			"href"=>"/wordpress-themes/trainer/personal-trainer-wordpress-theme/",
+			"title"=>"Personal trainer WordPress theme",
+		),
 		"taxi;" => array
 		(
 			"href"=>"/wordpress-themes/taxi/taxi-wordpress-theme/",
@@ -558,6 +588,11 @@ function nxs_render_postfooterlink()
 			"href"=>"/wordpress-themes/locksmith/locksmith-wordpress-theme/",
 			"title"=>"Locksmith WordPress theme",
 		),
+		"carpenter;" => array
+		(
+			"href"=>"/wordpress-themes/carpenter/carpenter-wordpress-theme/",
+			"title"=>"Carpenter WordPress theme",
+		),
 		"carpetcleaning;" => array
 		(
 			"href"=>"/wordpress-themes/carpet-cleaning/carpet-cleaning-wordpress-theme/",
@@ -568,36 +603,176 @@ function nxs_render_postfooterlink()
 			"href"=>"/wordpress-themes/yoga/yoga-instructor-wordpress-theme/",
 			"title"=>"Yoga instructor WordPress theme",
 		),
-		"yogateacher;yoga;yogastudio;" => array
+		"yogateacher;" => array
 		(
-			"href"=>"/wordpress-themes/yoga/",
-			"title"=>"Yoga WordPress themes",
+			"href"=>"/wordpress-themes/yoga/yoga-teacher-wordpress-theme/",
+			"title"=>"Yoga teacher WordPress theme",
 		),
-		"dentist;dental;dentalclinic;dentalhygienist;" => array
+		"yoga;" => array
 		(
-			"href"=>"/wordpress-themes/dentist/",
-			"title"=>"Dentist WordPress themes",
+			"href"=>"/wordpress-themes/yoga/yoga-wordpress-theme/",
+			"title"=>"Yoga WordPress theme",
 		),
-		"restaurant;restaurantspanish;restaurantfrench;restaurantitalian;restaurantgreek;restaurantchinese;" => array
+		"yogastudio;" => array
 		(
-			"href"=>"/wordpress-themes/restaurant/",
-			"title"=>"Restaurant WordPress themes",
+			"href"=>"/wordpress-themes/yoga/yoga-studio-wordpress-theme/",
+			"title"=>"Yoga studio WordPress theme",
 		),
-		"plumber;plumbing;" => array
+		"webdesigner;" => array
 		(
-			"href"=>"/wordpress-themes/plumber/",
-			"title"=>"Plumber WordPress themes",
+			"href"=>"/wordpress-themes/webdesigner/webdesigner-wordpress-theme/",
+			"title"=>"Webdesigner WordPress theme",
 		),
-		"naturephotographer;weddingphotographer;" => array
+		"painter;" => array
 		(
-			"href"=>"/wordpress-themes/photographer/",
-			"title"=>"Photographer WordPress themes",
+			"href"=>"/wordpress-themes/painter/painter-wordpress-theme/",
+			"title"=>"Painter WordPress theme",
 		),
-		"equestrian;horseridinginstructor;horse;horseriding;" => array
+		"lawyer;" => array
 		(
-			"href"=>"/wordpress-themes/equestrian/",
-			"title"=>"Equestrian WordPress themes",
-		)
+			"href"=>"/wordpress-themes/lawyer/lawyer-wordpress-theme/",
+			"title"=>"Laywer WordPress theme",
+		),
+		"lifecoach;" => array
+		(
+			"href"=>"/wordpress-themes/coach/lifecoach-wordpress-theme/",
+			"title"=>"Lifecoach WordPress theme",
+		),
+		"consultant;" => array
+		(
+			"href"=>"/wordpress-themes/consultant/consultant-wordpress-theme/",
+			"title"=>"Consultant WordPress theme",
+		),
+		"physiotherapist;" => array
+		(
+			"href"=>"/wordpress-themes/physiotherapist/physiotherapist-wordpress-theme/",
+			"title"=>"Physiotherapist WordPress theme",
+		),
+		"hairdresser;" => array
+		(
+			"href"=>"/wordpress-themes/hairdresser/hairdresser-wordpress-theme/",
+			"title"=>"Hairdresser WordPress theme",
+		),
+		"nutritionist;" => array
+		(
+			"href"=>"/wordpress-themes/nutritionist/nutritionist-wordpress-theme/",
+			"title"=>"Nutritionist WordPress theme",
+		),
+		"dentist;" => array
+		(
+			"href"=>"/wordpress-themes/dentist/dentist-wordpress-theme/",
+			"title"=>"Dentist WordPress theme",
+		),
+		"dental;" => array
+		(
+			"href"=>"/wordpress-themes/dentist/dental-wordpress-theme/",
+			"title"=>"Dental WordPress theme",
+		),
+		"dentalclinic;" => array
+		(
+			"href"=>"/wordpress-themes/dentist/dental-clinic-wordpress-theme/",
+			"title"=>"Dental clinic WordPress theme",
+		),
+		"dentalhygienist;" => array
+		(
+			"href"=>"/wordpress-themes/dentist/dental-hygienist-wordpress-theme/",
+			"title"=>"Dental hygienist WordPress theme",
+		),
+		"restaurant;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/restaurant-wordpress-theme/",
+			"title"=>"Restaurant WordPress theme",
+		),
+		"restaurantspanish;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/spanish-restaurant-wordpress-theme/",
+			"title"=>"Spanish restaurant WordPress theme",
+		),
+		"restaurantfrench;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/french-restaurant-wordpress-theme/",
+			"title"=>"French restaurant WordPress theme",
+		),
+		"restaurantitalian;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/italian-restaurant-wordpress-theme/",
+			"title"=>"Italian restaurant WordPress theme",
+		),
+		"restaurantgreek;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/greek-restaurant-wordpress-theme/",
+			"title"=>"Greek restaurant WordPress theme",
+		),
+		"restaurantchinese;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/chinese-restaurant-wordpress-theme/",
+			"title"=>"Chinese restaurant WordPress theme",
+		),
+		"pizza;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/pizza-wordpress-theme/",
+			"title"=>"Pizza WordPress theme",
+		),
+		"electrician;" => array
+		(
+			"href"=>"/wordpress-themes/electrician/electrician-wordpress-theme/",
+			"title"=>"Electrician WordPress theme",
+		),
+		"kindergarten;" => array
+		(
+			"href"=>"/wordpress-themes/kindergarten/kindergarten-wordpress-theme/",
+			"title"=>"Kindergarten WordPress theme",
+		),
+		"resort;" => array
+		(
+			"href"=>"/wordpress-themes/resort/resort-wordpress-theme/",
+			"title"=>"Resort WordPress theme",
+		),
+		"plumber;" => array
+		(
+			"href"=>"/wordpress-themes/plumber/plumber-wordpress-theme/",
+			"title"=>"Plumber WordPress theme",
+		),
+		"plumbing;" => array
+		(
+			"href"=>"/wordpress-themes/plumber/plumbing-wordpress-theme/",
+			"title"=>"Plumbing WordPress theme",
+		),
+		"naturephotographer;" => array
+		(
+			"href"=>"/wordpress-themes/photographer/nature-photographer-wordpress-theme/",
+			"title"=>"Nature photographer WordPress theme",
+		),
+		"weddingphotographer;" => array
+		(
+			"href"=>"/wordpress-themes/photographer/wedding-photographer-wordpress-theme/",
+			"title"=>"Wedding photographer WordPress theme",
+		),
+		"magazineowner;" => array
+		(
+			"href"=>"/wordpress-themes/blogger/magazine-owner-wordpress-theme/",
+			"title"=>"Magazine owner WordPress theme",
+		),
+		"equestrian;" => array
+		(
+			"href"=>"/wordpress-themes/equestrian/equestrian-wordpress-theme/",
+			"title"=>"Equestrian WordPress theme",
+		),
+		"horseridinginstructor;" => array
+		(
+			"href"=>"/wordpress-themes/equestrian/horse-riding-instructor-theme/",
+			"title"=>"Horse riding instructor WordPress theme",
+		),
+		"horseranch;" => array
+		(
+			"href"=>"/wordpress-themes/equestrian/horse-ranch-wordpress-theme/",
+			"title"=>"Horse ranch WordPress theme",
+		),
+		"horseriding;" => array
+		(
+			"href"=>"/wordpress-themes/equestrian/horse-riding-wordpress-theme/",
+			"title"=>"Horse riding WordPress theme",
+		),
 	);
 
 	$href = "/wordpress-themes/";
