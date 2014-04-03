@@ -8,7 +8,9 @@
 
 	if (!is_super_admin)
 	{
-		wp_redirect(wp_login_url(get_permalink()));
+		$url = wp_login_url(get_permalink());
+		$url = nxs_addqueryparametertourl($url, "nxsnosuperadmin", "no");
+		wp_redirect($url);
 		die();		
 	}	
 	

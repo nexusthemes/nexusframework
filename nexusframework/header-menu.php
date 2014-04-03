@@ -12,6 +12,12 @@
 	wp_head(); 
 	?>
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	
+	<?php
+	//
+	nxs_render_headstyles();
+	?>
+	
 	<?php if (is_user_logged_in()) { ?>
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
 	<script type="text/javascript">

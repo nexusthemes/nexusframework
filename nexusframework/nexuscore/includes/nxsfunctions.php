@@ -2373,7 +2373,8 @@ function nxs_redirectafterimport($location, $status)
 	else
 	{
 		// ok
-		$location = get_home_url() . "?redirectedtohomeafterimport=true";
+		$location = get_home_url();
+		$location = nxs_addqueryparametertourl_v2($location, "redirectedtohomeafterimport", "true", true, true);
 	}
 	return $location;
 }
@@ -8526,6 +8527,32 @@ function nxs_render_htmlcorescripts()
 	</script>
 	<noscript><?php do_action('nxs_ext_injectnoscript'); ?></noscript>
 	<?php 
+}
+
+function nxs_render_headstyles()
+{
+	// mutaties hierin ook doorvoeren in nxsmenu.php en header-post.php
+	$sitemeta = nxs_getsitemeta();
+	?>
+	<style type="text/css" id="dynamicCssCurrentConfiguration">
+		<?php
+		$css = "";	
+
+		// lettertypen
+		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_1"]);		
+		$css .= "body { font-family: " . $hetfont . "; }";
+		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_2"]);		
+		$css .= "h1, .nxs-size1, h2, .nxs-size2, h3, .nxs-size3, h4, .nxs-size4, h5, .nxs-size5, h6, .nxs-size6, .nxs-logo { font-family: " . $hetfont . "; }";
+
+		// output		
+		echo $css;
+		?>
+	</style>
+	<style type="text/css" id="dynamicCssVormgevingKleuren"></style>
+	<style type="text/css" id="dynamicCssVormgevingLettertypen"></style>
+	<?php nxs_render_dynamicservercss($sitemeta); ?>
+	<?php nxs_render_manualcss($sitemeta); ?>
+	<?php
 }
 
 function nxs_iswidgetallowedonpost($postid, $widgetid, $isundefinedallowed)

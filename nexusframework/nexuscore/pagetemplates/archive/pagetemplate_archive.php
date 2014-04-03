@@ -517,45 +517,11 @@ function nxs_pagetemplate_handleheader()
 	{
 		echo "<!-- responsive design deactivated -->";
 	}
-	
-	?>
-
-	<?php // mutaties hierin ook doorvoeren in nxsmenu.php ?>
-	
-	<?php
-	// ------------------------------------------------
-	// ------------------------------------------------ COLORS / STYLE / CSS
-	// ------------------------------------------------
+		
 	//
-	// mutaties hierin ook doorvoeren in nxsmenu.php en header-post.php
-	?>
-	
-	<style type="text/css" id="dynamicCssCurrentConfiguration">
-		<?php
-		$css = "";	
+	nxs_render_headstyles();
 
-		// lettertypen
-		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_1"]);		
-		$css .= "body { font-family: " . $hetfont . "; }";
-		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_2"]);		
-		$css .= "h1, .nxs-size1, h2, .nxs-size2, h3, .nxs-size3, h4, .nxs-size4, h5, .nxs-size5, h6, .nxs-size6, .nxs-logo { font-family: " . $hetfont . "; }";
-
-		// output		
-		echo $css;
-		?>
-	</style>
-	<style type="text/css" id="dynamicCssVormgevingKleuren"></style>
-	<style type="text/css" id="dynamicCssVormgevingLettertypen"></style>
-	<?php nxs_render_dynamicservercss($sitemeta); ?>
-	<?php nxs_render_manualcss($sitemeta); ?>
-	
-	<?php
-	// ------------------------------------------------
-	// ------------------------------------------------
-	// ------------------------------------------------
-	?>
-
-	<?php if ($analyticsUA != "") { ?>
+	if ($analyticsUA != "") { ?>
 	<script type="text/javascript">
 
   var _gaq = _gaq || [];

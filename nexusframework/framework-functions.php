@@ -128,7 +128,6 @@ require_once(NXS_FRAMEWORKPATH . '/nexuscore/extensions/commentsproviders/commen
 
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/webservices/webservices.php'); 
 
-
 // compliance with feeds
 nxs_addfeedsupport();
 
@@ -278,7 +277,7 @@ function nxs_validatethemedata()
 
 add_action('init', 'nxs_init');
 function nxs_init() 
-{
+{	
 	if (nxs_has_adminpermissions())
   {
   	if (isset($_REQUEST["nxs"]))
@@ -357,12 +356,13 @@ function nxs_init()
 			if (isset($anonymousaccess) && $anonymousaccess == "block")
 			{
 				$url = wp_login_url();
+				$url = nxs_addqueryparametertourl_v2($url, "nxsaccess", "blocked", true, true);
 				?>
 				<script type='text/javascript'>
 					window.location.href="<?php echo $url; ?>";
 				</script>
 				<?php
-				wp_redirect($url, 301); // werkt niet op Werner's PROD server ?!
+				wp_redirect($url, 301);
 				exit;
 			}
 		}
@@ -865,12 +865,12 @@ function nxs_clearunwantedscripts()
 
 function nxs_addsupportforadditionalimageformats()
 {
-	 add_image_size('nxs_cropped_200x200', 200, 200, TRUE );
-	 add_image_size('nxs_cropped_320x200', 320, 200, TRUE );	// used by the gallerybox
-	 add_image_size('nxs_cropped_320x512', 320, 512, TRUE );	// used by the gallerybox
+	add_image_size('nxs_cropped_200x200', 200, 200, TRUE );
+	add_image_size('nxs_cropped_320x200', 320, 200, TRUE );	// used by the gallerybox
+	add_image_size('nxs_cropped_320x512', 320, 512, TRUE );	// used by the gallerybox
 	 
-	 //$i = get_intermediate_image_sizes();
-	 //var_dump($i);
+	//$i = get_intermediate_image_sizes();
+	//var_dump($i);
 }
 
 add_filter('image_size_names_choose', 'nxs_custom_sizes');

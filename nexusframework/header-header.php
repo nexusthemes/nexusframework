@@ -46,29 +46,11 @@
 	<link rel="shortcut icon" href="<?php echo $faviconurl; ?>" type="image/x-icon" />
 	<!-- -->
 	<script type="text/javascript">	document.documentElement.className = 'js'; </script>
-	<?php // mutaties hierin ook doorvoeren in nxsmenu.php ?>
-	<style type="text/css" id="dynamicCssCurrentConfiguration">
-		<?php
-		$css = "";
-		
-		// lettertypen
-		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_1"]);		
-		$css .= "body { font-family: " . $hetfont . "; }";
-		
-		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_2"]);		
-		$css .= "h1, .nxs-size1, h2, .nxs-size2, h3, .nxs-size3, h4, .nxs-size4, h5, .nxs-size5, h6, .nxs-size6, .nxs-logo { font-family: " . $hetfont . "; }";
-
-		// output		
-		echo $css;
-		?>
-	</style>
-	<style type="text/css" id="dynamicCssVormgevingKleuren"></style>
-	<style type="text/css" id="dynamicCssVormgevingLettertypen"></style>
-	<?php nxs_render_dynamicservercss($sitemeta); ?>
-	<?php nxs_render_manualcss($sitemeta); ?>
-
-	<?php
-		echo $sitemeta["vg_injecthead"];
+	<?php 
+	
+	//
+	nxs_render_headstyles();
+	echo $sitemeta["vg_injecthead"];
 	?>
 	
 	<?php if (is_user_logged_in()) { ?>
