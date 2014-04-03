@@ -642,8 +642,8 @@ html.nxs-pageslider p#nxs-copyright												{ padding-bottom: 60px; }
 div.nxs-menu-minified										{ display: none; }
 .right ul.nxs-menu.nxs-menu-minified             			{ float: left; }
 
-.nxs-menu .nxs-active > a                           		{ cursor: pointer; }
-.nxs-menu .nxs-inactive > a                         		{ cursor: default; }
+.nxs-menu .nxs-active > a                           		{ cursor: default; }
+.nxs-menu .nxs-inactive > a                         		{ cursor: pointer; }
 .nxs-menu a.nxs-menuitemnolink                      		{ cursor: default; }
 
 /* Enabling center alignment */

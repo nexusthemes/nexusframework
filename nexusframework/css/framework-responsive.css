@@ -125,6 +125,7 @@ Because we're working with ems we set a font-size for each viewport. */
 #nxs-content,
 #nxs-header-container
 #nxs-footer-container												{ margin-bottom: 0px; margin-top: 0px; }
+#nxs-content														{ border-radius: 0px; }
 
 .nxs-main															{ width: 96em; }
 .nxs-sidebar1														{ float: left; width: 88.8em; padding-left: 3.6em; }

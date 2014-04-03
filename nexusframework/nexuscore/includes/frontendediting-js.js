@@ -8191,7 +8191,7 @@ function nxs_js_menuitemclick(domelement, event)
 	if (event == "mouseleave")
 	{
 		jQuery(domelement).closest(".nxs-widget").find("li.nxs-touched").removeClass("nxs-touched");
-		nxs_js_log("mouseleave");
+		//nxs_js_log("mouseleave");
 		return;
 	}
 	
@@ -8213,7 +8213,6 @@ function nxs_js_menuitemclick(domelement, event)
 		jQuery(closestwidget).find(".nxs-touched").removeClass("nxs-touched");
 		// mark new path
 		jQuery(domelement).parentsUntil(".nxs-widget").addClass("nxs-touched");
-		return;
 	}
 	
 	// if user click on a domelement in the menu,
