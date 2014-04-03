@@ -8195,23 +8195,24 @@ function nxs_js_menuitemclick(domelement, event)
 		return;
 	}
 	
+	var closestwidget = jQuery(domelement).closest(".nxs-widget");
+	
+	if (event == "touch")
+	{
+		if (jQuery(domelement).closest("li").hasClass("nxs-touched"))
+		{
+			// if item it touched for the 2nd time, hide all touched items
+			jQuery(closestwidget).find(".nxs-touched").removeClass("nxs-touched");
+			return;
+		}
+	}
+	
 	if (event == "mouseenter" || event == "touch" || event == "click")
 	{
-		//nxs_js_log("mouse enter");
-		
-		var closestwidget = jQuery(domelement).closest(".nxs-widget");
-		
 		// wipe previous path
 		jQuery(closestwidget).find(".nxs-touched").removeClass("nxs-touched");
-		// mark all as noise
-		jQuery(closestwidget).find("li").addClass("nxs-noise");	
-		// select victims of crumb path from top
-		// mark victims as being not noise
+		// mark new path
 		jQuery(domelement).parentsUntil(".nxs-widget").addClass("nxs-touched");
-		// remove noise "tag"
-		jQuery(closestwidget).find(".nxs-noise").removeClass("nxs-noise");
-		
-		//nxs_js_log("mouse enter finished");
 		return;
 	}
 	
@@ -8224,28 +8225,18 @@ function nxs_js_menuitemclick(domelement, event)
 	{
 		if (nxs_js_deviceistouchdevice()) 
 		{
-			// 
-			
 			// the submenu is not an immediate child of the 'this' link,
 			// its a child of a sibling element ...
-			//nxs_js_log("nice:");
-			//nxs_js_log(jQuery(domelement).parent().children(".nxs-sub-menu"));
-			//nxs_js_log(jQuery(domelement).parent().children(".nxs-sub-menu").length);
 			if (jQuery(domelement).parent().children(".nxs-sub-menu").length > 0)
 			{
-				//nxs_js_log('dit menu item heeft submenu items');
-				nxs_js_log('NOT about to follow that link!');
-				// nxs_js_alert('NOT about to follow that link!');
+				// nxs_js_log('NOT about to follow that link!');
 			}
 			else
 			{
-				//nxs_js_log('about to follow that link!');
-				
-				
 				var url = jQuery(domelement).attr("nxsurl");
 				if ((url == null || url == ""))
 				{
-					
+					// empty element; no url, nothing to do
 				}
 				else
 				{
@@ -8255,16 +8246,14 @@ function nxs_js_menuitemclick(domelement, event)
 		}
 		else
 		{
-			//nxs_js_log('about to follow that link!');
-			// reguliere redirect
-			
 			var url = jQuery(domelement).attr("nxsurl");
 			if ((url == null || url == ""))
 			{
-				
+				// nothing to do
 			}
 			else
 			{
+				// regular redirect
 				nxs_js_redirect(url);
 			}
 		}

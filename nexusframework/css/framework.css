@@ -98,7 +98,7 @@ body														{ height: 100%; }
 img.nxs-grayscale { 
 	filter: 		grayscale(100%);
 	-webkit-filter: grayscale(100%);
-	-webkit-transitionUIT: all .6s ease;
+	-webkit-transition: all .6s ease;
 	filter: gray;
 	
 	/* http://stackoverflow.com/questions/16208851/images-wiggles-when-hover-scale-effect */
@@ -115,10 +115,10 @@ img.nxs-grayscale:hover,
 
 /* enlarge transition */
 img.nxs-enlarge { 	
-	transitionUIT: 		all 0.2s linear;
-	-o-transitionUIT: 		all 0.2s linear; 
-	-moz-transitionUIT: 	all 0.2s linear;
-	-webkit-transitionUIT: all 0.2s linear; 
+	transition: 		all 0.2s linear;
+	-o-transition: 		all 0.2s linear; 
+	-moz-transition: 	all 0.2s linear;
+	-webkit-transition: all 0.2s linear; 
 	
 	/* http://stackoverflow.com/questions/16208851/images-wiggles-when-hover-scale-effect */
 	-webkit-backface-visibility: hidden;
@@ -152,10 +152,10 @@ a .nxs-title,
 .nxs-blog a,
 .nxs-default-p a { 
 	opacity: 1;
-	transitionUIT: 		opacity 0.1s linear;
-	-o-transitionUIT: 		opacity 0.1s linear; 
-	-moz-transitionUIT: 	opacity 0.1s linear;
-	-webkit-transitionUIT: opacity 0.1s linear;
+	transition: 		opacity 0.1s linear;
+	-o-transition: 		opacity 0.1s linear; 
+	-moz-transition: 	opacity 0.1s linear;
+	-webkit-transition: opacity 0.1s linear;
 }
 a.nxs-button:hover,
 a:hover .nxs-title,
@@ -193,10 +193,10 @@ a.nxs-frontendbutton2 {
 ul.icon-font-list li { 
 	float: left; 
 	text-align: center;
-	transitionUIT: 		all 0.1s linear;
-	-o-transitionUIT: 		all 0.1s linear; 
-	-moz-transitionUIT: 	all 0.1s linear;
-	-webkit-transitionUIT: all 0.1s linear;
+	transition: 		all 0.1s linear;
+	-o-transition: 		all 0.1s linear; 
+	-moz-transition: 	all 0.1s linear;
+	-webkit-transition: all 0.1s linear;
 	font-size: 24px; 
 	width: 36px;
 	line-height: 36px;
@@ -245,10 +245,10 @@ ul.nxs-default-list											{ line-height: 1.625em; font-size: 15px; margin-to
 .nxs-widget	.nxs-title a span { 
 	font-size: 20px; 
 	margin-right: 8px; 
-	transitionUIT: 		all 0.1s linear;
-	-o-transitionUIT: 		all 0.1s linear; 
-	-moz-transitionUIT: 	all 0.1s linear;
-	-webkit-transitionUIT: all 0.1s linear;
+	transition: 		all 0.1s linear;
+	-o-transition: 		all 0.1s linear; 
+	-moz-transition: 	all 0.1s linear;
+	-webkit-transition: all 0.1s linear;
 }
 .nxs-widget	.nxs-title a:hover span 						{ opacity: 0.5; }
 
@@ -702,20 +702,32 @@ ul.nxs-menu li:hover > ul > ul > ul							{ z-index: 1002; }
 
 /* transitions */
 ul.nxs-menu li ul {	
-	-webkit-transitionUIT: all .25s ease .1s;
-	-moz-transitionUIT: 	all .25s ease .1s;
-	-o-transitionUIT: 		all .25s ease .1s;
-	transitionUIT: 		all .25s ease .1s;
+	-webkit-transition: all .25s ease .1s;
+	-moz-transition: 	all .25s ease .1s;
+	-o-transition: 		all .25s ease .1s;
+	transition: 		all .25s ease .1s;
 }
+
+
 ul.nxs-menu li ul li { 
 	height: 0;
 	padding: 0;
 	padding-left: 20px;
 	
-	-webkit-transitionUIT: height .25s ease .1s;
-	-moz-transitionUIT: 	height .25s ease .1s;
-	-o-transitionUIT: 		height .25s ease .1s;
-	transitionUIT: 		height .25s ease .1s;
+	-webkit-transition: height .25s ease .1s;
+	-moz-transition: 	height .25s ease .1s;
+	-o-transition: 		height .25s ease .1s;
+	transition: 		height .25s ease .1s;
+}
+
+/* but no transitions for ipad menu's */
+.nxs-m-touch ul.nxs-menu li ul li,
+.nxs-m-touch ul.nxs-menu li ul 
+{
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
 }
 
 ul.nxs-menu li ul li ul li ul 								{ opacity: 0 !important; }
@@ -1001,10 +1013,10 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 	font-size: 16px; 
 	color: #999; 
 	line-height: 35px !important;
-	transitionUIT: 		all 0.1s linear;
-	-o-transitionUIT: 		all 0.1s linear; 
-	-moz-transitionUIT: 	all 0.1s linear;
-	-webkit-transitionUIT: all 0.1s linear;
+	transition: 		all 0.1s linear;
+	-o-transition: 		all 0.1s linear; 
+	-moz-transition: 	all 0.1s linear;
+	-webkit-transition: all 0.1s linear;
 }
 .general-nav:hover .general-ui-styling						{ color: white; font-size: 24px; }
 #controls-wrapper .nxs-toggle 								{ float: left; line-height: 42px !important; border-right: 1px solid #1c1c1c; width: 55px; text-align: center; }
@@ -1024,10 +1036,10 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
 	border: 2px solid #777;
 	text-align: center;
-	transitionUIT: 		all 0.1s linear;
-	-o-transitionUIT: 		all 0.1s linear; 
-	-moz-transitionUIT: 	all 0.1s linear;
-	-webkit-transitionUIT: all 0.1s linear;
+	transition: 		all 0.1s linear;
+	-o-transition: 		all 0.1s linear; 
+	-moz-transition: 	all 0.1s linear;
+	-webkit-transition: all 0.1s linear;
 }
 .general-nav:hover											{ background-color: rgba(0, 0, 0, 1); border: 2px solid white; }
 #thumb-forward 												{ right: 0px; }
@@ -1136,11 +1148,11 @@ ul#thumb-list li img {
 	opacity: 0.5; 
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; 
 	filter: alpha(opacity=60); 
-	-webkit-transitionUIT: all 100ms ease-in-out; 
-	-moz-transitionUIT: 	all 100ms ease-in-out; 
-	-ms-transitionUIT: 	all 100ms ease-in-out; 
-	-o-transitionUIT: 		all 100ms ease-in-out; 
-	transitionUIT: 		all 100ms ease-in-out; 
+	-webkit-transition: all 100ms ease-in-out; 
+	-moz-transition: 	all 100ms ease-in-out; 
+	-ms-transition: 	all 100ms ease-in-out; 
+	-o-transition: 		all 100ms ease-in-out; 
+	transition: 		all 100ms ease-in-out; 
 }
 ul#thumb-list li.current-thumb img, 
 ul#thumb-list li:hover img									{ opacity:1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter:alpha(opacity=100); }
@@ -1165,10 +1177,10 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 	z-index: 10; 
 	opacity: 1;
 	
-	transitionUIT: 		all 0.2s linear;
-	-o-transitionUIT: 		all 0.2s linear; 
-	-moz-transitionUIT: 	all 0.2s linear;
-	-webkit-transitionUIT: all 0.2s linear; 
+	transition: 		all 0.2s linear;
+	-o-transition: 		all 0.2s linear; 
+	-moz-transition: 	all 0.2s linear;
+	-webkit-transition: all 0.2s linear; 
 	
 	/* http://stackoverflow.com/questions/16208851/images-wiggles-when-hover-scale-effect */
 	-webkit-backface-visibility: hidden;
@@ -1194,10 +1206,10 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 }
 /* Touch devices transition removal */
 .nxs-m-touch .nxs-gallery img { 
-	transitionUIT: 		none;
-	-o-transitionUIT: 		none;
-	-moz-transitionUIT: 	none;
-	-webkit-transitionUIT: none; 
+	transition: 		none;
+	-o-transition: 		none;
+	-moz-transition: 	none;
+	-webkit-transition: none; 
 }
 .nxs-m-touch .nxs-gallery img:hover { 
 	opacity: 1;
@@ -1352,10 +1364,10 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-signpost .nxs-default p								{ position: relative; padding: 0 20px; text-align: center; }
 .nxs-signpost .nxs-default .nxs-title,
 .nxs-signpost .image { 
-	transitionUIT: 		all 0.2s linear;
-	-o-transitionUIT: 		all 0.2s linear; 
-	-moz-transitionUIT: 	all 0.2s linear;
-	-webkit-transitionUIT: all 0.2s linear; 
+	transition: 		all 0.2s linear;
+	-o-transition: 		all 0.2s linear; 
+	-moz-transition: 	all 0.2s linear;
+	-webkit-transition: all 0.2s linear; 
 }
 .nxs-signpost .mask-color,
 .nxs-signpost .mask { 
@@ -1363,10 +1375,10 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	width: 100%; 
 	opacity: 0;	 
 	
-	transitionUIT: 		all 0.4s ease-in-out;
-	-o-transitionUIT: 		all 0.4s ease-in-out; 
-	-moz-transitionUIT: 	all 0.4s ease-in-out;
-	-webkit-transitionUIT: all 0.4s ease-in-out; 
+	transition: 		all 0.4s ease-in-out;
+	-o-transition: 		all 0.4s ease-in-out; 
+	-moz-transition: 	all 0.4s ease-in-out;
+	-webkit-transition: all 0.4s ease-in-out; 
 }
 .nxs-signpost .mask 										{ opacity: 1; }
 .nxs-signpost .nxs-default p { 
@@ -1377,18 +1389,18 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-moz-transform: 	translateY(-100px);
 	-webkit-transform: 	translateY(-100px);
 	
-	transitionUIT: 		all 0.2s linear;
-	-o-transitionUIT: 		all 0.2s linear; 
-	-moz-transitionUIT: 	all 0.2s linear;
-	-webkit-transitionUIT: all 0.2s linear; 
+	transition: 		all 0.2s linear;
+	-o-transition: 		all 0.2s linear; 
+	-moz-transition: 	all 0.2s linear;
+	-webkit-transition: all 0.2s linear; 
 }
 .nxs-signpost .nxs-default a.nxs-button { 
 	opacity: 0;
 		
-	transitionUIT: 		all 0.2s ease-in-out;
-	-o-transitionUIT: 		all 0.2s ease-in-out; 
-	-moz-transitionUIT: 	all 0.2s ease-in-out;
-	-webkit-transitionUIT: all 0.2s ease-in-out; 
+	transition: 		all 0.2s ease-in-out;
+	-o-transition: 		all 0.2s ease-in-out; 
+	-moz-transition: 	all 0.2s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out; 
 }
 .nxs-signpost:hover .nxs-default p {
 	transform: 			translateY(0px);
@@ -1409,9 +1421,9 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-signpost:hover .nxs-default a.nxs-button { 
 	opacity: 1; 
 		
-	transitionUIT: 		translateY(0px);
-	-o-transitionUIT: 		translateY(0px); 
-	-moz-transitionUIT: 	translateY(0px);
+	transition: 		translateY(0px);
+	-o-transition: 		translateY(0px); 
+	-moz-transition: 	translateY(0px);
 	-webkit-transform:  translateY(0px); 
 }
 .nxs-signpost:hover .nxs-default p { 
@@ -1426,7 +1438,7 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-moz-transition-delay: 	  0.2s;
 	-webkit-transition-delay: 0.2s; 
 }
-.nxs-signpost .nxs-default a.nxs-button:hover 				{ transitionUIT: none; }
+.nxs-signpost .nxs-default a.nxs-button:hover 				{ transition: none; }
 
 /* SIGNPOST Modernizr fallback */
 
@@ -1447,10 +1459,10 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-webkit-perspective: 8000px; 
 }   
 .nxs-tumbler .item { 
-	transitionUIT: 		        transform .6s;
-	-o-transitionUIT: 		     -o-transform .6s; 
-	-moz-transitionUIT: 	   -moz-transform .6s;
-	-webkit-transitionUIT: -webkit-transform .6s;
+	transition: 		        transform .6s;
+	-o-transition: 		     -o-transform .6s; 
+	-moz-transition: 	   -moz-transform .6s;
+	-webkit-transition: -webkit-transform .6s;
 	
 	transform-style: 		 preserve-3d;
 	-o-transform-style: 	 preserve-3d;
@@ -1466,15 +1478,15 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	width: 100%;
 	box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6); 
 	 
-	transitionUIT:			translateZ(20px);
-	-o-transitionUIT: 	   	translateZ(20px); 
-	-moz-transitionUIT:   	translateZ(20px);
+	transition:			translateZ(20px);
+	-o-transition: 	   	translateZ(20px); 
+	-moz-transition:   	translateZ(20px);
 	-webkit-transform: 	translateZ(20px);
 	
-	transitionUIT: 		all .6s;
-	-o-transitionUIT: 		all .6s;
-	-moz-transitionUIT:    all .6s;
-	-webkit-transitionUIT: all .6s;
+	transition: 		all .6s;
+	-o-transition: 		all .6s;
+	-moz-transition:    all .6s;
+	-webkit-transition: all .6s;
 	
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility:    hidden;
@@ -1592,19 +1604,19 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 /* transitions */
 .nxs-radial .transition.nxs-default .radial:first-child { 
 	opacity: 0;
-	-webkit-transitionUIT: all 0.3s;
-	-moz-transitionUIT: 	all 0.3s;
-	-o-transitionUIT: 		all 0.3s;
-	-ms-transitionUIT: 	all 0.3s;
-	transitionUIT: 		all 0.3s;
+	-webkit-transition: all 0.3s;
+	-moz-transition: 	all 0.3s;
+	-o-transition: 		all 0.3s;
+	-ms-transition: 	all 0.3s;
+	transition: 		all 0.3s;
 }
 .nxs-radial:hover .transition.nxs-default .radial:first-child 		{ opacity: 1; z-index: 30; }
 .nxs-radial .nxs-button { 
-	-webkit-transitionUIT: none;
-	-moz-transitionUIT: 	none;
-	-o-transitionUIT: 		none;
-	-ms-transitionUIT: 	none;
-	transitionUIT: 		none;
+	-webkit-transition: none;
+	-moz-transition: 	none;
+	-o-transition: 		none;
+	-ms-transition: 	none;
+	transition: 		none;
 } 
 
 .nxs-one-fourth .nxs-radial .nxs-default						{ height: 195px; }
@@ -1754,11 +1766,11 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	overflow: hidden;
 	position: relative;
 	
-	-webkit-transitionUIT: background 300ms linear;
-	-moz-transitionUIT: 	background 300ms linear;
-	-ms-transitionUIT: 	background 300ms linear;
-	-o-transitionUIT: 		background 300ms linear;
-	transitionUIT: 		background 300ms linear;
+	-webkit-transition: background 300ms linear;
+	-moz-transition: 	background 300ms linear;
+	-ms-transition: 	background 300ms linear;
+	-o-transition: 		background 300ms linear;
+	transition: 		background 300ms linear;
 }
 .nxs-target a 												{ display: block; }
 .nxs-target .nxs-button										{ display: inline-block; }
@@ -1769,11 +1781,11 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	font-size: 32px;
 	float: left;
 	text-align: center;
-	-webkit-transitionUIT: font-size 300ms linear;
-	-moz-transitionUIT: 	font-size 300ms linear;
-	-ms-transitionUIT: 	font-size 300ms linear;
-	-o-transitionUIT: 		font-size 300ms linear;
-	transitionUIT: 		font-size 300ms linear;
+	-webkit-transition: font-size 300ms linear;
+	-moz-transition: 	font-size 300ms linear;
+	-ms-transition: 	font-size 300ms linear;
+	-o-transition: 		font-size 300ms linear;
+	transition: 		font-size 300ms linear;
 }
 .nxs-target .content 										{ display: block; margin-left: 58px; }
 .nxs-target .main 											{ display: block;  }
@@ -1829,11 +1841,11 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 .nxs-target .no-transition,
 .nxs-m-touch .nxs-target .icon,
 .nxs-target .no-transition .icon {	
-	-webkit-transitionUIT: none;
-	-moz-transitionUIT: 	none;
-	-ms-transitionUIT: 	none;
-	-o-transitionUIT: 		none;
-	transitionUIT: 		none;
+	-webkit-transition: none;
+	-moz-transition: 	none;
+	-ms-transition: 	none;
+	-o-transition: 		none;
+	transition: 		none;
 }
 .nxs-m-touch .nxs-target:hover .icon,
 .nxs-target:hover .no-transition .icon 						{ font-size: 32px; }
@@ -1946,10 +1958,10 @@ h3#order_review_heading,
 .button-container span { 
 	font-size: 32px !important; 
 	line-height: 48px; 
-	-webkit-transitionUIT: all 0.2s; 
-	-moz-transitionUIT: 	all 0.2s; 	
-	-o-transitionUIT: 		all 0.2s;	
-	transitionUIT: 		all 0.2s;
+	-webkit-transition: all 0.2s; 
+	-moz-transition: 	all 0.2s; 	
+	-o-transition: 		all 0.2s;	
+	transition: 		all 0.2s;
 }
 .button-container:hover,
 .button-container:hover input								{ cursor: pointer; }
@@ -1968,10 +1980,10 @@ h3#order_review_heading,
 ---------------------------------------------------------------------------------------------------- */
 .nxs-themeselector img {  
 	z-index: 1;
-	transitionUIT: 		z-index 0.2s linear;
-	-o-transitionUIT: 		z-index 0.2s linear; 
-	-moz-transitionUIT: 	z-index 0.2s linear;
-	-webkit-transitionUIT: z-index 0.2s linear;
+	transition: 		z-index 0.2s linear;
+	-o-transition: 		z-index 0.2s linear; 
+	-moz-transition: 	z-index 0.2s linear;
+	-webkit-transition: z-index 0.2s linear;
 }
 .nxs-themeselector .color-palettes { 
 	position: absolute; 
@@ -1983,10 +1995,10 @@ h3#order_review_heading,
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
 	z-index: 100;
-	-webkit-transitionUIT: all .25s ease;
-	-moz-transitionUIT: 	all .25s ease;
-	-o-transitionUIT: 		all .25s ease;
-	transitionUIT: 		all .25s ease;
+	-webkit-transition: all .25s ease;
+	-moz-transition: 	all .25s ease;
+	-o-transition: 		all .25s ease;
+	transition: 		all .25s ease;
 }
 .nxs-themeselector:hover .color-palettes 					{ height: 86px; padding: 5px 0; }
 .nxs-themeselector .color-palettes ul { 
@@ -1994,10 +2006,10 @@ h3#order_review_heading,
 	padding: 5px; 
 	border-radius: 2px; 
 	background-color: none;
-	transitionUIT: 		background-color 0.2s linear;
-	-o-transitionUIT: 		background-color 0.2s linear; 
-	-moz-transitionUIT: 	background-color 0.2s linear;
-	-webkit-transitionUIT: background-color 0.2s linear;
+	transition: 		background-color 0.2s linear;
+	-o-transition: 		background-color 0.2s linear; 
+	-moz-transition: 	background-color 0.2s linear;
+	-webkit-transition: background-color 0.2s linear;
 }
 .nxs-themeselector:hover .color-palettes ul.nxs-activepalette,
 .nxs-themeselector .color-palettes ul:hover					{ background-color: #BBB; cursor: pointer; }
@@ -2005,10 +2017,10 @@ h3#order_review_heading,
 	display: block; 
 	margin: 5px 0 0; 
 	height: 0px;
-	-webkit-transitionUIT: all .25s ease;
-	-moz-transitionUIT: 	all .25s ease;
-	-o-transitionUIT: 		all .25s ease;
-	transitionUIT: 		all .25s ease;
+	-webkit-transition: all .25s ease;
+	-moz-transition: 	all .25s ease;
+	-o-transition: 		all .25s ease;
+	transition: 		all .25s ease;
 }
 .nxs-themeselector:hover li.miniColors-trigger 				{ height: 22px; }
 .nxs-themeselector li.miniColors-trigger:first-child 		{ margin-top: 0px; }
