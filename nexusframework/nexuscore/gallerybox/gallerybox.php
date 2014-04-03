@@ -72,6 +72,9 @@ function nxs_gallerybox_detail_rendersheet($args)
 	
 	<div class="nxs-table" style='opacity: 0'>
 		<div class="nxs-table-cell">
+			<a class="nxs-popupcloser" style="position: absolute;" href='#' onclick="nxs_js_closepopup_unconditionally_if_not_dirty(); return false;">
+				<span class="nxs-icon-close">CLOSE</span>
+			</a>
 			<img id='galleryimg' class='nxs-gallery-image' src="<?php echo $fullimageurl; ?>" />
 			<ul class="icon-font-list nxs-center">
 				<li>
