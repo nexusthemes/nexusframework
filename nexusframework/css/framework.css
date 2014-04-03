@@ -98,7 +98,7 @@ body														{ height: 100%; }
 img.nxs-grayscale { 
 	filter: 		grayscale(100%);
 	-webkit-filter: grayscale(100%);
-	-webkit-transition: all .6s ease;
+	-webkit-transitionUIT: all .6s ease;
 	filter: gray;
 	
 	/* http://stackoverflow.com/questions/16208851/images-wiggles-when-hover-scale-effect */
@@ -115,10 +115,10 @@ img.nxs-grayscale:hover,
 
 /* enlarge transition */
 img.nxs-enlarge { 	
-	transition: 		all 0.2s linear;
-	-o-transition: 		all 0.2s linear; 
-	-moz-transition: 	all 0.2s linear;
-	-webkit-transition: all 0.2s linear; 
+	transitionUIT: 		all 0.2s linear;
+	-o-transitionUIT: 		all 0.2s linear; 
+	-moz-transitionUIT: 	all 0.2s linear;
+	-webkit-transitionUIT: all 0.2s linear; 
 	
 	/* http://stackoverflow.com/questions/16208851/images-wiggles-when-hover-scale-effect */
 	-webkit-backface-visibility: hidden;
@@ -152,10 +152,10 @@ a .nxs-title,
 .nxs-blog a,
 .nxs-default-p a { 
 	opacity: 1;
-	transition: 		opacity 0.1s linear;
-	-o-transition: 		opacity 0.1s linear; 
-	-moz-transition: 	opacity 0.1s linear;
-	-webkit-transition: opacity 0.1s linear;
+	transitionUIT: 		opacity 0.1s linear;
+	-o-transitionUIT: 		opacity 0.1s linear; 
+	-moz-transitionUIT: 	opacity 0.1s linear;
+	-webkit-transitionUIT: opacity 0.1s linear;
 }
 a.nxs-button:hover,
 a:hover .nxs-title,
@@ -193,10 +193,10 @@ a.nxs-frontendbutton2 {
 ul.icon-font-list li { 
 	float: left; 
 	text-align: center;
-	transition: 		all 0.1s linear;
-	-o-transition: 		all 0.1s linear; 
-	-moz-transition: 	all 0.1s linear;
-	-webkit-transition: all 0.1s linear;
+	transitionUIT: 		all 0.1s linear;
+	-o-transitionUIT: 		all 0.1s linear; 
+	-moz-transitionUIT: 	all 0.1s linear;
+	-webkit-transitionUIT: all 0.1s linear;
 	font-size: 24px; 
 	width: 36px;
 	line-height: 36px;
@@ -245,10 +245,10 @@ ul.nxs-default-list											{ line-height: 1.625em; font-size: 15px; margin-to
 .nxs-widget	.nxs-title a span { 
 	font-size: 20px; 
 	margin-right: 8px; 
-	transition: 		all 0.1s linear;
-	-o-transition: 		all 0.1s linear; 
-	-moz-transition: 	all 0.1s linear;
-	-webkit-transition: all 0.1s linear;
+	transitionUIT: 		all 0.1s linear;
+	-o-transitionUIT: 		all 0.1s linear; 
+	-moz-transitionUIT: 	all 0.1s linear;
+	-webkit-transitionUIT: all 0.1s linear;
 }
 .nxs-widget	.nxs-title a:hover span 						{ opacity: 0.5; }
 
@@ -642,8 +642,8 @@ html.nxs-pageslider p#nxs-copyright												{ padding-bottom: 60px; }
 div.nxs-menu-minified										{ display: none; }
 .right ul.nxs-menu.nxs-menu-minified             			{ float: left; }
 
-.nxs-menu .nxs-active > a                           		{ cursor: default; }
-.nxs-menu .nxs-inactive > a                         		{ cursor: pointer; }
+.nxs-menu .nxs-active > a                           		{ cursor: pointer; }
+.nxs-menu .nxs-inactive > a                         		{ cursor: default; }
 .nxs-menu a.nxs-menuitemnolink                      		{ cursor: default; }
 
 /* Enabling center alignment */
@@ -702,20 +702,20 @@ ul.nxs-menu li:hover > ul > ul > ul							{ z-index: 1002; }
 
 /* transitions */
 ul.nxs-menu li ul {	
-	-webkit-transition: all .25s ease .1s;
-	-moz-transition: 	all .25s ease .1s;
-	-o-transition: 		all .25s ease .1s;
-	transition: 		all .25s ease .1s;
+	-webkit-transitionUIT: all .25s ease .1s;
+	-moz-transitionUIT: 	all .25s ease .1s;
+	-o-transitionUIT: 		all .25s ease .1s;
+	transitionUIT: 		all .25s ease .1s;
 }
 ul.nxs-menu li ul li { 
-	height: 0; 
+	height: 0;
 	padding: 0;
 	padding-left: 20px;
 	
-	-webkit-transition: height .25s ease .1s;
-	-moz-transition: 	height .25s ease .1s;
-	-o-transition: 		height .25s ease .1s;
-	transition: 		height .25s ease .1s;
+	-webkit-transitionUIT: height .25s ease .1s;
+	-moz-transitionUIT: 	height .25s ease .1s;
+	-o-transitionUIT: 		height .25s ease .1s;
+	transitionUIT: 		height .25s ease .1s;
 }
 
 ul.nxs-menu li ul li ul li ul 								{ opacity: 0 !important; }
@@ -742,11 +742,31 @@ div.nxs-menu-minified .nxs-expand							{ display: block !important; }
 div.nxs-menu-minified .nxs-expand ul						{ display: block; }
 div.nxs-menu-minified .nxs-expand ul li						{ width: 100%; }
 
-/* Responsive navigation should always be on for touch devices */
+/* Responsive navigation should always be on for touch devices
 .nxs-m-touch ul.nxs-menu									{ display: none; }
 .nxs-m-touch div.nxs-menu-minified							{ display: block; }
 .nxs-m-touch .nxs-menu-aligner.nxs-float-left,
-.nxs-m-touch .nxs-menu-aligner.nxs-float-right				{ float: none; }
+.nxs-m-touch .nxs-menu-aligner.nxs-float-right				{ float: none; } */
+
+/* Enabling drop down menu's for touch devices */
+ul.nxs-menu li.nxs-touched > ul								{ z-index: 1000 !important; }
+ul.nxs-menu li.nxs-touched > ul > ul						{ z-index: 1001 !important; }
+ul.nxs-menu li.nxs-touched > ul > ul > ul					{ z-index: 1002 !important; }
+
+ul.nxs-menu li ul								{ opacity: 0 !important; visibility: hidden !important; }
+ul.nxs-menu li.nxs-touched ul								{ opacity: 1 !important; visibility: visible !important; }
+ul.nxs-menu li ul li ul li.nxs-touched ul 					{ opacity: 1 !important; }
+
+ul.nxs-menu li.nxs-touched ul li.height13					{ height: 65px !important; }
+ul.nxs-menu li.nxs-touched ul li.height12					{ height: 60px !important; }
+ul.nxs-menu li.nxs-touched ul li.height11					{ height: 55px !important; }
+ul.nxs-menu li.nxs-touched ul li.height10					{ height: 50px !important; }
+ul.nxs-menu li.nxs-touched ul li.height09					{ height: 45px !important; }
+ul.nxs-menu li.nxs-touched ul li.height08					{ height: 40px !important; }
+
+
+
+
 
 
 /* WORDPRESS NATIVE MENU 
@@ -981,10 +1001,10 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 	font-size: 16px; 
 	color: #999; 
 	line-height: 35px !important;
-	transition: 		all 0.1s linear;
-	-o-transition: 		all 0.1s linear; 
-	-moz-transition: 	all 0.1s linear;
-	-webkit-transition: all 0.1s linear;
+	transitionUIT: 		all 0.1s linear;
+	-o-transitionUIT: 		all 0.1s linear; 
+	-moz-transitionUIT: 	all 0.1s linear;
+	-webkit-transitionUIT: all 0.1s linear;
 }
 .general-nav:hover .general-ui-styling						{ color: white; font-size: 24px; }
 #controls-wrapper .nxs-toggle 								{ float: left; line-height: 42px !important; border-right: 1px solid #1c1c1c; width: 55px; text-align: center; }
@@ -1004,10 +1024,10 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
 	border: 2px solid #777;
 	text-align: center;
-	transition: 		all 0.1s linear;
-	-o-transition: 		all 0.1s linear; 
-	-moz-transition: 	all 0.1s linear;
-	-webkit-transition: all 0.1s linear;
+	transitionUIT: 		all 0.1s linear;
+	-o-transitionUIT: 		all 0.1s linear; 
+	-moz-transitionUIT: 	all 0.1s linear;
+	-webkit-transitionUIT: all 0.1s linear;
 }
 .general-nav:hover											{ background-color: rgba(0, 0, 0, 1); border: 2px solid white; }
 #thumb-forward 												{ right: 0px; }
@@ -1116,11 +1136,11 @@ ul#thumb-list li img {
 	opacity: 0.5; 
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; 
 	filter: alpha(opacity=60); 
-	-webkit-transition: all 100ms ease-in-out; 
-	-moz-transition: 	all 100ms ease-in-out; 
-	-ms-transition: 	all 100ms ease-in-out; 
-	-o-transition: 		all 100ms ease-in-out; 
-	transition: 		all 100ms ease-in-out; 
+	-webkit-transitionUIT: all 100ms ease-in-out; 
+	-moz-transitionUIT: 	all 100ms ease-in-out; 
+	-ms-transitionUIT: 	all 100ms ease-in-out; 
+	-o-transitionUIT: 		all 100ms ease-in-out; 
+	transitionUIT: 		all 100ms ease-in-out; 
 }
 ul#thumb-list li.current-thumb img, 
 ul#thumb-list li:hover img									{ opacity:1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter:alpha(opacity=100); }
@@ -1145,10 +1165,10 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 	z-index: 10; 
 	opacity: 1;
 	
-	transition: 		all 0.2s linear;
-	-o-transition: 		all 0.2s linear; 
-	-moz-transition: 	all 0.2s linear;
-	-webkit-transition: all 0.2s linear; 
+	transitionUIT: 		all 0.2s linear;
+	-o-transitionUIT: 		all 0.2s linear; 
+	-moz-transitionUIT: 	all 0.2s linear;
+	-webkit-transitionUIT: all 0.2s linear; 
 	
 	/* http://stackoverflow.com/questions/16208851/images-wiggles-when-hover-scale-effect */
 	-webkit-backface-visibility: hidden;
@@ -1174,10 +1194,10 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 }
 /* Touch devices transition removal */
 .nxs-m-touch .nxs-gallery img { 
-	transition: 		none;
-	-o-transition: 		none;
-	-moz-transition: 	none;
-	-webkit-transition: none; 
+	transitionUIT: 		none;
+	-o-transitionUIT: 		none;
+	-moz-transitionUIT: 	none;
+	-webkit-transitionUIT: none; 
 }
 .nxs-m-touch .nxs-gallery img:hover { 
 	opacity: 1;
@@ -1332,10 +1352,10 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-signpost .nxs-default p								{ position: relative; padding: 0 20px; text-align: center; }
 .nxs-signpost .nxs-default .nxs-title,
 .nxs-signpost .image { 
-	transition: 		all 0.2s linear;
-	-o-transition: 		all 0.2s linear; 
-	-moz-transition: 	all 0.2s linear;
-	-webkit-transition: all 0.2s linear; 
+	transitionUIT: 		all 0.2s linear;
+	-o-transitionUIT: 		all 0.2s linear; 
+	-moz-transitionUIT: 	all 0.2s linear;
+	-webkit-transitionUIT: all 0.2s linear; 
 }
 .nxs-signpost .mask-color,
 .nxs-signpost .mask { 
@@ -1343,10 +1363,10 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	width: 100%; 
 	opacity: 0;	 
 	
-	transition: 		all 0.4s ease-in-out;
-	-o-transition: 		all 0.4s ease-in-out; 
-	-moz-transition: 	all 0.4s ease-in-out;
-	-webkit-transition: all 0.4s ease-in-out; 
+	transitionUIT: 		all 0.4s ease-in-out;
+	-o-transitionUIT: 		all 0.4s ease-in-out; 
+	-moz-transitionUIT: 	all 0.4s ease-in-out;
+	-webkit-transitionUIT: all 0.4s ease-in-out; 
 }
 .nxs-signpost .mask 										{ opacity: 1; }
 .nxs-signpost .nxs-default p { 
@@ -1357,18 +1377,18 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-moz-transform: 	translateY(-100px);
 	-webkit-transform: 	translateY(-100px);
 	
-	transition: 		all 0.2s linear;
-	-o-transition: 		all 0.2s linear; 
-	-moz-transition: 	all 0.2s linear;
-	-webkit-transition: all 0.2s linear; 
+	transitionUIT: 		all 0.2s linear;
+	-o-transitionUIT: 		all 0.2s linear; 
+	-moz-transitionUIT: 	all 0.2s linear;
+	-webkit-transitionUIT: all 0.2s linear; 
 }
 .nxs-signpost .nxs-default a.nxs-button { 
 	opacity: 0;
 		
-	transition: 		all 0.2s ease-in-out;
-	-o-transition: 		all 0.2s ease-in-out; 
-	-moz-transition: 	all 0.2s ease-in-out;
-	-webkit-transition: all 0.2s ease-in-out; 
+	transitionUIT: 		all 0.2s ease-in-out;
+	-o-transitionUIT: 		all 0.2s ease-in-out; 
+	-moz-transitionUIT: 	all 0.2s ease-in-out;
+	-webkit-transitionUIT: all 0.2s ease-in-out; 
 }
 .nxs-signpost:hover .nxs-default p {
 	transform: 			translateY(0px);
@@ -1389,9 +1409,9 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-signpost:hover .nxs-default a.nxs-button { 
 	opacity: 1; 
 		
-	transition: 		translateY(0px);
-	-o-transition: 		translateY(0px); 
-	-moz-transition: 	translateY(0px);
+	transitionUIT: 		translateY(0px);
+	-o-transitionUIT: 		translateY(0px); 
+	-moz-transitionUIT: 	translateY(0px);
 	-webkit-transform:  translateY(0px); 
 }
 .nxs-signpost:hover .nxs-default p { 
@@ -1406,7 +1426,7 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-moz-transition-delay: 	  0.2s;
 	-webkit-transition-delay: 0.2s; 
 }
-.nxs-signpost .nxs-default a.nxs-button:hover 				{ transition: none; }
+.nxs-signpost .nxs-default a.nxs-button:hover 				{ transitionUIT: none; }
 
 /* SIGNPOST Modernizr fallback */
 
@@ -1427,10 +1447,10 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-webkit-perspective: 8000px; 
 }   
 .nxs-tumbler .item { 
-	transition: 		        transform .6s;
-	-o-transition: 		     -o-transform .6s; 
-	-moz-transition: 	   -moz-transform .6s;
-	-webkit-transition: -webkit-transform .6s;
+	transitionUIT: 		        transform .6s;
+	-o-transitionUIT: 		     -o-transform .6s; 
+	-moz-transitionUIT: 	   -moz-transform .6s;
+	-webkit-transitionUIT: -webkit-transform .6s;
 	
 	transform-style: 		 preserve-3d;
 	-o-transform-style: 	 preserve-3d;
@@ -1446,15 +1466,15 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	width: 100%;
 	box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6); 
 	 
-	transition:			translateZ(20px);
-	-o-transition: 	   	translateZ(20px); 
-	-moz-transition:   	translateZ(20px);
+	transitionUIT:			translateZ(20px);
+	-o-transitionUIT: 	   	translateZ(20px); 
+	-moz-transitionUIT:   	translateZ(20px);
 	-webkit-transform: 	translateZ(20px);
 	
-	transition: 		all .6s;
-	-o-transition: 		all .6s;
-	-moz-transition:    all .6s;
-	-webkit-transition: all .6s;
+	transitionUIT: 		all .6s;
+	-o-transitionUIT: 		all .6s;
+	-moz-transitionUIT:    all .6s;
+	-webkit-transitionUIT: all .6s;
 	
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility:    hidden;
@@ -1572,19 +1592,19 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 /* transitions */
 .nxs-radial .transition.nxs-default .radial:first-child { 
 	opacity: 0;
-	-webkit-transition: all 0.3s;
-	-moz-transition: 	all 0.3s;
-	-o-transition: 		all 0.3s;
-	-ms-transition: 	all 0.3s;
-	transition: 		all 0.3s;
+	-webkit-transitionUIT: all 0.3s;
+	-moz-transitionUIT: 	all 0.3s;
+	-o-transitionUIT: 		all 0.3s;
+	-ms-transitionUIT: 	all 0.3s;
+	transitionUIT: 		all 0.3s;
 }
 .nxs-radial:hover .transition.nxs-default .radial:first-child 		{ opacity: 1; z-index: 30; }
 .nxs-radial .nxs-button { 
-	-webkit-transition: none;
-	-moz-transition: 	none;
-	-o-transition: 		none;
-	-ms-transition: 	none;
-	transition: 		none;
+	-webkit-transitionUIT: none;
+	-moz-transitionUIT: 	none;
+	-o-transitionUIT: 		none;
+	-ms-transitionUIT: 	none;
+	transitionUIT: 		none;
 } 
 
 .nxs-one-fourth .nxs-radial .nxs-default						{ height: 195px; }
@@ -1734,11 +1754,11 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	overflow: hidden;
 	position: relative;
 	
-	-webkit-transition: background 300ms linear;
-	-moz-transition: 	background 300ms linear;
-	-ms-transition: 	background 300ms linear;
-	-o-transition: 		background 300ms linear;
-	transition: 		background 300ms linear;
+	-webkit-transitionUIT: background 300ms linear;
+	-moz-transitionUIT: 	background 300ms linear;
+	-ms-transitionUIT: 	background 300ms linear;
+	-o-transitionUIT: 		background 300ms linear;
+	transitionUIT: 		background 300ms linear;
 }
 .nxs-target a 												{ display: block; }
 .nxs-target .nxs-button										{ display: inline-block; }
@@ -1749,11 +1769,11 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	font-size: 32px;
 	float: left;
 	text-align: center;
-	-webkit-transition: font-size 300ms linear;
-	-moz-transition: 	font-size 300ms linear;
-	-ms-transition: 	font-size 300ms linear;
-	-o-transition: 		font-size 300ms linear;
-	transition: 		font-size 300ms linear;
+	-webkit-transitionUIT: font-size 300ms linear;
+	-moz-transitionUIT: 	font-size 300ms linear;
+	-ms-transitionUIT: 	font-size 300ms linear;
+	-o-transitionUIT: 		font-size 300ms linear;
+	transitionUIT: 		font-size 300ms linear;
 }
 .nxs-target .content 										{ display: block; margin-left: 58px; }
 .nxs-target .main 											{ display: block;  }
@@ -1809,11 +1829,11 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 .nxs-target .no-transition,
 .nxs-m-touch .nxs-target .icon,
 .nxs-target .no-transition .icon {	
-	-webkit-transition: none;
-	-moz-transition: 	none;
-	-ms-transition: 	none;
-	-o-transition: 		none;
-	transition: 		none;
+	-webkit-transitionUIT: none;
+	-moz-transitionUIT: 	none;
+	-ms-transitionUIT: 	none;
+	-o-transitionUIT: 		none;
+	transitionUIT: 		none;
 }
 .nxs-m-touch .nxs-target:hover .icon,
 .nxs-target:hover .no-transition .icon 						{ font-size: 32px; }
@@ -1926,10 +1946,10 @@ h3#order_review_heading,
 .button-container span { 
 	font-size: 32px !important; 
 	line-height: 48px; 
-	-webkit-transition: all 0.2s; 
-	-moz-transition: 	all 0.2s; 	
-	-o-transition: 		all 0.2s;	
-	transition: 		all 0.2s;
+	-webkit-transitionUIT: all 0.2s; 
+	-moz-transitionUIT: 	all 0.2s; 	
+	-o-transitionUIT: 		all 0.2s;	
+	transitionUIT: 		all 0.2s;
 }
 .button-container:hover,
 .button-container:hover input								{ cursor: pointer; }
@@ -1948,10 +1968,10 @@ h3#order_review_heading,
 ---------------------------------------------------------------------------------------------------- */
 .nxs-themeselector img {  
 	z-index: 1;
-	transition: 		z-index 0.2s linear;
-	-o-transition: 		z-index 0.2s linear; 
-	-moz-transition: 	z-index 0.2s linear;
-	-webkit-transition: z-index 0.2s linear;
+	transitionUIT: 		z-index 0.2s linear;
+	-o-transitionUIT: 		z-index 0.2s linear; 
+	-moz-transitionUIT: 	z-index 0.2s linear;
+	-webkit-transitionUIT: z-index 0.2s linear;
 }
 .nxs-themeselector .color-palettes { 
 	position: absolute; 
@@ -1963,10 +1983,10 @@ h3#order_review_heading,
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
 	z-index: 100;
-	-webkit-transition: all .25s ease;
-	-moz-transition: 	all .25s ease;
-	-o-transition: 		all .25s ease;
-	transition: 		all .25s ease;
+	-webkit-transitionUIT: all .25s ease;
+	-moz-transitionUIT: 	all .25s ease;
+	-o-transitionUIT: 		all .25s ease;
+	transitionUIT: 		all .25s ease;
 }
 .nxs-themeselector:hover .color-palettes 					{ height: 86px; padding: 5px 0; }
 .nxs-themeselector .color-palettes ul { 
@@ -1974,10 +1994,10 @@ h3#order_review_heading,
 	padding: 5px; 
 	border-radius: 2px; 
 	background-color: none;
-	transition: 		background-color 0.2s linear;
-	-o-transition: 		background-color 0.2s linear; 
-	-moz-transition: 	background-color 0.2s linear;
-	-webkit-transition: background-color 0.2s linear;
+	transitionUIT: 		background-color 0.2s linear;
+	-o-transitionUIT: 		background-color 0.2s linear; 
+	-moz-transitionUIT: 	background-color 0.2s linear;
+	-webkit-transitionUIT: background-color 0.2s linear;
 }
 .nxs-themeselector:hover .color-palettes ul.nxs-activepalette,
 .nxs-themeselector .color-palettes ul:hover					{ background-color: #BBB; cursor: pointer; }
@@ -1985,10 +2005,10 @@ h3#order_review_heading,
 	display: block; 
 	margin: 5px 0 0; 
 	height: 0px;
-	-webkit-transition: all .25s ease;
-	-moz-transition: 	all .25s ease;
-	-o-transition: 		all .25s ease;
-	transition: 		all .25s ease;
+	-webkit-transitionUIT: all .25s ease;
+	-moz-transitionUIT: 	all .25s ease;
+	-o-transitionUIT: 		all .25s ease;
+	transitionUIT: 		all .25s ease;
 }
 .nxs-themeselector:hover li.miniColors-trigger 				{ height: 22px; }
 .nxs-themeselector li.miniColors-trigger:first-child 		{ margin-top: 0px; }

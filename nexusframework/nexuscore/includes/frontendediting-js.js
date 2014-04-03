@@ -8186,49 +8186,88 @@ function nxs_js_tagdevices()
 	}
 }
 
-function nxs_js_menuitemclick(domelement)
+function nxs_js_menuitemclick(domelement, event)
 {
-	//nxs_js_log('menu item click');
-
-	var url = jQuery(domelement).attr("nxsurl");
-	if (url == null || url == "")
+	if (event == "mouseleave")
 	{
-		// no url set, ignore
+		jQuery(domelement).closest(".nxs-widget").find("li.nxs-touched").removeClass("nxs-touched");
+		nxs_js_log("mouseleave");
 		return;
 	}
 	
-	//nxs_js_log(url);
-	
+	if (event == "mouseenter" || event == "touch" || event == "click")
+	{
+		//nxs_js_log("mouse enter");
+		
+		var closestwidget = jQuery(domelement).closest(".nxs-widget");
+		
+		// wipe previous path
+		jQuery(closestwidget).find(".nxs-touched").removeClass("nxs-touched");
+		// mark all as noise
+		jQuery(closestwidget).find("li").addClass("nxs-noise");	
+		// select victims of crumb path from top
+		// mark victims as being not noise
+		jQuery(domelement).parentsUntil(".nxs-widget").addClass("nxs-touched");
+		// remove noise "tag"
+		jQuery(closestwidget).find(".nxs-noise").removeClass("nxs-noise");
+		
+		//nxs_js_log("mouse enter finished");
+		return;
+	}
 	
 	// if user click on a domelement in the menu,
 	// we shouldn't redirect immediately,
 	// if the item has child items and the device is a touch device, 
 	// and the sub menu is not yet showing, absorb the click
-	
-	if (nxs_js_deviceistouchdevice()) 
+
+	if (event == 'touch' || event == 'click')
 	{
-		// the submenu is not an immediate child of the 'this' link,
-		// its a child of a sibling element ...
-		//nxs_js_log("nice:");
-		//nxs_js_log(jQuery(domelement).parent().children(".nxs-sub-menu"));
-		//nxs_js_log(jQuery(domelement).parent().children(".nxs-sub-menu").length);
-		if (jQuery(domelement).parent().children(".nxs-sub-menu").length > 0)
+		if (nxs_js_deviceistouchdevice()) 
 		{
-			//nxs_js_log('dit menu item heeft submenu items');
-			nxs_js_log('NOT about to follow that link!');
-			// nxs_js_alert('NOT about to follow that link!');
+			// 
+			
+			// the submenu is not an immediate child of the 'this' link,
+			// its a child of a sibling element ...
+			//nxs_js_log("nice:");
+			//nxs_js_log(jQuery(domelement).parent().children(".nxs-sub-menu"));
+			//nxs_js_log(jQuery(domelement).parent().children(".nxs-sub-menu").length);
+			if (jQuery(domelement).parent().children(".nxs-sub-menu").length > 0)
+			{
+				//nxs_js_log('dit menu item heeft submenu items');
+				nxs_js_log('NOT about to follow that link!');
+				// nxs_js_alert('NOT about to follow that link!');
+			}
+			else
+			{
+				//nxs_js_log('about to follow that link!');
+				
+				
+				var url = jQuery(domelement).attr("nxsurl");
+				if ((url == null || url == ""))
+				{
+					
+				}
+				else
+				{
+					nxs_js_redirect(url);
+				}
+			}
 		}
 		else
 		{
 			//nxs_js_log('about to follow that link!');
-			nxs_js_redirect(url);
+			// reguliere redirect
+			
+			var url = jQuery(domelement).attr("nxsurl");
+			if ((url == null || url == ""))
+			{
+				
+			}
+			else
+			{
+				nxs_js_redirect(url);
+			}
 		}
-	}
-	else
-	{
-		//nxs_js_log('about to follow that link!');
-		// reguliere redirect
-		nxs_js_redirect(url);
 	}
 }
 
