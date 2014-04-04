@@ -188,6 +188,29 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 										$content = str_replace("\n", "", $content);
 										$content = str_replace("\r", "", $content);
 										$content = str_replace("'", "&#39;", $content);
+										// on sabine's text editor strange 226 chars are introduced at various places...
+										// causing the output to be interpreted as having
+										// newline chars, causing the JS to crash
+										$content = str_replace(chr("226"), "", $content);
+										/*
+										if (false) // nxs_stringcontains($content, "Tienercentra TAS"))
+										{
+											//echo $content[29];
+											//echo $content[30];
+											//echo $content[31];
+											//echo $content[32];
+											echo $content[33];
+											if ($content[33] == chr("226"))
+											{
+												echo "GOT YOU THERE!";
+											}
+											echo ord($content[33]);
+											var_dump($content[33]);
+											echo "AAAAAAA";
+											echo $content;
+											die();
+										}
+										*/
 									?>
 									var content = '<?php echo $content ;?>';
 									nxseditor.setContent(content, { format: 'raw' });
