@@ -596,7 +596,14 @@ function nxs_widgets_pageslider_beforeend_head()
 											
 											if ($show_metadata != "")
 											{
-												$titlevalue = "<div class='slidecaption-container $text_padding_cssclass $bgcolor_cssclass $text_align $text_margin_cssclass'><h2 class='nxs-title $title_fontsize_cssclass $metadata_transition'>" . nxs_render_html_escape_singlequote($koptekst) . "</h2><div class='nxs-placeholder $description_fontsize_cssclass'><div class='nxs-default-p nxs-padding-bottom0 $metadata_transition'><p>" . nxs_render_html_escape_singlequote($bodytekst) . "</p></div></div>$link</div>";
+												$kophtml = "";
+												if ($koptekst != "")
+												{
+													$kophtml = "<h2 class='nxs-title $title_fontsize_cssclass $metadata_transition'>" . nxs_render_html_escape_singlequote($koptekst) . "</h2>";
+												}
+												$bodyhtml = "<div class='nxs-placeholder $description_fontsize_cssclass'><div class='nxs-default-p nxs-padding-bottom0 $metadata_transition'><p>" . nxs_render_html_escape_singlequote($bodytekst) . "</p></div></div>";
+												
+												$titlevalue = "<div class='slidecaption-container $text_padding_cssclass $bgcolor_cssclass $text_align $text_margin_cssclass'>{$kophtml}{$bodyhtml}{$link}</div>";
 												$titlevalue = str_replace("'", "\"", $titlevalue);
 												$titlevalue = str_replace("\n", "", $titlevalue);
 											}
