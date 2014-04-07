@@ -109,4 +109,39 @@ function nxs_ext_getpostwizards($result, $args)
 	return $result;
 }
 
+/* ******************** */
+
+// nxs_lazyload_plugin_postwizard
+
+function nxs_lazyload_plugin_postwizard($file, $postwizard)
+{
+	// store file loc in lookup (mem)
+	global $nxs_gl_postwizard_file;
+	if ($nxs_gl_postwizard_file == null)
+	{
+		$nxs_gl_postwizard_file = array();
+	}
+	$nxs_gl_postwizard_file[$postwizard] = $file;
+		
+	add_action("nxs_ext_inject_postwizard_" . $postwizard, "nxs_inject_plugin_postwizard");
+}
+
+// unfortunately we can't use anonymous functions to support older servers running old PHP versions...
+function nxs_inject_plugin_postwizard($postwizard)
+{
+	if ($postwizard == "")
+	{	
+		echo "geen postwizard meegegeven";
+		die();
+	}
+	
+	global $nxs_gl_postwizard_file;
+	$file = $nxs_gl_postwizard_file[$postwizard];
+	$path = plugin_dir_path($file);
+	$filetobeincluded = $path . '/postwizards/' . $postwizard . '/postwizard_' . $postwizard . '.php';
+	require_once($filetobeincluded);
+}
+
+/* ******************** */
+
 ?>

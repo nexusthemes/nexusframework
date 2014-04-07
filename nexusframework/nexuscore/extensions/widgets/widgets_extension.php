@@ -227,11 +227,14 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "wordpresssidebar");
 		$result[] = array("widgetid" => "categories");
 		$result[] = array("widgetid" => "archive");
-		$result[] = array("widgetid" => "htmlcustom");		
+		$result[] = array("widgetid" => "htmlcustom");
+		$result[] = array("widgetid" => "squeezebox");
+		$result[] = array("widgetid" => "googlebusinessphoto");		
 		$result[] = array("widgetid" => "rssfeed");
 		
-		// $result[] = array("widgetid" => "squeezebox");
-		// $result[] = array("widgetid" => "googlebusinessphoto");
+		
+		
+		
 		// $result[] = array("widgetid" => "wpmenu");
 		// $result[] = array("widgetid" => "fbcomments");
 		// $result[] = array("widgetid" => "template2");
@@ -313,16 +316,19 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemdate");
 			$result[] = array("widgetid" => "contactitemdatetime");
 			$result[] = array("widgetid" => "contactitemselect");
+			$result[] = array("widgetid" => "contactitemsecret");
 			// $result[] = array("widgetid" => "contactitemhidden");
 			// $result[] = array("widgetid" => "contactitemattachment");
 		}
 		
 		// FORM
-		if ($nxssubposttype == "form") {
+		if ($nxssubposttype == "form") 
+		{
 			$result[] = array("widgetid" => "contactitemtext");
 			$result[] = array("widgetid" => "contactitemdate");
 			$result[] = array("widgetid" => "contactitemselect");
 			$result[] = array("widgetid" => "contactitemdatetime");
+			$result[] = array("widgetid" => "contactitemsecret");
 			// $result[] = array("widgetid" => "contactitemhidden");
 			// $result[] = array("widgetid" => "contactitemattachment");
 		}
@@ -371,6 +377,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			"contactitemdate", 
 			"contactitemdatetime",
 			"contactitemselect", 
+			"contactitemsecret", 
 			"definitionlistitemtext", 
 			"eventsboxitem", 
 			"gallerybox", 
@@ -453,6 +460,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("contactbox");
 	nxs_ext_lazyload_widget("formbox");
 	nxs_ext_lazyload_widget("contactitemtext");
+	nxs_ext_lazyload_widget("contactitemsecret");
 	nxs_ext_lazyload_widget("contactitemdate");
 	nxs_ext_lazyload_widget("contactitemdatetime");	
 	nxs_ext_lazyload_widget("contactitemselect");
@@ -545,5 +553,45 @@ function nxs_lazyload_widgets()
 add_action("plugins_loaded", "nxs_lazyload_widgets");
 // if framework is loaded by the theme, we load the widgets after the theme is setup
 add_action("after_setup_theme", "nxs_lazyload_widgets");
+
+/* *************** */
+
+// USAGE: nxs_lazyload_plugin_widget(__FILE__, "nameofwidget");
+
+function nxs_lazyload_plugin_widget($file, $widget)
+{
+	// store file loc in lookup (mem)
+	global $nxs_gl_widget_file;
+	if ($nxs_gl_widget_file == null)
+	{
+		$nxs_gl_widget_file = array();
+	}
+	$nxs_gl_widget_file[$widget] = $file;
+	
+	$action = "nxs_ext_inject_widget_" . $widget;
+	add_action($action, "nxs_inject_plugin_widget");
+}
+
+function nxs_inject_plugin_widget($widget)
+{
+	global $nxs_gl_widget_file;
+	$file = $nxs_gl_widget_file[$widget];
+	$path = plugin_dir_path($file);
+	$filetobeincluded = $path . '/widgets/' . $widget . '/widget_' . $widget . '.php';
+	require_once($filetobeincluded);
+}
+
+/* *************** */
+
+function nxs_getobsoletewidgetids()
+{
+	$result = array();
+	
+	$result[] = "contactbox";
+	$result[] = "googlebusinessphoto";
+	$result[] = "squeezebox";
+
+	return $result;
+}
 
 ?>

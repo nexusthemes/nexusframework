@@ -47,7 +47,7 @@ function nxs_ext_inject_popup_theme_contextprocessor($popup_contextprocessor)
 }
 
 function nxs_requirepopup_contextprocessor($popup_contextprocessor)
-{
+{	
 	if ($popup_contextprocessor == "") { nxs_webmethod_return_nack("popup_contextprocessor not set"); }
 	
 	$result = array();
@@ -81,6 +81,36 @@ function nxs_requirepopup_contextprocessor($popup_contextprocessor)
 	
 	return $result;
 }
+
+/* ***************************** */
+
+// usage: nxs_lazyload_popup_plugin_contextprocessor(__FILE__, "nameofyourcontextprocessor");
+
+function nxs_lazyload_popup_plugin_contextprocessor($file, $popup_contextprocessor)
+{
+	// store file loc in lookup (mem)
+	global $nxs_gl_contextproc_file;
+	if ($nxs_gl_contextproc_file == null)
+	{
+		$nxs_gl_contextproc_file = array();
+	}
+	$nxs_gl_contextproc_file[$popup_contextprocessor] = $file;
+	
+	$action = "nxs_ext_inject_popup_contextprocessor_" . $popup_contextprocessor;
+	add_action($action, "nxs_inject_popup_theme_contextprocessor");
+}
+
+function nxs_inject_popup_theme_contextprocessor($popup_contextprocessor)
+{
+	global $nxs_gl_contextproc_file;
+	$file = $nxs_gl_contextproc_file[$popup_contextprocessor];
+	$path = plugin_dir_path($file);
+	$filetobeincluded = $path . '/contextprocessors/' . $popup_contextprocessor . '/' . $popup_contextprocessor . '_contextprocessor.php';
+	
+	require_once($filetobeincluded);
+}
+
+/* ***************************** */
 
 //
 // lazy load popup_contextprocessors

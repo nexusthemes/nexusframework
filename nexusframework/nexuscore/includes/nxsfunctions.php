@@ -873,15 +873,6 @@ function nxs_removequeryparameterfromurl($url, $parametertoremove)
 	return $result;
 }
 
-function nxs_getobsoletewidgetids()
-{
-	$result = array();
-	
-	$result[] = "contactbox";
-	
-	return $result;
-}
-
 function nxs_getwidgets($widgetargs)
 {
 	return nxs_getwidgets_v2($widgetargs, false);
@@ -5835,6 +5826,8 @@ function nxs_genericpopup_getpopuphtml($args)
 {
 	if (nxs_genericpopup_supportsoptions($args))
 	{
+		
+		
 		$result = nxs_genericpopup_getpopuphtml_basedonoptions($args);
 	}
 	else
@@ -8295,7 +8288,7 @@ function nxs_genericpopup_supportsoptions($args)
 	// delegate request to the contextprocessor
 	$functionnametoinvoke = 'nxs_popup_contextprocessor_' . $contextprocessor . '_supportsoptions';
 	if (function_exists($functionnametoinvoke))
-	{
+	{		
 		$result = call_user_func($functionnametoinvoke, $args);
 	}
 	else

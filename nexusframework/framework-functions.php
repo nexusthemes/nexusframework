@@ -109,6 +109,7 @@ define('NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT', true);	// default to true
 // 
 
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsfunctions.php');
+require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsstyles.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/shortcodes/shortcodes.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/postwizards/wizards.php');
@@ -982,6 +983,7 @@ add_action("admin_menu", "nxs_admin_menu");
 function nxs_admin_menu() 
 {
 	add_menu_page('Nexus Theme', 'Nexus Theme', 'manage_options', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
+	add_submenu_page("nxs_backend_overview", 'Overview', 'Overview', 'manage_options', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
 }  
 
 function nxs_lazyactivate_backend_overview() 
