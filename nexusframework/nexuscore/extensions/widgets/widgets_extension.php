@@ -227,14 +227,11 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "wordpresssidebar");
 		$result[] = array("widgetid" => "categories");
 		$result[] = array("widgetid" => "archive");
-		$result[] = array("widgetid" => "htmlcustom");
-		$result[] = array("widgetid" => "squeezebox");
-		$result[] = array("widgetid" => "googlebusinessphoto");		
+		$result[] = array("widgetid" => "htmlcustom");		
 		$result[] = array("widgetid" => "rssfeed");
 		
-		
-		
-		
+		// $result[] = array("widgetid" => "squeezebox");
+		// $result[] = array("widgetid" => "googlebusinessphoto");
 		// $result[] = array("widgetid" => "wpmenu");
 		// $result[] = array("widgetid" => "fbcomments");
 		// $result[] = array("widgetid" => "template2");
