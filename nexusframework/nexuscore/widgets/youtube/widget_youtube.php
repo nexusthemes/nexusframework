@@ -121,18 +121,18 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-youtube";
 	
-	?>
-	<div <?php echo $class; ?>>
-		<?php
-		if ($title != "") 
-		{ 
-			echo "<h2>" . $title . "</h2>";
-		}
-		?>
-		<iframe class='nxs-youtube-iframe' src="http://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" frameborder="0"></iframe>
-	</div>
+	echo '
+	<div '.$class.'>';
+
+ 		echo '   
+        <div class="video-container">
+        
+            <iframe class="nxs-youtube-iframe" src="http://www.youtube.com/embed/'.$videoid.'?wmode=transparent'.$transcriptparameter . $additionalparameters.'" frameborder="0"></iframe>
+        
+        </div>
+    </div>';
 	
-	<?php 
+
 	
 	if ($nxs_global_row_render_statebag == null)
 	{
@@ -193,18 +193,6 @@ function nxs_widgets_youtube_home_rendersheet($args)
     	          
 				<div class="nxs-popup-content-canvas-cropper">
 					<div class="nxs-popup-content-canvas">
-		    	          
-		        <div class="content2">
-		            <div class="box">
-		                <div class="box-title">
-		                  <h4><?php nxs_l18n_e("Title[nxs:heading]", "nxs_td"); ?></h4>
-		                 </div>
-		                <div class="box-content">
-		                	<input type='text' id='title' name='title' value='<?php echo $title; ?>' />
-		                </div>
-		            </div>
-		            <div class="nxs-clear"></div>
-		        </div> <!--END content-->
 		
 		        <div class="content2">
 		            <div class="box">
