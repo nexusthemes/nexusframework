@@ -873,20 +873,8 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 
 /* YOUTUBE 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-youtube h2												{ margin-bottom: 10px; }
-.nxs-one-fourth iframe.nxs-youtube-iframe					{ width: 195px; height: 117px; }
-.nxs-one-third iframe.nxs-youtube-iframe					{ width: 272px; height: 164px; }
-.nxs-one-half iframe.nxs-youtube-iframe						{ width: 426px; height: 256px; }
-.nxs-two-third iframe.nxs-youtube-iframe					{ width: 580px; height: 348px; }
-.nxs-one-whole iframe.nxs-youtube-iframe					{ width: 888px; height: 533px; }
-
-.nxs-main .nxs-one-fourth iframe.nxs-youtube-iframe			{ width: 118px; height: 70px; }
-.nxs-main .nxs-one-third iframe.nxs-youtube-iframe			{ width: 169px; height: 101px; }
-.nxs-main .nxs-one-half iframe.nxs-youtube-iframe			{ width: 272px; height: 163px; }
-.nxs-main .nxs-two-third iframe.nxs-youtube-iframe			{ width: 374px; height: 224px; }
-.nxs-main .nxs-one-whole iframe.nxs-youtube-iframe			{ width: 580px; height: 348px; }
-
-.nxs-sidebar1 .nxs-one-whole iframe.nxs-youtube-iframe		{ width: 272px; height: 164px; }
+.nxs-youtube .video-container								{ position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden; }
+.nxs-youtube .video-container iframe 						{ position: absolute; top: 0; left: 0; width: 100%;	height: 100%; }
 
 /* TEXT 
 ---------------------------------------------------------------------------------------------------- */
@@ -903,8 +891,7 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 .nxs-text ul 												{ list-style: square; }
 
 /* Callout banner */
-.callout-
- {
+.callout-banner {
 	padding: 5px;
 	text-align: center;
 	transform:			rotate(45deg);
