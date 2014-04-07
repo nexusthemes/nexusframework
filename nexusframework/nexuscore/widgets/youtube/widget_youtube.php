@@ -72,7 +72,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		if ($videoid == "")
 		{
 			
-			$videoid = "u9hyOQEwB4c";
+			$videoid = "B6cg4ZoUwVU";
 			$videourl = "http://www.youtube.com/watch?v=" . $videoid;
 		}
 		
@@ -202,7 +202,7 @@ function nxs_widgets_youtube_home_rendersheet($args)
 		                <div class="box-content">
 		                	<input type='text' id='videourl' name='videourl' class='nxs-float-left' placeholder='<?php nxs_l18n_e("For example http://www.youtube.com/watch?feature=player_embedded&v=Gvvw4lXcCXE[nxs:placeholder]", "nxs_td"); ?>' value='<?php echo $videourl; ?>' />
 		                	<div class="nxs-clear">&nbsp;</div>
-		                	<a href='#' onclick="jQuery('#videourl').val('<?php nxs_l18n_e("http://www.youtube.com/watch?feature=player_embedded&amp;v=u9hyOQEwB4c[nxs:sample,url]", "nxs_td"); ?>'); nxs_js_popup_sessiondata_make_dirty(); return false;" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Sample[nxs:ddl]", "nxs_td"); ?></a>
+		                	<a href='#' onclick="jQuery('#videourl').val('<?php nxs_l18n_e("http://www.youtube.com/watch?feature=player_embedded&amp;v=B6cg4ZoUwVU[nxs:sample,url]", "nxs_td"); ?>'); nxs_js_popup_sessiondata_make_dirty(); return false;" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Sample[nxs:ddl]", "nxs_td"); ?></a>
 		                	<a href='http://www.youtube.com' target="_blank" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Open youtube[nxs:button]", "nxs_td"); ?></a>
 		                </div>
 		            </div>
@@ -546,8 +546,8 @@ function nxs_widgets_youtube_home_rendersheet($args)
 function nxs_widgets_youtube_initplaceholderdata($args)
 {
 	$args["title"] = nxs_l18n__("title[sample]", "nxs_td");
-	$args["videoid"] = nxs_l18n__("videoid[youtube,sample,u9hyOQEwB4c]", "nxs_td");
-	$args["videourl"] = nxs_l18n__("videourl[youtube,sample,http://www.youtube.com/watch?v=u9hyOQEwB4c]", "nxs_td");
+	$args["videoid"] = nxs_l18n__("videoid[youtube,sample,B6cg4ZoUwVU]", "nxs_td");
+	$args["videourl"] = nxs_l18n__("videourl[youtube,sample,http://www.youtube.com/watch?v=B6cg4ZoUwVU]", "nxs_td");
 	$args["language"] = nxs_l18n__("language[sample,youtube]", "nxs_td");
 	
 	nxs_widgets_youtube_updateplaceholderdata($args);
