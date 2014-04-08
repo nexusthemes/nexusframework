@@ -37,7 +37,7 @@ function nxs_widgets_flickr_home_getoptions($args)
 			// TITLE
 			
 			array( 
-				"id" 				=> "wrapper_title_begin",
+				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 			),
@@ -101,7 +101,28 @@ function nxs_widgets_flickr_home_getoptions($args)
 			),
 			
 			array( 
-				"id" 				=> "wrapper_title_end",
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),
+			
+			// URL
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("URL", "nxs_td"),
+			),
+			
+			array(
+				"id" 				=> "flickr_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Flickr URL", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("The URL of Flickr. This is a required setting.", "nxs_td"),
+				"localizablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
 		)
@@ -259,9 +280,7 @@ function nxs_widgets_flickr_render_webpart_render_htmlvisualization($args)
 		
 		echo $htmlfiller; 
 		
-		echo '<iframe src="https://www.flickr.com/photos/21173664@N00/9865277543/in/photolist-g2L8j8-g2Kzo6-g2KBLb-g2KAjz-g2Ky6g-g2KAHu-g2L63V-g2KEfm-g2KFt3-g2KDCQ-g2L8d6-g2KD43-g2Kzcd-g2La6K-g2KyuS-g2KBQb-g2Ky9b-g2L5re-g2KDim-g2KyPR-g2L8mc-g2KFxw-g2KCSG-g2KyEH-g2KDwC-g2KBYf-g2KAfB-g2KyAK-g2KCXb-g2Kz6c-g2KzaR-g2KBuR-g2KBmJ-g2KBwq-g2KByh-g2L6uM-g2KDdb-g2KB5H-g2KA6Y-g2KBTC-g2KCPL-g2KBrK-g2KC8q-g2KBVG-g2KDAf-g2KDU1-g2KBs5-g2L6sc-g2KCL9-g2KEhA-g2KB5G/player/" width="500" height="333" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>';
-
-
+		echo '<iframe src="'.$flickr_url.'/player/" width="670" height="446" frameborder="0" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" oallowfullscreen="" msallowfullscreen=""></iframe>';
 	}
 	
 	/* ------------------------------------------------------------------------------------------------- */
