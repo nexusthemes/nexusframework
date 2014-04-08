@@ -707,8 +707,6 @@ ul.nxs-menu li ul {
 	-o-transition: 		all .25s ease .1s;
 	transition: 		all .25s ease .1s;
 }
-
-
 ul.nxs-menu li ul li { 
 	height: 0;
 	padding: 0;
@@ -722,16 +720,8 @@ ul.nxs-menu li ul li {
 
 /* but no transitions for ipad menu's */
 .nxs-m-touch ul.nxs-menu li ul li,
-.nxs-m-touch ul.nxs-menu li ul 
-{
-	-webkit-transition: none;
-	-moz-transition: none;
-	-o-transition: none;
-	transition: none;
-}
+.nxs-m-touch ul.nxs-menu li ul 								{ -webkit-transition: none; -moz-transition: none; -o-transition: none; transition: none; }
 
-ul.nxs-menu li ul li ul li ul 								{ opacity: 0 !important; }
-ul.nxs-menu li ul li ul li:hover ul 						{ opacity: 1 !important; }
 .nxs-m-csstransitions ul.nxs-menu li ul li ul 				{ opacity: 0; }
 .nxs-m-csstransitions ul.nxs-menu li ul li:hover ul 		{ opacity: 1; }
 
@@ -754,32 +744,21 @@ div.nxs-menu-minified .nxs-expand							{ display: block !important; }
 div.nxs-menu-minified .nxs-expand ul						{ display: block; }
 div.nxs-menu-minified .nxs-expand ul li						{ width: 100%; }
 
-/* Responsive navigation should always be on for touch devices
-.nxs-m-touch ul.nxs-menu									{ display: none; }
-.nxs-m-touch div.nxs-menu-minified							{ display: block; }
-.nxs-m-touch .nxs-menu-aligner.nxs-float-left,
-.nxs-m-touch .nxs-menu-aligner.nxs-float-right				{ float: none; } */
-
 /* Enabling drop down menu's for touch devices */
-ul.nxs-menu li.nxs-touched > ul								{ z-index: 1000 !important; }
-ul.nxs-menu li.nxs-touched > ul > ul						{ z-index: 1001 !important; }
-ul.nxs-menu li.nxs-touched > ul > ul > ul					{ z-index: 1002 !important; }
+ul.nxs-menu li.nxs-touched > ul								{ z-index: 1000; }
+ul.nxs-menu li.nxs-touched > ul > ul						{ z-index: 1001; }
+ul.nxs-menu li.nxs-touched > ul > ul > ul					{ z-index: 1002; }
 
-ul.nxs-menu li ul								{ opacity: 0 !important; visibility: hidden !important; }
-ul.nxs-menu li.nxs-touched ul								{ opacity: 1 !important; visibility: visible !important; }
-ul.nxs-menu li ul li ul li.nxs-touched ul 					{ opacity: 1 !important; }
+ul.nxs-menu li ul											{ opacity: 0; visibility: hidden; }
+ul.nxs-menu li.nxs-touched > ul								{ opacity: 1; visibility: visible; }
+ul.nxs-menu li ul li ul li.nxs-touched > ul					{ opacity: 1; }
 
-ul.nxs-menu li.nxs-touched ul li.height13					{ height: 65px !important; }
-ul.nxs-menu li.nxs-touched ul li.height12					{ height: 60px !important; }
-ul.nxs-menu li.nxs-touched ul li.height11					{ height: 55px !important; }
-ul.nxs-menu li.nxs-touched ul li.height10					{ height: 50px !important; }
-ul.nxs-menu li.nxs-touched ul li.height09					{ height: 45px !important; }
-ul.nxs-menu li.nxs-touched ul li.height08					{ height: 40px !important; }
-
-
-
-
-
+ul.nxs-menu li.nxs-touched ul li.height13					{ height: 65px; }
+ul.nxs-menu li.nxs-touched ul li.height12					{ height: 60px; }
+ul.nxs-menu li.nxs-touched ul li.height11					{ height: 55px; }
+ul.nxs-menu li.nxs-touched ul li.height10					{ height: 50px; }
+ul.nxs-menu li.nxs-touched ul li.height09					{ height: 45px; }
+ul.nxs-menu li.nxs-touched ul li.height08					{ height: 40px; }
 
 /* WORDPRESS NATIVE MENU 
 ---------------------------------------------------------------------------------------------------- */
