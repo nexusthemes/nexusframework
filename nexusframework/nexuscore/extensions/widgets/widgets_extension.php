@@ -222,6 +222,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "eventsbox");
 		$result[] = array("widgetid" => "carousel");
 		$result[] = array("widgetid" => "banner");
+		$result[] = array("widgetid" => "flickr");
 		
 		// Never
 		$result[] = array("widgetid" => "wordpresssidebar");
@@ -494,6 +495,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("csv");
 	nxs_ext_lazyload_widget("wpmenu");
 	nxs_ext_lazyload_widget("target");
+	nxs_ext_lazyload_widget("flickr");
 	nxs_ext_lazyload_widget("carousel");
 	nxs_ext_lazyload_widget("carouselitem");
 	nxs_ext_lazyload_widget("banner");
