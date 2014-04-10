@@ -519,6 +519,11 @@ function nxs_render_postfooterlink()
 	$catitem_themeid = $sitemeta["catitem_themeid"];
 	$lookup = array
 	(
+		"pestcontrol;" => array
+		(
+			"href"=>"/wordpress-themes/pest-control/pest-control-wordpress-theme/",
+			"title"=>"Pest control WordPress theme",
+		),
 		"hvac;" => array
 		(
 			"href"=>"/wordpress-themes/hvac/hvac-wordpress-theme/",
