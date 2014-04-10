@@ -2317,7 +2317,7 @@ function nxs_getsitemeta_internal($nackwhenerror)
 		if (count($postids) == 0)
 		{
 			if ($nackwhenerror)
-			{				
+			{
 				ob_clean();
  						
  				$backendurl = wp_login_url();

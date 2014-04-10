@@ -1,12 +1,7 @@
 <?php
-	$sitemeta = nxs_getsitemeta_internal(false);
-	if (count($sitemeta) == 0)
+	if (nxs_hassitemeta())
 	{
-		echo "No (active) site settings found. Please pick one of the following options: a) Switch the theme to re-import data, b) import a file manually containing site settings";
-	}
-	else
-	{
-				function nxs_backend_addmetaboxesgeneric($allboxes, $where)
+		function nxs_backend_addmetaboxesgeneric($allboxes, $where)
 		{
 			global $nxs_global_overviewservicevalue;
 			
@@ -68,5 +63,9 @@
 			</div>
 		</div>	
 		<?php
+	}
+	else
+	{
+		// do nothing
 	}
 ?>

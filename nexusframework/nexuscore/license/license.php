@@ -33,6 +33,15 @@ function nxs_license_checkupdate($value)
 	
 	if ($shouldcheck)
 	{
+		if (!nxs_hassitemeta())
+		{
+			// if the site meta is not (yet) available, don't perform the license check!
+			$shouldcheck = false;
+		}
+	}
+	
+	if ($shouldcheck)
+	{
 		
 		// TODO: get from options
 		$licensekey = "qwfjgq23ui4ytg";
@@ -248,7 +257,5 @@ function nxs_licensekey_callback()
   $licensekey = esc_attr(get_option('nxs_licensekey'));
 	echo "<input type='text' name='nxs_licensekey' value='{$licensekey}' />";
 }
-
-
 
 ?>
