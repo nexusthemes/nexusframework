@@ -11,11 +11,15 @@ function nxs_widgets_csv_gettitle() {
 	return __($widget_name);
 }
 
-// 
+// Unistyling
 function nxs_widgets_csv_getunifiedstylinggroup() {
 	return "csvwidget";
 }
 
+// Unicontent
+function nxs_widgets_csv_getunifiedcontentgroup() {
+	return "csvwidget";
+}
 
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
@@ -27,13 +31,11 @@ function nxs_widgets_csv_home_getoptions()
 {
 	$options = array
 	(
-		"sheettitle" => "CSV table",
-		"sheeticonid" => nxs_widgets_csv_geticonid(),
-		"sheethelp" => nxs_l18n__("http://nexusthemes.com/csv-widget/"),
-		"unifiedstyling" => array
-		(
-			"group" => nxs_widgets_csv_getunifiedstylinggroup(),
-		),
+		"sheettitle" 		=> "CSV table",
+		"sheeticonid" 		=> nxs_widgets_csv_geticonid(),
+		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/csv-widget/"),
+		"unifiedstyling" 	=> array ("group" => nxs_widgets_csv_getunifiedstylinggroup(),),
+		"unifiedcontent" 	=> array ("group" => nxs_widgets_csv_getunifiedcontentgroup(),),
 		"fields" => array
 		(
 			// TITLE
@@ -45,12 +47,12 @@ function nxs_widgets_csv_home_getoptions()
 				"initial_toggle_state"	=> "closed",
 			),
 			
-			array
-			( 			
+			array( 			
 				"id" 				=> "title",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"tooltip"			=> nxs_l18n__("If you want to give the entire widget a title, you can use this option.", "nxs_td"),
+				"unicontentablefield" => true,
 			),	
 			array(
 				"id" 				=> "title_heading",
@@ -59,7 +61,6 @@ function nxs_widgets_csv_home_getoptions()
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),
-						
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
@@ -99,6 +100,7 @@ function nxs_widgets_csv_home_getoptions()
 				"id" 				=> "icon",
 				"type" 				=> "icon",
 				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id"     			=> "icon_scale",
@@ -124,6 +126,7 @@ function nxs_widgets_csv_home_getoptions()
 				"id" 				=> "csv_data",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("CSV data", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array( 
 				"id" 				=> "responsive",
@@ -151,6 +154,7 @@ function nxs_widgets_csv_home_getoptions()
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
 				"placeholder"		=> "Read more",
+				"unicontentablefield" => true,
 			),	
 			
 			array(
@@ -178,6 +182,7 @@ function nxs_widgets_csv_home_getoptions()
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			
 			array( 
@@ -272,12 +277,20 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 	// The $postid and $placeholderid are used when building the HTML later on
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
 	
+	// Blend unistyling properties
 	$unistyle = $temp_array["unistyle"];
-	if (isset($unistyle) && $unistyle != "")
-	{
+	if (isset($unistyle) && $unistyle != "") {
 		// blend unistyle properties
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_csv_getunifiedstylinggroup(), $unistyle);
 		$temp_array = array_merge($temp_array, $unistyleproperties);	
+	}
+	
+	// Blend unicontent properties
+	$unicontent = $temp_array["unicontent"];
+	if (isset($unicontent) && $unicontent != "") {
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_text_getunifiedcontentgroup(), $unicontent);
+		$temp_array = array_merge($temp_array, $unicontentproperties);
 	}
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
@@ -518,6 +531,10 @@ function nxs_widgets_csv_initplaceholderdata($args)
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_csv_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
+	
+	// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_csv_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
