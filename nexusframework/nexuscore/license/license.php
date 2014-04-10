@@ -12,7 +12,7 @@ function nxs_license_checkupdate($value)
 {
 	$shouldcheck = false;
 
-	if ($_REQUEST["themeupdatecheck"] == "true") 
+	if ($_REQUEST["nxs_force_themeupdatecheck"] == "true") 
 	{
 		nxs_license_clearupdatetransient();
 	}
@@ -39,6 +39,7 @@ function nxs_license_checkupdate($value)
 		
 		$sitemeta = nxs_getsitemeta();
 		$catitem_themeid = $sitemeta["catitem_themeid"];
+		$site = nxs_geturl_home();
 	
 		$serviceparams = array
 		(
@@ -89,60 +90,129 @@ function nxs_license_checkupdate($value)
 }
 add_filter('site_transient_update_themes', 'nxs_license_checkupdate');
 
-function nxs_license_triggerupdate()
+function nxs_license_periodictriggerupdate()
 {
+	if ($_REQUEST["nxs_force_themeupdatecheck"] == "true")
+	{
+		// wipe
+		set_transient("nxs_themeupdater_freq", "");
+	}
+	
+	$nxs_themeupdater_freq = get_transient("nxs_themeupdater_freq");
+	if ($nxs_themeupdater_freq == false || $nxs_themeupdater_freq == "")
+	{
+		nxs_license_actualtriggerupdate();
+		
+		$hours = 4; // poll max 
+		set_transient("nxs_themeupdater_freq", "cached", 60 * 60 * $hours);
+	}
+}
+add_action('after_setup_theme', 'nxs_license_periodictriggerupdate');
+
+function nxs_license_actualtriggerupdate()
+{
+	if (defined('NXS_FRAMEWORKSHARED'))
+	{
+		if (NXS_FRAMEWORKSHARED == "true")
+		{
+			// ignoring update; shared frameworks cannot be updated by the theme updater
+			return;
+		}
+	}
+	
 	// deze regel is nodig om de logica te triggeren!
+	set_site_transient('nxs_themeupdate', "");
 	$x = get_site_transient("update_themes");
+	set_site_transient('update_themes', $x);
 	//var_dump($x);
 }
-nxs_license_triggerupdate();
 
-add_action('admin_menu', 'nxs_license_theme_license_page', 11);
-function nxs_license_theme_license_page()
+add_action('admin_menu', 'nxs_license_addadminpages', 11);
+function nxs_license_addadminpages()
 {
-	add_submenu_page("nxs_backend_overview", 'License', 'License', 'manage_options', 'license_admin', 'nxs_license_theme_license_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'License', 'License', 'manage_options', 'nxs_admin_license', 'nxs_license_theme_license_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'Update', 'Update', 'manage_options', 'nxs_admin_update', 'nxs_license_update_page_content', '', 81 );
 }
 
 function plugin_admin_init()
 {
 	//All callbacks must be valid names of functions, even if provided functions are blank
-	//register_setting('option_group', 'option_name', 'sanitize_callback' );
-	add_settings_section('nxs_section_license', 'License key title', 'nxs_section_license_callback', 'nxs_section_page_type');
-	add_settings_field('nxs_licensekey', 'Serial number', 'nxs_licensekey_callback', 'nxs_section_page_type', 'nxs_section_license');
-	add_settings_section('nxs_section_update', 'Updates', 'nxs_section_update_callback', 'nxs_section_page_type');
+	add_settings_section('nxs_section_license', 'License key title', 'nxs_section_license_callback', 'nxs_section_license_type');
+	add_settings_field('nxs_licensekey', 'Serial number', 'nxs_licensekey_callback', 'nxs_section_license_type', 'nxs_section_license');
+	add_settings_section('nxs_section_update', 'Updates', 'nxs_section_update_callback', 'nxs_section_update_type');
 }
 add_action( 'admin_init', 'plugin_admin_init' );
 
-function sanitize_callback()
-{
-	echo "sanitize_callback :)";
-	die();
-}
-
 function nxs_section_license_callback()
 {
-	//echo "nxs_section_license_callback :)";
 }
 
 function nxs_section_update_callback()
-{
+{	
 	$theme = wp_get_theme();
 	echo "Theme name: " . $theme -> name . "<br />";
 	echo "Current version: " . $theme -> version . "<br />";
 
-	$themeupdate = get_site_transient('nxs_themeupdate');
-	if ($themeupdate["new_version"] != "")
+	if (defined('NXS_FRAMEWORKSHARED'))
 	{
-		// var_dump($theme);
-		
-		
-		echo "A new version is available (version: " . $themeupdate["new_version"] . ")";
-		// var_dump($themeupdate);
+		if (NXS_FRAMEWORKSHARED == "true")
+		{
+			echo "Automatic updates are not available (the framework is shared)";
+		}
 	}
 	else
 	{
-		echo "Your theme is up to date :)";
+		// call actual trigger
+		nxs_license_actualtriggerupdate();
+
+		if (is_multisite())
+		{
+			$updateurl = network_admin_url('themes.php');
+		}
+		else
+		{
+			$updateurl = admin_url('themes.php');
+		}
+	
+		$themeupdate = get_site_transient('nxs_themeupdate');
+		//var_dump($themeupdate);
+		//die();
+		
+		if ($themeupdate["new_version"] != "")
+		{
+			echo "A new version is available (version: " . $themeupdate["new_version"] . ")";
+			?>
+			<p>
+				<a class="button-primary" href="<?php echo $updateurl; ?>">Go to Themes</a>
+	  	</p>
+			<?php
+			//echo $themeupdate["package"];
+		}
+		else
+		{
+			echo "Your theme is up to date :)";
+		}
 	}
+}
+
+function nxs_license_update_page_content() 
+{
+	?>
+  <div class="wrap">
+    <h2>Update</h2>
+    <form method="post">
+      <?php 
+      	settings_fields('option_group'); 
+      	do_settings_sections('nxs_section_update_type');
+      ?>
+      <!--
+     	<p class='submit'>
+       	<input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Save Changes") ?>' />
+     	</p>
+     	-->     	
+		</form>
+	</div>
+	<?php
 }
 
 function nxs_license_theme_license_page_content() 
@@ -153,11 +223,12 @@ function nxs_license_theme_license_page_content()
     <form method="post">
       <?php 
       	settings_fields('option_group'); 
-      	do_settings_sections('nxs_section_page_type');
+      	do_settings_sections('nxs_section_license_type');
       ?>
      <p class='submit'>
        <input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Save Changes") ?>' />
      </p>
+     	
 		</form>
 	</div>
 	<?php
@@ -177,5 +248,7 @@ function nxs_licensekey_callback()
   $licensekey = esc_attr(get_option('nxs_licensekey'));
 	echo "<input type='text' name='nxs_licensekey' value='{$licensekey}' />";
 }
+
+
 
 ?>

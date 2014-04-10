@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Nexus Theme\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-22 17:44+0100\n"
-"PO-Revision-Date: 2014-04-10 13:10+0100\n"
+"PO-Revision-Date: 2014-04-10 13:18+0100\n"
 "Last-Translator: Gert-Jan Bark <barkgj@nexusthemes.com>\n"
 "Language-Team: Nexus Themes <info@nexusthemes.com>\n"
 "MIME-Version: 1.0\n"
@@ -882,51 +882,51 @@ msgstr " "
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:121
 msgid "month_jan"
-msgstr "Jan"
+msgstr "Janvier"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:122
 msgid "month_feb"
-msgstr "Feb"
+msgstr "Février"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:123
 msgid "month_mrt"
-msgstr "Mar"
+msgstr "Mars"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:124
 msgid "month_apr"
-msgstr "Apr"
+msgstr "Avril"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:125
 msgid "month_may"
-msgstr "May"
+msgstr "Mai"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:126
 msgid "month_jun"
-msgstr "Jun"
+msgstr "Juin"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:127
 msgid "month_jul"
-msgstr "Jul"
+msgstr "Juillet"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:128
 msgid "month_aug"
-msgstr "Aug"
+msgstr "Août"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:129
 msgid "month_sep"
-msgstr "Sep"
+msgstr "Septembre"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:130
 msgid "month_oct"
-msgstr "Oct"
+msgstr "Octobre"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:131
 msgid "month_nov"
-msgstr "Nov"
+msgstr "Novembre"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:132
 msgid "month_dec"
-msgstr "Dec"
+msgstr "Décembre"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsfunctions.php:135
 msgid "month_unknown"
@@ -4146,7 +4146,7 @@ msgstr "Name"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/comments/widget_comments.php:440
 msgid "Email address[nxs:tooltip]"
-msgstr "Email address"
+msgstr "Courriel"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/comments/widget_comments.php:441
 msgid "We wont publish your email address[nxs:placeholder]"
@@ -4154,19 +4154,19 @@ msgstr "We wont publish your email address"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/comments/widget_comments.php:445
 msgid "Website[nxs:tooltip]"
-msgstr "Website"
+msgstr " Site Web"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/comments/widget_comments.php:450
 msgid "Comment[nxs:tooltip]"
-msgstr "Comment"
+msgstr "Commentaire"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/comments/widget_comments.php:455
 msgid "Send[nxs:tooltip]"
-msgstr "Send"
+msgstr "Envoyer"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/comments/widget_comments.php:456
 msgid "Cancel[nxs:tooltip]"
-msgstr "Cancel"
+msgstr "Annuler"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/comments/widget_comments.php:519
 msgid "Are you sure you want to remove this comment?[nxs:tooltip]"
