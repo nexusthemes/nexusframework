@@ -522,7 +522,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
                     
                     <div class="content2">
 						<div class="box">
-							<div class="box-title"><h4><?php nxs_l18n_e("Smilies", "nxs_td"); ?></h4></div>
+							<div class="box-title"><h4><?php nxs_l18n_e("Animals", "nxs_td"); ?></h4></div>
 							<div class="box-content">
 								<ul>
 									<?php
