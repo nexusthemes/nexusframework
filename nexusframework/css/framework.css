@@ -850,10 +850,10 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 .widescreen-row .nxs-row1 .nxs-one-whole 					{ width: 100% !important; }
 .widescreen-row .nxs-slider-controller.fullwidth			{ width: 100%; }
 
-/* YOUTUBE 
+/* YOUTUBE & VIMEO 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-youtube .video-container								{ position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden; }
-.nxs-youtube .video-container iframe 						{ position: absolute; top: 0; left: 0; width: 100%;	height: 100%; }
+.video-container											{ position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden; }
+.video-container iframe 									{ position: absolute; top: 0; left: 0; width: 100%;	height: 100%; }
 
 /* TEXT 
 ---------------------------------------------------------------------------------------------------- */
