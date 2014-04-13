@@ -224,12 +224,12 @@ function nxs_section_update_callback()
 			<?php
 			//echo $themeupdate["package"];
 
-			set_site_transient('nxs_themeupdate', "");
-			$x = get_site_transient("update_themes");
-			set_site_transient('update_themes', $x);
-			var_dump($x);
-			echo "AAAAA";
-			die();			
+			//set_site_transient('nxs_themeupdate', "");
+			//$x = get_site_transient("update_themes");
+			//set_site_transient('update_themes', $x);
+			//var_dump($x);
+			//echo "AAAAA";
+			//die();			
 		}
 		else
 		{
