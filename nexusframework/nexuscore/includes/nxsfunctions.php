@@ -89,10 +89,13 @@ function nxs_after_theme_setup()
 		nxs_reinitializetheme();
 	}
 	
-	$sitemeta	= nxs_getsitemeta();
-	if ($sitemeta["pagecaching"] != "")
+	if (nxs_hassitemeta())
 	{
-		nxs_setupcache();
+		$sitemeta	= nxs_getsitemeta();
+		if ($sitemeta["pagecaching_enabled"] != "")
+		{
+			nxs_setupcache();
+		}
 	}
 }
 
@@ -113,6 +116,29 @@ function nxs_shouldusecache_stage1()
 		}
 	}
 	
+	$url = nxs_geturlcurrentpage();
+	if (nxs_stringcontains($url, "cart"))
+	{
+		$result = false;
+	}
+	else if (nxs_stringcontains($url, "checkout"))
+	{
+		$result = false;
+	}
+	else if (nxs_stringcontains($url, "nonce"))
+	{
+		// never cache (wp)nonces 
+		$result = false;
+	}
+	else if (nxs_stringcontains($url, "remove_item"))
+	{
+		$result = false;
+	}
+	else if (nxs_stringcontains($url, "add-to-cart"))
+	{
+		$result = false;
+	}
+	
 	if ($result)
 	{
 		if(session_id() == '') 
@@ -122,6 +148,21 @@ function nxs_shouldusecache_stage1()
 		else
 		{
 			// if session has started, dont use the cache
+			$result = false;
+		}
+	}
+	
+	// only GET requests can be cached
+	if ($result)
+	{
+		$request = $_SERVER['REQUEST_METHOD'];
+		if ($request == "GET")
+		{
+			// ok
+		}
+		else
+		{
+			// post (and other) requests are never cached
 			$result = false;
 		}
 	}
@@ -139,8 +180,9 @@ function nxs_shouldusecache_stage1()
 
 function nxs_cache_getmd5hash()
 {
-	$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
-	$result = md5($url);
+	$data = "";
+	$data .= nxs_geturlcurrentpage();
+	$result = md5($data);
 	return $result;
 }
 
@@ -167,7 +209,65 @@ function nxs_ensurenocacheoutput($buffer)
 
 function nxs_storecacheoutput($buffer)
 {
-	if(session_id() == '') 
+	$shouldstore = true;
+	
+	if(session_id() != '') 
+	{
+		// dont store; the session is set
+		$shouldstore = false;
+	}
+	
+	if ($shouldstore)
+	{
+		if (is_404())
+		{
+			// dont store 404's
+			$shouldstore = false;
+		}
+	}
+	
+	$lowercasecontenttype = "";
+	if ($shouldstore)
+	{
+		$headerssent = headers_list();
+		foreach ($headerssent as $currentheadersent)
+		{
+			$lowercase = strtolower($currentheadersent);
+			if (nxs_stringstartswith($lowercase, "content-type:"))
+			{
+				$pieces = explode(":", $lowercase, 2);
+				if (count($pieces) == 2)
+				{
+					$lowercasecontenttype = $pieces[1];
+				}
+				else
+				{
+					//
+				}
+			}
+			else
+			{
+				
+			}
+		}
+		
+		if (nxs_stringstartswith($lowercasecontenttype, "text/html"))
+		{
+			// okidoki, cache!
+		}
+		else
+		{
+			// unknown content, likely we dont want to store this
+			// return "$contenttype; fiets:" . $a . "]";
+			$shouldstore = false;
+		}
+	}
+	
+	//
+	//
+	//
+	
+	if($shouldstore) 
 	{
 		// session has not yet started
 		
@@ -181,14 +281,9 @@ function nxs_storecacheoutput($buffer)
 		}
 
 		$cached = $buffer;
-		$cached = str_replace("</body>", "</body><!-- CACHED :) -->", $cached);			
+		$cached = str_replace("</body>", "</body><!-- CACHED -->", $cached);			
 		
 		file_put_contents($file, $cached, FILE_APPEND | LOCK_EX);
-	} 
-	else
-	{
-		// session was started; dont save as this page likely 
-		// has some user context specific content, ignore!
 	}
 	
 	return $buffer;
@@ -210,7 +305,18 @@ function nxs_setupcache()
 			$diff = $now - $cachetime;
 			if ($diff > 0)
 			{
-				if ($diff < 60 * 60 * 24)
+				$sitemeta	= nxs_getsitemeta();
+				$pagecaching_expirationinsecs = $sitemeta["pagecaching_expirationinsecs"];
+				if ($pagecaching_expirationinsecs == "")
+				{
+					$pagecaching_expirationinsecs = "86400";
+				}
+				
+				if ($pagecaching_expirationinsecs == "never")
+				{
+					$nxs_shouldusecache_stage2 = true;
+				}
+				else if ($diff < $pagecaching_expirationinsecs)
 				{
 					$nxs_shouldusecache_stage2 = true;	
 				}

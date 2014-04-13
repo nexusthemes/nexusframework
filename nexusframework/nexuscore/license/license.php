@@ -10,6 +10,11 @@ add_action('load-themes.php', 'nxs_license_clearupdatetransient');
 
 function nxs_license_checkupdate($value)
 {
+	if (!nxs_hassitemeta())
+	{
+		return $value;
+	}
+	
 	$shouldcheck = false;
 
 	if ($_REQUEST["nxs_force_themeupdatecheck"] == "true") 
@@ -47,7 +52,16 @@ function nxs_license_checkupdate($value)
 		$licensekey = "qwfjgq23ui4ytg";
 		
 		$sitemeta = nxs_getsitemeta();
-		$catitem_themeid = $sitemeta["catitem_themeid"];
+		$theme = $sitemeta["catitem_themeid"];
+		
+		if ($theme == "")
+		{
+			echo "theme not set?";
+			return $value;
+			//var_dump($sitemeta);
+			//die();
+		}
+		
 		$site = nxs_geturl_home();
 	
 		$serviceparams = array
@@ -57,7 +71,7 @@ function nxs_license_checkupdate($value)
 			'body' => array
 			(
 				"nxs_license_action" => "get_version",
-				"theme" => $catitem_themeid,
+				"theme" => $theme,
 				"licensekey" => $licensekey,
 				"site" => $site
 			)
@@ -84,6 +98,12 @@ function nxs_license_checkupdate($value)
 	 		set_site_transient("nxs_themeupdate", $update_data, $durationinsecs);
 	 		
 			$theme = $update_data["theme"];
+			if ($theme == null)
+			{
+				echo "theme not set!	";
+				var_dump($update_data);
+				die();
+			}
 			$value -> response[$theme] = $update_data;
 			set_site_transient('update_themes', $value);
 		}
@@ -162,12 +182,19 @@ function nxs_section_update_callback()
 	echo "Theme name: " . $theme -> name . "<br />";
 	echo "Current version: " . $theme -> version . "<br />";
 
+	$isframeworkshared = false;
+	
 	if (defined('NXS_FRAMEWORKSHARED'))
 	{
 		if (NXS_FRAMEWORKSHARED == "true")
 		{
-			echo "Automatic updates are not available (the framework is shared)";
+			$isframeworkshared = true;
 		}
+	}
+	
+	if ($isframeworkshared)
+	{
+		echo "Automatic updates are not available (the framework is shared)";
 	}
 	else
 	{
@@ -196,6 +223,13 @@ function nxs_section_update_callback()
 	  	</p>
 			<?php
 			//echo $themeupdate["package"];
+
+			set_site_transient('nxs_themeupdate', "");
+			$x = get_site_transient("update_themes");
+			set_site_transient('update_themes', $x);
+			var_dump($x);
+			echo "AAAAA";
+			die();			
 		}
 		else
 		{

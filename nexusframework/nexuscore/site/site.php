@@ -2399,7 +2399,20 @@ function nxs_site_dashboardhome_rendersheet($args)
             </div>
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
-	        					
+
+					<!-- cache management -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Cache management (performance/speed)", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('cachemanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+
 					<!-- uni styling management -->
 	        <div class="content2">
             <div class="box">
@@ -2866,6 +2879,41 @@ function nxs_site_marketingmanagementhome_getoptions($args)
 				"id" 			=> "pagecaching",
 				"label"			=> nxs_l18n__("Page caching", "nxs_td"),
 				"type" 			=> "checkbox",
+			),
+		)
+	);
+	return $options;
+}
+
+/* MARKETING MANAGEMENT
+---------------------------------------------------------------------------------------------------- */
+function nxs_site_cachemanagementhome_getoptions($args)
+{	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Cache management", "nxs_td"),
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "pagecaching_enabled",
+				"label"			=> nxs_l18n__("Page caching", "nxs_td"),
+				"type" 			=> "checkbox",
+			),
+			array
+			(
+				"id" 			=> "pagecaching_expirationinsecs",
+				"label"			=> nxs_l18n__("Expiration period", "nxs_td"),
+				"type" 			=> "select",
+				"dropdown" 		=> array
+				(
+					"@@@nxsempty@@@"	=>nxs_l18n__("Default", "nxs_td"), 
+					"3600"	=>nxs_l18n__("1 hour", "nxs_td"), 
+					"14400"	=>nxs_l18n__("4 hours", "nxs_td"), 
+					"86400"	=>nxs_l18n__("1 day", "nxs_td"), 
+					"604800"	=>nxs_l18n__("1 week", "nxs_td"), 
+					"never"	=>nxs_l18n__("Never", "nxs_td"), 
+				)
 			),
 		)
 	);
