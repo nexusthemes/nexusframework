@@ -23,7 +23,7 @@ function nxs_widgets_vimeo_home_getoptions($args)
 		"sheethelp" => nxs_l18n__("http://nexusthemes.com/vimeo-widget/"),
 		"fields" => array
 		(
-			// TITLE
+			/* TITLE
 			
 			array( 
 				"id" 				=> "wrapper_title_begin",
@@ -71,6 +71,8 @@ function nxs_widgets_vimeo_home_getoptions($args)
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 			),
+			*/
+			
 			
 			// CONFIGURATION
 			
@@ -165,19 +167,17 @@ function nxs_widgets_vimeo_render_webpart_render_htmlvisualization($args)
 	} 
 	else 
 	{
-		echo '<div ' .$class . '>';
-			echo $htmltitle;
-			if ($htmltitle != "") 
-			{ 
-				echo $htmlfiller; 
-			}
-
-			?>			
-			<iframe class='nxs-vimeo-iframe nxs-youtube-iframe' src="http://player.vimeo.com/video/<?php echo $videoid; ?>" frameborder="0"></iframe>
-			<?php
-
+		echo '
+		<div '.$class.'>';
+	
+			echo '   
+			<div class="video-container">
 			
-		echo '</div>';				
+				<iframe class="nxs-vimeo-iframe nxs-youtube-iframe" src="http://player.vimeo.com/video/'.$videoid.'" frameborder="0"></iframe>
+			
+			</div>
+		</div>';
+						
 	}
 	
 	$html = ob_get_contents();
