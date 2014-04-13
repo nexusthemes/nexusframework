@@ -88,6 +88,170 @@ function nxs_after_theme_setup()
 	{
 		nxs_reinitializetheme();
 	}
+	
+	$sitemeta	= nxs_getsitemeta();
+	if ($sitemeta["pagecaching"] != "")
+	{
+		nxs_setupcache();
+	}
+}
+
+function nxs_shouldusecache_stage1()
+{
+	$result = false;
+	
+	if (!is_user_logged_in())
+	{
+		$result = true;
+	}
+	
+	if ($result)
+	{
+		if (nxs_isnxswebservicerequest())
+		{
+			$result = false;	
+		}
+	}
+	
+	if ($result)
+	{
+		if(session_id() == '') 
+		{
+			// session has not yet started
+		}
+		else
+		{
+			// if session has started, dont use the cache
+			$result = false;
+		}
+	}
+	
+	// allow plugins/extensions to intercept this
+	$result = apply_filters("nxs_shouldusecache_stage1", $result);
+	
+	if ($result)
+	{
+		//echo "will cache";
+	}
+	
+	return $result;	
+}
+
+function nxs_cache_getmd5hash()
+{
+	$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+	$result = md5($url);
+	return $result;
+}
+
+function nxs_cache_getcachedfilename()
+{
+	$md5hash = nxs_cache_getmd5hash();
+	$uploaddir = wp_upload_dir();
+	$basedir = $uploaddir["basedir"];
+	$cachedfile = $basedir . "/" . "nxscache" . "/" . $md5hash . ".cache";
+	return $cachedfile;
+}
+
+function nxs_ensurenocacheoutput($buffer)
+{
+	$file = nxs_cache_getcachedfilename();
+	if (is_file($file))
+	{
+		// remove file
+		unlink($file);
+	}
+	// return buffer as-is
+	return $buffer;
+}
+
+function nxs_storecacheoutput($buffer)
+{
+	if(session_id() == '') 
+	{
+		// session has not yet started
+		
+		$file = nxs_cache_getcachedfilename();
+		$dir = dirname($file);
+		
+		if(!is_dir($dir)) 
+		{
+			// if the folder doesn't yet exist, create it!
+			mkdir($dir, 0777, true);
+		}
+
+		$cached = $buffer;
+		$cached = str_replace("</body>", "</body><!-- CACHED :) -->", $cached);			
+		
+		file_put_contents($file, $cached, FILE_APPEND | LOCK_EX);
+	} 
+	else
+	{
+		// session was started; dont save as this page likely 
+		// has some user context specific content, ignore!
+	}
+	
+	return $buffer;
+}
+
+function nxs_setupcache()
+{
+	if (nxs_shouldusecache_stage1())
+	{
+		$nxs_shouldusecache_stage2 = false;
+		
+		$file = nxs_cache_getcachedfilename();
+		//var_dump($file);
+		//die();
+		if (file_exists($file))
+		{
+			$cachetime = filectime($file);
+			$now = time();
+			$diff = $now - $cachetime;
+			if ($diff > 0)
+			{
+				if ($diff < 60 * 60 * 24)
+				{
+					$nxs_shouldusecache_stage2 = true;	
+				}
+				else
+				{
+					// cache is deprecated; its too old; dont use the cache
+				}
+			}
+			else
+			{
+				// cache was written in the future?
+			}
+			
+			if ($nxs_shouldusecache_stage2)
+			{
+				$filesize = filesize($file);
+				if ($filesize == 0)
+				{
+					$nxs_shouldusecache_stage2 = false;
+				}
+			}
+		}
+			
+		if ($nxs_shouldusecache_stage2)
+		{
+			echo file_get_contents($file);
+			die();
+		}
+		else
+		{
+			//echo "will store cache output";
+			ob_start("nxs_storecacheoutput");
+		}
+	}
+	else
+	{
+		// proceed as usual... don't cache anything
+		// echo "proceed as usual (no caching)";
+		ob_start("nxs_ensurenocacheoutput");
+	}
+	// die();
 }
 
 function nxs_nositesettings_adminnotice()
@@ -2318,6 +2482,9 @@ function nxs_getsitemeta_internal($nackwhenerror)
 		{
 			if ($nackwhenerror)
 			{
+				//nxs_dumpstacktrace();
+				//die();
+				
 				ob_clean();
  						
  				$backendurl = wp_login_url();
@@ -2341,6 +2508,7 @@ function nxs_getsitemeta_internal($nackwhenerror)
 			// store site settings as pagemeta of specific postid
 			$postid = $postids[0];
 			$result = nxs_get_postmeta($postid);
+			
 			$nxs_gl_cache_sitemeta = $result;
 		}
 	}

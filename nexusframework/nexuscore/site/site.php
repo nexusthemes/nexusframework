@@ -2857,10 +2857,15 @@ function nxs_site_marketingmanagementhome_getoptions($args)
 				"label"			=> nxs_l18n__("Google Tag Manager", "nxs_td"),
 				"type" 			=> "textarea",
 			),
-			array( 
+			array(
 				"id" 			=> "analyticsUA",
 				"label"			=> nxs_l18n__("Google Analytics UA", "nxs_td"),
 				"type" 			=> "input",
+			),
+			array(
+				"id" 			=> "pagecaching",
+				"label"			=> nxs_l18n__("Page caching", "nxs_td"),
+				"type" 			=> "checkbox",
 			),
 		)
 	);
