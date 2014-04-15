@@ -43,22 +43,23 @@ function nxs_license_checkupdate($value)
 			// if the site meta is not (yet) available, don't perform the license check!
 			$shouldcheck = false;
 		}
+		else
+		{
+			$sitemeta = nxs_getsitemeta();
+			$theme = $sitemeta["catitem_themeid"];
+			if ($theme == "")
+			{
+				$shouldcheck = false;
+			}
+		}
 	}
 	
 	if ($shouldcheck)
 	{
 		$licensekey = get_option('nxs_licensekey');
 		//var_dump($licensekey);
-		$sitemeta = nxs_getsitemeta();
-		$theme = $sitemeta["catitem_themeid"];
 		
-		if ($theme == "")
-		{
-			echo "theme not set?";
-			return $value;
-			//var_dump($sitemeta);
-			//die();
-		}
+		
 		
 		$site = nxs_geturl_home();
 		$themeobject = wp_get_theme();

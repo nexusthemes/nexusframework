@@ -60,9 +60,18 @@ function nxs_ensure_theme_translations_are_loaded()
 		// localization
 		//
 		$domain = 'nxs_td';
-		$locale = apply_filters('theme_locale', get_locale(), $domain);
-		
+		$locale = apply_filters('theme_locale', get_locale(), $domain);		
 		$mofile = dirname(dirname(dirname(__FILE__))) . "/lang/nxs-theme-" . $locale . ".mo"; 
+		if (file_exists($mofile))
+		{
+			$mofile = dirname(dirname(dirname(__FILE__))) . "/lang/nxs-theme-" . $locale . ".mo"; 
+		}
+		else
+		{
+			// if the specified locale is N/A, use English as the fallback
+			$mofile = dirname(dirname(dirname(__FILE__))) . "/lang/nxs-theme-en_US.mo"; 
+		}
+		
 		$res = load_textdomain($domain, $mofile);
 		
 		define('NXS_DEFINE_NXSTHEMETRANSLATIONLOADED', true);	// default to true (improved performance), false means all transients are ignored
