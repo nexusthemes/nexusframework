@@ -47,10 +47,8 @@ function nxs_license_checkupdate($value)
 	
 	if ($shouldcheck)
 	{
-		
-		// TODO: get from options
-		$licensekey = "qwfjgq23ui4ytg";
-		
+		$licensekey = get_option('nxs_licensekey');
+		//var_dump($licensekey);
 		$sitemeta = nxs_getsitemeta();
 		$theme = $sitemeta["catitem_themeid"];
 		
@@ -63,6 +61,8 @@ function nxs_license_checkupdate($value)
 		}
 		
 		$site = nxs_geturl_home();
+		$themeobject = wp_get_theme();
+		$version = $themeobject->version;
 	
 		$serviceparams = array
 		(
@@ -71,6 +71,7 @@ function nxs_license_checkupdate($value)
 			'body' => array
 			(
 				"nxs_license_action" => "get_version",
+				"version" => $version,
 				"theme" => $theme,
 				"licensekey" => $licensekey,
 				"site" => $site
@@ -97,14 +98,25 @@ function nxs_license_checkupdate($value)
 	 		$durationinsecs = 60 * 60 * 12;	// 12 hours
 	 		set_site_transient("nxs_themeupdate", $update_data, $durationinsecs);
 	 		
-			$theme = $update_data["theme"];
-			if ($theme == null)
-			{
-				echo "theme not set!	";
-				var_dump($update_data);
-				die();
+	 		if ("no" == $update_data["nxs_updates"])
+	 		{
+	 			$value = null;
+	 		}
+	 		else if ("enterlicensekey" == $update_data["nxs_updates"])
+	 		{
+	 			$value = null;
+	 		}
+	 		else
+	 		{
+				$theme = $update_data["theme"];
+				if ($theme == null)
+				{
+					echo "theme not set!	";
+					var_dump($update_data);
+					die();
+				}
+				$value -> response[$theme] = $update_data;
 			}
-			$value -> response[$theme] = $update_data;
 			set_site_transient('update_themes', $value);
 		}
 		else
@@ -214,26 +226,40 @@ function nxs_section_update_callback()
 		//var_dump($themeupdate);
 		//die();
 		
-		if ($themeupdate["new_version"] != "")
+		$newversionexists = false;
+		
+		if ($themeupdate["nxs_updates"] == "enterlicensekey")
 		{
-			echo "A new version is available (version: " . $themeupdate["new_version"] . ")";
-			?>
-			<p>
-				<a class="button-primary" href="<?php echo $updateurl; ?>">Go to Themes</a>
-	  	</p>
-			<?php
-			//echo $themeupdate["package"];
-
-			//set_site_transient('nxs_themeupdate', "");
-			//$x = get_site_transient("update_themes");
-			//set_site_transient('update_themes', $x);
-			//var_dump($x);
-			//echo "AAAAA";
-			//die();			
+			echo "Please enter a license key first";
 		}
 		else
 		{
-			echo "Your theme is up to date :)";
+			if (version_compare($themeupdate["new_version"], $theme->version) > 0)
+			{
+				$newversionexists = true;
+			}
+			
+			if ($newversionexists)
+			{
+				echo "A new version is available (version: " . $themeupdate["new_version"] . ") [" . version_compare($themeupdate["new_version"], $theme->version) . "]";
+				?>
+				<p>
+					<a class="button-primary" href="<?php echo $updateurl; ?>">Go to Themes</a>
+		  	</p>
+				<?php
+				//echo $themeupdate["package"];
+	
+				//set_site_transient('nxs_themeupdate', "");
+				//$x = get_site_transient("update_themes");
+				//set_site_transient('update_themes', $x);
+				//var_dump($x);
+				//echo "AAAAA";
+				//die();			
+			}
+			else
+			{
+				echo "Your theme is up to date :)";
+			}
 		}
 	}
 }
@@ -277,15 +303,25 @@ function nxs_license_theme_license_page_content()
 	<?php
 }
 
+function nxs_licensekey_stripspecialchars($input) 
+{
+	$input = strtolower($input);
+	$input = preg_replace('/[^A-Za-z0-9.]/', '', $input); // Removes special chars.
+	$result = $input;
+	return $result;
+}
+
 function nxs_licensekey_callback()
 {
 	extract($_POST);
+	
 	if ($nxs_licensekey != "")
 	{
+		$nxs_licensekey = nxs_licensekey_stripspecialchars($nxs_licensekey);
 		update_option('nxs_licensekey', $nxs_licensekey);
+
 		// ensure checking for update..
 		nxs_license_clearupdatetransient();
-		// 
 	}
 	
   $licensekey = esc_attr(get_option('nxs_licensekey'));

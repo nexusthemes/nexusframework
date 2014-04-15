@@ -21,7 +21,7 @@ function nxs_popup_optiontype_icon_renderhtmlinpopup($optionvalues, $args, $runt
 				?>
 		<div class="box-content">
           	<ul>
-				<li onclick='nxs_js_starticonpicker_<?php echo $id;?>(); return false;' class='nxs-float-left'>
+				<li onclick='nxs_js_starticonpicker_<?php echo $id;?>(); return false;' style='cursor: pointer' class='nxs-float-left'>
 	          		<?php if (isset($value) && $value != "") { ?>
           			<span class="<?php echo $value; ?> nxs-icon">
 						<?php } else { ?>

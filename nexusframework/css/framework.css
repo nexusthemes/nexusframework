@@ -930,6 +930,7 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 ---------------------------------------------------------------------------------------------------- */
 .nxs-categories ul li 										{ margin-top: 10px; line-height: 1.625em; font-size: 15px; }
 .nxs-categories ul li span									{ font-size: 16px; margin-right: 5px; }
+.nxs-categories ul.children { padding-left: 20px; }
 
 /* SIDEBAR & WORDPRESS WIDGETS 
 ---------------------------------------------------------------------------------------------------- */

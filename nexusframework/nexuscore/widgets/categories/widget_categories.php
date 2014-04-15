@@ -121,9 +121,8 @@ function nxs_widgets_categories_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "font_icon",
-				"type" 				=> "select",
+				"type" 				=> "icon",
 				"label" 			=> nxs_l18n__("Categories icon", "nxs_td"),
-				"dropdown" 			=> array(""=>"none","nxs-icon-categories"=>"closed folder"),
 				"unistylablefield"	=> true
 			),
 			array( 
