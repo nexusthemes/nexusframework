@@ -9,7 +9,7 @@ function nxs_widgets_menuitemcategory_geticonid()
 
 function nxs_widgets_menuitemcategory_gettitle()
 {
-	return nxs_l18n__("Xatego reference (menu item)[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Category reference (menu item)[nxs:widgettitle]", "nxs_td");
 }
 
 //
