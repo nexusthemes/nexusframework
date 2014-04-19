@@ -50,6 +50,7 @@ function nxs_license_checkupdate($value)
 			if ($theme == "")
 			{
 				$shouldcheck = false;
+				echo "<!-- theme not set -->";
 			}
 		}
 	}
@@ -242,7 +243,8 @@ function nxs_section_update_callback()
 			
 			if ($newversionexists)
 			{
-				echo "A new version is available (version: " . $themeupdate["new_version"] . ") [" . version_compare($themeupdate["new_version"], $theme->version) . "]";
+				echo "A new version ( " . $themeupdate["new_version"] . ") is available";
+				echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
 				?>
 				<p>
 					<a class="button-primary" href="<?php echo $updateurl; ?>">Go to Themes</a>
@@ -260,7 +262,13 @@ function nxs_section_update_callback()
 			else
 			{
 				echo "Your theme is up to date :)";
+				echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
 			}
+		}
+		
+		if ($themeupdate["nxs_messagehtml"] != "")
+		{
+			echo $themeupdate["nxs_messagehtml"];
 		}
 	}
 }
@@ -326,7 +334,7 @@ function nxs_licensekey_callback()
 	}
 	
   $licensekey = esc_attr(get_option('nxs_licensekey'));
-	echo "<input type='text' name='nxs_licensekey' value='{$licensekey}' />";
+	echo "<input type='text' name='nxs_licensekey' value='{$licensekey}' style='width:30%' />";
 }
 
 ?>
