@@ -2374,6 +2374,19 @@ function nxs_site_dashboardhome_rendersheet($args)
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
 					
+					<!-- header footer -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Header footer", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('headerfooter'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+					
 					<!-- access restrictions -->
 	        <div class="content2">
             <div class="box">
@@ -3704,6 +3717,47 @@ function nxs_site_maintenancehome_getoptions($args)
 			),
 			array( 
 				"id" 			=> "wrapper_maintenance_end",
+				"type" 			=> "wrapperend"
+			),
+		)
+	);
+	
+	return $options;
+}
+
+/* MAINTENANCE MODE
+---------------------------------------------------------------------------------------------------- */
+
+function nxs_site_headerfooter_getoptions($args)
+{	
+	$options = array (
+		"sheettitle" => nxs_l18n__("Header and footer options", "nxs_td"),
+		"fields" => array(
+			
+			array( 
+				"id"			=> "wrapper_header_begin",
+				"type" 			=> "wrapperbegin",
+				"label" 		=> nxs_l18n__("Header", "nxs_td"),
+			),
+			array( 
+				"id" 			=> "vg_injecthead",
+				"label"			=> nxs_l18n__("Head script", "nxs_td"),
+				"type" 			=> "textarea",
+				"placeholder" 		=> nxs_l18n__("Script to insert within the &gt;head&lt; tag", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Script to insert within the &gt;head&lt; tag", "nxs_td"),
+				"localizablefield"	=> true
+			),
+			array( 
+				"id" 			=> "footerhtmltemplate",
+				"label"			=> nxs_l18n__("Footer html template", "nxs_td"),
+				"type" 			=> "textarea",
+				"valueadapters" => array("" => "{{{themelink}}} | {{{authenticatelink}}}"),
+				"placeholder" 		=> nxs_l18n__("{{{themelink}}} | {{{authenticatelink}}}", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("The html to show in the footer. You can use {{{nexuslink}}} {{{themelink}}} and {{{authenticatelink}}} placeholders.", "nxs_td"),
+				"localizablefield"	=> true
+			),
+			array( 
+				"id" 			=> "wrapper_header_end",
 				"type" 			=> "wrapperend"
 			),
 		)

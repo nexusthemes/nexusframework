@@ -66,7 +66,6 @@
 		            <li><a href="#tabs-design"><?php nxs_l18n_e("Design[nxs:adminmenu,tab]", "nxs_td"); ?></a></li>
 		            <?php if (nxs_cap_hasdesigncapabilities()) { ?>
 		            <li><a href="#tabs-css"><?php nxs_l18n_e("CSS[nxs:adminmenu,tab]", "nxs_td"); ?></a></li>
-		            <li><a href="#tabs-head"><?php nxs_l18n_e("Head[nxs:adminmenu,tab]", "nxs_td"); ?></a></li>
 		          	<?php } ?>
 		            <?php if ($nxsposttype == "post" && is_singular() && nxs_cap_hasdesigncapabilities()) { ?>
 		            <li><a href="#tabs-seo"><?php nxs_l18n_e("SEO", "nxs_td"); ?></a></li>
@@ -493,20 +492,6 @@
 			        </div> <!--END content-->
 		        </div> <!--END tabs-->
 			      
-		        <?php if (nxs_cap_hasdesigncapabilities()) { ?>
-		        <div id="tabs-head">
-		          <div class="content nxs-padding10">
-		            <div class="box">
-		              <textarea id='vg_injecthead' onkeyup='nxs_menu_updateinjecthead();'><?php echo nxs_render_html_escape_gtlt($sitemeta["vg_injecthead"]);?></textarea>
-		            </div>
-								<div class="nxs-clear padding"></div>
-		                		
-		            <a id='nxs_menu_saveinjectheadbutton' style='display: none;' href='#' class="nxsbutton nxs-float-left" onclick='nxs_menu_saveinjecthead(); return false;'><?php nxs_l18n_e("Save[nxs:btn]", "nxs_td"); ?></a>
-		            
-		            <div class="nxs-clear"></div>
-		          </div> <!--END content-->
-		        </div> <!--END tabs-->
-		      	<?php } ?>
 		        <?php 
 		        if ($nxsposttype == "post" && is_singular() && nxs_cap_hasdesigncapabilities() && !defined('WPSEO_PATH')) 
 		        {
@@ -1023,7 +1008,7 @@
 				{
 					nxs_js_refreshtopmenufillerheight();
 					
-					if (ui.index == 4)
+					if (ui.index == 3)
 					{
 						// SEO tab activated
 						nxs_js_refresh_seoanalysis();
@@ -1523,31 +1508,6 @@
 			);		
 		}
 	</script>
-	<!--
-	<div id="nxs-support" class="nxs-hidewheneditorinactive" style="position: fixed; bottom: 0px; right: 20px; z-index: 10000; display: none; -moz-border-radius-topleft:5px; -moz-border-radius-topright:5px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #DEDFDE; color: black; padding-top: 10px; padding-left: 10px; padding-right: 10px; padding-bottom: 0px;">
-		<div>
-	  	<div style='padding-bottom: 10px;'>
-			<span>
-				<a href='#' onclick='nxs_js_opensupportoptions(); return false;'><?php nxs_l18n_e("Need help? Live support[nxs:btn]", "nxs_td"); ?></a>
-			</span>
-			</div>
-		</div>
-	</div>
-	
-	<script>
-		function nxs_js_showsupport()
-		{
-			jQuery('#nxs-support').slideDown(1000);
-		}
-	
-		jQuery(document).ready(
-			function() 
-			{
-				setTimeout(function(){nxs_js_showsupport();},500);
-			}
-		);
-	</script>
-	-->
 </div>
 
 <?php do_action('nxs_action_after_menu'); ?>

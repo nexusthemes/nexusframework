@@ -180,7 +180,7 @@ function nxs_license_addadminpages()
 function plugin_admin_init()
 {
 	//All callbacks must be valid names of functions, even if provided functions are blank
-	add_settings_section('nxs_section_license', 'License key title', 'nxs_section_license_callback', 'nxs_section_license_type');
+	add_settings_section('nxs_section_license', 'License key', 'nxs_section_license_callback', 'nxs_section_license_type');
 	add_settings_field('nxs_licensekey', 'Serial number', 'nxs_licensekey_callback', 'nxs_section_license_type', 'nxs_section_license');
 	add_settings_section('nxs_section_update', 'Updates', 'nxs_section_update_callback', 'nxs_section_update_type');
 }
@@ -297,14 +297,14 @@ function nxs_license_theme_license_page_content()
 {
   ?>
   <div class="wrap">
-    <h2>License key</h2>
+    <h2>License</h2>
     <form method="post">
       <?php 
       	settings_fields('option_group'); 
       	do_settings_sections('nxs_section_license_type');
       ?>
      <p class='submit'>
-       <input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Save Changes") ?>' />
+       <input name='submit' type='submit' id='submit' style='display: none;' class='button-primary' value='<?php _e("Save Changes") ?>' />
      </p>
      	
 		</form>
@@ -334,7 +334,7 @@ function nxs_licensekey_callback()
 	}
 	
   $licensekey = esc_attr(get_option('nxs_licensekey'));
-	echo "<input type='text' name='nxs_licensekey' value='{$licensekey}' style='width:30%' />";
+	echo "<input type='text' name='nxs_licensekey' onkeydown='jQuery(\"#submit\").show();' onchange='jQuery(\"#submit\").show();' value='{$licensekey}' style='width:30%' />";
 }
 
 ?>

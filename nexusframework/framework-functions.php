@@ -517,6 +517,14 @@ function nxs_render_postfooterlink()
 	
 	$sitemeta = nxs_getsitemeta();
 	$catitem_themeid = $sitemeta["catitem_themeid"];
+	$footerhtmltemplate = $sitemeta["footerhtmltemplate"];
+	
+	if ($footerhtmltemplate == "")
+	{
+		// default
+		$footerhtmltemplate = "{{{themelink}}} | {{{authenticatelink}}}";	
+	}
+	
 	$lookup = array
 	(
 		"pestcontrol;" => array
@@ -542,7 +550,7 @@ function nxs_render_postfooterlink()
 		"makeupartist;" => array
 		(
 			"href"=>"/wordpress-themes/makeup-artist/makeup-artist-wordpress-theme/",
-			"title"=>"Makeu artist WordPress theme",
+			"title"=>"Makeup artist WordPress theme",
 		),
 		"contractor;" => array
 		(
@@ -780,7 +788,7 @@ function nxs_render_postfooterlink()
 			"title"=>"Horse riding WordPress theme",
 		),
 	);
-
+	
 	$href = "/wordpress-themes/";
 	$title = "Premium Business WordPress themes";
 	foreach ($lookup as $keylist => $lookupval)
@@ -795,29 +803,41 @@ function nxs_render_postfooterlink()
 			}
 		}
 	}
-	$url = "";
-	$url .= "http://";
-	$url .= "nexusthemes";
-	$url .= ".";
-	$url .= "com";
+	$baseurl = "";
+	$baseurl .= "http://";
+	$baseurl .= "nexusthemes";
+	$baseurl .= ".";
+	$baseurl .= "com";
+	
+	$url = $baseurl;
 	$url .= $href;
+	
+	$nexuslink = "<a target='_blank' href='" . $baseurl . "' title='WordPress themes'>WordPress themes</a>";
+
 	?>
-  <p id="nxs-copyright" class="nxs-clear padding nxs-applylinkvarcolor"> 
-	<a target='_blank' href="<?php echo $url; ?>" title="<?php echo $title;?>"><?php echo $title;?></a>
-	|
-	<?php
-	if (is_user_logged_in())
-	{?>
-		<a href="#" onclick="nxs_js_popup_site_neweditsession('logouthome'); return false;">Logout</a>
-	<?php 
-	}
-	else
-	{
-	?>
-		<a href="#" onclick="nxs_js_popup_site_neweditsession('loginhome'); return false;">Login</a>
-	<?php 
-	}
-	?>
+  <p id="nxs-copyright" class="nxs-clear padding nxs-applylinkvarcolor">
+	  <?php
+		$themelink = "<a target='_blank' href='" . $url . "' title='" . $title . "'>" . $title . "</a>";
+		//echo $themelink;
+		
+		if (is_user_logged_in())
+		{
+			$authenticatelink = "<a href=\"#\" onclick=\"nxs_js_popup_site_neweditsession('logouthome'); return false;\">Logout</a>";
+		}
+		else
+		{
+			$authenticatelink = "<a href=\"#\" onclick=\"nxs_js_popup_site_neweditsession('loginhome'); return false;\">Login</a>";
+		}
+		//echo $authenticatelink;
+		
+		
+		
+		$footerhtmltemplate = str_replace("{{{authenticatelink}}}", $authenticatelink, $footerhtmltemplate);
+		$footerhtmltemplate = str_replace("{{{themelink}}}", $themelink, $footerhtmltemplate);
+		$footerhtmltemplate = str_replace("{{{nexuslink}}}", $nexuslink, $footerhtmltemplate);
+		
+		echo $footerhtmltemplate;
+		?>
 	</p>
 	<?php
 }

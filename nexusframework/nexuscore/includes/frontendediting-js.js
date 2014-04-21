@@ -5541,7 +5541,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 		function nxs_js_alert(text)
 		{
 			nxs_js_log("alerting:" + text);
-			jQuery.jGrowl(text, { sticky: false, life: 15000 });
+			jQuery.jGrowl(text, { sticky: false, life: 3000 });
 		}
 		
 		//
@@ -5582,7 +5582,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 				text = "<span style='padding-left: 10px;'>" + text + message + "</span>";
 			}
 			text += "</div>";
-			jQuery.jGrowl(text, { sticky: false, life: 15000, group: token });
+			jQuery.jGrowl(text, { sticky: false, life: 3000, group: token });
 			
 			//nxs_js_log("created:" + token);
 			

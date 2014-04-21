@@ -3,12 +3,17 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
 {
 	$cols = "50";	// default
 	$rows = "15";	// default
+	$valueadapters = array();
 	
 	extract($optionvalues);
 	extract($args);
 	extract($runtimeblendeddata);
 	$value = $$id;	// $id is the parametername, $$id is the value of that parameter
-	
+	if (array_key_exists($value, $valueadapters))
+	{
+		// adapt value
+		$value = $valueadapters[$value];
+	}
 	echo '
   <div class="content2">
     <div class="box">';
