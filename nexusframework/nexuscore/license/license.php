@@ -60,8 +60,6 @@ function nxs_license_checkupdate($value)
 		$licensekey = get_option('nxs_licensekey');
 		//var_dump($licensekey);
 		
-		
-		
 		$site = nxs_geturl_home();
 		$themeobject = wp_get_theme();
 		$version = $themeobject->version;
@@ -108,7 +106,7 @@ function nxs_license_checkupdate($value)
 	 		{
 	 			$value = null;
 	 		}
-	 		else
+	 		else if ("yes" == $update_data["nxs_updates"])
 	 		{
 				$theme = $update_data["theme"];
 				if ($theme == null)
@@ -118,6 +116,10 @@ function nxs_license_checkupdate($value)
 					die();
 				}
 				$value -> response[$theme] = $update_data;
+			}
+			else
+			{
+				$value = null;
 			}
 			set_site_transient('update_themes', $value);
 		}
@@ -180,8 +182,12 @@ function nxs_license_addadminpages()
 function plugin_admin_init()
 {
 	//All callbacks must be valid names of functions, even if provided functions are blank
-	add_settings_section('nxs_section_license', 'License key', 'nxs_section_license_callback', 'nxs_section_license_type');
-	add_settings_field('nxs_licensekey', 'Serial number', 'nxs_licensekey_callback', 'nxs_section_license_type', 'nxs_section_license');
+	add_settings_section('nxs_section_license', 'Registration', 'nxs_section_license_callback', 'nxs_section_license_type');
+	add_settings_field('nxs_register', 'Register', 'nxs_licenseregister_callback', 'nxs_section_license_type', 'nxs_section_license');
+	
+	//add_settings_field('nxs_licensekey', 'Serial number', 'nxs_licensekey_callback', 'nxs_section_license_type', 'nxs_section_license');
+	
+		
 	add_settings_section('nxs_section_update', 'Updates', 'nxs_section_update_callback', 'nxs_section_update_type');
 }
 add_action( 'admin_init', 'plugin_admin_init' );
@@ -243,7 +249,7 @@ function nxs_section_update_callback()
 			
 			if ($newversionexists)
 			{
-				echo "A new version ( " . $themeupdate["new_version"] . ") is available";
+				echo "A new version (" . $themeupdate["new_version"] . ") is available";
 				echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
 				?>
 				<p>
@@ -303,10 +309,6 @@ function nxs_license_theme_license_page_content()
       	settings_fields('option_group'); 
       	do_settings_sections('nxs_section_license_type');
       ?>
-     <p class='submit'>
-       <input name='submit' type='submit' id='submit' style='display: none;' class='button-primary' value='<?php _e("Save Changes") ?>' />
-     </p>
-     	
 		</form>
 	</div>
 	<?php
@@ -318,6 +320,176 @@ function nxs_licensekey_stripspecialchars($input)
 	$input = preg_replace('/[^A-Za-z0-9.]/', '', $input); // Removes special chars.
 	$result = $input;
 	return $result;
+}
+
+function nxs_licenseregister_invoke()
+{
+	$ordernr = $_REQUEST["nxs_ordernr"];
+	
+	$site = nxs_geturl_home();
+	$themeobject = wp_get_theme();
+	$version = $themeobject->version;
+	
+	if (!nxs_hassitemeta())
+	{
+		// if the site meta is not (yet) available, don't perform the license check!
+		$shouldcheck = false;
+		$theme = "notset1";
+	}
+	else
+	{
+		$sitemeta = nxs_getsitemeta();
+		$theme = $sitemeta["catitem_themeid"];
+	}
+
+	$serviceparams = array
+	(
+		'timeout' => 15,
+		'sslverify' => false,
+		'body' => array
+		(
+			"nxs_license_action" => "register",
+			"version" => $version,
+			"theme" => $theme,
+			"ordernr" => $ordernr,
+			"site" => $site
+		)
+	);
+	
+	$site = home_url();
+	$url = "http://license.nexusthemes.com/";
+	$response = wp_remote_post($url, $serviceparams);
+	
+	$successful = true;
+
+  // make sure the response was successful
+  if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) 
+  {
+  	$successful = false;
+  	//var_dump($response);
+  }
+  
+  $body = wp_remote_retrieve_body($response); 
+	$response_data = json_decode($body, true);
+	
+	if ($successful ) 
+  {
+  	if ($response_data["result"] == "OK")
+  	{
+	  	$nxs_licensekey = $response_data["nxs_licensekey"];
+  		// store serial
+  		update_option('nxs_licensekey', $nxs_licensekey);
+  		echo "Thank you for your registration<br />";
+  		echo "<a href=''>Reload the page</a>";
+  	}
+  	else
+  	{
+  		update_option('nxs_licensekey', "");
+  		?>
+  		<p>
+  			Unable to complete your registration (1). If you made a valid purchase
+  			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
+	  		<a href=''>Reload the page</a>
+  		</p>
+  		<?php
+  		//var_dump($response);
+  	}
+  }
+  else
+  {
+  	update_option('nxs_licensekey', "");
+		?>
+		<p>
+			Unable to complete your registration (2). If you made a valid purchase
+			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
+  		<a href=''>Reload the page</a>
+		</p>
+		<?php
+  	//var_dump($response);
+  }
+}
+
+function nxs_licenseregister_callback()
+{
+	$licensekey = esc_attr(get_option('nxs_licensekey'));
+	if ($licensekey == "")
+	{
+		if ($_REQUEST["nxs_license_register"] == "true")
+		{
+			nxs_licenseregister_invoke();
+		}
+		else
+		{
+			$url = nxs_geturlcurrentpage();
+			$url = nxs_addqueryparametertourl_v2($url, "nxs_license_register", "true", true, true);
+			$noncedurl = wp_nonce_url($url, 'register');
+			$site = nxs_geturl_home();
+			?>
+			<p>
+				Enter your ordernumber below to register your purchase.<br />
+				Registering your site will enable best effort support and theme updates for one year
+				for this specific site.<br />
+			</p>
+			<p>
+				&nbsp;
+			</p>
+			<p>
+				Site
+			</p>
+			<p>
+				<input type='text' name='nxs_site' readonly onkeydown='jQuery("#nxsregbutton").show();' onchange='jQuery("#nxsregbutton").show();' value='<?php echo $site; ?>' style='width:30%' />
+			</p>
+			<p>
+				&nbsp;
+			</p>
+			<p>
+				Ordernumber
+			</p>
+			<input type='text' name='nxs_ordernr' onkeydown='jQuery("#nxsregproceed").show();' onchange='jQuery("#nxsregproceed").show();' value='' style='width:30%' />
+			<p>
+				&nbsp;
+			</p>
+			<p id='nxsregproceed' style='display: none;' >
+				<input name="nxs_license_register" type="hidden" value="true" />
+				<input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Register purchase") ?>' />
+				<i>NOTE; your purchase can be registered <u>one SINGLE time</u>.</i>
+			</p>
+			<p>
+				&nbsp;
+			</p>
+			<p>
+				<ul>
+					<li>Don't have an ordernumber? <a href='http://nexusthemes.com' target='_blank'>Purchase now</a></li>
+				</ul>
+			</p>
+			<?php
+		}
+	}
+	else
+	{
+		if ($_REQUEST["nxs_license_unregister"] == "true")
+		{
+			update_option('nxs_licensekey', "");
+			// reload
+			echo "License was removed. <a href=''>Reload the page</a>";
+			die();
+		}
+		else
+		{
+			$licensekey = esc_attr(get_option('nxs_licensekey'));
+			?>
+			<p>
+				Existing license: <?php echo $licensekey; ?><br />
+				Check the update section to see if this license is still valid.
+			</p>
+			<p>
+				&nbsp;
+			</p>
+			<input name="nxs_license_unregister" type="hidden" value="true" />
+			<input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Unregister") ?>' />
+			<?php
+		}
+	}
 }
 
 function nxs_licensekey_callback()
@@ -335,6 +507,13 @@ function nxs_licensekey_callback()
 	
   $licensekey = esc_attr(get_option('nxs_licensekey'));
 	echo "<input type='text' name='nxs_licensekey' onkeydown='jQuery(\"#submit\").show();' onchange='jQuery(\"#submit\").show();' value='{$licensekey}' style='width:30%' />";
+	?>
+  <p class='submit'>
+  	<input name='submit' type='submit' id='submit' style='display: none;' class='button-primary' value='<?php _e("Save Changes") ?>' />
+ 	</p>
+
+	<?php
+	
 }
 
 ?>

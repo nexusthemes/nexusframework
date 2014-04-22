@@ -146,11 +146,9 @@ function nxs_seotab_pluginnotfound()
 		<div class="content nxs-padding10">
 			<h2>Search engine optimization</h2>
 			<br />
-			<iframe class="nxs-youtube-iframe" src="http://www.youtube.com/embed/WRgxNE7hbMo?wmode=transparent&amp;cc_load_policy=1&amp;cc_lang_pref=en&amp;hl=en&amp;yt:cc=on&amp;vq=hd1080&amp;rel=0&amp;autoplay=0" frameborder="0"></iframe>
-			<br />
 			<br />
 			<p>
-				<?php nxs_l18n_e("Want to attract more traffic to your website? Click <a target='_blank' href='http://nexusthemes.com/search-engine-optimization-for-your-website/?from=clientsite'>here</a>", "nxs_td"); ?><br />
+				<?php nxs_l18n_e("Want to attract more traffic to your website? Click <a target='_blank' href='http://nexusthemes.com/support/increase-visitors/'>here</a>", "nxs_td"); ?><br />
 			</p>
 		</div>
 	</div>
