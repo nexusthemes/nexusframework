@@ -53,11 +53,14 @@ function nxs_showphpwarnings()
 	{
 		$result = false;
 	}
+	
+	return $result;
 }
 
 if (!nxs_showphpwarnings())
 {
 	error_reporting(E_ERROR | E_PARSE);
+	
 	//echo "test";
 	// error_reporting(E_ERROR);
 
@@ -66,6 +69,7 @@ if (!nxs_showphpwarnings())
 	// cause warnings that mess up the output of the webmethod
 	// for example when activating the theme
 	// to solve this, at this stage we clean the output buffer
+
 	ob_clean();
 }
 
@@ -110,6 +114,7 @@ define('NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT', true);	// default to true
 
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsfunctions.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
+require_once(NXS_FRAMEWORKPATH . '/nexuscore/importers/nexusimporter/nexus-importer.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsstyles.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/shortcodes/shortcodes.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/postwizards/wizards.php');

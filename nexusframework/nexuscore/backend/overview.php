@@ -1,5 +1,5 @@
 <?php
-	if (nxs_hassitemeta())
+	if (true) // nxs_hassitemeta())
 	{
 		function nxs_backend_addmetaboxesgeneric($allboxes, $where)
 		{
@@ -32,17 +32,15 @@
 			$metaboxid = $foo["id"];
 			echo $nxs_global_overviewservicevalue[$metaboxid . "_html"];
 		}
-		
+
 		global $nxs_global_overviewservicevalue;
 		$nxs_global_overviewservicevalue = nxs_gettransientnexusservervalue("themespage", "overview", array());
-		
+
 		$allboxes = $nxs_global_overviewservicevalue["leftboxes"];
 		nxs_backend_addmetaboxesgeneric($allboxes, 'left');
 		
 		$allboxes = $nxs_global_overviewservicevalue["rightboxes"];
 		nxs_backend_addmetaboxesgeneric($allboxes, 'right');
-		
-
 	  
 		?>
 		<div class="wrap">

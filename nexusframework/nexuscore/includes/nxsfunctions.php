@@ -4260,40 +4260,8 @@ function nxs_cleanup_paragraphbreaks($content)
 
 function nxs_invokenexusservicevalue_internal($data)
 {
-	if (NXS_DEFINE_NXSALLOWSERVICECOMMUNICATION)
-	{
-		try 
-		{
-			$data = nxs_urlencodearrayvalues($data);	
-			$serializeddata = urlencode(json_encode($data));
-			$url = "http://services.nexusthemes.com/wp-admin/admin-ajax.php?action=nxs_ajax_backendwebmethods&webmethod=invokeservicevalue&data=" . $serializeddata ."&makeunique=" . time();
-			$jsonresponse = url_get_contents($url);
-			$result = json_decode($jsonresponse, true);
-			
-			if (NXS_DEFINE_NXSDEBUGNEXUSSERVICEFAILURES)
-	 		{
-	 			echo "url:[" . $url . "]";
-	 			echo "jsonresponse:[" . $jsonresponse . "]";
-	 		}
-		} 
-		catch (Exception $e) 
-		{ 
-	  	$result = array();
-			$result["result"] = "NACK";
-		
-	  	if ($_REQUEST["debug"] == "true" && nxs_has_adminpermissions())
-	 		{
-	 			var_dump($e);
-	 			nxs_webmethod_return_nack("exception");
-	 		}
-		}
-	}
-	else
-	{
-		$result = array();
-		$result["result"] = "NACK";
-	}	
-	
+	$result = array();
+	$result["result"] = "NACK";
 	return $result;
 }
 
@@ -4330,14 +4298,8 @@ function nxs_getactiveplugins_cachecontrol($bypasscache)
 
 function nxs_invokenexusservicevalue($key, $subkey, $data)
 {
-	$sitemeta = nxs_getsitemeta();
-	$collectanonymousdata = $sitemeta["collectanonymousdata"];
-	
-	$data["key"] = $key;
-	$data["subkey"] = $subkey;
-
-	$result = nxs_invokenexusservicevalue_internal($data);
-	
+	$result = array();
+	$result["result"] = "NACK";
 	return $result;
 }
 
@@ -4396,55 +4358,8 @@ function nxs_gettransientnexusservervalue($key, $subkey, $additionalparams)
 	{
 		nxs_webmethod_return_nack("key not set");
 	}
-		
-	$optionkey = 'nxs_nxssrvval_' . $key;	
-	if ($subkey != "")
-	{
-		$optionkey = $optionkey . "_" . $subkey;
-	}
 	
-	$value = get_transient($optionkey);
-	if (!NXS_DEFINE_NXSSERVERVALUECACHING || $value == false)
-	{
-		// niet bekend of geforceerd ge-expired, die moeten we ophalen
-	 	
-	 	// get value from server
-	 	$valuefromserver = nxs_invokenexusservicevalue($key, $subkey, $additionalparams);
-	 	
-	 	$retrievalsucceeded = $valuefromserver["result"] == "OK";
-	 	if ($retrievalsucceeded)
-	 	{
-	 		$value = $valuefromserver;
-	 	}
-	 	else
-	 	{
-	 		if (NXS_DEFINE_NXSDEBUGNEXUSSERVICEFAILURES)
-	 		{
-	 			echo "value from server for [$key / $subkey]:[";
-	 			var_dump($valuefromserver);
-	 			echo "]";
-	 		}
-	 		
-	 		$value = nxs_getfailovertransientnexusservervalue($key, $subkey, $additionalparams);
-	 	}
-	 	
-	 	// set transient duration if set by nexus service
- 		if ($value["transientduration"] != "")
- 		{
- 			$transientduration = $value["transientduration"];
- 		}
- 		else
- 		{
- 			$transientduration = $successduration;
- 		}
-		
-		// store
-		set_transient($optionkey, $value, $transientduration);
-	}
-	else
-	{
-		// value is bekend; herbruik deze!
-	}
+	$value = nxs_getfailovertransientnexusservervalue($key, $subkey, $additionalparams);
 	
 	return $value;
 }

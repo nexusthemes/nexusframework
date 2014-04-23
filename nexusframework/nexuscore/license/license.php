@@ -1,8 +1,13 @@
 <?php
 
+//$x = get_transient("nxs_themeupdate");
+//var_dump($x);
+
+//die();
+
 function nxs_license_clearupdatetransient()
 {
-	set_site_transient('nxs_themeupdate', "");
+	delete_transient("nxs_themeupdate");
 }
 add_filter('delete_site_transient_update_themes', 'nxs_license_clearupdatetransient');
 add_action('load-update-core.php', 'nxs_license_clearupdatetransient');
@@ -12,51 +17,42 @@ function nxs_license_checkupdate($value)
 {
 	if (!nxs_hassitemeta())
 	{
+		// dont use this if the sitemeta is not available
 		return $value;
 	}
 	
-	$shouldcheck = false;
-
-	if ($_REQUEST["nxs_force_themeupdatecheck"] == "true") 
+	// ---
+	
+	$sitemeta = nxs_getsitemeta();
+	$theme = $sitemeta["catitem_themeid"];
+	if ($theme == "")
 	{
-		nxs_license_clearupdatetransient();
+		// dont use this if the theme is not updateble
+		return $value;
 	}
-
-	$nxs_themeupdate = get_site_transient('nxs_themeupdate');
 	
-	//var_dump($nxs_themeupdate);
+	// ---
 	
-	if ($nxs_themeupdate == false || $nxs_themeupdate == "")
+	$shouldcheck = false;
+	$url = nxs_geturlcurrentpage();
+	
+	$nxs_themeupdate = get_transient("nxs_themeupdate");
+	if (nxs_stringcontains($url, "nxs_admin_update"))
+	{
+		// always refresh if the user accesses the admin_update page
+		$shouldcheck = true;
+	}	
+	else if ($nxs_themeupdate == false || $nxs_themeupdate == "")
 	{
 		$shouldcheck = true;
 	}	
 	else
 	{
-		//echo "wont check!";
-		//die();
+		// 
 	}
 	
 	if ($shouldcheck)
-	{
-		if (!nxs_hassitemeta())
-		{
-			// if the site meta is not (yet) available, don't perform the license check!
-			$shouldcheck = false;
-		}
-		else
-		{
-			$sitemeta = nxs_getsitemeta();
-			$theme = $sitemeta["catitem_themeid"];
-			if ($theme == "")
-			{
-				$shouldcheck = false;
-				echo "<!-- theme not set -->";
-			}
-		}
-	}
-	
-	if ($shouldcheck)
-	{
+	{		
 		$licensekey = get_option('nxs_licensekey');
 		//var_dump($licensekey);
 		
@@ -96,8 +92,10 @@ function nxs_license_checkupdate($value)
 	  if ($successful ) 
 	  {
 	 		$durationinsecs = 60 * 60 * 12;	// 12 hours
-	 		set_site_transient("nxs_themeupdate", $update_data, $durationinsecs);
+	 		$before = get_transient("nxs_themeupdate");
 	 		
+	 		set_transient("nxs_themeupdate", $update_data, $durationinsecs);
+
 	 		if ("no" == $update_data["nxs_updates"])
 	 		{
 	 			$value = null;
@@ -116,18 +114,20 @@ function nxs_license_checkupdate($value)
 					die();
 				}
 				$value -> response[$theme] = $update_data;
+				//echo "JAAAA" . $theme;
+				//die();
 			}
 			else
 			{
 				$value = null;
 			}
+			
 			set_site_transient('update_themes', $value);
 		}
 		else
 		{
 			// skip for now... 
 	    $durationinsecs = 60 * 60 * 12;	// 12 hours
-      set_site_transient("nxs_themeupdate", "fail", $durationinsecs);
 		}
 	}
 	
@@ -140,7 +140,7 @@ function nxs_license_periodictriggerupdate()
 	if ($_REQUEST["nxs_force_themeupdatecheck"] == "true")
 	{
 		// wipe
-		set_transient("nxs_themeupdater_freq", "");
+		nxs_license_clearupdatetransient();
 	}
 	
 	$nxs_themeupdater_freq = get_transient("nxs_themeupdater_freq");
@@ -166,7 +166,7 @@ function nxs_license_actualtriggerupdate()
 	}
 	
 	// deze regel is nodig om de logica te triggeren!
-	set_site_transient('nxs_themeupdate', "");
+	nxs_license_clearupdatetransient();
 	$x = get_site_transient("update_themes");
 	set_site_transient('update_themes', $x);
 	//var_dump($x);
@@ -230,7 +230,7 @@ function nxs_section_update_callback()
 			$updateurl = admin_url('themes.php');
 		}
 	
-		$themeupdate = get_site_transient('nxs_themeupdate');
+		$themeupdate = get_transient("nxs_themeupdate");
 		//var_dump($themeupdate);
 		//die();
 		
@@ -240,7 +240,7 @@ function nxs_section_update_callback()
 		{
 			echo "Please enter a license key first";
 		}
-		else
+		else if ($themeupdate["nxs_updates"] == "yes")
 		{
 			if (version_compare($themeupdate["new_version"], $theme->version) > 0)
 			{
@@ -253,23 +253,20 @@ function nxs_section_update_callback()
 				echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
 				?>
 				<p>
-					<a class="button-primary" href="<?php echo $updateurl; ?>">Go to Themes</a>
+					<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
 		  	</p>
 				<?php
-				//echo $themeupdate["package"];
-	
-				//set_site_transient('nxs_themeupdate', "");
-				//$x = get_site_transient("update_themes");
-				//set_site_transient('update_themes', $x);
-				//var_dump($x);
-				//echo "AAAAA";
-				//die();			
+				
 			}
 			else
 			{
-				echo "Your theme is up to date :)";
+				echo "Your theme is up to date";
 				echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
 			}
+		}
+		else
+		{
+			echo "Your theme is up to date <!-- (2) -->";
 		}
 		
 		if ($themeupdate["nxs_messagehtml"] != "")
@@ -379,18 +376,44 @@ function nxs_licenseregister_invoke()
 	  	$nxs_licensekey = $response_data["nxs_licensekey"];
   		// store serial
   		update_option('nxs_licensekey', $nxs_licensekey);
-  		echo "Thank you for your registration<br />";
-  		echo "<a href=''>Reload the page</a>";
+  		
+  		$dummy = new stdClass();
+			nxs_license_checkupdate($dummy);
+
+  		// reload current page
+  		$url = nxs_geturlcurrentpage();
+  		?>
+  		<script type='text/javascript'>
+  			var url = '<?php echo $url; ?>';
+  			window.location = url;
+  		</script>
+  		<?php
+  		?>
+  		<p>
+  			Thank you for your registration
+  		</p>
+			<p>
+				&nbsp;
+			</p>
+			<p>
+	  		<a class='button-primary' href=''>Reload the page</a>
+	  	</p>
+  		<?php
   	}
   	else
   	{
   		update_option('nxs_licensekey', "");
   		?>
   		<p>
-  			Unable to complete your registration (1). If you made a valid purchase
+  			Unable to complete your registration<!-- 1 -->.<br />If you made a valid purchase
   			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
-	  		<a href=''>Reload the page</a>
   		</p>
+			<p>
+				&nbsp;
+			</p>
+			<p>
+	  		<a class='button-primary' href=''>Reload the page</a>
+	  	</p>
   		<?php
   		//var_dump($response);
   	}
@@ -400,10 +423,15 @@ function nxs_licenseregister_invoke()
   	update_option('nxs_licensekey', "");
 		?>
 		<p>
-			Unable to complete your registration (2). If you made a valid purchase
+			Unable to complete your registration<!-- 2 -->.<br />If you made a valid purchase
 			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
-  		<a href=''>Reload the page</a>
 		</p>
+		<p>
+			&nbsp;
+		</p>
+		<p>
+  		<a class='button-primary' href=''>Restart registration</a>
+  	</p>
 		<?php
   	//var_dump($response);
   }
@@ -449,9 +477,9 @@ function nxs_licenseregister_callback()
 			<p>
 				&nbsp;
 			</p>
-			<p id='nxsregproceed' style='display: none;' >
+			<p id='nxsregproceed' style='' >
 				<input name="nxs_license_register" type="hidden" value="true" />
-				<input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Register purchase") ?>' />
+				<input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Register") ?>' />
 				<i>NOTE; your purchase can be registered <u>one SINGLE time</u>.</i>
 			</p>
 			<p>
@@ -470,13 +498,33 @@ function nxs_licenseregister_callback()
 		if ($_REQUEST["nxs_license_unregister"] == "true")
 		{
 			update_option('nxs_licensekey', "");
+			nxs_license_clearupdatetransient();
 			// reload
-			echo "License was removed. <a href=''>Reload the page</a>";
+			?>
+			<p>
+				License was removed.
+			</p>
+			<p>
+				&nbsp;
+			</p>
+			<p>
+	  		<a class='button-primary' href=''>Reload the page</a>
+	  	</p>
+	  	<?php
+  		// reload current page
+  		$url = nxs_geturlcurrentpage();
+  		?>
+  		<script type='text/javascript'>
+  			var url = '<?php echo $url; ?>';
+  			window.location = url;
+  		</script>
+			<?php
 			die();
 		}
 		else
 		{
 			$licensekey = esc_attr(get_option('nxs_licensekey'));
+			$checkupdatesurl = admin_url('admin.php?page=nxs_admin_update');
 			?>
 			<p>
 				Existing license: <?php echo $licensekey; ?><br />
@@ -486,7 +534,8 @@ function nxs_licenseregister_callback()
 				&nbsp;
 			</p>
 			<input name="nxs_license_unregister" type="hidden" value="true" />
-			<input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Unregister") ?>' />
+			<a href="<?php echo $checkupdatesurl; ?>" class='button-primary'>Check for updates</a>
+			<input name='submit' type='submit' id='submit' class='button-secondary' value='<?php _e("Remove license") ?>' />
 			<?php
 		}
 	}
@@ -513,7 +562,5 @@ function nxs_licensekey_callback()
  	</p>
 
 	<?php
-	
 }
-
 ?>

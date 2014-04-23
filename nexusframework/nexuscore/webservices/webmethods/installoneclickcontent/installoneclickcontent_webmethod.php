@@ -31,7 +31,7 @@ function nxs_webmethod_installoneclickcontent()
 	}
 	else if ($currentstep == 2) 
 	{
-		require_once(NXS_FRAMEWORKPATH . '/nexuscore/importers/nxsimporter.php');
+		require_once(NXS_FRAMEWORKPATH . '/nexuscore/importers/oneclick/nxsimporter.php');
 		$importer = new NXS_importer();
 	
 		// inner stacked ob_start		
