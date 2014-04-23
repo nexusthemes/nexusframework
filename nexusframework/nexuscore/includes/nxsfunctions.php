@@ -2599,7 +2599,6 @@ function nxs_getsitemeta_internal($nackwhenerror)
 			{
 				//nxs_dumpstacktrace();
 				//die();
-				
 				ob_clean();
  						
  				$backendurl = wp_login_url();

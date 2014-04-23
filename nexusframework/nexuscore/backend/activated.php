@@ -386,7 +386,7 @@
 								nxs_js_popup_notifyservererror();
 								nxs_js_log(response);
 								// stop spinning! (!)
-								nxs_js_handleunexpectederrorwhileactivating();
+								nxs_js_handleunexpectederrorwhileactivating(response);
 							}
 						}
 					);
@@ -408,12 +408,28 @@
 			}
 		}
 		
-		function nxs_js_handleunexpectederrorwhileactivating()
+		function nxs_js_handleunexpectederrorwhileactivating(response)
 		{
-			nxs_js_alert_sticky("<?php echo nxs_l18n__("Bad news; an error occured while activating the theme. The good news is that we can try to help you out, if you <a target='_blank' href='http://www.nexusthemes.com'>contact us</a>.", "nxs_td"); ?>");
+			nxs_js_alert_sticky("<?php echo nxs_l18n__("Bad news; an error occured while activating the theme. Please first check our <a target='_blank' href='http://nexusthemes.com/support/how-to-install-a-wordpress-theme/'>installation guide</a>. The good news is that we can try to help you out, if you <a target='_blank' href='http://www.nexusthemes.com'>contact us</a>.", "nxs_td"); ?>");
 			maintask = -999;
 			jQuery("#waitwrap").hide();
 			jQuery("#errorwrap").show();
+			
+			if (response != null)
+			{
+				if (response.responseText != null)
+				{
+					var lowercase = response.responseText.toLowerCase();
+					if (lowercase.indexOf("under development") > -1)
+					{
+						nxs_js_alert_sticky("<?php echo nxs_l18n__("Hint: site is under development.", "nxs_td"); ?>");
+					}
+					else
+					{
+						nxs_js_alert_sticky("<?php echo nxs_l18n__("Sorry, no hint available", "nxs_td"); ?>");
+					}
+				}
+			}
 		}
 		
 		function nxs_js_starttask2()
@@ -496,7 +512,7 @@
 								nxs_js_popup_notifyservererror();
 								nxs_js_log(response);
 								// stop spinning! (2)
-								nxs_js_handleunexpectederrorwhileactivating();
+								nxs_js_handleunexpectederrorwhileactivating(response);
 							}
 						}
 					);
@@ -548,7 +564,7 @@
 								nxs_js_popup_notifyservererror();
 								nxs_js_log(response);
 								// stop spinning! (3)
-								nxs_js_handleunexpectederrorwhileactivating();
+								nxs_js_handleunexpectederrorwhileactivating(response);
 							}
 						}
 					);

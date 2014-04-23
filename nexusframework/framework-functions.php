@@ -525,6 +525,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"preschool;" => array
+		(
+			"href"=>"/wordpress-themes/education/preschool-wordpress-theme/",
+			"title"=>"Preschool WordPress theme",
+		),
 		"pestcontrol;" => array
 		(
 			"href"=>"/wordpress-themes/pest-control/pest-control-wordpress-theme/",
