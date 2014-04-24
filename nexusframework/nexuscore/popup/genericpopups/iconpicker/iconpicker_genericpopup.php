@@ -54,7 +54,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"signpost", 
 										
 										"tumbler", 
-										"wordpresssidebar", 
+										"wordpresstitle",
 										"comments", 
 										"bubble", 
 										"wordpresstitle",  
@@ -234,7 +234,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"bus",
 										"bicycle",
 										"soccer",
-										"flickr",
+										"carousel",
 	
 									);
 										
@@ -453,9 +453,11 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"pinterest",
 										"youtube",  
 										"vimeo", 
-										"feed",
+										"rss",
 										"google",
 										"google-drive",
+										"flickr",
+										"wordpresssidebar",
 										
 									);
 										
