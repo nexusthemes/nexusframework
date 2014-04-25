@@ -19,7 +19,7 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 								<div class="box">
 									' . nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip) . '
 									<div class="box-content">
-										<select id="'. $id .'" name="'. $id .'" onchange="nxs_js_popup_sessiondata_make_dirty();">
+										<select id="'. $id .'" class="chosen-select" name="'. $id .'" onchange="nxs_js_popup_sessiondata_make_dirty();">
 										';
 										 
 										 if ($id == "") {
