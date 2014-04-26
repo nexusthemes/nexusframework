@@ -247,7 +247,7 @@ function nxs_storecacheoutput($buffer)
 				$pieces = explode(":", $lowercase, 2);
 				if (count($pieces) == 2)
 				{
-					$lowercasecontenttype = $pieces[1];
+					$lowercasecontenttype = trim($pieces[1]);
 				}
 				else
 				{
@@ -269,6 +269,9 @@ function nxs_storecacheoutput($buffer)
 			// unknown content, likely we dont want to store this
 			// return "$contenttype; fiets:" . $a . "]";
 			$shouldstore = false;
+			
+			//$buffer = "is lowercasecontenttype; [$lowercasecontenttype]";
+			//var_dump($lowercasecontenttype);
 		}
 	}
 	
@@ -276,12 +279,17 @@ function nxs_storecacheoutput($buffer)
 	//
 	//
 	
+	//echo "gj";
+	//die();
+	
 	if($shouldstore) 
 	{
 		// session has not yet started
 		
 		$file = nxs_cache_getcachedfilename();
 		$dir = dirname($file);
+		
+		
 		
 		if(!is_dir($dir)) 
 		{
@@ -293,6 +301,10 @@ function nxs_storecacheoutput($buffer)
 		$cached = str_replace("</body>", "</body><!-- CACHED -->", $cached);			
 		
 		file_put_contents($file, $cached, FILE_APPEND | LOCK_EX);
+		
+	}
+	else
+	{
 	}
 	
 	return $buffer;
