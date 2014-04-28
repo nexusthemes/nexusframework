@@ -117,6 +117,19 @@ function nxs_shouldusecache_stage1()
 		$result = true;
 	}
 	
+	global $woocommerce;
+	if (isset($woocommerce))
+	{
+		if (isset($woocommerce->cart))
+		{
+			//check if any product is in the cart
+			if ( sizeof( $woocommerce->cart->get_cart() ) > 0 )
+			{
+				$result = false;
+			}
+		}
+	}
+	
 	if ($result)
 	{
 		if (nxs_isnxswebservicerequest())
@@ -235,6 +248,35 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	if ($shouldstore)
+	{
+		global $woocommerce;
+		if (isset($woocommerce))
+		{
+			if (isset($woocommerce->cart))
+			{
+				//check if product already in cart
+				if ( sizeof( $woocommerce->cart->get_cart() ) > 0 )
+				{
+					$shouldstore = false;
+				}
+			}
+		}
+	}
+	
+	if ($shouldstore)
+	{
+		if(session_id() == '') 
+		{
+			// session has not yet started
+		}
+		else
+		{
+			// if session has started, dont use the cache
+			$shouldstore = false;
+		}
+	}
+	
 	$lowercasecontenttype = "";
 	if ($shouldstore)
 	{
@@ -275,6 +317,15 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	if ($shouldstore)
+	{
+		if ($buffer == "")
+		{
+			// useless to store
+			$shouldstore = false;
+		}
+	}
+	
 	//
 	//
 	//
@@ -284,12 +335,8 @@ function nxs_storecacheoutput($buffer)
 	
 	if($shouldstore) 
 	{
-		// session has not yet started
-		
 		$file = nxs_cache_getcachedfilename();
 		$dir = dirname($file);
-		
-		
 		
 		if(!is_dir($dir)) 
 		{
@@ -297,11 +344,11 @@ function nxs_storecacheoutput($buffer)
 			mkdir($dir, 0777, true);
 		}
 
+		// enhance the output so we know its cached
 		$cached = $buffer;
 		$cached = str_replace("</body>", "</body><!-- CACHED -->", $cached);			
 		
 		file_put_contents($file, $cached, FILE_APPEND | LOCK_EX);
-		
 	}
 	else
 	{
