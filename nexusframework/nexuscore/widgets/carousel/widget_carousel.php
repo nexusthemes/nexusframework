@@ -173,6 +173,34 @@ function nxs_widgets_carousel_home_getoptions($args)
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
+			
+			/* OVERLAY
+			---------------------------------------------------------------------------------------------------- */
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Overlay", "nxs_td"),
+			),
+			
+			array( 
+				"id" 				=> "object1_color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Object1 color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "object2_color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Object2 color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),
+			
 		)
 	);
 	
@@ -246,6 +274,10 @@ function nxs_widgets_carousel_render_webpart_render_htmlvisualization($args)
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
+	
+	// Color
+	$object1_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $object1_color);
+	$object2_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $object2_color);
 	
 	/* IMAGE
 	---------------------------------------------------------------------------------------------------- */
@@ -379,18 +411,32 @@ function nxs_widgets_carousel_render_webpart_render_htmlvisualization($args)
 			echo '<div class="nxs-clear padding"></div>'; 
 		}
 		
+		// Logo
 		echo '
 		<div class="logo-wrapper nxs-absolute nxs-logo">
 			<img src="'.$imageurl.'" class="nxs-absolute '.$halign.' '.$max_height_percentage.'">
 		</div>';
-	
-		// Haven't been able to remove 2px at bottom of this div > http://css-tricks.com/fighting-the-space-between-inline-block-elements/
-	
+		
+		// Objects
+		if ($object1_color != "" || $object2_color != ""){
+			echo '
+			<div class="color-wrapper nxs-absolute">
+				<div class="object1 nxs-absolute '.$object1_color_cssclass.'"></div>
+				<div class="object2 nxs-absolute '.$object2_color_cssclass.'"></div>
+				<div class="object3 nxs-absolute '.$object2_color_cssclass.'"></div>
+				
+				<div class="object4 nxs-absolute '.$object1_color_cssclass.'"></div>
+				<div class="object5 nxs-absolute '.$object2_color_cssclass.'"></div>
+				<div class="object6 nxs-absolute '.$object2_color_cssclass.'"></div>
+				<div class="object7 nxs-absolute '.$object2_color_cssclass.'"></div>
+			</div>';
+		}
+		
+		// Carousel
 		echo '
-		<div class="carousel-wrapper nxs-align-center '.$image_size.'" >		
+		<div class="carousel-wrapper nxs-align-center '.$image_size.'" >
 			'.randomImage_2($carousel).'
-		</div>	
-		';
+		</div>';
 			
 	}
 	
