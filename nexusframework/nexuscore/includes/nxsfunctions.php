@@ -7649,6 +7649,38 @@ function nxs_lookuptable_deletekey($key)
 
 // -------------
 
+function nxs_get_referringpageurl()
+{
+	$requestp = $_REQUEST["nxsrefurlspecial"];
+	$result = urldecode($requestp);
+	
+	return $result;
+}
+
+function nxs_render_backbutton()
+{
+	if (nxs_has_adminpermissions())
+	{
+		if ($_REQUEST["nxsrefurlspecial"] != "") 
+		{
+			// two-step
+			$url = nxs_get_referringpageurl();
+			$url2 = base64_decode($url);
+			?>
+			<a href='<?php echo $url2; ?>' class='nxsbutton nxs-float-right'>OK</a>
+			<?php 
+		} 
+		else
+		{
+			?>
+			<a href='<?php echo nxs_geturl_home(); ?>' class='nxsbutton nxs-float-right'>OK</a>
+			<?php
+		}
+	}
+}
+
+// -------------
+
 /* UNICONTENTING */
 
 // get list of possible unicontent names that can be selected

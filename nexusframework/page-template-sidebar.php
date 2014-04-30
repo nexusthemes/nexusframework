@@ -56,15 +56,8 @@
   	<div class='nxs-aligncenter338 nxs-admin-wrap' style="position: static;">
   		<div class='padding'></div>
   		<!-- knoppen -->
-
-			<?php if ($_REQUEST["urlencbase64referringurl"] != "") { ?>
-			<a href='<?php echo base64_decode(urldecode($_REQUEST["urlencbase64referringurl"])); ?>' class='nxsbutton nxs-float-right'>OK</a>
-			<?php } else { ?>
-			<a href='<?php echo nxs_geturl_home(); ?>' class='nxsbutton nxs-float-right'>OK</a>
-			<?php } ?>
-    	
+			<?php nxs_render_backbutton(); ?>
 			<a href="#" onclick="nieuwmenuitem(this); return false;" class="nxsbutton1"><?php nxs_l18n_e("Add row[nxs:newrow,button]", "nxs_td"); ?></a>
-			
 			<div style='padding-bottom: 20px; overflow: hidden;'>&nbsp;</div>
   	</div>
   </div>

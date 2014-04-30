@@ -284,7 +284,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					<?php $url = get_home_url() . "/?nxs_menu=" . urlencode(nxs_getslug_for_postid($menu_menuid));?>
 						<!-- default = edit -->
 						<li title='<?php nxs_l18n_e("Configure menu items", "nxs_td"); ?>' class='tool' style='display: none;'>
-							<a href='#' class='nxs-defaultwidgetclickhandler' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick='var url = "<?php echo $url; ?>&urlencbase64referringurl=" + nxs_js_get_urlencbase64referringurl(); nxs_js_redirect(url);return false;'>
+							<a href='#' class='nxs-defaultwidgetclickhandler' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick='var url = "<?php echo $url; ?>&nxsrefurlspecial=" + nxs_js_get_nxsrefurlspecial(); nxs_js_redirect(url);return false;'>
 								<span class='nxs-icon-menucontainer'></span>
 							</a>
 						</li>

@@ -55,18 +55,8 @@
 		
 	    <div class="content2">
 	    	<div class="box">
-					<?php if ($_REQUEST["urlencbase64referringurl"] != "") { ?>
-					<a href='<?php echo base64_decode(urldecode($_REQUEST["urlencbase64referringurl"])); ?>' class='nxsbutton nxs-float-right'>OK</a>
-					<?php } ?>
+					<?php nxs_render_backbutton(); ?>
 					<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'dialogappendgenericlistitem'); return false;"><?php nxs_l18n_e("Add[nxs:heading]", "nxs_td"); ?></a>
-					<?php
-					if (false)
-					{
-					?>
-					<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'dialogappendbulkgenericlistitems'); return false;"><?php nxs_l18n_e("Bulk add", "nxs_td"); ?></a>
-					<?php
-					}
-					?>
 				</div>
 				<div class="nxs-clear margin"></div>
 			</div>

@@ -12,58 +12,58 @@ function nxs_webmethod_geturl()
  	
  	if ($destination == "header")
  	{
- 		if ($urlencbase64referringurl == "")
+ 		if ($nxsrefurlspecial == "")
  		{
- 			nxs_webmethod_return_nack("urlencbase64referringurl niet meegegeven");
+ 			nxs_webmethod_return_nack("nxsrefurlspecial niet meegegeven");
  		}
  		if ($postid == "")
  		{
  			nxs_webmethod_return_nack("postid niet meegegeven");
  		}
  		
- 		$url = get_home_url() . "/?nxs_header=" . urlencode(nxs_getslug_for_postid($postid)) . "&urlencbase64referringurl=" . $urlencbase64referringurl;
+ 		$url = get_home_url() . "/?nxs_header=" . urlencode(nxs_getslug_for_postid($postid)) . "&nxsrefurlspecial=" . $nxsrefurlspecial;
  		$result["url"] = $url;
  	}
  	else if ($destination == "footer")
  	{
- 		if ($urlencbase64referringurl == "")
+ 		if ($nxsrefurlspecial == "")
  		{
- 			nxs_webmethod_return_nack("urlencbase64referringurl niet meegegeven");
+ 			nxs_webmethod_return_nack("nxsrefurlspecial niet meegegeven");
  		}
  		if ($postid == "")
  		{
  			nxs_webmethod_return_nack("postid niet meegegeven");
  		}
  		
- 		$url = get_home_url() . "/?nxs_footer=" . urlencode(nxs_getslug_for_postid($postid)) . "&urlencbase64referringurl=" . $urlencbase64referringurl;
+ 		$url = get_home_url() . "/?nxs_footer=" . urlencode(nxs_getslug_for_postid($postid)) . "&nxsrefurlspecial=" . $nxsrefurlspecial;
  		$result["url"] = $url;
  	}
  	else if ($destination == "sidebar")
  	{
- 		if ($urlencbase64referringurl == "")
+ 		if ($nxsrefurlspecial == "")
  		{
- 			nxs_webmethod_return_nack("urlencbase64referringurl niet meegegeven");
+ 			nxs_webmethod_return_nack("nxsrefurlspecial niet meegegeven");
  		}
  		if ($postid == "")
  		{
  			nxs_webmethod_return_nack("postid niet meegegeven");
  		}
  		
- 		$url = get_home_url() . "/?nxs_sidebar=" . urlencode(nxs_getslug_for_postid($postid)) . "&urlencbase64referringurl=" . $urlencbase64referringurl;
+ 		$url = get_home_url() . "/?nxs_sidebar=" . urlencode(nxs_getslug_for_postid($postid)) . "&nxsrefurlspecial=" . $nxsrefurlspecial;
  		$result["url"] = $url;
  	}
  	else if ($destination == "pagelet")
  	{
- 		if ($urlencbase64referringurl == "")
+ 		if ($nxsrefurlspecial == "")
  		{
- 			nxs_webmethod_return_nack("urlencbase64referringurl niet meegegeven");
+ 			nxs_webmethod_return_nack("nxsrefurlspecial niet meegegeven");
  		}
  		if ($postid == "")
  		{
  			nxs_webmethod_return_nack("postid niet meegegeven");
  		}
  		
- 		$url = get_home_url() . "/?containerpostid=" . $containerpostid . "&nxs_pagelet=" . urlencode(nxs_getslug_for_postid($postid)) . "&urlencbase64referringurl=" . $urlencbase64referringurl;
+ 		$url = get_home_url() . "/?containerpostid=" . $containerpostid . "&nxs_pagelet=" . urlencode(nxs_getslug_for_postid($postid)) . "&nxsrefurlspecial=" . $nxsrefurlspecial;
  		$result["url"] = $url;
  	}
  	else if ($destination == "postid")

@@ -41,9 +41,7 @@
 		</div>
 				
     <div>			
-			<?php if ($_REQUEST["urlencbase64referringurl"] != "") { ?>
-			<a href='<?php echo base64_decode(urldecode($_REQUEST["urlencbase64referringurl"])); ?>' class='nxsbutton nxs-float-right'><?php nxs_l18n_e("OK[nxs:newrow,button]", "nxs_td"); ?></a>
-			<?php } ?>
+			<?php nxs_render_backbutton(); ?>
 			<a href="#" onclick="nxs_js_nieuwmenuitem_v2(this); return false;" class="nxsbutton1"><?php nxs_l18n_e("Add item[nxs:newrow,button]", "nxs_td"); ?></a>
 		</div>
 	</div> <!-- END content -->

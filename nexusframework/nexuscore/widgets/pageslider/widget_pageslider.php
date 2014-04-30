@@ -405,8 +405,8 @@ function nxs_widgets_pageslider_addmenuitem()
 	$postid = $post->ID;
 	
 	$refurl = nxs_geturl_for_postid($nxs_pageslider_pagesliderid);
-	$urlencbase64referringurl = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
-	$refurl = nxs_addqueryparametertourl($refurl, "urlencbase64referringurl", $urlencbase64referringurl);
+	$nxsrefurlspecial = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
+	$refurl = nxs_addqueryparametertourl($refurl, "nxsrefurlspecial", $nxsrefurlspecial);
 	?>
 	<li class="nxs-hidewheneditorinactive nxs-sub-menu">
 		<!-- edit slides -->

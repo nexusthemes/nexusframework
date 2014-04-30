@@ -56,15 +56,14 @@
 			</div>			
 					
 		</div>
-		  <div class="content2">
-  	<div class="box">
-			<?php if ($_REQUEST["urlencbase64referringurl"] != "") { ?>
-			<a href='<?php echo base64_decode(urldecode($_REQUEST["urlencbase64referringurl"])); ?>' class='nxsbutton nxs-float-right'>OK</a>
-			<?php } ?>
+		
+	  <div class="content2">
+			<div class="box">
+				<?php nxs_render_backbutton(); ?>
+			</div>
+			<div class="nxs-clear margin"></div>
 		</div>
-		<div class="nxs-clear margin"></div>
-	</div>
-	</div>
+	div>
 
 	<?php
 	nxs_getfooter("admin"); 

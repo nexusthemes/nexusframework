@@ -335,8 +335,8 @@
                             <?php } ?>
                         
                             <?php
-                            	$urlencbase64referringurl = urlencode(base64_encode(home_url('/') . "?nxs_admin=admin&backendpagetype=sidebars"));
-                            	$refurl = get_home_url() . "/?nxs_sidebar=" . urlencode($postname) . "&urlencbase64referringurl=" . $urlencbase64referringurl;
+                            	$nxsrefurlspecial = urlencode(base64_encode(home_url('/') . "?nxs_admin=admin&backendpagetype=sidebars"));
+                            	$refurl = get_home_url() . "/?nxs_sidebar=" . urlencode($postname) . "&nxsrefurlspecial=" . $nxsrefurlspecial;
                             ?>
                             <strong><a href="<?php echo $refurl; ?>"><?php echo $posttitle;?></a></strong>    
                         </td>

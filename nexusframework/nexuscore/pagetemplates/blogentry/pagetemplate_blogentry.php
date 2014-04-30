@@ -960,8 +960,8 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 								if ($pagedecorator_postid != "") 
 								{
 			          	$refurl = nxs_geturl_for_postid($pagedecorator_postid);
-									$urlencbase64referringurl = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
-									$refurl = nxs_addqueryparametertourl_v2($refurl, "urlencbase64referringurl", $urlencbase64referringurl, false);
+									$nxsrefurlspecial = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
+									$refurl = nxs_addqueryparametertourl_v2($refurl, "nxsrefurlspecial", $nxsrefurlspecial, false);
 									?>
 									<a class='nxsbutton1 nxs-float-left' href='<?php echo $refurl;?>'><?php nxs_l18n_e("Edit[nxs:popup,header]", "nxs_td"); ?></a>
 		          		<?php

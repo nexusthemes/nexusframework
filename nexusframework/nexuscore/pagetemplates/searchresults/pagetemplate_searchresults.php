@@ -573,7 +573,7 @@ function nxs_pagetemplate_searchresults_headerhome_getsheethtml($args)
 		function nxs_js_saveandopenheader()
 		{
 			nxs_js_savegenericpopup_core(function() {
-				var url = "<?php echo get_home_url() . "/?nxs_header=" . urlencode(nxs_getslug_for_postid($header_postid)); ?>" + "&urlencbase64referringurl=" + nxs_js_get_urlencbase64referringurl()();
+				var url = "<?php echo get_home_url() . "/?nxs_header=" . urlencode(nxs_getslug_for_postid($header_postid)); ?>" + "&nxsrefurlspecial=" + nxs_js_get_nxsrefurlspecial()();
 				nxs_js_redirect(url);
 			});
 		}
@@ -781,7 +781,7 @@ function nxs_pagetemplate_searchresults_sidebarhome_getsheethtml($args)
 		{
 			nxs_js_savegenericpopup_core(function() 
 			{
-				var url = "<?php echo get_home_url() . "/?nxs_sidebar=" . urlencode(nxs_getslug_for_postid($sidebar_postid)); ?>" + "&urlencbase64referringurl=" + nxs_js_get_urlencbase64referringurl();
+				var url = "<?php echo get_home_url() . "/?nxs_sidebar=" . urlencode(nxs_getslug_for_postid($sidebar_postid)); ?>" + "&nxsrefurlspecial=" + nxs_js_get_nxsrefurlspecial();
 				nxs_js_redirect(url);	
 			});
 		}
@@ -994,7 +994,7 @@ function nxs_pagetemplate_searchresults_footerhome_getsheethtml($args)
 		function nxs_js_saveandopenfooter()
 		{
 			nxs_js_savegenericpopup_core(function() {
-				var url = "<?php echo get_home_url() . "/?nxs_footer=" . urlencode(nxs_getslug_for_postid($footer_postid)); ?>" + "&urlencbase64referringurl=" + nxs_js_get_urlencbase64referringurl();
+				var url = "<?php echo get_home_url() . "/?nxs_footer=" . urlencode(nxs_getslug_for_postid($footer_postid)); ?>" + "&nxsrefurlspecial=" + nxs_js_get_nxsrefurlspecial();
 				nxs_js_redirect(url);
 			});
 		}

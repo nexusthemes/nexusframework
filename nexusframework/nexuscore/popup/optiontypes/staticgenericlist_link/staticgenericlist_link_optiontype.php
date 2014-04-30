@@ -8,9 +8,9 @@ function nxs_popup_optiontype_staticgenericlist_link_renderhtmlinpopup($optionva
 	
 	$containerpostid = $args["clientpopupsessioncontext"]["containerpostid"];
 	$currentcontainerposturl = nxs_geturl_for_postid($containerpostid);
-	$urlencbase64referringurl = urlencode(base64_encode($currentcontainerposturl));
+	$nxsrefurlspecial = urlencode(base64_encode($currentcontainerposturl));
 	
-	$refurl = get_home_url() . "/?nxs_genericlist=" . urlencode(nxs_getslug_for_postid($value)) . "&urlencbase64referringurl=" . $urlencbase64referringurl;
+	$refurl = get_home_url() . "/?nxs_genericlist=" . urlencode(nxs_getslug_for_postid($value)) . "&nxsrefurlspecial=" . $nxsrefurlspecial;
 	?>
 	<div class="content2">
     <div class="box">

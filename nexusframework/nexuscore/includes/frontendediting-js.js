@@ -5927,7 +5927,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			);
 		}
 		
-		function nxs_js_geturl(destination, postid, urlencbase64referringurl, invokewhenready, invokewhenfailed)
+		function nxs_js_geturl(destination, postid, nxsrefurlspecial, invokewhenready, invokewhenfailed)
 		{
 			// invoke ajax call
 			var ajaxurl = nxs_js_get_adminurladminajax();
@@ -5942,7 +5942,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 						"destination": destination,
 						"containerpostid": nxs_js_getcontainerpostid(),
 						"postid": postid,
-						"urlencbase64referringurl": urlencbase64referringurl
+						"nxsrefurlspecial": nxsrefurlspecial
 					},
 					async: false,
 					cache: false,
@@ -6469,11 +6469,11 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 		// 
 		function nxs_js_editpagesection(postid, layouttype, pagesheetwhennotavailable)
 		{
-			var urlencbase64referringurl = nxs_js_get_urlencbase64referringurl();
+			var nxsrefurlspecial = nxs_js_get_nxsrefurlspecial();
 			nxs_js_geturl(
 				layouttype, 
 				postid, 
-				urlencbase64referringurl, 
+				nxsrefurlspecial, 
 				function(response) 
 				{
 					var url = response.url;
@@ -8872,7 +8872,7 @@ function nxs_js_get_themecsstemplate_part1_anchorlinkcolors(cssprefix, pseudo, c
 	return u;
 }
 
-function nxs_js_get_urlencbase64referringurl() 
+function nxs_js_get_nxsrefurlspecial() 
 { 
 	var url = nxs_js_geturlcurrentpage();
 	var base64encodedurl = nxs_js_base64_encode(url);

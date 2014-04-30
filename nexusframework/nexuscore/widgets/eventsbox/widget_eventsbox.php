@@ -278,8 +278,8 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 			$currentcontainerposturl = nxs_geturl_for_postid($nxs_global_current_containerpostid_being_rendered);
 			$destinationurl = nxs_geturl_for_postid($items_genericlistid);
 			
-			$urlencbase64referringurl = urlencode(base64_encode($currentcontainerposturl));
-			$destinationurl = nxs_addqueryparametertourl_v2($destinationurl, "urlencbase64referringurl", $urlencbase64referringurl, false);
+			$nxsrefurlspecial = urlencode(base64_encode($currentcontainerposturl));
+			$destinationurl = nxs_addqueryparametertourl_v2($destinationurl, "nxsrefurlspecial", $nxsrefurlspecial, false);
 			?>
 			<a href='#' class='nxs-defaultwidgetclickhandler' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick="var url='<?php echo $destinationurl; ?>'; nxs_js_redirect(url); return false;">
 				<li title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>'>

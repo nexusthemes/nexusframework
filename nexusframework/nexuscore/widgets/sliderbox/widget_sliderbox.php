@@ -227,11 +227,11 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		{
 			global $nxs_global_current_containerpostid_being_rendered;
 			$currentcontainerposturl = nxs_geturl_for_postid($nxs_global_current_containerpostid_being_rendered);
-			$urlencbase64referringurl = urlencode(base64_encode($currentcontainerposturl));
+			$nxsrefurlspecial = urlencode(base64_encode($currentcontainerposturl));
 			
-			//$urlencbase64referringurl = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
+			//$nxsrefurlspecial = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
 			$refurl = nxs_geturl_for_postid($items_genericlistid);
-			$refurl = nxs_addqueryparametertourl_v2($refurl, "urlencbase64referringurl", $urlencbase64referringurl, false);
+			$refurl = nxs_addqueryparametertourl_v2($refurl, "nxsrefurlspecial", $nxsrefurlspecial, false);
 			?>
 			<a href='#' class='nxs-defaultwidgetclickhandler' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick="var url='<?php echo $refurl; ?>'; nxs_js_redirect(url); return false;">
 				<li title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>'>

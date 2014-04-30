@@ -530,6 +530,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"accounting;" => array
+		(
+			"href"=>"/wordpress-themes/accounting/accounting-wordpress-theme/",
+			"title"=>"Accounting WordPress theme",
+		),
 		"preschool;" => array
 		(
 			"href"=>"/wordpress-themes/education/preschool-wordpress-theme/",
