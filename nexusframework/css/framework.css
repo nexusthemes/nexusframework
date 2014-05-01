@@ -2359,6 +2359,10 @@ h3#order_review_heading,
 .nxs-icon-rabbit:before 			{ content: "\e73d"; }
 .nxs-icon-squirrel:before 			{ content: "\e73e"; }
 .nxs-icon-wasp:before 				{ content: "\e73f"; }
+.nxs-icon-landrover:before 			{ content: "\e740"; }
+.nxs-icon-mustang:before 			{ content: "\e741"; }
+.nxs-icon-truck:before 				{ content: "\e742"; }
+.nxs-icon-toyota:before 			{ content: "\e743"; }
 
 /* Incompatible with icomoon names */
 .nxs-icon-matchresults:before 		{ content: "\e6fa"; } /* uitslagen */
