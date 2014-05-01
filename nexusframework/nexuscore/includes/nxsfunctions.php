@@ -277,6 +277,18 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	if ($shouldstore)
+	{
+		global $nxs_gl_cache_pagecache;
+		if (isset($nxs_gl_cache_pagecache))
+		{
+			if ($nxs_gl_cache_pagecache == false)
+			{
+				$shouldstore = false;
+			}
+		}
+	}
+	
 	$lowercasecontenttype = "";
 	if ($shouldstore)
 	{
