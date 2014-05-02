@@ -388,7 +388,7 @@ function nxs_widgets_bio_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			array(
+			/*array(
 				"id" 				=> "header_vertical_alignment",
 				"type" 				=> "select",
 				"label" 			=> "Header vertical alignment",
@@ -399,7 +399,7 @@ function nxs_widgets_bio_home_getoptions($args)
 				),
 				"tooltip" 			=> nxs_l18n__("The complete top information can be swapped with the textual information with this option.", "nxs_td"),
 				"unistylablefield"	=> true
-			),
+			),*/
 			
 			array( 
 				"id" 				=> "wrapper_headingadvanced_end",
@@ -807,26 +807,15 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		$content_filler = '<div class="nxs-clear"></div>';
 	}
 	
-	// CONTENT ALIGNMENT
-	if ($header_vertical_alignment == 'top' || $header_vertical_alignment == ''){
-		$bio_result = '
-			<div class="header-wrapper">' .
-				$htmlforimage .
-				$afterimagefiller . 
-				$info .
-			'</div>' .
-			$content_filler .
-			$htmltext;
-	} else if ($header_vertical_alignment == 'bottom'){
-		$bio_result = 
-			$htmltext .
-			$content_filler . '
-			<div class="nxs-clear nxs-padding-top15"></div>
-			<div class="header-wrapper">' .
-				$htmlforimage .
-				$info .
-			'</div>';
-	}
+	$bio_result = '
+		<div class="header-wrapper">' .
+			$htmlforimage .
+			$afterimagefiller . 
+			$info .
+		'</div>' .
+		$content_filler .
+		$htmltext;
+	
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
