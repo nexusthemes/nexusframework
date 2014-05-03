@@ -530,6 +530,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"carrepair;" => array
+		(
+			"href"=>"/wordpress-themes/automotive/car-repair-wordpress-theme/",
+			"title"=>"Car Repair WordPress theme",
+		),
 		"accounting;" => array
 		(
 			"href"=>"/wordpress-themes/accounting/accounting-wordpress-theme/",
