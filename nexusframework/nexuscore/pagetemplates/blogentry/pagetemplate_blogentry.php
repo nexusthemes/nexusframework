@@ -299,8 +299,9 @@ function nxs_pagetemplate_handlecontent()
 																		$featuredimageid = get_post_thumbnail_id($contentpostid);
 																		if ($featuredimageid != "" && $featuredimageid != 0)
 																		{
-																			$image_size = "nxs_cropped_200x200";
+																			$image_size = "c@2-0";
 																			$wpsize = nxs_getwpimagesize($image_size);
+																			
 																			$imagemetadata = wp_get_attachment_image_src($featuredimageid, $wpsize, true);
 																			$imageurl = $imagemetadata[0];
 																			$hasfeatureimage = true;
