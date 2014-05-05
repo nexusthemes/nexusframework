@@ -740,7 +740,40 @@ function nxs_pagetemplate_handlepagedecorator($pagedecoratorid)
 }
 
 function nxs_pagetemplate_blogentry_render($args)
-{
+{	
+	if (is_attachment())
+	{
+		$templateproperties = nxs_gettemplateproperties();
+		if ($templateproperties["lastmatchingrule"] == "busruleisattachment")
+		{
+			// the templateproperties will render the correct output
+		}
+		else 
+		{
+			$attachmentid = $_REQUEST["attachment_id"];
+			?>
+			<h1><?php the_title(); ?></h1>
+			<?php 
+			if (wp_attachment_is_image($attachmentid))
+			{
+				$att_image = wp_get_attachment_image_src($attachmentid, "full"); 
+				?>
+			  <img src="<?php echo $att_image[0];?>" width="<?php echo $att_image[1];?>" height="<?php echo $att_image[2];?>"  class="attachment-medium" alt="<?php $post->post_excerpt; ?>" />
+				<?php 
+			}
+			else 
+			{
+				?>
+			  <a href="<?php echo wp_get_attachment_url($attachmentid) ?>" title="<?php echo wp_specialchars( get_the_title($attachmentid), 1 ) ?>" rel="attachment">
+			  	Link
+			  </a>
+				<?php 
+			}
+			
+			return;
+		}
+	}
+	
 	if (is_singular())
 	{
 		// the containerpostid is the id of the (one and only) post
