@@ -595,7 +595,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 			
 			// Slideset
 			echo '
-			<div id="slideset_'.$placeholderid.'" class="nxs-slideset" style="'.$slider_width.' '.$slideset_inlinestyle.'">';
+			<div id="slideset_'.$placeholderid.'" class="nxs-slideset '.$shadow.'" style="'.$slider_width.' '.$slideset_inlinestyle.'">';
 				
 			$slideindex = 0;
 			
@@ -603,9 +603,9 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				$slideindex++;
 				
 				// Image
-				$slide_image2 = '<img class="nxs-stretch nxs-slide-img '.$shadow.'" style="opacity: 0; '.$slide_img_inlinestyle.'" src="'.$slidedataset["imageurl"].'" />';
+				$slide_image2 = '<img class="nxs-stretch nxs-slide-img" style="opacity: 0; '.$slide_img_inlinestyle.'" src="'.$slidedataset["imageurl"].'" />';
 				$slide_image = '
-					<div class="nxs-stretch nxs-slide-img '.$shadow.'" style="'.$slide_img_inlinestyle.' background: url('.$slidedataset["imageurl"].') no-repeat center">
+					<div class="nxs-stretch nxs-slide-img" style="'.$slide_img_inlinestyle.' background: url('.$slidedataset["imageurl"].') no-repeat center">
 						'.$slide_image2.'
 					</div>';
 				
