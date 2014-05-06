@@ -40,6 +40,7 @@ function nxs_widgets_flickr_home_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
 			),
 			
 			array(
@@ -120,6 +121,23 @@ function nxs_widgets_flickr_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("The URL of Flickr. This is a required setting.", "nxs_td"),
 				"localizablefield"	=> true
 			),
+			array(
+				"id" 				=> "flickr_height",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Overrule default height", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("None", "nxs_td"),
+					"200px" => nxs_l18n__("200px", "nxs_td"),
+					"300px" => nxs_l18n__("300px", "nxs_td"),
+					"400px" => nxs_l18n__("400px", "nxs_td"),
+					"500px" => nxs_l18n__("500px", "nxs_td"),
+					"600px" => nxs_l18n__("600px", "nxs_td"),
+					"screenheight" => nxs_l18n__("Height of screen", "nxs_td"),
+				),
+				"tooltip" 			=> nxs_l18n__("The height of the bounding box. This is a optional.", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			
 			array( 
 				"id" 				=> "wrapper_end",
@@ -194,7 +212,7 @@ function nxs_widgets_flickr_render_webpart_render_htmlvisualization($args)
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
-	
+	if ($flickr_height == "") { $flickr_height = "446"; }
 	
 	/* TITLE
 	---------------------------------------------------------------------------------------------------- */
@@ -280,7 +298,7 @@ function nxs_widgets_flickr_render_webpart_render_htmlvisualization($args)
 		
 		echo $htmlfiller; 
 		
-		echo '<iframe src="'.$flickr_url.'/player/" width="670" height="446" frameborder="0" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" oallowfullscreen="" msallowfullscreen=""></iframe>';
+		echo '<iframe src="'.$flickr_url.'/player/" width="670" height="'.$flickr_height.'" frameborder="0" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" oallowfullscreen="" msallowfullscreen=""></iframe>';
 	}
 	
 	/* ------------------------------------------------------------------------------------------------- */
