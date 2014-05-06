@@ -39,20 +39,20 @@ function nxs_widgets_blog_home_getoptions($args)
 			// TITLE
 			
 			array( 
-				"id" 				=> "wrapper_title_begin",
+				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 			),
 			
-			array
-			( 			
+			array(
 				"id" 				=> "title",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"tooltip"			=> nxs_l18n__("If you want to give the entire widget a title, you can use this option.", "nxs_td"),
+				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
-			),	
+			),
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
@@ -76,20 +76,45 @@ function nxs_widgets_blog_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
+			array( 
+				"id" 				=> "top_info_color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Top info color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id"     			=> "top_info_padding",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Top info padding", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "icon",
+				"type" 				=> "icon",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array(
+				"id"     			=> "icon_scale",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
+				"unistylablefield"	=> true
+			),
 			array(
 				"id" 				=> "title_height",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
 				"unistylablefield"	=> true
-			),			
-					
+			),
+			
 			array( 
-				"id" 				=> "wrapper_title_end",
+				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
-
-			// ------------------------------------------------------------------------------------------------------------
+			
 			// SEARCHCRITERIA
 
 			array( 
@@ -287,22 +312,18 @@ function nxs_widgets_blog_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
-			//---------
 			array( 
 				"id" 				=> "twittercounters",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Twitter counters", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			
 			array( 
 				"id" 				=> "facebookcounters",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Facebook counters", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			
-			//---------
 			
 			array( 
 				"id" 				=> "wrapper_counters_end",
@@ -653,28 +674,47 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 			nxs_renderplaceholderwarning(nxs_l18n__("No categories selected[nxs:warning]", "nxs_td"));	
 		}
 		
+		/* TITLE
+		---------------------------------------------------------------------------------------------------- */
+		
 		// Title heading
-		if ($title_heading != "") {
-			$title_heading = "h" . $title_heading;	
-		} else {
-			$title_heading = "h1";
-		}
+		if ($title_heading != "") 	{ $title_heading = "h" . $title_heading; } else 
+									{ $title_heading = "h1"; }
 	
 		// Title alignment
 		$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
 		
+		if ($title_alignment == "center") { $top_info_title_alignment = "margin: 0 auto;"; } else
+		if ($title_alignment == "right")  { $top_info_title_alignment = "margin-left: auto;"; } 
+		
 		// Title fontsize
 		$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
-	
-		// Title height (across titles in the same row)
-		// This function does not fare well with CSS3 transitions targeting "all"
-		$heightiqprio = "p1";
-		$title_heightiqgroup = "title";
-		$titlecssclasses = $title_fontsize_cssclass;
-		$titlecssclasses = nxs_concatenateargswithspaces($titlecssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
+		
+		// Top info padding and color
+		$top_info_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $top_info_color);
+		$top_info_padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $top_info_padding);
+		
+		// Icon scale
+		$icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+			
+		// Icon
+		if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span>';}
+		
+		if ($title_schemaorgitemprop != "") {
+			// bijv itemprop="name"
+			$title_schemaorg_attribute = 'itemprop="' . $title_schemaorgitemprop . '"';
+		} else {
+			$title_schemaorg_attribute = "";	
+		}		
 		
 		// Title
-		$htmltitle = '<' . $title_heading . ' class="nxs-title ' . $title_alignment_cssclass . ' ' . $title_fontsize_cssclass . ' ' . $titlecssclasses . '">' . $title . '</' . $title_heading . '>';
+		$titlehtml = '<'.$title_heading.' ' . $title_schemaorg_attribute . ' class="nxs-title '.$title_alignment_cssclass.' '.$title_fontsize_cssclass.' '.$titlecssclasses.'">'.$title.'</'.$title_heading.'>';
+		
+		// Filler
+		$htmlfiller = nxs_gethtmlforfiller();
+		
+		
+		
 		
 		// Minimal vs. extended
 		if 			($items_layout == "minimal") 	{ $blogtype = 'nxs-blog-minimal'; } 
@@ -961,12 +1001,37 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		
 		echo '<div class="' . $blogtype . ' nxs-blogentries nxs-paging-page-' . $paging_page_class . ' ' . $metadata_layout . '">';
 		
-		echo $htmltitle;
+		/* TITLE
+		---------------------------------------------------------------------------------------------------- */
+		if ($icon == "" && $title == "") {
+			// nothing to show
+		} else if (($top_info_padding_cssclass != "") || ($icon != "") || ($top_info_color_cssclass != "")) {
+			 
+			// Icon title
+			echo '
+			<div class="top-wrapper nxs-border-width-1-0 '.$top_info_color_cssclass.' '.$top_info_padding_cssclass.'">
+				<div class="nxs-table" style="'.$top_info_title_alignment.'">';
+				
+					// Icon
+					echo $icon;
+					
+					// Title
+					if ($title != "") {	echo $titlehtml; }
+					
+					echo '
+				</div>
+			</div>';
 		
-		if ($htmltitle != "")
-		{		
-			echo '<div class="nxs-margin"></div>';
+		} else {
+		
+			// Default title
+			if ($title != "") {
+				echo $titlehtml;
+			}
+		
 		}
+		
+		echo $htmlfiller;
 			
 			// MINIMAL ICON
 			if ($items_layout == "minimal") {
