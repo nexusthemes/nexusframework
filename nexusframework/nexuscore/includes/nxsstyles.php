@@ -200,7 +200,7 @@ function nxs_getstyletypeoptions()
 		"padding" => array
 		(
 			"subtype" 		=> "multiplier",
-			"values" 			=> array("", 0, 0.3, 0.5, 1, 1.5, 2, 2.5, 3, 3.5),
+			"values" 			=> array("", 0, 0.1, 0.2, 0.3, 0.5, 1, 1.5, 2, 2.5, 3, 3.5),
 		),
 		"border_radius" => array
 		(
@@ -240,132 +240,33 @@ function nxs_getfonts()
 	);
 	*/
 	
-	$result = array
-	(
-		"Arial, Arial, Helvetica, sans-serif" => 
-			array
-			(
-				"text" => "Arial, Arial, Helvetica, sans-serif"
-			),
-		"Arial Black, Arial Black, Gadget, sans-serif" => 
-			array
-			(
-				"text"  => "Arial Black, Arial Black, Gadget, sans-serif"
-			),
-		"Courier New, Courier New, monospace" => 
-			array
-			(
-				"text"  => "Courier New, Courier New, monospace"
-			),
-		"'Georgia', serif" => 
-			array
-			(
-				"text"  => "'Georgia', serif"
-			),
-		"Tahoma, Geneva, sans-serif" => 
-			array
-			(
-				"text"  => "Tahoma, Geneva, sans-serif"
-			),
-		"Times New Roman, Times New Roman, Times, serif" => 
-			array
-			(
-				"text"  => "Times New Roman, Times New Roman, Times, serif"
-			),
-		"Verdana, Verdana, Geneva, sans-serif" => 
-			array
-			(
-				"text"  => "Verdana, Verdana, Geneva, sans-serif"
-			),
-		"'Droid Serif	', serif" => 
-			array
-			(
-				"text"  => "'Droid Serif	', serif"
-			),
-		"'Droid Sans', sans-serif" => 
-			array
-			(
-				"text"  => "'Droid Sans', sans-serif"
-			),
-		"'Crafty Girls', cursive" => 
-			array
-			(
-				"text"  => "'Crafty Girls', cursive"
-			),		
-		"'Trade Winds', cursive" => array
-			(
-				"text"  => "'Trade Winds', cursive"
-			),
-		"'Cherry Cream Soda', cursive" => array
-			(
-				"text"  => "'Cherry Cream Soda', cursive"
-			),
-		"'Federo', sans-serif" => array
-			(
-				"text"  => "'Federo', sans-serif"
-			),		
-		"'Smokum', cursive" => array
-			(
-				"text"  => "'Smokum', cursive"
-			),
-		"'Lobster', cursive" => array
-			(
-				"text"  => "'Lobster', cursive"
-			),
-		"'Rock Salt', cursive" => array
-			(
-				"text"  => "'Rock Salt', cursive"
-			),
-		"'Kranky', cursive" => 
-			array
-			(
-				"text"  => "'Kranky', cursive"
-			),
-		"'Sancreek', cursive" => 
-			array
-			(
-				"text"  => "'Sancreek', cursive"
-			),
-		"'Righteous', cursive" => 
-			array
-			(
-				"text"  => "'Righteous', cursive"
-			),
-		"'UnifrakturMaguntia', cursive" => 
-			array
-			(
-				"text"  => "'UnifrakturMaguntia', cursive"
-			),
-		"'Raleway', cursive" => 
-			array
-			(
-				"text"  => "'Raleway', cursive"
-			),
-		"'Helvetica Neue',Helvetica,sans-serif" => 
-			array
-			(
-				"text"  => "'Helvetica Neue',Helvetica,sans-serif"
-			),
-		"'Vidaloka', serif" => 
-			array
-			(
-				"text"  => "'Vidaloka',serif",
-			),
-		"'Great Vibes', serif" => 
-			array
-			(
-				"text"  => "'Great Vibes',serif",
-			),
-		"'Oswald', sans-serif" => 
-			array
-			(
-				"text"  => "'Oswald', sans-serif",
-			),
-			"'Open Sans', sans-serif" => 
-			array
-			(
-				"text"  => "'Open Sans', sans-serif",
-			),
+	$result = array(
+		"Arial, Arial, Helvetica, sans-serif" 					=> array("text" => "Arial, Arial, Helvetica, sans-serif"),
+		"Arial Black, Arial Black, Gadget, sans-serif" 			=> array("text"  => "Arial Black, Arial Black, Gadget, sans-serif"),
+		"Courier New, Courier New, monospace" 					=> array("text"  => "Courier New, Courier New, monospace"),
+		"'Georgia', serif" 										=> array("text"  => "'Georgia', serif"),
+		"Tahoma, Geneva, sans-serif" 							=> array("text"  => "Tahoma, Geneva, sans-serif"),
+		"Times New Roman, Times New Roman, Times, serif" 		=> array("text"  => "Times New Roman, Times New Roman, Times, serif"),
+		"Verdana, Verdana, Geneva, sans-serif" 					=> array("text"  => "Verdana, Verdana, Geneva, sans-serif"),
+		"'Droid Serif', serif" 									=> array("text"  => "'Droid Serif	', serif"),
+		"'Droid Sans', sans-serif" 								=> array("text"  => "'Droid Sans', sans-serif"),
+		"'Crafty Girls', cursive" 								=> array("text"  => "'Crafty Girls', cursive"),		
+		"'Trade Winds', cursive" 								=> array("text"  => "'Trade Winds', cursive"),
+		"'Cherry Cream Soda', cursive" 							=> array("text"  => "'Cherry Cream Soda', cursive"),
+		"'Federo', sans-serif" 									=> array("text"  => "'Federo', sans-serif"),		
+		"'Smokum', cursive" 									=> array("text"  => "'Smokum', cursive"),
+		"'Lobster', cursive" 									=> array("text"  => "'Lobster', cursive"),
+		"'Rock Salt', cursive" 									=> array("text"  => "'Rock Salt', cursive"),
+		"'Kranky', cursive" 									=> array("text"  => "'Kranky', cursive"),
+		"'Sancreek', cursive" 									=> array("text"  => "'Sancreek', cursive"),
+		"'Righteous', cursive" 									=> array("text"  => "'Righteous', cursive"),
+		"'UnifrakturMaguntia', cursive" 						=> array("text"  => "'UnifrakturMaguntia', cursive"),
+		"'Raleway', cursive" 									=> array("text"  => "'Raleway', cursive"),
+		"'Helvetica Neue',Helvetica,sans-serif" 				=> array("text"  => "'Helvetica Neue',Helvetica,sans-serif"),
+		"'Vidaloka', serif" 									=> array("text"  => "'Vidaloka',serif",),
+		"'Great Vibes', serif" 									=> array("text"  => "'Great Vibes',serif",),
+		"'Oswald', sans-serif" 									=> array("text"  => "'Oswald', sans-serif",),
+		"'Open Sans', sans-serif" 								=> array("text"  => "'Open Sans', sans-serif",),
 	);
 	
 	//
