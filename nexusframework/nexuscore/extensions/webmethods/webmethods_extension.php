@@ -56,4 +56,39 @@ function nxs_ext_inject_theme_webmethod($webmethod)
 	require_once($filetobeincluded);
 }
 
+//
+
+function nxs_lazyload_plugin_webmethod($file, $webmethod)
+{
+	// store file loc in lookup (mem)
+	global $nxs_gl_webmethod_file;
+	if ($nxs_gl_webmethod_file == null)
+	{
+		$nxs_gl_webmethod_file = array();
+	}
+	$nxs_gl_webmethod_file[$webmethod] = $file;
+		
+	add_action("nxs_ext_inject_webmethod_" . $webmethod, "nxs_inject_plugin_webmethod");
+}
+
+// unfortunately we can't use anonymous functions to support older servers running old PHP versions...
+function nxs_inject_plugin_webmethod($webmethod)
+{
+	if ($webmethod == "")
+	{
+		nxs_webmethod_return_nack("webmethod not set;" . $webmethod);
+	}
+	
+	global $nxs_gl_webmethod_file;
+	$file = $nxs_gl_webmethod_file[$webmethod];
+	$path = plugin_dir_path($file);
+	$filetobeincluded = $path . '/webmethods/' . $webmethod . '/' . $webmethod . '.php';
+	if (!file_exists($filetobeincluded))
+	{
+		nxs_webmethod_return_nack("file not found;" . $filetobeincluded);
+	}
+	
+	require_once($filetobeincluded);
+}
+
 ?>
