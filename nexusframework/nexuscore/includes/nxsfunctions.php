@@ -6154,6 +6154,9 @@ function nxs_localization_isactivated()
 // returns the foreign languages (this is the list EXCLUDING the native one)
 function nxs_localization_getsupportedforeignlanguages()
 {
+	$result = array();
+	return $result;
+	/*
 	if ($_SERVER["HTTP_HOST"] == "nexusthemes.com")
 	{
 		$result = array("nl");
@@ -6174,6 +6177,7 @@ function nxs_localization_getsupportedforeignlanguages()
 	// $result = array("nl");
 	
 	return $result;
+	*/
 }
 
 function nxs_localization_usenativelanguage()
