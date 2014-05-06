@@ -43,14 +43,6 @@ function nxs_ajax_webmethods()
 	// before we handle the request, we decode the values that are encoded with 
 	// the nxs_js_getescapeddictionary js function (here: *426759487653456)
 	$_REQUEST = nxs_urldecodearrayvalues($_REQUEST);
-	
-	/*
-	if (nxs_stringcontains($result, '\\'))
-	{
-		$result .= "HEEFTEENBACKSLASH(2";
-		// $result = str_replace('\\', '\\backslag', $result);
-	}
-	*/
 
 	// check permissions
 	if (!nxs_has_adminpermissions())
@@ -212,8 +204,6 @@ function nxs_ajax_webmethods()
 		nxs_webmethod_return_nack("nxs no access for webmethod [" . $webmethod . "]. If this was not intended, tune the nxs_iswebmethodallowed filter");
 	}
 	
-	
-	
 	// doorlussen naar handler voor dit sub request
 	$filefound = false;
 	$filetobeincluded = dirname(__FILE__) . "/webmethods/" . $webmethod . "/" . $webmethod . "_webmethod.php";
@@ -228,7 +218,7 @@ function nxs_ajax_webmethods()
 		nxs_requirewebmethod($webmethod);
 	}
 	
-	$functionnametoinvoke = 'nxs_webmethod_' . $webmethod;
+	$functionnametoinvoke = "nxs_webmethod_" . $webmethod;
 	if (function_exists($functionnametoinvoke))
 	{
 		$args = array();

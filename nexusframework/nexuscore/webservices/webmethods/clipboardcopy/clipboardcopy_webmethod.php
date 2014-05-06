@@ -7,7 +7,7 @@ function nxs_webmethod_clipboardcopy()
 
 	// first of all wipe the session data and reset the clipboard context,
 	// the session data will be filled in the following steps
-
+	
 	// process based upon the selected context 	
  	if ($clipboardcontext == "widget")
  	{

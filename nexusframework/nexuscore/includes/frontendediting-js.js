@@ -6155,7 +6155,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 					data: 
 					{
 						"action": "nxs_ajax_webmethods",
-						"webmethod": "clipboardcopy",
+						"webmethod": nxs_js_getclipboardhandler() + "copy",
 						"clipboardcontext" : "widget",
 						"postid": postid,
 						"placeholderid": placeholderid
@@ -6246,7 +6246,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 						data: 
 						{
 							"action": "nxs_ajax_webmethods",
-							"webmethod": "clipboardpaste",
+							"webmethod": nxs_js_getclipboardhandler() + "paste",
 							"clipboardcontext" : "widget",
 							"containerpostid": nxs_js_getcontainerpostid(),
 							"postid": postid,

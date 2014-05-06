@@ -21,6 +21,7 @@
 
 	$sitemeta = nxs_getsitemeta_internal(false);	// note this is cached
 	$locale = apply_filters( 'theme_locale', get_locale(), "");
+	$clipboardhandler = apply_filters('nxs_clipboardhandler', "clipboard");
 	
 	$guieffectsenabled = "true";
 	if (is_admin())
@@ -270,6 +271,7 @@
 	function nxs_js_getlocale() { return "<?php echo get_locale(); ?>"; }
 	function nxs_js_enableguieffects() { return <?php echo $guieffectsenabled;?>; }
 	function nxs_js_getcontainerpostid() { return <?php echo $containerpostid;?>; }
+	function nxs_js_getclipboardhandler() { return "<?php echo $clipboardhandler;?>"; }
 	function nxs_js_getcontainerpagetemplate() { return "<?php echo $pagetemplate;?>"; }
 	<?php
 	/*
