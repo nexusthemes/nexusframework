@@ -181,8 +181,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"lab", 
 										"magnet", 
 										"briefcase", 
-										 
-										 
+										"apple",
+										"windows8", 
 										"road", 
 										
 										"accessibility", 
@@ -190,6 +190,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"switch", 
 										"signup", 
 										"tree", 
+										"cloud",
 										"cloud-download", 
 										"cloud-upload", 
 										"earth", 
