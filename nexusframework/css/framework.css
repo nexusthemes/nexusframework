@@ -2185,6 +2185,7 @@ h3#order_review_heading,
 .nxs-icon-list2:before 				{ content: "\e67b"; }
 .nxs-icon-numbered-list:before 		{ content: "\e67c"; }
 .nxs-icon-tree:before 				{ content: "\e67e"; }
+.nxs-icon-cloud:before 				{ content: "\e744"; }
 .nxs-icon-cloud-download:before 	{ content: "\e67f"; }
 .nxs-icon-cloud-upload:before 		{ content: "\e680"; }
 .nxs-icon-earth:before 				{ content: "\e682"; }
@@ -2294,6 +2295,8 @@ h3#order_review_heading,
 .nxs-icon-bell:before 				{ content: "\e725"; }
 .nxs-icon-lock2:before 				{ content: "\e726"; }
 .nxs-icon-flickr:before 			{ content: "\e732"; }
+.nxs-icon-apple:before 				{ content: "\e745"; }
+.nxs-icon-windows8:before 			{ content: "\e746"; }
 
 /* CUSTOM ICONS */
 .nxs-icon-blowtorch:before 			{ content: "\e6ef"; }
