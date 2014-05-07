@@ -4796,6 +4796,36 @@ function nxs_postexistsbyid($postid)
 	}
 }
 
+function nxs_global_globalidexists($globalid)
+{
+	if ($globalid == "" || $globalid == "0" || $globalid == "NXS-NULL")
+	{
+		nxs_webmethod_return_nack("invalid parameter;" . $globalid);
+	}
+	
+	$postids = nxs_get_postidsaccordingtoglobalid($globalid);
+	if (count($postids) == 0)
+	{
+		$result = false;
+	}
+	else
+	{
+		$result = true;
+	}
+	
+	return $result;
+}
+
+function nxs_get_postidaccordingtoglobalid($globalid)
+{
+	$postids = nxs_get_postidsaccordingtoglobalid($globalid);
+	if (count($postids) != 1)
+	{
+		nxs_webmethod_return_nack("no, or multiple globalids found;" . count($postids) . " / " . $globalid);
+	}
+	return $postids[0];
+}
+
 function nxs_get_postidsaccordingtoglobalid($globalid)
 {
 	global $wpdb;
@@ -4865,17 +4895,6 @@ function nxs_get_globalid($postid, $createwhennotexists)
 			}
 		}
 	}
-	
-	/*
-	if ($postid == 2)
-	{
-		echo "<br />nxs_get_globalid for (" . $postid . ") equals {" . $result . "}<br />";
-		if ($result == "NXS-NULL")
-		{
-			nxs_webmethod_return_nack("null");
-		}
-	}
-	*/
 	
 	return $result;
 }

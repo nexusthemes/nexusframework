@@ -82,7 +82,7 @@ function nxs_inject_plugin_webmethod($webmethod)
 	global $nxs_gl_webmethod_file;
 	$file = $nxs_gl_webmethod_file[$webmethod];
 	$path = plugin_dir_path($file);
-	$filetobeincluded = $path . '/webmethods/' . $webmethod . '/' . $webmethod . '.php';
+	$filetobeincluded = $path . '/webmethods/' . $webmethod . '/' . $webmethod . '_webmethod.php';
 	if (!file_exists($filetobeincluded))
 	{
 		nxs_webmethod_return_nack("file not found;" . $filetobeincluded);

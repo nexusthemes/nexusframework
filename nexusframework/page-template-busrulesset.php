@@ -63,7 +63,7 @@
 			</div>
 			<div class="nxs-clear margin"></div>
 		</div>
-	div>
+	</div>
 
 	<?php
 	nxs_getfooter("admin"); 
