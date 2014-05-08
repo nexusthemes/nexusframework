@@ -318,6 +318,14 @@ function nxs_init()
 				
 				die();
 		  }
+		  else if ($_REQUEST["nxs"] == "testmagicquotes")
+		  {
+		  	$r = get_magic_quotes_gpc() === true;
+		  	echo "magic quotes?;";
+		  	var_dump($r);
+				
+				die();
+		  }
 		  else if ($_REQUEST["nxs"] == "testping")
 		  {
 		  	$url = $_REQUEST["url"];
