@@ -51,7 +51,7 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 				"id" 				=> "item_durationvisibility",	
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Visibility duration", "nxs_td"),
-				"dropdown" 			=> nxs_convertindexarraytoassociativearray(array("3000","4000","5000","6000")),
+				"dropdown" 			=> nxs_convertindexarraytoassociativearray(array("3000","4000","5000","6000","9000","12000")),
 				"unistylablefield"	=> true
 			),
 			array(

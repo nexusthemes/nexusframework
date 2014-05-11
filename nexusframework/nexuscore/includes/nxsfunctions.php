@@ -937,6 +937,11 @@ function nxs_addnewarticle($args)
 		nxs_webmethod_return_nack("unable to insert post; $titel; $slug; $posttype; " . $postid);
 	}
 	
+	if ($globalid != "")
+	{
+		nxs_reset_globalidtovalue($postid, $globalid);
+	}
+	
 	// if specified, store the subposttype,
 	// this is needed for generic lists, for example
 	// there the subposttype is used 
@@ -1001,6 +1006,11 @@ function nxs_addnewarticle($args)
 		$args["postid"] = $postid;
 		$args["postwizard"] = $postwizard;
 		nxs_postwizard_setuppost($args);
+	}
+	
+	if ($poststructure != "")
+	{
+		nxs_updatepoststructure($postid, $poststructure);
 	}
 	
 	//
@@ -4002,7 +4012,7 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 	// step 1; store the metadata of the widget itself
 	//
 	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($allvalues));
-	
+	 
 	//
 	// step 2; update the metadata of the unistyle
 	//
@@ -4800,7 +4810,7 @@ function nxs_global_globalidexists($globalid)
 {
 	if ($globalid == "" || $globalid == "0" || $globalid == "NXS-NULL")
 	{
-		nxs_webmethod_return_nack("invalid parameter;" . $globalid);
+		nxs_webmethod_return_nack("invalid parameter globalid;" . $globalid);
 	}
 	
 	$postids = nxs_get_postidsaccordingtoglobalid($globalid);
