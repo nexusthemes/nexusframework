@@ -2838,6 +2838,7 @@ function nxs_set_dataconsistencyvalidationrequired()
 	$metadatakey = 'nxs_dataconsistencyvalidationrequired';
 	
 	update_option($metadatakey, "true");
+	do_action('nxs_dataconsistency_validationchanged');
 }
 
 function nxs_set_dataconsistencyvalidationnolongerrequired()
@@ -2847,6 +2848,7 @@ function nxs_set_dataconsistencyvalidationnolongerrequired()
 	$metadatakey = 'nxs_dataconsistencyvalidationrequired';
 	
 	update_option($metadatakey, "");
+	do_action('nxs_dataconsistency_validationchanged');	
 }
 
 function nxs_isdataconsistencyvalidationrequired()
