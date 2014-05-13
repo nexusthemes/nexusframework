@@ -212,7 +212,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"point-right", 
 										"point-down", 
 										"point-left",
-										
+										"hardhat",
 										"yoga",
 										"tooth",
 										"horseshoe",
