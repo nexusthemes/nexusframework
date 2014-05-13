@@ -2366,6 +2366,7 @@ h3#order_review_heading,
 .nxs-icon-mustang:before 			{ content: "\e741"; }
 .nxs-icon-truck2:before				{ content: "\e742"; }
 .nxs-icon-toyota:before 			{ content: "\e743"; }
+.nxs-icon-hardhat:before 			{ content: "\e747"; }
 
 /* Incompatible with icomoon names */
 .nxs-icon-matchresults:before 		{ content: "\e6fa"; } /* uitslagen */
