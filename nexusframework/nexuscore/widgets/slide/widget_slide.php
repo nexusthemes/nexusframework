@@ -61,7 +61,12 @@ function nxs_widgets_slide_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the menu item to an article within your site.", "nxs_td"),
 			),	
-		
+			array(
+				"id" 				=> "destination_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("External link", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
+			),		
 		)
 	);
 	

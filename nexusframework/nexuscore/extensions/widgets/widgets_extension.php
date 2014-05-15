@@ -99,6 +99,20 @@ function nxs_requirewidget($widget)
 	return $result;
 }
 
+function nxs_enableconceptualwidgets()
+{
+	$enableconceptualwidgets = false;
+	if (nxs_hassitemeta())
+	{
+		$sitemeta = nxs_getsitemeta();
+		if ($sitemeta["widgetsmanagement_enableconceptual"] == "show")
+		{
+			$enableconceptualwidgets = true;
+		}
+	}
+	return $enableconceptualwidgets;
+}
+
 /* ENQUEUE WIDGETS
 ---------------------------------------------------------------------------------------------------- */
 add_action("nxs_getwidgets", "nxs_getwidgets_functions_AF", 10, 2);	// default prio 10, 2 parameters (result, args)
@@ -110,6 +124,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 	if ($nxsposttype == "") {
 		nxs_webmethod_return_nack("nxsposttype not set");
 	}
+	
+	$enableconceptualwidgets = nxs_enableconceptualwidgets();
 	
 	// BUSINESS RULES WIDGETS
 	
@@ -235,8 +251,11 @@ function nxs_getwidgets_functions_AF($result, $args)
 		
 		
 		
+		if ($enableconceptualwidgets)
+		{
+			$result[] = array("widgetid" => "wpmenu");
+		}
 		
-		// $result[] = array("widgetid" => "wpmenu");
 		// $result[] = array("widgetid" => "fbcomments");
 		// $result[] = array("widgetid" => "template2");
 		// $result[] = array("widgetid" => "stack");
@@ -275,6 +294,12 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "gallerybox");
 		$result[] = array("widgetid" => "definitionlistbox");
 		$result[] = array("widgetid" => "sliderbox");
+		
+		
+		if ($enableconceptualwidgets)
+		{
+			$result[] = array("widgetid" => "filmrollbox");
+		}
 	} 
 	
 	/* MENU POSTTYPE
@@ -299,6 +324,14 @@ function nxs_getwidgets_functions_AF($result, $args)
 		// SLIDER
 		if ($nxssubposttype == "sliderbox") {
 			$result[] = array("widgetid" => "slide");
+		}
+		
+		if ($enableconceptualwidgets)
+		{
+			// FILMROLL
+			if ($nxssubposttype == "filmrollbox") {
+				$result[] = array("widgetid" => "slide");
+			}
 		}
 		
 		// SUPERSIZED SLIDER
@@ -430,6 +463,8 @@ function nxs_lazyload_widgets()
 		return;
 	}
 
+	$enableconceptualwidgets = nxs_enableconceptualwidgets();
+
 	define('nxs_widgets_loaded', true);
 	
 	do_action("nxs_lazyload_widgets");
@@ -451,6 +486,12 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("googlemap");
 	nxs_ext_lazyload_widget("slide");
 	nxs_ext_lazyload_widget("sliderbox");
+	
+	if ($enableconceptualwidgets)
+	{
+		nxs_ext_lazyload_widget("filmrollbox");
+	}
+	
 	nxs_ext_lazyload_widget("youtube");
 	nxs_ext_lazyload_widget("vimeo");
 	nxs_ext_lazyload_widget("twittertweets");
@@ -493,7 +534,12 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("eventsbox");
 	nxs_ext_lazyload_widget("eventsboxitem");
 	nxs_ext_lazyload_widget("csv");
-	nxs_ext_lazyload_widget("wpmenu");
+	
+	if ($enableconceptualwidgets)
+	{
+		nxs_ext_lazyload_widget("wpmenu");
+	}
+	
 	nxs_ext_lazyload_widget("target");
 	nxs_ext_lazyload_widget("flickr");
 	nxs_ext_lazyload_widget("carousel");
