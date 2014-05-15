@@ -601,6 +601,47 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						</div>
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
+                    
+                    <div class="content2">
+						<div class="box">
+							<div class="box-title"><h4><?php nxs_l18n_e("Zodiac signs", "nxs_td"); ?></h4></div>
+							<div class="box-content">
+								<ul>
+									<?php
+									$iconset = "nxs-icon";
+									$icontypes = array
+									(									
+										"aries",
+										"taurus",
+										"gemini",
+										"cancer",
+										"leo",
+										"virgo",
+										"libra",
+										"scorpio",
+										"sagittarius",
+										"capricorn",
+										"aquarius",
+										"pisces",
+									);
+										
+									foreach($icontypes as $currenticontype)
+									{
+										$identification = $iconset . "-" . $currenticontype;
+										?>
+										<li class='nxs-float-left nxs-icon'>
+											<a href='#' onclick='nxs_js_selecticonitem("<?php echo $identification;?>"); return false;'>
+												<span class="<?php echo $identification; ?>"></span>
+											</a>
+										</li>
+										<?php
+									}
+									?>
+								</ul>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
 						
 				</div> <!-- END nxs-popup-content-canvas -->
 			</div> <!-- END nxs-popup-content-canvas-cropper -->
