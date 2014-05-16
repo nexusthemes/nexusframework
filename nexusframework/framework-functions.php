@@ -292,17 +292,17 @@ function nxs_init()
   			echo "homeurl:" . get_home_url() . "<br />";
   			die();
   		}
-	  	if ($_REQUEST["nxs"] == "phpinfo")
+	  	else if ($_REQUEST["nxs"] == "phpinfo")
 		  {
 		  	phpinfo();
 		  	die();
 		  }
-		  if ($_REQUEST["nxs"] == "phpversion")
+		  else if ($_REQUEST["nxs"] == "phpversion")
 		  {
 		  	echo phpversion();
 		  	die();
 		  }
-		  if ($_REQUEST["nxs"] == "wpversion")
+		  else if ($_REQUEST["nxs"] == "wpversion")
 		  {
 		  	global $wp_version;
 		  	echo $wp_version;
@@ -347,6 +347,12 @@ function nxs_init()
 		  	$result = dns_get_record($url);
 				print_r($result);
 				die();
+		  }
+		  else if ($_REQUEST["nxs"] == "testlocale")
+		  {
+		  	$env = localeconv();
+		  	var_dump($env);
+		  	die();
 		  }
 		}
 	}
@@ -538,6 +544,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"computerrepair;" => array
+		(
+			"href"=>"/wordpress-themes/computer-repair/computer-repair-wordpress-theme/",
+			"title"=>"Computer repair WordPress theme",
+		),
 		"carrepair;" => array
 		(
 			"href"=>"/wordpress-themes/automotive/car-repair-wordpress-theme/",

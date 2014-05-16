@@ -114,7 +114,7 @@
 		$coloralphas = nxs_getcoloralphas();
 		if (count($coloralphas) > 1)
 		{
-			$result = "[" . implode(",", $coloralphas) . "]";
+			$result = nxs_numerics_to_comma_sep_array_string($coloralphas);
 		}
 		else if (count($coloralphas) == 1)
 		{

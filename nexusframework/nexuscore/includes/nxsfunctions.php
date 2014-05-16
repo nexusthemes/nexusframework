@@ -9818,6 +9818,27 @@ function nxs_style_getdropdownitems($styletype)
 	return $result;
 }
 
+function nxs_numerics_to_comma_sep_array_string($values)
+{
+	$locale = localeconv();
+	$decimalseperator = $locale["decimal_point"];
+	
+	// note that the values could contain values like 0.8,
+	// which when converted to strings could become misinterpreted
+	// as "0,8", messing up our wanted behaviour
+	// we therefore first build the string with SEP as the seperator
+	// for example [0,8SEP1,2]
+	$itemseperator = ",";
+	$seperatorplaceholder = "[NXS:SEP]";
+	$result = "[" . implode($seperatorplaceholder, $values) . "]";
+	// convert any possible locale issues to dot's [0.8SEP1.2]
+	$result = str_replace($decimalseperator, ".", $result);
+	// convert seperator to commas [0.8,1.2]
+	$result = str_replace($seperatorplaceholder, $itemseperator, $result);
+	
+	return $result;
+}
+
 // is used to initialize for example colors or widths or other variations
 // clientside (used as part of creating CSS for, for example multipliers)
 function nxs_style_getstyletypevaluesjsinitialization($styletype)
@@ -9832,7 +9853,7 @@ function nxs_style_getstyletypevaluesjsinitialization($styletype)
 		// these cannot be initialized (they are used to show up 
 		// in the DDL's only
 		$styletypevalues = array_filter($styletypevalues, "is_numeric");
-		$result = "[" . implode(",", $styletypevalues) . "]";
+		$result = nxs_numerics_to_comma_sep_array_string($styletypevalues);
 	}
 	else if ($subtype == "encodedmultiplier")
 	{
