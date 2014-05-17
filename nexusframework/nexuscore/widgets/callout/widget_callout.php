@@ -371,7 +371,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	}
 	if ($destination_articleid != "") 
 	{
-		$$verifydestinationcount++;
+		$verifydestinationcount++;
 	}
 	if ($destination_js != "") 
 	{
