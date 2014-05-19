@@ -32,9 +32,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 									$icontypes = array
 									(
 										"categories", 
-										"gallerybox", 
-										"htmlcustom", 
-										"menucontainer", 
+										"gallerybox",  
 										"socialsharing", 
 										"callout", 
 										"newspaper", 
@@ -44,20 +42,14 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										
 										"googlemap", 
 										"sliderbox", 
-										"twittertweets", 
-										"radial", 
+										"twittertweets",
 										"squeezebox", 
-										"quote", 
-										"quotes-left", 
 										"bio", 
-										"logo", 
 										"signpost", 
 										
-										"tumbler", 
-										"wordpresstitle",
-										"comments", 
-										"bubble", 
-										"wordpresstitle",  
+										"comments",
+										"quote",  
+										"bubble",  
 										"undefined", 
 										"remove-sign", 
 										"article-overview", 
@@ -72,13 +64,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"lightning", 
 										"cog", 
 										"link", 
-										"spinner", 
-										"spinner2", 
 										
 										"calendar", 
 										"checkmark", 
 										"pagedecorator", 
-										"csv", 
 										"shirt", 
 										"profile", 
 										"history", 
@@ -89,13 +78,12 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"users", 
 										"trophy", 
 										"pie", 
-										"birthdaycake", 
+										//"birthdaycake", 
 										"commission", 
 										"referee", 
 										"matchresults",
 										"drawer", 
-										"zen", 
-										"template", 
+										"zen",  
 										
 										"books", 
 										"star2",
@@ -109,11 +97,11 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"euro", 
 										
 										"fire", 
-										"plunger", 
-										"faucet", 
-										"sewerage", 
-										"toilet", 
-										"blowtorch", 
+										//"plunger", 
+										//"faucet", 
+										//"sewerage", 
+										//"toilet", 
+										//"blowtorch", 
 										"pencil2", 
 										"pencil", 
 										"blog", 
@@ -212,30 +200,30 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"point-right", 
 										"point-down", 
 										"point-left",
-										"hardhat",
-										"yoga",
-										"tooth",
-										"horseshoe",
+										//"hardhat",
+										//"yoga",
+										//"tooth",
+										//"horseshoe",
 										"dollar",
-										"bread",
-										"palette",
+										//"bread",
+										//"palette",
 										
 										"pound",
-										"herring",
+										//"herring",
 										"bell",
 										"lock2",
 										
-										"security-camera",
-										"safe",
-										"fan",
-										"sofa",
-										"paw",
-										"vacuum-cleaner",
+										//"security-camera",
+										//"safe",
+										//"fan",
+										//"sofa",
+										//"paw",
+										//"vacuum-cleaner",
 										
-										"bus",
-										"bicycle",
-										"soccer",
-										"carousel",
+										//"bus",
+										//"bicycle",
+										//"soccer",
+										//"carousel",
 	
 									);
 										
@@ -523,7 +511,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
                     
-                    <div class="content2">
+                    <!-- <div class="content2">
 						<div class="box">
 							<div class="box-title"><h4><?php nxs_l18n_e("Animals", "nxs_td"); ?></h4></div>
 							<div class="box-content">
@@ -575,10 +563,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 									$iconset = "nxs-icon";
 									$icontypes = array
 									(									
-										"landrover",
-										"toyota",
-										"mustang",
-										"truck2",
+										//"landrover",
+										//"toyota",
+										//"mustang",
+										//"truck2",
 										"truck",
 										"car",
 										"airplane",
