@@ -331,8 +331,14 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 				   echo '<div class="nxs-clear multi-step-divider"></div>';
 				}
 				
+				//
+				if 		($index % 2 == 0 && $numofcolumns == "2") { $firstinrow = 'firstinrow'; }
+				else if ($index % 3 == 0 && $numofcolumns == "3") { $firstinrow = 'firstinrow'; }
+				else if ($index % 4 == 0 && $numofcolumns == "4") { $firstinrow = 'firstinrow'; }
+				else if ($index % 2 == 0 && $numofcolumns == "4") { $firstinrow = 'firstinrow-multistep'; }
+				
 				echo '
-				<div id="nxs-galleryitem-'.$items_genericlistid .'-'.$index.'-'.$imageid.'" class="nxs-galleryitem '.$orientation.'">
+				<div id="nxs-galleryitem-'.$items_genericlistid .'-'.$index.'-'.$imageid.'" class="nxs-galleryitem '.$orientation.' '.$firstinrow.'">
 					<a href="#" onclick="nxs_js_opengalleryitemlightbox(this); return false;">';
 					
 						// Title
@@ -369,6 +375,8 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 				</div>';
 
 			}
+			
+			$firstinrow = '';
 		}
 		
 		echo "<div class='nxs-clear'></div>";
