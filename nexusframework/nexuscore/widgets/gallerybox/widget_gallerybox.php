@@ -338,7 +338,7 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 				else if ($index % 2 == 0 && $numofcolumns == "4") { $firstinrow = 'firstinrow-multistep'; }
 				
 				echo '
-				<div id="nxs-galleryitem-'.$items_genericlistid .'-'.$index.'-'.$imageid.'" class="nxs-galleryitem '.$orientation.' '.$firstinrow.'">
+				<div id="nxs-galleryitem-'.$items_genericlistid .'-'.$index.'-'.$imageid.'" class="nxs-galleryitem '.$orientation.' '.$firstinrow.' numofcolumns'.$numofcolumns.'">
 					<a href="#" onclick="nxs_js_opengalleryitemlightbox(this); return false;">';
 					
 						// Title
