@@ -424,9 +424,9 @@ table.ui-datepicker-calendar td 					{ text-align: center !important; padding: 8
 /* ADMIN SEO TAB
 ----------------------------------------------------------------------------------------------------*/
 .nxs-admin-wrap #wpseosnippet 						{ background: white; border: 1px solid #DFDFDF; padding: 10px 10px 8px; max-width: 512px; }
-.nxs-admin-wrap #wpseosnippet a.title				{ color: #12C; font-size: 16px; line-height: 19px; }
-.nxs-admin-wrap #wpseosnippet a.url					{ line-height: 18px !important; }
-.nxs-admin-wrap #wpseosnippet span.content			{ color: #222 !important; font-size: 13px !important; line-height: 18px !important; }
+.nxs-admin-wrap #wpseosnippet a.title				{ color: #1e0fbe; font-size: 16px; line-height: 19px; display: block; }
+.nxs-admin-wrap #wpseosnippet .url					{ color: #006621; line-height: 18px !important; }
+.nxs-admin-wrap #wpseosnippet span.content			{ color: #545454 !important; font-size: 13px !important; line-height: 18px !important; }
 .nxs-admin-wrap #wpseosnippet span.nxs-highlighted	{ font-weight: bold; }
 
 .nxs-admin-wrap #seotitlecharsused,
