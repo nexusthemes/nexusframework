@@ -367,8 +367,21 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 /* GALLERY
 ------------------------------------------------------------------------------------------ */
 @media only screen and ( min-width: 0px )			{ .nxs-gallery .nxs-galleryitem	{ margin-left: 3.6em; } }
-@media only screen and ( max-width: 479px )			{ .nxs-gallery .nxs-galleryitem	{ margin-left: 0; } }
+@media only screen and ( max-width: 479px ) { 
+.nxs-gallery .nxs-galleryitem.numofcolumns4,
+.nxs-gallery .nxs-galleryitem.numofcolumns2							{ margin-left: 0; } }
+@media only screen and ( max-width: 719px )			{ .nxs-gallery .nxs-galleryitem.numofcolumns3 { margin-left: 0; } }
+@media only screen and ( max-width: 719px ) 		{ .nxs-main .nxs-gallery .nxs-galleryitem.numofcolumns2	{ margin-left: 0; } }
+@media only screen and ( max-width: 959px )			{ .nxs-gallery .nxs-galleryitem.numofcolumns3 { margin-left: 0; } }
 
+/* multistep divider */
+@media only screen and ( max-width: 719px ) { 
+.multi-step-divider 												{ display: block !important; } 
+.nxs-gallery .nxs-galleryitem.firstinrow-multistep					{ margin-left: 0; }
+}
+@media only screen and ( max-width: 959px ) { 
+.nxs-main .nxs-gallery .nxs-galleryitem.firstinrow-multistep		{ margin-left: 0; }
+}
 
 /*
 @media only screen 	   ( min-width: 0px ) 			{ .nxs-gallery-image { max-width: 120em !important; max-height: 90em !important; } }*/
@@ -377,13 +390,6 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 @media only screen and ( max-width: 959px ) 		{ .nxs-gallerypopup img { max-width: 620px !important; } }
 @media only screen and ( max-width: 719px )	 		{ .nxs-gallerypopup img { max-width: 460px !important; } }
 @media only screen and ( max-width: 479px )	 		{ .nxs-gallerypopup img { max-width: 300px !important; } }
-
-
-@media only screen and ( max-width: 719px ) { 
-.multi-step-divider 												{ display: block !important; } 
-.nxs-gallery .nxs-galleryitem.firstinrow-multistep					{ margin-left: 0; }
-}
-
 
 @media only screen and ( min-width: 0px ) {
 /* default landscape orientation */
