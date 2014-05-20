@@ -1128,11 +1128,8 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 
 /* GALLERY 
 ---------------------------------------------------------------------------------------------------- */
-/*.row-no-border-right .nxs-one-whole							{ border-right: 0; width: 924px; }
-.nxs-main .row-no-border-right .nxs-one-whole				{ border-right: 0; width: 652px; }*/
-.nxs-gallery 												{ margin-bottom: 30px; }
 .nxs-gallery .nxs-title										{ margin-bottom: 15px; }
-.nxs-gallery .nxs-galleryitem								{ display: inline; float: left; }
+.nxs-gallery .nxs-galleryitem								{ display: inline; float: left; margin-bottom: 30px; }
 .nxs-gallery .title-wrapper									{ margin-bottom: 10px; height: auto !important; }
 .nxs-gallery .description-wrapper							{ height: auto !important; }
 .multi-step-divider 										{ display: none; }
