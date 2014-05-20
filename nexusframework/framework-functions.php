@@ -32,6 +32,13 @@ if (version_compare($wp_version, '3.3.0') < 0)
 	die();
 }
 
+// tell WP SUPER CACHE to not cache any page;
+// if caching is wanted, user should use the 
+// build in caching implementation we use
+// would be best to output a warning in that 
+// case in the WP backend...
+define('DONOTCACHEPAGE', 'true');
+
 //
 // FEATURES IMAGES
 //
@@ -544,6 +551,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"astrology;" => array
+		(
+			"href"=>"/wordpress-themes/astrology/astrology-wordpress-theme/",
+			"title"=>"Astrology WordPress theme",
+		),
 		"computerrepair;" => array
 		(
 			"href"=>"/wordpress-themes/computer-repair/computer-repair-wordpress-theme/",
@@ -867,12 +879,12 @@ function nxs_render_postfooterlink()
 		}
 		//echo $authenticatelink;
 		
-		
-		
 		$footerhtmltemplate = str_replace("{{{authenticatelink}}}", $authenticatelink, $footerhtmltemplate);
-		$footerhtmltemplate = str_replace("{{{themelink}}}", $themelink, $footerhtmltemplate);
-		$footerhtmltemplate = str_replace("{{{nexuslink}}}", $nexuslink, $footerhtmltemplate);
 		
+		$footerhtmltemplate = str_replace("{{{themelink}}}", $themelink, $footerhtmltemplate);
+		
+		$footerhtmltemplate = str_replace("{{{nexuslink}}}", $nexuslink, $footerhtmltemplate);
+
 		echo $footerhtmltemplate;
 		?>
 	</p>
