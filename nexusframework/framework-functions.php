@@ -64,6 +64,19 @@ function nxs_showphpwarnings()
 	return $result;
 }
 
+function nxs_isdebug()
+{
+	$result = false;
+	
+	$remoteaddress = $_SERVER['REMOTE_ADDR'];
+	if ($remoteaddress == "92.254.25.182")
+	{
+		$result = true;
+	}
+	
+	return $result;
+}
+
 if (!nxs_showphpwarnings())
 {
 	error_reporting(E_ERROR | E_PARSE);
