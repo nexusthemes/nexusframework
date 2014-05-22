@@ -94,6 +94,12 @@ function nxs_widgets_fblikebox_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("The height of the plugin in pixels. This is optional.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			array( 
+				"id" 				=> "likebox_color",
+				"type" 				=> "colorzen", 
+				"label" 			=> nxs_l18n__("Background color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			
 			array( 
 				"id" 				=> "wrapper_input_end",
@@ -178,6 +184,9 @@ function nxs_widgets_fblikebox_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("You haven't set the url of the specific Facebook page.", "nxs_td");
 	}
 	
+	// Likebox color
+	$likebox_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $likebox_color);
+	
 	// if ($likebox_header == "") 	{ $likebox_header = "false"; } 	else { $likebox_header = "true"; }
 	if ($likebox_faces == "") 	{ $likebox_faces = "false"; } 	else { $likebox_faces = "true"; }
 	if ($likebox_border == "") 	{ $likebox_border = "false"; } 	else { $likebox_border = "true"; }
@@ -212,7 +221,7 @@ function nxs_widgets_fblikebox_render_webpart_render_htmlvisualization($args)
 		
 			// Likebox
 			echo '
-			<div class="fb-like-box-wrapper" style="height: '.$likebox_height.'">
+			<div class="fb-like-box-wrapper '.$likebox_color_cssclass.'" style="height: '.$likebox_height.'">
 				<div class="fb-like-box" 
 					data-href="'.$likebox_url.'" 
 					data-height="'.$likebox_height.'" 
