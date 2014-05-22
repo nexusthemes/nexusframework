@@ -400,6 +400,51 @@ function nxs_licenseregister_invoke()
 	  	</p>
   		<?php
   	}
+  	else if ($response_data["result"] == "ALTFLOW")
+  	{
+  		
+  		if ($response_data["altflowid"] == "WRONGSITE")
+  		{
+  			// license is already in use on another site
+  			update_option('nxs_licensekey', "");
+  			//var_dump($response_data);
+  			if ($response_data["helphtml"] != "")
+  			{
+  				echo $response_data["helphtml"];
+  			}
+  			else
+  			{
+  				?>
+		  		<p>
+		  			This ordernumber is already registered and actively being used on another website.
+		  			If you want to transfer the license to this new domain, please contact us at info@nexusthemes.com.
+		  		</p>
+  				<?php
+  			}
+	  		?>
+  			<p>
+		  		<a class='button-primary' href=''>Reload the page</a>
+		  	</p>
+			  <?php
+  		}
+  		else
+  		{
+  			update_option('nxs_licensekey', "");
+	  		?>
+	  		<p>
+	  			Unable to complete your registration<!-- ALT FLOW <?php echo $response_data["altflowid"]; ?> -->.<br />If you made a valid purchase
+	  			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
+	  		</p>
+				<p>
+					&nbsp;
+				</p>
+				<p>
+		  		<a class='button-primary' href=''>Reload the page</a>
+		  	</p>
+	  		<?php
+	  		//var_dump($response);
+  		}
+  	}
   	else
   	{
   		update_option('nxs_licensekey', "");
