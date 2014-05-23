@@ -1121,7 +1121,7 @@ function nxs_js_pop_resetdynamiccontentcontainer()
 	initialvalue += "function nxs_js_popup_get_initialbuttonstate() { return 'showokifnotdirty'; }";
 	initialvalue += "function nxs_js_popup_get_minwidth() { return 750; }";
 	initialvalue += "function nxs_js_popup_get_maxwidth() { return 1000; }";
-	initialvalue += "function nxs_js_popup_get_maxheight() { var contentheight = jQuery('.nxs-popup-content-canvas').height(); var maxheight = Math.round(jQuery(window).height() * 0.8); if (maxheight > contentheight) { maxheight = contentheight; } return maxheight; }";
+	initialvalue += "function nxs_js_popup_get_maxheight() { var contentheight = jQuery('.nxs-popup-content-canvas').height(); var maxheight = Math.round(jQuery(window).height() * 0.8); if (maxheight > contentheight) { maxheight = contentheight; } if (maxheight < 400) { maxheight = 400; }  ; return maxheight; }";
 	initialvalue += "function nxs_js_showwarning_when_trying_to_close_dirty_popup() { return true; }";
 	initialvalue += "<" + "/script>";
 	
@@ -1221,6 +1221,24 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						// enable "chosen" script to enhance dropdownlists
 						//nxs_js_log("chosen select done");
 						jQuery(".chosen-select").chosen({allow_single_deselect: true});
+						
+						// detect opening of the chosen ddl's
+						jQuery(".chosen-select").on
+						(
+							"chosen:showing_dropdown", function()
+							{
+								nxs_js_log("Open sesame!");
+							}
+						);
+						
+						jQuery(".chosen-select").on
+						(
+							"chosen:hiding_dropdown", function()
+							{
+								nxs_js_log("Closing sesame!");
+							}
+						);
+						
 						//nxs_js_log("chosen select done");
 						
 						nxs_js_popupshows = true;
@@ -1794,6 +1812,9 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 		//
 		function nxs_js_reset_popup_dimensions_actualrequest()
 		{
+			// turn off footer fillter initially before making any calculations
+			jQuery(".nxs-canvas-footerfiller").css("height", 0);
+			
 			if (nxs_js_popup_getsessiondata("popup_current_dimensions") == "gallerybox")
 			{
 			}
@@ -1825,11 +1846,9 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 				
 				if(typeof nxs_js_popup_get_maxheight == 'function')
 				{
-					//
-					var maxheight= nxs_js_popup_get_maxheight();	// can be overriden
+					var maxheight = nxs_js_popup_get_maxheight();	// can be overriden
+					//nxs_js_log("max height is " + maxheight);
 					jQuery(".nxs-popup-content-canvas-cropper").css('height', '' + maxheight + 'px');
-					//jQuery(".nxs-popup-content-canvas-cropper").css('max-height', '' + maxheight + 'px');
-					//jQuery(".nxs-popup-content-canvas-cropper").css('overflow', 'auto !important;');
 				}
 				else
 				{
@@ -1932,6 +1951,8 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 					}
 					else
 					{
+						nxs_js_log("setting to:" + parentHeight);
+						
 						jQuery(element).css
 						(
 							{
@@ -1953,6 +1974,15 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			}
 			
 			//jQuery('#TB_ajaxContent').css('opacity', '1');
+			
+			// add additional spacing at the bottom of the popup
+			var footerfillerheight = nxs_js_popup_get_maxheight();
+			footerfillerheight = footerfillerheight - 60;
+			if (footerfillerheight < 0)
+			{
+				footerfillerheight = 0;
+			}
+			jQuery(".nxs-canvas-footerfiller").css("height", footerfillerheight);
 		}
 		
 		function nxs_js_toggle_editor_state()

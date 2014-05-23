@@ -5,6 +5,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 	extract($args);
 	extract($runtimeblendeddata);
 	$value = $$id;	// $id is the parametername, $$id is the value of that parameter
+
 	
 	// the random id is needed, to solve a very strange bug since it looks like
 	// the tinymce editor instance is not yet correctly removed from the DOM
@@ -188,31 +189,25 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 										$content = str_replace("\n", "", $content);
 										$content = str_replace("\r", "", $content);
 										$content = str_replace("'", "&#39;", $content);
+
+										// on steve's text editor error occurs when
+										// using text containing Right Single Quotation Mark; '&rsquo;';    
+										$content = str_replace(chr("226") . chr('128') . chr('153'), "&rsquo;", $content);	
+										
 										// on sabine's text editor strange 226 chars are introduced at various places...
 										// causing the output to be interpreted as having
 										// newline chars, causing the JS to crash
+										
 										$content = str_replace(chr("226"), "", $content);
-										/*
-										if (false) // nxs_stringcontains($content, "Tienercentra TAS"))
-										{
-											//echo $content[29];
-											//echo $content[30];
-											//echo $content[31];
-											//echo $content[32];
-											echo $content[33];
-											if ($content[33] == chr("226"))
-											{
-												echo "GOT YOU THERE!";
-											}
-											echo ord($content[33]);
-											var_dump($content[33]);
-											echo "AAAAAAA";
-											echo $content;
-											die();
-										}
-										*/
+										//226 + 128 + 153
+										
+										// on steve's text editor strange chars are introduced at various places...
+										// causing the output to be interpreted as having
+										// newline chars, causing the JS to crash
+										//$content = str_replace(chr("226"), "", $content);										
 									?>
 									var content = '<?php echo $content ;?>';
+									
 									nxseditor.setContent(content, { format: 'raw' });
 									
 									<?php if (isset($focus) && $focus == "true") { ?>
