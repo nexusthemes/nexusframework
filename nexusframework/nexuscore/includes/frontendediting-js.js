@@ -1121,7 +1121,7 @@ function nxs_js_pop_resetdynamiccontentcontainer()
 	initialvalue += "function nxs_js_popup_get_initialbuttonstate() { return 'showokifnotdirty'; }";
 	initialvalue += "function nxs_js_popup_get_minwidth() { return 750; }";
 	initialvalue += "function nxs_js_popup_get_maxwidth() { return 1000; }";
-	initialvalue += "function nxs_js_popup_get_maxheight() { var contentheight = jQuery('.nxs-popup-content-canvas').height(); var maxheight = Math.round(jQuery(window).height() * 0.8); if (maxheight > contentheight) { maxheight = contentheight; } if (maxheight < 400) { maxheight = 400; }  ; return maxheight; }";
+	initialvalue += "function nxs_js_popup_get_maxheight() { var contentheight = jQuery('.nxs-popup-content-canvas').height(); var maxheight = Math.round(jQuery(window).height() * 0.8); if (maxheight > contentheight) { maxheight = contentheight; } if (maxheight < 400 && jQuery('.nxs-canvas-footerfiller').length > 0) { maxheight = 400; }  ; return maxheight; }";
 	initialvalue += "function nxs_js_showwarning_when_trying_to_close_dirty_popup() { return true; }";
 	initialvalue += "<" + "/script>";
 	
@@ -1221,24 +1221,7 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						// enable "chosen" script to enhance dropdownlists
 						//nxs_js_log("chosen select done");
 						jQuery(".chosen-select").chosen({allow_single_deselect: true});
-						
-						// detect opening of the chosen ddl's
-						jQuery(".chosen-select").on
-						(
-							"chosen:showing_dropdown", function()
-							{
-								nxs_js_log("Open sesame!");
-							}
-						);
-						
-						jQuery(".chosen-select").on
-						(
-							"chosen:hiding_dropdown", function()
-							{
-								nxs_js_log("Closing sesame!");
-							}
-						);
-						
+
 						//nxs_js_log("chosen select done");
 						
 						nxs_js_popupshows = true;

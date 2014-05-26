@@ -8205,6 +8205,11 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	{
 		$sheethelp = $options['sheethelp'];
 	}
+	$footerfiller = false;
+	if (isset($options['footerfiller']))
+	{
+		$footerfiller = $options['footerfiller'];
+	}
 	
 	// turn all fields into variables
 	extract($runtimewidgetmetadata);
@@ -8293,12 +8298,14 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	          </div> <!-- END box -->
 	          <div class="nxs-clear margin"></div>
 	      	</div> <!-- END content2 -->
+	      	<?php if ($footerfiller) { ?>
 	      	<div class="nxs-canvas-footerfiller content2 nxs-popup-heading">
 	      		<div class="box">
 	      			&nbsp;
 	      		</div> <!-- END box -->
 	      		<div class="nxs-clear margin"></div>
 	      	</div>
+	      	<?php } ?>
 	  		</div> <!-- nxs-popup-content-canvas -->
 			</div> <!-- END nxs-popup-content-canvas-cropper -->
         

@@ -45,9 +45,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 						function nxsremoveeditor_<?php echo $internaltextareaid; ?>()
 						{									
 							// remove editor
-							//nxs_js_log('before remove');
 							tinyMCE.execCommand('mceRemoveControl', false, '<?php echo $internaltextareaid; ?>');
-							//nxs_js_log('after remove');
 						}
 						
 						function gogoeditor_<?php echo $internaltextareaid; ?>()
@@ -67,8 +65,6 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								return;
 							}
 						
-							//nxs_js_log('gogoeditor invoked for <?php echo $internaltextareaid; ?>');
-							
 							// mocht hij toch al /nog?/ bestaan, verwijder 'm dan
 							nxsremoveeditor_<?php echo $internaltextareaid; ?>();
 							
@@ -186,13 +182,28 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 									// using this approach reopening the popup screens will be OK
 									<?php
 										$content = $value;
-										$content = str_replace("\n", "", $content);
-										$content = str_replace("\r", "", $content);
+										$content = str_replace("\n", "\\n", $content);
+										$content = str_replace("\r", "\\r", $content);
 										$content = str_replace("'", "&#39;", $content);
+										
+										// detectie; when there's an issue, use htmlentities($content) to locate the html lookup
+										// then google site:www.fileformat.info <name> to find the proper ascii representation
 
-										// on steve's text editor error occurs when
-										// using text containing Right Single Quotation Mark; '&rsquo;';    
-										$content = str_replace(chr("226") . chr('128') . chr('153'), "&rsquo;", $content);	
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x93), "&ndash;", $content);		// dash
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x94), "&mdash;", $content);		// mdash
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x98), "&lsquo;", $content);		// right quotation
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x99), "&rsquo;", $content);		// right quotation
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x9C), "&ldquo;", $content);		// left Double Quotation Mark 
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x9D), "&rdquo;", $content);		// Right Double Quotation Mark 
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x9E), "&bdquo;", $content);		
+										
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xA0), "&dagger;", $content);	// 
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xA1), "&Dagger;", $content);	// 
+
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xB0), "&permil;", $content);	// 
+										
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xA6), "&hellip;", $content);	// horizontal elipses
+										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xA2), "&bull;", $content);		// bullet
 										
 										// on sabine's text editor strange 226 chars are introduced at various places...
 										// causing the output to be interpreted as having

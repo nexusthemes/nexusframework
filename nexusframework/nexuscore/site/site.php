@@ -3741,6 +3741,7 @@ function nxs_site_maintenancehome_getoptions($args)
 {	
 	$options = array (
 		"sheettitle" => nxs_l18n__("Site maintenance mode", "nxs_td"),
+		"footerfiller" => true,	// fills footer since the ddl at bottom wont be accessible otherwise
 		"fields" => array(
 			
 			array( 
