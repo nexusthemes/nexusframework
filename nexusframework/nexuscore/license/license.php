@@ -350,7 +350,19 @@ function nxs_license_handlealtflow($response_data)
 	//var_dump($response_data);
 	if ($response_data["helphtml"] != "")
 	{
-		echo $response_data["helphtml"];
+		$helphtml = $response_data["helphtml"];
+		
+		$lookup = array
+		(
+			"{{nxslicenseurl}}" => admin_url('admin.php?page=nxs_admin_license'),
+		);
+		
+		foreach ($lookup as $key => $val)
+		{
+			$helphtml = str_replace($key, $val, $helphtml);
+		}
+		
+		echo $helphtml;
 	}
 	else
 	{
@@ -360,7 +372,7 @@ function nxs_license_handlealtflow($response_data)
 		</p>
 		<?php
 	}
-	
+	/*
 	if ($response_data["footernextstep"] == "" || $response_data["footernextstep"] == "reloadpage")
 	{
 		?>
@@ -373,6 +385,7 @@ function nxs_license_handlealtflow($response_data)
 	{
 		//
 	}
+	*/
 }
 
 function nxs_licenseregister_invoke()
