@@ -73,6 +73,10 @@ function nxs_isdebug()
 	{
 		$result = true;
 	}
+	else if ($remoteaddress == "10.0.160.89")
+	{
+		$result = true;
+	}
 	
 	return $result;
 }
@@ -564,6 +568,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"handyman;" => array
+		(
+			"href"=>"/wordpress-themes/maintenance-services/handyman-wordpress-theme/",
+			"title"=>"Handyman WordPress theme",
+		),
 		"astrology;" => array
 		(
 			"href"=>"/wordpress-themes/astrology/astrology-wordpress-theme/",

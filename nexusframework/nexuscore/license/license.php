@@ -50,7 +50,7 @@ function nxs_license_checkupdate($value)
 	{
 		// 
 	}
-	
+		
 	if ($shouldcheck)
 	{		
 		$licensekey = get_option('nxs_licensekey');
@@ -87,42 +87,54 @@ function nxs_license_checkupdate($value)
 	  }
 	  
 	  $body = wp_remote_retrieve_body($response); 
+	  
 		$update_data = json_decode($body, true);
+		
+		//var_dump($body);
+		//die();
 		
 	  if ($successful ) 
 	  {
-	 		$durationinsecs = 60 * 60 * 12;	// 12 hours
-	 		$before = get_transient("nxs_themeupdate");
-	 		
-	 		set_transient("nxs_themeupdate", $update_data, $durationinsecs);
-
-	 		if ("no" == $update_data["nxs_updates"])
-	 		{
-	 			$value = null;
-	 		}
-	 		else if ("enterlicensekey" == $update_data["nxs_updates"])
-	 		{
-	 			$value = null;
-	 		}
-	 		else if ("yes" == $update_data["nxs_updates"])
-	 		{
-				$theme = $update_data["theme"];
-				if ($theme == null)
-				{
-					echo "theme not set!	";
-					var_dump($update_data);
-					die();
+	  	if ($update_data["result"] == "OK" || $update_data["result"] == "ALTFLOW")
+	  	{
+		 		$durationinsecs = 60 * 60 * 12;	// 12 hours
+		 		$before = get_transient("nxs_themeupdate");
+		 		
+		 		set_transient("nxs_themeupdate", $update_data, $durationinsecs);
+	
+		 		if ("no" == $update_data["nxs_updates"])
+		 		{
+		 			$value = null;
+		 		}
+		 		else if ("enterlicensekey" == $update_data["nxs_updates"])
+		 		{
+		 			$value = null;
+		 		}
+		 		else if ("yes" == $update_data["nxs_updates"])
+		 		{
+					$theme = $update_data["theme"];
+					if ($theme == null)
+					{
+						echo "theme not set!	";
+						var_dump($update_data);
+						die();
+					}
+					$value -> response[$theme] = $update_data;
+					//echo "JAAAA" . $theme;
+					//die();
 				}
-				$value -> response[$theme] = $update_data;
-				//echo "JAAAA" . $theme;
-				//die();
+				else
+				{
+					$value = null;
+				}
+				
+				set_site_transient('update_themes', $value);
 			}
 			else
 			{
-				$value = null;
+				// skip for now... 
+	    	$durationinsecs = 60 * 60 * 12;	// 12 hours
 			}
-			
-			set_site_transient('update_themes', $value);
 		}
 		else
 		{
@@ -231,47 +243,51 @@ function nxs_section_update_callback()
 		}
 	
 		$themeupdate = get_transient("nxs_themeupdate");
-		//var_dump($themeupdate);
-		//die();
 		
-		$newversionexists = false;
-		
-		if ($themeupdate["nxs_updates"] == "enterlicensekey")
+		if ($themeupdate["result"] == "OK")
 		{
-			echo "Please enter a license key first";
-		}
-		else if ($themeupdate["nxs_updates"] == "yes")
-		{
-			if (version_compare($themeupdate["new_version"], $theme->version) > 0)
-			{
-				$newversionexists = true;
-			}
+			$newversionexists = false;
 			
-			if ($newversionexists)
+			if ($themeupdate["nxs_updates"] == "enterlicensekey")
 			{
-				echo "A new version (" . $themeupdate["new_version"] . ") is available";
-				echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
-				?>
-				<p>
-					<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
-		  	</p>
-				<?php
+				echo "Please enter a license key first";
+			}
+			else if ($themeupdate["nxs_updates"] == "yes")
+			{		
+				if (version_compare($themeupdate["new_version"], $theme->version) > 0)
+				{
+					$newversionexists = true;
+				}
 				
+				if ($newversionexists)
+				{
+					echo "A new version (" . $themeupdate["new_version"] . ") is available";
+					echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
+					?>
+					<p>
+						<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
+			  	</p>
+					<?php
+					
+				}
+				else
+				{
+					echo "Your theme is up to date";
+					echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
+				}
 			}
 			else
 			{
-				echo "Your theme is up to date";
-				echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
+				echo "Your theme is up to date <!-- (2) -->";
 			}
+		}
+		else if ($themeupdate["result"] == "ALTFLOW")
+		{
+			nxs_license_handlealtflow($themeupdate);
 		}
 		else
 		{
-			echo "Your theme is up to date <!-- (2) -->";
-		}
-		
-		if ($themeupdate["nxs_messagehtml"] != "")
-		{
-			echo $themeupdate["nxs_messagehtml"];
+			//
 		}
 	}
 }
@@ -317,6 +333,46 @@ function nxs_licensekey_stripspecialchars($input)
 	$input = preg_replace('/[^A-Za-z0-9.]/', '', $input); // Removes special chars.
 	$result = $input;
 	return $result;
+}
+
+function nxs_license_handlealtflow($response_data)
+{ 		
+	if ($response_data["keeplicense"] == "true")
+	{
+		// 
+	}
+	else
+	{
+		// by default the alternativeflow will wipe the licensekey
+		update_option('nxs_licensekey', "");
+	}
+	
+	//var_dump($response_data);
+	if ($response_data["helphtml"] != "")
+	{
+		echo $response_data["helphtml"];
+	}
+	else
+	{
+		?>
+		<p>
+			No help info supplied. Please contact us at info@nexusthemes.com.
+		</p>
+		<?php
+	}
+	
+	if ($response_data["footernextstep"] == "" || $response_data["footernextstep"] == "reloadpage")
+	{
+		?>
+		<p>
+			<a class='button-primary' href=''>Reload the page</a>
+		</p>
+	  <?php
+	}
+	else
+	{
+		//
+	}
 }
 
 function nxs_licenseregister_invoke()
@@ -402,48 +458,7 @@ function nxs_licenseregister_invoke()
   	}
   	else if ($response_data["result"] == "ALTFLOW")
   	{
-  		
-  		if ($response_data["altflowid"] == "WRONGSITE")
-  		{
-  			// license is already in use on another site
-  			update_option('nxs_licensekey', "");
-  			//var_dump($response_data);
-  			if ($response_data["helphtml"] != "")
-  			{
-  				echo $response_data["helphtml"];
-  			}
-  			else
-  			{
-  				?>
-		  		<p>
-		  			This ordernumber is already registered and actively being used on another website.
-		  			If you want to transfer the license to this new domain, please contact us at info@nexusthemes.com.
-		  		</p>
-  				<?php
-  			}
-	  		?>
-  			<p>
-		  		<a class='button-primary' href=''>Reload the page</a>
-		  	</p>
-			  <?php
-  		}
-  		else
-  		{
-  			update_option('nxs_licensekey', "");
-	  		?>
-	  		<p>
-	  			Unable to complete your registration<!-- ALT FLOW <?php echo $response_data["altflowid"]; ?> -->.<br />If you made a valid purchase
-	  			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
-	  		</p>
-				<p>
-					&nbsp;
-				</p>
-				<p>
-		  		<a class='button-primary' href=''>Reload the page</a>
-		  	</p>
-	  		<?php
-	  		//var_dump($response);
-  		}
+ 			nxs_license_handlealtflow($response_data);
   	}
   	else
   	{

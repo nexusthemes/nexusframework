@@ -3142,6 +3142,7 @@ function nxs_site_accessrestrictionhome_getoptions($args)
 	$options = array
 	(
 		"sheettitle" => nxs_l18n__("Site access restrictions", "nxs_td"),
+		"footerfiller" => true,
 		"fields" => array(
 			
 			array( 
