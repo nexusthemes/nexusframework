@@ -64,13 +64,6 @@ function nxs_widgets_target_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
-				"id" 				=> "title_alignment",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("title_halignment"),
-				"unistylablefield"	=> true
-			),
-			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
