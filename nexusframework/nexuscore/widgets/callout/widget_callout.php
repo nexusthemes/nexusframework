@@ -406,6 +406,9 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	// Text width
 	if ($callout_text_width != ""){
 		$callout_text_width = 'width: '.$callout_text_width.';';
+	}
+	
+	if ($text_margin != ""){
 		// the "overflow: auto; property is necessary to prevent parent div's to move when a margin is set on the child div
 		$overflow = 'overflow: auto;';
 	}
