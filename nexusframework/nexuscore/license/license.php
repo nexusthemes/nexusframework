@@ -5,6 +5,47 @@
 
 //die();
 
+function nxs_license_notifyregistersuccess()
+{
+  ?>
+  <div class="updated">
+    <p>Succesfully registered your license</p>
+  </div>
+  <?php
+}
+
+function nxs_license_notifynolicense()
+{
+	$url = admin_url('admin.php?page=nxs_admin_license');
+  ?>
+  <div class="error">
+    <p>
+    	You are not receiving theme updates for this WordPress theme because the site is not connected to a valid license.
+    	<br />
+    	Please <a href='<?php echo $url;?>'>register</a> your license to enable theme updates.
+    </p>
+  </div>
+  <?php
+}
+
+function nxs_license_notifyunregistersuccess()
+{
+  ?>
+  <div class="updated">
+    <p>Succesfully unregistered your license</p>
+  </div>
+  <?php
+}
+
+function nxs_license_notifyrequireswpupdate()
+{
+  ?>
+  <div class="error">
+    <p>The Nexus updater requires at least WP 3.4</p>
+  </div>
+  <?php
+}
+
 function nxs_license_clearupdatetransient()
 {
 	delete_transient("nxs_themeupdate");
@@ -15,21 +56,14 @@ add_action('load-themes.php', 'nxs_license_clearupdatetransient');
 
 function nxs_license_checkupdate($value)
 {
-	if (!nxs_hassitemeta())
+	if (!function_exists("wp_get_theme"))
 	{
-		// dont use this if the sitemeta is not available
+		add_action('admin_notices', 'nxs_license_notifyrequireswpupdate');
 		return $value;
 	}
 	
-	// ---
-	
-	$sitemeta = nxs_getsitemeta();
-	$theme = $sitemeta["catitem_themeid"];
-	if ($theme == "")
-	{
-		// dont use this if the theme is not updateble
-		return $value;
-	}
+	$themeobject = wp_get_theme();
+	$theme = $themeobject->name;
 	
 	// ---
 	
@@ -52,7 +86,7 @@ function nxs_license_checkupdate($value)
 	}
 		
 	if ($shouldcheck)
-	{		
+	{
 		$licensekey = get_option('nxs_licensekey');
 		//var_dump($licensekey);
 		
@@ -90,9 +124,6 @@ function nxs_license_checkupdate($value)
 	  
 		$update_data = json_decode($body, true);
 		
-		//var_dump($body);
-		//die();
-		
 	  if ($successful ) 
 	  {
 	  	if ($update_data["result"] == "OK" || $update_data["result"] == "ALTFLOW")
@@ -120,8 +151,6 @@ function nxs_license_checkupdate($value)
 						die();
 					}
 					$value -> response[$theme] = $update_data;
-					//echo "JAAAA" . $theme;
-					//die();
 				}
 				else
 				{
@@ -201,6 +230,21 @@ function plugin_admin_init()
 	
 		
 	add_settings_section('nxs_section_update', 'Updates', 'nxs_section_update_callback', 'nxs_section_update_type');
+	
+	if ($_REQUEST["nxsmsg"] == "registeredsuccesfully")
+	{
+		add_action('admin_notices', 'nxs_license_notifyregistersuccess');
+	}
+	else if ($_REQUEST["nxsmsg"] == "unregisteredsuccesfully")
+	{
+		add_action('admin_notices', 'nxs_license_notifyunregistersuccess');
+	}
+	
+	$licensekey = esc_attr(get_option('nxs_licensekey'));
+	if ($licensekey == "")
+	{
+		add_action('admin_notices', 'nxs_license_notifynolicense');
+	}
 }
 add_action( 'admin_init', 'plugin_admin_init' );
 
@@ -209,10 +253,16 @@ function nxs_section_license_callback()
 }
 
 function nxs_section_update_callback()
-{	
+{
+	if (!function_exists("wp_get_theme"))
+	{
+		add_action('admin_notices', 'nxs_license_notifyrequireswpupdate');
+		return;
+	}
+	
 	$theme = wp_get_theme();
-	echo "Theme name: " . $theme -> name . "<br />";
-	echo "Current version: " . $theme -> version . "<br />";
+	//echo "Theme name: " . $theme -> name . "<br />";
+	//echo "Current version: " . $theme -> version . "<br />";
 
 	$isframeworkshared = false;
 	
@@ -337,7 +387,7 @@ function nxs_licensekey_stripspecialchars($input)
 
 function nxs_license_handlealtflow($response_data)
 { 		
-	if ($response_data["keeplicense"] == "true")
+	if ($response_data["keeplicense"] == "true" || $response_data["keeplicense"] == true)
 	{
 		// 
 	}
@@ -368,7 +418,8 @@ function nxs_license_handlealtflow($response_data)
 	{
 		?>
 		<p>
-			No help info supplied. Please contact us at info@nexusthemes.com.
+			Operation failed. No help info supplied. Please <a target='_blank' href='mailto:info@nexusthemes.com'>contact us</a> at <a target='_blank' href='mailto:info@nexusthemes.com'>info@nexusthemes.com</a>.
+			<!-- <?php echo $response_data["altflowid"]; ?> -->
 		</p>
 		<?php
 	}
@@ -390,23 +441,18 @@ function nxs_license_handlealtflow($response_data)
 
 function nxs_licenseregister_invoke()
 {
+	if (!function_exists("wp_get_theme"))
+	{
+		add_action('admin_notices', 'nxs_license_notifyrequireswpupdate');
+		return;
+	}
+	
 	$ordernr = $_REQUEST["nxs_ordernr"];
 	
 	$site = nxs_geturl_home();
 	$themeobject = wp_get_theme();
 	$version = $themeobject->version;
-	
-	if (!nxs_hassitemeta())
-	{
-		// if the site meta is not (yet) available, don't perform the license check!
-		$shouldcheck = false;
-		$theme = "notset1";
-	}
-	else
-	{
-		$sitemeta = nxs_getsitemeta();
-		$theme = $sitemeta["catitem_themeid"];
-	}
+	$theme = $themeobject->name;
 
 	$serviceparams = array
 	(
@@ -445,12 +491,13 @@ function nxs_licenseregister_invoke()
 	  	$nxs_licensekey = $response_data["nxs_licensekey"];
   		// store serial
   		update_option('nxs_licensekey', $nxs_licensekey);
-  		
+  		  		
   		$dummy = new stdClass();
 			nxs_license_checkupdate($dummy);
 
   		// reload current page
   		$url = nxs_geturlcurrentpage();
+  		$url = nxs_addqueryparametertourl_v2($url, "nxsmsg", "registeredsuccesfully", true, true);
   		?>
   		<script type='text/javascript'>
   			var url = '<?php echo $url; ?>';
@@ -528,8 +575,7 @@ function nxs_licenseregister_callback()
 			?>
 			<p>
 				Enter your ordernumber below to register your purchase.<br />
-				Registering your site will enable best effort support and theme updates for one year
-				for this specific site.<br />
+				Registering your site will activate the <a target='_blank' href='http://nexusthemes.com/support/theme-license/'>license</a> to this site.<br />
 			</p>
 			<p>
 				&nbsp;
@@ -553,7 +599,6 @@ function nxs_licenseregister_callback()
 			<p id='nxsregproceed' style='' >
 				<input name="nxs_license_register" type="hidden" value="true" />
 				<input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Register") ?>' />
-				<i>NOTE; your purchase can be registered <u>one SINGLE time</u>.</i>
 			</p>
 			<p>
 				&nbsp;
@@ -600,13 +645,13 @@ function nxs_licenseregister_callback()
 			$checkupdatesurl = admin_url('admin.php?page=nxs_admin_update');
 			?>
 			<p>
-				Existing license: <?php echo $licensekey; ?><br />
-				Check the update section to see if this license is still valid.
+				Your license is valid. <!-- <?php echo $licensekey; ?> -->
 			</p>
 			<p>
 				&nbsp;
 			</p>
 			<input name="nxs_license_unregister" type="hidden" value="true" />
+			<input name="nxsmsg" type="hidden" value="unregisteredsuccesfully" />
 			<a href="<?php echo $checkupdatesurl; ?>" class='button-primary'>Check for updates</a>
 			<input name='submit' type='submit' id='submit' class='button-secondary' value='<?php _e("Remove license") ?>' />
 			<?php
