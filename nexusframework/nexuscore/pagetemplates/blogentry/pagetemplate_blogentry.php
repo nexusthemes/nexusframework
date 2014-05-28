@@ -545,6 +545,7 @@ function nxs_pagetemplate_handleheader()
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
 	<!-- Nexus Framework | http://nexusthemes.com -->	
 	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemename(); ?>" />
+	<meta name="nxs_geturl_home" content="<?php echo nxs_geturl_home(); ?>" />
 	<title><?php wp_title(''); ?></title>
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 

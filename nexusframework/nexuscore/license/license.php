@@ -110,7 +110,17 @@ function nxs_license_checkupdate($value)
 		
 		$site = home_url();
 		$url = "http://license.nexusthemes.com/";
-		$response = wp_remote_post($url, $serviceparams);
+		
+		global $nxs_glb_license_response; // prevent server from making multiple invocations per request
+		if ($nxs_glb_license_response == null)
+		{		
+			$response = wp_remote_post($url, $serviceparams);
+			$nxs_glb_license_response = $response;
+		}
+		else
+		{
+			$response = $nxs_glb_license_response;
+		}
 		
 		$successful = true;
 	
@@ -645,7 +655,7 @@ function nxs_licenseregister_callback()
 			$checkupdatesurl = admin_url('admin.php?page=nxs_admin_update');
 			?>
 			<p>
-				Your license is valid. <!-- <?php echo $licensekey; ?> -->
+				License found :) <!-- <?php echo $licensekey; ?> -->
 			</p>
 			<p>
 				&nbsp;
