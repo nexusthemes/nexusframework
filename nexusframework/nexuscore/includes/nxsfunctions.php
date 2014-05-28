@@ -4507,7 +4507,24 @@ function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	//
 	$headers .= 'Content-Type: text/html;' . "\n\r";
 	$result = wp_mail($toemail, $subject, $body, $headers);
+	
+	if ($result == false)
+	{
+		error_log("Error sending mail $fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject");
+	}
+	
 	return $result;
+}
+
+function nxs_sendhtmlmailtemplate($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body, $lookup)
+{
+	foreach ($lookup as $key => $val)
+	{
+		$body = str_replace($key, $val, $body);
+		$subject = str_replace($key, $val, $subject);
+	}
+	
+	return nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body);
 }
 
 function nxs_dump_post_meta_all($post_id)

@@ -132,6 +132,8 @@ function nxs_license_checkupdate($value)
 	  
 	  $body = wp_remote_retrieve_body($response); 
 	  
+	  
+	  
 		$update_data = json_decode($body, true);
 		
 	  if ($successful ) 
@@ -304,6 +306,7 @@ function nxs_section_update_callback()
 	
 		$themeupdate = get_transient("nxs_themeupdate");
 		
+		
 		if ($themeupdate["result"] == "OK")
 		{
 			$newversionexists = false;
@@ -321,14 +324,21 @@ function nxs_section_update_callback()
 				
 				if ($newversionexists)
 				{
-					echo "A new version (" . $themeupdate["new_version"] . ") is available";
-					echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
-					?>
-					<p>
-						<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
-			  	</p>
-					<?php
-					
+					if ($themeupdate["helphtml"] != "")
+					{
+						$helphtml = nxs_license_getoutputhelphtml($themeupdate);
+						echo $helphtml;
+					}
+					else
+					{
+						echo "A new version (" . $themeupdate["new_version"] . ") is available";
+						echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
+						?>
+						<p>
+							<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
+				  	</p>
+						<?php
+					}
 				}
 				else
 				{
@@ -395,6 +405,33 @@ function nxs_licensekey_stripspecialchars($input)
 	return $result;
 }
 
+function nxs_license_getoutputhelphtml($response_data)
+{
+	$helphtml = $response_data["helphtml"];
+	
+	if (is_multisite())
+	{
+		$updateurl = network_admin_url('themes.php');
+	}
+	else
+	{
+		$updateurl = admin_url('themes.php');
+	}
+		
+	$lookup = array
+	(
+		"{{nxslicenseurl}}" => admin_url('admin.php?page=nxs_admin_license'),
+		"{{nxsupdateurl}}" => $updateurl,
+	);
+	
+	foreach ($lookup as $key => $val)
+	{
+		$helphtml = str_replace($key, $val, $helphtml);
+	}
+	
+	echo $helphtml;
+}
+
 function nxs_license_handlealtflow($response_data)
 { 		
 	if ($response_data["keeplicense"] == "true" || $response_data["keeplicense"] == true)
@@ -410,18 +447,7 @@ function nxs_license_handlealtflow($response_data)
 	//var_dump($response_data);
 	if ($response_data["helphtml"] != "")
 	{
-		$helphtml = $response_data["helphtml"];
-		
-		$lookup = array
-		(
-			"{{nxslicenseurl}}" => admin_url('admin.php?page=nxs_admin_license'),
-		);
-		
-		foreach ($lookup as $key => $val)
-		{
-			$helphtml = str_replace($key, $val, $helphtml);
-		}
-		
+		$helphtml = nxs_license_getoutputhelphtml($response_data);
 		echo $helphtml;
 	}
 	else
@@ -433,20 +459,6 @@ function nxs_license_handlealtflow($response_data)
 		</p>
 		<?php
 	}
-	/*
-	if ($response_data["footernextstep"] == "" || $response_data["footernextstep"] == "reloadpage")
-	{
-		?>
-		<p>
-			<a class='button-primary' href=''>Reload the page</a>
-		</p>
-	  <?php
-	}
-	else
-	{
-		//
-	}
-	*/
 }
 
 function nxs_licenseregister_invoke()
