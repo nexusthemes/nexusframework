@@ -96,7 +96,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 										  theme_advanced_resize_horizontal: false,
 										  //theme_advanced_resize_vertical: true,
 										  fix_list_elements : true,
-										  valid_styles : {'*' : 'color,font-size,font-weight,font-style,text-decoration,text-align'},
+										  valid_styles : {'*' : 'color,font-size,font-weight,font-style,text-decoration,text-align,list-style-type'},
 										  paste_use_dialog : true,
 										  paste_auto_cleanup_on_paste : true,
 										  extended_valid_elements : "style,a[id|name|href|target|title|onclick|class],hr[width|size|noshade],span[id|align|style|class],h1,h2,h3,h4,h5,h6",

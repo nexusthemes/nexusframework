@@ -1959,11 +1959,15 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			//jQuery('#TB_ajaxContent').css('opacity', '1');
 			
 			// add additional spacing at the bottom of the popup
-			var footerfillerheight = nxs_js_popup_get_maxheight();
-			footerfillerheight = footerfillerheight - 60;
-			if (footerfillerheight < 0)
+			var footerfillerheight = 0;
+			if(typeof nxs_js_popup_get_maxheight == 'function')
 			{
-				footerfillerheight = 0;
+				var footerfillerheight = nxs_js_popup_get_maxheight();
+				footerfillerheight = footerfillerheight - 60;
+				if (footerfillerheight < 0)
+				{
+					footerfillerheight = 0;
+				}
 			}
 			jQuery(".nxs-canvas-footerfiller").css("height", footerfillerheight);
 		}
@@ -3875,11 +3879,16 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			}
 			else
 			{
+				//nxs_js_log("scenario applies!!");
+				
 				jQuery("html").addClass("nxs-rows-responsive");
 				jQuery("html").removeClass("nxs-rows-nonresponsive");
 			
 				// nxs_js_log('spread across multiple rows');	
 				// rows are potentially spread across multiple rows; we should not set heights in that case
+				
+				// reset heights of heightiq elements
+				jQuery(".nxs-heightiq").css('height', 'auto');
 				
 				jQuery.each
 				(
@@ -3893,7 +3902,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 						(
 							innerplaceholders, function(index, currentinnerplaceholder)
 							{
-								jQuery(currentinnerplaceholder).css('height', null);
+								jQuery(currentinnerplaceholder).css('height', 'auto');
 								jQuery(currentinnerplaceholder).css('margin-top', '0');
 								// var height = jQuery(currentinnerplaceholder).css('height'); // hier zit fout-> padding meenemen
 								var height = jQuery(currentinnerplaceholder).outerHeight(true);

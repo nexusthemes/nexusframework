@@ -161,6 +161,12 @@ function nxs_shouldusecache_stage1()
 		$result = false;
 	}
 	
+	if ($_REQUEST["nxscache"] == "off")
+	{
+		// no cache is explicitly instructed not to use cache
+		$result = false;
+	}
+	
 	if ($result)
 	{
 		if(session_id() == '') 
@@ -496,6 +502,22 @@ function nxs_renderplaceholderwarning($message)
 		<!-- warning detected; please sign in to see the warning -->
 		<?php
 	}
+}
+
+function nxs_date_todatestring($timestamp)
+{
+	$dayhtml = date('j', $timestamp);
+	
+	$monthhtml = nxs_getlocalizedmonth(date('m', $timestamp));
+	$yearhtml = date('Y', $timestamp);
+	$result = $dayhtml . " " . $monthhtml . " " . $yearhtml;
+	return $result;
+}
+
+function nxs_date_gettotaldaysinterval($timestamp)
+{
+	$result = round($timestamp / 86400);
+	return $result;
 }
 
 function nxs_getlocalizedmonth($monthleadingzeros)
