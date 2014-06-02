@@ -5,6 +5,56 @@
 
 //die();
 
+function nxs_site_wipe()
+{
+	if (!is_super_admin())
+	{
+		echo "no super admin rights!";
+		die();
+	}
+	
+	//ob_start();
+	
+	global $wpdb;
+
+	// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
+	// as these can use the pagetemplate concept too. This saves development
+	// time for plugins, and increases consistency of data for end-users
+	
+	$tables_to_delete = array();
+	$tables_to_delete[] = "comments";
+	$tables_to_delete[] = "commentmeta";
+	$tables_to_delete[] = "links";
+	$tables_to_delete[] = "terms";
+	$tables_to_delete[] = "term_relationships";
+	$tables_to_delete[] = "term_taxonomy";
+	$tables_to_delete[] = "postmeta";
+	$tables_to_delete[] = "posts";
+	
+	foreach ($tables_to_delete as $currenttabletodelete)
+	{
+		$q = "DELETE FROM " . $wpdb->prefix . $currenttabletodelete;
+		//echo $q;
+		$dbresult = $wpdb->get_results($q, ARRAY_A );
+		//echo "sql output:<br />";
+		//var_dump($dbresult);
+		//echo "<br /><br />";
+	}
+	
+  //
+  //echo "patch finished";
+	
+  //echo "<br /><br />";
+  
+  //$output = ob_get_contents();
+	//ob_end_clean();
+	
+	//echo "output:" . $output;
+	
+	//echo "-----------<br />";
+	//echo "DO NOT FORGET TO ALSO REMOVE THE WP-CONTENT FILES (IMAGES/ATTACHMENTS!!!!)";
+}
+
 function nxs_license_notifyregistersuccess()
 {
   ?>
@@ -230,6 +280,7 @@ function nxs_license_addadminpages()
 {
 	add_submenu_page("nxs_backend_overview", 'License', 'License', 'manage_options', 'nxs_admin_license', 'nxs_license_theme_license_page_content', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'Update', 'Update', 'manage_options', 'nxs_admin_update', 'nxs_license_update_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'Restart', 'Restart', 'manage_options', 'nxs_admin_restart', 'nxs_license_restart_page_content', '', 81 );
 }
 
 function plugin_admin_init()
@@ -382,6 +433,104 @@ function nxs_license_update_page_content()
 	<?php
 }
 
+function nxs_license_restart_page_content()
+{
+	$iswiped = false;
+	
+	$nxsaction = $_REQUEST["nxsaction"];
+	if ($nxsaction == "wipesite")
+	{
+		$valid = true;
+		
+		// check nonce
+		if (! isset( $_POST['wipenonce']) || ! wp_verify_nonce( $_POST['wipenonce'], 'nxswipesite'))
+		{
+   		echo "Invalid noncetext<br />";
+			$valid = false;
+   	}
+   	
+   	$confirmtext = $_REQUEST["confirmtext"];
+   	if ($confirmtext != "DELETE")
+   	{
+   		echo "Invalid confirmation text<br />";
+   		$valid = false;
+   	}
+   	
+   	//
+   	
+   	if ($valid)
+   	{
+   		// check 
+			
+			nxs_site_wipe();
+			
+			$url = nxs_geturlcurrentpage();
+			$url = nxs_addqueryparametertourl_v2($url, "nxsaction", "wipesitefinished", true, true);
+			?>
+			<script>
+				window.location = '<?php echo $url; ?>';
+			</script>
+			<?php
+			wp_redirect($url, 301);
+			die();
+		}
+		else
+		{
+			//echo "Invalid request";
+		}
+	}
+	else if ($nxsaction == "wipesitefinished")
+	{
+		$iswiped = true;
+	}
+	
+	if ($iswiped)
+	{
+		?>
+		 <div class="wrap">
+	    <h2>Restart</h2>
+	    <p>
+	    	All data was succesfully wiped from your system.
+	    </p>
+	   </div>
+	  <?php
+	}
+	else
+	{
+		?>
+	  <div class="wrap">
+	    <h2>Restart (for system admins only!)</h2>
+	    <p>
+	    	If for whatever reason you are totally not happy with the content on your site, 
+	    	you might want to cleanup the entire site. <br />
+	    	To avoid having to delete every post,
+	    	page, media items, etc per individual item, we have added a feature in this theme
+	    	to wipe the entire site with basically one click. <br />
+	    	NOTE that this is a dangerous 
+	    	operation as there is no way back. So proceed with caution!<br />
+	    	<br />
+	    	We have a created a video that explains in more detail why you would want
+	    	to delete your entire site (and start from scratch).<br />
+	    	Its defined at the section 'How to remove all WordPress content and start from scratch'
+	    	on the support page for <a target='_blank' href='http://nexusthemes.com/support/how-to-install-a-wordpress-theme/'>activating your WordPress theme</a>.
+	    </p>
+	    <p>
+				<b>Be sure to make a backup, and proceed only if you know what you are doing!</b><br />
+				<br />
+				To continue erasing your entire site, enter the text <b>DELETE</b> (capitalized) in the field below and push the button.<br />
+				Clicking the button below will wipe ALL information from your site; all images, all posts, pages, etc.etc. This can NOT be reverted.<br />
+				<form method="POST">
+					<?php wp_nonce_field('nxswipesite','wipenonce'); ?>
+					<input type='hidden' name='nxsaction' value='wipesite' />
+					Confirmation text: <input type='text' name='confirmtext' /><br /><br />
+					<input class='button button-primary' type='submit' value='Wipe all content (irreversable)' />
+				</form>
+			</p>
+		</div>
+		<?php
+	}
+}
+
 function nxs_license_theme_license_page_content() 
 {
   ?>
@@ -458,6 +607,70 @@ function nxs_license_handlealtflow($response_data)
 			<!-- <?php echo $response_data["altflowid"]; ?> -->
 		</p>
 		<?php
+	}
+}
+
+function nxs_license_getnolicensetip_invoke()
+{
+	$response_data = get_transient("nxs_nolicensetip");
+	if ($response_data == false || $_REQUEST["nxs_nolicensetip_cache"] == "true")
+	{
+		// no data, or expired data
+		
+		$site = nxs_geturl_home();
+		$themeobject = wp_get_theme();
+		$version = $themeobject->version;
+		$theme = $themeobject->name;
+	
+		$serviceparams = array
+		(
+			'timeout' => 15,
+			'sslverify' => false,
+			'body' => array
+			(
+				"nxs_license_action" => "getnolicensetip",
+				"version" => $version,
+				"theme" => $theme,
+				"ordernr" => $ordernr,
+				"site" => $site
+			)
+		);
+		
+		$site = home_url();
+		$url = "http://license.nexusthemes.com/";
+		$response = wp_remote_post($url, $serviceparams);
+		
+		$successful = true;
+	
+	  // make sure the response was successful
+	  if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) 
+	  {
+	  	$successful = false;
+	  	//var_dump($response);
+	  }
+	  
+	  $body = wp_remote_retrieve_body($response); 
+		$response_data = json_decode($body, true);
+		
+		if ($successful)
+	  {
+  		$hours = 4; // poll max 
+	 		set_transient("nxs_nolicensetip", $response_data, 60 * 60 * $hours);
+	  }
+	  else
+	  {
+	  	$hours = 4; // poll max 
+			set_transient("nxs_nolicensetip", "", 60 * 60 * $hours);
+	  }
+	}
+	
+	if ($response_data != false && $response_data != "")
+	{
+		nxs_license_handlealtflow($response_data);
+	}
+	else
+	{
+		// ignore
 	}
 }
 
@@ -590,18 +803,14 @@ function nxs_licenseregister_callback()
 		}
 		else
 		{
+			//
+			nxs_license_getnolicensetip_invoke();
+			
 			$url = nxs_geturlcurrentpage();
 			$url = nxs_addqueryparametertourl_v2($url, "nxs_license_register", "true", true, true);
 			$noncedurl = wp_nonce_url($url, 'register');
 			$site = nxs_geturl_home();
 			?>
-			<p>
-				Enter your ordernumber below to register your purchase.<br />
-				Registering your site will activate the <a target='_blank' href='http://nexusthemes.com/support/theme-license/'>license</a> to this site.<br />
-			</p>
-			<p>
-				&nbsp;
-			</p>
 			<p>
 				Site
 			</p>
@@ -624,11 +833,6 @@ function nxs_licenseregister_callback()
 			</p>
 			<p>
 				&nbsp;
-			</p>
-			<p>
-				<ul>
-					<li>Don't have an ordernumber? <a href='http://nexusthemes.com' target='_blank'>Purchase now</a></li>
-				</ul>
 			</p>
 			<?php
 		}

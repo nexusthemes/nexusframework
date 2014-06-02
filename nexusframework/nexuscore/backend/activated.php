@@ -172,10 +172,10 @@
         
 		<div id='finishedwrap' style='display:none;'>
 			<?php
-			$url = nxs_geturl_home();
+			$url = admin_url('admin.php?page=nxs_admin_license');
 			?>
 			<div class='nxs-width100 nxs-align-center'>
-				<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo nxs_l18n__("Access your site", "nxs_td"); ?></a>
+				<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo nxs_l18n__("Enable automatic updates", "nxs_td"); ?></a>
 			</div>			
 		</div>
 		

@@ -37,8 +37,9 @@
 		$result["leftboxes"] = "support;";
 		$result["rightboxes"] = "logo;likeus;";
 		
-		$wipeurl = nxs_geturl_home();
-		$wipeurl = nxs_addqueryparametertourl_v2($wipeurl, "nxspatch", "patch20130610002_clear", true, true);
+		$license_url = admin_url('admin.php?page=nxs_admin_license');
+		$update_url = admin_url('admin.php?page=nxs_admin_update');
+		$restart_url = admin_url('admin.php?page=nxs_admin_restart');
 		
 		$showcptsurl = nxs_geturlcurrentpage();
 		$showcptsurl = nxs_addqueryparametertourl_v2($showcptsurl, "shownexustypesinbackend", "true", true, true);
@@ -48,12 +49,25 @@
 		//
 		ob_start();
 		?>
-		<p><h1>Support</h1></p>
-		<?php nxs_l18n_e("<p><a target='_blank' href='http://nexusthemes.com'>Contact us</a></p>", "nxs_td"); ?>
-		<p><hr /></p>
-		<p><h1>Links below are for system admins only</h1></p>
-		<p><a href='<?php echo $showcptsurl; ?>'>Display Nexus custom post types</a></p>
-		<p><a target='_blank' href='<?php echo $wipeurl; ?>'>Wipe environment (irreversible!)</a></p>
+		<p>
+			<ul>
+				<li>
+					<a href='http://nexusthemes.com/support'>Support</a>
+					<ul style='padding-left: 20px;'>
+						<li><a target='_blank' href='http://nexusthemes.com/support/getting-started/'>Getting started</a></li>
+						<li><a target='_blank' href='http://nexusthemes.com/support/changing-and-adding-content/'>Changing &amp; adding content</a></li>
+						<li><a target='_blank' href='http://nexusthemes.com/support/changing-and-adding-content/'>Building blocks</a></li>
+						<li><a target='_blank' href='http://nexusthemes.com/support/faq/'>FAQ</a></li>
+					</ul>
+				</li>
+				<li><a href='<?php echo $license_url; ?>'>License</a></li>
+				<li><a href='<?php echo $update_url; ?>'>Update</a></li>
+			</ul>
+			<h3 style='padding-left: 0px;'>Links below are for system admins only</h3>
+			<ul>
+				<li><a href='<?php echo $restart_url; ?>' style='color: red;'>Restart</a></li>
+			</ul>
+		</p>
 		<?php
 		$result["support_htmlid"] = "support";
 		$result["support_title"] = nxs_l18n__("Support", "nxs_td");
@@ -73,35 +87,6 @@
 		$result["logo_title"] = "&nbsp;";
 		$result["logo_html"] = ob_get_contents();
 		ob_end_clean();
-		
-		/*
-		//
-		// like us
-		//
-		ob_start();
-		?>
-		<?php nxs_l18n_e("<p><a target='_blank' href='http://nexusthemes.com'>Contact us</a></p>", "nxs_td"); ?>
-		<p>
-			This 3 WordPress theme is primarily developed, maintained, supported and documented by <a href='http://www.nexusstudios.nl' target='_blank'>Nexus Studios</a> with a 
-			lot of love & effort. Any kind of contribution would be highly appreciated. Thanks!
-		</p>
-		<ul>
-			<li>
-				<a href='http://en.wikipedia.org/wiki/Word_of_mouth' target='_blank'>Word of mouth</a>
-			</li>
-			<li>
-				<a href='http://nexusthemes.com/?track=backendoverviewlikeus' target='_blank'>Visit the theme's homepage</a>
-			</li>
-			<!--
-			todo: add link to github
-			-->
-		</ul>
-		<?php
-		$result["likeus_htmlid"] = "likeus";
-		$result["likeus_title"] = nxs_l18n__("Help us help you!", "nxs_td");
-		$result["likeus_html"] = ob_get_contents();
-		ob_end_clean();
-		*/
 		
 		$result["transientduration"] = $expirationtimeinseconds;
 		
