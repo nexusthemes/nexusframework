@@ -101,12 +101,19 @@ function nxs_popup_optiontype_selectpost_renderhtmlinpopup($optionvalues, $args,
 				foreach ($items as $currentpost) 
 				{
 					$currentpostid = $currentpost->ID;
+					$currentpoststatus = $currentpost->post_status;
 					$posttitle = nxs_cutstring($currentpost->post_title, 50);
 				
 					if ($posttitle == "") 
 					{
-						$posttitle = "(leeg, ID:" . $currentpostid . ")";
-					}                    
+						$posttitle = "(empty, ID:" . $currentpostid . ")";
+					}
+					
+					if ($currentpoststatus != "publish")
+					{
+						$posttitle .= " ($currentpoststatus)";
+					}
+					
 					$selected = "";
 					if ($currentpostid == $value) 
 					{

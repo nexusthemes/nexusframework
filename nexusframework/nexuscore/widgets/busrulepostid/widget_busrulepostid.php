@@ -36,6 +36,7 @@ function nxs_widgets_busrulepostid_home_getoptions($args)
 			( 
 				"id"								=> "filter_postid",
 				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
 				"previewlink_enable"=> "false",
 				"label" 						=> nxs_l18n__("Post or page", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("For which postid do you want to apply this template?", "nxs_td"),

@@ -2692,10 +2692,20 @@ function nxs_getsitemeta_internal($nackwhenerror)
 				//nxs_dumpstacktrace();
 				//die();
 				ob_clean();
- 						
- 				$backendurl = wp_login_url();
- 				$backendurl = nxs_addqueryparametertourl_v2($backendurl, "nxstrigger", "noactivesitesettings", true, true);
+ 				
+				if (is_user_logged_in())
+				{
+					$backendurl = get_admin_url();
+ 				}
+ 				else
+ 				{
+ 					$backendurl = wp_login_url();
+ 				}
+ 				// add a reason
+				$backendurl = nxs_addqueryparametertourl_v2($backendurl, "nxstrigger", "noactivesitesettings", true, true);
+				
  				wp_redirect($backendurl);
+ 				
  				//echo "This theme is not yet initialized. Click <a href='" . $backendurl . "'>here</a> to go to the backend";
  				die();
  				
@@ -10218,6 +10228,7 @@ function nxs_busrules_getgenericoptions()
 			( 
 				"id"								=> "header_postid",
 				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
 				"previewlink_enable"=> "false",
 				"label" 						=> nxs_l18n__("Header", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("Select a header to show on the top of your page", "nxs_td"),
@@ -10230,6 +10241,7 @@ function nxs_busrules_getgenericoptions()
 			( 
 				"id"								=> "footer_postid",
 				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
 				"previewlink_enable"=> "false",
 				"label" 						=> nxs_l18n__("Footer", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("Select a header to show on the top of your page", "nxs_td"),
@@ -10241,6 +10253,7 @@ function nxs_busrules_getgenericoptions()
 			( 
 				"id"								=> "sidebar_postid",
 				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
 				"previewlink_enable"=> "false",
 				"label" 						=> nxs_l18n__("Sidebar", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("Select a sidebar to show on the right side of your page", "nxs_td"),
@@ -10252,6 +10265,7 @@ function nxs_busrules_getgenericoptions()
 			( 
 				"id"								=> "subheader_postid",
 				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
 				"previewlink_enable"=> "false",
 				"label" 						=> nxs_l18n__("Sub header", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("Select a sub header to show above your main content", "nxs_td"),
@@ -10263,6 +10277,7 @@ function nxs_busrules_getgenericoptions()
 			( 
 				"id"								=> "subfooter_postid",
 				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
 				"previewlink_enable"=> "false",
 				"label" 						=> nxs_l18n__("Sub footer", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("Select a sub footer to show below your main content", "nxs_td"),
@@ -10274,6 +10289,7 @@ function nxs_busrules_getgenericoptions()
 			( 
 				"id"								=> "pagedecorator_postid",
 				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
 				"post_type" 				=> "nxs_genericlist",
 				"subposttype" => "pagedecorator", 
 				"previewlink_enable"=> "false",
@@ -10286,6 +10302,7 @@ function nxs_busrules_getgenericoptions()
 			( 
 				"id"								=> "content_postid",
 				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
 				"previewlink_enable"=> "false",
 				"post_type" 				=> "nxs_templatepart",
 				"subposttype"				=> "content",				
