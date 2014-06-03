@@ -670,18 +670,6 @@ function nxs_templates_getslug()
 	return "pagetemplaterules";
 }
 
-function nxs_gettemplatepropertiesid()
-{
-	$result = 0;	
-	$args = array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset');
-	$posts = get_posts($args);
-	if ($posts)
-	{
-		$result = $posts[0]->ID;
-	}
-	return $result;
-}
-
 function nxs_cap_getdesigncapability()
 {
 	return "nxs_cap_design_site";
@@ -800,7 +788,7 @@ function nxs_getbusinessruleimpact($metadata)
 			$url = nxs_geturl_for_postid($selectedvalue);
 			
 			$poststatus = get_post_status($selectedvalue);
-			if ($poststatus != "publish")
+			if ($poststatus != "publish" && $poststatus != "future")
 			{
 				$title .= " (<b class='blink'>" . nxs_l18n__("warning, not found!", "nxs_td") . "</b> <span class='nxs-icon-point-left'></span>)";
 			}
@@ -826,7 +814,7 @@ function nxs_gettemplateproperties_internal()
 	$result = array();
 	
 	$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
-	
+		
 	$statebag = array();
 	$statebag["vars"] = array();
 	$statebag["out"] = array();
@@ -846,6 +834,7 @@ function nxs_gettemplateproperties_internal()
 	if ( $query->have_posts() ) 	
 	{
 		$postid = $query->posts[0]->ID;
+		$result["templaterulespostid"] = $postid;
 		$businessrules = nxs_parsepoststructure($postid);
 				
 		$index = 0;
@@ -904,7 +893,7 @@ function nxs_gettemplateproperties_internal()
 	{
 		$result["result"] = "NACK";
 	}
-			
+		
 	return $result;
 }
 

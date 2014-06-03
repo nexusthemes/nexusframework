@@ -677,8 +677,17 @@
 			      <?php
 			      if (nxs_hastemplateproperties())
 			      {
-			      	$rulesid = nxs_gettemplatepropertiesid();
-			      	$url = nxs_geturl_for_postid($rulesid);
+			      	$templateproperties = nxs_gettemplateproperties();
+			      	$rulesid = $templateproperties["templaterulespostid"];
+			      	if ($rulesid == 0)
+			      	{
+			      		$url = nxs_geturl_home();
+								$url = nxs_addqueryparametertourl_v2($url, "nxserr", "nxsnotemplateproperties", true, true);
+			      	}
+			      	else
+			      	{
+			      		$url = nxs_geturl_for_postid($rulesid);
+			      	}
 				      ?>
 				      <li>
 		     		  	<a href="<?php echo $url; ?>" title="<?php nxs_l18n_e("Business rules", "nxs_td"); ?>" class="site">
