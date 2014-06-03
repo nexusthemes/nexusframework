@@ -378,6 +378,16 @@ function nxs_init()
 		  	var_dump($env);
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "activesitesettings")
+		  {
+		  	echo "postid:<br />";
+		  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
+				var_dump($postids);
+				echo "<br /><br />keyvalues:<br />";
+				$sitemeta = nxs_getsitemeta_internal(false);
+				var_dump($sitemeta);
+		  	die();
+		  }
 		}
 	}
 	
@@ -568,6 +578,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"trucking;" => array
+		(
+			"href"=>"/wordpress-themes/automotive/trucking-wordpress-theme/",
+			"title"=>"Trucking WordPress theme",
+		),	
 		"handyman;" => array
 		(
 			"href"=>"/wordpress-themes/maintenance-services/handyman-wordpress-theme/",

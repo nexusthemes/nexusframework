@@ -2689,6 +2689,11 @@ function nxs_getsitemeta_internal($nackwhenerror)
 		{
 			if ($nackwhenerror)
 			{
+				error_log("no active site settings");
+				$st = nxs_getstacktrace();
+				$textst = json_encode($st);
+				error_log("stack:" . $textst);
+				
 				//nxs_dumpstacktrace();
 				//die();
 				ob_clean();
@@ -3937,7 +3942,7 @@ function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
 	// if the widget has a unistyle, the properties of the unistyle should 
 	// override the properties stored in the widget itself
 	// this method is pretty fast since the unistyle configurations are cached in mem
-	if ($behaviourargs["lookupunistyle"] = true && $result["unistyle"] != "")
+	if ($behaviourargs["lookupunistyle"] == true && $result["unistyle"] != "")
 	{
 		// unistyle lookup should override the result
 		$widgetname = $result["type"];
@@ -3954,7 +3959,7 @@ function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
 	// if the widget has a unicontent, the properties of the unicontent should 
 	// override the properties stored in the widget itself
 	// this method is pretty fast since the unicontent configurations are cached in mem
-	if ($behaviourargs["lookupunicontent"] = true && $result["unicontent"] != "")
+	if ($behaviourargs["lookupunicontent"] == true && $result["unicontent"] != "")
 	{
 		// unicontentlookup should override the result
 		$widgetname = $result["type"];
