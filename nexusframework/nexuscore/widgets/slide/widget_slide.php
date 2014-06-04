@@ -105,35 +105,27 @@ function nxs_widgets_slide_render_webpart_render_htmlvisualization($args)
 	$lookup = wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
 	$url = $lookup[0];
 
-	if (nxs_has_adminpermissions())
-	{
+	if (nxs_has_adminpermissions()) {
 		$renderBeheer = true;
-	}
-	else
-	{
+	} else {
 		$renderBeheer = false;
 	}
 	
-	if ($rendermode == "default")
-	{
-		if ($renderBeheer)
-		{
+	if ($rendermode == "default") {
+		if ($renderBeheer) {
 			$shouldrenderhover = true;
-		} 
-		else
-		{
+		} else {
 			$shouldrenderhover = false;
 		}
-	}
-	else if ($rendermode == "anonymous")
-	{
+	} else if ($rendermode == "anonymous") {
 		$shouldrenderhover = false;
-	}
-	else
-	{
+	} else {
 		echo "unsupported rendermode;" . $rendermode;
 		die();
 	}
+
+	// Link
+	$destination_articleid = nxs_geturl_for_postid($destination_articleid);
 
 	global $nxs_global_placeholder_render_statebag;
 
@@ -154,21 +146,16 @@ function nxs_widgets_slide_render_webpart_render_htmlvisualization($args)
 	
 	?>
 	    
-  <div class="content2">
-      <div class="box-content nxs-width20 nxs-float-left">
-      	<div class='fixed-image-container'>
-      		<img src="<?php echo $url; ?>" />
-      	</div>
-      	<p>
-      		<?php echo sprintf(nxs_l18n__("Dimensions %s px h:%s px[nxs:span]", "nxs_td"), $width, $height); ?>
-      	</p>
-      </div>
-      <div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($title); ?></div>
-      <div class="box-content nxs-width50 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($text); ?></div>
-  	<div class="nxs-clear"></div>
-	</div> <!--END content-->
-	
-	<!-- -->
+    <div class="content2">
+    	<div class="box-content nxs-width10 nxs-float-left">
+    		<div class='fixed-image-container'><img src="<?php echo $url; ?>" /></div>
+    		<p><?php echo sprintf(nxs_l18n__("Dimensions %s px h:%s px[nxs:span]", "nxs_td"), $width, $height); ?></p>
+    	</div>
+    	<div class="box-content nxs-width20 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($title); ?></div>
+    	<div class="box-content nxs-width40 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($text); ?></div>
+    	<div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($destination_articleid); ?></div>
+    	<div class="nxs-clear"></div>
+    </div> <!--END content-->
 	
 	<?php 
 	
