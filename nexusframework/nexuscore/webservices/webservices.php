@@ -100,18 +100,6 @@ function nxs_ajax_webmethods()
 					nxs_webmethod_return_nack("no access granted for sheet $sheet");
 				}
 			}
-			else if ($contextprocessor == "site")
-			{
-				if ($sheet == "loginhome")
-				{
-					// anonieme gebruikers moeten gallery popups kunnen zien/gebruiken
-					$hasaccess = true;
-				}
-				else
-				{
-					nxs_webmethod_return_nack("no access granted for sheet $sheet");
-				}
-			}
 			else
 			{
 				// last chance; allow plugins to allow the request by using the following filter
@@ -119,7 +107,7 @@ function nxs_ajax_webmethods()
 				$pluginargs["contextprocessor"] = $contextprocessor;
 				$pluginargs["webmethod"] = $webmethod;
 				$pluginargs["sheet"] = $sheet;
-				$hasaccess = apply_filters("nxs_iswebmethodallowed", $hasaccess, $pluginargs); // gjgj
+				$hasaccess = apply_filters("nxs_iswebmethodallowed", $hasaccess, $pluginargs);
 			}
 		}
 		else if ($webmethod == "login")
@@ -179,12 +167,16 @@ function nxs_ajax_webmethods()
 		{
 			$hasaccess = true;
 		}
-		else
+		
+		if (!$hasaccess)
 		{
 			// last chance; allow plugins to allow the request by using the following filter
 			$pluginargs = array();
 			$pluginargs["webmethod"] = $webmethod;
 			$hasaccess = apply_filters("nxs_iswebmethodallowed", $hasaccess, $pluginargs); // gjgj
+			
+			// allow plugin to allow the request with more specific filter
+			$hasaccess = apply_filters("nxs_iswebmethodallowed_$contextprocessor_$webmethod", $hasaccess, $pluginargs);
 		}
 	}
 	else
@@ -201,7 +193,7 @@ function nxs_ajax_webmethods()
 	else
 	{
 		// anything other than an expliciet "true" is false
-		nxs_webmethod_return_nack("nxs no access for webmethod [" . $webmethod . "]. If this was not intended, tune the nxs_iswebmethodallowed filter");
+		nxs_webmethod_return_nack("nxs no access for webmethod [" . $webmethod . "]. If this was not intended, tune the nxs_iswebmethodallowed and/or the nxs_iswebmethodallowed_$contextprocessor_$webmethod filter");
 	}
 	
 	// doorlussen naar handler voor dit sub request

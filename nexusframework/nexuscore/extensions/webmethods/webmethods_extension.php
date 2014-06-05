@@ -58,6 +58,15 @@ function nxs_ext_inject_theme_webmethod($webmethod)
 
 //
 
+function nxs_lazyload_plugin_webmethod_v2($file, $webmethod, $allowanonymousaccess)
+{
+	nxs_lazyload_plugin_webmethod($file, $webmethod);
+	if ($allowanonymousaccess)
+	{
+		add_filter("nxs_iswebmethodallowed_site_$webmethod", "nxs_returntrue");
+	}
+}
+
 function nxs_lazyload_plugin_webmethod($file, $webmethod)
 {
 	// store file loc in lookup (mem)

@@ -578,6 +578,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"psychologist;" => array
+		(
+			"href"=>"/wordpress-themes/therapy/psychologist-wordpress-theme/",
+			"title"=>"Psychologist WordPress theme",
+		),
 		"trucking;" => array
 		(
 			"href"=>"/wordpress-themes/automotive/trucking-wordpress-theme/",
