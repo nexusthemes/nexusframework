@@ -416,6 +416,7 @@ table.ui-datepicker-calendar td 					{ text-align: center !important; padding: 8
 	animation: 			none;
 }
 .nxs-editor-active .nxs-admin-wrap .nxs-not-unistyled .nxs-widget,
+.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-sharing,
 .nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-youtube,
 .nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-custom-html,
 .nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-definitionlist,
