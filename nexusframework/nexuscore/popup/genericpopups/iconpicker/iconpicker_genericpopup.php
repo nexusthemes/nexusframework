@@ -521,20 +521,18 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 									$icontypes = array
 									(									
 										"flea", 
-										"ant",
 										"termite",
 										"cockroach", 
-										"deer", 
 										"fly", 
+										"wasp",
+										"moth",
 										"fox", 
 										"mouse", 
 										"mole", 
-										"moth", 
 										
 										"pigeon", 
 										"rabbit", 
-										"squirrel", 
-										"wasp",  
+										"squirrel",  
 									);
 										
 									foreach($icontypes as $currenticontype)
