@@ -52,6 +52,12 @@ function nxs_hideadminbar()
 	remove_action('wp_head', '_admin_bar_bump_cb');
 }
 
+// helper function used by some filters
+function nxs_returntrue()
+{
+	return true;
+}
+
 function nxs_ensure_theme_translations_are_loaded()
 {
 	if (!defined('NXS_DEFINE_NXSTHEMETRANSLATIONLOADED'))

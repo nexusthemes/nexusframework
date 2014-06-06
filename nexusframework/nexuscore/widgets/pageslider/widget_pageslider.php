@@ -865,10 +865,17 @@ function nxs_widgets_pageslider_betweenheadandcontent()
                     (
                         function()
                         {
-                            if (!api.options.autoplay)
-                            {
-                                jQuery(".pagesliderplaypausetoggle").toggle();
-                            }
+                        	if (api)
+                        	{
+	                          if (!api.options.autoplay)
+	                          {
+	                              jQuery(".pagesliderplaypausetoggle").toggle();
+	                          }
+	                        }
+	                        else
+                        	{
+                        		nxs_js_log("pageslider api not (yet?) found");
+                        	}
                         }
                     );
                 </script>
