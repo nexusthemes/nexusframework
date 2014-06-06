@@ -63,7 +63,7 @@ function nxs_lazyload_plugin_webmethod_v2($file, $webmethod, $allowanonymousacce
 	nxs_lazyload_plugin_webmethod($file, $webmethod);
 	if ($allowanonymousaccess)
 	{
-		add_filter("nxs_iswebmethodallowed_site_$webmethod", "nxs_returntrue");
+		add_filter("nxs_iswebmethodallowed_$webmethod", "nxs_returntrue");
 	}
 }
 

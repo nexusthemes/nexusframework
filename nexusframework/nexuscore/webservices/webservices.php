@@ -193,7 +193,7 @@ function nxs_ajax_webmethods()
 	else
 	{
 		// anything other than an expliciet "true" is false
-		nxs_webmethod_return_nack("nxs no access for webmethod [" . $webmethod . "]. If this was not intended, tune the nxs_iswebmethodallowed and/or the nxs_iswebmethodallowed_$contextprocessor_$webmethod filter");
+		nxs_webmethod_return_nack("nxs no access for webmethod [" . $webmethod . "] and cp [$contextprocessor]. If this was not intended, tune the nxs_iswebmethodallowed and/or the nxs_iswebmethodallowed_$contextprocessor_$webmethod filter");
 	}
 	
 	// doorlussen naar handler voor dit sub request
