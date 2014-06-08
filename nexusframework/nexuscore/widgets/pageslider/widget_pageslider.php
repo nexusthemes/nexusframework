@@ -38,7 +38,6 @@ function nxs_widgets_pageslider_registerhooksforpagewidget($args)
 		
 		add_action('nxs_beforeend_head', 'nxs_widgets_pageslider_beforeend_head');
 		add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pageslider_betweenheadandcontent');
-		add_action('nxs_menu_afterpagesettings', 'nxs_widgets_pageslider_addmenuitem');	
 	}
 }
 
@@ -395,36 +394,6 @@ function nxs_widgets_pageslider_updateplaceholderdata($args)
 	$widgetname = basename(dirname(__FILE__));
 	$result = nxs_widgets_updateplaceholderdatageneric($args, $widgetname);
 	return $result;
-}
-
-function nxs_widgets_pageslider_addmenuitem()
-{
-	// the global $nxs_pageslider_pagesliderid is set in nxs_widgets_pageslider_registerhooksforpagewidget($args)
-	global $nxs_pageslider_pagesliderid;
-	global $post;
-	$postid = $post->ID;
-	
-	$refurl = nxs_geturl_for_postid($nxs_pageslider_pagesliderid);
-	$nxsrefurlspecial = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
-	$refurl = nxs_addqueryparametertourl($refurl, "nxsrefurlspecial", $nxsrefurlspecial);
-	?>
-	<li class="nxs-hidewheneditorinactive nxs-sub-menu">
-		<!-- edit slides -->
-		<a href='#' class='site' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick="var url='<?php echo $refurl; ?>'; nxs_js_redirect(url); return false;">
-			<span class='<?php echo nxs_widgets_pageslider_geticonid();?>'></span>
-		</a>
-		<ul>
-			<!-- config slider -->
-			<!--
-			<li title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>'>
-				<a href='#' class='site' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick="nxs_js_edit_offscreen_widget(this); return false;">
-					<span class='nxs-icon-plug'></span>
-				</a>
-			</li>
-			-->
-		</ul>
-	</li>
-	<?php
 }
 
 /* PAGE SLIDER HTML

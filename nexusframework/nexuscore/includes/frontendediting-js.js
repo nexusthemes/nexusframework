@@ -1708,6 +1708,9 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			nxs_js_popupshows = false;
 
 			jQuery("body").append("<div id='TB_window' class='thickboxwindow' style='display:none;'></div>");
+			
+			//
+			
 		}
 		
 		function nxs_js_closepopup_unconditionally_if_not_dirty()
@@ -2832,9 +2835,34 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			nxs_js_alert('nxs_js_edit_offscreen_widget to be implemented...');
 		}
 		
-		// opent een pop up voor het bewerken van de meegegeven placeholder
+		// converts dictionary to properties of the specified scope object
+		function nxs_js_extract(data, scope)
+		{
+	    for (var key in data) 
+	    {
+        scope[key] = data[key];
+    	}
+		}
+		
 		function nxs_js_popup_placeholder_neweditsession(postid, placeholderid, rowindex, sheet)
 		{
+			var containerpostid = nxs_js_getcontainerpostid();
+			var args = 
+			{
+				containerpostid:postid,
+				postid:postid,
+				placeholderid:placeholderid,
+				rowindex:rowindex,
+				sheet:sheet
+			};
+			return nxs_js_popup_placeholder_neweditsession_v2(args);
+		}
+		
+		// opent een pop up voor het bewerken van de meegegeven placeholder
+		function nxs_js_popup_placeholder_neweditsession_v2(args)
+		{
+			nxs_js_extract(args, this);
+			
 			if (sheet == null)
 			{
 				sheet = 'home'; // default, if not set
@@ -2848,9 +2876,18 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			// wipe any existing popupsession data
 			nxs_js_popupsession_startnewcontext();
 
+			if (typeof onsaverefreshpage === "undefined")
+			{
+				//
+			}
+			else
+			{
+				nxs_js_popup_setsessioncontext("onsaverefreshpage", true);
+			}
+
 			//
-			nxs_js_popup_setsessioncontext("contextprocessor", "widgets");		
-			nxs_js_popup_setsessioncontext("containerpostid", nxs_js_getcontainerpostid());
+			nxs_js_popup_setsessioncontext("contextprocessor", "widgets");
+			nxs_js_popup_setsessioncontext("containerpostid", containerpostid);
 			nxs_js_popup_setsessioncontext("postid", postid);
 			nxs_js_popup_setsessioncontext("placeholderid", placeholderid);
 			nxs_js_popup_setsessioncontext("rowindex", rowindex);

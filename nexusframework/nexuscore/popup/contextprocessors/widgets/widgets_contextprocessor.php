@@ -205,6 +205,20 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
 		(
 			function(response)
 			{
+				// behaviour: refresh page
+				var onsaverefreshpage = nxs_js_popup_getsessioncontext("onsaverefreshpage");
+				if (onsaverefreshpage == true)
+				{
+					// this is used for example when the user
+					// requests a popup of a pagedecorator,
+					// (containerpostid != pagedecoratorid)
+					// in that case the saving of the popup should trigger a refresh of the page
+					nxs_js_refreshcurrentpage();
+					return;
+				}
+			
+				// behavious else:
+			
 				// mark row of this widget as dirty
 				jQuery(".nxs-post-<?php echo $postid;?> .nxs-widget-<?php echo $placeholderid;?>").closest(".nxs-row-container").addClass("nxs-dirty");
 				

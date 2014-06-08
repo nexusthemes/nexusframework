@@ -2870,6 +2870,7 @@ function nxs_site_selectcommentprovider_getoptions($args)
 	$options = array
 	(
 		"sheettitle" => nxs_l18n__("Comment provider", "nxs_td"),
+		"footerfiller" => true,
 		"fields" => array
 		(
 			array( 
@@ -2918,6 +2919,7 @@ function nxs_site_cachemanagementhome_getoptions($args)
 	$options = array
 	(
 		"sheettitle" => nxs_l18n__("Cache management", "nxs_td"),
+		"footerfiller" => true,
 		"fields" => array
 		(
 			array
@@ -2952,6 +2954,7 @@ function nxs_site_sitestyling_getoptions($args)
 {	
 	$options = array(
 		"sheettitle" => nxs_l18n__("Generic styling", "nxs_td"),
+		"footerfiller" => true,		
 		"fields" => array(
 
 			// WORDPRESS CONTENT
@@ -3107,6 +3110,7 @@ function nxs_site_widgetsmanagementhome_getoptions($args)
 	$options = array
 	(
 		"sheettitle" => nxs_l18n__("Widgets", "nxs_td"),
+		"footerfiller" => true,
 		"fields" => array(
 			
 			array( 

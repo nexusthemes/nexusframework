@@ -758,6 +758,83 @@
 		  <li class="nxs-hidewheneditorinactive"><span class="nxs-menu-spacer">&nbsp;</span></li>
 		  
 		  <?php
+		  
+	  	$pagedecoratorexists = false;
+	  	
+		  // page decorator items
+			$templateproperties = nxs_gettemplateproperties();
+		
+			if ($templateproperties["result"] == "OK")
+			{
+				$pagedecoratorid = $templateproperties["pagedecorator_postid"];
+				if (isset($pagedecoratorid))
+				{
+					$poststatus = get_post_status($pagedecoratorid);
+					if ($poststatus == "publish" || $poststatus == "future")
+					{
+						$pagedecoratorexists = true;
+						
+						$currenturl = nxs_geturlcurrentpage();
+						$nxsrefurlspecial = urlencode(base64_encode($currenturl));
+						$refurl = nxs_geturl_for_postid($pagedecoratorid);
+						$refurl = nxs_addqueryparametertourl_v2($refurl, "nxsrefurlspecial", $nxsrefurlspecial, false);
+						
+						?>
+						<li class="nxs-hidewheneditorinactive nxs-sub-menu">
+							<a class='site' title="<?php nxs_l18n_e("Page decorator", "nxs_td"); ?>" href='<?php echo $refurl; ?>'>
+								<span class='nxs-icon-pagedecorator'></span>
+							</a>
+							<ul>
+							<?php
+							$parsedpagedecoratorstructure = nxs_parsepoststructure($pagedecoratorid);
+							$rowindex = -1;
+							foreach ($parsedpagedecoratorstructure as $currentdecoratoritem)
+							{
+								$rowindex++;
+								$content = $currentdecoratoritem["content"];
+								$pagewidgetplaceholderid = nxs_parsepagerow($content);
+								$placeholdermetadata = nxs_getwidgetmetadata($pagedecoratorid, $pagewidgetplaceholderid);
+								$widget = $placeholdermetadata["type"];
+								if (isset($widget) && $widget != "" && $widget != "undefined")
+								{										
+									// load the type in mem
+									// inject widget if not already loaded, implements *dsfvjhgsdfkjh*
+								 	$requirewidgetresult = nxs_requirewidget($widget);
+								 	if ($requirewidgetresult["result"] == "OK")
+								 	{
+										$iconid = nxs_getwidgeticonid($widget);
+										$title = nxs_getplaceholdertitle($widget);
+										$invoke = "var args={containerpostid:'$pagedecoratorid',postid:'$pagedecoratorid',placeholderid:'$pagewidgetplaceholderid',rowindex:'$rowindex',sheet:'home',onsaverefreshpage:true}; nxs_js_popup_placeholder_neweditsession_v2(args); return false;";
+								 		?>
+										<!-- page decorator has sub items -->
+										<li>
+							      	<a href="#" onclick="<?php echo $invoke; ?>" class="site" title="<?php echo $title; ?>">
+							      		<span class='<?php echo $iconid; ?>'></span>
+							      	</a>
+							      </li>
+						 				<?php
+						 			}
+						 		}
+						 	}
+							?>
+							</ul>
+						</li>
+						<?php
+					}
+				}
+			}
+			
+			if (!$pagedecoratorexists)
+			{
+				?>
+				<li class="nxs-hidewheneditorinactive nxs-sub-menu" style='opacity: 0.5;'>
+					<a class='site' title="<?php nxs_l18n_e("Page decorator", "nxs_td"); ?>" href='#' onclick="nxs_js_alert('This page has no pagedecorator configured');  return false;">
+						<span class='nxs-icon-pagedecorator'></span>
+					</a>
+				</li>
+				<?php
+			}
+		  
 		  $shouldshowpagesettings = false;
 	  	if (nxs_has_adminpermissions())
 	  	{

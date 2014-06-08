@@ -127,7 +127,7 @@ function nxs_widgets_pagebackground_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_pagebackground_gettitle(),
 		"sheeticonid" => nxs_widgets_pagebackground_geticonid(),
-	
+		"footerfiller" => true,
 		"fields" => array
 		(
 			// SLIDES			

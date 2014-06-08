@@ -26,6 +26,7 @@ function nxs_widgets_menuitemarticle_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_menuitemarticle_gettitle(),
 		"sheeticonid" => nxs_widgets_menuitemarticle_geticonid(),
+		"footerfiller" => true,
 		"fields" => array
 		(
 			// TITLE
