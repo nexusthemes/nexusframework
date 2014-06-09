@@ -26,14 +26,21 @@ function nxs_popup_optiontype_colorzen_renderhtmlinpopup($optionvalues, $args, $
 	    	?>
           <div class="box-content">
           	<ul>
-	          	<li onclick='nxs_js_startcolorzenpicker_<?php echo $id;?>(); return false;' class='nxs-float-left'>
+	          	<li onclick='nxs_js_startcolorzenpicker_<?php echo $id;?>(); return false;' style='cursor: pointer;' class='nxs-float-left'>
 	          		<?php if (isset($value) && $value != "") { ?>
 									<div class="nxs-colorzen-<?php echo $value; ?> border-radius-small color-sample">
 										<p><?php echo $sampletext; ?></p>
 									</div>
-								<?php } else { ?>
-									
-								<?php } ?>
+								<?php 
+								} 
+								else 
+								{
+									// when no color is selected
+									?>
+									<p><?php echo "Not selected"; ?></p>
+									<?php 
+								} 
+								?>
 							</li>
           	</ul>
           	<?php
