@@ -6,7 +6,6 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 	extract($runtimeblendeddata);
 	$value = $$id;	// $id is the parametername, $$id is the value of that parameter
 
-	
 	// the random id is needed, to solve a very strange bug since it looks like
 	// the tinymce editor instance is not yet correctly removed from the DOM
 	// to "solve" this problem, we create a unique id for each request,
@@ -36,20 +35,25 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							function(e) 
 							{
 								// nxs_js_log("detected: nxs_jstrigger_afterpopupshows for <?php echo $internaltextareaid; ?>");
-								var scripturl = '/js/tinymce/jscripts/tiny_mce/tiny_mce.js';
-								var functiontoinvoke = 'gogoeditor_<?php echo $internaltextareaid; ?>()';
-								nxs_js_lazyexecute(scripturl, true, functiontoinvoke);
+								var scripturl = '//tinymce.cachefly.net/4.0/tinymce.min.js';
+								var functiontoinvoke = 'nxs_loadplugins_tinymce_editor()';
+								nxs_js_lazyexecute(scripturl, false, functiontoinvoke);
+								nxs_js_log("lazyexecuted " + scripturl);
 							}
 						);
 		
-						function nxsremoveeditor_<?php echo $internaltextareaid; ?>()
-						{									
-							// remove editor
-							tinyMCE.execCommand('mceRemoveControl', false, '<?php echo $internaltextareaid; ?>');
-						}
-						
-						function gogoeditor_<?php echo $internaltextareaid; ?>()
+						function nxs_loadplugins_tinymce_editor()
 						{
+							var scripturl = '<?php echo nxs_getframeworkurl(); ?>/js/tinymcev4/nxslinkv4.js';
+							var functiontoinvoke = 'nxs_launch_tinymce_editor()';
+							nxs_js_lazyexecute(scripturl, false, functiontoinvoke);
+							nxs_js_log("lazyexecuted " + scripturl);
+						}
+		
+						function nxs_launch_tinymce_editor()
+						{
+							nxs_js_log("nxs_launch_tinymce_editor");
+							
 							// bugfix: when multiple tinymce instances are on the same popup,
 							// it appears the first one loads perfect, but the ones following
 							// give an error because the tinyMCE instance is not yet defined
@@ -61,65 +65,40 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							else
 							{
 								// nxs_js_log('Delayed execution required for TinyMCE, having to wait till tinyMCE object is initialized... retrying...');
-								setTimeout(gogoeditor_<?php echo $internaltextareaid; ?>, 500);
+								setTimeout(nxs_launch_tinymce_editor, 500);
 								return;
 							}
-						
-							// mocht hij toch al /nog?/ bestaan, verwijder 'm dan
-							nxsremoveeditor_<?php echo $internaltextareaid; ?>();
 							
-							var plugins = "paste,nexuslink,nexusemotion,advlist,wordcount,autoresize,inlinepopups";
+							
+						
+							// Remove any editor occurences, should they (still?) exist
+							tinymce.remove();
+							
+							var plugins = "paste,advlist,wordcount,code,example";
 							if (true)
 							{
-								tinyMCE.init
+								tinymce.init
 								(
 									{
-									 	 script_url : "<?php echo nxs_getframeworkurl(); ?>/js/tinymce/jscripts/tiny_mce/tiny_mce.js",
-										  mode: "none",
-										  theme: 'advanced',
-										  // see http://www.tinymce.com/wiki.php/Creating_a_theme
-										  handle_event_callback: editoreventcallbackfunction_<?php echo $internaltextareaid; ?>,
-										  width: "100%",
-											setup: setupeditorfunction_<?php echo $internaltextareaid; ?>,
-										  skin: 'nexus',
-										  plugins: plugins,
-										  
-										  theme_advanced_buttons1 : "fontsizeselect,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,cut,copy,paste|,bullist,numlist,|,link,unlink,code",
-										  theme_advanced_buttons2 : "",
-										  theme_advanced_buttons3 : "",
-										  theme_advanced_toolbar_location : "top",
-										  theme_advanced_layout_manager : "SimpleLayout",
-										  theme_advanced_toolbar_align : "left",
-										  theme_advanced_path : "false",
-										  theme_advanced_statusbar_location : "bottom",
-										  theme_advanced_resizing : true,
-										  theme_advanced_resize_horizontal: false,
-										  //theme_advanced_resize_vertical: true,
-										  fix_list_elements : true,
-										  valid_styles : {'*' : 'color,font-size,font-weight,font-style,text-decoration,text-align,list-style-type'},
-										  paste_use_dialog : true,
-										  paste_auto_cleanup_on_paste : true,
-										  extended_valid_elements : "style,a[id|name|href|target|title|onclick|class],hr[width|size|noshade],span[id|align|style|class],h1,h2,h3,h4,h5,h6",
-										  //content_css : "/wysiwyg_editor_rendering.css",
-										  traileritem : true,
-										  // do not promote spaces to non breaking spaces											  
-										  // http://www.abeautifulsite.net/blog/2009/12/tinymce-removes-non-breaking-spaces/
-										  entity_encoding: 'named',
-											entities: '160,nbsp',
-											dialog_type : "modal",
-											forced_root_block : "p"
+										entity_encoding : "raw",
+										width: "100%",
+										baseURL: "<?php echo includes_url() . "/js/tinymce"; ?>",
+										selector:'#<?php echo $internaltextareaid; ?>',
+										menubar: false,
+										setup: setupeditorfunction,
+										theme: "modern",
+								    plugins: plugins,
+								    toolbar1: "bold code example",
 									}
 								);
-								
-								tinyMCE.execCommand('mceAddControl', false, '<?php echo $internaltextareaid; ?>');
 								
 								//nxs_js_log('gogoeditor finished for <?php echo $internaltextareaid; ?>');
 							}
 						}
 		
-						function editoreventcallbackfunction_<?php echo $internaltextareaid; ?>(e)
+						function editoreventcallbackfunction(e)
 					  {
-							//nxs_js_log('editoreventcallbackfunction(inst);');
+							nxs_js_log('call back');
 							//nxs_js_log(e);
 							
 					  	// het blijkt dat hier events door blijven komen, ook als de popup ondertussen al weer is gesloten...
@@ -155,117 +134,40 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 		          } 
 			      }
 						
-						function setupeditorfunction_<?php echo $internaltextareaid; ?>(ed) 
+						function setupeditorfunction(ed) 
 					  {
-				      ed.onKeyPress.add(function(ed, e) 
-				      {
-				        nxs_js_popup_sessiondata_make_dirty();
-				      });
+					  	ed.on('keydown', editoreventcallbackfunction);		
+
+						  ed.on
+						  (
+						  	'keypress', function(e) 
+						  	{
+							  	nxs_js_log(e);
+				        	nxs_js_popup_sessiondata_make_dirty();
+				      	}
+				      );
 				      
-				      ed.onChange.add
+				      ed.on
 				      (
-				      	function(ed, l) 
+				      	'change', 
+				      	function(e) 
 				      	{
-				      		nxs_js_popup_setsessiondata("<?php echo $id; ?>", l.content); 
+						  		nxs_js_popup_setsessiondata("<?php echo $id; ?>", ed.getContent()); 
 				      		nxs_js_popup_sessiondata_make_dirty();
-		        			//console.debug('Editor contents was modified. Contents: ' + l.content);
 								}
 							);
 							
-							ed.onInit.add
+							ed.on
 							(
+								'init',
 								function(nxseditor) 
 								{
-									// sets the initial content of the editor
-									// we cannot use the textarea for this, as the text area only is bound the very first time 
-									// the editor is initialized
-									// using this approach reopening the popup screens will be OK
-									<?php
-										$content = $value;
-										$content = str_replace("\n", "\\n", $content);
-										$content = str_replace("\r", "\\r", $content);
-										$content = str_replace("'", "&#39;", $content);
-										
-										// detectie; when there's an issue, use htmlentities($content) to locate the html lookup
-										// then google site:www.fileformat.info <name> to find the proper ascii representation
-
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x93), "&ndash;", $content);		// dash
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x94), "&mdash;", $content);		// mdash
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x98), "&lsquo;", $content);		// right quotation
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x99), "&rsquo;", $content);		// right quotation
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x9C), "&ldquo;", $content);		// left Double Quotation Mark 
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x9D), "&rdquo;", $content);		// Right Double Quotation Mark 
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0x9E), "&bdquo;", $content);		
-										
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xA0), "&dagger;", $content);	// 
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xA1), "&Dagger;", $content);	// 
-
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xB0), "&permil;", $content);	// 
-										
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xA6), "&hellip;", $content);	// horizontal elipses
-										$content = str_replace(chr(0xE2) . chr(0x80) . chr(0xA2), "&bull;", $content);		// bullet
-										
-										// on sabine's text editor strange 226 chars are introduced at various places...
-										// causing the output to be interpreted as having
-										// newline chars, causing the JS to crash
-										
-										$content = str_replace(chr("226"), "", $content);
-										//226 + 128 + 153
-										
-										// on steve's text editor strange chars are introduced at various places...
-										// causing the output to be interpreted as having
-										// newline chars, causing the JS to crash
-										//$content = str_replace(chr("226"), "", $content);										
-									?>
-									var content = '<?php echo $content ;?>';
-									
-									nxseditor.setContent(content, { format: 'raw' });
-									
-									<?php if (isset($focus) && $focus == "true") { ?>
-				        	nxseditor.focus();
-				        	<?php } ?>
-				        	
-				        	// if the user hits the "code" ("html") button,
-				        	// we mark the session as dirty, even though 
-				        	// no modifications are made. This is because we 
-				        	// haven't found a proper way to detect if the DOM
-				        	// was adjusted
-				        	
-				        	//
-				        	// note that the buttons that are showing op TOP of the 
-				        	// tinymce editor are in fact stored in the DOM of the 
-				        	// main HTML doc, they are NOT stored in the iframe,
-				        	// this makes it possible to store a sessiondata object
-				        	// pointing to the "current" optionid. This fact enables
-				        	// us to change the session variables from the plugin!
-				        	//
-				        	
-				        	jQuery(".nxs-optionid-<?php echo $id;?> .mceButton.mceButtonEnabled.mce_code").click
-				        	(
-				        		function()
-				        		{
-				        			nxs_js_popup_sessiondata_make_dirty();
-				        			nxs_js_popup_setsessiondata("nxs_tinymce_invoker_optionid", "<?php echo $id;?>");
-				        		}
-				        	);
-				        	
-				        	// reset dimensions of popup after tinymce is loaded 
-				        	nxs_js_reset_popup_dimensions();
-				        	
-				        	// rather "lame" workaround for #567; ensure the dimensions of the popup
-				        	// OK, even if the height of the popup is adjusted 
-				        	// after we reach this point...
-				        	
-							  	// repeat after 500 msecs
-							  	setTimeout(nxs_js_reset_popup_dimensions, 500);
-							  	// repeat after 1 sec
-							  	setTimeout(nxs_js_reset_popup_dimensions, 1000);
-							  	// repeat after 5 secs
-							  	setTimeout(nxs_js_reset_popup_dimensions, 5000);
-							  	// repeat after 10 secs
-							  	setTimeout(nxs_js_reset_popup_dimensions, 10000);							        	
-				    		}
+									nxs_js_log("init");
+									nxs_js_log(ed);
+									nxs_js_log(nxseditor);
+								}
 				    	);
+							
 				   	}
 					</script>
 				</div>
@@ -283,8 +185,9 @@ function nxs_popup_optiontype_tinymce_renderstorestatecontroldata($optionvalues)
 	?>
 	// persist all tinyMCE editors data back to textarea(s)
 	tinyMCE.triggerSave();
-	
-	nxsremoveeditor_<?php echo $internaltextareaid;?>();
+
+	// Remove all editors
+	tinymce.remove();	
 	
 	nxs_js_popup_storestatecontroldata_textbox('<?php echo $internaltextareaid; ?>', '<?php echo $id;?>');
 	
