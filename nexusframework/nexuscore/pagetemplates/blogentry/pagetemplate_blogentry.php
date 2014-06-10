@@ -76,15 +76,55 @@ function nxs_pagetemplate_handlecontent()
 		$showcontent = false;
 	}
 	
-	// don't show content if pagetemplate rules tells us to suppress the content
+	$contentpostid = $templateproperties["content_postid"];
+	if (post_password_required($contentpostid))
+	{
+		$html = get_the_password_form();
+		
+		$enhanced_html = $html;
+		// class="post-password-form" => class="post-password-form nxs-form"
+		$enhanced_html = str_replace("post-password-form", "nxs-form post-password-form", $enhanced_html);
+		?>
+		<div id="nxs-content" class="nxs-sitewide-element">
+			<div id="nxs-content-container" class="has-no-sidebar">
+				<div class="nxs-article-container nxs-elements-container">
+					<div class="nxs-postrows">
+						<div class="nxs-row nxs-padding-top-1-0 nxs-padding-bottom-1-0 ">
+							<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">
+								<ul class="nxs-placeholder-list"> 
+									<li class="nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-third nxs-unistyle-reference nxs-unistyled nxs-not-unicontented nxs-widgetype-text  nxs-column-1-3" style="height: 342px;">
+										<div class="ABC">
+											<div class="XYZ">
+												<div class="nxs-placeholder-content-wrap nxs-crop ">
+													<div id="nxs-widget-passwordidentifier" class="nxs-widget nxs-text">
+														<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left   nxs-heightiq nxs-heightiq-p1-text " style="height: 121px;">
+															<?php echo $enhanced_html; ?>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</li>
+								</ul>
+								<div class="nxs-clear"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php
+		$showcontent = false;
+	}
 	
+	
+	// don't show content if pagetemplate rules tells us to suppress the content
 	
 	if ($showcontent)
 	{
 		?>
 		<div id="nxs-content" class="nxs-sitewide-element <?php echo $cssclass; ?>">
 			<?php 
-			
 			
 			if (nxs_hastemplateproperties())
 			{
