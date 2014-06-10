@@ -39,6 +39,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							"nxs_jstrigger_afterpopupshows", 
 							function(e) 
 							{
+								nxs_js_log("Received nxs_jstrigger_afterpopupshows");
 								// nxs_js_log("detected: nxs_jstrigger_afterpopupshows for <?php echo $internaltextareaid; ?>");
 								var scripturl = '//tinymce.cachefly.net/4.0/tinymce.min.js';
 								var functiontoinvoke = 'nxs_loadplugins_tinymce_editor()';
@@ -46,9 +47,6 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								nxs_js_log("lazyexecuted " + scripturl);
 							}
 						);
-
-
-
 						
 						function tinymcekeydownhandler(e)
 						{
@@ -87,15 +85,14 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 						
 						function nxs_tinymce_claimfocus_internal()
 						{
-							nxs_js_log("doing it");
-							nxs_i_textarea_text_UNIQUE_ifr.contentDocument.documentElement.focus();
+							nxs_js_log("setting focus...");
+							// sets the actual focus to the body
 							jQuery('#nxs_i_textarea_text_UNIQUE_ifr').contents().find('body').focus();
-							nxs_js_log("did it");
 						}
 						
 						function nxs_tinymce_claimfocus()
 						{
-							nxs_js_log("nxs_tinymce_claimfocus");
+							// the settimeout is required, otherwise the focus is not set!
 							setTimeout(nxs_tinymce_claimfocus_internal, 0);
 						}
 		
@@ -107,19 +104,13 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							nxs_js_log("lazyexecuted " + scripturl);
 						}
 		
-						function setupeditorfunction(ed) 
+						function nxs_tinymce_registereventhandlers(ed) 
 					  {
-					  	ed.on('keydown', tinymcekeydownhandler);		
-
-						  ed.on
-						  (
-						  	'keypress', function(e) 
-						  	{
-							  	nxs_js_log(e);
-				        	nxs_js_popup_sessiondata_make_dirty();
-				      	}
-				      );
-				      
+					  	// remove any other listeners
+					  	ed.off();
+					  
+					  	ed.on('keydown', tinymcekeydownhandler);
+						  ed.on('keypress', function(e) { nxs_js_popup_sessiondata_make_dirty(); });
 				      ed.on
 				      (
 				      	'change', 
@@ -130,9 +121,11 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								}
 							);
 							
+							// set focus to the tinymce editor
 							nxs_tinymce_claimfocus();
+							
+							nxs_js_log("finished setup of handlers");
 						}
-		
 		
 						function nxs_launch_tinymce_editor()
 						{
@@ -149,28 +142,36 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							else
 							{
 								// nxs_js_log('Delayed execution required for TinyMCE, having to wait till tinyMCE object is initialized... retrying...');
-								setTimeout(nxs_launch_tinymce_editor, 500);
+								setTimeout(nxs_launch_tinymce_editor, 100);
 								return;
 							}
-							
-							
 						
 							// Remove any editor occurences, should they (still?) exist
 							tinymce.remove();
 							
-							var plugins = "paste,advlist,wordcount,code";
 							tinymce.init
 							(
 								{
 									entity_encoding : "raw",
 									width: "100%",
 									baseURL: "<?php echo includes_url() . "/js/tinymce"; ?>",
+									relative_urls: false,
+									remove_script_host: false,
+									convert_urls: false,
+									browser_spellcheck: true,
+									fix_list_elements: true,
+									entities : "38,amp,60,lt,62,gt",
+									keep_styles: false,
 									selector:'#<?php echo $internaltextareaid; ?>',
 									menubar: false,
 									theme: "modern",
-							    plugins: plugins,
-							    toolbar1: "bold code",
-							    setup: setupeditorfunction,							    
+							    plugins:  [
+						        "advlist lists image charmap print preview anchor",
+						        "searchreplace visualblocks code fullscreen",
+						        "insertdatetime media table contextmenu paste link"
+							    ],
+						      toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | code",
+							    setup: nxs_tinymce_registereventhandlers,							    
 								}
 							);
 						}

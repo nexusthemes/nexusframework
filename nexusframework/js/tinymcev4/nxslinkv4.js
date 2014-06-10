@@ -1,181 +1,419 @@
 /**
- * editor_plugin.js
+ * plugin.js
  *
- * Copyright 2012, Nexus Studios, Nexus Themes
- * Released under GPL License v2.
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
  */
 
-function nxs_js_tiny_plugin_link_shouldeditorinstanceprocessactivity(ed)
-{
-	// determine who "we" are
-	var optionid = nxs_js_tiny_plugin_link_getoptionidforeditor(ed);
-	
-	// retrieve the invoker of this activity
-	var triggerbyoptionid = nxs_js_popup_getsessiondata("nxs_tinymce_invoker_optionid");
+/*global tinymce:true */
 
-	var result = (optionid == triggerbyoptionid);
-	
-	nxs_js_log("nxs_js_tiny_plugin_link_shouldeditorinstanceprocessactivity " + result);
-	
-	return result;
-}
+tinymce.PluginManager.add('link', function(editor) {
+	function createLinkList(callback) {
+		return function() {
+			var linkList = editor.settings.link_list;
 
-function nxs_js_tiny_plugin_link_handleactivities(ed, url)
-{
-	if (!nxs_js_tiny_plugin_link_shouldeditorinstanceprocessactivity(ed))
-	{
-		// if the activity isn't caused by us, skip it!
-		return;
+			if (typeof(linkList) == "string") {
+				tinymce.util.XHR.send({
+					url: linkList,
+					success: function(text) {
+						callback(tinymce.util.JSON.parse(text));
+					}
+				});
+			} else if (typeof(linkList) == "function") {
+				linkList(callback);
+			} else {
+				callback(linkList);
+			}
+		};
 	}
-	
-	var tinymcepopupcontext = nxs_js_popup_getsessiondata('tinymcepopupcontext');
-	if (tinymcepopupcontext == '')
+
+	function showDialog(linkList) 
 	{
-	}
-	else if (tinymcepopupcontext == 'createlink')
-	{
-		// store the target for our tinymce plugin to continue
-		nxs_js_popup_sessiondata_make_dirty();
-
-		// als we hier komen, heeft de gebruiker op "save" gedrukt in het "create link" popup scherm,
-		// deze 'context' was reeds gezet toen we op de "make link" knop drukten...
-		nxs_js_log("returning to tinymce...");
-
-		// haal de url op van de link die we moeten gaan plaatsen,
-		// deze is gezet door de popup waar de link gekozen is...
-		var tinymcelink = nxs_js_popup_getsessiondata('tinymcelink');
-		nxs_js_log('we gaan zo linken naar: ' + tinymcelink);
-		//				
-		var tinymcetarget = nxs_js_popup_getsessiondata('tinymcetarget');
-		nxs_js_log('de target is : ' + tinymcetarget);
-
-		var tinymcetitle = nxs_js_popup_getsessiondata('tinymcetitle');
-		nxs_js_log('de title is : ' + tinymcetitle);
+		nxs_js_log("showDialog");
 		
-		ed.on
+		var data = {}, selection = editor.selection, dom = editor.dom, selectedElm, anchorElm, initialText;
+		
+		nxs_js_log("editor.selection:");
+		nxs_js_log(editor.selection);
+		
+		var win, onlyText, textListCtrl, linkListCtrl, relListCtrl, targetListCtrl, classListCtrl, linkTitleCtrl;
+
+		function linkListChangeHandler(e) {
+			var textCtrl = win.find('#text');
+
+			if (!textCtrl.value() || (e.lastControl && textCtrl.value() == e.lastControl.text())) {
+				textCtrl.value(e.control.text());
+			}
+
+			win.find('#href').value(e.control.value());
+		}
+
+		function buildLinkList() 
+		{
+			
+			function appendItems(values, output) {
+				output = output || [];
+
+				tinymce.each(values, function(value) {
+					var item = {text: value.text || value.title};
+
+					if (value.menu) {
+						item.menu = appendItems(value.menu);
+					} else {
+						item.value = editor.convertURL(value.value || value.url, 'href');
+					}
+
+					output.push(item);
+				});
+
+				return output;
+			}
+
+			return appendItems(linkList, [{text: 'None', value: ''}]);
+		}
+
+		function applyPreview(items) {
+			tinymce.each(items, function(item) {
+				item.textStyle = function() {
+					return editor.formatter.getCssText({inline: 'a', classes: [item.value]});
+				};
+			});
+
+			return items;
+		}
+
+		function buildValues(listSettingName, dataItemName, defaultItems) {
+			var selectedItem, items = [];
+
+			tinymce.each(editor.settings[listSettingName] || defaultItems, function(target) {
+				var item = {
+					text: target.text || target.title,
+					value: target.value
+				};
+
+				items.push(item);
+
+				if (data[dataItemName] === target.value || (!selectedItem && target.selected)) {
+					selectedItem = item;
+				}
+			});
+
+			if (selectedItem && !data[dataItemName]) {
+				data[dataItemName] = selectedItem.value;
+				selectedItem.selected = true;
+			}
+
+			return items;
+		}
+
+		function buildAnchorListControl(url) {
+			var anchorList = [];
+
+			tinymce.each(editor.dom.select('a:not([href])'), function(anchor) {
+				var id = anchor.name || anchor.id;
+
+				if (id) {
+					anchorList.push({
+						text: id,
+						value: '#' + id,
+						selected: url.indexOf('#' + id) != -1
+					});
+				}
+			});
+
+			if (anchorList.length) {
+				anchorList.unshift({text: 'None', value: ''});
+
+				return {
+					name: 'anchor',
+					type: 'listbox',
+					label: 'Anchors',
+					values: anchorList,
+					onselect: linkListChangeHandler
+				};
+			}
+		}
+
+		function urlChange() {
+			if (linkListCtrl) {
+				linkListCtrl.value(editor.convertURL(this.value(), 'href'));
+			}
+
+			if (!initialText && data.text.length === 0 && onlyText) {
+				this.parent().parent().find('#text')[0].value(this.value());
+			}
+		}
+
+		function isOnlyTextSelected(anchorElm) 
+		{
+			nxs_js_log("isOnlyTextSelected");
+
+			var html = selection.getContent();
+
+			// Partial html and not a fully selected anchor element
+			if (/</.test(html) && (!/^<a [^>]+>[^<]+<\/a>$/.test(html) || html.indexOf('href=') == -1)) {
+				return false;
+			}
+
+			if (anchorElm) {
+				var nodes = anchorElm.childNodes, i;
+
+				if (nodes.length === 0) {
+					return false;
+				}
+
+				for (i = nodes.length - 1; i >= 0; i--) {
+					if (nodes[i].nodeType != 3) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+		
+		// HIERONDER BEGINT DE CODE DIE DIRECT WORDT UITGEVOERD,
+		// ALS DE GEBRUIKER DE KNOP INDRUKT;
+
+		selectedElm = selection.getNode();
+		anchorElm = dom.getParent(selectedElm, 'a[href]');
+		onlyText = isOnlyTextSelected();
+
+		data.text = initialText = anchorElm ? (anchorElm.innerText || anchorElm.textContent) : selection.getContent({format: 'text'});
+		data.href = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
+		data.target = anchorElm ? dom.getAttrib(anchorElm, 'target') : (editor.settings.default_link_target || null);
+		data.rel = anchorElm ? dom.getAttrib(anchorElm, 'rel') : null;
+		data['class'] = anchorElm ? dom.getAttrib(anchorElm, 'class') : null;
+		data.title = anchorElm ? dom.getAttrib(anchorElm, 'title') : '';
+		
+		/*
+		nxs_js_log(selectedElm);
+		nxs_js_log(anchorElm);
+		nxs_js_log(onlyText);
+		nxs_js_log(data);
+		*/
+		nxs_js_log(editor.settings);
+
+		if (onlyText) {
+			textListCtrl = {
+				name: 'text',
+				type: 'textbox',
+				size: 40,
+				label: 'Text to display',
+				onchange: function() {
+					data.text = this.value();
+				}
+			};
+		}
+
+		if (linkList) {
+			linkListCtrl = {
+				type: 'listbox',
+				label: 'Link list',
+				values: buildLinkList(),
+				onselect: linkListChangeHandler,
+				value: editor.convertURL(data.href, 'href'),
+				onPostRender: function() {
+					linkListCtrl = this;
+				}
+			};
+		}
+
+		// editor.settings zijn alle initialisatie properties van de tinymce editor instance
+		
+		// target_list => This option lets you specify a predefined list of targets for the link dialog.
+
+		// de mogelijk TARGET="" waarden die gekozen kunnen worden
+		if (editor.settings.target_list !== false) 
+		{
+			targetListCtrl = {
+				name: 'target',
+				type: 'listbox',
+				label: 'Target',
+				values: buildValues('target_list', 'target', [{text: 'None', value: ''}, {text: 'New window', value: '_blank'}])
+			};
+		}
+
+		// de REL="" property die gekozen kan worden bij een link
+		if (editor.settings.rel_list) {
+			relListCtrl = {
+				name: 'rel',
+				type: 'listbox',
+				label: 'Rel',
+				values: buildValues('rel_list', 'rel', [{text: 'None', value: ''}])
+			};
+		}
+
+		// de CLASS property die gekozen kan worden bij een link
+		if (editor.settings.link_class_list) {
+			classListCtrl = {
+				name: 'class',
+				type: 'listbox',
+				label: 'Class',
+				values: applyPreview(buildValues('link_class_list', 'class'))
+			};
+		}
+
+		// bepaalt of de mogelijkheid aan of uit staat om een TITLE="" te kunnen zetten bij het aanmaken van een link
+		if (editor.settings.link_title !== false) {
+			linkTitleCtrl = {
+				name: 'title',
+				type: 'textbox',
+				label: 'Title',
+				value: data.title
+			};
+		}
+
+		win = editor.windowManager.open
 		(
-			'init',
-			function(editor) 
 			{
-				editor = ed;
-				
-				var contenttogetanchored = nxs_js_popup_getsessiondata("tinymcecontenttogetanchored");
-				var uniqueid = "nxs-magic" + nxs_js_getrandom(999999);
-				var scaffoldedcontent = nxs_js_popup_getsessiondata("tinymcescaffoldedcontent");
-				scaffoldedcontent = scaffoldedcontent.replace("nxs-domselection", "<a id='" + uniqueid + "'>" + contenttogetanchored + "</a><span id='caret_pos_holder'></span>");
+			title: 'Insert link NXS',
+			data: data,
+			body: 
+			[
+				{
+					name: 'href',
+					type: 'filepicker',
+					filetype: 'file',
+					size: 40,
+					autofocus: true,
+					label: 'Url',
+					onchange: urlChange,
+					onkeyup: urlChange
+				},
+				textListCtrl,
+				linkTitleCtrl,
+				buildAnchorListControl(data.href),
+				linkListCtrl,
+				relListCtrl,
+				targetListCtrl,
+				classListCtrl
+			],
+			onSubmit: function(e) {
+				var href;
 
-				editor.setContent(scaffoldedcontent, {format : 'raw'});
-				
-				nxs_js_log('content updated');
+				data = tinymce.extend(data, e.data);
+				href = data.href;
 
-				// resetten van de state
-				nxs_js_popup_setsessiondata('tinymcepopupcontext', '');
-				
-				nxs_js_log("done!...");
-  		}
-  	);
+				// Delay confirm since onSubmit will move focus
+				function delayedConfirm(message, callback) {
+					var rng = editor.selection.getRng();
+
+					window.setTimeout(function() {
+						editor.windowManager.confirm(message, function(state) {
+							editor.selection.setRng(rng);
+							callback(state);
+						});
+					}, 0);
+				}
+
+				function insertLink() 
+				{
+					nxs_js_log("insertLink");
+					
+					var linkAttrs = {
+						href: href,
+						target: data.target ? data.target : null,
+						rel: data.rel ? data.rel : null,
+						"class": data["class"] ? data["class"] : null,
+						title: data.title ? data.title : null
+					};
+
+					if (anchorElm) {
+						editor.focus();
+
+						if (onlyText && data.text != initialText) {
+							if ("innerText" in anchorElm) {
+								anchorElm.innerText = data.text;
+							} else {
+								anchorElm.textContent = data.text;
+							}
+						}
+
+						dom.setAttribs(anchorElm, linkAttrs);
+
+						selection.select(anchorElm);
+						editor.undoManager.add();
+					} else {
+						if (onlyText) {
+							editor.insertContent(dom.createHTML('a', linkAttrs, dom.encode(data.text)));
+						} else {
+							editor.execCommand('mceInsertLink', false, linkAttrs);
+						}
+					}
+				}
+
+				if (!href) {
+					editor.execCommand('unlink');
+					return;
+				}
+
+				// Is email and not //user@domain.com
+				if (href.indexOf('@') > 0 && href.indexOf('//') == -1 && href.indexOf('mailto:') == -1) {
+					delayedConfirm(
+						'The URL you entered seems to be an email address. Do you want to add the required mailto: prefix?',
+						function(state) {
+							if (state) {
+								href = 'mailto:' + href;
+							}
+
+							insertLink();
+						}
+					);
+
+					return;
+				}
+
+				// Is www. prefixed
+				if (/^\s*www\./i.test(href)) {
+					delayedConfirm(
+						'The URL you entered seems to be an external link. Do you want to add the required http:// prefix?',
+						function(state) {
+							if (state) {
+								href = 'http://' + href;
+							}
+
+							insertLink();
+						}
+					);
+
+					return;
+				}
+
+				insertLink();
+			}
+		});
 	}
-	else
-	{
-		// add handling for other activities here, when needed
-		// one plugin could for example have a "process" and "cancel" activity
 
-		//nxs_js_log("initializing nexuslink v2 in tinymce...");
-		//nxs_js_alert('initializing nexuslink v2 in tinymce...');
-	}
-}
+	editor.addButton('link', {
+		icon: 'link',
+		tooltip: 'Insert/edit link NXS',
+		shortcut: 'Ctrl+K',
+		onclick: createLinkList(showDialog),	// showDialog is de callback
+		stateSelector: 'a[href]'
+	});
 
-tinymce.PluginManager.add
-(
-	'example', 
-	function(editor, url) 
-	{
-		nxs_js_tiny_plugin_link_handleactivities(editor, url);
-		
-		// Add a button that opens a window
-    editor.addButton('example', {
-        text: 'My button GJ',
-        icon: false,
-        onclick: function() 
-        {
-        	nxs_js_log("button clicked!");    
-        	nxs_js_tiny_plugin_link_handlebuttonpressed(editor);
-        }
-    });
+	editor.addButton('unlink', {
+		icon: 'unlink',
+		tooltip: 'Remove link',
+		cmd: 'unlink',
+		stateSelector: 'a[href]'
+	});
 
-    // Adds a menu item to the tools menu
-    editor.addMenuItem('example', {
-        text: 'Example plugin',
-        context: 'tools',
-        onclick: function() {
-            // Open window with a specific url
-            editor.windowManager.open({
-                title: 'TinyMCE site',
-                url: 'http://www.tinymce.com',
-                width: 800,
-                height: 600,
-                buttons: [{
-                    text: 'Close',
-                    onclick: 'close'
-                }]
-            });
-        }
-    });
-	}
-);
+	editor.addShortcut('Ctrl+K', '', createLinkList(showDialog));
 
-function nxs_js_tiny_plugin_link_handlebuttonpressed(ed)
-{
-	nxs_js_log('touched');
-	
-	var se = ed.selection;
+	this.showDialog = showDialog;
 
-	// save content before modification (undo content)
-	var contentbefore = tinyMCE.activeEditor.getContent({format : 'raw'});
-	nxs_js_popup_setsessiondata("tinymcecontentbefore", contentbefore);
-	
-	//
-	var optionid = nxs_js_tiny_plugin_link_getoptionidforeditor(ed);
-	
-	// store the 'current' optionid in the session
-	nxs_js_popup_setsessiondata("nxs_tinymce_invoker_optionid", optionid);
-	
-	// save selected content (content to be linked)
-	var contenttogetanchored = se.getContent({format : 'raw'});
-	nxs_js_log("contenttogetanchored:");
-	nxs_js_log(contenttogetanchored);
-	nxs_js_popup_setsessiondata("tinymcecontenttogetanchored", contenttogetanchored);
-	
-	var anchoredcontent = "<span>nxs-domselection</span>";
-	
-	// adjust the DOM such that we know what piece was selected (no other way to persist the selected DOM unfortunately...)
-	tinyMCE.execCommand('mceInsertContent',false,anchoredcontent);
-	
-	// save content after modification (temp content)
-	var scaffoldedcontent = tinyMCE.activeEditor.getContent({format : 'raw'});
-	nxs_js_popup_setsessiondata("tinymcescaffoldedcontent", scaffoldedcontent);
-	
-	// store information (not just the tiny mce data, but also other fields on the popup) 
-	nxs_js_setpopupdatefromcontrols();
-	// note that the content contains the (temporary) link to be pimped with the selected DOM
-	// in case the user pressed UNDO, we can easily revert the contents based on the 
-	// data in "tinymcecontentbefore".
-
-	// redirect to popup allowing user to select destination
-	nxs_js_popup_setsessiondata('tinymcepopupcontext', 'createlink');
-	// we mark the current popup as the invoker, such that we will be returned to this 
-	// popup when the linkpicker is done
-	nxs_js_popup_setsessiondata("nxs_tinymce_invoker_sheet", nxs_js_popup_getcurrentsheet());
-	
-	nxs_js_popup_navigateto("tinymcepicklink");
-	// the popup will be responsible to redirect back to the 'home' screen,
-	// which will eventually re-render this plugin			
-}
-
-function nxs_js_tiny_plugin_link_getoptionidforeditor(ed)
-{
-	var textareaelement = jQuery(ed.getElement());
-	var optioniddomelement = jQuery(textareaelement).closest(".nxs-optionid");
-	var optionid = nxs_js_findclassidentificationwithprefix(optioniddomelement, "nxs-optionid-");
-	return optionid;
-}
+	editor.addMenuItem('link', {
+		icon: 'link',
+		text: 'Insert link NXS',
+		shortcut: 'Ctrl+K',
+		onclick: createLinkList(showDialog),
+		stateSelector: 'a[href]',
+		context: 'insert',
+		prependToContext: true
+	});
+});

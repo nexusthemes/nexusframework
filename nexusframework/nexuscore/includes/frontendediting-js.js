@@ -1334,8 +1334,16 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 							nxs_js_execute_after_popup_shows();
 						}
 						
+						
+						nxs_js_log("broadcasting afterpopupshows");
+						
 						// broadcast clientside trigger for dom elements to be notified when the popup shows
 						jQuery(window).trigger('nxs_jstrigger_afterpopupshows');
+
+						nxs_js_log("unbinding broadcast receivers");
+						
+						// remove all listeners
+						jQuery(window).unbind("nxs_jstrigger_afterpopupshows");
 						
 						// reset last focus to specified element (if available)
 						if (elementidlastfocussed != null)
