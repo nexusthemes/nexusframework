@@ -1,4 +1,9 @@
 <?php
+
+
+/*
+*/
+
 function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $runtimeblendeddata) 
 {
 	extract($optionvalues);
@@ -12,7 +17,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 	// this id is also used in one of the other functions below,
 	// so we therefore introduce/use the NXS_UNIQUEIDFORREQUEST variable that is set
 	// when the system uses the framework for the first time
-	$internaltextareaid = "nxs_i_textarea_" . $id . "_" . NXS_UNIQUEIDFORREQUEST;
+	$internaltextareaid = "nxs_i_textarea_" . $id . "_" . "UNIQUE"; // NXS_UNIQUEIDFORREQUEST;
 	//
 	
 	?>
@@ -41,66 +46,12 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								nxs_js_log("lazyexecuted " + scripturl);
 							}
 						);
-		
-						function nxs_loadplugins_tinymce_editor()
-						{
-							var scripturl = '<?php echo nxs_getframeworkurl(); ?>/js/tinymcev4/nxslinkv4.js';
-							var functiontoinvoke = 'nxs_launch_tinymce_editor()';
-							nxs_js_lazyexecute(scripturl, false, functiontoinvoke);
-							nxs_js_log("lazyexecuted " + scripturl);
-						}
-		
-						function nxs_launch_tinymce_editor()
-						{
-							nxs_js_log("nxs_launch_tinymce_editor");
-							
-							// bugfix: when multiple tinymce instances are on the same popup,
-							// it appears the first one loads perfect, but the ones following
-							// give an error because the tinyMCE instance is not yet defined
-							// this is solved by using a lazy load approacy
-							if(typeof tinyMCE != 'undefined')
-							{
-								//nxs_js_log('looks like tinyMCE exists');
-							}
-							else
-							{
-								// nxs_js_log('Delayed execution required for TinyMCE, having to wait till tinyMCE object is initialized... retrying...');
-								setTimeout(nxs_launch_tinymce_editor, 500);
-								return;
-							}
-							
-							
+
+
+
 						
-							// Remove any editor occurences, should they (still?) exist
-							tinymce.remove();
-							
-							var plugins = "paste,advlist,wordcount,code,example";
-							if (true)
-							{
-								tinymce.init
-								(
-									{
-										entity_encoding : "raw",
-										width: "100%",
-										baseURL: "<?php echo includes_url() . "/js/tinymce"; ?>",
-										selector:'#<?php echo $internaltextareaid; ?>',
-										menubar: false,
-										setup: setupeditorfunction,
-										theme: "modern",
-								    plugins: plugins,
-								    toolbar1: "bold code example",
-									}
-								);
-								
-								//nxs_js_log('gogoeditor finished for <?php echo $internaltextareaid; ?>');
-							}
-						}
-		
-						function editoreventcallbackfunction(e)
-					  {
-							nxs_js_log('call back');
-							//nxs_js_log(e);
-							
+						function tinymcekeydownhandler(e)
+						{
 					  	// het blijkt dat hier events door blijven komen, ook als de popup ondertussen al weer is gesloten...
 					  	// de focus blijft namelijk in het iframe 'hangen'...
 					  	if (nxs_js_popupshows)
@@ -131,12 +82,34 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 		          	// zeer belangrijk; we zetten de focus op de parent (oftewel de pagina die het iframe bevat van tinymce,
 		          	// zodat daar weer keyboard events op binnenkomen), als we dat niet doen, dan blijft de focus op het iframe staan
 		          	parent.focus();
-		          } 
+		          }
 			      }
 						
+						function nxs_tinymce_claimfocus_internal()
+						{
+							nxs_js_log("doing it");
+							nxs_i_textarea_text_UNIQUE_ifr.contentDocument.documentElement.focus();
+							jQuery('#nxs_i_textarea_text_UNIQUE_ifr').contents().find('body').focus();
+							nxs_js_log("did it");
+						}
+						
+						function nxs_tinymce_claimfocus()
+						{
+							nxs_js_log("nxs_tinymce_claimfocus");
+							setTimeout(nxs_tinymce_claimfocus_internal, 0);
+						}
+		
+						function nxs_loadplugins_tinymce_editor()
+						{
+							var scripturl = '<?php echo nxs_getframeworkurl(); ?>/js/tinymcev4/nxslinkv4.js';
+							var functiontoinvoke = 'nxs_launch_tinymce_editor()';
+							nxs_js_lazyexecute(scripturl, false, functiontoinvoke);
+							nxs_js_log("lazyexecuted " + scripturl);
+						}
+		
 						function setupeditorfunction(ed) 
 					  {
-					  	ed.on('keydown', editoreventcallbackfunction);		
+					  	ed.on('keydown', tinymcekeydownhandler);		
 
 						  ed.on
 						  (
@@ -157,18 +130,50 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								}
 							);
 							
-							ed.on
-							(
-								'init',
-								function(nxseditor) 
-								{
-									nxs_js_log("init");
-									nxs_js_log(ed);
-									nxs_js_log(nxseditor);
-								}
-				    	);
+							nxs_tinymce_claimfocus();
+						}
+		
+		
+						function nxs_launch_tinymce_editor()
+						{
+							nxs_js_log("nxs_launch_tinymce_editor");
 							
-				   	}
+							// bugfix: when multiple tinymce instances are on the same popup,
+							// it appears the first one loads perfect, but the ones following
+							// give an error because the tinyMCE instance is not yet defined
+							// this is solved by using a lazy load approacy
+							if(typeof tinyMCE != 'undefined')
+							{
+								//nxs_js_log('looks like tinyMCE exists');
+							}
+							else
+							{
+								// nxs_js_log('Delayed execution required for TinyMCE, having to wait till tinyMCE object is initialized... retrying...');
+								setTimeout(nxs_launch_tinymce_editor, 500);
+								return;
+							}
+							
+							
+						
+							// Remove any editor occurences, should they (still?) exist
+							tinymce.remove();
+							
+							var plugins = "paste,advlist,wordcount,code";
+							tinymce.init
+							(
+								{
+									entity_encoding : "raw",
+									width: "100%",
+									baseURL: "<?php echo includes_url() . "/js/tinymce"; ?>",
+									selector:'#<?php echo $internaltextareaid; ?>',
+									menubar: false,
+									theme: "modern",
+							    plugins: plugins,
+							    toolbar1: "bold code",
+							    setup: setupeditorfunction,							    
+								}
+							);
+						}
 					</script>
 				</div>
 				</div>

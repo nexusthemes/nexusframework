@@ -126,8 +126,8 @@
 						nxs_js_log('content updated');
 						
 						// focus the editor
-						editor.focus();						
-						nxs_js_log('focus set');
+						//editor.focus();	
+						//nxs_js_log('focus set');
 						
 						nxs_js_log('uniqueid:' + uniqueid);
 						
