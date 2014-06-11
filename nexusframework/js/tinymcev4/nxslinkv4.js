@@ -343,9 +343,6 @@ tinymce.PluginManager.add
 			data.class = anchorElm ? dom.getAttrib(anchorElm, 'class') : null;
 			data.title = anchorElm ? dom.getAttrib(anchorElm, 'title') : '';
 
-			nxs_js_log("current selection:");
-			nxs_js_log(data);
-
 			// redirect to popup allowing user to select destination
 			nxs_js_popup_setshortscopedata('linktarget', data.target);
 			nxs_js_popup_setshortscopedata('linktext', data.text);
@@ -369,22 +366,18 @@ tinymce.PluginManager.add
 			if (anchorElm) 
 			{
 				nxs_js_log("anchorElm is 'set'");
-				
 				//anchorElm.innerText = "INNERTEXT:AAP";
 				anchorElm.textContent = text;
-				
 				selection.select(anchorElm);
 				//editor.undoManager.add();
-				
 			} 
 			else 
 			{
 				//nxs_js_log("anchorElm is not 'set'");
 				var x = dom.createHTML('a', currentatts, text);
-				editor.insertContent(x);
-				
+				editor.insertContent(x);				
 				var domitem = tinymce.activeEditor.dom.select('#' + currentatts.id)[0];
-				nxs_js_log(domitem);
+				//nxs_js_log(domitem);
 				selection.select(domitem);
 			}
 			
@@ -419,16 +412,16 @@ tinymce.PluginManager.add
 				//var selection = editor.selection
 				//selection.select(anchorElm);
 		
-				var linktext = nxs_js_popup_getsessiondata('linktext');
+				var linktext = nxs_js_popup_getsessioncontext('linktext');
 				nxs_js_log(linktext);
 				
-				var linkhref = nxs_js_popup_getsessiondata('linkhref');
+				var linkhref = nxs_js_popup_getsessioncontext('linkhref');
 				nxs_js_log(linkhref);
 				
-				var linktarget = nxs_js_popup_getsessiondata('linktarget');
+				var linktarget = nxs_js_popup_getsessioncontext('linktarget');
 				nxs_js_log(linktarget);
 				
-				var linktitle = nxs_js_popup_getsessiondata('linktitle');
+				var linktitle = nxs_js_popup_getsessioncontext('linktitle');
 				nxs_js_log(linktitle);
 				
 				anchorElm.textContent = linktext;
@@ -443,6 +436,9 @@ tinymce.PluginManager.add
 				
 				editor.dom.setAttribs(anchorElm, atts);
 				editor.selection.select(anchorElm);
+				
+				// collapse the title section in the popup, used in the text widget
+				nxs_js_popuptogglewrapper(this, 'nxs-wrapperbegin-wrapper_title_begin');
 				
 				// prevent trigger from re-triggering :)
 				nxs_js_popup_setsessioncontext('tinymceinittrigger', '');
@@ -465,9 +461,20 @@ tinymce.PluginManager.add
 			'link', 
 			{
 				icon: 'link',
-				tooltip: 'Insert/edit link NXS 3',
+				tooltip: 'Insert/edit link NXS',
 				shortcut: 'Ctrl+K',
-				onclick: createLinkList(showDialog),	// showDialog is de callback
+				onclick: showDialog,
+				stateSelector: 'a[href]'
+			}
+		);
+		
+		editor.addButton
+		(
+			'unlink', 
+			{
+				icon: 'unlink',
+				tooltip: 'Remove link NXS',
+				onclick: showDialog,
 				stateSelector: 'a[href]'
 			}
 		);

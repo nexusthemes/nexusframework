@@ -62,13 +62,32 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 			}
 			else
 			{
-				$lowercase = strtolower($linkhref);
-				if (!nxs_stringstartswith($lowercase, "http://"))
-				{
-					$linkhref = "http://" . $linkhref;
-				}
 				$linktype = 'external';
 			}
+		}
+	}
+	
+	if ($linktype == 'external')
+	{
+		// ensure link starts with https
+		$lowercase = strtolower($linkhref);
+		if (nxs_stringstartswith($lowercase, "http://"))
+		{
+			// ignore
+		}
+		else if (nxs_stringstartswith($lowercase, "https://"))
+		{
+			// ignore
+		}
+		else if (nxs_stringstartswith($lowercase, "//"))
+		{
+			// ignore
+		}
+		else
+		{
+			// prefix the link with http, otherwise it will become a relative url
+			// which results in support q's
+			$linkhref = "http://" . $linkhref;
 		}
 	}
 	
