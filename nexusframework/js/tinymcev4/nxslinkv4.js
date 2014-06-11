@@ -36,6 +36,11 @@ tinymce.PluginManager.add
 			};
 		}
 	
+		function removeLink()
+		{
+			
+		}
+	
 		function showDialog(linkList) 
 		{
 			function linkListChangeHandler(e) 
@@ -461,7 +466,7 @@ tinymce.PluginManager.add
 			'link', 
 			{
 				icon: 'link',
-				tooltip: 'Insert/edit link NXS',
+				tooltip: 'Insert/edit link',
 				shortcut: 'Ctrl+K',
 				onclick: showDialog,
 				stateSelector: 'a[href]'
@@ -472,10 +477,10 @@ tinymce.PluginManager.add
 		(
 			'unlink', 
 			{
-				icon: 'unlink',
-				tooltip: 'Remove link NXS',
-				onclick: showDialog,
-				stateSelector: 'a[href]'
+			icon: 'unlink',
+			tooltip: 'Remove link',
+			cmd: 'unlink',
+			stateSelector: 'a[href]'
 			}
 		);
 	

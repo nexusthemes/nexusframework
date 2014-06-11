@@ -170,7 +170,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 						        "searchreplace visualblocks code fullscreen",
 						        "insertdatetime media table contextmenu paste link"
 							    ],
-						      toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | code",
+						      toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code",
 							    setup: nxs_tinymce_registereventhandlers,							    
 								}
 							);
