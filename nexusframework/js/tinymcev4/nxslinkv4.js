@@ -310,6 +310,10 @@ tinymce.PluginManager.add
 
 			nxs_js_log("showDialog");
 			
+			// save content before modification (undo content)
+			var contentbefore = tinyMCE.activeEditor.getContent({format : 'raw'});
+			nxs_js_popup_setsessiondata("tinymcecontentbefore", contentbefore);
+
 			var data = {}, selection = editor.selection, dom = editor.dom, selectedElm, anchorElm, initialText;
 			
 			nxs_js_log("editor.selection:");
@@ -336,112 +340,65 @@ tinymce.PluginManager.add
 			data.rel = anchorElm ? dom.getAttrib(anchorElm, 'rel') : null;
 			data['class'] = anchorElm ? dom.getAttrib(anchorElm, 'class') : null;
 			data.title = anchorElm ? dom.getAttrib(anchorElm, 'title') : '';
+
+			// redirect to popup allowing user to select destination
+			nxs_js_popup_setsessiondata('tinymcepopupmeta', data);
 			
-			if (onlyText) 
+			nxs_js_log("current selection:");
+			nxs_js_log(data);
+
+			var currentatts = new Object();
+			currentatts.id = "NXS-SELECTED-ID";
+			currentatts.href = "{{NXS-LINK-HREF}}";
+			currentatts.target = "{{NXS-LINK-TARGET}}";
+			currentatts.rel = "{{NXS-LINK-REL}}";
+			currentatts.title = "{{NXS-LINK-TITLE}}";
+						
+			dom.setAttribs(anchorElm, currentatts);
+						
+			var text = "{{NXS-LINK-TEXT}}";
+						
+			if (anchorElm) 
 			{
-				textListCtrl = {
-					name: 'text',
-					type: 'textbox',
-					size: 40,
-					label: 'Text to display',
-					onchange: function() {
-						data.text = this.value();
-					}
-				};
-			}
-	
-			if (linkList) 
+				nxs_js_log("anchorElm is 'set'");
+				
+				//anchorElm.innerText = "INNERTEXT:AAP";
+				anchorElm.textContent = text;
+				
+				selection.select(anchorElm);
+				//editor.undoManager.add();
+				
+			} 
+			else 
 			{
-				linkListCtrl = {
-					type: 'listbox',
-					label: 'Link list',
-					values: buildLinkList(),
-					onselect: linkListChangeHandler,
-					value: editor.convertURL(data.href, 'href'),
-					onPostRender: function() {
-						linkListCtrl = this;
-					}
-				};
-			}
-	
-			// editor.settings zijn alle initialisatie properties van de tinymce editor instance
-			
-			// target_list => This option lets you specify a predefined list of targets for the link dialog.
-	
-			// de mogelijk TARGET="" waarden die gekozen kunnen worden
-			if (editor.settings.target_list !== false) 
-			{
-				targetListCtrl = {
-					name: 'target',
-					type: 'listbox',
-					label: 'Target',
-					values: buildValues('target_list', 'target', [{text: 'None', value: ''}, {text: 'New window', value: '_blank'}])
-				};
-			}
-	
-			// de REL="" property die gekozen kan worden bij een link
-			if (editor.settings.rel_list) {
-				relListCtrl = {
-					name: 'rel',
-					type: 'listbox',
-					label: 'Rel',
-					values: buildValues('rel_list', 'rel', [{text: 'None', value: ''}])
-				};
-			}
-	
-			// de CLASS property die gekozen kan worden bij een link
-			if (editor.settings.link_class_list) {
-				classListCtrl = 
-				{
-					name: 'class',
-					type: 'listbox',
-					label: 'Class',
-					values: applyPreview(buildValues('link_class_list', 'class'))
-				};
-			}
-	
-			// bepaalt of de mogelijkheid aan of uit staat om een TITLE="" te kunnen zetten bij het aanmaken van een link
-			if (editor.settings.link_title !== false) 
-			{
-				linkTitleCtrl = 
-				{
-					name: 'title',
-					type: 'textbox',
-					label: 'Title',
-					value: data.title
-				};
+				//nxs_js_log("anchorElm is not 'set'");
+				var x = dom.createHTML('a', currentatts, text);
+				editor.insertContent(x);
+				
+				var domitem = tinymce.activeEditor.dom.select('#' + currentatts.id)[0];
+				nxs_js_log(domitem);
+				selection.select(domitem);
 			}
 			
-			// hier wordt het EDIT scherm opgestart
-	
-			win = editor.windowManager.open
-			(
-				{
-					title: 'Insert link NXS',
-					data: data,
-					body: 
-					[
-						{
-							name: 'href',
-							type: 'filepicker',
-							filetype: 'file',
-							size: 40,
-							autofocus: true,
-							label: 'Url',
-							onchange: urlChange,
-							onkeyup: urlChange
-						},
-						textListCtrl,
-						linkTitleCtrl,
-						buildAnchorListControl(data.href),
-						linkListCtrl,
-						relListCtrl,
-						targetListCtrl,
-						classListCtrl
-					],
-					onSubmit: nxs_handlesubmitlinkform
-				}
-			);
+			// save content after modification (temp content)
+			var scaffoldedcontent = tinyMCE.activeEditor.getContent({format : 'raw'});
+			nxs_js_popup_setsessiondata("tinymcescaffoldedcontent", scaffoldedcontent);
+
+			// store information (not just the tiny mce data, but also other fields on the popup) 
+			nxs_js_setpopupdatefromcontrols();
+			// note that the content contains the (temporary) link to be pimped with the selected DOM
+			// in case the user pressed UNDO, we can easily revert the contents based on the 
+			// data in "tinymcecontentbefore".
+
+			// redirect to popup allowing user to select destination
+			nxs_js_popup_setsessiondata('tinymcepopupcontext', 'createlink');
+			// we mark the current popup as the invoker, such that we will be returned to this 
+			// popup when the linkpicker is done
+			nxs_js_popup_setsessiondata("nxs_tinymce_invoker_sheet", nxs_js_popup_getcurrentsheet());
+			
+			nxs_js_popup_navigateto("tinymcepicklink");
+			// the popup will be responsible to redirect back to the 'home' screen,
+			// which will eventually re-render this plugin	
 		}
 		
 		// hierboven staan functies
