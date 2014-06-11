@@ -31,6 +31,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 		<div class="box">			
       <div class="">
 				<div class="nxs-optionid-<?php echo $id;?> nxs-optionid">
+				
 		      <textarea style='display: block;' id="<?php echo $internaltextareaid; ?>" nxs-option-id="<?php echo $id;?>" name="<?php echo $internaltextareaid; ?>" cols="50" rows="15" ><?php echo $value; ?></textarea>
 		      
 					<script type="text/javascript">
@@ -45,6 +46,22 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								var functiontoinvoke = 'nxs_loadplugins_tinymce_editor()';
 								nxs_js_lazyexecute(scripturl, false, functiontoinvoke);
 								nxs_js_log("lazyexecuted " + scripturl);
+							}
+						);
+						
+						jQuery(window).bind 
+						(
+							"nxs_jstrigger_beforepopupcloses", 
+							function(e) 
+							{
+								nxs_js_log("removing tinymce evidence from the DOM");
+								// 
+								tinymce.remove();
+								
+								// remove textarea from dom
+								jQuery("textarea").remove();
+								
+								//kljsdf();
 							}
 						);
 						
@@ -146,9 +163,6 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								return;
 							}
 						
-							// Remove any editor occurences, should they (still?) exist
-							tinymce.remove();
-							
 							tinymce.init
 							(
 								{
@@ -174,9 +188,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							    setup: nxs_tinymce_registereventhandlers,							    
 								}
 							);
-							
-							// hopefully the dom is ready here..
-							
+								
 							var ed = tinyMCE.activeEditor;
 							jQuery(window).trigger('nxs_tinymce_setup', ed);
 						}

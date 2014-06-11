@@ -1666,8 +1666,6 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			}
 			else
 			{
-				nxs_js_broadcastpopupcloses();
-				
 				nxs_js_popupsession_startnewcontext();
 	
 				nxs_js_teardownpopupdom();	// removes dom elements, and prepares for the next thickbox
@@ -1692,11 +1690,13 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			}
 			
 			// broadcast clientside trigger for dom elements to be notified when the popup shows
+			nxs_js_log("broadcasting trigger: nxs_jstrigger_beforepopupcloses");
 			jQuery(window).trigger('nxs_jstrigger_beforepopupcloses');
 		}
 		
 		function nxs_js_teardownpopupdom()
 		{
+			nxs_js_log("broadcast b");
 			nxs_js_broadcastpopupcloses();
 		
 			jQuery("#TB_window").removeClass("nxs-active");
