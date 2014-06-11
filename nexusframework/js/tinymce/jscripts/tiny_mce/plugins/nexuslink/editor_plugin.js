@@ -53,10 +53,10 @@
 			// data in "tinymcecontentbefore".
 
 			// redirect to popup allowing user to select destination
-			nxs_js_popup_setsessiondata('tinymcepopupcontext', 'createlink');
+			nxs_js_popup_setsessioncontext('tinymcepopupcontext', 'createlink');
 			// we mark the current popup as the invoker, such that we will be returned to this 
 			// popup when the linkpicker is done
-			nxs_js_popup_setsessiondata("nxs_tinymce_invoker_sheet", nxs_js_popup_getcurrentsheet());
+			nxs_js_popup_setsessioncontext("nxs_tinymce_invoker_sheet", nxs_js_popup_getcurrentsheet());
 			
 			nxs_js_popup_navigateto("tinymcepicklink");
 			// the popup will be responsible to redirect back to the 'home' screen,
@@ -83,7 +83,7 @@
 				return;
 			}
 			
-			var tinymcepopupcontext = nxs_js_popup_getsessiondata('tinymcepopupcontext');
+			var tinymcepopupcontext = nxs_js_popup_getsessioncontext('tinymcepopupcontext');
 			if (tinymcepopupcontext == '')
 			{
 			}
@@ -162,7 +162,7 @@
 						// editor.selection.select(tinyMCE.activeEditor.dom.select('a#' + uniqueid)[0]);
 
 						// resetten van de state
-						nxs_js_popup_setsessiondata('tinymcepopupcontext', '');
+						nxs_js_popup_setsessioncontext('tinymcepopupcontext', '');
 						
 						nxs_js_log("done!...");
 	    		}

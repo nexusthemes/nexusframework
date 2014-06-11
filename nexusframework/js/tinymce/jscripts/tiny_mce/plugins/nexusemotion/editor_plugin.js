@@ -10,7 +10,7 @@
 	{
 		init : function(ed, url) 
 		{
-			var tinymcepopupcontext = nxs_js_popup_getsessiondata('tinymcepopupcontext');
+			var tinymcepopupcontext = nxs_js_popup_getsessioncontext('tinymcepopupcontext');
 			if (tinymcepopupcontext == 'createemotion')
 			{
 				nxs_js_log("returning to tinymce...");
@@ -56,7 +56,7 @@
 						tinyMCE.activeEditor.dom.remove(ed.dom.select('span#caret_pos_holder')[0]); //remove the span
 
 						// resetten van de state
-						nxs_js_popup_setsessiondata('tinymcepopupcontext', '');
+						nxs_js_popup_setsessioncontext('tinymcepopupcontext', '');
 						
 						nxs_js_log("done!...");
 					}
@@ -112,7 +112,7 @@
 					// data in "tinymcecontentbefore".
 
 					// redirect to popup allowing user to select destination
-					nxs_js_popup_setsessiondata('tinymcepopupcontext', 'createemotion');
+					nxs_js_popup_setsessioncontext('tinymcepopupcontext', 'createemotion');
 					nxs_js_popup_navigateto("tinymcepickemotion");
 					// the popup will be responsible to redirect back to the 'home' screen,
 					// which will eventually re-render this plugin

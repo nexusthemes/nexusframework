@@ -174,6 +174,11 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							    setup: nxs_tinymce_registereventhandlers,							    
 								}
 							);
+							
+							// hopefully the dom is ready here..
+							
+							var ed = tinyMCE.activeEditor;
+							jQuery(window).trigger('nxs_tinymce_setup', ed);
 						}
 					</script>
 				</div>

@@ -305,6 +305,8 @@ tinymce.PluginManager.add
 				insertLink();
 			}
 			
+
+			
 			// HIERONDER BEGINT DE CODE DIE DIRECT WORDT UITGEVOERD,
 			// ALS DE GEBRUIKER DE KNOP INDRUKT;
 
@@ -312,7 +314,7 @@ tinymce.PluginManager.add
 			
 			// save content before modification (undo content)
 			var contentbefore = tinyMCE.activeEditor.getContent({format : 'raw'});
-			nxs_js_popup_setsessiondata("tinymcecontentbefore", contentbefore);
+			nxs_js_popup_setsessioncontext("tinymcecontentbefore", contentbefore);
 
 			var data = {}, selection = editor.selection, dom = editor.dom, selectedElm, anchorElm, initialText;
 			
@@ -338,15 +340,21 @@ tinymce.PluginManager.add
 			data.href = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
 			data.target = anchorElm ? dom.getAttrib(anchorElm, 'target') : (editor.settings.default_link_target || null);
 			data.rel = anchorElm ? dom.getAttrib(anchorElm, 'rel') : null;
-			data['class'] = anchorElm ? dom.getAttrib(anchorElm, 'class') : null;
+			data.class = anchorElm ? dom.getAttrib(anchorElm, 'class') : null;
 			data.title = anchorElm ? dom.getAttrib(anchorElm, 'title') : '';
 
-			// redirect to popup allowing user to select destination
-			nxs_js_popup_setsessiondata('tinymcepopupmeta', data);
-			
 			nxs_js_log("current selection:");
 			nxs_js_log(data);
 
+			// redirect to popup allowing user to select destination
+			nxs_js_popup_setshortscopedata('linktarget', data.target);
+			nxs_js_popup_setshortscopedata('linktext', data.text);
+			nxs_js_popup_setshortscopedata('linkhref', data.href);
+			nxs_js_popup_setshortscopedata('linktype', "autoderive");
+			nxs_js_popup_setshortscopedata('linkrel', data.rel);	// not (yet) used
+			nxs_js_popup_setshortscopedata('linkclass', data.class);	// not (yet) used
+			nxs_js_popup_setshortscopedata('linktitle', data.title);	// not (yet) used
+			
 			var currentatts = new Object();
 			currentatts.id = "NXS-SELECTED-ID";
 			currentatts.href = "{{NXS-LINK-HREF}}";
@@ -382,7 +390,7 @@ tinymce.PluginManager.add
 			
 			// save content after modification (temp content)
 			var scaffoldedcontent = tinyMCE.activeEditor.getContent({format : 'raw'});
-			nxs_js_popup_setsessiondata("tinymcescaffoldedcontent", scaffoldedcontent);
+			nxs_js_popup_setsessioncontext("tinymcescaffoldedcontent", scaffoldedcontent);
 
 			// store information (not just the tiny mce data, but also other fields on the popup) 
 			nxs_js_setpopupdatefromcontrols();
@@ -391,26 +399,73 @@ tinymce.PluginManager.add
 			// data in "tinymcecontentbefore".
 
 			// redirect to popup allowing user to select destination
-			nxs_js_popup_setsessiondata('tinymcepopupcontext', 'createlink');
+			nxs_js_popup_setsessioncontext('tinymcepopupcontext', 'createlink');
 			// we mark the current popup as the invoker, such that we will be returned to this 
 			// popup when the linkpicker is done
-			nxs_js_popup_setsessiondata("nxs_tinymce_invoker_sheet", nxs_js_popup_getcurrentsheet());
+			nxs_js_popup_setsessioncontext("nxs_tinymce_invoker_sheet", nxs_js_popup_getcurrentsheet());
 			
 			nxs_js_popup_navigateto("tinymcepicklink");
 			// the popup will be responsible to redirect back to the 'home' screen,
 			// which will eventually re-render this plugin	
 		}
 		
+		function nxs_js_handleinittriggers(event, editor)
+		{
+			var trigger = nxs_js_popup_getsessioncontext('tinymceinittrigger');
+			if (trigger == "setanchor")
+			{
+				var selection = editor.selection;
+				var anchorElm = editor.dom.select('a#NXS-SELECTED-ID')[0];
+				//var selection = editor.selection
+				//selection.select(anchorElm);
+		
+				var linktext = nxs_js_popup_getsessiondata('linktext');
+				nxs_js_log(linktext);
+				
+				var linkhref = nxs_js_popup_getsessiondata('linkhref');
+				nxs_js_log(linkhref);
+				
+				var linktarget = nxs_js_popup_getsessiondata('linktarget');
+				nxs_js_log(linktarget);
+				
+				var linktitle = nxs_js_popup_getsessiondata('linktitle');
+				nxs_js_log(linktitle);
+				
+				anchorElm.textContent = linktext;
+				
+				var atts = 
+				{
+					'href' : linkhref,
+					'target' : linktarget,
+					'title' : linktitle,
+					'id' : '',	// wipe the ID
+				}
+				
+				editor.dom.setAttribs(anchorElm, atts);
+				editor.selection.select(anchorElm);
+				
+				// prevent trigger from re-triggering :)
+				nxs_js_popup_setsessioncontext('tinymceinittrigger', '');
+			}
+		}
+		
+		
+		
 		// hierboven staan functies
 		// ------------------
 		// hieronder wordt de knop toegevoegd bij initialisatie van de link plugin
 	
+		
+		
+		//trigger
+		jQuery(window).bind('nxs_tinymce_setup', nxs_js_handleinittriggers);
+		
 		editor.addButton
 		(
 			'link', 
 			{
 				icon: 'link',
-				tooltip: 'Insert/edit link NXS 2',
+				tooltip: 'Insert/edit link NXS 3',
 				shortcut: 'Ctrl+K',
 				onclick: createLinkList(showDialog),	// showDialog is de callback
 				stateSelector: 'a[href]'
@@ -420,3 +475,4 @@ tinymce.PluginManager.add
 		this.showDialog = showDialog;
 	}
 );
+

@@ -27,19 +27,51 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 	
 	$linktype = $temp_array['linktype'];
 	$linktarget = $temp_array['linktarget'];
-	$linktitle = $temp_array['linktitle'];
+	$linkttext = $temp_array['linktext'];
 	$linkpostid = $temp_array['linkpostid'];
-	$linkexternurl = $temp_array['linkexternurl'];
+	$linkhref = $temp_array['linkhref'];
 	
-	if ($linkexternurl == "")
+	if ($linkhref == "")
 	{
-		$linkexternurl = "http://";
+		$linkhref = "http://";
 	}
 
 	// clientpopupsessiondata bevat key values van de client side, deze overschrijven reeds bestaande variabelen
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
-
+	
+	if ($linktype == "autoderive")
+	{
+		if ($linkhref == "")
+		{
+			// most likely is to want to make a link internally
+			$linktype = "internal";
+		}
+		else if (nxs_stringcontains($linkhref, "@"))
+		{
+			$linktype = 'mail';
+		}
+		else
+		{
+			// it could be a link within this site
+			$postid = url_to_postid($linkhref);
+			if ($postid > 0)
+			{
+				$linkpostid	= $postid;
+				$linktype = 'internal';
+			}
+			else
+			{
+				$lowercase = strtolower($linkhref);
+				if (!nxs_stringstartswith($lowercase, "http://"))
+				{
+					$linkhref = "http://" . $linkhref;
+				}
+				$linktype = 'external';
+			}
+		}
+	}
+	
 	$result = array();
 	$result["result"] = "OK";
 	
@@ -129,7 +161,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 		      			<h4><?php nxs_l18n_e("Url[nxs:popup,heading]", "nxs_td"); ?></h4>
 		      		</div>
 		      		<div class="box-content">
-		      		<input id='linkexternurl' type='text' value='<?php echo $linkexternurl; ?>' />
+		      		<input id='linkhref' type='text' value='<?php echo $linkhref; ?>' />
 		      		</div>
 		      	</div>
 		      	<div class="nxs-clear margin"></div>
@@ -183,7 +215,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 		              <h4><?php nxs_l18n_e("Link target[nxs:popup,heading]", "nxs_td"); ?></h4>
 		             </div>
 		            <div class="box-content">
-		            	<select id='linktarget' onchange="nxs_js_setpopupdatefromcontrols(); nxs_js_popup_refresh_keep_focus(this);">
+		            	<select id='linktarget'>
 		            		<option <?php if ($linktarget=='_self' || $linktarget=='') echo "selected='selected'"; ?> value='_self'><?php nxs_l18n_e("Current window[nxs:popup,heading]", "nxs_td"); ?></option>
 		            		<option <?php if ($linktarget=='_blank') echo "selected='selected'"; ?> value='_blank'><?php nxs_l18n_e("New window[nxs:popup,heading]", "nxs_td"); ?></option>
 		            	</select>
@@ -195,10 +227,10 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 		      <div class="content2">
 		      	<div class="box">
 		      		<div class="box-title">
-		      			<h4><?php nxs_l18n_e("Title[nxs:heading]", "nxs_td"); ?></h4>
+		      			<h4><?php nxs_l18n_e("Text", "nxs_td"); ?></h4>
 		      		</div>
 		      		<div class="box-content">
-		      		<input id='linktitle' type='text' value='<?php echo $linktitle; ?>' />
+		      		<input id='linktext' type='text' value='<?php echo $linktext; ?>' />
 		      		</div>
 		      	</div>
 		      	<div class="nxs-clear margin"></div>
@@ -232,8 +264,8 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 			nxs_js_popup_storestatecontroldata_dropdown('linktype', 'linktype');
 			nxs_js_popup_storestatecontroldata_dropdown('linkpostid', 'linkpostid');
 			nxs_js_popup_storestatecontroldata_dropdown('linktarget', 'linktarget');
-			nxs_js_popup_storestatecontroldata_textbox('linktitle', 'linktitle');
-			nxs_js_popup_storestatecontroldata_textbox('linkexternurl', 'linkexternurl');
+			nxs_js_popup_storestatecontroldata_textbox('linktext', 'linktext');
+			nxs_js_popup_storestatecontroldata_textbox('linkhref', 'linkhref');
 			nxs_js_popup_storestatecontroldata_textbox('linkmailto', 'linkmailto');
 			nxs_js_popup_storestatecontroldata_textbox('linkmailsubject', 'linkmailsubject');
 			nxs_js_popup_storestatecontroldata_textbox('linkmailbody', 'linkmailbody');
@@ -248,16 +280,21 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 			var linktype = nxs_js_popup_getsessiondata('linktype');
 			if (linktype == 'external')
 			{
-				var url = nxs_js_popup_getsessiondata('linkexternurl');
+				var url = nxs_js_popup_getsessiondata('linkhref');
 				nxs_js_pickurlandnavigatebacktooriginalpopup(url);
 			}
 			else if (linktype == 'internal')
 			{
 				var postid = nxs_js_popup_getsessiondata('linkpostid');
+				nxs_js_log('processing internal linktype postid ' + postid);
 				nxs_js_geturl("postid", postid, "notused", 
 				function(response) 
 				{
+					nxs_js_log("magnificent result is:");
+					nxs_js_log(response);
+					
 					var url = response.url;
+					nxs_js_log("in other words, the URL is:" + url);
 					nxs_js_pickurlandnavigatebacktooriginalpopup(url);
 				},
 				function(response) 
@@ -286,23 +323,20 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 		
 		function nxs_js_pickurlandnavigatebacktooriginalpopup(url)
 		{
-			// store the title such that our tinymce plugin can continue
-			var tinymcetitle = nxs_js_popup_getsessiondata('linktitle');
-			nxs_js_popup_setsessiondata('tinymcetitle', tinymcetitle);
+			nxs_js_log("nxs_js_pickurlandnavigatebacktooriginalpopup(url):" + url);
 			
-			// store the target for our tinymce plugin to continue
-			var tinymcetarget = nxs_js_popup_getsessiondata('linktarget');
-			nxs_js_popup_setsessiondata('tinymcetarget', tinymcetarget);
+			nxs_js_popup_setsessioncontext('tinymceinittrigger', "setanchor");
+			nxs_js_popup_setsessioncontext('linktext', nxs_js_popup_getsessiondata('linktext'));
+			nxs_js_popup_setsessioncontext('linktarget', nxs_js_popup_getsessiondata('linktarget'));
+			nxs_js_popup_setsessioncontext('linktitle', nxs_js_popup_getsessiondata('linktitle'));
+			nxs_js_popup_setsessioncontext('linkhref', url);
 			
-			// store the url for our tinymce plugin to use it
-			nxs_js_log(url);					
-			nxs_js_popup_setsessiondata('tinymcelink', url);
 			
 			// store the target for our tinymce plugin to continue
 			nxs_js_popup_sessiondata_make_dirty();
 			
 			// redirect back to the sheet that triggered us
-			var nxs_tinymce_invoker_sheet = nxs_js_popup_getsessiondata("nxs_tinymce_invoker_sheet");
+			var nxs_tinymce_invoker_sheet = nxs_js_popup_getsessioncontext("nxs_tinymce_invoker_sheet");
 			nxs_js_popup_navigateto(nxs_tinymce_invoker_sheet);
 		}
 		
