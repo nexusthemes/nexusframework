@@ -1718,7 +1718,6 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			jQuery("body").append("<div id='TB_window' class='thickboxwindow' style='display:none;'></div>");
 			
 			//
-			
 		}
 		
 		function nxs_js_closepopup_unconditionally_if_not_dirty()

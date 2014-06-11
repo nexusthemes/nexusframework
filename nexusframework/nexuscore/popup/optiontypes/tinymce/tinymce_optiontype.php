@@ -65,7 +65,9 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							}
 						);
 						
-						function tinymcekeydownhandler(e)
+						
+						
+						function tinymcekeyuphandler(e)
 						{
 					  	// het blijkt dat hier events door blijven komen, ook als de popup ondertussen al weer is gesloten...
 					  	// de focus blijft namelijk in het iframe 'hangen'...
@@ -73,8 +75,11 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 					  	{								  	
 		            if (e.keyCode==27) 
 		            {
+			            e.preventDefault();
+	        				e.stopPropagation();
 		            	// escape
 		            	nxs_js_closepopup_unconditionally_if_not_dirty();
+		            	return false;
 		            }
 		            else if (e.keyCode==8) 
 		            {
@@ -126,7 +131,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 					  	// remove any other listeners
 					  	ed.off();
 					  
-					  	ed.on('keydown', tinymcekeydownhandler);
+					  	ed.on('keyup', tinymcekeyuphandler);
 						  ed.on('keypress', function(e) { nxs_js_popup_sessiondata_make_dirty(); });
 				      ed.on
 				      (
