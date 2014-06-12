@@ -97,6 +97,17 @@ if (!nxs_showphpwarnings())
 	ob_clean();
 }
 
+function nxs_getcharset()
+{
+	// charset wordt (verkeerd geinterpreteerd bij Edwin als je NIET bent ingelogd (?)
+	// LET de aanroep
+	// 
+	// doet direct een ECHO
+	
+	$result = get_bloginfo('charset');	// "UTF-8";
+	return $result;
+}
+
 //
 // define a uniqueid for this request,
 // can be used in various places,
@@ -578,6 +589,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"childrensfarm;" => array
+		(
+			"href"=>"/wordpress-themes/agriculture/childrens-farm-wordpress-theme/",
+			"title"=>"Childrens farm WordPress theme",
+		),
 		"massage;" => array
 		(
 			"href"=>"/wordpress-themes/therapy/massage-wordpress-theme/",

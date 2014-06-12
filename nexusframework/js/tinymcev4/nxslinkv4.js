@@ -48,120 +48,9 @@ tinymce.PluginManager.add
 	
 		function showDialog(linkList) 
 		{
-			function linkListChangeHandler(e) 
-			{
-				var textCtrl = win.find('#text');
-	
-				if (!textCtrl.value() || (e.lastControl && textCtrl.value() == e.lastControl.text())) {
-					textCtrl.value(e.control.text());
-				}
-	
-				win.find('#href').value(e.control.value());
-			}
-	
-			function buildLinkList() 
-			{
-				
-				function appendItems(values, output) {
-					output = output || [];
-	
-					tinymce.each(values, function(value) {
-						var item = {text: value.text || value.title};
-	
-						if (value.menu) {
-							item.menu = appendItems(value.menu);
-						} else {
-							item.value = editor.convertURL(value.value || value.url, 'href');
-						}
-	
-						output.push(item);
-					});
-	
-					return output;
-				}
-	
-				return appendItems(linkList, [{text: 'None', value: ''}]);
-			}
-	
-			function applyPreview(items) 
-			{
-				tinymce.each(items, function(item) {
-					item.textStyle = function() {
-						return editor.formatter.getCssText({inline: 'a', classes: [item.value]});
-					};
-				});
-	
-				return items;
-			}
-	
-			function buildValues(listSettingName, dataItemName, defaultItems) 
-			{
-				var selectedItem, items = [];
-	
-				tinymce.each(editor.settings[listSettingName] || defaultItems, function(target) {
-					var item = {
-						text: target.text || target.title,
-						value: target.value
-					};
-	
-					items.push(item);
-	
-					if (data[dataItemName] === target.value || (!selectedItem && target.selected)) {
-						selectedItem = item;
-					}
-				});
-	
-				if (selectedItem && !data[dataItemName]) {
-					data[dataItemName] = selectedItem.value;
-					selectedItem.selected = true;
-				}
-	
-				return items;
-			}
-	
-			function buildAnchorListControl(url) 
-			{
-				var anchorList = [];
-	
-				tinymce.each(editor.dom.select('a:not([href])'), function(anchor) {
-					var id = anchor.name || anchor.id;
-	
-					if (id) {
-						anchorList.push({
-							text: id,
-							value: '#' + id,
-							selected: url.indexOf('#' + id) != -1
-						});
-					}
-				});
-	
-				if (anchorList.length) {
-					anchorList.unshift({text: 'None', value: ''});
-	
-					return {
-						name: 'anchor',
-						type: 'listbox',
-						label: 'Anchors',
-						values: anchorList,
-						onselect: linkListChangeHandler
-					};
-				}
-			}
-	
-			function urlChange() 
-			{
-				if (linkListCtrl) {
-					linkListCtrl.value(editor.convertURL(this.value(), 'href'));
-				}
-	
-				if (!initialText && data.text.length === 0 && onlyText) {
-					this.parent().parent().find('#text')[0].value(this.value());
-				}
-			}
-	
 			function isOnlyTextSelected(anchorElm) 
 			{
-				nxs_js_log("isOnlyTextSelected");
+				//nxs_js_log("isOnlyTextSelected");
 	
 				var html = selection.getContent();
 	
@@ -187,140 +76,10 @@ tinymce.PluginManager.add
 				return true;
 			}
 			
-			function nxs_handlesubmitlinkform(e)
-			{
-				// handles submit of popup form
-				
-				function insertLink() 
-				{
-					nxs_js_log("insertLink");
-					
-					var linkAttrs = 
-					{
-						href: href,
-						target: data.target ? data.target : null,
-						rel: data.rel ? data.rel : null,
-						"class": data["class"] ? data["class"] : null,
-						title: data.title ? data.title : null
-					};
-
-					if (anchorElm) 
-					{
-						editor.focus();
-
-						if (onlyText && data.text != initialText) 
-						{
-							if ("innerText" in anchorElm) 
-							{
-								anchorElm.innerText = data.text;
-							} 
-							else 
-							{
-								anchorElm.textContent = data.text;
-							}
-						}
-
-						dom.setAttribs(anchorElm, linkAttrs);
-
-						selection.select(anchorElm);
-						editor.undoManager.add();
-					} 
-					else 
-					{
-						if (onlyText) 
-						{
-							editor.insertContent(dom.createHTML('a', linkAttrs, dom.encode(data.text)));
-						} 
-						else 
-						{
-							editor.execCommand('mceInsertLink', false, linkAttrs);
-						}
-					}
-				}
-
-				// Delay confirm since onSubmit will move focus
-				function delayedConfirm(message, callback) 
-				{
-					var rng = editor.selection.getRng();
-
-					window.setTimeout
-					(
-						function() 
-						{
-							editor.windowManager.confirm
-							(
-								message, 
-								function(state) 
-								{
-									editor.selection.setRng(rng);
-									callback(state);
-								}
-							);
-						}, 
-						0
-					);
-				}
-
-				var href;
-
-				data = tinymce.extend(data, e.data);
-				href = data.href;
-
-				if (!href) 
-				{
-					editor.execCommand('unlink');
-					return;
-				}
-
-				// Is email and not //user@domain.com
-				if (href.indexOf('@') > 0 && href.indexOf('//') == -1 && href.indexOf('mailto:') == -1) 
-				{
-					delayedConfirm
-					(
-						'The URL you entered seems to be an email address. Do you want to add the required mailto: prefix?',
-						function(state) 
-						{
-							if (state) 
-							{
-								href = 'mailto:' + href;
-							}
-
-							insertLink();
-						}
-					);
-
-					return;
-				}
-				
-				// Is www. prefixed
-				if (/^\s*www\./i.test(href)) 
-				{
-					delayedConfirm
-					(
-						'The URL you entered seems to be an external link. Do you want to add the required http:// prefix?',
-						function(state) 
-						{
-							if (state) 
-							{
-								href = 'http://' + href;
-							}
-
-							insertLink();
-						}
-					);
-
-					return;
-				}
-
-				insertLink();
-			}
-			
-
-			
 			// HIERONDER BEGINT DE CODE DIE DIRECT WORDT UITGEVOERD,
 			// ALS DE GEBRUIKER DE KNOP INDRUKT;
 
-			nxs_js_log("showDialog");
+			//nxs_js_log("showDialog");
 			
 			// save content before modification (undo content)
 			var contentbefore = tinyMCE.activeEditor.getContent({format : 'raw'});
@@ -328,20 +87,9 @@ tinymce.PluginManager.add
 
 			var data = {}, selection = editor.selection, dom = editor.dom, selectedElm, anchorElm, initialText;
 			
-			nxs_js_log("editor.selection:");
-			nxs_js_log(editor.selection);
-			
 			var win;
 			var onlyText;
 			
-			// the variables that are used to render the properties in the popup window
-			var textListCtrl;
-			var linkListCtrl;
-			var relListCtrl;
-			var targetListCtrl;
-			var classListCtrl;
-			var linkTitleCtrl;
-	
 			selectedElm = selection.getNode();
 			anchorElm = dom.getParent(selectedElm, 'a[href]');
 			onlyText = isOnlyTextSelected();
@@ -433,6 +181,9 @@ tinymce.PluginManager.add
 				
 				var linktitle = nxs_js_popup_getsessioncontext('linktitle');
 				nxs_js_log(linktitle);
+
+				var linkrel = nxs_js_popup_getsessioncontext('linkrel');
+				nxs_js_log(linkrel);
 				
 				anchorElm.textContent = linktext;
 				
@@ -441,6 +192,7 @@ tinymce.PluginManager.add
 					'href' : linkhref,
 					'target' : linktarget,
 					'title' : linktitle,
+					'rel' : linkrel,
 					'id' : '',	// wipe the ID
 				}
 				

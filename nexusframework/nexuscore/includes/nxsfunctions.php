@@ -371,7 +371,9 @@ function nxs_storecacheoutput($buffer)
 		// enhance the output so we know its cached
 		$cached = $buffer;
 		$cached = str_replace("</body>", "</body><!-- CACHED -->", $cached);			
+		//$cached = utf8_encode($cached);
 		
+		// fix: first encode the cached data to UTF8
 		file_put_contents($file, $cached, FILE_APPEND | LOCK_EX);
 	}
 	else
@@ -434,7 +436,13 @@ function nxs_setupcache()
 			
 		if ($nxs_shouldusecache_stage2)
 		{
-			echo file_get_contents($file);
+			// set headers
+			$htmltype = get_bloginfo('html_type');
+			$charset = nxs_getcharset();
+			
+			header("Content-type: {$htmltype}; charset={$charset}");
+			
+			echo file_get_contents_utf8($file);
 			die();
 		}
 		else
@@ -450,6 +458,12 @@ function nxs_setupcache()
 		ob_start("nxs_ensurenocacheoutput");
 	}
 	// die();
+}
+
+function file_get_contents_utf8($fn) 
+{
+ 	$content = file_get_contents($fn);
+  return mb_convert_encoding($content, 'UTF-8', mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
 }
 
 function nxs_nositesettings_adminnotice()
