@@ -139,7 +139,8 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 						
 						
 						<script type="text/javascript">
-							function setupfiletransfer() {
+							function setupfiletransfer() 
+							{
 								//alert("setting up...");
 								var filename = jQuery('#file').val().split(/\\|\//).pop();
 								var options = {
@@ -155,7 +156,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 								jQuery('#nxsuploadform').ajaxForm(options);
 							}
 							
-							function storefile() {                            
+							function storefile() {
 								// setup form to support ajax submission (file transfer using html5 features)
 								setupfiletransfer();
 								if (!verifyFileSelected()) {

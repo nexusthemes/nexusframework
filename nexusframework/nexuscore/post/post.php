@@ -423,7 +423,7 @@ function nxs_post_edittitle_rendersheet($args)
 					{
 						nxs_js_popup_notifyservererror();
 						nxs_js_log(response);
-					}										
+					}
 				}
 			);
 		}
@@ -444,7 +444,6 @@ function nxs_post_edittitle_rendersheet($args)
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
 }
-
 
 //
 // wordt aangeroepen bij het opslaan van data
@@ -574,193 +573,20 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 	
 	<script type='text/javascript'>
 		
-		function nxs_js_popup_get_initialbuttonstate() 
-		{ 
-			return 'showcancel'; 
-		}
-		
-		function selectplaceholdertype(obj, placeholdertype)
+		<?php
+		$numofoptions = count($widgets);
+		if ($numofoptions == 1)
 		{
-			nxs_js_popup_setsessiondata("type", placeholdertype);
-			// auto save
-			nxs_js_savegenericpopup();
+			// get the first one
+			$currentwidget = $widgets[0];
+			$widgetid = $currentwidget["widgetid"];
+			//
+			?>
+			nxs_js_log("UX improvement; since theres only one option, pick that one automatically ...");
+			selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;
+			<?php
 		}
-		
-		function nxs_js_savegenericpopup()
-		{
-			var e = jQuery(".nxs-layout-editable .nxs-postrows")[0];
-			
-			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding slide[nxs:growl]","nxs_td"); ?>");
-			
-			var totalrows = jQuery(document).find(".nxs-row").length;
-			nxs_js_log("totalrows:" + totalrows);
-			
-			var insertafterindex;
-			insertafterindex = totalrows - 1;
-			
-			nxs_js_log("inserting after index:" + insertafterindex);
-			
-			// voeg een "one" row toe
-			var widget = nxs_js_popup_getsessiondata("type");
-			nxs_js_log('inserting widget of type:' + widget);
-			nxs_js_addnewrowwithtemplate('<?php echo $postid; ?>', insertafterindex, "one", widget, e, 
-			function()
-			{
-				nxs_js_alert_wait_finish(waitgrowltoken);
-				
-				// question; is the rowelement fully added when we reach this point?
-				nxs_js_log("postid:<?php echo $postid; ?>");
-				var rowelement = nxs_js_getrowelement('<?php echo $postid; ?>', totalrows);
-				nxs_js_log(rowelement);
-				
-				var placeholderids = nxs_js_getplaceholderidsinrow(rowelement);
-				nxs_js_log(placeholderids);
-				
-				// there should be exactly one placeholderid in the list
-				var placeholderid = placeholderids[0];
-				
-				// clear dirty indicator, if its present...
-				nxs_js_popup_sessiondata_clear_dirty()
-
-				// open popup to edit the newly added widget
-				var domelementinwidget = jQuery('.nxs-post-<?php echo $postid; ?> #nxs-widget-' + placeholderid);
-				nxs_js_edit_widget(domelementinwidget);
-			},
-			function()
-			{
-				nxs_js_alert_wait_finish(waitgrowltoken);
-				// bummer....
-			}
-			);			
-		}
-		
-	</script>
-	
-	<?php
-	
-	$html = ob_get_contents();
-	ob_end_clean();
-
-	$result["html"] = $html;
-	nxs_webmethod_return_ok($result);
-}
-
-function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)	
-{
-	//
-	extract($args);
-			
-	$result = array();
-	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
-	
-	ob_start();
-
-	/*
-	$pagedata = get_page($postid);
-	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
-	
-	$posttype = $pagedata->post_type;
-	$nxssubposttype = nxs_get_nxssubposttype($postid);
-
-	$postmeta = nxs_get_postmeta($postid);
-	$pagetemplate = nxs_getpagetemplateforpostid($postid);	
-	
-	/*
-	$phtargs = array();
-	$phtargs["invoker"] = "nxsextundefined";
-	$phtargs["wpposttype"] = $posttype;
-	$phtargs["nxsposttype"] = nxs_getnxsposttype_by_wpposttype($posttype);
-	$phtargs["nxssubposttype"] = $nxssubposttype;	// NOTE
-	$phtargs["pagetemplate"] = $pagetemplate;
-	
-	$widgets = nxs_getwidgets($phtargs);
-	*/
-	?>
-	
-	<div class="nxs-admin-wrap">
-		<div class="block">
-			
-     	<?php nxs_render_popup_header(nxs_l18n__("Add[nxs:popup,heading]", "nxs_td")); ?>
-
-			<div class="nxs-popup-content-canvas-cropper">
-				<div class="nxs-popup-content-canvas">
-		
-					<div class="content2">
-		        <div class="box">
-		          <div class="box-title" style='width: 400px;'>
-		            <h4>TODO</h4>
-		          </div>
-		        </div>
-		        <div class="nxs-clear"></div>
-		      </div> <!--END content-->
-		      
-		      <div class="content2">
-						<?php
-						$fileuploadurl = admin_url( 'admin-ajax.php');
-						?>
-						<form id="upload" action="<?php echo $fileuploadurl;?>" method="POST" enctype="multipart/form-data">
-							
-							<fieldset>
-								<legend>HTML File Upload</legend>
-								
-								<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
-								
-								<div>
-									<label for="fileselect">Files to upload:</label>
-									<input type="file" id="fileselect" name="fileselect[]" multiple="multiple" onchange="nxs_js_storefile();" />
-									<!-- <div id="filedrag">or drop files here</div> -->
-								</div>
-								
-								<div id="submitbutton">
-									<button type="submit">Upload Files</button>
-								</div>
-								
-							</fieldset>
-						
-						</form>
-
-		      </div>
-		      
-			  </div>
-			</div>
-			
-			<script type='text/javascript'>
-				function nxs_js_storefile()
-				{
-					var options = 
-		      { 
-		        data:
-		        {
-		            action: "nxs_ajax_webmethods",
-		            webmethod: "savemultifileupload",
-		            uploadtitel: jQuery("#nxs_titel").val()
-		        },
-		        dataType: 'json',
-		        iframe: true,
-		        success: processResponse,
-		    	};
-		        
-					jQuery('#nxsuploadform').ajaxForm(options);
-				}	
-
-			</script>
-			
-      <!--
-      <div class="content2">
-         <div class="box">
-            <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Add[nxs:popup,newrow,button]", "nxs_td"); ?></a>
-            <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>
-            <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:popup,button]", "nxs_td"); ?></a>                    
-         </div>
-         <div class="nxs-clear"></div>
-      </div> -->
-    	
-    </div>
-  </div>
-	
-	<script type='text/javascript'>
+		?>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1158,5 +984,248 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
 }
+
+function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)	
+{
+	//
+	extract($args);
+			
+	$result = array();
+	
+	extract($clientpopupsessiondata);
+	extract($clientshortscopedata);
+	
+	ob_start();
+	?>
+	<div class="nxs-admin-wrap">
+		<div class="block">
+     	<?php nxs_render_popup_header(nxs_l18n__("Add bulk", "nxs_td")); ?>
+			<div class="nxs-popup-content-canvas-cropper">
+				<div class="nxs-popup-content-canvas">
+					<div class="content2">
+		        <div class="box">
+		          <div class="box-title" style='width: 400px;'>
+		            <h4>BULK UPLOADER</h4>
+		          </div>
+		        </div>
+		        <div class="nxs-clear"></div>
+		      </div> <!--END content-->
+		      
+		      <div class="content2">
+						<?php
+						$fileuploadurl = admin_url('admin-ajax.php');
+						?>
+						<form id="nxsuploadform" action="<?php echo $fileuploadurl;?>" method="POST" enctype="multipart/form-data">
+							
+							<fieldset>
+								<legend>HTML File Upload</legend>
+								
+								<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+								
+								<div>
+									<label for="file">Files to upload:</label>
+									<input type="file" id="file" name="file[]" multiple="multiple" onchange="nxs_js_storefile();" />
+									<!-- <div id="filedrag">or drop files here</div> -->
+								</div>
+								
+								<div id="submitbutton">
+									<button type="submit">Upload Files</button>
+								</div>
+								
+							</fieldset>
+						
+						</form>
+
+		      </div>
+		      
+			  </div>
+			</div>
+			
+			<script type='text/javascript'>
+				function nxs_js_storefile()
+				{
+					nxs_js_log("nxs_js_storefile; STORING FILE");
+					var options = 
+		      { 
+		        data:
+		        {
+		            action: "nxs_ajax_webmethods",
+		            webmethod: "savemultifileupload",
+		            uploadtitel: jQuery("#nxs_titel").val(),
+ 		            postprocessor: "append",
+ 		            appendtype: "galleryitem",
+		            postid: <?php echo $postid; ?>,
+		            unusedclosingelement: true
+		        },
+		        dataType: 'json',
+		        iframe: true,
+		        success: function(response) 
+						{
+							nxs_js_log(response);
+							if (response.result == "OK")
+							{
+								// refresh current page (if the footer is updated we could decide to
+								// update only the footer, but this is needless; an update of the page is ok too)
+								nxs_js_refreshcurrentpage();
+							}
+							else
+							{
+								nxs_js_popup_notifyservererror();
+								nxs_js_log(response);
+							}
+						},
+						error: function(response)
+						{
+							nxs_js_popup_notifyservererror();
+							nxs_js_log(response);
+						}
+		    	};
+		        
+					jQuery('#nxsuploadform').ajaxForm(options);
+				}
+				
+				function nxs_js_processsingleupload(data, type)
+				{
+					var e = jQuery(".nxs-layout-editable .nxs-postrows")[0];
+					
+					var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding slide[nxs:growl]","nxs_td"); ?>");
+					
+					var totalrows = jQuery(document).find(".nxs-row").length;
+					nxs_js_log("totalrows:" + totalrows);
+					
+					var insertafterindex;
+					insertafterindex = totalrows - 1;
+					
+					nxs_js_log("inserting after index:" + insertafterindex);
+					
+					// voeg een "one" row toe
+					var widget = type;
+					nxs_js_log('inserting widget of type:' + widget);
+					nxs_js_addnewrowwithtemplate
+					(
+						'<?php echo $postid; ?>', 
+						insertafterindex, 
+						"one", 
+						widget, 
+						e, 
+						function()
+						{
+							nxs_js_alert_wait_finish(waitgrowltoken);
+							
+							// question; is the rowelement fully added when we reach this point?
+							nxs_js_log("postid:<?php echo $postid; ?>");
+							var rowelement = nxs_js_getrowelement('<?php echo $postid; ?>', totalrows);
+							nxs_js_log(rowelement);
+							
+							var placeholderids = nxs_js_getplaceholderidsinrow(rowelement);
+							nxs_js_log(placeholderids);
+							
+							// there should be exactly one placeholderid in the list
+							var placeholderid = placeholderids[0];
+							
+							// clear dirty indicator, if its present...
+							nxs_js_popup_sessiondata_clear_dirty()
+			
+							// open popup to edit the newly added widget
+							var domelementinwidget = jQuery('.nxs-post-<?php echo $postid; ?> #nxs-widget-' + placeholderid);
+							nxs_js_edit_widget(domelementinwidget);
+						},
+						function()
+						{
+							nxs_js_alert_wait_finish(waitgrowltoken);
+							// bummer....
+						}
+					);			
+				}
+
+			</script>
+			
+      <!--
+      <div class="content2">
+         <div class="box">
+            <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Add[nxs:popup,newrow,button]", "nxs_td"); ?></a>
+            <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>
+            <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:popup,button]", "nxs_td"); ?></a>                    
+         </div>
+         <div class="nxs-clear"></div>
+      </div> -->
+    	
+    </div>
+  </div>
+	
+	<script type='text/javascript'>
+		
+		function nxs_js_popup_get_initialbuttonstate() 
+		{ 
+			return 'showcancel'; 
+		}
+		
+		function selectplaceholdertype(obj, placeholdertype)
+		{
+			nxs_js_popup_setsessiondata("type", placeholdertype);
+			// auto save
+			nxs_js_savegenericpopup();
+		}
+		
+		function nxs_js_savegenericpopup()
+		{
+			var e = jQuery(".nxs-layout-editable .nxs-postrows")[0];
+			
+			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding slide[nxs:growl]","nxs_td"); ?>");
+			
+			var totalrows = jQuery(document).find(".nxs-row").length;
+			nxs_js_log("totalrows:" + totalrows);
+			
+			var insertafterindex;
+			insertafterindex = totalrows - 1;
+			
+			nxs_js_log("inserting after index:" + insertafterindex);
+			
+			// voeg een "one" row toe
+			var widget = nxs_js_popup_getsessiondata("type");
+			nxs_js_log('inserting widget of type:' + widget);
+			nxs_js_addnewrowwithtemplate('<?php echo $postid; ?>', insertafterindex, "one", widget, e, 
+			function()
+			{
+				nxs_js_alert_wait_finish(waitgrowltoken);
+				
+				// question; is the rowelement fully added when we reach this point?
+				nxs_js_log("postid:<?php echo $postid; ?>");
+				var rowelement = nxs_js_getrowelement('<?php echo $postid; ?>', totalrows);
+				nxs_js_log(rowelement);
+				
+				var placeholderids = nxs_js_getplaceholderidsinrow(rowelement);
+				nxs_js_log(placeholderids);
+				
+				// there should be exactly one placeholderid in the list
+				var placeholderid = placeholderids[0];
+				
+				// clear dirty indicator, if its present...
+				nxs_js_popup_sessiondata_clear_dirty()
+
+				// open popup to edit the newly added widget
+				var domelementinwidget = jQuery('.nxs-post-<?php echo $postid; ?> #nxs-widget-' + placeholderid);
+				nxs_js_edit_widget(domelementinwidget);
+			},
+			function()
+			{
+				nxs_js_alert_wait_finish(waitgrowltoken);
+				// bummer....
+			}
+			);			
+		}
+		
+	</script>
+	
+	<?php
+	
+	$html = ob_get_contents();
+	ob_end_clean();
+
+	$result["html"] = $html;
+	nxs_webmethod_return_ok($result);
+}
+
+
 
 ?>
