@@ -370,11 +370,11 @@ function nxs_storecacheoutput($buffer)
 
 		// enhance the output so we know its cached
 		$cached = $buffer;
-		$cached = str_replace("</body>", "</body><!-- CACHED -->", $cached);			
+		$cached = str_replace("</body>", "</body><!-- CACHED " . NXS_UNIQUEIDFORREQUEST . " -->", $cached);			
 		//$cached = utf8_encode($cached);
 		
 		// fix: first encode the cached data to UTF8
-		file_put_contents($file, $cached, FILE_APPEND | LOCK_EX);
+		file_put_contents($file, $cached, LOCK_EX);
 	}
 	else
 	{
