@@ -4009,14 +4009,6 @@ function nxs_getpagerowmetadata($postid, $pagerowid)
 	return $result;
 }
 
-function nxs_getwidgetmetadata_serialized($postid, $placeholderid)
-{
-	$widgetmetadata = nxs_getwidgetmetadata($postid, $placeholderid);
-	$serialized = json_encode($widgetmetadata);
-		
-	return $serialized;
-}
-
 // persists the widget's metadata (assumes the global data is already enriched)
 function nxs_mergewidgetmetadata_internal($postid, $placeholderid, $updatedvalues)
 {

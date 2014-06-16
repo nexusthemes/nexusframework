@@ -73,6 +73,70 @@ function nxs_webmethod_clipboardpaste()
 			$responseargs["rowindex"] = $rowindex;
 			$responseargs["rowhtml"] = $html;
 		}
+		else if ($clipboardcontext == "row")
+		{
+			if ($containerpostid == "") { nxs_webmethod_return_nack("containerpostid empty? (shp)"); }
+		 	if ($postid == "") { nxs_webmethod_return_nack("postid empty? (shp)"); }
+		 	if ($rowindex == "") { nxs_webmethod_return_nack("rowindex empty? (shp)"); }
+
+			global $nxs_global_current_containerpostid_being_rendered;
+			$nxs_global_current_containerpostid_being_rendered = $containerpostid;
+		
+			global $nxs_global_current_postid_being_rendered;
+			$nxs_global_current_postid_being_rendered = $postid;
+			
+			global $nxs_global_current_postmeta_being_rendered;
+			$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);		
+
+			$clipboardata = json_decode($serializedmetadata, true);
+			$rowtemplate = $clipboardata["rowtemplate"];
+			
+			$newrow = array();
+			$newrow["rowindex"] = "new";
+			$newrow["pagerowtemplate"] = $rowtemplate;
+			$newrow["pagerowid"] = nxs_allocatenewpagerowid($postid);
+			$newrow["pagerowattributes"] = "pagerowtemplate='" . $rowtemplate . "' pagerowid='" . $pagerowid . "'";
+			$newrow["content"] = nxs_getpagerowtemplatecontent($rowtemplate);
+		
+			$updatedpoststructure = nxs_parsepoststructure($postid);		
+			$updatedpoststructure[$rowindex] = $newrow;
+		
+			// insert row into structure
+			//$updatedpoststructure = nxs_insertarrayindex($poststructure, $newrow, $rowindex);
+			
+			// persist structure
+			$updateresult = nxs_storebinarypoststructure($postid, $updatedpoststructure);
+			
+			// decorate the widgets *in* the page row
+			
+			$content = $newrow["content"];
+			$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+			$placeholderindex = 0;
+			foreach ($placeholderids as $placeholderid)
+			{
+				// get source metadata
+				$metadata = $clipboardata["widgetsmetadata"][$placeholderindex];
+				// store destination metadata
+				nxs_overridewidgetmetadata($postid, $placeholderid, $metadata);
+				
+				$placeholderindex++;
+			}
+			
+			// output / return; the HTML for the row we just pasted
+			nxs_after_postcontents_updated($postid);
+			// parse page
+			$parsedpoststructure = nxs_parsepoststructure($postid);
+			$rendermode = "default";
+			$html = nxs_getrenderedrowhtml($postid, $rowindex, $rendermode);
+			
+			//
+			// create response
+			//
+			$responseargs["refresh"] = "row";
+			$responseargs["postid"] = $postid;
+			$responseargs["rowindex"] = $rowindex;
+			$responseargs["html"] = $html;
+		}
 		else if ($clipboardcontext == "maincontent:contentbuilder")
 		{
 			$metadata = json_decode($serializedmetadata, true);

@@ -1,4 +1,44 @@
 <?php
+
+function nxs_getwidgetmetadata_serialized($postid, $placeholderid)
+{
+	$widgetmetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+	$serialized = json_encode($widgetmetadata);
+		
+	return $serialized;
+}
+
+function nxs_getrow_serialized($postid, $rowindex)
+{
+	$result = array();
+	
+	$rows = nxs_parsepoststructure($postid);
+	$row = $rows[$rowindex];
+	// $row is bijv. 
+	// array(6) 
+	// {
+	//  ["rowindex"]=> int(0)
+	//  ["pagerowtemplate"]=> string(4) "1212"
+	//  ["pagerowid"]=> string(14) "prid1101840585"
+	//  ["pagerowattributes"]=> string(50) " pagerowid="prid1101840585" pagerowtemplate="1212""
+	//  ["content"]=>  string(220) [nxsphcontainer width="1/2"]  [nxsplaceholder placeholderid='a1080165985'][/nxsplaceholder] [/nxsphcontainer] [nxsphcontainer width="1/2"]  [nxsplaceholder placeholderid='b1080165985'][/nxsplaceholder] [/nxsphcontainer]"?  ["outercontent"]=>?  string(295) "[nxspagerow pagerowid="prid1101840585" pagerowtemplate="1212"] [nxsphcontainer width="1/2"]  [nxsplaceholder placeholderid='a1080165985'][/nxsplaceholder] [/nxsphcontainer] [nxsphcontainer width="1/2"]  [nxsplaceholder placeholderid='b1080165985'][/nxsplaceholder] [/nxsphcontainer][/nxspagerow]"?}
+	$rowtemplate = $row["pagerowtemplate"];
+	$result["rowtemplate"] = $rowtemplate;
+	
+	$rowcontent = $row["content"];
+	
+	$placeholderids = nxs_parseplaceholderidsfrompagerow($rowcontent);
+	foreach ($placeholderids as $placeholderid)
+	{
+		$widgetmetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+		$result["widgetsmetadata"][] = $widgetmetadata;
+	}
+	
+	$serialized = json_encode($result);
+	
+	return $serialized;
+}
+
 function nxs_webmethod_clipboardcopy() 
 {
 	extract($_REQUEST);
@@ -14,8 +54,14 @@ function nxs_webmethod_clipboardcopy()
 	 	if ($postid == "") { nxs_webmethod_return_nack("postid empty? (shp)"); }
 	 	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid empty? (shp)"); }
 
-	 	$placeholdertype = nxs_getplaceholdertemplate($postid, $placeholderid); 	
 	 	$serializedmetadata = nxs_getwidgetmetadata_serialized($postid, $placeholderid);
+	}
+	else if ($clipboardcontext == "row")
+ 	{
+	 	if ($postid == "") { nxs_webmethod_return_nack("postid empty"); }
+	 	if ($rowindex == "") { nxs_webmethod_return_nack("rowindex empty"); }
+	 	
+	 	$serializedmetadata = nxs_getrow_serialized($postid, $rowindex);
 	}
 	else if ($clipboardcontext == "maincontent:contentbuilder")
 	{

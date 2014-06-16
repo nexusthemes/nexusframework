@@ -2837,11 +2837,6 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			}
 		}
 		
-		function nxs_js_edit_offscreen_widget()
-		{
-			nxs_js_alert('nxs_js_edit_offscreen_widget to be implemented...');
-		}
-		
 		// converts dictionary to properties of the specified scope object
 		function nxs_js_extract(data, scope)
 		{
@@ -3052,6 +3047,93 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 				return;
 			}
 			nxs_js_trash_article_no_question(postid);
+		}
+		
+		function nxs_js_invokewebmethod(options, handlehappyflow, handlealternativeflow, handlefailureflow)
+		{
+			var waitgrowltoken = -1;
+			if ('waitgrowltext' in options)
+			{
+				var text = options.waitgrowltext;
+				waitgrowltoken = nxs_js_alert_wait_start(text);
+			}
+			var data = options.webmethoddata;
+			var async = true;	// default = async
+			if ('async' in options)
+			{
+				async = options.async;
+			}
+			var cache = false;	// default = no caching
+			if ('cache' in options)
+			{
+				cache = options.cache;
+			}
+			data.action = "nxs_ajax_webmethods";
+		
+			// invoke ajax call
+			var ajaxurl = nxs_js_get_adminurladminajax();
+			jQuery.ajax
+			(
+				{
+					type: 'POST',
+					url: ajaxurl, 
+					data: data,
+					async: async,
+					cache: cache,
+					dataType: 'JSON',
+					success: function(response) 
+					{
+						// dismiss loading growl if exists						
+						nxs_js_alert_wait_finish(waitgrowltoken);
+						nxs_js_log(response);
+						if (response.result == "OK")
+						{
+							if ('happyflowgrowltext' in options)
+							{
+								var text = options.happyflowgrowltext;
+								nxs_js_alert(text);
+							}
+							
+							if (handlehappyflow)
+							{
+								handlehappyflow(response);
+							}
+							else
+							{
+								nxs_js_log("if you want to invoke a function, pass a function as handlehappyflow parameter");
+							}
+						}
+						else
+						{
+							
+							
+							handlealternativeflow(response);
+						}
+					},
+					error: function(response)
+					{
+						// dismiss loading growl if exists
+						nxs_js_alert_wait_finish(waitgrowltoken);
+						nxs_js_popup_notifyservererror();
+						nxs_js_log(response);
+						
+						if ('errorflowgrowltext' in options)
+						{
+							var text = options.errorflowgrowltext;
+							nxs_js_alert(text);
+						}
+
+						if (handlefailureflow && getClass.call(handlefailureflow) == '[object Function]')
+						{
+							handlefailureflow(response);
+						}
+						else
+						{
+							nxs_js_log("if you want to invoke a function, pass a function as handlefailureflow parameter");
+						}
+					}										
+				}
+			);
 		}
 		
 		function nxs_js_trash_article_no_question(postid)
@@ -6248,7 +6330,28 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 						nxs_js_alert(nxs_js_gettrans('Clipboard failed'));
 					}										
 				}
-			);		
+			);
+		}
+		
+		function nxs_js_saverowtoclipboard(postid, rowindex)
+		{
+			nxs_js_log("about to copy row data to memory :)");
+			nxs_js_log("postid: " + postid);
+			nxs_js_log("rowindex: " + rowindex);
+			
+			var options = 
+			{
+				"waitgrowltext": "One moment ...",
+				"happyflowgrowltext": "Copied row to clipboard",
+				"webmethoddata": 
+				{
+					"webmethod": nxs_js_getclipboardhandler() + "copy",
+					"clipboardcontext" : "row",
+					"postid": postid,
+					"rowindex": rowindex,
+				}
+			};
+			nxs_js_invokewebmethod(options, null, null, null);
 		}
 		
 		function nxs_copytoserverclipboard(clipboardscope)
@@ -6260,6 +6363,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 		
 			// currently we only support copy pasting of individual widgets (no rows yet...)
 			var selectedhovermenus = jQuery(".nxs-widget-hover-menu.nxs-hovering.inside-right-top");
+			var hoverrows = jQuery(".nxs-row-container > .nxs-hover-menu.nxs-hovering");		
 			if (jQuery(selectedhovermenus).length == 1)
 			{
 				var postid = nxs_js_findclosestpostid_for_dom(selectedhovermenus[0]);
@@ -6269,6 +6373,22 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 				if (clipboardscope == "all")
 				{
 					nxs_js_saveplaceholdertoclipboard(postid, placeholderid);
+				}
+				else
+				{
+					nxs_js_log('unsupported clipboardscope; ' + clipboardscope);
+				}
+			}
+			else if (jQuery(hoverrows).length == 1)
+			{
+				nxs_js_log("copying while hovering over a row (not over a widget)");
+				
+				var postid = nxs_js_findclosestpostid_for_dom(hoverrows[0]);
+				var rowindex = nxs_js_getrowindex(hoverrows[0]);
+
+				if (clipboardscope == "all")
+				{
+					nxs_js_saverowtoclipboard(postid, rowindex);
 				}
 				else
 				{
@@ -6297,8 +6417,10 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			}
 		
 			var selectedhovermenus = jQuery(".nxs-widget-hover-menu.nxs-hovering.inside-right-top");
+			var hoverrows = jQuery(".nxs-row-container > .nxs-hover-menu.nxs-hovering");
 			if (jQuery(selectedhovermenus).length == 1)
 			{
+				// hovering over a widget
 				var postid = nxs_js_findclosestpostid_for_dom(selectedhovermenus[0]);
 				var selectedwidget = jQuery(selectedhovermenus).closest(".nxs-placeholder").find(".nxs-widget");
 				var placeholderid = jQuery(selectedwidget).attr("id").split("-")[2];
@@ -6381,6 +6503,55 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 						}										
 					}
 				);
+			}
+			else if (jQuery(hoverrows).length == 1)
+			{
+				nxs_js_log("pasting while hovering over a row (not over a widget)");
+				
+				var postid = nxs_js_findclosestpostid_for_dom(hoverrows[0]);
+				var rowindex = nxs_js_getrowindex(hoverrows[0]);
+				var containerpostid = nxs_js_getcontainerpostid();
+				
+				function nxs_js_updaterow(response)
+				{
+					var postid = response.postid;
+					var rowindex = response.rowindex;
+					var html = response.html;
+					
+					// update the row; the html is already provided in the response
+					var pagecontainer = jQuery(".nxs-post-" + postid)[0];
+					var pagerowscontainer = jQuery(pagecontainer).find(".nxs-postrows")[0];
+					// afterwards update existing row
+					var updateElement = jQuery(pagerowscontainer).children()[rowindex];
+	
+					// before updating the dom, we first wipe any functions for notification ajax used by the "old" widgets in this row
+					nxs_js_clear_ajaxrefresh_notifications(updateElement);
+					
+					//nxs_js_log("replacing index " + rowindex);
+					jQuery(updateElement).replaceWith(html);
+					
+					// after updating the dom, invoke execute_after_clientrefresh_XYZ for each widget in the affected first row, if present
+					var updateElement = jQuery(pagerowscontainer).children()[rowindex];
+					nxs_js_notify_widgets_after_ajaxrefresh(updateElement);
+					
+					nxs_js_reenable_all_window_events();
+				}
+				
+				var options = 
+				{
+					"waitgrowltext": "One moment ...",
+					"happyflowgrowltext": "Pasted row from clipboard",
+					"webmethoddata": 
+					{
+						"webmethod": nxs_js_getclipboardhandler() + "paste",
+						"clipboardcontext" : "row",
+						"containerpostid": containerpostid,
+						"postid": postid,
+						"rowindex": rowindex,
+					}
+				};
+				nxs_js_invokewebmethod(options, nxs_js_updaterow, null, null);
+				
 			}
 			else
 			{
