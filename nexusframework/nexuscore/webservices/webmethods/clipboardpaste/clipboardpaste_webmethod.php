@@ -98,17 +98,19 @@ function nxs_webmethod_clipboardpaste()
 			$newrow["pagerowattributes"] = "pagerowtemplate='" . $rowtemplate . "' pagerowid='" . $pagerowid . "'";
 			$newrow["content"] = nxs_getpagerowtemplatecontent($rowtemplate);
 		
+			// override row in existing structure
 			$updatedpoststructure = nxs_parsepoststructure($postid);		
 			$updatedpoststructure[$rowindex] = $newrow;
-		
-			// insert row into structure
-			//$updatedpoststructure = nxs_insertarrayindex($poststructure, $newrow, $rowindex);
 			
 			// persist structure
 			$updateresult = nxs_storebinarypoststructure($postid, $updatedpoststructure);
 			
-			// decorate the widgets *in* the page row
+			// override the metadata of the row itself
+			$metadata = $clipboardata["rowmetadata"];
+			$pagerowid = $newrow["pagerowid"];
+			nxs_overridepagerowmetadata($postid, $pagerowid, $metadata);
 			
+			// override the metadata of the widgets in this row
 			$content = $newrow["content"];
 			$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
 			$placeholderindex = 0;

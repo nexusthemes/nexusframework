@@ -22,11 +22,18 @@ function nxs_getrow_serialized($postid, $rowindex)
 	//  ["pagerowid"]=> string(14) "prid1101840585"
 	//  ["pagerowattributes"]=> string(50) " pagerowid="prid1101840585" pagerowtemplate="1212""
 	//  ["content"]=>  string(220) [nxsphcontainer width="1/2"]  [nxsplaceholder placeholderid='a1080165985'][/nxsplaceholder] [/nxsphcontainer] [nxsphcontainer width="1/2"]  [nxsplaceholder placeholderid='b1080165985'][/nxsplaceholder] [/nxsphcontainer]"?  ["outercontent"]=>?  string(295) "[nxspagerow pagerowid="prid1101840585" pagerowtemplate="1212"] [nxsphcontainer width="1/2"]  [nxsplaceholder placeholderid='a1080165985'][/nxsplaceholder] [/nxsphcontainer] [nxsphcontainer width="1/2"]  [nxsplaceholder placeholderid='b1080165985'][/nxsplaceholder] [/nxsphcontainer][/nxspagerow]"?}
+	
 	$rowtemplate = $row["pagerowtemplate"];
 	$result["rowtemplate"] = $rowtemplate;
+	$pagerowid = $row["pagerowid"];
 	
 	$rowcontent = $row["content"];
 	
+	// rowmeta
+	$rowmetadata = nxs_getpagerowmetadata($postid, $pagerowid);
+	$result["rowmetadata"] = $rowmetadata;
+	
+	// widgetmeta
 	$placeholderids = nxs_parseplaceholderidsfrompagerow($rowcontent);
 	foreach ($placeholderids as $placeholderid)
 	{
@@ -34,6 +41,9 @@ function nxs_getrow_serialized($postid, $rowindex)
 		$result["widgetsmetadata"][] = $widgetmetadata;
 	}
 	
+	//
+	//
+	//
 	$serialized = json_encode($result);
 	
 	return $serialized;
