@@ -479,7 +479,7 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 									// Text
 									echo '
 										<p class="nxs-default-p nxs-padding-bottom0">
-											<span>' . $curtweet_text . '</span>
+											<span class="nxs-applylinkvarcolor">' . $curtweet_text . '</span>
 										</p>';
 										
 								echo '</div> <!-- END twitter-content -->';
