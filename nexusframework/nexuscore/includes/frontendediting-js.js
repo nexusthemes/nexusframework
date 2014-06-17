@@ -4430,6 +4430,39 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			jQuery(".nxs-postrows").sortable
 			(
 				{
+					over: function( event, ui ) 
+					{ 
+						//nxs_js_log("over!"); 
+						var x = jQuery(".nxs-row.ui-sortable-placeholder");
+						if (jQuery(x).data("enriched") != "yes")
+						{
+							// TODO: next lines should be moved to CSS file
+							jQuery(".nxs-row").css("opacity", 0.5);
+							jQuery(".nxs-row.ui-sortable-helper").css("opacity", 1.0);
+							jQuery(".nxs-row.ui-sortable-placeholder").css("opacity", 1.0);
+
+							var h = jQuery(x).height();
+							var dashthick = 4;
+							if (h - dashthick - dashthick < 0)
+							{
+								h = 40;
+							}
+							
+							var heightwithoutborders = h - dashthick - dashthick;
+							
+							var html = '';
+							
+							//html = 'AAAAA';
+							//html = '<li class="nxs-placeholder nxs-one-whole nxs-column-1-1" style="background-color: green; height: 100%;">' + html + '</li>';
+							html = '<ul class="nxs-placeholder-list">' + html + '</ul>';
+							html = '<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1" style="border-color: black; border-width: ' + dashthick + 'px; border-style: dashed; background-color: white;height:' + heightwithoutborders + 'px">' + html + '</div>';
+							
+							jQuery(x).html(html);
+							jQuery(x).css("visibility", "visible"); // .css("background-color", "red");
+							//nxs_js_log(x);
+							jQuery(x).data("enriched", "yes");
+						}
+					},
 					handle: ".nxs-dragrow-handler",
 					scroll: true, 
 					//scrollSensitivity: 100,
@@ -4439,12 +4472,14 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 						nxs_js_nxsisdragging = true;
 						jQuery(ui.item).data("sourcepostid", nxs_js_findclosestpostid_for_dom(ui.item));
 						jQuery(ui.item).data("sourcerowindex", ui.item.index());
+						
 					},
 					stop: function(event, ui) 
 					{
 						nxs_js_nxsisdragging = false;
 						jQuery("html").removeClass("nxs-dragging");
-						
+						// TODO: next line should be moved to CSS file
+						jQuery(".nxs-row").css("opacity", 1.0);
 					},
 			    update: function(event, ui) 
 					{						

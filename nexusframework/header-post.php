@@ -68,7 +68,6 @@
 	// to prevent this from happening, we restore the post
 	$post = $beforepost;
 	?>
-	
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	
 	<?php	if (isset($faviconurl)) { ?>
