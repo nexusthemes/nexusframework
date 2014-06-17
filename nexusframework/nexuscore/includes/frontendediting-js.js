@@ -4406,6 +4406,80 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 					}
 				}
 			);
+			
+			// by default, the row drag will not be able to scroll,
+			// since the nxs-container has overflow: auto
+			jQuery(".nxs-dragrow-handler").each
+			(
+				function() 
+				{
+					// remove any previous mousedown handlers for rowdragfix
+					jQuery(this).unbind("mousedown.rowdragfix");
+			    jQuery(this).bind
+			    (
+			    	"mousedown.rowdragfix", 
+			    	function() 
+			    	{
+			    		jQuery("html").addClass("nxs-dragging");
+			    	}
+			    );
+				}
+			);
+			
+			// enable dragging of rows
+			jQuery(".nxs-postrows").sortable
+			(
+				{
+					handle: ".nxs-dragrow-handler",
+					scroll: true, 
+					//scrollSensitivity: 100,
+					//scrollSpeed: 100,
+			   	start: function(event, ui) 
+					{
+						nxs_js_nxsisdragging = true;
+						jQuery(ui.item).data("sourcepostid", nxs_js_findclosestpostid_for_dom(ui.item));
+						jQuery(ui.item).data("sourcerowindex", ui.item.index());
+					},
+					stop: function(event, ui) 
+					{
+						nxs_js_nxsisdragging = false;
+						jQuery("html").removeClass("nxs-dragging");
+						
+					},
+			    update: function(event, ui) 
+					{						
+						var sourcerow = ui.item;
+						var sourcepostid = jQuery(sourcerow).data("sourcepostid");
+						var sourcerowindex = jQuery(sourcerow).data("sourcerowindex");
+						var destinationpostid = nxs_js_findclosestpostid_for_dom(ui.item);
+						var destinationrowindex = ui.item.index();
+						var containerpostid = nxs_js_getcontainerpostid();						
+						
+						nxs_js_log("source postid:" + sourcepostid);
+						nxs_js_log("source row index:" + sourcerowindex);
+
+						nxs_js_log("destination postid:" + destinationpostid);
+						nxs_js_log("destination row index:" + destinationrowindex);
+						
+						
+						var options = 
+						{
+							"waitgrowltext": "One moment ...",
+							"happyflowgrowltext": "Moved row",
+							"webmethoddata": 
+							{
+								"webmethod": "moverow",
+								"containerpostid": containerpostid,
+								"sourcepostid": sourcepostid,
+								"sourcerowindex": sourcerowindex,
+								"destinationpostid": destinationpostid,
+								"destinationrowindex": destinationrowindex,
+							}
+						};
+						nxs_js_invokewebmethod(options, null, null, null);
+					},
+				}
+			);
 		}
 		
 		function nxs_js_gui_cleanup_drag_scaffolding()
