@@ -17,7 +17,7 @@ function nxs_widgets_social_getunifiedstylinggroup() {
 
 // Unicontent
 function nxs_widgets_social_getunifiedcontentgroup() {
-	return "logowidget";
+	return "socialwidget";
 }
 
 /* WIDGET STRUCTURE

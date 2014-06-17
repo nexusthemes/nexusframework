@@ -540,16 +540,6 @@ function nxs_backend_meta_box()
 		
 		jQuery(document).ready(function() 
 		{
-			//
-			//
-			//
-			/*
-			if (jQuery('#wpseo_meta').length > 0)
-			{
-				jQuery('#wpseo_meta').find(".inside").html("Please use the SEO tab of the Nexus flyout menu to access the SEO features");
-			}
-			*/
-			
 			// move Nexus content editing item up the DOM
 			
 			nxs_js_movetotop();
@@ -560,17 +550,6 @@ function nxs_backend_meta_box()
 	<?php
 }
 
-
-/*
-	$hashed = md5($url);
-	$asciival = $ord($hashed[0]);
-	$likelinesspercentage = 100;
-	if ($asciival <= ($likelinesspercentage / 100) * 256)
-	{
-		
-	}
-	*/
-	
 add_action('nxs_action_postfooterlink', 'nxs_render_postfooterlink');
 function nxs_render_postfooterlink()
 {

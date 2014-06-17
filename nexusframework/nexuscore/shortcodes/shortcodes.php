@@ -191,8 +191,14 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 					//
 					
 					$output .= '<ul>';
-					// $output .= '<li title="Decorate" class="paintroller" onclick="nxs_js_edit_row_v2(this, \'backgroundstyle\'); return false;"></li>';
+
+					// move row
+					$output .= "<li class='nxs-dragrow-handler' style='cursor:move;' title='" . nxs_l18n__("Move row", "nxs_td") ."'><span class='nxs-icon-move'></span></li>";
+					
+					// delete row					
 					$output .= "<a class='nxs-no-event-bubbling nxs-defaultwidgetdeletehandler' href='#' onclick='nxs_js_row_remove(this); return false;'><li title='" . nxs_l18n__("Remove row[nxs:hovermenu,tooltip]", "nxs_td") ."'><span class='nxs-icon-trash'></span></li></a>";
+
+
 					$output .= "</ul> <!-- nxs-sub-menu -->";
 	
 					//
