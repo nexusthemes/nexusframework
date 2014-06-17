@@ -359,8 +359,11 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 										<img src="'.$thumbimageurl.'" />
 									</div>
 								</div>
-							</div>
-						</div>';						
+							</div>';
+							
+							if ($item_text != "") { echo'<div class="nxs-clear padding"></div>'; }
+							
+						echo '</div>';						
 						
 						// Text
 						if ($item_text != "") {
