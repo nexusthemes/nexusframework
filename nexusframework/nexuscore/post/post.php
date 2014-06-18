@@ -583,7 +583,7 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 			//
 			?>
 			nxs_js_log("UX improvement; since theres only one option, pick that one automatically ...");
-			selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;
+			selectplaceholdertype(this, '<?php echo $widgetid; ?>');
 			<?php
 		}
 		?>

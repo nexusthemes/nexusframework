@@ -147,4 +147,103 @@ function nxs_widgets_galleryitem_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_widgets_galleryitem_renderingallery($args)
+{
+	extract($args);
+		
+	// hardcoded implementation... to be moved to the galleryitem widget eventually ...
+	$imageid = $placeholdermetadata['image_imageid'];
+	if ($orientation == "landscape"  || $orientation == "") 
+	{
+		$lookup = wp_get_attachment_image_src($imageid, 'nxs_cropped_320x200', true);
+	} 
+	else if ($orientation == "portrait") 
+	{
+		$lookup = wp_get_attachment_image_src($imageid, 'nxs_cropped_320x512', true);	
+	}
+	
+	$thumbimageurl = $lookup[0];
+	
+	$item_title = $placeholdermetadata["title"];
+	$item_text = $placeholdermetadata["text"];
+	
+	// Default modulo to separate lines of items when content height is variable
+	if ($index % $numofcolumns == 0 && $index != 0) {
+	   echo '<div class="nxs-clear"></div>';
+	}
+	
+	// Exceptional modulo for two step separation with four column gallery
+	if ($index % 2 == 0 && $index != 0) {
+	   echo '<div class="nxs-clear multi-step-divider"></div>';
+	}
+	
+	$firstinrow = '';
+	//
+	if 		($index % 2 == 0 && $numofcolumns == "2") { $firstinrow = 'firstinrow'; }
+	else if ($index % 3 == 0 && $numofcolumns == "3") { $firstinrow = 'firstinrow'; }
+	else if ($index % 4 == 0 && $numofcolumns == "4") { $firstinrow = 'firstinrow'; }
+	else if ($index % 2 == 0 && $numofcolumns == "4") { $firstinrow = 'firstinrow-multistep'; }
+	
+	if 		($numofcolumns == "2") { $widthclass = "nxs-one-half"; }
+	else if ($numofcolumns == "3") { $widthclass = "nxs-one-third";	}
+	else if ($numofcolumns == "4") { $widthclass = "nxs-one-fourth"; }
+	else 	{ $widthclass = "nxs-one-third";	}
+	
+	// Title importance (H1 - H6)
+	if ($item_title_heading != "") {
+		$itemheadingelement = "h" . $item_title_heading; }
+	else {
+		// TODO: derive the title_importance based on the title_fontsize
+		//nxs_webmethod_return_nack("to be implemented; derive title_heading from title_fontsize");
+		$itemheadingelement = "h1";
+	}
+	
+	// Image shadow
+	$image_shadow = 'nxs-shadow';
+	if ($remove_image_shadow != "") { $image_shadow = ''; }
+	
+	// Image border
+	$image_border_width_cssclass = nxs_getcssclassesforlookup("nxs-border-width-", $image_border_width);
+	
+	echo '
+	<div id="nxs-galleryitem-'.$items_genericlistid .'-'.$index.'-'.$imageid.'" class="nxs-galleryitem '.$orientation.' '.$firstinrow.' numofcolumns'.$numofcolumns.'">
+		<a href="#" onclick="nxs_js_opengalleryitemlightbox(this); return false;">';
+		
+			// Title
+			if ($item_title != "") {
+				echo'
+				<div class="title-wrapper '.$widthclass.'">
+					<'.$itemheadingelement.'>'.$item_title.'</'.$itemheadingelement.'>
+				</div>';
+			}
+		
+			// Image
+			echo'
+			<div class="nxs-relative" >
+				<div class="nxs-clear"></div>
+				<div class="image-wrapper '.$widthclass.' '.$image_shadow.'">
+					<div class="image-cropper">
+						<div class="image-container '.$image_border_width_cssclass.'">
+							<img src="'.$thumbimageurl.'" />
+						</div>
+					</div>
+				</div>';
+				
+				if ($item_text != "") { echo'<div class="nxs-clear padding"></div>'; }
+				
+			echo '</div>';						
+			
+			// Text
+			if ($item_text != "") {
+				echo'
+				<div class="description-wrapper '.$widthclass.'">
+					<p class="nxs-default-p nxs-margin-bottom0"><span>'.$item_text.'<span></p>
+				</div>';
+			}
+			
+		echo'
+		</a>
+	</div>';
+}
+
 ?>

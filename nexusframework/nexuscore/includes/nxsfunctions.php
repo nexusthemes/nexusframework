@@ -10563,6 +10563,21 @@ function nxs_recursive_copyfolders($source, $dest)
 	}
 }
 
+function nxs_function_invokefunction($functionnametoinvoke, $args)
+{
+	if (function_exists($functionnametoinvoke))
+	{
+		$parameters = array( &$args );
+		$result = call_user_func_array($functionnametoinvoke, $parameters);
+	}
+	else
+	{
+		nxs_webmethod_return_nack("function not found; $functionnametoinvoke");
+	}
+	
+	return $result;
+}
+
 function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 {
 	if ($title == "")
