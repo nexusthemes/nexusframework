@@ -1020,7 +1020,7 @@ function nxs_pre_get_posts_categorypageextension($query)
   return $query;
 }
 
-
+// custom post types cpt
 function nxs_create_post_types_and_taxonomies() 
 {
 	// allow categories to be linked to pages too

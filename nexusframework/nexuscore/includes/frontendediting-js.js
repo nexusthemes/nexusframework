@@ -46,6 +46,11 @@ var nxs_js_scrollstateidentifier = 0;
 var nxs_js_lazyloadinggrowl = false;
 var nxs_js_queuestatelookup = {};
 
+function nxs_js_replaceall(find, replace, str) 
+{
+  return str.replace(new RegExp(find, 'g'), replace);
+}
+
 // see http://api.jquery.com/jQuery.browser/
 function nxs_js_getvendorprefix()
 {

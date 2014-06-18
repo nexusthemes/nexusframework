@@ -1093,6 +1093,7 @@ function nxs_addnewarticle($args)
 	return $responseargs;
 }
 
+// custom post type cpt
 function nxs_registernexustype($title, $ispublic)
 {
 	$taxonomies = array();
@@ -10578,6 +10579,7 @@ function nxs_function_invokefunction($functionnametoinvoke, $args)
 	return $result;
 }
 
+// custom post type cpt
 function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 {
 	if ($title == "")
