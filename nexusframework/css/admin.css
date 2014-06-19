@@ -1398,3 +1398,8 @@ img.nxs-preview-thumbnail 									{ max-width: 48px; max-height: 48px; }
 #nxs-content ul.nxs-sidebar-widgets 						{ list-style: none; }
 span.nxs-title 												{ line-height: 20px; }
 .nxs-loginlogowrapper 										{ height: 150px; }
+
+/* prevent double scroll bar on nxs-container; rows have hover menu's,
+   that fill in space that causes scrollbar, when the editor is on,
+   we increase height of copyright to prevent the scrollbar from showing */
+html.nxs-editor-active #nxs-copyright { height: 70px; }

@@ -568,6 +568,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"landscaping;" => array
+		(
+			"href"=>"/wordpress-themes/landscaping/landscaping-wordpress-theme/",
+			"title"=>"Landscaping WordPress theme",
+		),
 		"childrensfarm;" => array
 		(
 			"href"=>"/wordpress-themes/agriculture/childrens-farm-wordpress-theme/",
