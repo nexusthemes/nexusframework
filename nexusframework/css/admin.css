@@ -769,32 +769,30 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	padding-top: 5px;
 	opacity: 0;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	-webkit-transition: opacity .25s ease .2s;
-	-moz-transition: 	opacity .25s ease .2s;
-	-o-transition: 		opacity .25s ease .2s;
-	transition: 		opacity .25s ease .2s;
+	-webkit-transition: opacity .25s ease-in-out .2s;
+	-moz-transition: 	opacity .25s ease-in-out .2s;
+	-o-transition: 		opacity .25s ease-in-out .2s;
+	transition: 		opacity .25s ease-in-out .2s;
 }
 .nxs-admin-wrap ul.admin li.nxs-sub-menu ul li a { 
 	height: 0px;
-	-webkit-transition: height .25s ease .2s;
-	-moz-transition: 	height .25s ease .2s;
-	-o-transition: 		height .25s ease .2s;
-	transition: 		height .25s ease .2s; 
+	margin-bottom: 5px;
+	-webkit-transition: height .25s ease-in-out .2s;
+	-moz-transition: 	height .25s ease-in-out .2s;
+	-o-transition: 		height .25s ease-in-out .2s;
+	transition: 		height .25s ease-in-out .2s; 
 }
 .nxs-admin-wrap ul.admin li.nxs-sub-menu:hover ul 		{ opacity: 1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; }
-.nxs-admin-wrap ul.admin li.nxs-sub-menu:hover ul li a	{ height: 45px; }
+.nxs-admin-wrap ul.admin li.nxs-sub-menu:hover ul li a	{ height: 45px;  }
+
+.nxs-admin-wrap ul.admin li.nxs-sub-menu ul li a span	{ display: none; }
+.nxs-admin-wrap ul.admin li.nxs-sub-menu:hover ul li a span	{ display: block; }
 
 
+.nxs-admin-wrap a.info:hover 							{ border-color: black; }
 
-.nxs-admin-wrap a.info:hover 						{ border-color: black; }
-
-.nxs-admin-wrap ul.admin li.nxs-sub-menu ul li 		{ float: none; margin: 0px; }
-.nxs-admin-wrap ul.admin li.nxs-sub-menu ul li a {
-	-webkit-border-radius: 	3px; 
-	-moz-border-radius: 	3px; 
-	border-radius: 			3px;
-	margin-bottom: 5px;	
-}
+.nxs-admin-wrap ul.admin li.nxs-sub-menu ul li 			{ float: none; margin: 0px; }
+.nxs-admin-wrap ul.admin li.nxs-sub-menu ul li a 		{ border-radius: 3px; }
 
 /* IE8 submenu disappear fix */
 .nxs-ie-8 .nxs-admin-wrap ul.admin li.nxs-sub-menu ul		{ padding-top: 0px; }
