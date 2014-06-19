@@ -161,10 +161,8 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 	color: #333333;
 	text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
 	overflow: hidden;
-	font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif !important;
 	text-align: left;
 	line-height: 36px;
-	font-size: 14px;
 }
 .nxs-admin-wrap table th,
 .nxs-admin-wrap table td 							{ border-top: 1px solid white;	border-bottom: 1px solid #DFDFDF; }
@@ -363,6 +361,18 @@ span.nxs-title { line-height: 20px; }
 .nxs-admin-wrap .nxs-placeholder					{ margin-bottom: 0px !important; }
 .mceIframeContainer iframe 							{ min-height: 200px; }
 
+/* ADMIN FONT */
+.nxs-admin-font,
+.nxs-admin-wrap ul.tabs li,
+.nxs-admin-wrap .nxs-vertical-tabs > li,
+.nxs-admin-wrap .nxs-vertical-tabs > li.ui-tabs-selected,
+.nxs-admin-wrap table th {  
+	font-family: 'Open Sans', sans-serif !important;
+	font-size: 14px;
+	text-shadow: white 0px 1px 0px;
+	color: #464646;
+}
+
 /* ADMIN ROW
 ----------------------------------------------------------------------------------------------------*/
 
@@ -416,6 +426,7 @@ table.ui-datepicker-calendar td 					{ text-align: center !important; padding: 8
 	animation: 			none;
 }
 .nxs-editor-active .nxs-admin-wrap .nxs-not-unistyled .nxs-widget,
+.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-sharing,
 .nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-youtube,
 .nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-custom-html,
 .nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-definitionlist,
@@ -849,19 +860,14 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 */
 .nxs-admin-wrap .ui-tabs 							{ position: relative; zoom: 1; } 
 .nxs-admin-wrap ul.tabs 							{ background: #464646; padding: 22px 15px 0 122px; border-bottom: 1px solid #DFDFDF; }
-.nxs-admin-wrap ul.tabs li { 
-	font-family: Georgia,"Times New Roman","Bitstream Charter" !important;
-	text-shadow: white 0px 1px 0px;
+.nxs-admin-wrap ul.tabs li {
 	list-style: none; 
 	float: left; 
 	position: relative; 
 	top: 1px; 
 	margin-right: 6px;  
 	padding: 0; 
-	font-size: 14px;
 	border: 1px solid #DFDFDF;
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	background: #DFDFDF;
@@ -877,7 +883,7 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 */
 .nxs-admin-wrap .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } 
 .nxs-admin-wrap ul.tabs li a:hover 					{ color: #D54E21; }
-.nxs-admin-wrap ul.tabs li.ui-tabs-selected a 		{ background: #F9F9F9; border-bottom: 1px solid #F9F9F9; color: #464646; }
+.nxs-admin-wrap ul.tabs li.ui-tabs-selected a 		{ background: #FCFCFC; border-bottom: 1px solid #FCFCFC; }
 .nxs-admin-wrap .ui-tabs .ui-tabs-panel 			{ display: block; border-width: 0; }
 .nxs-admin-wrap .ui-tabs .ui-tabs-hide 				{ display: none !important; }
 
@@ -888,9 +894,6 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 .nxs-admin-wrap .nxs-vertical-tabs > li,
 .nxs-admin-wrap .nxs-vertical-tabs > li.ui-tabs-selected { 
 	width: 86px; 
-	font-family: Georgia,"Times New Roman","Bitstream Charter" !important;
-	text-shadow: white 0px 1px 0px;
-	font-size: 14px;
 	padding: 6px 13px 6px;;
 	background: #DFDFDF;
 	border-radius: 0;
@@ -1275,6 +1278,78 @@ div.jGrowl div.jGrowl-closer {
 @media print {
 div.jGrowl 											{ display: none; } 
 }
+
+/* FRAMEWORK VERSION
+----------------------------------------------------------------------------------------------------*/
+#nxs-version {
+	height: 45px;
+	position: fixed;
+	right: 13px;
+	top: 60px;
+	z-index: 1030;
+	background-color: #FCFCFC;
+	border-radius: 3px;
+	box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6);
+}
+#nxs-version span { line-height: 45px; padding-left: 10px; padding-right: 10px; }
+
+/* SUPPORT
+----------------------------------------------------------------------------------------------------*/
+#nxs_chat_wrap {}
+#nxs_chat_topquestionwrap .nxs-question-wrapper 							{ line-height: 45px; }
+#nxs_chat_topquestionwrap {
+	width: 700px;
+	position: fixed;
+	right: 13px;
+	bottom: 0px;
+	z-index: 1030;
+	background-color: #FCFCFC;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6);
+}
+#nxs_chat_topquestionwrap ul.question li 									{ height: 45px; width: 46px; text-align: center; }
+#nxs_chat_topquestionwrap ul.question li a span  {
+	line-height: 45px; 
+	color: black;
+	font-size: 16px;
+	-webkit-transition: all .2s;
+	-moz-transition:	all .2s;
+	-o-transition: 		all .2s;
+	transition: 		all .2s;
+	color: black;
+	text-shadow: 1px 1px 1px white;
+}
+#nxs_chat_topquestionwrap ul.question li a:hover span						{ font-size: 32px; }
+.nxs-admin-wrap input[type=text] {
+	height: 28px;
+	line-height: 15px;
+	border: 1px solid #ddd;
+	background-color: #fff;
+	-webkit-appearance: textfield;
+	color: #333;
+	padding: 3px 5px;
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+	box-shadow: 		inset 0 1px 2px rgba(0,0,0,.07);
+	-webkit-transition: .05s border-color ease-in-out;
+	transition: 		.05s border-color ease-in-out;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: 	border-box;
+	box-sizing: 	 	border-box;
+}
+#nxs_chat_topquestionwrap input[type=text] 									{ width: 400px; }
+
+.nxs-hints.nxs-padding10 													{ padding-top: 0px; }
+.nxs-hints .block 															{ margin-bottom: 0px; max-height: 330px; overflow-y: scroll; }
+.nxs-hints a 																{ color: #1a0dab; }
+.nxs-hints a:hover															{ text-decoration: underline; }
+.nxs-hints a:visited														{ color: #609; }
+.nxs-hints h3 																{ font-size: 18px; line-height: 1.4em; font-family: arial, sans-serif; }
+.nxs-hints img																{ float: left; }
+.nxs-hints cite																{ font-family: arial, sans-serif; color: #006621; font-size: 13px; line-height: 16px; }
+.nxs-hints span.meta														{ font-family: arial, sans-serif; color: #545454; font-size: 13px; line-height: 16px; }
+.nxs-hints ul li															{ width: 512px; }
+.nxs-hints li.live-chat img													{ height: 44px; width: 44px; }
 
 /* ADMIN GJ 
 ----------------------------------------------------------------------------------------------------*/
