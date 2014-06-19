@@ -556,6 +556,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-table													{ display: table; }
 .nxs-table-cell												{ display: table-cell; vertical-align: middle; }
 .nxs-overflow												{ overflow: hidden; }
+.nxs-display-none											{ display: none; }
 
 /* Used to delineate an undefined. Styling taken over by the unistyle styling
 .nxs-border-dash											{ border: 1px dashed #666666; }*/
