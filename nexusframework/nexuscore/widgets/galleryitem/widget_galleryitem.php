@@ -237,7 +237,7 @@ function nxs_widgets_galleryitem_renderingallery($args)
 			if ($item_text != "") {
 				echo'
 				<div class="description-wrapper '.$widthclass.'">
-					<p class="nxs-default-p nxs-margin-bottom0"><span>'.$item_text.'<span></p>
+					<p class="nxs-default-p nxs-padding-bottom0"><span>'.$item_text.'<span></p>
 				</div>';
 			}
 			
