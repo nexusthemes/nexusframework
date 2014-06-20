@@ -508,11 +508,16 @@ function nxs_widgets_filmrollbox_render_webpart_render_htmlvisualization($args)
 				function nxs_js_filmrollbox_js_loaded_<?php echo $placeholderid; ?>()
 				{
 					this.film_rolls || (this.film_rolls = []);
-			    this.film_rolls['nxs_filmroll_<?php echo $placeholderid; ?>'] = new FilmRoll({
-			      container: '#nxs_filmroll_<?php echo $placeholderid; ?>',
-			      //height: 190,
-			      pager: false
-			    });					
+			    this.film_rolls['nxs_filmroll_<?php echo $placeholderid; ?>'] = new FilmRoll
+			    (
+			    	{
+				      container: '#nxs_filmroll_<?php echo $placeholderid; ?>',
+				      interval: 2000,
+				      hover: false,	// false: ignore hover, true: hover = pause
+				      //height: 100,
+				      pager: false
+				    }
+				  );
 				}
 			</script>
       <?php

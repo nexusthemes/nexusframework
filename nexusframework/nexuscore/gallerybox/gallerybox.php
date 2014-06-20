@@ -50,17 +50,8 @@ function nxs_gallerybox_detail_rendersheet($args)
 	$placeholdermetadata = nxs_getwidgetmetadata($galleryid, $placeholderid);
 	$placeholdertype = $placeholdermetadata["type"];
 	
-	if ($placeholdertype == "galleryitem")
-	{
-		$imageid = $placeholdermetadata['image_imageid'];
-	}
-	else
-	{
-		$imageid = -1;
-	}
-	
-	$lookup = wp_get_attachment_image_src($imageid, 'full', true);
-	$fullimageurl = $lookup[0];
+	nxs_requirewidget($placeholdertype);
+	$fullimageurl = nxs_function_invokefunction("nxs_widgets_{$placeholdertype}_getfullsizeurl", $placeholdermetadata);
 
 	$result = array();
 	

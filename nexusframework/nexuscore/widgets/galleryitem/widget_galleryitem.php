@@ -147,6 +147,15 @@ function nxs_widgets_galleryitem_initplaceholderdata($args)
 	return $result;
 }
 
+// invoked by gallerybox contextprocessor
+function nxs_widgets_galleryitem_getfullsizeurl($placeholdermetadata)
+{
+	$imageid = $placeholdermetadata['image_imageid'];
+	$lookup = wp_get_attachment_image_src($imageid, 'full', true);
+	$fullimageurl = $lookup[0];
+	return $fullimageurl;
+}
+
 function nxs_widgets_galleryitem_renderingallery($args)
 {
 	extract($args);

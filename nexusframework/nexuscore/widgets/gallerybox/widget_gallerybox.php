@@ -261,7 +261,7 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 				nxs_js_popup_setsessioncontext("galleryid", galleryid);
 				nxs_js_popup_setsessioncontext("imageid", imageid);
 				nxs_js_popup_setsessioncontext("index", '' + index + '');
-			
+				
 				// show the popup
 				nxs_js_popup_navigateto_v2("detail", false);
 			}
