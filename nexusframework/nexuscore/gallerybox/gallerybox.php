@@ -9,6 +9,9 @@ function nxs_gallerybox_detail_rendersheet($args)
 	extract($clientpopupsessioncontext);
 	extract($clientshortscopedata);
 	
+	global $nxs_global_current_containerpostid_being_rendered;
+	$nxs_global_current_containerpostid_being_rendered = $containerpostid;
+	
 	$index = intval($index);
 
 	$structure = nxs_parsepoststructure($galleryid);
