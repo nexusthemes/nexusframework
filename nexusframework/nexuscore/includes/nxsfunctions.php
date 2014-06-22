@@ -66,7 +66,7 @@ function nxs_ensure_theme_translations_are_loaded()
 		// localization
 		//
 		$domain = 'nxs_td';
-		$locale = apply_filters('theme_locale', get_locale(), $domain);		
+		$locale = apply_filters('theme_locale', get_locale(), $domain);
 		$mofile = dirname(dirname(dirname(__FILE__))) . "/lang/nxs-theme-" . $locale . ".mo"; 
 		if (file_exists($mofile))
 		{
@@ -87,13 +87,14 @@ function nxs_ensure_theme_translations_are_loaded()
 		// already loaded 
 	}
 }
+add_action("nxs_load_l18ns", "nxs_ensure_theme_translations_are_loaded");
 
 // let op, dit is na INITIALISATIE van de theme, dit betekent niet dat de theme is gekozen/geactiveerd of dat er van theme is geswitcht!
 // we kiezen hier met opzet voor een option, niet voor een post meta field
 // de options worden immers niet ge-importeerd en ge-exporteerd.
 function nxs_after_theme_setup()
 {
-	nxs_ensure_theme_translations_are_loaded();
+	do_action("nxs_load_l18ns");
 	
 	// set het nxs_themepath indien dat nog niet was gedaan	
 	nxs_validatethemedata();
