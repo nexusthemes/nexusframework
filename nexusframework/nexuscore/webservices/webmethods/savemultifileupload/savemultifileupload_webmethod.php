@@ -48,8 +48,6 @@ function nxs_webmethod_savemultifileupload()
 			nxs_webmethod_return_alternativeflow("UPLOADERROR" . $currentfileprops["error"], $args);
 		}
 		
-		$uploadeddata = file_get_contents($currentfileprops["tmp_name"]);
-		
 		$filename = $currentfileprops["name"];
 		$mimetype = $currentfileprops["type"];
 		$filesize = $currentfileprops["size"];

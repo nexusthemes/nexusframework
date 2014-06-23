@@ -10,7 +10,7 @@ function nxs_popup_optiontype_staticgenericlist_link_renderhtmlinpopup($optionva
 	$currentcontainerposturl = nxs_geturl_for_postid($containerpostid);
 	$nxsrefurlspecial = urlencode(base64_encode($currentcontainerposturl));
 	
-	$refurl = get_home_url() . "/?nxs_genericlist=" . urlencode(nxs_getslug_for_postid($value)) . "&nxsrefurlspecial=" . $nxsrefurlspecial;
+	$refurl = get_home_url() . "/?nxs_genericlist=" . urlencode(nxs_getslug_for_postid($value)) . "&nxsrefcontainerpostid=" . $containerpostid . "&nxsrefurlspecial=" . $nxsrefurlspecial;
 	?>
 	<div class="content2">
     <div class="box">
