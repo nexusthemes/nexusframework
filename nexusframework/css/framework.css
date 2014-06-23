@@ -2379,6 +2379,11 @@ h3#order_review_heading,
 .nxs-icon-capricorn:before 			{ content: "\e751"; }
 .nxs-icon-aquarius:before 			{ content: "\e752"; }
 .nxs-icon-pisces:before 			{ content: "\e753"; }
+.nxs-icon-spray-can:before 			{ content: "\e72b"; }
+.nxs-icon-vacuum-cleaner:before 	{ content: "\e72d"; }
+.nxs-icon-sofa:before 				{ content: "\e73f"; }
+.nxs-icon-window:before 			{ content: "\e755"; }
+.nxs-icon-oven:before 				{ content: "\e756"; }
 
 /* Incompatible with icomoon names */
 .nxs-icon-matchresults:before 		{ content: "\e6fa"; } /* uitslagen */
