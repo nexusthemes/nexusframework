@@ -297,11 +297,11 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("Title is required.", "nxs_td");
 	}
 
-	// text is required
+	/* text is required
 	if (!isset($text) || $text == "") {
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Text is required.", "nxs_td");
-	}
+	}*/
 	
 	// Image
 	if ($image_imageid != "") {     
