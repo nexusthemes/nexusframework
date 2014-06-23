@@ -131,8 +131,8 @@ function nxs_widgets_vimeo_render_webpart_render_htmlvisualization($args)
 	$hovermenuargs["placeholderid"] = $placeholderid;
 	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
 	$hovermenuargs["enable_decoratewidget"] = false;
-	$hovermenuargs["enable_deletewidget"] = false;
-	$hovermenuargs["enable_deleterow"] = true;
+	$hovermenuargs["enable_deletewidget"] = true;
+	$hovermenuargs["enable_deleterow"] = false;
 	$hovermenuargs["metadata"] = $mixedattributes;
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
