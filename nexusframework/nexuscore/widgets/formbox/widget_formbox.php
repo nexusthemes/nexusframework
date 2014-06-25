@@ -506,10 +506,10 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 
 	// Title height (across titles in the same row)
 	// This function does not fare well with CSS3 transitions targeting "all"
-	$heightiqprio = "p1";
+	/*$heightiqprio = "p1";
 	$title_heightiqgroup = "title";
   	$titlecssclasses = $title_fontsize_cssclass;
-	$titlecssclasses = nxs_concatenateargswithspaces($titlecssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
+	$titlecssclasses = nxs_concatenateargswithspaces($titlecssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");*/
 	
 	// Top info padding and color
 	$top_info_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $top_info_color);
