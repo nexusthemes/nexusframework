@@ -532,7 +532,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										
 										"pigeon", 
 										"rabbit", 
-										"squirrel",  
+										"squirrel",
+										"rat",  
 									);
 										
 									foreach($icontypes as $currenticontype)
