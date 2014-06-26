@@ -568,6 +568,21 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"cleaningservices;" => array
+		(
+			"href"=>"/wordpress-themes/maintenance-services/cleaning-services-wordpress-theme/",
+			"title"=>"Cleaning services WordPress theme",
+		),
+		"autorepair;" => array
+		(
+			"href"=>"/wordpress-themes/automotive/auto-repair-wordpress-theme/",
+			"title"=>"Auto repair WordPress theme",
+		),
+		"martialarts;" => array
+		(
+			"href"=>"/wordpress-themes/sports/martial-arts-wordpress-theme/",
+			"title"=>"Martial Arts WordPress theme",
+		),
 		"landscaping;" => array
 		(
 			"href"=>"/wordpress-themes/landscaping/landscaping-wordpress-theme/",

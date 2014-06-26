@@ -58,6 +58,22 @@ function nxs_returntrue()
 	return true;
 }
 
+// kudos to http://www.php.net//manual/en/function.shuffle.php
+function nxs_shuffle_assoc($list) 
+{ 
+  if (!is_array($list)) return $list; 
+
+  $keys = array_keys($list); 
+  shuffle($keys); 
+  $random = array(); 
+  foreach ($keys as $key) 
+  {
+    $random[$key] = $list[$key];
+  }
+
+  return $random; 
+} 
+
 function nxs_ensure_theme_translations_are_loaded()
 {
 	if (!defined('NXS_DEFINE_NXSTHEMETRANSLATIONLOADED'))
@@ -1505,6 +1521,9 @@ function nxs_geturlcontents($args)
 	curl_setopt($session, CURLOPT_TIMEOUT, $timeoutsecs);
 	curl_setopt($session, CURLOPT_USERAGENT, 'NexusService');
 	
+	curl_setopt($session, CURLOPT_FORBID_REUSE, 1);	// 1 means true
+	curl_setopt($session, CURLOPT_FRESH_CONNECT, 1);	// 1 means true
+	
 	$postargs = $args["postargs"];
 	if (isset($postargs))
 	{
@@ -1512,19 +1531,80 @@ function nxs_geturlcontents($args)
 	}
 	$output = curl_exec($session);
 	
+	$haserror = false;	
+	
 	if (FALSE === $output)
 	{
-		// nxs_webmethod_return_nack("Curl error, uncomment lines below to get verbose output"); 
-		
-		var_dump($session);
-		var_dump(curl_error($session));
-		var_dump(curl_errno($session));
-  	die();
-  	
+		$haserror = true;
+		$curlerror = curl_error($session);
+		$curlerrorno = curl_errno($session);
   }
 	
   curl_close($session);
+  
+  if ($haserror)
+  {
+  	if ($curlerrorno == 28)
+  	{
+  		//echo "connection timeout, retrying";
+  		
+  		// connection time out
+  		$args["connectiontimeoutretriesleft"] = $args["connectiontimeoutretriesleft"] - 1;
+  		if ($args["connectiontimeoutretriesleft"] > 0)
+  		{
+  			// recursion
+  			$output = nxs_geturlcontents($args);
+		  }
+		  else
+		  {
+		  	// fatal
+		  	error_log("Nxs; time out for $url;");
+		  	return false;
+		  }
+  
+  		// timeout
+  	}
+  }
+  
   return $output;
+}
+
+function nxs_storemedia($args)
+{	
+	if (has_filter("nxs_storemedia"))
+	{
+		// allow plugin to retrieve/store the file in a different way
+		$result = apply_filters("nxs_storemedia", true, $args);
+	}
+	else
+	{
+		// if there is no plugin available, use the poor mens solution
+		$result = nxs_storemedia_remotehttpdownload($args);
+	}
+	
+	return $result;
+}
+
+function nxs_storemedia_remotehttpdownload($args)
+{
+	$url = $args["url"];
+	$destinationpath = $args["destinationpath"];
+
+	// default implementation
+	$args = array();
+	$args["url"] = $url;
+	
+	// get content
+	$args["timeoutsecs"] = 1;
+	$args["connectiontimeoutretriesleft"] = 6;
+	$content = nxs_geturlcontents($args);
+	
+	// override content
+	file_put_contents($destinationpath, $content);
+	
+	// assumed OK
+	$result = true;
+	return $result;
 }
 
 function nxs_getpagerowtemplatecontent($template)

@@ -97,7 +97,6 @@ class NXS_importer extends WP_Importer {
 	 */
 	function import($file) {
 		add_filter( 'import_post_meta_key', array( $this, 'is_valid_meta_key' ) );
-		add_filter( 'http_request_timeout', array( &$this, 'bump_request_timeout' ) );
 
 		$this->import_start($file);
 
@@ -617,6 +616,7 @@ class NXS_importer extends WP_Importer {
 				}
 
 				if ( is_wp_error( $post_id ) ) {
+
 					printf( __( 'Failed to import %s &#8220;%s&#8221;', 'wordpress-importer' ),
 						$post_type_object->labels->singular_name, esc_html($post['post_title']) );
 					if ( defined('NXS_DEFINE_IMPORT_DEBUG') && NXS_DEFINE_IMPORT_DEBUG )
@@ -965,7 +965,8 @@ class NXS_importer extends WP_Importer {
 	 * @param array $post Attachment details
 	 * @return array|WP_Error Local file location details on success, WP_Error otherwise
 	 */
-	function fetch_remote_file( $url, $post ) {
+	function fetch_remote_file( $url, $post ) 
+	{
 		// extract the file name and extension from the url
 		$file_name = basename( $url );
 
@@ -974,39 +975,15 @@ class NXS_importer extends WP_Importer {
 		if ( $upload['error'] )
 			return new WP_Error( 'upload_dir_error', $upload['error'] );
 
-		// fetch the remote url and write it to the placeholder file
-		$headers = wp_get_http( $url, $upload['file'] );
-
-		// request failed
-		if ( ! $headers ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Remote server did not respond', 'wordpress-importer') );
+		// NXS - we use the storemedia function instead of the regular approach
+		// our IIS - cURL throws strange unexpected connectiontimeouts
+		$args = array("url"=>$url, "destinationpath"=>$upload['file']);
+		$storemedia = nxs_storemedia($args);
+		if (is_wp_error($storemedia)) 
+		{
+			return $storemedia;
 		}
-
-		// make sure the fetch was successful
-		if ( $headers['response'] != '200' ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', sprintf( __('Remote server returned error response %1$d %2$s', 'wordpress-importer'), esc_html($headers['response']), get_status_header_desc($headers['response']) ) );
-		}
-
-		$filesize = filesize( $upload['file'] );
-
-		if ( isset( $headers['content-length'] ) && $filesize != $headers['content-length'] ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Remote file is incorrect size', 'wordpress-importer') );
-		}
-
-		if ( 0 == $filesize ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Zero size file downloaded', 'wordpress-importer') );
-		}
-
-		$max_size = (int) $this->max_attachment_size();
-		if ( ! empty( $max_size ) && $filesize > $max_size ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', sprintf(__('Remote file is too large, limit is %s', 'wordpress-importer'), size_format($max_size) ) );
-		}
-
+		
 		// keep track of the old and new urls so we can substitute them later
 		$this->url_remap[$url] = $upload['url'];
 		$this->url_remap[$post['guid']] = $upload['url']; // r13735, really needed?
@@ -1142,14 +1119,6 @@ class NXS_importer extends WP_Importer {
 	 */
 	function max_attachment_size() {
 		return apply_filters( 'import_attachment_size_limit', 0 );
-	}
-
-	/**
-	 * Added to http_request_timeout filter to force timeout at 60 seconds during import
-	 * @return int 60
-	 */
-	function bump_request_timeout() {
-		return 60;
 	}
 
 	// return the difference in length between two strings

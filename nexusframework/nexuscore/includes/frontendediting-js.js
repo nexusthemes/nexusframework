@@ -3056,12 +3056,23 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 		
 		function nxs_js_invokewebmethod(options, handlehappyflow, handlealternativeflow, handlefailureflow)
 		{
+			if ('confirmtext' in options)
+			{
+				var text = options.confirmtext;
+				var answer = confirm(text);
+				if (!answer)
+				{
+					// toch niet
+					return true;
+				}
+			}
 			var waitgrowltoken = -1;
 			if ('waitgrowltext' in options)
 			{
 				var text = options.waitgrowltext;
 				waitgrowltoken = nxs_js_alert_wait_start(text);
 			}
+			
 			var data = options.webmethoddata;
 			var async = true;	// default = async
 			if ('async' in options)

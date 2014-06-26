@@ -80,7 +80,7 @@ class Nexus_Import extends WP_Importer {
 				if ( $this->handle_upload() )
 					$this->import_options();
 				break;
-			case 2:
+			case 2:				
 				check_admin_referer( 'import-wordpress' );
 				$this->fetch_attachments = ( ! empty( $_POST['fetch_attachments'] ) && $this->allow_fetch_attachments() );
 				$this->id = (int) $_POST['import_id'];
@@ -100,8 +100,9 @@ class Nexus_Import extends WP_Importer {
 	 */
 	function import( $file ) {
 		add_filter( 'import_post_meta_key', array( $this, 'is_valid_meta_key' ) );
-		add_filter( 'http_request_timeout', array( &$this, 'bump_request_timeout' ) );
-
+		
+		//
+		
 		$this->import_start( $file );
 
 		$this->get_author_mapping();
@@ -111,6 +112,7 @@ class Nexus_Import extends WP_Importer {
 		$this->process_tags();
 		$this->process_terms();
 		$this->process_posts();
+		
 		wp_suspend_cache_invalidation( false );
 
 		// update incorrect/missing information in the DB
@@ -589,7 +591,8 @@ class Nexus_Import extends WP_Importer {
 				$original_post_ID = $post['post_id'];
 				$postdata = apply_filters( 'wp_import_post_data_processed', $postdata, $post );
 
-				if ( 'attachment' == $postdata['post_type'] ) {
+				if ( 'attachment' == $postdata['post_type'] ) 
+				{
 					$remote_url = ! empty($post['attachment_url']) ? $post['attachment_url'] : $post['guid'];
 
 					// try to use _wp_attached file for upload folder placement to ensure the same location as the export site
@@ -604,19 +607,29 @@ class Nexus_Import extends WP_Importer {
 							}
 						}
 					}
-
+					//echo "about to process attachment<br />";
 					$comment_post_ID = $post_id = $this->process_attachment( $postdata, $remote_url );
+					//echo "processed the attachment<br />";
 				} else {
 					$comment_post_ID = $post_id = wp_insert_post( $postdata, true );
 					do_action( 'wp_import_insert_post', $post_id, $original_post_ID, $postdata, $post );
+					
 				}
 
-				if ( is_wp_error( $post_id ) ) {
+				if ( is_wp_error( $post_id ) ) 
+				{
+					/*
+					echo "<br />TESTGJ 1<br />";
+					echo "<br />";
+					echo $post_id->get_error_message();
+					echo "<br />";
+					*/
 					printf( __( 'Failed to import %s &#8220;%s&#8221;', 'nexus-importer' ),
 						$post_type_object->labels->singular_name, esc_html($post['post_title']) );
 					if ( defined('IMPORT_DEBUG') && IMPORT_DEBUG )
 						echo ': ' . $post_id->get_error_message();
-					echo '<br />';
+					//echo '<br />';
+					//die();
 					continue;
 				}
 
@@ -887,6 +900,8 @@ class Nexus_Import extends WP_Importer {
 		if ( preg_match( '|^/[\w\W]+$|', $url ) )
 			$url = rtrim( $this->base_url, '/' ) . $url;
 
+		
+
 		$upload = $this->fetch_remote_file( $url, $post );
 		if ( is_wp_error( $upload ) )
 			return $upload;
@@ -916,6 +931,8 @@ class Nexus_Import extends WP_Importer {
 		return $post_id;
 	}
 
+	
+
 	/**
 	 * Attempt to download a remote file attachment
 	 *
@@ -923,7 +940,8 @@ class Nexus_Import extends WP_Importer {
 	 * @param array $post Attachment details
 	 * @return array|WP_Error Local file location details on success, WP_Error otherwise
 	 */
-	function fetch_remote_file( $url, $post ) {
+	function fetch_remote_file( $url, $post ) 
+	{
 		// extract the file name and extension from the url
 		$file_name = basename( $url );
 
@@ -932,39 +950,15 @@ class Nexus_Import extends WP_Importer {
 		if ( $upload['error'] )
 			return new WP_Error( 'upload_dir_error', $upload['error'] );
 
-		// fetch the remote url and write it to the placeholder file
-		$headers = wp_get_http( $url, $upload['file'] );
-
-		// request failed
-		if ( ! $headers ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Remote server did not respond', 'nexus-importer') );
+		// NXS - we use the storemedia function instead of the regular approach
+		// our IIS - cURL throws strange unexpected connectiontimeouts
+		$args = array("url"=>$url, "destinationpath"=>$upload['file']);
+		$storemedia = nxs_storemedia($args);
+		if (is_wp_error($storemedia)) 
+		{
+			return $storemedia;
 		}
-
-		// make sure the fetch was successful
-		if ( $headers['response'] != '200' ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', sprintf( __('Remote server returned error response %1$d %2$s', 'nexus-importer'), esc_html($headers['response']), get_status_header_desc($headers['response']) ) );
-		}
-
-		$filesize = filesize( $upload['file'] );
-
-		if ( isset( $headers['content-length'] ) && $filesize != $headers['content-length'] ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Remote file is incorrect size', 'nexus-importer') );
-		}
-
-		if ( 0 == $filesize ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Zero size file downloaded', 'nexus-importer') );
-		}
-
-		$max_size = (int) $this->max_attachment_size();
-		if ( ! empty( $max_size ) && $filesize > $max_size ) {
-			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', sprintf(__('Remote file is too large, limit is %s', 'nexus-importer'), size_format($max_size) ) );
-		}
-
+		
 		// keep track of the old and new urls so we can substitute them later
 		$this->url_remap[$url] = $upload['url'];
 		$this->url_remap[$post['guid']] = $upload['url']; // r13735, really needed?
@@ -1132,14 +1126,6 @@ class Nexus_Import extends WP_Importer {
 	 */
 	function max_attachment_size() {
 		return apply_filters( 'import_attachment_size_limit', 0 );
-	}
-
-	/**
-	 * Added to http_request_timeout filter to force timeout at 60 seconds during import
-	 * @return int 60
-	 */
-	function bump_request_timeout() {
-		return 60;
 	}
 
 	// return the difference in length between two strings
