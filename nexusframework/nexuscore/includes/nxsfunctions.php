@@ -1571,6 +1571,8 @@ function nxs_geturlcontents($args)
 
 function nxs_storemedia($args)
 {	
+	//error_log("nxs_storemedia INVOKED");
+	
 	if (has_filter("nxs_storemedia"))
 	{
 		// allow plugin to retrieve/store the file in a different way
@@ -1578,8 +1580,66 @@ function nxs_storemedia($args)
 	}
 	else
 	{
-		// if there is no plugin available, use the poor mens solution
-		$result = nxs_storemedia_remotehttpdownload($args);
+		//error_log("nxs_storemedia NO FILTER");
+		
+		// if there is no plugin available, use the default implementation
+		$sourcefile = get_template_directory() . "/resources/data/";
+		if (file_exists($sourcefile))
+		{
+			//error_log("found data directory in theme, using that one; $sourcefile");
+			// if the data folder exists, import from that directory
+			$result = nxs_storemedia_fromtheme($args);
+		}
+		else
+		{
+			// TODO: do not log error; on our prod server this is not very practical
+			error_log("did NOT find a data directory in theme, using fallback implementation; $sourcefile");
+		 	$result = nxs_storemedia_remotehttpdownload($args);
+		}
+	}
+	
+	return $result;
+}
+
+function nxs_storemedia_fromtheme($args)
+{		
+	extract($args);
+	
+	//error_log("nxs_storemedia_fromtheme; URL: $url");
+	
+	// url is bijv.
+	// http://89.18.175.44/beautician/wp-content/uploads/sales/beautician/2013/10/logo.png
+	
+	// we splitten eerst de "sales/"
+	$urlpiecesfirst = explode("sales/", $url);
+	$url2 = $urlpiecesfirst[1];
+	
+	// url2 is bijv.
+	// beautician/2013/10/logo.png	
+	// het begint dus met {themeid}/, echter, 
+	// we weten de themeid hier nog niet, dus de exploden deze opnieuw ...
+	$urlpieces = explode("/", $url2, 2);
+	
+	// $urlpieces[1] is nu dus "2013/10/logo.png"
+		
+	// check if the url has a local variant file
+	// url is for example http://89.18.175.44/plumber/wp-content/uploads/sites/26/2013/09/offer.jpg
+	$sourcefile = get_template_directory() . "/resources/data/" . $urlpieces[1];
+	//echo $sourcefile;
+	if (!file_exists($sourcefile))
+	{
+		error_log("nxs_storemedia_fromtheme; NOT FOUND; $sourcefile");
+		$result = false;
+	}
+	else
+	{
+		//error_log("nxs_storemedia_fromtheme; STORING from $sourcefile to $destinationpath");
+		
+		// don't copy the file, just copy its contents!!
+		// (keeping the other file atts in place)
+		$content = file_get_contents($sourcefile);
+		file_put_contents($destinationpath, $content);
+		$result = true;
 	}
 	
 	return $result;
@@ -10631,6 +10691,12 @@ function nxs_sanitize_chars($chars)
 // kudos to http://stackoverflow.com/questions/5707806/recursive-copy-of-directory
 function nxs_recursive_copyfolders($source, $dest)
 {
+	$skipitemscontaininglowercase = array();
+	return nxs_recursive_copyfolders_v2($source, $dest, $skipitemscontaininglowercase);
+}
+
+function nxs_recursive_copyfolders_v2($source, $dest, $skipitemscontaininglowercase)
+{
 	foreach (
 	 $iterator = new RecursiveIteratorIterator(
 	  new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
@@ -10639,8 +10705,29 @@ function nxs_recursive_copyfolders($source, $dest)
 	{
 	  if ($item->isDir()) {
 	    mkdir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
-	  } else {
-	    copy($item, $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+	  } 
+	  else 
+	  {
+	  	$name = $iterator->getSubPathName();
+	  	$lowername = strtolower($name);
+	  	$shouldinclude = true;
+	  	foreach ($skipitemscontaininglowercase as $excludeitem)
+	  	{
+	  		$lowercaseexcludeitem = strtolower($excludeitem);
+	  		if (nxs_stringcontains($lowername, $lowercaseexcludeitem))
+	  		{
+	  			$shouldinclude = false;
+	  		}
+	  	}
+	  	
+	  	if ($shouldinclude)
+	  	{
+	    	copy($item, $dest . DIRECTORY_SEPARATOR . $name);
+	    }
+	    else
+	    {
+	    	echo "excluding $name<br />";
+	    }
 	  }
 	}
 }
