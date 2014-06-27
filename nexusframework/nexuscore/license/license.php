@@ -64,6 +64,12 @@ function nxs_license_notifyregistersuccess()
   <?php
 }
 
+function nxs_license_getlicenseserverurl($purpose)
+{
+	//error_log("invoke; nxs_license_getlicenseserverurl; " . $purpose);
+	return "http://license.nexusthemes.com/";
+}
+
 function nxs_license_notifynolicense()
 {
 	$url = admin_url('admin.php?page=nxs_admin_license');
@@ -125,7 +131,12 @@ function nxs_license_checkupdate($value)
 	{
 		// always refresh if the user accesses the admin_update page
 		$shouldcheck = true;
-	}	
+	}
+	else if ($nxs_themeupdate == "nostressing")
+	{
+		error_log("detected: no stressing, wont invoke get_version");
+		$shouldcheck = false;
+	}
 	else if ($nxs_themeupdate == false || $nxs_themeupdate == "")
 	{
 		$shouldcheck = true;
@@ -159,7 +170,7 @@ function nxs_license_checkupdate($value)
 		);
 		
 		$site = home_url();
-		$url = "http://license.nexusthemes.com/";
+		$url = nxs_license_getlicenseserverurl("get_version");
 		
 		global $nxs_glb_license_response; // prevent server from making multiple invocations per request
 		if ($nxs_glb_license_response == null)
@@ -175,9 +186,11 @@ function nxs_license_checkupdate($value)
 		$successful = true;
 	
 	  // make sure the response was successful
-	  if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) 
+	  if ( is_wp_error( $response )) 
 	  {
 	  	$successful = false;
+	  	error_log("detected failure response, message:");
+	    error_log($response->get_error_message());
 	  }
 	  
 	  $body = wp_remote_retrieve_body($response); 
@@ -230,7 +243,10 @@ function nxs_license_checkupdate($value)
 		else
 		{
 			// skip for now... 
-	    $durationinsecs = 60 * 60 * 12;	// 12 hours
+	    $durationinsecs = 60 * 60 * 4;	// 4 hours
+
+ 	  	error_log("instructing to prevent stressing");
+	    set_transient("nxs_themeupdate", "nostressing", $durationinsecs);
 		}
 	}
 	
@@ -637,13 +653,13 @@ function nxs_license_getnolicensetip_invoke()
 		);
 		
 		$site = home_url();
-		$url = "http://license.nexusthemes.com/";
+		$url = nxs_license_getlicenseserverurl("tipnolicense");
 		$response = wp_remote_post($url, $serviceparams);
 		
 		$successful = true;
 	
 	  // make sure the response was successful
-	  if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) 
+	  if ( is_wp_error( $response )) 
 	  {
 	  	$successful = false;
 	  	//var_dump($response);
@@ -704,13 +720,13 @@ function nxs_licenseregister_invoke()
 	);
 	
 	$site = home_url();
-	$url = "http://license.nexusthemes.com/";
+	$url = nxs_license_getlicenseserverurl("register");
 	$response = wp_remote_post($url, $serviceparams);
 	
 	$successful = true;
 
   // make sure the response was successful
-  if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) 
+  if ( is_wp_error( $response )) 
   {
   	$successful = false;
   	//var_dump($response);
