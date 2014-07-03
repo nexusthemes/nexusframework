@@ -332,6 +332,15 @@ function nxs_init()
 		  	phpinfo();
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "errorlog")
+		  {
+			  $errorpath = ini_get('error_log');
+			  echo "path: $errorpath <br />";
+			  $content = file_get_contents($errorpath);
+			  $content = str_replace("\r\n", "<br />", $content);			
+			  echo $content;
+		  	die();
+		  }
 		  else if ($_REQUEST["nxs"] == "phpversion")
 		  {
 		  	echo phpversion();
@@ -399,6 +408,12 @@ function nxs_init()
 				var_dump($sitemeta);
 		  	die();
 		  }
+		 	else if ($_REQUEST["nxs"] == "locale")
+			{
+				$locale = apply_filters('theme_locale', get_locale(), $domain);
+				echo "Current locale is set to:" . $locale;
+				die();
+			}
 		}
 	}
 	
@@ -956,34 +971,6 @@ function nxs_render_postfooterlink()
 		?>
 	</p>
 	<?php
-}
-
-add_filter('locale', 'nxs_change_language');
-function nxs_change_language($locale)
-{
-	$temp_array = nxs_getsitemeta_internal(false);
-	if (array_key_exists('lang', $temp_array))
-	{
-		$lang = $temp_array['lang'];
-		if ($lang == "" || $lang == "bloglanguage")
-		{
-			// leave as-is
-		}
-		else
-		{
-			$locale = $lang;
-		}
-	}
-	else
-	{
-		// when no lang is set...
-		// leave as-is
-	}
-	
-	global $nxs_global_lang;
-	$nxs_global_lang = $locale;
-	
-  return $locale;
 }
 
 add_action('init', 'nxs_performdataconsistencycheck');

@@ -36,12 +36,6 @@ function nxs_ws_site_updatesitedata($args)
 
 		nxs_mergesitemeta($modifiedmetadata);
 	}
-	else if ($updatesectionid == "dashboardlang")
-	{
-		$modifiedmetadata["lang"] = $lang;
-
-		nxs_mergesitemeta($modifiedmetadata);
-	}	
 	else if ($updatesectionid == "menuvormgevingkleuren")
 	{		
 		//
@@ -1194,151 +1188,6 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 	nxs_webmethod_return_ok($result);
 }
 
-function nxs_site_dashboardtaalhome_rendersheet($args)
-{
-	//
-	//
-	//
-	extract($args);
-	
-	$temp_array = nxs_getsitemeta();
-	$lang = $temp_array['lang'];
-	
-	//
-	// clientpopupsessiondata bevat key values van de client side
-	// deze overschrijft met opzet (tijdelijk) mogelijk waarden die via $args
-	// zijn meegegeven; hierdoor kan namelijk een 'gevoel' worden gecreeerd
-	// van een 'state' die client side leeft, die helpt om meerdere (popup) 
-	// pagina's state te laten delen. De inhoud van clientpopupsessiondata is een
-	// array die wordt gevoed door de clientside variabele "popupsessiondata",
-	// die gedefinieerd is in de file 'frontendediting.php'
-	//
-	extract($clientpopupsessiondata);	
-	extract($clientshortscopedata);
-	
-	$result = array();
-	$result["result"] = "OK";
-	
-	ob_start();
-	?>
-
-  <div class="nxs-admin-wrap">
-    <div class="block">
-    	
-      <?php nxs_render_popup_header(nxs_l18n__("Language[nxs:popup]", "nxs_td")); ?>
-
-			<div class="nxs-popup-content-canvas-cropper">
-				<div class="nxs-popup-content-canvas">
-      
-					<div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-		              <h4><?php nxs_l18n_e("Language (GUI)[nxs:popup,label]", "nxs_td"); ?></h4>
-		           </div>
-		          <div class="box-content">
-		          	<select id='lang'>
-		          		<option <?php if (!isset($lang) || $lang=="" || $lang=='bloglanguage') echo "selected='selected'"; ?> value='bloglanguage'>WordPress blog language</option>
-		          		<option <?php if ($lang=='en_US') echo "selected='selected'"; ?> value='en_US'>English</option>
-		          		<option <?php if ($lang=='nl_NL') echo "selected='selected'"; ?> value='nl_NL'>Nederlands</option>
-		          	</select>
-		          </div>
-		        </div>
-		        <div class="nxs-clear"></div>
-		      </div> <!--END content-->
-
-					<div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-		              <h4><?php nxs_l18n_e("Language (website)[nxs:popup,label]", "nxs_td"); ?></h4>
-		           </div>
-		          <div class="box-content">
-									<a class='nxsbutton1 nxs-float-left' href='<?php echo admin_url('options-general.php');?>'><?php nxs_l18n_e("Configure website language[nxs:btn]", "nxs_td"); ?></a>
-		          </div>
-		        </div>
-		        <div class="nxs-clear"></div>
-		      </div> <!--END content-->			      
-		    </div>
-		  </div>
-                
-      <div class="content2">
-        <div class="box">
-		      <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Save[nxs:popup,button]", "nxs_td"); ?></a>
-		    	<a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>            
-		      <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:popup,button]", "nxs_td"); ?></a>
-       	</div>
-       	<div class="nxs-clear margin"></div>
-      </div> <!--END content-->
-    </div> <!--END block-->
-  	
-  </div>
-
-    <script type='text/javascript'>
-			
-			function nxs_js_setpopupdatefromcontrols()
-			{
-				nxs_js_popup_storestatecontroldata_dropdown('lang', 'lang');
-			}
-			
-			function nxs_js_savegenericpopup()
-			{
-				nxs_js_setpopupdatefromcontrols();
-			
-				var valuestobeupdated = {};
-				valuestobeupdated["lang"] = nxs_js_popup_getsessiondata("lang");
-			
-				var ajaxurl = nxs_js_get_adminurladminajax();
-				jQuery.ajax
-				(
-					{
-						type: 'POST',
-						data: 
-						{
-							"action": "nxs_ajax_webmethods",
-							"webmethod": "updatesitedata",
-							"updatesectionid": "dashboardlang",
-							"data": nxs_js_getescapeddictionary(valuestobeupdated)
-						},
-						async: false,
-						cache: false,
-						dataType: 'JSON',
-						url: ajaxurl, 
-						success: function(response) 
-						{
-							nxs_js_log(response);
-							if (response.result == "OK")
-							{
-								// close the pop up
-								nxs_js_closepopup_unconditionally();
-								
-								// refresh current page (if the footer is updated we could decide to
-								// update only the footer, but this is needless; an update of the page is ok too)
-								nxs_js_refreshcurrentpage();
-							}
-							else
-							{
-								nxs_js_popup_notifyservererror();
-								nxs_js_log(response);
-							}
-						},
-						error: function(response)
-						{
-							nxs_js_popup_notifyservererror();
-							nxs_js_log(response);
-						}
-					}
-				);
-			}
-		</script>
-  
-	<?php
-	
-	$html = ob_get_contents();
-	ob_end_clean();
-	
-	$result["html"] = $html;
-	nxs_webmethod_return_ok($result);
-}
-
 function nxs_site_dashboardfaviconhome_rendersheet($args)
 {
 	//
@@ -2473,39 +2322,6 @@ function nxs_site_dashboardhome_rendersheet($args)
               </div>
               <div class="box-content">
               	<a href="#" onclick="nxs_js_popup_site_neweditsession('lookuptablemanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-	        
-	        
-	        
-					
-			    <!-- taal -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Current language[nxs:popup,label]", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dashboardtaalhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change[nxs:popup,button]", "nxs_td"); ?></a>
-              	<!--
-              	<span class='title'><?php
-                	global $nxs_global_lang;
-                	if ($nxs_global_lang == "en_US")
-                	{
-                		echo "English";
-                	}
-                	else if ($nxs_global_lang == "nl_NL")
-                	{
-                		echo "Nederlands";
-                	}
-                	else
-                	{
-										echo $nxs_global_lang;
-									}
-                ?></span>
-                -->
               </div>
             </div>
             <div class="nxs-clear margin"></div>

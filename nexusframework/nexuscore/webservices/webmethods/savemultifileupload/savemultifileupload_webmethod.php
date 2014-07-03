@@ -173,8 +173,8 @@ function nxs_webmethod_savemultifileupload()
 				$args["placeholderid"] = $placeholderid;
 				
 				$args["image_imageid"] = $imageid;	// the image we just uploaded
-				$args["title"] = "Title";
-				$args["text"] = "Text";
+				//$args["title"] = "Title";
+				//$args["text"] = "Text";
 				
 				nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 			}
