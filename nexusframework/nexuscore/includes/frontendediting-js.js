@@ -2451,23 +2451,49 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 				  	}
 					}
 				
-					// detect copy-paste
 					if (nxs_js_nxseditoractive)
 		    	{
 		        if (nxs_js_isctrlkeydown)
 		        {
+		        	// if keyboard focus is set to an element 
+		        	// in the top menu, ignore the event to allow "normal"
+		        	// copy and pasting of the clipboard
+		        	var focusElement = jQuery(document.activeElement);
+		        	/*
+		        	var isFocusSetOnTopMenu = jQuery(focusElement).closest("#nxs-menu-outerwrap");
+		        	if (isFocusSetOnTopMenu)
+		        	{
+		        		nxs_js_log("ignoring ctrl-keyboard; focus in top menu");
+		        		return;
+		        	}
+		        	*/
+		        	if (jQuery(focusElement).is('input:text'))
+		        	{
+		        		nxs_js_log("ignoring ctrl-keyboard; focus in input textbox");
+		        		return;
+		        	}
+		        	if (jQuery(focusElement).is('textarea'))
+		        	{
+		        		nxs_js_log("ignoring ctrl-keyboard; focus in textarea");
+		        		return;
+		        	}
+		        	
+		        	// detect CTRL-related keyboard combinations like copy-paste
+		        	
 		        	//nxs_js_log("keycode:" + evt.keyCode);
 		        
 		        	// ctrl is pressed
 		        	
 		        	if (evt.keyCode == 67)
 		        	{
+		        		// CTRL-C / CMD-C
 		        		nxs_js_isctrlkeydown = false;
 		        		nxs_copytoserverclipboard("all");
 		        		return false;
 		        	}
 		        	else if (evt.keyCode == 86)
 		        	{
+		        		// CTRL-V / CMD-V
 		        		nxs_js_isctrlkeydown = false;
 		        		nxs_pastefromserverclipboard("all");
 		        		return false;
@@ -2508,7 +2534,6 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 									}
 								}
 							}
-							
 						}
 					}
 				});
