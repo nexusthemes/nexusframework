@@ -371,21 +371,10 @@ function nxs_widgets_googlemap_home_rendersheet($args)
 		
 		function nxs_js_initializetwitterwidget_trigger_<?php echo $placeholderid; ?>()
 		{
-			nxs_js_log('todo: refresh somehow');
-			
 			google.maps.event.trigger(map_popup_<?php echo $placeholderid; ?>, "resize");
 			
 			var location = new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>);
 			map_popup_<?php echo $placeholderid; ?>.setCenter(location);
-			
-			/*
-			// add marker
-      initialmarker = new google.maps.Marker(
-      {
-    		position: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
-    		map: map_popup_<?php echo $placeholderid; ?>,
-  		});
-  		*/
 		}
 		
 		//var initialmarker = null;

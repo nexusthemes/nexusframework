@@ -20,9 +20,8 @@ function nxs_webmethod_updatepagedata()
 			{
 				nxs_webmethod_return_nack("In het resultaat zit geen 'result' key;");
 			}
-			$output=json_encode($result);
-			echo $output;
-			die();
+			
+			nxs_webmethod_return_ok($result);
 		}
 		else
 		{

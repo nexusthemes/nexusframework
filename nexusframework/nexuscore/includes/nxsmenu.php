@@ -1308,6 +1308,7 @@
 						// get HSL of RGB
 						var rgb = nxs_js_hextorgb(hex);
 						var hsl = nxs_js_hextohsl(hex);
+						<?php
 						/*
 						var oppositehsl = nxs_js_getoppositesaturationandlightforhsl(hsl);
 						var oppositergb = nxs_js_hsltorgb(oppositehsl);
@@ -1320,6 +1321,7 @@
 						var complementaryhex = nxs_js_rgbtohex(complementaryrgb);
 						$('#vg_color_<?php echo $identification; ?>_o_m').miniColors('value', complementaryhex);
 						*/
+						?>
 						nxs_js_menu_handlecolorthemechanged();
 						
 						// update GUI

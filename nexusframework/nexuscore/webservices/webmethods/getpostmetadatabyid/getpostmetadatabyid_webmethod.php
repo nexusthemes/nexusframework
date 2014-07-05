@@ -16,7 +16,7 @@ function nxs_webmethod_getpostmetadatabyid()
 	//
 	//
 	
-	$output = array
+	$result = array
 	(
 		"result" => "OK",
 		"title" => $post->post_title,
@@ -24,9 +24,7 @@ function nxs_webmethod_getpostmetadatabyid()
 		"alt" => get_post_meta($id, '_wp_attachment_image_alt', true),
 		"src" => $url,
 	);
-	
-	$output=json_encode($output);
-	echo $output;
-	die();
+
+	nxs_webmethod_return_ok($result);	
 }
 ?>

@@ -985,10 +985,18 @@ function nxs_clearunwantedscripts()
 	{
 		// the theme could break if pointing to an incompatible version
 		// therefore we remove jquery scripts added by third party plugins, such as NGG
-  	wp_deregister_script('jquery');
+  	//wp_deregister_script('jquery');
   	// we use our own thickbox
+  	
   	wp_deregister_script('thickbox');
   	wp_deregister_style('thickbox');
+  	
+  	function nxs_modify_scripts() 
+  	{
+	  	wp_dequeue_script('jquery');
+	  	wp_deregister_script('jquery');
+		}
+		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
   }
 }
 

@@ -206,7 +206,6 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 		           </div>
 		          <div class="box-content">
 		          	<?php
-		          	//$url = get_bloginfo('url'); // orig
 		          	$actualurl = nxs_geturl_for_postid($postid);
 		          	$urlwithoutslug = nxs_str_lastreplace($slug . "/", "", $actualurl);
 		          	if (!nxs_stringendswith($urlwithoutslug, "/"))

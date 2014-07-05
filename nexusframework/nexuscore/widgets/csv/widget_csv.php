@@ -289,7 +289,7 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 	$unicontent = $temp_array["unicontent"];
 	if (isset($unicontent) && $unicontent != "") {
 		// blend unistyle properties
-		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_text_getunifiedcontentgroup(), $unicontent);
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_csv_getunifiedcontentgroup(), $unicontent);
 		$temp_array = array_merge($temp_array, $unicontentproperties);
 	}
 	

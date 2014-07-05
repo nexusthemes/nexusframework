@@ -157,8 +157,6 @@ jQuery(window).ready
 		jQuery(window).bind("load", function() 
 		{
 			nxs_js_reenable_all_window_events();
-			// nice scroll		
-			// $("html").niceScroll();
 		});
 
 		// see http://stackoverflow.com/questions/6677181/how-to-know-when-font-face-has-been-applied
@@ -467,7 +465,13 @@ function nxs_js_getqueryparametervalues()
     pair,
     i;
 
-  for ( i in pairs ) {
+  for ( i in pairs ) 
+  {
+  	if (!pairs.hasOwnProperty(i)) 
+		{
+			continue;
+		}
+  	
     if ( pairs[i] === "" ) continue;
 
     pair = pairs[i].split("=");
@@ -841,6 +845,11 @@ function nxs_js_getescapeddictionary(input)
 	var escaped = {};
 	for (var x in input)
   {
+  	if (!input.hasOwnProperty(x)) 
+		{
+			continue;
+		}
+		
   	var waarde = input[x];
   	escaped[x] = encodeURIComponent(waarde);
   	/*
@@ -1638,6 +1647,11 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 	// set initial context
 	for (var initialcontextkey in initialcontext) 
 	{
+  	if (!initialcontext.hasOwnProperty(initialcontextkey)) 
+		{
+			continue;
+		}
+		
   	var initialcontextvalue = initialcontext[initialcontextkey];
   	nxs_js_popup_setsessioncontext(initialcontextkey, initialcontextvalue);
   }
@@ -2847,6 +2861,10 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 		{
 	    for (var key in data) 
 	    {
+	    	if (!data.hasOwnProperty(key)) 
+				{
+					continue;
+				}
         scope[key] = data[key];
     	}
 		}
@@ -4059,6 +4077,11 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			// todo: move this implementation to google maps widget...
 			for (mapkey in nxs_js_maps)
 			{
+				if (!nxs_js_maps.hasOwnProperty(mapkey)) 
+				{
+					continue;
+				}
+				
 				//nxs_js_log('resizing mapkey:' + mapkey);
 				var center = nxs_js_maps[mapkey].getCenter();
 				google.maps.event.trigger(nxs_js_maps[mapkey], 'resize'); 
@@ -7138,6 +7161,11 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 					
 					for(var currentcalculatedresult in calculatedresults)
 					{
+						if (!calculatedresults.hasOwnProperty(currentcalculatedresult)) 
+						{
+							continue;
+						}
+						
 					  var message = "";
 					  message += "<li class='nxs-seoindicator-" + calculatedresults[currentcalculatedresult].indicator + "'>";
 					  message += calculatedresults[currentcalculatedresult].msg;
@@ -8002,6 +8030,11 @@ function nxs_js_displayStyleSheetProperties()
     	var sheetindex;
     	for (sheetindex in document.styleSheets)
     	{
+    		if (!document.styleSheets.hasOwnProperty(sheetindex)) 
+				{
+					continue;
+				}
+
     		var sheet = document.styleSheets[sheetindex];
     		nxs_js_log(sheet);
     		 
@@ -8062,7 +8095,12 @@ function nxs_js_getkeys(lookup)
 	var result = new Array();
 	for(var key in lookup)
 	{
-	   result[result.length] = key;
+		if (!lookup.hasOwnProperty(key)) 
+		{
+			continue;
+		}
+		
+	  result[result.length] = key;
 	}	
 	return result;
 }
@@ -8729,6 +8767,11 @@ function nxs_js_getderivedcsslookup(corecsslookup)
 				// flat colors have to take into consideration the alpha's (100%, 80%, 60%, etc.)
 				for (var ca_i in coloralphas)
 				{
+					if (!coloralphas.hasOwnProperty(ca_i)) 
+					{
+						continue;
+					}
+					
 					var currentcoloralpha = coloralphas[ca_i];
 					var alphasuffix;
 					
@@ -8766,16 +8809,25 @@ function nxs_js_getcsslookupflyoutmenu()
 	var colorschemelookup = {};
 	
 	var colortypes = nxs_js_getcolorsinpalette();
-	
 	var subtypes = ['1','2'];
 	
 	for (var i in colortypes)
 	{
+		if (!colortypes.hasOwnProperty(i)) 
+		{
+			continue;
+		}
+			
 		var currentcolortype = colortypes[i];
 		// for example 'primary' color, or 'secundary'
 		
 		for (var sti in subtypes)
 		{
+			if (!subtypes.hasOwnProperty(sti)) 
+			{
+				continue;
+			}
+			
 			var currentsubtype = subtypes[sti];
 			var identification = currentcolortype + currentsubtype;
 			colorschemelookup['color_' + identification + '_m'] = jQuery('#vg_color_' + identification + '_m').val();
@@ -8876,6 +8928,11 @@ function nxs_js_createcssstyling(options)
   
   for (var i in multipliers) 
   {
+		if (!multipliers.hasOwnProperty(i)) 
+		{
+			continue;
+		}
+
     var currentmultiplier = multipliers[i];
     
     var wholepart = Math.floor(currentmultiplier);
@@ -8885,6 +8942,11 @@ function nxs_js_createcssstyling(options)
     
     for (var j in cssparameters ) 
     {
+    	if (!cssparameters.hasOwnProperty(j)) 
+			{
+				continue;
+			}
+			
     	var currentcssparameter = cssparameters[j];
 
     	var identification = wholepart + '-' + fractionpart;
@@ -8955,6 +9017,11 @@ function nxs_js_get_themecsstemplate_part1_colorzen(cssprefix, csspostfix, zenpr
 	
 	for (var i in colortypes)
 	{
+		if (!colortypes.hasOwnProperty(i)) 
+		{
+			continue;
+		}
+
 		var currentcolortype = colortypes[i];
 		
 		// currentcolortype is for example 'c1', or 'base1'
@@ -9096,6 +9163,11 @@ function nxs_js_get_themecsstemplate_part1_colorzen(cssprefix, csspostfix, zenpr
 		var coloralphas = nxs_js_getcoloralphas();
 		for (var i in coloralphas)
 		{
+			if (!coloralphas.hasOwnProperty(i)) 
+			{
+				continue;
+			}
+			
 			var currentcoloralpha = coloralphas[i];
 			var alphasuffix;
 			
@@ -9206,6 +9278,11 @@ function nxs_js_get_themecsstemplate_part1_anchorlinkcolors(cssprefix, pseudo, c
 
 	for (var i in colortypes)
 	{
+		if (!colortypes.hasOwnProperty(i)) 
+		{
+			continue;
+		}		
+		
 		var currentcolortype = colortypes[i];
 		var identification = currentcolortype;
 		
@@ -11319,7 +11396,7 @@ function nxs_js_colorshake()
 	{
 		nxs_js_updatecss_themecss_actualrequest();
 		nxs_js_updatecss_manualcss_actualrequest();
-		$("#nxs-load-cover").hide();
+		jQuery("#nxs-load-cover").hide();
 	}
 }
 

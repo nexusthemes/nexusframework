@@ -1610,9 +1610,23 @@ function nxs_storemedia_fromtheme($args)
 	// url is bijv.
 	// http://89.18.175.44/beautician/wp-content/uploads/sales/beautician/2013/10/logo.png
 	
-	// we splitten eerst de "sales/"
-	$urlpiecesfirst = explode("sales/", $url);
-	$url2 = $urlpiecesfirst[1];
+	if (nxs_stringcontains($url, "sales/"))
+	{
+		// we splitten eerst de "sales/"
+		$urlpiecesfirst = explode("sales/", $url);
+		$url2 = $urlpiecesfirst[1];
+	}
+	else if (nxs_stringcontains($url, "sites/"))
+	{
+		// for example http://89.18.175.44/pestcontrol/wp-content/uploads/sites/110/2014/04/logo.png
+		// we splitten eerst de "sales/"
+		$urlpiecesfirst = explode("sites/", $url);
+		$url2 = $urlpiecesfirst[1];
+	}
+	else
+	{
+		// ?
+	}
 	
 	// url2 is bijv.
 	// beautician/2013/10/logo.png	
@@ -5706,10 +5720,11 @@ function nxs_webmethod_return_ok($args)
 	// if we won't this could cause output to not be json compatible
 	$outputbeforenack = ob_get_clean();
 	
+	
 	nxs_set_jsonheader();
 	
 	header('HTTP/1.0 200 OK');	
-	
+
 	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
 	{
 		// very practical; the stacktrace and request are returned too,

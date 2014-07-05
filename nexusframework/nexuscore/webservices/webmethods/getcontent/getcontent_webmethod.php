@@ -74,10 +74,8 @@ function nxs_webmethod_getcontent()
 		{
 			nxs_webmethod_return_nack("file not found " . $filetobeincluded);
 		}
-		
-		$output=json_encode($result);
-		echo $output;
-		die();	
+
+		nxs_webmethod_return_ok($result);		
 	}
 	else if ($entity == "rows")
 	{

@@ -282,21 +282,41 @@
 	// NextGenGallery plugin. The NGG gallery plugin would not be compatible with our
 	// framework if we would invoke the ajax calls through the regular URL. 
 	// A certain "FLAG" is set by WP, on which the plugin behaves differently, resulting
-	// (in the case of NGG) in an error when renderig HTML through AJAX calls.
+	// (in the case of NGG) in an error when rendering HTML through AJAX calls.
 	// This workaround solves this problem.
 	*/
 	?>
-	function nxs_js_get_adminurladminajax() { return "<?php 
-		$result = get_bloginfo('url');
-		if (nxs_stringendswith($result, '/'))
-		{
-			// ok
-		}
-		else
+	function nxs_js_get_adminurladminajax() { return "<?php 	
+		$result = get_bloginfo("url");
+		if (!nxs_stringendswith($result, '/'))
 		{
 			// fix bug detected on Gerbers server
 			$result = $result . "/";
 		}
+		
+		// depending on the permalink structure,
+		// we will add a postfix. this helps to 
+		// serve webmethods on sites that
+		// have a plugin or their homepage be
+		// reversed proxies to some other 
+		// site ("maintenance mode")
+		$permalink = get_option('permalink_structure');
+		if ($permalink == "")
+		{
+			// if no rewriting occurs (?p=1234) we will
+			// add a queryparameter to the URL instead
+			// of a folder/path combination (very likely
+			// that would not be mapped correctly 
+			// to WP, likely causing each webmethod to fail)
+			$result .= "?nxs-webmethod-queryparameter=true";
+		}
+		else
+		{
+			// the permalink structure is set, quite likely
+			// its safe to use a folder and file mapping
+			$result .= "nxs-webmethod/nxs-webmethod.php/";
+		}
+		
 		echo $result;
 		?>";
 	}
