@@ -5619,7 +5619,13 @@ function nxs_webmethod_return_nack($message)
 {
 	// cleanup output that was possibly produced before,
 	// if we won't this could cause output to not be json compatible
-	$outputbeforenack = ob_get_clean();
+	$existingoutput = array();
+	
+	$numlevels = ob_get_level();
+	for ($i = 0; $i < $numlevels; $i++)
+	{
+		$existingoutput[] = ob_get_clean();
+	}
 	
 	// mark as 500 (error)
 	header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
@@ -5634,7 +5640,7 @@ function nxs_webmethod_return_nack($message)
 	{
 		// very practical; the stacktrace and request are returned too,
 		// see the js console window to ease the debugging
-		$output["outputbeforenack"] = $outputbeforenack;
+		$output["outputbeforenack"] = $existingoutput;
 		$output["request"] = $_REQUEST;
 		$output["stacktrace"] = nxs_getstacktrace();
 	}
@@ -5716,20 +5722,23 @@ function nxs_set_jsonheader()
 
 function nxs_webmethod_return_ok($args)
 {
-	// cleanup output that was possibly produced before,
-	// if we won't this could cause output to not be json compatible
-	$outputbeforenack = ob_get_clean();
+	$existingoutput = array();
 	
+	$numlevels = ob_get_level();
+	for ($i = 0; $i < $numlevels; $i++)
+	{
+		$existingoutput[] = ob_get_clean();
+	}
 	
 	nxs_set_jsonheader();
 	
-	header('HTTP/1.0 200 OK');	
+	header('HTTP/1.0 200 OK');
 
 	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
 	{
 		// very practical; the stacktrace and request are returned too,
 		// see the js console window to ease the debugging
-		$args["outputbeforeok"] = $outputbeforenack;
+		$args["outputbeforeok"] = $existingoutput;
 		$args["request"] = $_REQUEST;
 		$args["stacktrace"] = nxs_getstacktrace();
 	}
@@ -6337,13 +6346,10 @@ function nxs_genericpopup_getpopuphtml($args)
 {
 	if (nxs_genericpopup_supportsoptions($args))
 	{
-		
-		
 		$result = nxs_genericpopup_getpopuphtml_basedonoptions($args);
 	}
 	else
 	{
-		
 		// this popupcontext does not support "options",
 		// delegate the implementation to the custom implementation
 		$result = nxs_genericpopup_getpopuphtml_basedoncustomimplementation($args);
