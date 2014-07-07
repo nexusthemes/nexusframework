@@ -213,8 +213,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"bell",
 										"lock2",
 										
-										//"security-camera",
-										//"safe",
+										"security-camera",
+										"safe",
 										//"fan",
 										//"sofa",
 										//"paw",
