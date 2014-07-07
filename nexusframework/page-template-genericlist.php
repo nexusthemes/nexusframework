@@ -63,10 +63,20 @@
 					{
 						$showbulkbutton = true;
 					}
+					else if ($nxssubposttype == "banner")
+					{
+						$showbulkbutton = true;
+					}
 					if ($showbulkbutton)
 					{
 						?>
 						<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'dialogappendbulkgenericlistitems'); return false;"><?php nxs_l18n_e("Add bulk", "nxs_td"); ?></a>
+						<?php
+					}
+					else
+					{
+						?>
+						<!-- no bulk; <?php echo $nxssubposttype; ?> -->
 						<?php
 					}
 					

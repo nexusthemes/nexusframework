@@ -995,6 +995,20 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
 	
+	$nxssubposttype = nxs_get_nxssubposttype($postid);
+	if ($nxssubposttype == "gallery")
+	{
+		$bulkappendtype = "galleryitem";
+	}
+	else if ($nxssubposttype == "banner")
+	{
+		$bulkappendtype = "banneritem";
+	}
+	else
+	{
+		nxs_webmethod_return_nack("Unsupported nxssubposttype;" . $nxssubposttype);
+	}
+	
 	ob_start();
 	?>
 	<div class="nxs-admin-wrap">
@@ -1053,7 +1067,7 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 		            webmethod: "savemultifileupload",
 		            uploadtitel: jQuery("#nxs_titel").val(),
  		            postprocessor: "append",
- 		            appendtype: "galleryitem",
+ 		            appendtype: "<?php echo $bulkappendtype; ?>",
 		            postid: <?php echo $postid; ?>,
 		            unusedclosingelement: true
 		        },
