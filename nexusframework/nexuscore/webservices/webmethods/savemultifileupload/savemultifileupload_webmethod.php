@@ -116,7 +116,7 @@ function nxs_webmethod_savemultifileupload()
 	// post processor; what should we do with the uploaded images?
 	if ($postprocessor == "append")
 	{
-		if ($appendtype == "galleryitem")
+		if ($appendtype == "galleryitem" || $appendtype == "banneritem")
 		{
 			// create a new row for each uploaded image
 			foreach ($uploadedimages as $currentimage)
