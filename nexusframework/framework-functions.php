@@ -583,6 +583,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"summercamp;" => array
+		(
+			"href"=>"/wordpress-themes/resort/summer-camp-wordpress-theme/",
+			"title"=>"Summer camp WordPress theme",
+		),
 		"lawncare;" => array
 		(
 			"href"=>"/wordpress-themes/landscaping/lawn-care-wordpress-theme/",
