@@ -1735,6 +1735,10 @@ function nxs_urldecodearrayvalues_internal($array, $depth)
 				else
 				{
 					$result[$key] = utf8_urldecode($val);
+					
+					// nxs_js_getescapeddictionary() also escapes single quotes,
+					// here we de-escape \' back into ' 
+					$result[$key] = str_replace("\'","'", $result[$key]);
 				}
 			}
 			else
@@ -2721,11 +2725,12 @@ function nxs_render_html_escape_gtlt($input)
 {
 	//$result = htmlentities($input);
 	$result = $input;
+
 	$result = str_replace("'","&#039;", $result);
 	$result = str_replace("\"","&quot;", $result);
 	$result = str_replace("<","&lt;", $result);
 	$result = str_replace(">","&gt;", $result);
-		
+
 	return $result;
 }
 

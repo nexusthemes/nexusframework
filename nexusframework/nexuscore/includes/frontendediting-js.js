@@ -2899,7 +2899,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 			var containerpostid = nxs_js_getcontainerpostid();
 			var args = 
 			{
-				containerpostid:postid,
+				containerpostid:containerpostid,
 				postid:postid,
 				placeholderid:placeholderid,
 				rowindex:rowindex,
