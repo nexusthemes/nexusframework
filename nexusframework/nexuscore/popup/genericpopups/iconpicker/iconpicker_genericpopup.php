@@ -202,7 +202,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"point-left",
 										//"hardhat",
 										//"yoga",
-										//"tooth",
+										"tooth",
 										//"horseshoe",
 										"dollar",
 										//"bread",
@@ -533,7 +533,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"pigeon", 
 										"rabbit", 
 										"squirrel",
-										"rat",  
+										"rat",
+										"dog",
+										"cat",  
 									);
 										
 									foreach($icontypes as $currenticontype)
