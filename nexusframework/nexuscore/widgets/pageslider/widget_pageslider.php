@@ -107,6 +107,12 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "show_thumb_tray",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Show thumb tray", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "ken_burns",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Ken Burns effect", "nxs_td"),
@@ -652,22 +658,23 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 	$caption_width = 'nxs-width'.$caption_width;
 	
 	// CONTAINER HEIGHT
-	if ($caption_container_height != "")
-	{
-		if ($caption_container_height == "screenheight") 
-		{
+	if ($caption_container_height != "") {
+		if ($caption_container_height == "screenheight") {
 			// height will be determined in the runtime (javascript) 
 			$supersized_style = "";
-		}
-		else if ($caption_container_height == "@@@nxsempty@@@") 
-		{
+		} else if ($caption_container_height == "@@@nxsempty@@@") {
 			// no height
 			$supersized_style = "";
-		}
-		else
-		{
+		} else {
 			$supersized_style = 'height: '.$caption_container_height.';'; 	
 		}
+	}
+	
+	// Show thumb tray
+	if ($show_thumb_tray != ""){
+		$show_thumb_tray = "style='bottom: 0px !important;'";
+	} else {
+		$show_thumb_tray = "";	
 	}
 	
 	// Text padding and margin
@@ -785,7 +792,7 @@ function nxs_widgets_pageslider_betweenheadandcontent()
         </div>
         
         <!-- THUMB TRAY -->
-            <div id="thumb-tray" class="load-item">
+            <div id="thumb-tray" class="load-item" <?php echo $show_thumb_tray ?>>
                 <div id="thumb-back" class="general-nav">
                 	<span class="general-ui-styling nxs-icon-arrow-left">
                 </div>
