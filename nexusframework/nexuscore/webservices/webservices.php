@@ -42,6 +42,8 @@ function nxs_ajax_webmethods()
 	
 	// before we handle the request, we decode the values that are encoded with 
 	// the nxs_js_getescapeddictionary js function (here: *426759487653456)
+	
+	// otherwise the values like aa'aa would be returned as aa\'aa
 	$_REQUEST = nxs_urldecodearrayvalues($_REQUEST);
 
 	// check permissions

@@ -5632,8 +5632,8 @@ function nxs_webmethod_return_nack($message)
 		$existingoutput[] = ob_get_clean();
 	}
 	
-	// mark as 500 (error)
-	header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+	header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error");
+	header("Status: 500 Internal Server Error"); // for fast cgi
 	
 	$output = array
 	(
@@ -5737,7 +5737,10 @@ function nxs_webmethod_return_ok($args)
 	
 	nxs_set_jsonheader();
 	
-	header('HTTP/1.0 200 OK');
+	header($_SERVER['SERVER_PROTOCOL'] . " 200 OK");
+	header("Status: 200 OK"); // for fast cgi
+	
+	//header('HTTP/1.0 200 OK');
 
 	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
 	{
