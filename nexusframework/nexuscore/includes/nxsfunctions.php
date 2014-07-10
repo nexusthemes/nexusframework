@@ -5727,6 +5727,12 @@ function nxs_set_jsonheader()
 
 function nxs_webmethod_return_ok($args)
 {
+	if (headers_sent($filename, $linenum)) 
+	{
+		echo "nxs headers already send; $filename $linenum";
+		exit();
+	}
+	
 	$existingoutput = array();
 	
 	$numlevels = ob_get_level();
@@ -5739,8 +5745,6 @@ function nxs_webmethod_return_ok($args)
 	
 	header($_SERVER['SERVER_PROTOCOL'] . " 200 OK");
 	header("Status: 200 OK"); // for fast cgi
-	
-	//header('HTTP/1.0 200 OK');
 
 	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
 	{
@@ -5759,7 +5763,8 @@ function nxs_webmethod_return_ok($args)
 	
 	$output=json_encode($args);
 	echo $output;
-	die();
+	
+	exit();
 }
 
 function webmethod_return_alternativeflow($altflowid, $args)

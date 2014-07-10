@@ -181,7 +181,9 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 									fix_list_elements: true,
 									entities : "38,amp,60,lt,62,gt",
 									keep_styles: false,
+									forced_root_block: "p",
 									selector:'#<?php echo $internaltextareaid; ?>',
+									fontsize_formats: "12px 15px 18px 21px 24px 27px 30px 33px 36px 39px 42px 45px 60px 75px 90px",
 									menubar: false,
 									theme: "modern",
 							    plugins:  [
@@ -189,7 +191,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 						        "searchreplace visualblocks code fullscreen",
 						        "insertdatetime media table contextmenu paste link"
 							    ],
-						      toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code",
+						      toolbar: "undo redo | styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code",
 							    setup: nxs_tinymce_registereventhandlers,							    
 								}
 							);

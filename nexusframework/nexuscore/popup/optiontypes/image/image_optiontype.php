@@ -141,4 +141,4 @@ function nxs_popup_optiontype_image_getpersistbehaviour()
 	return "writeid";
 }
 
-?>		
+?>

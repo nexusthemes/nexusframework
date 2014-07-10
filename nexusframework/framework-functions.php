@@ -583,6 +583,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"recordingstudio;" => array
+		(
+			"href"=>"/wordpress-themes/music/recording-studio-wordpress-theme/",
+			"title"=>"Recording studio WordPress theme",
+		),
 		"summercamp;" => array
 		(
 			"href"=>"/wordpress-themes/resort/summer-camp-wordpress-theme/",
