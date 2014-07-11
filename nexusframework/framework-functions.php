@@ -583,6 +583,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"photoartist;" => array
+		(
+			"href"=>"/wordpress-themes/photographer/photoartist-wordpress-theme/",
+			"title"=>"Photo Artist WordPress theme",
+		),
 		"recordingstudio;" => array
 		(
 			"href"=>"/wordpress-themes/music/recording-studio-wordpress-theme/",
