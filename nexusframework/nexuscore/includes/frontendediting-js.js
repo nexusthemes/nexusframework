@@ -9330,6 +9330,23 @@ function nxs_js_get_themecsstemplate_part1_anchorlinkcolors(cssprefix, pseudo, c
 					text-shadow: none;\
 				}	\
 				";
+			
+			
+			if (currentcolortype == 'base')
+			{
+				// special case; if the currentcolortype == "base" we should also output the 1- version (for white colors)
+				var selector = "nxs-linkcolorvar-" + currentcolortype + "1-" + currentvariation;
+	   		var colorvar = csslookup["color_" + identification + "1_" + currentvariation];
+	   		
+	   		u = u + "\
+				" + cssprefix + "." + selector + " .nxs-applylinkvarcolor a" + pseudo + "\
+				{ \
+					color: " + colorvar + ";\
+					text-shadow: none;\
+				}	\
+				";
+				
+			}
 		}
 	}
 

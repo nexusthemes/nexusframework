@@ -38,7 +38,7 @@ function nxs_popup_genericpopup_colorvariationpicker_getpopup($args)
 	ob_start();
 	
 	$padding = "";
-	
+	$colortypes = nxs_getcolorsinpalette();
 	?>
 	
 	<div class="nxs-admin-wrap">
@@ -53,36 +53,110 @@ function nxs_popup_genericpopup_colorvariationpicker_getpopup($args)
 								<h4>Available colors</h4>
 							</div>
 							<div class="box-content">
-								<ul>
-									<?php
-									$variations = array("dd", "d", "m", "l", "ll");
-									foreach($variations as $currentvariation)
-									{
-										?>
-										<li class="nxs-clear"></li>
+								<table>
+									<!-- table header row -->
+									<tr>
+										<td>&nbsp;</td>
+										<td>White</td>
+										<td>Black</td>
 										<?php
-										
-										$currentsubtype = "2";
-										$colortypes = nxs_getcolorsinpalette();
+										$colorindex = 1;
 										foreach($colortypes as $currentcolortype)
 										{
-											/*
 											if ($currentcolortype == "base")
 											{
 												// skip!
 												continue;
 											}
-											*/
+											?>
+											<td><p></p>Color <?php echo $colorindex; ?></p></td>
+											<?php	
+											$colorindex++;
+										}
+										?>
+									</tr>
+									<?php
+									$variations = array("dd", "d", "m", "l", "ll");
+									foreach($variations as $currentvariation)
+									{
+										?>
+										<tr>
+											<td>
+												<?php
+													$translations = array("dd" => "Darker", "d" => "Dark", "m" => "Normal", "l" => "Light", "ll" => "Lighter");
+													if (array_key_exists($currentvariation, $translations))
+													{
+														echo $translations[$currentvariation];
+													}
+													else
+													{
+														echo $currentvariation;
+													}
+												?>
+											</td>
+										<?php
+										
+										$currentsubtype = "2";
+										
+										foreach($colortypes as $currentcolortype)
+										{
+											if ($currentcolortype == "base")
+											{
+												/*
+												special case; the base color has both a 1 (white) and 2 variant (black)
+												*/
+
+												$identification = $currentcolortype . "1" . "-" . $currentvariation;
+												$activeclass = nxs_popup_genericpopup_colorvariationpicker_getactiveclass($nxs_colorvariationpicker_currentvalue, $identification);
+												
+												?>
+												<td onclick='nxs_js_selectcolorvariationitem("<?php echo $identification;?>"); return false;'>
+													<?php
+													if ($nxs_colorvariationpicker_scope == "link")
+													{
+														?>
+														<div class="nxs-linkcolorvar-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>" style='background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjA76PVpAAAAGElEQVQYV2P4//9/S0NDQwsDiPj//38LAGTRCwvADjD8AAAAAElFTkSuQmCC");'>
+															<p class="nxs-applylinkvarcolor"><a href='#'><?php echo $nxs_colorvariationpicker_sampletext; ?></a></p>
+														</div>
+														<?php
+													}
+													else if ($nxs_colorvariationpicker_scope == "background")
+													{
+														?>
+														<div class="nxs-linkcolorvar-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>" style='background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjA76PVpAAAAGElEQVQYV2P4//9/S0NDQwsDiPj//38LAGTRCwvADjD8AAAAAElFTkSuQmCC");'>
+															<p class="nxs-applylinkvarcolor">
+																<a href='#'>
+																	<span style='font-size: 50px;'>&#9608;</span> 
+																</a>
+															</p>
+														</div>
+														<?php
+													}
+													else
+													{
+														?>
+														<div><p>unsupported</p></div>
+														<?php
+													}
+													?>
+												</td>
+												<?php
+
+												
+												/*
+												*/
+											}
+
 											$identification = $currentcolortype . $currentsubtype . "-" . $currentvariation;
 											$activeclass = nxs_popup_genericpopup_colorvariationpicker_getactiveclass($nxs_colorvariationpicker_currentvalue, $identification);
 											
 											?>
-											<li onclick='nxs_js_selectcolorvariationitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
+											<td onclick='nxs_js_selectcolorvariationitem("<?php echo $identification;?>"); return false;'>
 												<?php
 												if ($nxs_colorvariationpicker_scope == "link")
 												{
 													?>
-													<div class="nxs-linkcolorvar-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
+													<div class="nxs-linkcolorvar-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>" style='background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjA76PVpAAAAGElEQVQYV2P4//9/S0NDQwsDiPj//38LAGTRCwvADjD8AAAAAElFTkSuQmCC");'>
 														<p class="nxs-applylinkvarcolor"><a href='#'><?php echo $nxs_colorvariationpicker_sampletext; ?></a></p>
 													</div>
 													<?php
@@ -90,7 +164,7 @@ function nxs_popup_genericpopup_colorvariationpicker_getpopup($args)
 												else if ($nxs_colorvariationpicker_scope == "background")
 												{
 													?>
-													<div class="nxs-linkcolorvar-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
+													<div class="nxs-linkcolorvar-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>" style='background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjA76PVpAAAAGElEQVQYV2P4//9/S0NDQwsDiPj//38LAGTRCwvADjD8AAAAAElFTkSuQmCC");'>
 														<p class="nxs-applylinkvarcolor">
 															<a href='#'>
 																<span style='font-size: 50px;'>&#9608;</span> 
@@ -106,12 +180,17 @@ function nxs_popup_genericpopup_colorvariationpicker_getpopup($args)
 													<?php
 												}
 												?>
-											</li>
+											</td>
+											
 											<?php
 										}
+										?>
+										<td style='width: 100%;'><!-- table spacer remaining width --></td>
+										</tr>
+										<?php
 									}
 									?>
-								</ul>
+								</table>
 							</div>
 						</div>
 						<div class="nxs-clear"></div>

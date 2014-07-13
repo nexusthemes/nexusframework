@@ -21,10 +21,10 @@ function nxs_popup_optiontype_colorvariation_renderhtmlinpopup($optionvalues, $a
 	    <div class="box">';
 	    echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip);
 	    							
-						?>
+					?>
           <div class="box-content">
           	<ul>
-	          	<li onclick='nxs_js_startcolorvariationpicker_<?php echo $id;?>(); return false;' class='nxs-float-left'>
+	          	<li onclick='nxs_js_startcolorvariationpicker_<?php echo $id;?>(); return false;' style='cursor: pointer;' class='nxs-float-left'>
 	          		<?php 
 	          		$cssclass = "";
 	          		if ($scope == "link")
@@ -35,9 +35,16 @@ function nxs_popup_optiontype_colorvariation_renderhtmlinpopup($optionvalues, $a
 		          			<div class="nxs-linkcolorvar-<?php echo $value; ?> border-radius-small color-sample">
 											<p class="nxs-applylinkvarcolor"><a href='#'><?php echo nxs_l18n__("Sample", "nxs_td"); ?></a></p>
 										</div>
-									<?php } else { ?>
-									
-									<?php } ?>
+									<?php 
+									} 
+									else 
+									{ 
+										// if no color is selected
+										?>
+										<p><?php echo "Not selected"; ?></p>
+										<?php 
+									} 
+									?>
 	          			<?php
 	          		}
 	          		else if ($scope == "background")
@@ -52,9 +59,16 @@ function nxs_popup_optiontype_colorvariation_renderhtmlinpopup($optionvalues, $a
 												</a>
 											</p>
 										</div>
-									<?php } else { ?>
-									
-									<?php } ?>
+									<?php 
+									} 
+									else 
+									{ 
+										// if no color is selected
+										?>
+										<p><?php echo "Not selected"; ?></p>
+										<?php 
+									} 
+									?>
 	          			<?php
 	          		}
 	          		else
