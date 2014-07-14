@@ -657,6 +657,7 @@ ul.nxs-menu.nxs-float-right li a							{ margin-left: 20px; }
 ul.nxs-menu.nxs-float-left li a:last-child 					{ margin-right: 0px; }
 
 /* menu item height */
+ul.nxs-menu li.height20 a									{ line-height: 100px; }
 ul.nxs-menu li.height15 a									{ line-height: 75px; }
 ul.nxs-menu li.height14 a									{ line-height: 70px; }
 ul.nxs-menu li.height13 a									{ line-height: 65px; }
@@ -665,6 +666,7 @@ ul.nxs-menu li.height11 a									{ line-height: 55px; }
 ul.nxs-menu li.height10 a									{ line-height: 50px; }
 ul.nxs-menu li.height09 a									{ line-height: 45px; }
 ul.nxs-menu li.height08 a									{ line-height: 40px; }
+ul.nxs-menu li.height20 ul.nxs-sub-menu						{ top: 100px; }
 ul.nxs-menu li.height15 ul.nxs-sub-menu						{ top: 75px; }
 ul.nxs-menu li.height14 ul.nxs-sub-menu						{ top: 70px; }
 ul.nxs-menu li.height13 ul.nxs-sub-menu						{ top: 65px; }
@@ -673,6 +675,7 @@ ul.nxs-menu li.height11 ul.nxs-sub-menu						{ top: 55px; }
 ul.nxs-menu li.height10 ul.nxs-sub-menu						{ top: 50px; }
 ul.nxs-menu li.height09 ul.nxs-sub-menu						{ top: 45px; }
 ul.nxs-menu li.height08 ul.nxs-sub-menu						{ top: 40px; }
+ul.nxs-menu li:hover ul li.height20							{ height: 100px; }
 ul.nxs-menu li:hover ul li.height15							{ height: 75px; }
 ul.nxs-menu li:hover ul li.height14							{ height: 70px; }
 ul.nxs-menu li:hover ul li.height13							{ height: 65px; }
