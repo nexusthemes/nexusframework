@@ -180,6 +180,8 @@ function nxs_widgets_menucontainer_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Menu item height", "nxs_td"),
 				"dropdown" 			=> array(
+					"1.5x"	=>"1.5x",
+					"1.4x"	=>"1.4x",
 					"1.3x"	=>"1.3x",
 					"1.2x"	=>"1.2x",
 					"1.1x"	=>"1.1x",
@@ -383,6 +385,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 	
 	// Menu item height
 	if 		($parent_height == '1x' || $parent_height == '')	{ $parent_height = "10"; } 
+	else if ($parent_height == '1.5x') 							{ $parent_height = "15"; }
+	else if ($parent_height == '1.4x') 							{ $parent_height = "14"; }
 	else if ($parent_height == '1.3x') 							{ $parent_height = "13"; }
 	else if ($parent_height == '1.2x') 							{ $parent_height = "12"; }
 	else if ($parent_height == '1.1x') 							{ $parent_height = "11"; }
