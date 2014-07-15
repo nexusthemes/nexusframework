@@ -282,8 +282,6 @@ function nxs_widgets_definitionlistbox_initplaceholderdata($args)
 	global $current_user;
 	get_currentuserinfo();
 	
-	$args["title"] = nxs_l18n__("Sample", "nxs_td");
-	
 	$result = nxs_widgets_initplaceholderdatageneric($args, $widgetname);
 	return $result;
 }
