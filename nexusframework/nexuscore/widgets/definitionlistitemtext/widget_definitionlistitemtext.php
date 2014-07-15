@@ -144,10 +144,6 @@ function nxs_widgets_definitionlistitemtext_home_getoptions($args)
 function nxs_widgets_definitionlistitemtext_initplaceholderdata($args)
 {
 	extract($args);
-
-	$args["title"] = nxs_l18n__("Title", "nxs_td");
-	$args["text"] = nxs_l18n__("Text", "nxs_td");
-	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
 	$result = array();
