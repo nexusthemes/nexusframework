@@ -2547,12 +2547,13 @@ function nxs_get_text_blocks_on_page_v2($postid, $emptyplaceholder)
 
 			// per placeholderid get all meta data
 			$text = $placeholdermetadata["text"];
+			// the <br /> tag should be replaced with a space rather than being removed
+			// the <br> tag should also be replaced with a space rather than being removed
+			$text = str_ireplace("<br />", " ", $text);
+			$text = str_ireplace("<br>", " ", $text);
+			
 			$stripped = strip_tags($text);
-			$item = $stripped; // nxs_toutf8string($stripped);
-			// WARNING; nxs_toutf8string returns an empty string on the sites.nexusthemes.com site
-			
-			//$item = strip_tags($placeholdermetadata["text"]);
-			
+			$item = $stripped;
 			if ($item != "")
 			{
 				if (!in_array($item, $result))
