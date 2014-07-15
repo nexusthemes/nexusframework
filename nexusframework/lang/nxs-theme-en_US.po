@@ -3,18 +3,19 @@ msgstr ""
 "Project-Id-Version: Nexus Theme\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-22 17:44+0100\n"
-"PO-Revision-Date: 2014-04-10 13:10+0100\n"
-"Last-Translator: Gert-Jan Bark <barkgj@nexusthemes.com>\n"
+"PO-Revision-Date: 2014-07-15 13:07+0100\n"
+"Last-Translator: Gert-Jan Bark <info@nexusthemes.com>\n"
 "Language-Team: Nexus Themes <info@nexusthemes.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: nxs_l18n__;nxs_l18n_e\n"
 "X-Poedit-Basepath: H:\\Proj\\Wordpress\\DEV\\!NexusThemes\\nexusframework\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED STATES\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-SearchPath-0: H:\\Proj\\Wordpress\\DEV\\!NexusThemes\\nexusframework\n"
+"Language: en_US\n"
+"X-Generator: Poedit 1.6.6\n"
+"X-Poedit-SearchPath-0: H:\\Proj\\Wordpress\\DEV\\!NexusThemes"
+"\\nexusframework\n"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/framework-functions.php:422
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/framework-functions.php:423
@@ -23,7 +24,9 @@ msgstr "Content"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/framework-functions.php:430
 msgid "Edit content explanation[nxs:button]"
-msgstr "Themes based on the Nexus Framework feature drag'n'drop front-end content editing. Click on the editor button to edit the contents"
+msgstr ""
+"Themes based on the Nexus Framework feature drag'n'drop front-end content "
+"editing. Click on the editor button to edit the contents"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/framework-functions.php:437
 msgid "Edit content[nxs:button]"
@@ -655,7 +658,10 @@ msgid "Continu anyways"
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/backend/activated.php:410
-msgid "Bad news; an error occured while activating the theme. The good news is that we can try to help you out, if you <a target='_blank' href='http://www.nexusthemes.com'>contact us</a>."
+msgid ""
+"Bad news; an error occured while activating the theme. The good news is that "
+"we can try to help you out, if you <a target='_blank' href='http://www."
+"nexusthemes.com'>contact us</a>."
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/backend/overview.php:54
@@ -749,8 +755,11 @@ msgid "Are you sure you want to delete this page?[nxs:confirm]"
 msgstr "Are you sure you want to delete this page?"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/frontendediting.php:279
-msgid "Are you sure you want to delete this menu item (and its children)?[nxs:confirm]"
-msgstr "Are you sure you want to delete this menu item (plus child items if present)?"
+msgid ""
+"Are you sure you want to delete this menu item (and its children)?[nxs:"
+"confirm]"
+msgstr ""
+"Are you sure you want to delete this menu item (plus child items if present)?"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/frontendediting.php:280
 msgid "Editor is now disabled[nxs:growl]"
@@ -774,11 +783,15 @@ msgstr "Loading page"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/frontendediting.php:285
 msgid "Tip to move widget[nxs:growl]"
-msgstr "Want to move this widget? Drag the quot;move&quot;icon of this widget to the appropriate place (the possible drop points will be highlighted)."
+msgstr ""
+"Want to move this widget? Drag the quot;move&quot;icon of this widget to the "
+"appropriate place (the possible drop points will be highlighted)."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/frontendediting.php:286
 msgid "Ignore unsaved popup data?[nxs:confirm]"
-msgstr "There is unsaved data that will be lost if you continue. Are you sure you want to close the popup?"
+msgstr ""
+"There is unsaved data that will be lost if you continue. Are you sure you "
+"want to close the popup?"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/frontendediting.php:287
 msgid "Ignore unsaved changes?[nxs:confirm]"
@@ -1127,7 +1140,10 @@ msgid "Headings[nxs:adminmenu,subtab,heading]"
 msgstr "Headings"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsmenu.php:384
-msgid "Want to attract more traffic to your website? Click <a target='_blank' href='http://nexusthemes.com/search-engine-optimization-for-your-website/?from=clientsite'>here</a>"
+msgid ""
+"Want to attract more traffic to your website? Click <a target='_blank' "
+"href='http://nexusthemes.com/search-engine-optimization-for-your-website/?"
+"from=clientsite'>here</a>"
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/includes/nxsmenu.php:411
@@ -1363,7 +1379,12 @@ msgstr "Click here to start editing your content."
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/archive/pagetemplate_archive.php:843
 #, fuzzy
 msgid "Description of archive preview[nxs:preview]"
-msgstr "The page with template 'Searchresult' is the only page that can contain the searchresults widget. Although in theory its possible to have multiple pages on your site of this type, only one can be marked as 'the' search results page. End users should not use this template, unless they know what they are doing."
+msgstr ""
+"The page with template 'Searchresult' is the only page that can contain the "
+"searchresults widget. Although in theory its possible to have multiple pages "
+"on your site of this type, only one can be marked as 'the' search results "
+"page. End users should not use this template, unless they know what they are "
+"doing."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/archive/pagetemplate_archive.php:877
 msgid "Todo"
@@ -1416,7 +1437,14 @@ msgstr "Blogentry"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php:856
 msgid "Description of blogentry preview[nxs:preview]"
-msgstr "A blogpost is a non-static page on your website that generally speaking is related to a certain category of 'things'. For example, if you site has news items, each news item will be a blogpost in the category 'news'. If your website is about recipies, each recipie will likely be a blogpost in category 'recipies'. Blogpost differ from webpages in that webpages have a more static perspective. Thus, any 'set' of items on your page that belong to a group, are blogposts."
+msgstr ""
+"A blogpost is a non-static page on your website that generally speaking is "
+"related to a certain category of 'things'. For example, if you site has news "
+"items, each news item will be a blogpost in the category 'news'. If your "
+"website is about recipies, each recipie will likely be a blogpost in "
+"category 'recipies'. Blogpost differ from webpages in that webpages have a "
+"more static perspective. Thus, any 'set' of items on your page that belong "
+"to a group, are blogposts."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php:911
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php:923
@@ -1610,7 +1638,12 @@ msgstr "Searchresults"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/searchresults/pagetemplate_searchresults.php:25
 msgid "Description of searchresults preview[nxs:preview]"
-msgstr "The page with template 'Searchresult' is the only page that can contain the searchresults widget. Although in theory its possible to have multiple pages on your site of this type, only one can be marked as 'the' search results page. End users should not use this template, unless they know what they are doing."
+msgstr ""
+"The page with template 'Searchresult' is the only page that can contain the "
+"searchresults widget. Although in theory its possible to have multiple pages "
+"on your site of this type, only one can be marked as 'the' search results "
+"page. End users should not use this template, unless they know what they are "
+"doing."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/searchresults/pagetemplate_searchresults.php:79
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/searchresults/pagetemplate_searchresults.php:91
@@ -1679,7 +1712,9 @@ msgstr "Webpage"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/webpage/pagetemplate_webpage.php:25
 msgid "Description of webpage preview[nxs:preview]"
-msgstr "A webpage is a one of a kind page on your site; for example your website only has one homepage, and one contact page, and one 'about us' page."
+msgstr ""
+"A webpage is a one of a kind page on your site; for example your website "
+"only has one homepage, and one contact page, and one 'about us' page."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/webpage/pagetemplate_webpage.php:83
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/pagetemplates/webpage/pagetemplate_webpage.php:95
@@ -2018,8 +2053,12 @@ msgstr "Persist"
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/genericpopups/unlock/unlock_genericpopup.php:117
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/genericpopups/unlock/unlock_genericpopup.php:162
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/genericpopups/unlock/unlock_genericpopup.php:194
-msgid "All components that are connected to this unistyle will be updated if you proceed. Is this what you want?"
-msgstr "All components that are connected to this unistyle will be updated if you proceed. Is this what you want?"
+msgid ""
+"All components that are connected to this unistyle will be updated if you "
+"proceed. Is this what you want?"
+msgstr ""
+"All components that are connected to this unistyle will be updated if you "
+"proceed. Is this what you want?"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/genericpopups/unistylepersister/unistylepersister_genericpopup.php:137
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/genericpopups/unlock/unlock_genericpopup.php:137
@@ -2099,20 +2138,52 @@ msgid "Unistyle"
 msgstr "Unistyle"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/optiontypes/unistyle/unistyle_optiontype.php:14
-msgid "The unistyle feature is currently active. This means the styling properties can be re-used on other items on your site, saving you time to keep the style in-sync. The set of properties (identified by a unistyle name) are stored in a centralized place. If you want to customize this style, press the de-activate button on the right. This will de-activate the unistyle feature. After de-activation you will be able to override an existing, or create a new unistyle."
-msgstr "The unistyle feature is currently active. This means the styling properties can be re-used on other items on your site, saving you time to keep the style in-sync. The set of properties (identified by a unistyle name) are stored in a centralized place. If you want to customize this style, press the de-activate button on the right. This will de-activate the unistyle feature. After de-activation you will be able to override an existing, or create a new unistyle."
+msgid ""
+"The unistyle feature is currently active. This means the styling properties "
+"can be re-used on other items on your site, saving you time to keep the "
+"style in-sync. The set of properties (identified by a unistyle name) are "
+"stored in a centralized place. If you want to customize this style, press "
+"the de-activate button on the right. This will de-activate the unistyle "
+"feature. After de-activation you will be able to override an existing, or "
+"create a new unistyle."
+msgstr ""
+"The unistyle feature is currently active. This means the styling properties "
+"can be re-used on other items on your site, saving you time to keep the "
+"style in-sync. The set of properties (identified by a unistyle name) are "
+"stored in a centralized place. If you want to customize this style, press "
+"the de-activate button on the right. This will de-activate the unistyle "
+"feature. After de-activation you will be able to override an existing, or "
+"create a new unistyle."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/optiontypes/unistyle/unistyle_optiontype.php:19
-msgid "The unistyle is currently inactive. This means you can tweak and tune individual style properties of this component without having to worry that other parts of your site are impacted. If you are finished configuring the style properties, you could decide to store the style properties in a an existing or new centralized location, called a unistyle. This would allow you to re-use the same style, helping you to speed up creating a beautiful designzen for your site."
-msgstr "The unistyle is currently inactive. This means you can tweak and tune individual style properties of this component without having to worry that other parts of your site are impacted. If you are finished configuring the style properties, you could decide to store the style properties in a an existing or new centralized location, called a unistyle. This would allow you to re-use the same style, helping you to speed up creating a beautiful designzen for your site."
+msgid ""
+"The unistyle is currently inactive. This means you can tweak and tune "
+"individual style properties of this component without having to worry that "
+"other parts of your site are impacted. If you are finished configuring the "
+"style properties, you could decide to store the style properties in a an "
+"existing or new centralized location, called a unistyle. This would allow "
+"you to re-use the same style, helping you to speed up creating a beautiful "
+"designzen for your site."
+msgstr ""
+"The unistyle is currently inactive. This means you can tweak and tune "
+"individual style properties of this component without having to worry that "
+"other parts of your site are impacted. If you are finished configuring the "
+"style properties, you could decide to store the style properties in a an "
+"existing or new centralized location, called a unistyle. This would allow "
+"you to re-use the same style, helping you to speed up creating a beautiful "
+"designzen for your site."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/optiontypes/unistyle/unistyle_optiontype.php:102
 msgid "De-activate"
 msgstr "De-activate"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/optiontypes/unistyle/unistyle_optiontype.php:106
-msgid "This will enable you to customize the style for this widget. Is this what you want?"
-msgstr "This will enable you to customize the style for this widget. Is this what you want?"
+msgid ""
+"This will enable you to customize the style for this widget. Is this what "
+"you want?"
+msgstr ""
+"This will enable you to customize the style for this widget. Is this what "
+"you want?"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/popup/optiontypes/wrapperbegin/wrapperbegin_optiontype.php:42
 msgid "Close section"
@@ -2219,7 +2290,11 @@ msgstr "Webpage"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt1/postwizard_pdt1.php:18
 msgid "Webpage preview[nxs:popup,ddl]"
-msgstr "The webpage wizard enables you to create generic pages for your website. Generally speaking webpages are pages that are one of a kind. Examples of webpages are the 'contact' page of your site, the 'About me' page and the 'Home' page."
+msgstr ""
+"The webpage wizard enables you to create generic pages for your website. "
+"Generally speaking webpages are pages that are one of a kind. Examples of "
+"webpages are the 'contact' page of your site, the 'About me' page and the "
+"'Home' page."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt1/postwizard_pdt1.php:56
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt1/postwizard_pdt1.php:70
@@ -2289,7 +2364,10 @@ msgstr "Blogpost"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt2/postwizard_pdt2.php:18
 msgid "Blogpost preview[nxs:popup,ddl]"
-msgstr "Blogposts are pages on your website that belong to a certain group of items. For example, each news item is a blogpost that is connected to the 'news' category."
+msgstr ""
+"Blogposts are pages on your website that belong to a certain group of items. "
+"For example, each news item is a blogpost that is connected to the 'news' "
+"category."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt2/postwizard_pdt2.php:56
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt2/postwizard_pdt2.php:70
@@ -2302,7 +2380,10 @@ msgstr "Title of the new post"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt3/postwizard_pdt3.php:18
 msgid "Preview searchresults[nxs:popup,ddl]"
-msgstr "The searchresults template can be used for one specific page on your site that will be responsible for listing the searchresults based on the user's search criteria."
+msgstr ""
+"The searchresults template can be used for one specific page on your site "
+"that will be responsible for listing the searchresults based on the user's "
+"search criteria."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt3/postwizard_pdt3.php:56
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/postwizards/pdt3/postwizard_pdt3.php:70
@@ -2508,7 +2589,9 @@ msgstr "https://plus.google.com/101834797161834314384/posts"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/site/site.php:1129
 msgid "Google+ help[nxs:tip]"
-msgstr "Enter your Google+ profile url, for example https://plus.google.com/101834797161834314384/posts"
+msgstr ""
+"Enter your Google+ profile url, for example https://plus.google."
+"com/101834797161834314384/posts"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/site/site.php:1231
 msgid "Google Analytics[nxs:popup]"
@@ -2561,8 +2644,12 @@ msgstr "First select a file"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/site/site.php:1737
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/site/site.php:2078
-msgid "Upload failed (hints: check upload (filesize) restrictions, available diskspace and file permissions)[nxs:growl]"
-msgstr "Upload failed (hints: check upload (filesize) restrictions, available diskspace and file permissions)"
+msgid ""
+"Upload failed (hints: check upload (filesize) restrictions, available "
+"diskspace and file permissions)[nxs:growl]"
+msgstr ""
+"Upload failed (hints: check upload (filesize) restrictions, available "
+"diskspace and file permissions)"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/site/site.php:1863
 msgid "Logout?[nxs:popup]"
@@ -2984,8 +3071,11 @@ msgid "Clipboard - paste context selector"
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/webservices/webmethods/clipboardcopy/clipboardcopy_webmethod.php:44
-msgid "Information is saved to the clipboard. Use CTRL-V to paste it on any page[nxs:growl]"
-msgstr "Information is saved to the clipboard. Use CTRL-V to paste it on any page"
+msgid ""
+"Information is saved to the clipboard. Use CTRL-V to paste it on any "
+"page[nxs:growl]"
+msgstr ""
+"Information is saved to the clipboard. Use CTRL-V to paste it on any page"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/webservices/webmethods/clipboardpaste/clipboardpaste_webmethod.php:13
 msgid "Clipboard is empty, nothing to paste[nxs:growl]"
@@ -3002,7 +3092,9 @@ msgid "Clipboard is empty (no metadata), nothing to paste[nxs:growl]"
 msgstr "Empty clipboard, first press CTRL-C to place a widget on the clipboard"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/webservices/webmethods/clipboardpaste/clipboardpaste_webmethod.php:25
-msgid "Context of copied data in clipboard is different that context of the destination"
+msgid ""
+"Context of copied data in clipboard is different that context of the "
+"destination"
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/webservices/webmethods/clipboardpaste/clipboardpaste_webmethod.php:60
@@ -3021,15 +3113,18 @@ msgstr "Cannot submit this form; the recipient is not configured correctly"
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/webservices/webmethods/contactboxsubmit/contactboxsubmit_webmethod.php:157
 #, fuzzy
 msgid "Please notify the site administrator; error sending mail"
-msgstr "Please notify the site administrator the form is not configured correctly"
+msgstr ""
+"Please notify the site administrator the form is not configured correctly"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/webservices/webmethods/contactboxsubmit/contactboxsubmit_webmethod.php:172
 msgid "Cannot submit this form; the recipient is not configured correctly"
 msgstr "Cannot submit this form; the recipient is not configured correctly"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/webservices/webmethods/contactboxsubmit/contactboxsubmit_webmethod.php:174
-msgid "Please notify the site administrator the form is not configured correctly"
-msgstr "Please notify the site administrator the form is not configured correctly"
+msgid ""
+"Please notify the site administrator the form is not configured correctly"
+msgstr ""
+"Please notify the site administrator the form is not configured correctly"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/webservices/webmethods/contactboxsubmit/contactboxsubmit_webmethod.php:184
 msgid "Please correct the form"
@@ -3092,7 +3187,8 @@ msgstr "Title"
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:53
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:53
 msgid "If you want to give the entire widget a title, you can use this option."
-msgstr "If you want to give the entire widget a title, you can use this option."
+msgstr ""
+"If you want to give the entire widget a title, you can use this option."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:59
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:59
@@ -3120,8 +3216,12 @@ msgstr "Row align titles"
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:83
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:335
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:83
-msgid "When checked, the widget's title will participate in the title alignment of other partipating widgets in this row"
-msgstr "When checked, the title's height will be aligned with titles of other titles within this row."
+msgid ""
+"When checked, the widget's title will participate in the title alignment of "
+"other partipating widgets in this row"
+msgstr ""
+"When checked, the title's height will be aligned with titles of other titles "
+"within this row."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:98
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:98
@@ -3323,8 +3423,12 @@ msgstr "Show comments count"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:307
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:345
-msgid "The commentcount will be displayed by the configured comments provider (see site settings)"
-msgstr "The commentcount will be displayed by the configured comments provider (see site settings)"
+msgid ""
+"The commentcount will be displayed by the configured comments provider (see "
+"site settings)"
+msgstr ""
+"The commentcount will be displayed by the configured comments provider (see "
+"site settings)"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:313
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:351
@@ -3382,8 +3486,11 @@ msgstr "No matches"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:381
 #, fuzzy
-msgid "What message (if any) should be shown if no archives match the searchcriteria?"
-msgstr "What message (if any) should be shown if no blogs match the searchcriteria?"
+msgid ""
+"What message (if any) should be shown if no archives match the "
+"searchcriteria?"
+msgstr ""
+"What message (if any) should be shown if no blogs match the searchcriteria?"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:397
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:409
@@ -3457,7 +3564,9 @@ msgid "Minimal icon"
 msgstr "Minimal icon"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:587
-msgid "View this widget in the context of an archive page to see relevant information"
+msgid ""
+"View this widget in the context of an archive page to see relevant "
+"information"
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:596
@@ -3472,7 +3581,9 @@ msgstr "Ambiguous pagination (only one pagination can be used at a time)"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:609
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:629
-msgid "Sorry, the queryparameter currently uses a reserved value (page, post or p). This is not allowed, please change it."
+msgid ""
+"Sorry, the queryparameter currently uses a reserved value (page, post or p). "
+"This is not allowed, please change it."
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/archive/widget_archive.php:619
@@ -3562,7 +3673,8 @@ msgstr "johndoe.com"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:139
 msgid "Place the subcontent here, most likely this will be a person's website."
-msgstr "Place the subcontent here, most likely this will be a person's website."
+msgstr ""
+"Place the subcontent here, most likely this will be a person's website."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:145
 msgid "Line 2"
@@ -3573,8 +3685,10 @@ msgid "012 34567890"
 msgstr "012 34567890"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:147
-msgid "Place the subcontent here, use this field for telephone numbers or something."
-msgstr "Place the subcontent here, use this field for telephone numbers or something."
+msgid ""
+"Place the subcontent here, use this field for telephone numbers or something."
+msgstr ""
+"Place the subcontent here, use this field for telephone numbers or something."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:153
 msgid "Person URL"
@@ -3617,16 +3731,22 @@ msgid "Use full url"
 msgstr "Use full url"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:194
-msgid "If you want to place a link to the RSS feed, place it here. Use the full url!"
-msgstr "If you want to place a link to the RSS feed, place it here. Use the full url!"
+msgid ""
+"If you want to place a link to the RSS feed, place it here. Use the full url!"
+msgstr ""
+"If you want to place a link to the RSS feed, place it here. Use the full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:199
 msgid "Twitter link"
 msgstr "Twitter link"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:201
-msgid "If you want to place a link to the Twitter account, place it here. Don't use the full url!"
-msgstr "If you want to place a link to the Twitter account, place it here. Don't use the full url!"
+msgid ""
+"If you want to place a link to the Twitter account, place it here. Don't use "
+"the full url!"
+msgstr ""
+"If you want to place a link to the Twitter account, place it here. Don't use "
+"the full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:206
 msgid "Facebook link"
@@ -3634,8 +3754,12 @@ msgstr "Facebook link"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:208
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:215
-msgid "If you want to place a link to the Facebook account, place it here. Don't use the full url!"
-msgstr "If you want to place a link to the Facebook account, place it here. Don't use the full url!"
+msgid ""
+"If you want to place a link to the Facebook account, place it here. Don't "
+"use the full url!"
+msgstr ""
+"If you want to place a link to the Facebook account, place it here. Don't "
+"use the full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:213
 msgid "LinkedIn link"
@@ -3646,16 +3770,24 @@ msgid "Google+ link"
 msgstr "Google+ link"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:222
-msgid "If you want to place a link to the Google+ account, place it here. Don't use the full url!"
-msgstr "If you want to place a link to the Google+ acocunt, place it here. Don't use the full url!"
+msgid ""
+"If you want to place a link to the Google+ account, place it here. Don't use "
+"the full url!"
+msgstr ""
+"If you want to place a link to the Google+ acocunt, place it here. Don't use "
+"the full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:227
 msgid "Youtube link"
 msgstr "Youtube link"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:229
-msgid "If you want to place a link to the Youtube account, place it here. Don't use the full url!"
-msgstr "If you want to place a link to the Youtube account, place it here. Don't use the full url!"
+msgid ""
+"If you want to place a link to the Youtube account, place it here. Don't use "
+"the full url!"
+msgstr ""
+"If you want to place a link to the Youtube account, place it here. Don't use "
+"the full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:234
 msgid "Skype account (chat)"
@@ -3663,8 +3795,11 @@ msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:235
 #, fuzzy
-msgid "If you want to place a link to your Skype (chat) account, place it here."
-msgstr "If you want to place a link to the Twitter account, place it here. Use the full url!"
+msgid ""
+"If you want to place a link to your Skype (chat) account, place it here."
+msgstr ""
+"If you want to place a link to the Twitter account, place it here. Use the "
+"full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:240
 msgid "Custom RSS icon"
@@ -3746,8 +3881,12 @@ msgid "Bottom"
 msgstr "bottom"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:347
-msgid "The complete top information can be swapped with the textual information with this option."
-msgstr "The complete top information can be swapped with the textual information with this option."
+msgid ""
+"The complete top information can be swapped with the textual information "
+"with this option."
+msgstr ""
+"The complete top information can be swapped with the textual information "
+"with this option."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:10
 msgid "blog[widgettitle]"
@@ -3796,8 +3935,10 @@ msgid "Facebook counters"
 msgstr "Facebook link"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:541
-msgid "What message (if any) should be shown if no blogs match the searchcriteria?"
-msgstr "What message (if any) should be shown if no blogs match the searchcriteria?"
+msgid ""
+"What message (if any) should be shown if no blogs match the searchcriteria?"
+msgstr ""
+"What message (if any) should be shown if no blogs match the searchcriteria?"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/blog/widget_blog.php:617
 msgid "Select at least one category"
@@ -3989,8 +4130,12 @@ msgid "300px"
 msgstr "300px"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/callout/widget_callout.php:190
-msgid "You can set the minimum height of your callout widget. Make sure to end with 'px'."
-msgstr "You can set the minimum height of your callout widget. Make sure to end with 'px'."
+msgid ""
+"You can set the minimum height of your callout widget. Make sure to end with "
+"'px'."
+msgstr ""
+"You can set the minimum height of your callout widget. Make sure to end with "
+"'px'."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/callout/widget_callout.php:196
 msgid "Text padding"
@@ -4014,7 +4159,8 @@ msgstr "Minimal: title, subtitle or button"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/callout/widget_callout.php:317
 msgid "Button: both external URL and article reference are set (ambiguous URL)"
-msgstr "Button: both external URL and article reference are set (ambiguous URL)"
+msgstr ""
+"Button: both external URL and article reference are set (ambiguous URL)"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/callout/widget_callout.php:323
 msgid "Button: button is set, but no reference is set (no URL)"
@@ -4038,16 +4184,24 @@ msgid "Display uncategorized"
 msgstr "Display uncategorized"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/categories/widget_categories.php:105
-msgid "Decide if you want to include the uncategorized category (checked), or not (unchecked)"
-msgstr "Decide if you want to include the uncategorized category (checked), or not (unchecked)"
+msgid ""
+"Decide if you want to include the uncategorized category (checked), or not "
+"(unchecked)"
+msgstr ""
+"Decide if you want to include the uncategorized category (checked), or not "
+"(unchecked)"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/categories/widget_categories.php:111
 msgid "Display empty"
 msgstr "Display empty"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/categories/widget_categories.php:112
-msgid "If you want to include categories that are not linked to articles, check this box"
-msgstr "If you want to include categories that are not linked to articles, check this box"
+msgid ""
+"If you want to include categories that are not linked to articles, check "
+"this box"
+msgstr ""
+"If you want to include categories that are not linked to articles, check "
+"this box"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/categories/widget_categories.php:118
 msgid "Alphabetical order"
@@ -4223,8 +4377,12 @@ msgstr "Thank you page"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/contact/widget_contact.php:45
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/contactbox/widget_contactbox.php:156
-msgid "Thank the visitor for taking the time to send an email by redirecting them to this page."
-msgstr "Thank the visitor for taking the time to send an email by redirecting them to this page."
+msgid ""
+"Thank the visitor for taking the time to send an email by redirecting them "
+"to this page."
+msgstr ""
+"Thank the visitor for taking the time to send an email by redirecting them "
+"to this page."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/contact/widget_contact.php:69
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/contactbox/widget_contactbox.php:192
@@ -4317,8 +4475,12 @@ msgid "Include form source URL"
 msgstr "Include form source URL"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/contactbox/widget_contactbox.php:163
-msgid "When checked, the source URL from where this form was posted will be included in the email send"
-msgstr "When checked, the source URL from where this form was posted will be included in the email send"
+msgid ""
+"When checked, the source URL from where this form was posted will be "
+"included in the email send"
+msgstr ""
+"When checked, the source URL from where this form was posted will be "
+"included in the email send"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/contactbox/widget_contactbox.php:300
 msgid "Warning: no button text"
@@ -4486,7 +4648,7 @@ msgstr "March"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/contactitemdate/widget_contactitemdate.php:130
 msgid "April"
-msgstr "March"
+msgstr "April"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/contactitemdate/widget_contactitemdate.php:130
 msgid "May"
@@ -4723,7 +4885,8 @@ msgstr "Number of columns"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/gallerybox/widget_gallerybox.php:214
 msgid "Warning:please move the gallerybox to a row that has exactly 1 column"
-msgstr "Warning: please move the image gallery to a row that has exactly 1 column"
+msgstr ""
+"Warning: please move the image gallery to a row that has exactly 1 column"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/gallerybox/widget_gallerybox.php:393
 msgid "Gallery items"
@@ -4807,7 +4970,9 @@ msgid "Unicontent"
 msgstr "Content"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/generic/widget_generic.php:326
-msgid "Re-use the content properties of this widget type on your site by entering the same unicontent."
+msgid ""
+"Re-use the content properties of this widget type on your site by entering "
+"the same unicontent."
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/generic/widget_generic.php:340
@@ -4875,16 +5040,20 @@ msgid "Show linkscontrol"
 msgstr "Show linkscontrol"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/googlebusinessphoto/widget_googlebusinessphoto.php:147
-msgid "Provides guide arrows on the image for traveling to adjacent panorama images."
-msgstr "Provides guide arrows on the image for traveling to adjacent panorama images."
+msgid ""
+"Provides guide arrows on the image for traveling to adjacent panorama images."
+msgstr ""
+"Provides guide arrows on the image for traveling to adjacent panorama images."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/googlebusinessphoto/widget_googlebusinessphoto.php:153
 msgid "Show addresscontrol"
 msgstr "Show addresscontrol"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/googlebusinessphoto/widget_googlebusinessphoto.php:154
-msgid "Provides a visual overlay indicating the address of the associated location."
-msgstr "Provides a visual overlay indicating the address of the associated location."
+msgid ""
+"Provides a visual overlay indicating the address of the associated location."
+msgstr ""
+"Provides a visual overlay indicating the address of the associated location."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/googlebusinessphoto/widget_googlebusinessphoto.php:160
 msgid "Zoom mouse scrollwheel"
@@ -5021,7 +5190,9 @@ msgstr "HTML"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/htmlcustom/widget_htmlcustom.php:137
 msgid "Enter your custom HTML here. Ensure the HTML is XHTML compliant"
-msgstr "Enter your custom HTML here. Ensure the HTML is XHTML compliant to prevent markup issues."
+msgstr ""
+"Enter your custom HTML here. Ensure the HTML is XHTML compliant to prevent "
+"markup issues."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/htmlcustom/widget_htmlcustom.php:159
 msgid "Sample htmlcustom[nxs:default]"
@@ -5111,8 +5282,12 @@ msgid "Override subtitle fontsize"
 msgstr "Override subtitle fontsize"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/logo/widget_logo.php:145
-msgid "It's a best practice to give a logo a link to the homepage, but you're free to let it point to another page."
-msgstr "It's a best practice to give a logo a link to the homepage, but you're free to let it point to another page."
+msgid ""
+"It's a best practice to give a logo a link to the homepage, but you're free "
+"to let it point to another page."
+msgstr ""
+"It's a best practice to give a logo a link to the homepage, but you're free "
+"to let it point to another page."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/logo/widget_logo.php:167
 msgid "Absolute positioning"
@@ -5365,8 +5540,12 @@ msgstr "Height of screen"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/pageslider/widget_pageslider.php:93
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/sliderbox/widget_sliderbox.php:103
-msgid "This option set's the height of the caption container between the header and the rest of the content"
-msgstr "This option set's the height of the caption container between the header and the rest of the content"
+msgid ""
+"This option set's the height of the caption container between the header and "
+"the rest of the content"
+msgstr ""
+"This option set's the height of the caption container between the header and "
+"the rest of the content"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/pageslider/widget_pageslider.php:99
 msgid "Hide for handheld devices"
@@ -5378,8 +5557,10 @@ msgid "Captions"
 msgstr "Captions"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/pageslider/widget_pageslider.php:121
-msgid "When checked this option will show a title, description and link if available"
-msgstr "When checked this option will show a title, description and link if available"
+msgid ""
+"When checked this option will show a title, description and link if available"
+msgstr ""
+"When checked this option will show a title, description and link if available"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/pageslider/widget_pageslider.php:126
 msgid "Caption width"
@@ -5522,8 +5703,12 @@ msgid "Mask color"
 msgstr "Mask color"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/signpost/widget_signpost.php:103
-msgid "Set's the color of the transparent sheet that transitions over the background image when hovered"
-msgstr "Sets the color of the transparent sheet that transitions over the background image when hovered"
+msgid ""
+"Set's the color of the transparent sheet that transitions over the "
+"background image when hovered"
+msgstr ""
+"Sets the color of the transparent sheet that transitions over the background "
+"image when hovered"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/signpost/widget_signpost.php:140
 #, fuzzy
@@ -5618,7 +5803,8 @@ msgid "1200"
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/sliderbox/widget_sliderbox.php:124
-msgid "This option let's you set the sliders display at a certain viewport and up"
+msgid ""
+"This option let's you set the sliders display at a certain viewport and up"
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/sliderbox/widget_sliderbox.php:138
@@ -5676,16 +5862,28 @@ msgid "Use full url or leave blank to skip this item"
 msgstr "Use full url of leave blank to skip this item"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/social/widget_social.php:112
-msgid "If you want to place a link to the Twitter account, place it here. Use the full url!"
-msgstr "If you want to place a link to the Twitter account, place it here. Use the full url!"
+msgid ""
+"If you want to place a link to the Twitter account, place it here. Use the "
+"full url!"
+msgstr ""
+"If you want to place a link to the Twitter account, place it here. Use the "
+"full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/social/widget_social.php:119
-msgid "If you want to place a link to the Facebook account, place it here. Use the full url!"
-msgstr "If you want to place a link to the Facebook account, place it here. Use the full url!"
+msgid ""
+"If you want to place a link to the Facebook account, place it here. Use the "
+"full url!"
+msgstr ""
+"If you want to place a link to the Facebook account, place it here. Use the "
+"full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/social/widget_social.php:126
-msgid "If you want to place a link to the LinkedIn account, place it here. Use the full url!"
-msgstr "If you want to place a link to the LinkedIn account, place it here. Use the full url!"
+msgid ""
+"If you want to place a link to the LinkedIn account, place it here. Use the "
+"full url!"
+msgstr ""
+"If you want to place a link to the LinkedIn account, place it here. Use the "
+"full url!"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/social/widget_social.php:154
 msgid "Account icons"
@@ -5830,8 +6028,12 @@ msgid "Row align texts"
 msgstr "Row align texts"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/text/widget_text.php:279
-msgid "When checked, the widget's text will participate in the text alignment of other partipating widgets in this row"
-msgstr "When checked, the text's height will be aligned with the height of texts of other widgets in this row"
+msgid ""
+"When checked, the widget's text will participate in the text alignment of "
+"other partipating widgets in this row"
+msgstr ""
+"When checked, the text's height will be aligned with the height of texts of "
+"other widgets in this row"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/text/widget_text.php:285
 msgid "Liftnote"
@@ -6162,8 +6364,11 @@ msgstr "Single blog entry button"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/wooprodlist/widget_wooprodlist.php:400
 #, fuzzy
-msgid "What message (if any) should be shown if no wooprodlists match the searchcriteria?"
-msgstr "What message (if any) should be shown if no blogs match the searchcriteria?"
+msgid ""
+"What message (if any) should be shown if no wooprodlists match the "
+"searchcriteria?"
+msgstr ""
+"What message (if any) should be shown if no blogs match the searchcriteria?"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/wooprodlist/widget_wooprodlist.php:693
 #, fuzzy
@@ -6240,11 +6445,17 @@ msgid "Youtube url"
 msgstr "Youtube link"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/youtube/widget_youtube.php:215
-msgid "For example http://www.youtube.com/watch?feature=player_embedded&v=Gvvw4lXcCXE[nxs:placeholder]"
-msgstr "For example http://www.youtube.com/watch?feature=player_embedded&v=Gvvw4lXcCXE"
+msgid ""
+"For example http://www.youtube.com/watch?"
+"feature=player_embedded&v=Gvvw4lXcCXE[nxs:placeholder]"
+msgstr ""
+"For example http://www.youtube.com/watch?"
+"feature=player_embedded&v=Gvvw4lXcCXE"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/youtube/widget_youtube.php:217
-msgid "http://www.youtube.com/watch?feature=player_embedded&amp;v=B6cg4ZoUwVU[nxs:sample,url]"
+msgid ""
+"http://www.youtube.com/watch?feature=player_embedded&amp;v=B6cg4ZoUwVU[nxs:"
+"sample,url]"
 msgstr "http://www.youtube.com/watch?feature=player_embedded&amp;v=B6cg4ZoUwVU"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/youtube/widget_youtube.php:217
@@ -6287,7 +6498,9 @@ msgid "End"
 msgstr ""
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/youtube/widget_youtube.php:477
-msgid "Video not found; please enter the complete url of the Youtube video[nxs:growl]"
+msgid ""
+"Video not found; please enter the complete url of the Youtube video[nxs:"
+"growl]"
 msgstr "Video not found; please enter the complete url of the Youtube video"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/youtube/widget_youtube.php:562
