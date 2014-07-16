@@ -71,7 +71,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 		'numberposts' => -1,	//$mediapicker_paging_itemsperpage,
 		'offset' => 0,
 		'post_type' => 'attachment',
-		'post_mime_type' => 'image',	// only fetch images
+		// 'post_mime_type' => 'image',	// only fetch images
 		'post_parent' => null, // no parent
 		'suppress_filters' => false,
 	);

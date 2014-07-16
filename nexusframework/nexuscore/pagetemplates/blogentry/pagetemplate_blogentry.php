@@ -804,11 +804,10 @@ function nxs_pagetemplate_blogentry_render($args)
 			}
 			else 
 			{
-				?>
-			  <a href="<?php echo wp_get_attachment_url($attachmentid) ?>" title="<?php echo wp_specialchars( get_the_title($attachmentid), 1 ) ?>" rel="attachment">
-			  	Link
-			  </a>
-				<?php 
+				//header('Content-type: application/pdf');
+				// redirect to the attachment url
+				$attachmenturl = wp_get_attachment_url($attachmentid);
+				wp_redirect($attachmenturl);
 			}
 			
 			return;
