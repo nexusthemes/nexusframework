@@ -9511,12 +9511,35 @@ function nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fo
 	$microdata = "";
 	return nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $microdata);
 }
-	
+
 function nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $microdata)
+{
+	$destination_target = "";
+	return nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata);
+}
+	
+function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata)
 {
 	if ($title == "")
 	{
 		return "";
+	}
+	
+	if ($destination_target == "_self") {
+		$destination_target_html = 'target="_self"';
+	} else if ($destination_target == "_blank") {
+		$destination_target_html = 'target="_blank"';
+	} else {
+		if ($destination_articleid != "") {
+			$destination_target_html = 'target="_self"';
+		} else {
+			$homeurl = nxs_geturl_home();
+ 			if (nxs_stringstartswith($destination_url, $homeurl)) {
+ 				$destination_target_html = 'target="_self"';
+ 			} else {
+ 				$destination_target_html = 'target="_blank"';
+ 			}
+		}
 	}
 	
 	// Title alignment
@@ -9561,11 +9584,11 @@ function nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title
 	if ($destination_articleid != "") 
 	{
 		$destination_url = nxs_geturl_for_postid($destination_articleid);
-		$result = '<a href="' . $destination_url .'">' . $result . '</a>';
+		$result = '<a href="' . $destination_url .'" '.$destination_target_html.'>' . $result . '</a>';
 	}
 	else if ($destination_url != "") 
 	{
-		$result = '<a href="' . $destination_url .'" target="_blank">' . $result . '</a>';
+		$result = '<a href="' . $destination_url .'" '.$destination_target_html.'>' . $result . '</a>';
 	}
 	
 	return $result;

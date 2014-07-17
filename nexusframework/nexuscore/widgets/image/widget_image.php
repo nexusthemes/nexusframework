@@ -215,6 +215,18 @@ function nxs_widgets_image_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			array(
+				"id" 				=> "destination_target", 
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),						
 			array( 
 				"id" 				=> "wrapper_link_end",
 				"type" 				=> "wrapperend"
@@ -311,8 +323,25 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		$imageheight 	= $imagemetadata[2] . "px";	
 	}
 	
+	if ($destination_target == "_self") {
+		$destination_target_html = 'target="_self"';
+	} else if ($destination_target == "_blank") {
+		$destination_target_html = 'target="_blank"';
+	} else {
+		if ($destination_articleid != "") {
+			$destination_target_html = 'target="_self"';
+		} else {
+			$homeurl = nxs_geturl_home();
+ 			if (nxs_stringstartswith($destination_url, $homeurl)) {
+ 				$destination_target_html = 'target="_self"';
+ 			} else {
+ 				$destination_target_html = 'target="_blank"';
+ 			}
+		}
+	}
+	
 	// Title
-	$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url);
+	$htmltitle = nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata);
 
 	$image_border_width = nxs_getcssclassesforlookup("nxs-border-width-", $image_border_width);
 	
@@ -346,8 +375,8 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	$destination_articleid = nxs_geturl_for_postid($destination_articleid);
 	
 	// Image link
-	if 		($destination_articleid != "") 		{ $html = '<a href="'.$destination_articleid .'">'.$html.'</a>'; } 
-	else if ($destination_url != "") 			{ $html = '<a href="'.$destination_url .'" target="_blank">'.$html.'</a>'; }
+	if 		($destination_articleid != "") 		{ $html = '<a href="'.$destination_articleid .'" '.$destination_target_html.'>'.$html.'</a>'; } 
+	else if ($destination_url != "") 			{ $html = '<a href="'.$destination_url .'" '.$destination_target_html.'>'.$html.'</a>'; }
 	
 	// Image
 	if ($image_imageid != "") 
