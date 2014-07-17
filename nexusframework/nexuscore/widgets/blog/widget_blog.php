@@ -102,13 +102,13 @@ function nxs_widgets_blog_home_getoptions($args)
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
 				"unistylablefield"	=> true
 			),
-			array(
+			/*array(
 				"id" 				=> "title_height",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
 				"unistylablefield"	=> true
-			),
+			),*/
 			
 			array( 
 				"id" 				=> "wrapper_end",
@@ -198,6 +198,13 @@ function nxs_widgets_blog_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Title heading for item", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "title_heightiq",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
+				"unistylablefield"	=> true
 			),	
 				
 			array( 
@@ -234,6 +241,18 @@ function nxs_widgets_blog_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Image border size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("border_width"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "grayscale",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Grayscale hover effect", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "enlarge",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Enlarge hover effect", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			
@@ -713,8 +732,10 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		// Filler
 		$htmlfiller = nxs_gethtmlforfiller();
 		
-		
-		
+		// Single blog item heightiq	
+		$heightiqprio = "p1";
+		$title_heightiqgroup = "title";
+		$cssclasses = nxs_concatenateargswithspaces("nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");		
 		
 		// Minimal vs. extended
 		if 			($items_layout == "minimal") 	{ $blogtype = 'nxs-blog-minimal'; } 
@@ -1080,7 +1101,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					
 					$item_image_alt = $currentpost->post_title;
 					$item_image_title = $currentpost->post_title;
-					$htmlforimage = nxs_gethtmlforimage($item_image_imageid, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title);
+					$htmlforimage = nxs_gethtmlforimage($item_image_imageid, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title, $grayscale, $enlarge);
 					
 					
 									
@@ -1110,6 +1131,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 				
 						echo '</div>';
 				}
+			
 			// DEFAULT				
 			} else if 	(!isset($items_layout) || $items_layout == "" || $items_layout == "extended") 
 			{
@@ -1130,7 +1152,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					// Blog title			
 					if ($hide_title == "") {
 						$blogtitel = '
-						<' . $itemheadingelement . ' class="nxs-title nxs-applylinkvarcolor">
+						<' . $itemheadingelement . ' class="nxs-title nxs-applylinkvarcolor '.$cssclasses.'">
 							<a href="' . $currentposturl . '">' . $currentposttitle . '</a>
 						</' . $itemheadingelement . '>';
 					}
@@ -1189,7 +1211,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					
 					$item_image_alt = $currentposttitle;
 					$item_image_title = $currentposttitle;
-					$htmlforimage = nxs_gethtmlforimage($item_image_imageid, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title);
+					$htmlforimage = nxs_gethtmlforimage($item_image_imageid, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title, $grayscale, $enlarge);
 					
 					// Excerpt
 					$currentexcerpt = "";
