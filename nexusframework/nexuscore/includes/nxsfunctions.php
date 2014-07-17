@@ -9692,7 +9692,7 @@ function nxs_gethtmlforbutton_mailchimp($button_text, $button_scale, $button_col
 	return $result;
 }
 
-function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title)
+function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title, $grayscale, $enlarge)
 {
 	$image_alt = trim($image_alt);
 	$image_title = trim($image_title);
@@ -9717,6 +9717,10 @@ function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $
 		$image_shadow = 'nxs-shadow';
 	}
 	
+	// Hover effects
+	if ($enlarge != "") { $enlarge = 'nxs-enlarge'; }
+	if ($grayscale != "") {	$grayscale = 'nxs-grayscale'; }
+	
 	// escape quotes used in title and alt, preventing malformed html
 	$image_title = str_replace("\"", "&quote;", $image_title);
 	$image_alt = str_replace("\"", "&quote;", $image_alt);
@@ -9738,10 +9742,10 @@ function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $
 	// Image border
 	$image_border = '';
 	$image_border .= '<div class="nxs-image-wrapper ' . $image_shadow . ' ' . $image_size_cssclass . ' ' . $image_alignment_cssclass . ' ' . '">';
-	$image_border .= '<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="' . $image_border_width . '">';
+	$image_border .= '<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="nxs-overflow ' . $image_border_width . '">';
 	// note the display: block is essential/required! else the containing div
 	// will have two additional pixels; kudos to http://stackoverflow.com/questions/8828215/css-a-2-pixel-line-appears-below-image-img-element
-	$image_border .= '<img ';
+	$image_border .= '<img class="' . $grayscale . ' ' . $enlarge . '" ';
 	$image_border .= 'src="' . $imageurl . '" ';
 	if ($image_alt != "")
 	{
