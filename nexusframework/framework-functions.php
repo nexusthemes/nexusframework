@@ -77,6 +77,10 @@ function nxs_isdebug()
 	{
 		$result = true;
 	}
+	else if ($remoteaddress == "80.126.37.213")
+	{
+		$result = true;
+	}
 	
 	return $result;
 }

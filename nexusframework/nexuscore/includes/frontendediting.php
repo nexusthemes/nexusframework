@@ -410,23 +410,27 @@ if (is_admin)
 	<?php 
 }
 ?>
-
 <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/frontendediting-js.js" ></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	google.load('webfont','1');
 </script>
-
 <?php
-/*
-TODO: hier bepalen welke fonts (en varianten daarvan) we gaan inladen;
-initieel moeten alleen de fonts worden ingeladen die we ook daadwerkelijk gebruiken,
-dus maximaal 2 fonts. Pas als de gebruiker de font selector / editor kiest,
-moeten alle fonts worden ingeladen
-*/
-?>
-	
-<script> 
+$fontsbeingused = array();
+// add font fam for the "active" font1
+$fontfams = nxs_getmappedfontfams($sitemeta['vg_fontfam_1']);
+foreach ($fontfams as $fontfam)
+{
+	$fontsbeingused[]= $fontfam;
+}
+// add font fam for the "active" font2
+$fontfams = nxs_getmappedfontfams($sitemeta['vg_fontfam_2']);
+foreach ($fontfams as $fontfam)
+{
+	$fontsbeingused[]= $fontfam;
+}
+?>	
+<script>
 	WebFont.load
 	(
 		{
@@ -434,24 +438,22 @@ moeten alle fonts worden ingeladen
 			{ 
       	families: 
       	[
-      		'Droid Sans:400,700',
-      		'Droid Serif:400,700,400italic,700italic',
-      		'Crafty Girls',
-      		'Trade Winds',
-      		'Cherry+Cream+Soda',
-      		'Federo',
-      		'Smokum',
-      		'Lobster',
-      		'Raleway:100',
-      		'Rock Salt',
-      		'Kranky',
-      		'Sancreek',
-      		'Righteous',
-      		'UnifrakturMaguntia',
-      		'Vidaloka',
-      		'Great Vibes',
-      		'Oswald:400,300',
-      		'Open+Sans'
+      		<?php
+      		$isfirstfont = true;
+      		foreach ($fontsbeingused as $currentfont)
+      		{
+      			if ($isfirstfont == false)
+      			{
+      				echo ",";
+      			}
+      			else
+      			{
+      				$isfirstfont = false;
+      			}
+      			echo "'{$currentfont}'";
+      		}
+      		?>
+      		
       	] 
       }
 		}

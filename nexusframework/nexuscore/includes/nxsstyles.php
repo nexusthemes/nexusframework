@@ -10,6 +10,128 @@ function nxs_showloadcover() {
 	return false;
 }
 
+function nxs_getmappedfontfams($val)
+{
+	$result = array();
+	
+	if ($val == "Arial, Arial, Helvetica, sans-serif")
+	{
+		$result[] = "Arial";
+	}
+	else if ($val == "Arial Black, Arial Black, Gadget, sans-serif")
+	{
+		// NOT ALLOWED; NONE-EXISTING OR COPYRIGHTED FONT, IF THIS ONE IS SELECTED, WILL RESULT IN A 403!
+		//$result[] = "Arial Black";
+	}
+	else if ($val == "Courier New, Courier New, monospace")
+	{
+		// NOT ALLOWED; NONE-EXISTING OR COPYRIGHTED FONT, IF THIS ONE IS SELECTED, WILL RESULT IN A 403! 
+		//$result[] = "Courier New";
+	}
+	else if ($val == "'Georgia', serif")
+	{
+		$result[] = "Georgia";
+	}
+	else if ($val == "Tahoma, Geneva, sans-serif")
+	{
+		// NOT ALLOWED; NONE-EXISTING OR COPYRIGHTED FONT, IF THIS ONE IS SELECTED, WILL RESULT IN A 403!
+		//$result[] = "Tahoma";
+	}
+	else if ($val == "Times New Roman, Times New Roman, Times, serif")
+	{
+		$result[] = "Times New Roman";
+	}
+	else if ($val == "Verdana, Verdana, Geneva, sans-serif")
+	{
+		$result[] = "Verdana";
+	}
+	else if ($val == "'Droid Serif', serif")
+	{
+		$result[] = "Droid Serif:400,700,400italic,700italic";
+	}
+	else if ($val == "'Droid Sans', sans-serif")
+	{
+		$result[] = "Droid Sans:400,700";
+	}
+	else if ($val == "'Crafty Girls', cursive")
+	{
+		$result[] = "Crafty Girls";
+	}
+	else if ($val == "'Trade Winds', cursive")
+	{
+		$result[] = "Trade Winds";
+	}
+	else if ($val == "'Cherry Cream Soda', cursive")
+	{
+		$result[] = "Cherry Cream Soda";
+	}
+	else if ($val == "'Federo', sans-serif")
+	{
+		$result[] = "Federo";
+	}
+	else if ($val == "'Smokum', cursive")
+	{
+		$result[] = "Smokum";
+	}
+	else if ($val == "'Lobster', cursive")
+	{
+		$result[] = "Lobster";
+	}
+	else if ($val == "'Rock Salt', cursive")
+	{
+		$result[] = "Rock Salt";
+	}
+	else if ($val == "'Kranky', cursive")
+	{
+		$result[] = "Kranky";
+	}
+	else if ($val == "'Sancreek', cursive")
+	{
+		$result[] = "Sancreek";
+	}
+	else if ($val == "'Righteous', cursive")
+	{
+		$result[] = "Righteous";
+	}
+	else if ($val == "'UnifrakturMaguntia', cursive")
+	{
+		$result[] = "UnifrakturMaguntia";
+	}
+	else if ($val == "'Raleway', cursive")
+	{
+		$result[] = "Raleway:100";
+	}
+	else if ($val == "'Helvetica Neue',Helvetica,sans-serif")
+	{
+		$result[] = "Helvetica";
+	}
+	else if ($val == "'Vidaloka', serif")
+	{
+		$result[] = "Vidaloka";
+	}
+	else if ($val == "'Great Vibes', serif")
+	{
+		$result[] = "Great Vibes";
+	}
+	else if ($val == "'Oswald', sans-serif")
+	{
+		$result[] = "Oswald:400,300";
+	}
+	else if ($val == "'Open Sans', sans-serif")
+	{
+		$result[] = "Open Sans";
+	}
+	else
+	{
+		// default; we will assume that the val represents the fontfamily itself (this is the new style)
+		//$result[] = $val;
+	}
+	
+	// $result = array();
+	
+	return $result;
+}
+
 function nxs_getcoloralphas() {
 	$result = array();
 	$result[] = 1;

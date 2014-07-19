@@ -41,6 +41,58 @@
 	
 	$sitemeta = nxs_getsitemeta();
 ?>
+<!-- loading all fonts -->
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load('webfont','1');
+</script>
+
+<?php
+	/* FONT HANDLING v2 START */
+	// alle fonts worden hier ingeladen, anders kan gebruiker niet zien welke keuze hij maakt
+	$allfontfams = array();
+	$allfonts = nxs_getfonts();
+	foreach ($allfonts as $currentfontid=>$meta)
+	{
+		$currentfontfams = nxs_getmappedfontfams($currentfontid);
+		foreach ($currentfontfams as $currentfontfam)
+		{
+			$allfontfams[] = $currentfontfam;
+		}
+	}
+	?>	
+<script> 
+	
+	WebFont.load
+	(
+		{
+			google: 
+			{ 
+      	families: 
+      	[
+      		<?php
+      		$isfirstfont = true;
+      		foreach ($allfontfams as $currentfont)
+      		{
+      			if ($isfirstfont == false)
+      			{
+      				echo ",";
+      			}
+      			else
+      			{
+      				$isfirstfont = false;
+      			}
+      			echo "'{$currentfont}'";
+      		}
+      		?>
+      	] 
+      }
+		}
+	); 
+</script>
+<?php
+	/* FONT HANDLING v2 END */
+?>
 <div id="nxs-menu-outerwrap" style='display: none;'>
 	<div id="nxs-menu-wrap" class='nxs-admin-wrap'>
 		<div class="nxs-hidewheneditorinactive" style='display: none;'>
