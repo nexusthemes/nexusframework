@@ -583,6 +583,26 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"highschool;" => array
+		(
+			"href"=>"/wordpress-themes/education/high-school-wordpress-theme/",
+			"title"=>"High school WordPress theme",
+		),
+		"veterinary;" => array
+		(
+			"href"=>"/wordpress-themes/animals-pets/veterinary-wordpress-theme/",
+			"title"=>"Veterinary WordPress theme",
+		),
+		"propertymanagement;" => array
+		(
+			"href"=>"/wordpress-themes/real-estate/property-management-wordpress-theme/",
+			"title"=>"Property management WordPress theme",
+		),
+		"brewery;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/brewery-wordpress-theme/",
+			"title"=>"Brewery WordPress theme",
+		),
 		"photoartist;" => array
 		(
 			"href"=>"/wordpress-themes/photographer/photoartist-wordpress-theme/",
