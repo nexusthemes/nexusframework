@@ -25,6 +25,14 @@ function nxs_getthemeurl()
 	return get_bloginfo('template_url');
 }
 
+function nxs_font_getfontfamiliesforfontidentifier($fontidentifier)
+{
+	$sitemeta	= nxs_getsitemeta();
+	$configuredfontfamily = $sitemeta["vg_fontfam_{$fontidentifier}"];
+	$fontfams = nxs_getmappedfontfams($configuredfontfamily);
+	return $fontfams;
+}
+
 // kudos to http://stackoverflow.com/questions/5266945/wordpress-how-detect-if-current-page-is-the-login-page
 function nxs_is_login_page() 
 {

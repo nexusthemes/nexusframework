@@ -160,6 +160,17 @@ function nxs_getcolorsinpalette() {
 	return $result;
 }
 
+function nxs_font_getfontidentifiers() {
+	$result = array();
+	$result[] = "1";
+	$result[] = "2";
+	 
+	// enable themes to overrule or extends the fonts
+	$args = array();
+	$result = apply_filters("nxs_font_getfontidentifiers", $result, $args);
+	
+	return $result;
+}
 
 function nxs_getcssclassesforlookup($prefix, $value) {
 	$result = "";

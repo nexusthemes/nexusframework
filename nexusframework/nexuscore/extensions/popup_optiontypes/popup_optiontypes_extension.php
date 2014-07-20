@@ -73,6 +73,7 @@ nxs_ext_lazyload_popup_optiontype("staticgenericlist_link");
 nxs_ext_lazyload_popup_optiontype("textarea");
 nxs_ext_lazyload_popup_optiontype("categories");
 nxs_ext_lazyload_popup_optiontype("colorzen");
+nxs_ext_lazyload_popup_optiontype("fontzen");
 nxs_ext_lazyload_popup_optiontype("colorvariation");
 nxs_ext_lazyload_popup_optiontype("gotosheet");
 nxs_ext_lazyload_popup_optiontype("custom");

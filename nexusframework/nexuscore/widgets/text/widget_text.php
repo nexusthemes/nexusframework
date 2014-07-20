@@ -64,6 +64,13 @@ function nxs_widgets_text_home_getoptions($args)
 			),
 			
 			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
 				"id" 				=> "title_alignment",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
