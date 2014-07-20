@@ -577,13 +577,20 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	if ($title_schemaorgitemprop != "") {
 		// bijv itemprop="name"
-		$title_schemaorg_attribute = 'itemprop="' . $title_schemaorgitemprop . '"';
+		$title_schemaorg_attribute = "itemprop='{$title_schemaorgitempro}'";
 	} else {
 		$title_schemaorg_attribute = "";	
-	}		
+	}
+	
+	if ($title_fontzen != "")
+	{
+		$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $title_fontzen);
+	}
+	
+	$concatenatedcssclasses = nxs_concatenateargswithspaces("nxs-title", $title_alignment_cssclass, $title_fontsize_cssclass, $titlecssclasses, $title_fontzen_cssclass);
 	
 	// Title
-	$titlehtml = '<'.$title_heading.' ' . $title_schemaorg_attribute . ' class="nxs-title '.$title_alignment_cssclass.' '.$title_fontsize_cssclass.' '.$titlecssclasses.'">'.$title.'</'.$title_heading.'>';
+	$titlehtml = "<{$title_heading} {$title_schemaorg_attribute} class='{$concatenatedcssclasses}'>{$title}</{$title_heading}>";
 	
 	if ($destination_target == "_self") {
 		$destination_target_html = 'target="_self"';
