@@ -78,7 +78,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"users", 
 										"trophy", 
 										"pie", 
-										//"birthdaycake", 
+										"disabled", 
 										"commission", 
 										"referee", 
 										"matchresults",
