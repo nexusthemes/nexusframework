@@ -2374,6 +2374,7 @@ h3#order_review_heading,
 .nxs-icon-oven:before 				{ content: "\e756"; }
 .nxs-icon-dog:before 				{ content: "\e757"; }
 .nxs-icon-cat:before 				{ content: "\e758"; }
+.nxs-icon-disabled:before 			{ content: "\e759"; }
 
 /* Incompatible with icomoon names */
 .nxs-icon-matchresults:before 		{ content: "\e6fa"; } /* uitslagen */
