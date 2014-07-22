@@ -80,6 +80,12 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "subtitle",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Subtitle", "nxs_td"),
@@ -100,6 +106,12 @@ function nxs_widgets_callout_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Subtitle fontsize", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "subtitle_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Subtitle fontzen", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
@@ -151,6 +163,12 @@ function nxs_widgets_callout_home_getoptions($args)
 				"id" 				=> "button_color",
 				"type" 				=> "colorzen",
 				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "button_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
@@ -422,9 +440,12 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	
 	// Title fontsize
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
+	$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $title_fontzen);
+	
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass);
 	
 	// Title
-	$htmltitle = '<'.$title_heading.' class="nxs-title '.$title_fontsize_cssclass.'">'.$title.'</'.$title_heading.'>';
+	$htmltitle = '<'.$title_heading.' class="'.$cssclasses.'">'.$title.'</'.$title_heading.'>';
 	
 	// Subtitle heading
 	if ($subtitle_heading != "") {
@@ -435,14 +456,18 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	
 	// Subitle fontsize
 	$subtitle_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $subtitle_fontsize);
+	$subtitle_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $subtitle_fontzen);
+	
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", "nxs-subtitle", $subtitle_fontsize_cssclass, $subtitle_fontzen_cssclass);
 	
 	// Subitle
-	$htmlsubtitle = '<'.$subtitle_heading.' class="nxs-title nxs-subtitle '.$subtitle_fontsize_cssclass.'">'.$subtitle.'</'.$subtitle_heading.'>';
+	$htmlsubtitle = '<'.$subtitle_heading.' class="' . $cssclasses .'">'.$subtitle.'</'.$subtitle_heading.'>';
 	
 	
 	// Button
 	$button_alignment = "";								
-	$htmlbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js);
+	$button_heighiq = "";
+	$htmlbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $button_heighiq, $button_fontzen);
 	
 	// Image metadata
 	if ($image_imageid != "") {
