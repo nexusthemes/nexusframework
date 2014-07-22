@@ -464,7 +464,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					$placeholdermetadata = nxs_getwidgetmetadata($menu_menuid, $placeholderid);
 					
 					// localize fields
-					$placeholdermetadata = nxs_localization_localize($placeholdermetadata);
+					//$placeholdermetadata = nxs_localization_localize($placeholdermetadata);
 			
 					$placeholdertype = $placeholdermetadata["type"];
 					if (!isset($placeholdertype) || $placeholdertype == "" || $placeholdertype == "undefined") {
