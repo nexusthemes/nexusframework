@@ -841,6 +841,11 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 .widescreen-row .nxs-row1 .nxs-one-whole 					{ width: 100% !important; }
 .widescreen-row .nxs-slider-controller.fullwidth			{ width: 100%; }
 
+/* metadata layout */
+.center .nxs-slide-description-content:before				{ content: ''; display: inline-block; height: 100%; vertical-align: middle;	margin-right: -0.25em; }
+.center .nxs-slide-description-content						{ width: 100%; padding: 0px; text-align: center; }
+.center .text-container										{ display: inline-block; vertical-align: middle; }
+
 /* YOUTUBE & VIMEO 
 ---------------------------------------------------------------------------------------------------- */
 .video-container											{ position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden; }
