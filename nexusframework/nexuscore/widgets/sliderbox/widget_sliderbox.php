@@ -140,15 +140,34 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 			),
 			
 			array(
+				"id" 				=> "metadata_layout",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Text layout", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Default", "nxs_td"),
+					"center" => nxs_l18n__("center", "nxs_td"),
+				),
+				"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "metadata",
 				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Metadata", "nxs_td"),
+				"label" 			=> nxs_l18n__("Show title and description", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id" 				=> "main_controllers",
 				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Main controllers", "nxs_td"),
+				"label" 			=> nxs_l18n__("Show controllers", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "title_fontsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title fontsize", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
 			array( 
@@ -323,6 +342,9 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		$factor = 3;
 		$border_width = $multiplier * $factor; 
 		$slide_border_width = 'box-shadow: inset 0 0 0 '.$border_width.'px white;';
+	
+	// Title fontsize
+	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
 	
 	// MAIN CONTROLLERS
 	if ($metadata != "" && $main_controllers != "") {
@@ -611,12 +633,15 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				
 				// Title
 				if ($slidedataset["title"] != "") { 
-					$title = '<h2 class="nxs-slide-title">'.nxs_render_html_escape_gtlt($slidedataset["title"]).'</h2>'; 
+					$title = '<h2 class="nxs-slide-title nxs-title '.$title_fontsize_cssclass.'">'.nxs_render_html_escape_gtlt($slidedataset["title"]).'</h2>'; 
 				}
 				
 				// Text
 				if ($slidedataset["text"] != "") { 
-					$text = '<p>'.nxs_render_html_escape_gtlt($slidedataset["text"]).'</p>'; 
+					$text = '
+						<div class="nxs-default-p">
+							<p class="nxs-padding-bottom0">'.nxs_render_html_escape_gtlt($slidedataset["text"]).'</p>
+						</div>'; 
 				}
 			
 				// Description
@@ -624,12 +649,15 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					$slidedataset["title"] != "" && $metadata != "" || 
 					$slidedataset["text"] != ""  && $metadata != "") { 
 					$description = '
-					<div class="nxs-slide-description">
+					<div class="nxs-slide-description '.$metadata_layout.'">
 						
-						<div id="slide_description_content_'.$placeholderid.'_'.$slideindex.'" class="nxs-slide-description-content '.$bgcolor_cssclass.'" style="right: '.$border_width.'px; top: '.$border_width.'px; ">' .
-						  $title .
-						  $text.'
-						  </div>
+						<div id="slide_description_content_'.$placeholderid.'_'.$slideindex.'" class="nxs-slide-description-content '.$bgcolor_cssclass.'" style="right: '.$border_width.'px; top: '.$border_width.'px; ">
+							<div class="text-container">' .
+								$title .
+								$text.'
+							</div>
+						</div>
+					
 					</div>'; 
 				}
 				
