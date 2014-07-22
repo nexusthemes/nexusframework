@@ -456,48 +456,23 @@
 		                      <div class="nxs-float-left nxs-margin-right10">
 		                          <div class="block">
 		                              <div class="nxs-admin-header"><h3><?php nxs_l18n_e("Fonts[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
-		                              
-																	<div class="content2">
+		                              <?php
+	                              	$fontidentifiers = nxs_font_getfontidentifiers();
+	                              	foreach ($fontidentifiers as $currentfontidentifier)
+	                              	{
+	                              		//
+	                              		?>
+																		<div class="content2">
 		                                  <div class="box">
-		                                  		
-		                                      <div class="box-title2"><p><?php nxs_l18n_e("Texts[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></p></div>
-		                                      <div class="box-content3" style='width: auto;'>
-																						<select id="vg_fontfam_1" onchange='nxs_menu_updatelettertypen();'>
-																							<?php 
-																								$vg_fontfam_1 = $sitemeta['vg_fontfam_1']; 
-																								$fontlist = nxs_getfonts();
-																								foreach ($fontlist as $fontid => $fontdata)
-																								{
-																									if ($vg_fontfam_1 == $fontid)
-																									{
-																										$selected = "selected='selected'";	
-																									}
-																									else
-																									{
-																										$selected = "";
-																									}
-																									?>
-																									<option <?php echo $selected; ?> value="<?php echo $fontid; ?>"><?php echo $fontid; ?></option>
-																									<?php
-																								}
-																							?>
-																						</select>                                        	
-		                                      </div>
-		                                      <div class="nxs-clear"></div>
-		                                  </div>
-		                              </div> <!--END content-->                                
-		                              
-																	<div class="content2">
-		                                  <div class="box">
-		                                      <div class="box-title2"><p><?php nxs_l18n_e("Headings[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></p></div>
-		                                      <div class="box-content3" style='width: auto;'>
-																						<select id="vg_fontfam_2" onchange='nxs_menu_updatelettertypen();'>
-																							<?php
-																							$vg_fontfam_2 = $sitemeta['vg_fontfam_2']; 
+	                                      <div class="box-title2"><p><?php echo "Font {$currentfontidentifier}"; ?></p></div>
+	                                      <div class="box-content3" style='width: auto;'>
+																					<select id="vg_fontfam_<?php echo $currentfontidentifier; ?>" onchange='nxs_js_font_updatefonts();'>
+																						<?php 
+																							$vg_fontfam = $sitemeta["vg_fontfam_{$currentfontidentifier}"];
 																							$fontlist = nxs_getfonts();
 																							foreach ($fontlist as $fontid => $fontdata)
 																							{
-																								if ($vg_fontfam_2 == $fontid)
+																								if ($vg_fontfam == $fontid)
 																								{
 																									$selected = "selected='selected'";	
 																								}
@@ -509,19 +484,21 @@
 																								<option <?php echo $selected; ?> value="<?php echo $fontid; ?>"><?php echo $fontid; ?></option>
 																								<?php
 																							}
-																							?>
-																						</select>                                        	
-		                                      </div>
-		                                      <div class="nxs-clear"></div>
+																						?>
+																					</select>                                        	
+	                                      </div>
+	                                      <div class="nxs-clear"></div>
 		                                  </div>
-		                              </div> <!--END content-->                                   
-		                              
+			                              </div> <!--END content-->
+			                             	<?php
+			                            }
+		                              ?>
 		                          </div> 
 		                      </div> 
 		                  
 		                  		<div class="nxs-clear padding"></div>
 		                  		
-		     		              <a id='nxs_menu_savelettertypenbutton' style='display: none;' href='#' class="nxsbutton nxs-float-left" onclick='nxs_menu_savelettertypen(); return false;'><?php nxs_l18n_e("Save[nxs:btn]", "nxs_td"); ?></a>
+		     		              <a id='nxs_menu_savelettertypenbutton' style='display: none;' href='#' class="nxsbutton nxs-float-left" onclick='nxs_js_font_savefonts(); return false;'><?php nxs_l18n_e("Save[nxs:btn]", "nxs_td"); ?></a>
 		     		              
 		     		              <div class="nxs-clear"></div>
 		                  		
@@ -1516,16 +1493,27 @@
 		
 		// lettertypen
 		
-		function nxs_menu_updatelettertypen()
+		function nxs_js_font_updatefonts()
 		{
 			// mutaties hierin ook doorvoeren in header-post.php
 			
 			jQuery('#dynamicCssVormgevingLettertypen').html('');
 			// append
 			var u;
+			// old style :)
 			u = "";
 			u = u + "body { font-family: " + jQuery("#vg_fontfam_1").val() + "; }";
-			u = u + "h1, .nxs-size1, h2, .nxs-size2, h3, .nxs-size3, h4, .nxs-size4, h5, .nxs-size5, h6, .nxs-size6, .nxs-logo { font-family: " + jQuery("#vg_fontfam_2").val() + "; }";	
+			u = u + ".nxs-title, .nxs-logo { font-family: " + jQuery("#vg_fontfam_2").val() + "; }";	
+			// new style :)
+			<?php
+			$fontidentifiers = nxs_font_getfontidentifiers();
+			foreach ($fontidentifiers as $currentfontidentifier)
+			{
+				?>
+				u = u + ".nxs-fontzen-<?php echo $currentfontidentifier; ?> { font-family: " + jQuery("#vg_fontfam_<?php echo $currentfontidentifier; ?>").val() + "; }";	
+				<?php
+			}
+			?>
 			
 			// great, thanks to MS we need a lame IE patch, see http://stackoverflow.com/questions/9050441/how-do-i-inject-styles-into-ie8
 			if(jQuery.browser.msie)
@@ -1542,11 +1530,18 @@
 			nxs_js_refreshtopmenufillerheight();
 		}
 		
-		function nxs_menu_savelettertypen()
+		function nxs_js_font_savefonts()
 		{
 			var valuestobeupdated = {};
-			valuestobeupdated["vg_fontfam_1"] = jQuery("#vg_fontfam_1").val();
-			valuestobeupdated["vg_fontfam_2"] = jQuery("#vg_fontfam_2").val();
+			<?php
+			$fontidentifiers = nxs_font_getfontidentifiers();
+			foreach ($fontidentifiers as $currentfontidentifier)
+			{
+				?>
+				valuestobeupdated["vg_fontfam_<?php echo $currentfontidentifier; ?>"] = jQuery("#vg_fontfam_<?php echo $currentfontidentifier; ?>").val();
+				<?php
+			}
+			?>
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
 			jQuery.ajax

@@ -26,22 +26,27 @@ function nxs_popup_genericpopup_fontzenpicker_getpopup($args)
 						<div class="box">
 							<div class="box-title"><h4><?php nxs_l18n_e("Fonts", "nxs_td"); ?></h4></div>
 							<div class="box-content">
-								<ul>
+								<table>
 									<?php
 									$fontidentifiers = nxs_font_getfontidentifiers();
 										
 									foreach($fontidentifiers as $currentfontidentifier)
 									{
 										?>
-										<li class='nxs-float-left nxs-icon'>
-											<a href='#' onclick='nxs_js_selectitem("<?php echo $currentfontidentifier;?>"); return false;'>
-												<span class="<?php echo $currentfontidentifier; ?>"><?php echo $currentfontidentifier; ?></span>
-											</a>
-										</li>
+										<tr>
+											<td>
+												Font <?php echo $currentfontidentifier; ?>
+											</td>
+											<td class="nxs-fontzen-<?php echo $currentfontidentifier; ?>">
+												<a href='#' onclick='nxs_js_selectitem("<?php echo $currentfontidentifier;?>"); return false;'>
+													<span class="<?php echo $currentfontidentifier; ?>">Sample fontfamily text</span>
+												</a>
+											</td>
+										</tr>
 										<?php
 									}
 									?>
-								</ul>
+								</table>
 							</div>
 						</div>
 						<div class="nxs-clear"></div>
@@ -57,7 +62,7 @@ function nxs_popup_genericpopup_fontzenpicker_getpopup($args)
 					if ($nxs_fontzenpicker_currentvalue != "") 
 					{
 						?>
-						<a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton1 nxs-float-right" onclick='nxs_js_selecticonitem(""); return false;'><?php nxs_l18n_e("No icon", "nxs_td"); ?></a>
+						<a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton1 nxs-float-right" onclick='nxs_js_selecticonitem(""); return false;'><?php nxs_l18n_e("No fontzen", "nxs_td"); ?></a>
 						<?php
 					}
 					?>

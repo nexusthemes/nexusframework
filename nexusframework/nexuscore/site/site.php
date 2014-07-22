@@ -59,8 +59,13 @@ function nxs_ws_site_updatesitedata($args)
 	}
 	else if ($updatesectionid == "menuvormgevinglettertypen")
 	{
-		$modifiedmetadata["vg_fontfam_1"] = $vg_fontfam_1;
-		$modifiedmetadata["vg_fontfam_2"] = $vg_fontfam_2;
+		$fontidentifiers = nxs_font_getfontidentifiers();
+		foreach ($fontidentifiers as $currentfontidentifier)
+		{
+			$variablename = "vg_fontfam_" . $currentfontidentifier;
+			$variablevalue = $$variablename;
+			$modifiedmetadata["vg_fontfam_" . $currentfontidentifier] = $variablevalue;
+		}
 		
 		nxs_mergesitemeta($modifiedmetadata);
 	}

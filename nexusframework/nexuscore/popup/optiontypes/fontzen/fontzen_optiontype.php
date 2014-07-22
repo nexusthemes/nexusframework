@@ -31,7 +31,7 @@ function nxs_popup_optiontype_fontzen_renderhtmlinpopup($optionvalues, $args, $r
 	          			$first = $fontfamilies[0];
 	          			?>
 									<div class="nxs-fontzen-<?php echo $value; ?> border-radius-small font-sample">
-										<p style="font-family: '<?php echo $first; ?>'"><?php echo $sampletext; echo " (" . $first . ")"; ?></p>
+										<p><?php echo $sampletext; echo " (" . $first . ")"; ?></p>
 									</div>
 								<?php 
 								} 

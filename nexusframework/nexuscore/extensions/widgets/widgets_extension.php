@@ -196,6 +196,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$nxsposttype == "sidebar"
 	)
 	{
+		
+
 		// Default
 		$result[] = array("widgetid" => "text");
 		$result[] = array("widgetid" => "image");
@@ -636,8 +638,12 @@ function nxs_getobsoletewidgetids()
 	$result = array();
 	
 	$result[] = "contactbox";
-	$result[] = "googlebusinessphoto";
-	$result[] = "squeezebox";
+	
+	if (!nxs_enableconceptualwidgets())
+	{
+		$result[] = "googlebusinessphoto";
+		$result[] = "squeezebox";
+	}
 
 	return $result;
 }

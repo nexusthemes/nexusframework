@@ -9123,12 +9123,20 @@ function nxs_render_headstyles()
 		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_1"]);		
 		$css .= "body { font-family: " . $hetfont . "; }";
 		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_2"]);		
-		$css .= "h1, .nxs-size1, h2, .nxs-size2, h3, .nxs-size3, h4, .nxs-size4, h5, .nxs-size5, h6, .nxs-size6, .nxs-logo { font-family: " . $hetfont . "; }";
+		$css .= ".nxs-title, .nxs-logo { font-family: " . $hetfont . "; }";
+		
+		// new style
+		$fontidentifiers = nxs_font_getfontidentifiers();
+		foreach ($fontidentifiers as $currentfontidentifier)
+		{
+			$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_{$currentfontidentifier}"]);	
+			$css .= ".nxs-fontzen-{$currentfontidentifier} { font-family: $hetfont }";	
+		}
 
 		// output		
 		echo $css;
 		?>
-	</style>
+	</style><!-- HIERRR -->
 	<style type="text/css" id="dynamicCssVormgevingKleuren"></style>
 	<style type="text/css" id="dynamicCssVormgevingLettertypen"></style>
 	<?php nxs_render_dynamicservercss($sitemeta); ?>
@@ -9480,7 +9488,7 @@ function nxs_gethtmlforfiller()
 	return '<div class="nxs-clear nxs-filler"></div>';
 }
 
-function nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_showdropcap, $wrappingelement, $text_heightiq)
+function nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_showdropcap, $wrappingelement, $text_heightiq, $text_fontzen)
 {
 	if ( $text == "")
 	{
@@ -9496,9 +9504,9 @@ function nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_sh
 	if ($text_showdropcap != "") { $text_showdropcap_cssclass = 'nxs-dropcap'; }
 	
 	$text_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $text_alignment);
+	$text_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $text_fontzen);
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $text_alignment_cssclass, $text_showliftnote_cssclass, $text_showdropcap_cssclass);
-	
+	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $text_alignment_cssclass, $text_showliftnote_cssclass, $text_showdropcap_cssclass, $text_fontzen_cssclass);
 	
 	if ($text_heightiq != "") {
 		$heightiqprio = "p1";
@@ -9602,7 +9610,7 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 	return $result;
 }
 
-function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $text_heightiq)
+function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $text_heightiq, $button_fontzen)
 {
 	if ($button_text == "")
 	{
@@ -9616,6 +9624,7 @@ function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $desti
 	$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
 	$button_color = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
 	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
+	$button_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $button_fontzen);
 	
 	if ($destination_articleid != "")
 	{
@@ -9680,7 +9689,7 @@ function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $desti
 	
 	$result = '';
 	$result .= '<p class="' . $button_alignment . ' nxs-padding-bottom0">';
-	$result .= '<a target="' . $destination_target . '"' . $onclick . 'class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . '" href="' . $url . '">' . $button_text . '</a>';
+	$result .= '<a target="' . $destination_target . '"' . $onclick . 'class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '" href="' . $url . '">' . $button_text . '</a>';
 	$result .= '</p>';
 	
 	return $result;
