@@ -714,7 +714,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		nxs_renderplaceholderwarning($alternativehint); 
 	} else {
 		
-		// Title and filler
+		/* Title and filler
+		----------------------------------------------------------------------------------------------------*/
 		if ($icon == "" && $title == "") {
 			// nothing to show
 		} else if (($top_info_padding_cssclass != "") || ($icon != "") || ($top_info_color_cssclass != "")) {
@@ -752,7 +753,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 			echo $htmlfiller; 
 		}
 		
-		// Image and filler
+		/* Image and filler
+		----------------------------------------------------------------------------------------------------*/
 		if (nxs_isimageautofit($image_size) && $callout_text != "") {
 			echo '<div class="callout-cropper ' . $image_shadow . '">';
 			
@@ -775,7 +777,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 			echo $htmlfiller; 
 		}
 		
-		// Text and filler
+		/* Text and filler
+		----------------------------------------------------------------------------------------------------*/
 		echo $htmltext;
 		
 		if (
@@ -783,7 +786,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 			echo $htmlfiller; 
 		}
 		
-		// Button
+		/* Button
+		----------------------------------------------------------------------------------------------------*/
 		echo $htmlforbutton; 
 		
 		echo '<div class="nxs-clear"></div>';
