@@ -349,8 +349,8 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	if ($image_shadow != "") { $image_shadow = 'nxs-shadow'; }
 	
 	// Hover effects
-	if ($enlarge != "") { $enlarge = 'nxs-enlarge'; }
-	if ($grayscale != "") {	$grayscale = 'nxs-grayscale'; }
+	if ($enlarge != "" && ($destination_articleid != "" || $destination_url != "")) { $enlarge = 'nxs-enlarge'; }
+	if ($grayscale != "" && ($destination_articleid != "" || $destination_url != "")) {	$grayscale = 'nxs-grayscale'; }
 	
 	// Original vs stretched images
 	if ($image_size == 'original') {
