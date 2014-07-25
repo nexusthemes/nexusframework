@@ -133,6 +133,7 @@ function nxs_getstyletypeoptions() {
 			"values" 			=> array
 				(
 					"-"			=>nxs_l18n__("none", "nxs_td"),
+					"c@0-75"		=>nxs_l18n__("cropped icon 0.75x", "nxs_td"),
 				 	"c@1-0"		=>nxs_l18n__("cropped icon 1x", "nxs_td"),
 				 	"c@1-5"		=>nxs_l18n__("cropped icon 1.5x", "nxs_td"),
 				 	"c@2-0"		=>nxs_l18n__("cropped icon 2x", "nxs_td"),

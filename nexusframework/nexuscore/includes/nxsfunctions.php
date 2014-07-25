@@ -9848,6 +9848,10 @@ function nxs_getwpimagesize($value)
 		{
 			$result = "thumbnail";
 		}
+		else if ($factor == "0-75")
+		{
+			$result = "thumbnail";
+		}
 		else if ($factor == "1-5")
 		{
 			$result = "nxs_cropped_200x200";

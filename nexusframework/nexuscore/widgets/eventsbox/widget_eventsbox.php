@@ -127,6 +127,19 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 			),
 			
 			array( 
+				"id" 				=> "items_filter_hideeventsinpast",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Hide events in past", "nxs_td"),
+			),
+
+			array(
+				"id" 				=> "items_filter_maxcount",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Number of events", "nxs_td"),
+				"dropdown" 			=> array("@@@empty@@@"=>"default (no max)","1"=>"1","2"=>"2","3"=>"3","4"=>"4","5"=>"5","6"=>"6","7"=>"7","8"=>"8","9"=>"9","10"=>"10","20"=>"20","30"=>"30","40"=>"40","50"=>"50","100"=>"100")
+			),			
+			
+			array( 
 				"id" 				=> "wrapper_input_end",
 				"type" 				=> "wrapperend"
 			),
@@ -223,7 +236,7 @@ function nxs_parse_ddmmyyyy($value)
 ---------------------------------------------------------------------------------------------------- */
 
 function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args) 
-{	
+{
 	// Importing variables
 	extract($args);
 	
@@ -401,6 +414,8 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 	
 	echo $htmltitle;
 	
+	$nritemsshowing = 0;
+	
 	// Rendering of individual events
 	foreach ($structure as $pagerow)
 	{
@@ -432,6 +447,26 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 				$d2 = nxs_parse_ddmmyyyy($today_dd_mm_yyyy);
 				if ($d1 < $d2) {
 					// before today
+					$skipitem = true;
+				}
+			}
+			
+			// ensure we don't show too many items
+			if ($skipitem == false)
+			{
+				if ($items_filter_maxcount == "")
+				{
+					// good; show it!
+					$nritemsshowing++;
+				}
+				else if ($nritemsshowing < $items_filter_maxcount)
+				{
+					// good; show it!
+					$nritemsshowing++;
+				}
+				else
+				{
+					// too many; skip them!
 					$skipitem = true;
 				}
 			}
