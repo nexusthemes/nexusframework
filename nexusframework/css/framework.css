@@ -194,8 +194,9 @@ ul.icon-font-list .nxs-comments-count						{ position: absolute; color: white; w
 	width: 100%; 
 	text-align: center; 
 	text-transform: uppercase; 
-	font-size: 18px; 
-	line-height: 25px; height: 25px; 
+	font-size: 16px; 
+	line-height: 24px; 
+	height: 24px; 
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 }
@@ -204,11 +205,15 @@ ul.icon-font-list .nxs-comments-count						{ position: absolute; color: white; w
 	width: 100%; 
 	text-align: center; 
 	font-size: 28px; 
-	line-height: 45px; 
-	height: 45px; 
+	line-height: 44px; 
+	height: 44px; 
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
+.nxs-date.nxs-date-size-0-75								{ width: 60px; }
+.nxs-date.nxs-date-size-0-75 .month 						{ font-size: 12px; line-height: 18px; height: 18px; }
+.nxs-date.nxs-date-size-0-75 .day 							{ font-size: 21px; line-height: 33px; height: 33px; }
+
 
 /* DEFAULT LIST */
 ul.nxs-default-list				 							{ margin-bottom: 20px; }
