@@ -137,7 +137,18 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Number of events", "nxs_td"),
 				"dropdown" 			=> array("@@@empty@@@"=>"default (no max)","1"=>"1","2"=>"2","3"=>"3","4"=>"4","5"=>"5","6"=>"6","7"=>"7","8"=>"8","9"=>"9","10"=>"10","20"=>"20","30"=>"30","40"=>"40","50"=>"50","100"=>"100")
-			),			
+			),		
+			array(
+				"id" 				=> "date_size",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Date size", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"1-0" => nxs_l18n__("1x", "nxs_td"),
+					"0-75" => nxs_l18n__("0.75x", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),	
 			
 			array( 
 				"id" 				=> "wrapper_input_end",
@@ -488,7 +499,7 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 						// Date
 						if ($destination_url != "") { echo '<a href="' . $destination_url . '" target="_new" >'; }
 							echo '
-							<div class="nxs-date">
+							<div class="nxs-date nxs-date-size-'.$date_size.'">
 								<h4 class="icon nxs-border-width-1-0 month ' . $month_color_cssclass . '">' . $month . '</h4>
 								<h4 class="icon nxs-border-width-1-0 day ' . $day_color_cssclass . '">' . $day . '</h4>	
 							</div>';
