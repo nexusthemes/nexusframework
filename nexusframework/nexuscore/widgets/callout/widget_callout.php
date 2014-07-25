@@ -339,7 +339,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","subtitle", "button_text"));	
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","subtitle", "button_text","destination_url"));	
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
