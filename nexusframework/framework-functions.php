@@ -587,6 +587,16 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"cargarage;" => array
+		(		
+			"href"=>"/wordpress-themes/automotive/car-garage-wordpress-theme/",
+			"title"=>"Car Garage WordPress theme",
+		),
+		"singer;" => array
+		(
+			"href"=>"/wordpress-themes/music/singer-wordpress-theme/",
+			"title"=>"Singer WordPress theme",
+		),
 		"highschool;" => array
 		(
 			"href"=>"/wordpress-themes/education/high-school-wordpress-theme/",
