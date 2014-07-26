@@ -587,6 +587,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"pizzeria;" => array
+		(		
+			"href"=>"/wordpress-themes/restaurant/pizzeria-wordpress-theme/",
+			"title"=>"Pizzeria WordPress theme",
+		),
 		"cargarage;" => array
 		(		
 			"href"=>"/wordpress-themes/automotive/car-garage-wordpress-theme/",
