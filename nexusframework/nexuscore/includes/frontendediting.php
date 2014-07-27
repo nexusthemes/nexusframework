@@ -129,7 +129,9 @@
 		?>
 	}
 	
+	<?php
 	// returns the color scheme lookup, according to the latest persisted value on the server
+	?>
 	function nxs_js_getcolorsinpalette()
 	{
 		<?php
@@ -151,10 +153,14 @@
 		?>
 	}
 	
+	<?php
 	// returns the color scheme lookup, according to the latest persisted value on the server
+	?>
 	function nxs_js_getcolorschemeaccordingtoserverside()
 	{
+		<?php
 		// inject current colorscheme
+		?>
 		var colorschemelookup = 
 		{
 			<?php
@@ -217,9 +223,11 @@
 		
 		return colorschemelookup;
 	}
-	
+
+	<?php	
 	// retrieves the runtime manual css "template" to use,
 	// note that the css could contain placeholders (that's why its called a "template")
+	?>
 	function nxs_js_get_manualcsstemplate()
 	{
 		<?php 
@@ -464,7 +472,7 @@ foreach ($fontfams as $fontfam)
 
 
 <script type='text/javascript'>
-	// fast shake
+	// instant colorshake
 	nxs_js_colorshake();
 	
 	// reshake when the window is loaded; custom css tab and color pickers could apply
@@ -478,5 +486,3 @@ foreach ($fontfams as $fontfam)
 		}
 	);
 </script>
-
-
