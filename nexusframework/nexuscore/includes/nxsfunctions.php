@@ -9054,10 +9054,7 @@ function nxs_render_dynamicservercss($sitemeta)
 		<style type="text/css" id="nxs-dynamiccss-server-chunk-<?php echo $currentchunk; ?>"></style>
 		<?php
 	}
-	?>
-	<!-- add more chunks when needed... -->
-	
-	<?php
+	// add more chunks when needed... 
 }
 
 function nxs_render_manualcss($sitemeta)
@@ -9098,13 +9095,11 @@ function nxs_render_htmlcorescripts()
 {
 	?>
 	<script type='text/javascript'> var thickboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingthickbox.png" }; </script>	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<!-- see http://css-tricks.com/snippets/javascript/css-for-when-javascript-is-enabled/ -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script><?php
+	// see http://css-tricks.com/snippets/javascript/css-for-when-javascript-is-enabled/
+	?>
 	<script type="text/javascript">	
-		document.documentElement.className = 'js';
-		<?php
-		do_action('nxs_ext_injectinlinejsscriptfunctions');
-		?>		
+		document.documentElement.className = 'js'; <?php do_action('nxs_ext_injectinlinejsscriptfunctions'); ?>		
 	</script>
 	<noscript><?php do_action('nxs_ext_injectnoscript'); ?></noscript>
 	<?php 
@@ -9136,7 +9131,7 @@ function nxs_render_headstyles()
 		// output		
 		echo $css;
 		?>
-	</style><!-- HIERRR -->
+	</style>
 	<style type="text/css" id="dynamicCssVormgevingKleuren"></style>
 	<style type="text/css" id="dynamicCssVormgevingLettertypen"></style>
 	<?php nxs_render_dynamicservercss($sitemeta); ?>

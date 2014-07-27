@@ -410,7 +410,9 @@ if (is_admin)
 	<?php 
 }
 ?>
-<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/frontendediting-js.js" ></script>
+<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js"></script>
+<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-deferred.js" defer></script>
+<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-admin-deferred.js" defer></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	google.load('webfont','1');
