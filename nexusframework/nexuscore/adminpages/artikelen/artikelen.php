@@ -409,13 +409,13 @@
 			                                <?php } else if ($post_status == "trash") { ?> 
 			                                                               
 			                                <span>
-			                                	<a href="#" title="Permanent verwijderen" class='nxs-float-right nxs-margin-right10' onclick='nxs_js_delete_article("<?php echo $postid; ?>"); nxs_js_refreshcurrentpage(); return false;'>
+			                                	<a href="#" title="<?php nxs_l18n_e("Delete permanently", "nxs_td"); ?>" class='nxs-float-right nxs-margin-right10' onclick='nxs_js_delete_article("<?php echo $postid; ?>"); nxs_js_refreshcurrentpage(); return false;'>
 			                                		<span class='nxsiconbutton nxs-icon-lightning'></span>
 			                                		
 			                                	</a>
 			                                </span>
 			                                <span>
-			                                	<a href="#" title="Terugzetten" class='nxs-float-right nxs-margin-right10' onclick='nxs_js_restore_article("<?php echo $postid; ?>"); nxs_js_refreshcurrentpage(); return false;'>
+			                                	<a href="#" title="<?php nxs_l18n_e("Restore", "nxs_td"); ?>" class='nxs-float-right nxs-margin-right10' onclick='nxs_js_restore_article("<?php echo $postid; ?>"); nxs_js_refreshcurrentpage(); return false;'>
 			                                		<span class='nxsiconbutton nxs-icon-checkmark'></span>
 			                                	</a>
 			                                </span>

@@ -581,6 +581,63 @@ function nxs_widgets_blog_home_getoptions($args)
 				"type" 				=> "wrapperend",
 				"unistylablefield"	=> true
 			),
+			
+			/* BUTTON
+			---------------------------------------------------------------------------------------------------- */
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Button", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
+			array(
+				"id" 				=> "button_text",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
+				"placeholder"		=> "Read more",
+				"localizablefield"	=> true
+			),	
+			array(
+				"id" 				=> "destination_articleid",
+				"type" 				=> "article_link",
+				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
+			),
+			array(
+				"id" 				=> "destination_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("External link", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("http://www.nexusthemes.com", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
+				"localizablefield"	=> true
+			),
+			array(
+				"id" 				=> "button_scale",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button scale", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_scale"),
+				"unistylablefield"	=> true,
+			),
+			array( 
+				"id" 				=> "button_color",
+				"type" 				=> "colorzen", 
+				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "button_alignment",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_halignment"),
+				"unistylablefield"	=> true,
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),
 		)		
 	);
 	
@@ -1017,6 +1074,30 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 			ob_end_clean();
 		}
 		
+		/* BUTTON
+		---------------------------------------------------------------------------------------------------- */
+		
+		// Button aligment
+		$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
+		
+		// Button color
+		$button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
+		
+		// Button scale
+		$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
+		
+		// Button	
+		$button_html = "";
+		if ($destination_articleid != "") {
+			$button_html = '<a href="' . $destination_url .'" class="nxs-button ' . $button_color_cssclass .' ' . $button_scale_cssclass .'">' . $button_text . '</a>';
+		} else if ($destination_url != "") {
+			$button_html = '<a href="' . $destination_url .'" class="nx-button ' . $button_color_cssclass .' ' . $button_scale_cssclass .'" target="_blank">' . $button_text . '</a>';
+		}
+		
+		// Applying alignment to button
+		$button_html = '<p class="' . $button_alignment . ' nxs-padding-bottom0">' . $button_html . '</p>';
+		
+		
 		/* OUTPUT
 		---------------------------------------------------------------------------------------------------- */
 		
@@ -1248,7 +1329,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					
 					// Blogentry button
 					if ($item_button_text != "") {
-						$button = '
+						$item_button_html = '
 							<p class="' . $item_button_alignment . ' nxs-padding-bottom0">
 								<a class="nxs-button ' . $item_button_scale . ' ' . $item_button_color_cssclass . '" href="' . $currentposturl . '">' . $item_button_text . $item_button_icon_right . '</a>
 							</p>';
@@ -1377,7 +1458,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 							
 							echo $htmlforimage;
 							echo $tekst;
-							echo $button;
+							echo $item_button_html;
 							
 							if ($items_filter_maxcount != 1) { echo '<div class="nxs-clear nxs-padding-top20"></div>'; }
 				
@@ -1428,6 +1509,10 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 
 		echo '</div>';
 	}
+	
+	if ($button_text != "") {echo '<div class="nxs-clear padding"></div>';}
+		echo $button_html;
+
 		
 	/* ------------------------------------------------------------------------------------------------- */
 	 
