@@ -22,6 +22,7 @@ function nxs_popup_optiontype_select_renderhtmlinpopup($optionvalues, $args, $ru
       <select id='<?php echo $id; ?>' class="chosen-select" onchange="nxs_js_popup_setsessiondata('<?php echo $id; ?>', jQuery(this).val()); <?php echo $popuprefreshonchangeaction; ?> ">
       	<?php 
     		// dropdown is specified as keys and values
+    		$isfound = false;
       	foreach ($dropdown as $currentkey => $currentvalue) 
       	{
       		if ($currentkey == "@@@nxsempty@@@")
@@ -32,12 +33,21 @@ function nxs_popup_optiontype_select_renderhtmlinpopup($optionvalues, $args, $ru
       		$selected = "";
       		if ($currentkey == $value) 
       		{
+      			$isfound = true;
       			$selected ="selected='selected'";
       		}
       		?>
           <option <?php echo $selected; ?> value='<?php echo $currentkey; ?>'><?php echo $currentvalue; ?></option>
           <?php 
         } 
+        
+        if (!$isfound)
+        {
+        	$selected ="selected='selected'";
+        	?>
+        	<option <?php echo $selected; ?> value='<?php echo $value; ?>'>Value not (or no longer) supported: <?php echo $value; ?></option>
+        	<?php
+        }
         ?>
       </select>
     </div>

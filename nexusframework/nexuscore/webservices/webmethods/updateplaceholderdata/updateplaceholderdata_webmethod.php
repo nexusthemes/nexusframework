@@ -1,4 +1,4 @@
-	<?php
+<?php
 function nxs_webmethod_updateplaceholderdata() 
 {
 	// TODO: this function should eventually be removed in favor of updategenericpopupdata_webmethod,

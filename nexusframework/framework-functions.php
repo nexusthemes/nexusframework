@@ -173,6 +173,11 @@ require_once(NXS_FRAMEWORKPATH . '/nexuscore/extensions/commentsproviders/commen
 
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/webservices/webservices.php'); 
 
+// handle webmethod, is this is a webmethod
+// note that if this _is_ a webmethod, the system will stop execution after this method
+add_action('init', 'nxs_handlewebmethods', 9999);
+
+
 // compliance with feeds
 nxs_addfeedsupport();
 
@@ -329,6 +334,11 @@ function nxs_init()
   		{
   			echo "siteurl:" . get_site_url() . "<br />";
   			echo "homeurl:" . get_home_url() . "<br />";
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "serversoftware") 
+  		{
+  			echo $_SERVER["SERVER_SOFTWARE"];
   			die();
   		}
 	  	else if ($_REQUEST["nxs"] == "phpinfo")
@@ -1251,11 +1261,7 @@ add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');
 
 // ensures all templates are processed by our drag'drop system, enabling configurable (sub)headers, sidebars, (sub)footers and pagedecorators
 function nxs_template_include($template)
-{	
-	// handle webmethod, is this is a webmethod
-	// note that if this _is_ a webmethod, the system will stop execution after this method
-	nxs_handlewebmethods();
-	
+{
 	// force all pages to be handled by page-template.php	(using prio 20)
 	// note, this overrides all regular templates (like woocommerce), on purpose
 

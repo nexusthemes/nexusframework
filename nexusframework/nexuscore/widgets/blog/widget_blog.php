@@ -185,13 +185,30 @@ function nxs_widgets_blog_home_getoptions($args)
 				"label" 				=> nxs_l18n__("Single blog entry title", "nxs_td"),
 				"unistylablefield"	=> true
 			),	
-				
+			
+			/*	
 			array( 
 				"id" 				=> "hide_title",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Hide title", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			*/
+			
+			array(
+				"id" 				=> "item_title_format",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title format", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					""							=> nxs_l18n__("Default", "nxs_td"),
+					"{{{title}}}"				=> nxs_l18n__("Title", "nxs_td"),
+					"{{{title}}} {{{date}}}"				=> nxs_l18n__("Title date", "nxs_td"),
+					"none"		=> nxs_l18n__("Hidden", "nxs_td")
+				),
+				"unistylablefield"	=> true
+			),
+			
 			array(
 				"id" 				=> "item_title_heading",
 				"type" 				=> "select",
@@ -1089,6 +1106,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		// Button	
 		$button_html = "";
 		if ($destination_articleid != "") {
+			$destination_url = nxs_geturl_for_postid($destination_articleid); 
 			$button_html = '<a href="' . $destination_url .'" class="nxs-button ' . $button_color_cssclass .' ' . $button_scale_cssclass .'">' . $button_text . '</a>';
 		} else if ($destination_url != "") {
 			$button_html = '<a href="' . $destination_url .'" class="nx-button ' . $button_color_cssclass .' ' . $button_scale_cssclass .'" target="_blank">' . $button_text . '</a>';
@@ -1227,14 +1245,34 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					$currentposturl = nxs_geturl_for_postid($currentpostid);
 					$currentencodedposturl = urlencode($currentposturl);
 					$currentposttitle = $currentpost->post_title;
+					$currentpostdate = strtotime($currentpost->post_date);
+					$localizeddate = date_i18n(get_option('date_format'), $currentpostdate);
 					$currentencodedtitle = urlencode($currentposttitle);
 					$item_destination_articleid = $currentpostid;
 	
-					// Blog title			
-					if ($hide_title == "") {
+					// Blog title		
+					if ($hide_title != "")
+					{
+						// no title (obsolete)
+					}
+					else if ($item_title_format == "none")
+					{
+						// no title
+					}
+					else
+					{
+						if ($item_title_format == "")
+						{
+							// default
+							$item_title_format = "{{{title}}}";
+						}
+						$title_value = $item_title_format;
+						$title_value = str_replace("{{{title}}}", $currentposttitle, $title_value);	
+						$title_value = str_replace("{{{date}}}", $localizeddate, $title_value);	
+					
 						$blogtitel = '
 						<' . $itemheadingelement . ' class="nxs-title nxs-applylinkvarcolor '.$cssclasses.'">
-							<a href="' . $currentposturl . '">' . $currentposttitle . '</a>
+							<a href="' . $currentposturl . '">' . $title_value . '</a>
 						</' . $itemheadingelement . '>';
 					}
 				
@@ -1244,19 +1282,19 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 						// Date
 						if ($item_showdate != "" && ($metadata_layout == "" || $metadata_layout == "default")) {
 							
-							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpost->post_date));
+							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpostdate));
 							$datum = '
-								<span class="nxs-day">' 	. mysql2date('j', $currentpost->post_date) . '</span>
+								<span class="nxs-day">' 	. mysql2date('j', $currentpostdate) . '</span>
 								<span class="nxs-month">' 	. $monthhtml . '</span>
-								<span class="nxs-year">' 	. mysql2date('Y', $currentpost->post_date) . '</span>';
+								<span class="nxs-year">' 	. mysql2date('Y', $currentpostdate) . '</span>';
 						
 						} else if ($item_showdate != "" && $metadata_layout == "date-highlight") {
 							
-							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpost->post_date));
+							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpostdate));
 							$datum = '
 							<div class="nxs-date">
 								<h4 class="month nxs-border-width-1-0 ' . $month_color_cssclass . '">' 	. $monthhtml . '</h4>
-								<h4 class="day nxs-border-width-1-0 ' . $day_color_cssclass . '">' 	. mysql2date('j', $currentpost->post_date) . '</h4>	
+								<h4 class="day nxs-border-width-1-0 ' . $day_color_cssclass . '">' 	. mysql2date('j', $currentpostdate) . '</h4>	
 							</div>';
 						}
 						
