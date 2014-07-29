@@ -439,38 +439,43 @@ foreach ($fontfams as $fontfam)
 {
 	$fontsbeingused[]= $fontfam;
 }
-?>	
-<script>
-	WebFont.load
-	(
-		{
-			google: 
-			{ 
-      	families: 
-      	[
-      		<?php
-      		$isfirstfont = true;
-      		foreach ($fontsbeingused as $currentfont)
-      		{
-      			if ($isfirstfont == false)
-      			{
-      				echo ",";
-      			}
-      			else
-      			{
-      				$isfirstfont = false;
-      			}
-      			echo "'{$currentfont}'";
-      		}
-      		?>
-      		
-      	] 
-      }
-		}
-	); 
-</script>
-
-
+?>
+<?php
+if (count($fontsbeingused) > 0)
+{
+	?>
+	<script>
+		WebFont.load
+		(
+			{
+				google: 
+				{ 
+	      	families: 
+	      	[
+	      		<?php
+	      		$isfirstfont = true;
+	      		foreach ($fontsbeingused as $currentfont)
+	      		{
+	      			if ($isfirstfont == false)
+	      			{
+	      				echo ",";
+	      			}
+	      			else
+	      			{
+	      				$isfirstfont = false;
+	      			}
+	      			echo "'{$currentfont}'";
+	      		}
+	      		?>
+	      		
+	      	] 
+	      }
+			}
+		); 
+	</script>
+	<?php
+}
+?>
 <script type='text/javascript'>
 	// instant colorshake
 	nxs_js_colorshake();

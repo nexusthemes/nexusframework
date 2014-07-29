@@ -83,7 +83,7 @@
 			// activate WITH 1clickcontent
 			?>
 			<script type='text/javascript'>
-				jQuery(window).load
+				jQuery(window).ready
 				(
 					function()
 					{
@@ -424,7 +424,7 @@
 					{
 						nxs_js_alert_sticky("<?php echo nxs_l18n__("Hint: site is under development.", "nxs_td"); ?>");
 					}
-					else if (lowercase.indexOf("bytes exhausted (tried to allocate") > -1))
+					else if (lowercase.indexOf("bytes exhausted (tried to allocate") > -1)
 					{
 						// solutions; http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28
 						nxs_js_alert_sticky("<?php echo nxs_l18n__("Hint: not enough memory. See http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28", "nxs_td"); ?>");
