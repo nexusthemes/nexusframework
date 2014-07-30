@@ -9628,7 +9628,19 @@ function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $desti
 	}
 	else if ($destination_url != "")
 	{
-		$url = $destination_url;
+		if (nxs_stringstartswith($destination_url, "tel:"))
+		{
+			// a phone link; if parenthesis or spaces are used; absorb them
+			$url = $destination_url;
+			$url = str_replace(" ", "", $url);
+			$url = str_replace("(", "", $url);
+			$url = str_replace(")", "", $url);
+		}
+		else
+		{
+			// regular link
+			$url = $destination_url;
+		}
 		$onclick = "";
 	}
 	else if ($destination_js != "")
