@@ -452,6 +452,9 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// Localize atts
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
+	// Lookup atts
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("line1","line2"));
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";

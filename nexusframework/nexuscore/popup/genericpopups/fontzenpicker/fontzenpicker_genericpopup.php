@@ -62,7 +62,7 @@ function nxs_popup_genericpopup_fontzenpicker_getpopup($args)
 					if ($nxs_fontzenpicker_currentvalue != "") 
 					{
 						?>
-						<a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton1 nxs-float-right" onclick='nxs_js_selecticonitem(""); return false;'><?php nxs_l18n_e("No fontzen", "nxs_td"); ?></a>
+						<a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton1 nxs-float-right" onclick='nxs_js_selectitem(""); return false;'><?php nxs_l18n_e("No fontzen", "nxs_td"); ?></a>
 						<?php
 					}
 					?>
