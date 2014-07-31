@@ -175,7 +175,7 @@ require_once(NXS_FRAMEWORKPATH . '/nexuscore/webservices/webservices.php');
 
 // handle webmethod, is this is a webmethod
 // note that if this _is_ a webmethod, the system will stop execution after this method
-add_action('init', 'nxs_handlewebmethods', 9999);
+add_action('init', 'nxs_handlewebmethods', 999999);
 
 
 // compliance with feeds

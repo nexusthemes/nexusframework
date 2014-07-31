@@ -68,6 +68,7 @@ function nxs_webmethod_getseoanalysis()
 		$GLOBALS['wpseo_admin'] = new WPSEO_Admin;
 		
 		$posttoanalyze = get_post( $postid);
+		$post = $posttoanalyze;
 		$wpseo_metabox = new WPSEO_Metabox();
 		$calculatedresults = $wpseo_metabox->calculate_results($posttoanalyze);
 	}

@@ -1281,7 +1281,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 						
 						// Date
 						if ($item_showdate != "" && ($metadata_layout == "" || $metadata_layout == "default")) {
-							
+							$currentpostdate = $currentpost->post_date;
 							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpostdate));
 							$datum = '
 								<span class="nxs-day">' 	. mysql2date('j', $currentpostdate) . '</span>
@@ -1289,7 +1289,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 								<span class="nxs-year">' 	. mysql2date('Y', $currentpostdate) . '</span>';
 						
 						} else if ($item_showdate != "" && $metadata_layout == "date-highlight") {
-							
+							$currentpostdate = $currentpost->post_date;
 							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpostdate));
 							$datum = '
 							<div class="nxs-date">

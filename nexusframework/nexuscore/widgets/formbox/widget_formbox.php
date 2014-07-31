@@ -377,7 +377,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("internal_email"));
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("internal_email", "sender_email"));
 
 	
 	// Output the result array and setting the "result" position to "OK"
@@ -446,7 +446,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		// ensure its valid
 		if (!nxs_isvalidemailaddress($sender_email))
 		{
-			$alternativemessage = nxs_l18n__("Warning: sender email is not filled with a valid email address", "nxs_td");
+			$alternativemessage = nxs_l18n__("Warning: sender email is not filled with a valid email address ($sender_email)", "nxs_td");
 		}	
 	}
 	
@@ -720,8 +720,8 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	$args["title_heading"] = "2";			
 	
 	// Form
-	$args["internal_email"] = "dummy@dummyaddress.com"; // $current_user->user_email;
-	$args["sender_email"] = "dummy@dummyaddress.com";
+	$args["internal_email"] = "{{email}}"; // $current_user->user_email;
+	$args["sender_email"] = "{{email}}";
 	$args["sender_name"] = "Website name";
 	$args['mail_body_includesourceurl'] = "true";
 	$args["subject_email"] = nxs_l18n__("form submit", "nxs_td");

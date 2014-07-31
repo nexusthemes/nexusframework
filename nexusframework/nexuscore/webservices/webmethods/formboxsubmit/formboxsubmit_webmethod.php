@@ -129,7 +129,7 @@ function nxs_webmethod_formboxsubmit()
 		$metadata = nxs_localization_localize($metadata);
 
 		// Lookup atts
-		$metadata = nxs_filter_translatelookup($metadata, array("internal_email"));
+		$metadata = nxs_filter_translatelookup($metadata, array("internal_email", "sender_email"));
 
 	 	extract($metadata);
 	
