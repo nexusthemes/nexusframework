@@ -1597,6 +1597,13 @@ function nxs_storemedia($args)
 			//error_log("found data directory in theme, using that one; $sourcefile");
 			// if the data folder exists, import from that directory
 			$result = nxs_storemedia_fromtheme($args);
+			
+			if ($result === false)
+			{
+				// TODO: do not log error; on our prod server this is not very practical
+				error_log("did NOT find a data directory in theme, using fallback implementation; $sourcefile");
+			 	$result = nxs_storemedia_remotehttpdownload($args);
+			}
 		}
 		else
 		{

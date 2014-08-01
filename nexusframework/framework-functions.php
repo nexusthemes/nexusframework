@@ -597,6 +597,31 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"pettingzoo;" => array
+		(
+			"href"=>"/wordpress-themes/agriculture/petting-zoo-wordpress-theme/",
+			"title"=>"Petting zoo WordPress theme",
+		),	
+		"funeralhome;" => array
+		(		
+			"href"=>"/wordpress-themes/death-care/funeral-home-wordpress-theme/",
+			"title"=>"Funeral home WordPress theme",
+		),
+		"swimmingpooldealer;" => array
+		(		
+			"href"=>"/wordpress-themes/maintenance-services/swimming-pool-dealer-wordpress-theme/",
+			"title"=>"Swimming pool dealer WordPress theme",
+		),
+		"nailsalon;" => array
+		(		
+			"href"=>"/wordpress-themes/beauty/nail-salon-wordpress-theme/",
+			"title"=>"Nail salon WordPress theme",
+		),
+		"seocompany;" => array
+		(		
+			"href"=>"/wordpress-themes/business/seo-company-wordpress-theme/",
+			"title"=>"SEO Company WordPress theme",
+		),
 		"pizzeria;" => array
 		(		
 			"href"=>"/wordpress-themes/restaurant/pizzeria-wordpress-theme/",
@@ -671,11 +696,6 @@ function nxs_render_postfooterlink()
 		(
 			"href"=>"/wordpress-themes/landscaping/landscaping-wordpress-theme/",
 			"title"=>"Landscaping WordPress theme",
-		),
-		"childrensfarm;" => array
-		(
-			"href"=>"/wordpress-themes/agriculture/childrens-farm-wordpress-theme/",
-			"title"=>"Childrens farm WordPress theme",
 		),
 		"massage;" => array
 		(
