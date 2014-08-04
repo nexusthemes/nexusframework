@@ -429,7 +429,7 @@ function nxs_widgets_tumbler_render_webpart_render_htmlvisualization($args)
 							<span class="content '.$text_bg_cssclass.'" style="height: '.$container_height.'; '.$transform_content.'">
 								<div class="content-shadow" style="height: '.$container_height.';">
 									<div class="content-wrapper" style="height: '.$container_height.'; '. $image_border_width_tumbler.' '.$display_table.'">
-										<div class="content-container">';
+										<div class="content-container nxs-default-p">';
 								
 											echo $htmltext_default;
 											if ($htmlforbutton != "") {
