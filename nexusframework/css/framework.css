@@ -2482,3 +2482,14 @@ h3#order_review_heading,
 .nxs-icon-network:before 			{ content: "\e681"; }
 .nxs-icon-calendar:before 			{ content: "\e632"; }
 .nxs-icon-rss:before 				{ content: "\e6e9"; }
+
+.nxs-icon-train1:before 			{ content: "\f000"; }
+.nxs-icon-dry-van:before 			{ content: "\f001"; }
+.nxs-icon-snowflake1:before			{ content: "\f002"; }
+.nxs-icon-stopwatch1:before 		{ content: "\f003"; }
+.nxs-icon-flat-bed:before 			{ content: "\f004"; }
+.nxs-icon-truck3:before 			{ content: "\f005"; }
+.nxs-icon-trolley:before 			{ content: "\f006"; }
+.nxs-icon-warehouse:before 			{ content: "\f007"; }
+
+
