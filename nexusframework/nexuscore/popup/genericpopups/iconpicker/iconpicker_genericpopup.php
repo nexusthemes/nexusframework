@@ -215,15 +215,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										
 										"security-camera",
 										"safe",
-										//"fan",
-										//"sofa",
-										//"paw",
-										//"vacuum-cleaner",
-										
-										//"bus",
-										//"bicycle",
-										//"soccer",
-										//"carousel",
+										"snowflake1",
+										"stopwatch1",
+										"trolley",
 	
 									);
 										
@@ -260,6 +254,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"apartment",
 										"company",
 										"library", 
+										"warehouse",
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -572,6 +567,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"truck",
 										"car",
 										"airplane",
+										"train1",
+										"dry-van",
+										"flat-bed",
+										"truck3",
 									);
 										
 									foreach($icontypes as $currenticontype)
