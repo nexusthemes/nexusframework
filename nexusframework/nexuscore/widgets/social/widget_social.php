@@ -148,7 +148,14 @@ function nxs_widgets_social_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("If you want to place a link to the Youtube account, place it here. Don't use the full url!", "nxs_td"),
 				"unicontentablefield" => true,
 			),
-			
+			array(
+				"id" 				=> "pinterest_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Pinterest link", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Use full url or leave blank to skip this item", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to place a link to the Pinterest account, place it here. Use the full url!", "nxs_td"),
+				"unicontentablefield" => true,
+			),
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
@@ -213,7 +220,13 @@ function nxs_widgets_social_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Youtube icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			
+			array( 
+				"id" 				=> "pinterest_imageid",
+				"type" 				=> "image",
+				"label" 			=> nxs_l18n__("Custom Pinterest icon", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Pinterest icon.", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
@@ -332,6 +345,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	$linkedin_url == "" &&
 	$googleplus_url == "" &&
 	$youtube_url == "" &&
+	$pinterest_url == "" &&
 	nxs_has_adminpermissions()) {
 		$shouldrenderalternative = true;
 	}
@@ -344,6 +358,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		if ($linkedin_url != "") 	{ $linkedin_url = 		'<li><a target="_blank" href="' . $linkedin_url . '">	<span class="nxs-icon-linkedin"></span></a></li>'; }
 		if ($googleplus_url != "") 	{ $googleplus_url = 	'<li><a target="_blank" href="' . $googleplus_url . '">	<span class="nxs-icon-google-plus"></span></a></li>'; }
 		if ($youtube_url != "") 	{ $youtube_url = 		'<li><a target="_blank" href="' . $youtube_url . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
+		if ($pinterest_url != "") 	{ $pinterest_url = 		'<li><a target="_blank" href="' . $pinterest_url . '">	<span class="nxs-icon-pinterest"></span></a></li>'; }
 		
 		if 		($halign == 'left') 	{ $alignment = ''; } 
 		else if ($halign == 'center') 	{ $alignment = 'nxs-center'; } 
@@ -358,6 +373,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 					. $linkedin_url
 					. $googleplus_url
 					. $youtube_url
+					. $pinterest_url
 					. '
 				</ul>
 			</div>
@@ -496,6 +512,28 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 			</a>';	
 	}
 	
+	// PINTEREST
+	// If the accountname is set and there's no custom icon
+	if ($pinterest_url != "" && $pinterest_imageid == "") {
+		
+		$pinterest_url = '<a href="' . $pinterest_url . '" target="_new" class="nxs-social-pinterest" ><li></li></a>';
+	
+	// If both the accountname and a custom icon is set
+	} else if ($pinterest_url != "" && $pinterest_imageid != "") {
+	
+		$imagemetadata= wp_get_attachment_image_src($pinterest_imageid, 'full', true);
+		
+		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
+		$pinterest_imageurl 		= $imagemetadata[0];
+		$pinterest_imagewidth 	= $imagemetadata[1] . "px";
+		$pinterest_imageheight 	= $imagemetadata[2] . "px";
+	
+		$pinterest_url = '
+			<a href="' . $pinterest_url . '" target="_new" style="width: ' . $pinterest_imagewidth . '; height: ' . $pinterest_imageheight . ';">
+				<li style="background: url(' . $pinterest_imageurl . ') no-repeat; width: ' . $pinterest_imagewidth . '; height: ' . $pinterest_imageheight . ';"></li>
+			</a>';	
+	}
+	
 	// Alignment
 	if 		($halign == 'left') {
 		$text_alignment = 'text-align: left;';
@@ -513,13 +551,13 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	else if ($halign == 'right') {$halign = 'nxs-float-right'; }
 	
 	// Social list
-	if ($rss_url == "" && $twitter_url == "" && $facebook_url == "" && $linkedin_url == "" && $googleplus_url == "" && $youtube_url == "") {
+	if ($rss_url == "" && $twitter_url == "" && $facebook_url == "" && $linkedin_url == "" && $googleplus_url == "" && $youtube_url == "" && $pinterest_url == "") {
 		// do nothing
 	} else {
 		$social_list = '
 			<div class="' . $halign . '">
 				<ul class="nxs-social-list">
-					' . $rss_url . $twitter_url . $facebook_url . $linkedin_url . $googleplus_url . $youtube_url . '
+					' . $rss_url . $twitter_url . $facebook_url . $linkedin_url . $googleplus_url . $youtube_url . $pinterest_url. '
 				</ul>
 			</div>
 		';
@@ -573,6 +611,4 @@ function nxs_widgets_social_initplaceholderdata($args)
 	
 	return $result;
 }
-
-
 ?>
