@@ -229,11 +229,11 @@ three other one-fourths. This is necessary for individual rows to be completely 
 .nxs-slide-description-content h2 									{ font-size: 23px; }
 .nxs-slide-description-content p 									{ font-size: 14px; }
 }
-@media only screen and ( max-width: 959px ) { 
+/*@media only screen and ( max-width: 959px ) { 
 .nxs-slide-description,
 .main-controllers-bg,
 .nxs-slider-controller												{ display: none; }
-}
+}*/
 
 /* CONTAINER ALIGNMENT (middle and bottom)
 ------------------------------------------------------------------------------------------ */
