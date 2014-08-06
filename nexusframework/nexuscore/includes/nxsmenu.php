@@ -197,64 +197,69 @@
 		     		            
                           <?php
 		     		              	$palettenames = nxs_colorization_getpalettenames();
-		     		              	$activepalettename = nxs_colorization_getactivepalettename();
-														$foundatleastone = false;
-														
-														$what = array("showactiveitems", "showinactiveitems");
-														
-														foreach ($what as $whatnow)
+		     		              	$shouldrenderpalette = count($palettenames) > 1;
+														if ($shouldrenderpalette)
 														{
-															foreach ($palettenames as $key=>$currentpalettename) 
+			     		              	$activepalettename = nxs_colorization_getactivepalettename();
+															$foundatleastone = false;
+															
+															$what = array("showactiveitems", "showinactiveitems");
+															
+															foreach ($what as $whatnow)
 															{
-																if ($whatnow == "showactiveitems")
+																foreach ($palettenames as $key=>$currentpalettename) 
 																{
-																	// only show active one
-																	if ($currentpalettename != $activepalettename)
+																	if ($whatnow == "showactiveitems")
 																	{
-																		continue;
+																		// only show active one
+																		if ($currentpalettename != $activepalettename)
+																		{
+																			continue;
+																		}
 																	}
-																}
-																else if ($whatnow == "showinactiveitems")
-																{
-																	// only show active one
-																	if ($currentpalettename == $activepalettename)
+																	else if ($whatnow == "showinactiveitems")
 																	{
-																		continue;
+																		// only show active one
+																		if ($currentpalettename == $activepalettename)
+																		{
+																			continue;
+																		}
 																	}
-																}
-																
-																if ($key == "@@@nxsempty@@@") {
-																	// skip
-																	$currentpalettename = "";
-																} else {
-																	$foundatleastone = true;
 																	
-																	echo'
-																		<div class="block nxs-width200 nxs-float-left nxs-margin-right10">
-																			<div class="content2">
-																				<div class="box">';
-																					// Function to render color palette
-																					nxs_colorization_renderpalette($currentpalettename);
+																	if ($key == "@@@nxsempty@@@") {
+																		// skip
+																		$currentpalettename = "";
+																	} else {
+																		$foundatleastone = true;
+																		
+																		echo'
+																			<div class="block nxs-width200 nxs-float-left nxs-margin-right10">
+																				<div class="content2">
+																					<div class="box">';
+																						
+																						nxs_colorization_renderpalette($currentpalettename);
+																						
+																						// Activate button
+																						if ($activepalettename != $currentpalettename) {																
+																							echo'<a class="nxsbutton1 nxs-float-right" href="#" onclick="nxs_js_menu_activatepalette(\'' . $currentpalettename . '\'); return false;">Activate</a>';
+																							//echo "[" . $activepalettename . "] / [" ;
+																							//echo $currentpalettename;
+																							//echo "]";
+																						}
 																					
-																					// Activate button
-																					if ($activepalettename != $currentpalettename) {																
-																						echo'<a class="nxsbutton1 nxs-float-right" href="#" onclick="nxs_js_menu_activatepalette(\'' . $currentpalettename . '\'); return false;">Activate</a>';
-																						//echo "[" . $activepalettename . "] / [" ;
-																						//echo $currentpalettename;
-																						//echo "]";
-																					}
-																				
-																					echo'
-																					<div class="nxs-clear"></div>
-																				</div> <!-- END box -->
-																			</div> <!-- END content -->
-																		</div> <!-- END block -->';
+																						echo'
+																						<div class="nxs-clear"></div>
+																					</div> <!-- END box -->
+																				</div> <!-- END content -->
+																			</div> <!-- END block -->';
+																	}
 																}
 															}
-														}
-														?>
-		     		              	<div class="nxs-clear"></div>
-		     		              	
+															?>
+			     		              	<div class="nxs-clear"></div>
+		     		              	<?php
+		     		              	}
+		     		              	?>
 		     		              </div>
 
 		                      <div style='<?php echo $coloradjustdisplaystyle; ?>'>
