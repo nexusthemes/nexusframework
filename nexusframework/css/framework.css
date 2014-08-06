@@ -150,6 +150,21 @@ a:hover .nxs-title,
 .nxs-form input												{ height: 30px; line-height: 30px; text-indent: 10px; margin-bottom: 10px; }
 .nxs-form textarea											{ min-height: 200px; width: 98%; padding: 1%; }
 .nxs-form .invalidcontent									{ background-color: red; }
+.nxs-form select { 
+	float: right;
+	font-size: 15px; 
+	padding: .4em; 
+	background-color: #fff; 
+	box-shadow: 0px 0px 0px 1px gray inset; 
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	border: 0;
+	border-radius: 3px;
+	-webkit-appearance: none;
+	-moz-appearance: 	none;
+	appearance: 		none;
+}
 
 /* DEFAULT FILLER */
 .nxs-filler													{ padding: 5px 0; }
@@ -2491,5 +2506,6 @@ h3#order_review_heading,
 .nxs-icon-truck3:before 			{ content: "\f005"; }
 .nxs-icon-trolley:before 			{ content: "\f006"; }
 .nxs-icon-warehouse:before 			{ content: "\f007"; }
+
 
 
