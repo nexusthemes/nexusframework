@@ -122,7 +122,6 @@ function nxs_widgets_text_home_getoptions($args)
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),
 			),
-
 			array(
 				"id" 				=> "text",
 				"type" 				=> "tinymce",
@@ -138,7 +137,6 @@ function nxs_widgets_text_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("text_halignment"),
 				"unistylablefield"	=> true
 			),
-			
 			array( 
 				"id" 				=> "wrapper_text_end",
 				"type" 				=> "wrapperend"
@@ -346,7 +344,12 @@ function nxs_widgets_text_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Grayscale hover effect", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			
+			array(
+				"id" 				=> "fx",
+				"type" 				=> "effects",
+				"label" 			=> nxs_l18n__("Effects", "nxs_td"),
+			),
+
 			array( 
 				"id" 				=> "wrapper_misc_end",
 				"type" 				=> "wrapperend",
@@ -381,8 +384,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Callout banner color", "nxs_td"),
 				"sampletext"		=> nxs_l18n__("Sample", "nxs_td"),
 				"unistylablefield"	=> true
-			),
-			
+			),			
 			array( 
 				"id" 				=> "wrapper_misc_end",
 				"type" 				=> "wrapperend",

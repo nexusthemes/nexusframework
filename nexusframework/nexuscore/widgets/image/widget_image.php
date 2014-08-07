@@ -312,6 +312,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	$title == "" &&
 	nxs_has_adminpermissions()) {
 		$shouldrenderalternative = true;
+		$alternativehint = nxs_l18n__("Missing required field: at least the title or the image should be configured.", "nxs_td");
 	}
 	
 	// Image metadata
@@ -394,10 +395,13 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	if ($shouldrenderalternative) {
-		
-		nxs_renderplaceholderwarning(nxs_l18n__("Missing input", "nxs_td")); 
-		
+	if ($shouldrenderalternative) 
+	{
+		if ($alternativehint == "") 
+		{
+			$alternativehint = nxs_l18n__("Missing input", "nxs_td");
+		}
+		nxs_renderplaceholderwarning($alternativehint);			
 	} else {
 		
 		// logo class is necessary to enable autoscaling for "original" sized images

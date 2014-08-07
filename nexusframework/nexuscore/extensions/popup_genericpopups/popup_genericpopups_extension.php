@@ -81,5 +81,6 @@ nxs_ext_lazyload_popup_genericpopup("customhtml");
 nxs_ext_lazyload_popup_genericpopup("unistylepersister");
 nxs_ext_lazyload_popup_genericpopup("datepicker");
 nxs_ext_lazyload_popup_genericpopup("fontzenpicker");
+nxs_ext_lazyload_popup_genericpopup("effectspicker");
 
 ?>

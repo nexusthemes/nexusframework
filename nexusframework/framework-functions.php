@@ -428,6 +428,16 @@ function nxs_init()
 				echo "Current locale is set to:" . $locale;
 				die();
 			}
+			else if ($_REQUEST["nxs"] == "dumppost")
+			{
+				$postid = $_REQUEST["postid"];
+				echo "dumppost $postid<br />";
+				
+				$origpost_meta_all = nxs_get_post_meta_all($postid);
+				var_dump($origpost_meta_all);
+				
+				die();
+			}
 		}
 	}
 	
@@ -1366,47 +1376,6 @@ function nxs_init_handledebug()
 			die();
 		}
 	}
-	
-	if (isset($_REQUEST["testimg"]))
-	{
-		if (nxs_has_adminpermissions())
-		{
-			switch_to_blog(22);			
-			$postid = 2312;
-			var_dump(get_post_meta($postid, "_wp_attachment_metadata"));
-			restore_current_blog();
-			echo "<br />";
-			echo "<br />";
-			switch_to_blog(25);			
-			$postid = 2839;
-			var_dump(get_post_meta($postid, "_wp_attachment_metadata"));
-			restore_current_blog();
-			
-			
-			/*
-			echo "before:<br />";
-			$md = get_post_meta($postid);
-			var_dump($md);
-			
-			require ( ABSPATH . 'wp-admin/includes/image.php' );
-			
-			$id = $postid;
-			$image = get_post( $id );
-			$fullsizepath = get_attached_file( $image->ID );
-			$metadata = wp_generate_attachment_metadata( $image->ID, $fullsizepath );
-			wp_update_attachment_metadata( $image->ID, $metadata );
-			
-			echo "<br />after:<br />";
-			
-			$md = get_post_meta($postid);
-			var_dump($md);
-			*/
-			
-			echo "done";
-			die();
-		}
-	}
-	
 	
 	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "sanitize")
 	{
