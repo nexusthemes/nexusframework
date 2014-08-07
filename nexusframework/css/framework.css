@@ -1757,7 +1757,6 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 .nxs-target a 												{ display: block; }
 .nxs-target .nxs-button										{ display: inline-block; }
 .nxs-target .icon {
-	margin-bottom: 10px;
 	width: 48px;
 	line-height: 48px;
 	font-size: 32px;
@@ -1769,6 +1768,7 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	-o-transition: 		font-size 300ms linear;
 	transition: 		font-size 300ms linear;
 }
+.nxs-target .icon-top .icon 								{ margin-bottom: 10px; }
 .nxs-target .content 										{ display: block; margin-left: 58px; }
 .nxs-target .main 											{ display: block;  }
 .nxs-target .icon 											{ font-size: 32px; }
