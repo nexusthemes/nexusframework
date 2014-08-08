@@ -861,10 +861,14 @@ h2.nxs-slide-title a 										{ text-decoration: none; }
 .widescreen-row .nxs-row1 .nxs-one-whole 					{ width: 100% !important; }
 .widescreen-row .nxs-slider-controller.fullwidth			{ width: 100%; }
 
-/* metadata layout */
+/* metadata layout 
 .center .nxs-slide-description-content:before				{ content: ''; display: inline-block; height: 100%; vertical-align: middle;	margin-right: -0.25em; }
 .center .nxs-slide-description-content						{ width: 100%; padding: 0px; text-align: center; }
-.center .text-container										{ display: inline-block; vertical-align: middle; }
+.center .text-container										{ display: inline-block; vertical-align: middle; } */
+
+/* metadata layout */
+.center .nxs-slide-description-content						{ display: table; width: 100%; padding: 0px; }
+.center .text-container										{ display: table-cell; vertical-align: middle; text-align: center; }
 
 /* YOUTUBE & VIMEO 
 ---------------------------------------------------------------------------------------------------- */
