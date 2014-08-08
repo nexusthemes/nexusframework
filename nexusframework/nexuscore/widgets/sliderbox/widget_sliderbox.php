@@ -652,7 +652,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					<div class="nxs-slide-description '.$metadata_layout.'">
 						
 						<div id="slide_description_content_'.$placeholderid.'_'.$slideindex.'" class="nxs-slide-description-content '.$bgcolor_cssclass.'" style="right: '.$border_width.'px; top: '.$border_width.'px; ">
-							<div class="text-container">' .
+							<div class="text-container" style="height: '.$fullwidth_height.';">' .
 								$title .
 								$text.'
 							</div>
