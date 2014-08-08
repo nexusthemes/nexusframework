@@ -28,6 +28,19 @@ function nxs_popup_genericpopup_effectspicker_getpopup($args)
 							<div class="box-content">
 								<?php
 									echo $nxs_effectspicker_currentvalue;
+									if ($nxs_effectspicker_currentvalue != "")
+									{
+										echo "AAP:<br />";
+										$jsonobject = json_decode($nxs_effectspicker_currentvalue);
+										var_dump($jsonobject);
+										echo "NOOT:<br />";
+										$jsonobject = json_decode($nxs_effectspicker_currentvalue, true);
+										var_dump($jsonobject);
+										echo "MIES:<br />";
+										$jsonobject = json_decode('{ "name": "Johnson" }');
+										var_dump($jsonobject);
+										echo "<br />";
+									}
 								?>
 							</div>
 						</div>
@@ -40,6 +53,7 @@ function nxs_popup_genericpopup_effectspicker_getpopup($args)
 			<div class="content2">
 				<div class="box">
 					<a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_popup_navigateto("<?php echo $nxs_effectspicker_invoker; ?>"); return false;'><?php nxs_l18n_e("Back", "nxs_td"); ?></a>
+					<a href='#' onclick='nxs_js_selectitem_v2(); return false;'>ZET JSON</a>
 				</div>
 				<div class="nxs-clear"></div>
 			</div> <!-- END content -->
@@ -48,14 +62,19 @@ function nxs_popup_genericpopup_effectspicker_getpopup($args)
 	
 	<script type='text/javascript'>
 	
+		function nxs_js_selectitem_v2() 
+		{
+			var str = '{ "name": "PIET" }';
+			nxs_js_log(str);
+			nxs_js_selectitem(str);
+		}
+	
 		function nxs_js_selectitem(item) 
 		{
-			/*
 			nxs_js_popup_setsessiondata("<?php echo $nxs_effectspicker_targetvariable; ?>", item);
 			nxs_js_popup_sessiondata_make_dirty();
 			// toon eerste scherm in de popup
 			nxs_js_popup_navigateto("<?php echo $nxs_effectspicker_invoker; ?>");
-			*/
 		}
 	
 	</script>

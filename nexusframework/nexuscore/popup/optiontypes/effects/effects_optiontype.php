@@ -18,18 +18,17 @@ function nxs_popup_optiontype_effects_renderhtmlinpopup($optionvalues, $args, $r
 	<div class="content2">
 	    <div class="box">';
 	    	echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip);
-	    	$tempvalue = '{ "name": "John\'son" }';
-	    	$value = nxs_render_html_escape_doublequote($tempvalue);
+	    	//$value = '{ \"name\": \"Johnson\" }';
 	    	?>
           <div class="box-content">
           	<ul>
 	          	<li onclick='nxs_js_starteffectspicker_<?php echo $id;?>(); return false;' style='cursor: pointer;' class='nxs-float-left'>
-	          		TODO
+	          		<?php echo $value; ?>
 							</li>
           	</ul>
           	<?php
           	echo '
-          	<input type="hidden" name="' . $id . '" id="' . $id . '" value="' . $value . '"></input>
+          	<input type="hidden" name="' . $id . '" id="' . $id . '" value=\''.$value.'\'></input>
           	<a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_starteffectspicker_' . $id . '(); return false;">' . nxs_l18n__("Change", "nxs_td") .'</a>
           </div>
         </div>

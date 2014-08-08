@@ -10285,43 +10285,6 @@ function nxs_loadplugin_twittertweets()
 	nxs_twitter_dispatchrequest();
 }
 
-function nxs_ensureloadpathisset()
-{
-	if ( !defined('WP_LOAD_PATH') ) 
-	{
-		/** classic root path if wp-content and plugins is below wp-config.php */
-		$classic_root = dirname(dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))))) . '/' ;
-		if (file_exists( $classic_root . 'wp-load.php') )
-		{
-			define( 'WP_LOAD_PATH', $classic_root);
-		}
-		else
-		{
-			// for shared framework environments its 2 folders less up ....
-			$classic_root_shared = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/' ;
-			if (file_exists( $classic_root_shared . 'wp-load.php') )
-			{
-				define( 'WP_LOAD_PATH', $classic_root_shared);
-			}
-			else
-			{
-				if (file_exists( $path . 'wp-load.php') )
-				{
-					define( 'WP_LOAD_PATH', $path);
-				}
-				else
-				{
-					exit("Could not find wp-load.php ($classic_root) ($path), see nxs-ajax.php");
-				}
-			}
-		}		
-	}
-	else
-	{
-		//		
-	}
-}
-
 function nxs_addfeedsupport()
 {
 	// text
