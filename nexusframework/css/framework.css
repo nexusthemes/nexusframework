@@ -66,6 +66,20 @@ body														{ height: 100%; }
 .nxs-stretch img,
 .nxs-stretch												{ width: 100% !important; height: auto !important; }
 .nxs-stretch.nxs-icon-left									{ float: none; }
+.nxs-size-contain { max-width: 100%; }
+.nxs-ratio-original { width: auto !important; height: auto !important; }
+.nxs-img-width-1-0 { width: 40px !important; }
+.nxs-img-width-2-0 { width: 80px !important; }
+.nxs-img-width-3-0 { width: 120px !important; }
+.nxs-img-width-4-0 { width: 160px !important; }
+.nxs-img-width-5-0 { width: 200px !important; }
+.nxs-img-width-6-0 { width: 240px !important; }
+.nxs-img-width-7-0 { width: 280px !important; }
+.nxs-img-width-8-0 { width: 320px !important; }
+.nxs-img-width-9-0 { width: 360px !important; }
+.nxs-img-width-10-0 { width: 400px !important; }
+.nxs-img-width-15-0 { width: 600px !important; }
+.nxs-img-width-22-0 { width: 880px !important; }
 
 /* backface visibility */
 .backface {

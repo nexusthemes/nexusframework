@@ -35,12 +35,14 @@ function nxs_webmethod_swapplaceholders()
 	{
 		$responseargs = array();
 		$responseargs["msg"] = __("The widget can not be swapped");
+		$responseargs["explanation"] = "source post id: {$sourcepostid} source placeholdertemplate: $sourceplaceholdertemplate";
 		webmethod_return_alternativeflow("widgetnotallowed", $responseargs);
 	}
 	else if (!nxs_iswidgetallowedonpost($destinationpostid, $destinationplaceholdertemplate, true))
 	{
 		$responseargs = array();
 		$responseargs["msg"] = __("The widget can not be swapped");
+		$responseargs["explanation"] = "destination post id: {$destinationpostid} destination placeholdertemplate: $destinationplaceholdertemplate";
 		webmethod_return_alternativeflow("widgetnotallowed", $responseargs);
 	}
 		

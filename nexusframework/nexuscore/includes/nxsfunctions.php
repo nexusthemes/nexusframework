@@ -9421,6 +9421,18 @@ function nxs_getimagecsssizeclass($value)
 		// default
 		$result = "nxs-stretch";
 	}
+	else if ($value == "orig@contain")
+	{
+		// default
+		$result = "nxs-size-contain nxs-ratio-original";
+	}
+	else if (nxs_stringstartswith($value, "orig@contain@"))
+	{
+		// original, fixed width (but maximized to container), for example orig@contain@1-0
+		$splitted = explode("@", $value);
+		$factor = $splitted[2];	// for example 1-0 (for factor 1.0)
+		$result = "nxs-size-contain nxs-ratio-original nxs-img-width-" . $factor;
+	}
 	else if (nxs_stringstartswith($value, "c@"))
 	{
 		// cropped
@@ -9848,7 +9860,7 @@ function nxs_getwpimagesize($value)
 	{
 		nxs_webmethod_return_nack("unsupported value for getwpimagesize;" . $value);
 	}
-	else if ($value == "" || $value == "full" || $value == "auto-fit")
+	else if ($value == "" || $value == "full" || $value == "auto-fit" || $value == "orig-max")
 	{
 		// default
 		$result = "full";

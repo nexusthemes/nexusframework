@@ -132,12 +132,27 @@ function nxs_getstyletypeoptions() {
 			"subtype" 			=> "encodedmultiplier",
 			"values" 			=> array
 				(
-					"-"			=>nxs_l18n__("none", "nxs_td"),
+					// "orig@contain@1-0"	=>nxs_l18n__("width 1x (contained)", "nxs_td"),
+					//"orig@contain@2-0"	=>nxs_l18n__("width 2x (contained)", "nxs_td"),
+					//"orig@contain@3-0"	=>nxs_l18n__("width 3x (contained)", "nxs_td"),
+					"orig@contain@4-0"	=>nxs_l18n__("width 4x (contained)", "nxs_td"),
+					//"orig@contain@5-0"	=>nxs_l18n__("width 5x (contained)", "nxs_td"),
+					//"orig@contain@6-0"	=>nxs_l18n__("width 6x (contained)", "nxs_td"),
+					//"orig@contain@7-0"	=>nxs_l18n__("width 7x (contained)", "nxs_td"),
+					//"orig@contain@8-0"	=>nxs_l18n__("width 8x (contained)", "nxs_td"),
+					//"orig@contain@9-0"	=>nxs_l18n__("width 9x (contained)", "nxs_td"),
+					"orig@contain@10-0"	=>nxs_l18n__("width 10x (contained)", "nxs_td"),
+					"orig@contain@15-0"	=>nxs_l18n__("width 15x (contained)", "nxs_td"),
+					"orig@contain@22-0"	=>nxs_l18n__("width 22x (contained)", "nxs_td"),
+
 					"c@0-75"		=>nxs_l18n__("cropped icon 0.75x", "nxs_td"),
 				 	"c@1-0"		=>nxs_l18n__("cropped icon 1x", "nxs_td"),
 				 	"c@1-5"		=>nxs_l18n__("cropped icon 1.5x", "nxs_td"),
 				 	"c@2-0"		=>nxs_l18n__("cropped icon 2x", "nxs_td"),
-					"auto-fit"	=>nxs_l18n__("auto-fit", "nxs_td"),
+
+					"auto-fit"	=>nxs_l18n__("stretch (contained)", "nxs_td"),
+					"orig@contain"	=>nxs_l18n__("as-is (contained)", "nxs_td"),
+					"-"			=>nxs_l18n__("none", "nxs_td"),
 				),
 		),
 		"backgroundimage_repeat" => array (

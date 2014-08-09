@@ -44,8 +44,13 @@ function nxs_popup_optiontype_select_renderhtmlinpopup($optionvalues, $args, $ru
         if (!$isfound)
         {
         	$selected ="selected='selected'";
+        	$presentation = "";
+        	if ($value != "")
+        	{
+        		$presentation = "Value not (or no longer) supported: '{$value}'";
+        	}
         	?>
-        	<option <?php echo $selected; ?> value='<?php echo $value; ?>'>Value not (or no longer) supported: <?php echo $value; ?></option>
+        	<option <?php echo $selected; ?> value='<?php echo $value; ?>'><?php echo $presentation; ?></option>
         	<?php
         }
         ?>
