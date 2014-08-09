@@ -1556,11 +1556,12 @@ function nxs_js_redirect_top(url)
 					jQuery(this).find(".nxs-hover-menu").addClass("nxs-hovering");
 					jQuery(this).addClass("nxs-hovering");
 					
-					// find the unistyle sibling
+					// find unistyle siblings
 					if (jQuery(this).hasClass("nxs-unistyled"))
 					{
 						var unistylename = nxs_js_findclassidentificationwithprefix(this, "nxs-unistyle-")
-						nxs_js_log("hovering over unistyled widget:" + unistylename);
+						var widgettypename = nxs_js_findclassidentificationwithprefix(this, "nxs-widgettype-")
+						jQuery(".nxs-unistyle-" + unistylename + ".nxs-widgettype-" + widgettypename).prepend("<div class='nxs-sibling-unistyle-indicator'>Unistyle: " + unistylename + "</div>");
 					}
 				});
 				// OK
@@ -1571,6 +1572,9 @@ function nxs_js_redirect_top(url)
 					jQuery(this).find(".nxs-cell-cursor").removeClass("nxs-hovering");
 					jQuery(this).find(".nxs-hover-menu").removeClass("nxs-hovering");
 					jQuery(this).removeClass("nxs-hovering");
+					
+					// remove unistyle siblings
+					jQuery(".nxs-sibling-unistyle-indicator").remove();
 				}
 				);
 				

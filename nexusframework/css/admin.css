@@ -433,6 +433,27 @@ table.ui-datepicker-calendar td 					{ text-align: center !important; padding: 8
 .nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-definitionlist,
 .nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-google-map { outline: none; }
 
+.nxs-sibling-unistyle-indicator
+{
+	position:absolute;
+	font-family: arial;
+	font-size: 10px;
+	bottom: 0px;
+	padding: 5px;
+	margin: 5px;
+	background-color: #DFDFDF !important;
+	color: black;
+	border-color: black;
+	border-style:solid;
+	border-width:0px;
+	z-index:114;
+	border-radius: 3px;
+	right: 0px;
+	pointer-events: none;
+	text-shadow: none;
+}
+
+
 /* ADMIN SEO TAB
 ----------------------------------------------------------------------------------------------------*/
 .nxs-admin-wrap #wpseosnippet 						{ background: white; border: 1px solid #DFDFDF; padding: 10px 10px 8px; max-width: 512px; }
