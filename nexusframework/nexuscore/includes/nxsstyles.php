@@ -132,15 +132,7 @@ function nxs_getstyletypeoptions() {
 			"subtype" 			=> "encodedmultiplier",
 			"values" 			=> array
 				(
-					// "orig@contain@1-0"	=>nxs_l18n__("width 1x (contained)", "nxs_td"),
-					//"orig@contain@2-0"	=>nxs_l18n__("width 2x (contained)", "nxs_td"),
-					//"orig@contain@3-0"	=>nxs_l18n__("width 3x (contained)", "nxs_td"),
 					"orig@contain@4-0"	=>nxs_l18n__("width 4x (contained)", "nxs_td"),
-					//"orig@contain@5-0"	=>nxs_l18n__("width 5x (contained)", "nxs_td"),
-					//"orig@contain@6-0"	=>nxs_l18n__("width 6x (contained)", "nxs_td"),
-					//"orig@contain@7-0"	=>nxs_l18n__("width 7x (contained)", "nxs_td"),
-					//"orig@contain@8-0"	=>nxs_l18n__("width 8x (contained)", "nxs_td"),
-					//"orig@contain@9-0"	=>nxs_l18n__("width 9x (contained)", "nxs_td"),
 					"orig@contain@10-0"	=>nxs_l18n__("width 10x (contained)", "nxs_td"),
 					"orig@contain@15-0"	=>nxs_l18n__("width 15x (contained)", "nxs_td"),
 					"orig@contain@22-0"	=>nxs_l18n__("width 22x (contained)", "nxs_td"),

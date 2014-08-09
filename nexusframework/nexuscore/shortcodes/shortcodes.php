@@ -462,14 +462,14 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		$ph_unicontent_cssclass = "";
 	}
 
-	// widgetype css classes	
+	// widgettype css classes	
 	if (isset($widgetmetadata["type"]) && $widgetmetadata["type"] != "")
 	{
-		$ph_widgetype_cssclass = "nxs-widgetype-" . nxs_stripspecialchars($widgetmetadata["type"]);
+		$ph_widgettype_cssclass = "nxs-widgettype-" . nxs_stripspecialchars($widgetmetadata["type"]);
 	}
 	else
 	{
-		$ph_widgetype_cssclass = "";
+		$ph_widgettype_cssclass = "";
 	}
 
 	// clear the statebag for rendering this placeholder	
@@ -512,7 +512,7 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	{
 		$output = "";
 		
-		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgetype_cssclass);
+		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgettype_cssclass);
 		
 		$output .= "<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "'>";
 		$output .= $menutopleft;	// will be empty if not allowed, or not needed

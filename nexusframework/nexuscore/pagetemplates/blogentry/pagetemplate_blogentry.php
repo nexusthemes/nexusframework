@@ -92,7 +92,7 @@ function nxs_pagetemplate_handlecontent()
 						<div class="nxs-row nxs-padding-top-1-0 nxs-padding-bottom-1-0 ">
 							<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">
 								<ul class="nxs-placeholder-list"> 
-									<li class="nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-third nxs-unistyle-reference nxs-unistyled nxs-not-unicontented nxs-widgetype-text  nxs-column-1-3" style="height: 342px;">
+									<li class="nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-third nxs-unistyle-reference nxs-unistyled nxs-not-unicontented nxs-widgettype-text  nxs-column-1-3" style="height: 342px;">
 										<div class="ABC">
 											<div class="XYZ">
 												<div class="nxs-placeholder-content-wrap nxs-crop ">

@@ -197,7 +197,7 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
 	$widgetmetadata = nxs_getwidgetmetadata($postid, $placeholderid);
 	$unistyle_cssclass = "nxs-unistyle-" . nxs_stripspecialchars($widgetmetadata["unistyle"]);
 	$unicontent_cssclass = "nxs-unicontent-" . nxs_stripspecialchars($widgetmetadata["unicontent"]);
-	$widgetype_cssclass = "nxs-widgetype-" . nxs_stripspecialchars($widgetmetadata["type"]);
+	$widgettype_cssclass = "nxs-widgettype-" . nxs_stripspecialchars($widgetmetadata["type"]);
 	?>
 	function nxs_js_savegenericpopup()
   {
@@ -229,9 +229,9 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
 	      {
 	      	?>
 	      	// mark all rows of all widgets of same type with same unistyle as dirty
-	      	jQuery(".<?php echo $widgetype_cssclass;?>.<?php echo $unistyle_cssclass;?> .nxs-widget").closest(".nxs-row-container").addClass("nxs-dirty");
+	      	jQuery(".<?php echo $widgettype_cssclass;?>.<?php echo $unistyle_cssclass;?> .nxs-widget").closest(".nxs-row-container").addClass("nxs-dirty");
 	      	// mark all rows of all widgets of same type with same unicontent as dirty
-	      	jQuery(".<?php echo $widgetype_cssclass;?>.<?php echo $unicontent_cssclass;?> .nxs-widget").closest(".nxs-row-container").addClass("nxs-dirty");
+	      	jQuery(".<?php echo $widgettype_cssclass;?>.<?php echo $unicontent_cssclass;?> .nxs-widget").closest(".nxs-row-container").addClass("nxs-dirty");
 	      	<?php
 	      }
 	      ?>

@@ -421,7 +421,7 @@ table.ui-datepicker-calendar td 					{ text-align: center !important; padding: 8
 	-webkit-animation: 	dash 2s linear infinite;
 	animation: 			dash 2s linear infinite;
 }
-.nxs-editor-active .logged-in .nxs-not-unistyled.nxs-widgetype-undefined .nxs-widget {
+.nxs-editor-active .logged-in .nxs-not-unistyled.nxs-widgettype-undefined .nxs-widget {
 	-webkit-animation: 	none;
 	animation: 			none;
 }

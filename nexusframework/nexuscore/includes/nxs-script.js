@@ -1551,16 +1551,23 @@ function nxs_js_redirect_top(url)
 				jQuery(".nxs-widgets-editable .nxs-placeholder").unbind("mouseover.glowwidget");
 				jQuery(".nxs-widgets-editable .nxs-placeholder").bind("mouseover.glowwidget", function(e)
 				{
-					//nxs_js_log('mouse over detected');
+					// add nxs-hovering
 					jQuery(this).find(".nxs-cell-cursor").addClass("nxs-hovering");
 					jQuery(this).find(".nxs-hover-menu").addClass("nxs-hovering");
 					jQuery(this).addClass("nxs-hovering");
+					
+					// find the unistyle sibling
+					if (jQuery(this).hasClass("nxs-unistyled"))
+					{
+						var unistylename = nxs_js_findclassidentificationwithprefix(this, "nxs-unistyle-")
+						nxs_js_log("hovering over unistyled widget:" + unistylename);
+					}
 				});
 				// OK
 				jQuery(".nxs-widgets-editable .nxs-placeholder").unbind("mouseleave.glowwidget");
 				jQuery(".nxs-widgets-editable .nxs-placeholder").bind("mouseleave.glowwidget", function(e)
 				{
-					//nxs_js_log('mouse leave detected editable placeholder'); // gj done that
+					//
 					jQuery(this).find(".nxs-cell-cursor").removeClass("nxs-hovering");
 					jQuery(this).find(".nxs-hover-menu").removeClass("nxs-hovering");
 					jQuery(this).removeClass("nxs-hovering");
