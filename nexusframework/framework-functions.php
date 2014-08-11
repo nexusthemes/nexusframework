@@ -226,19 +226,6 @@ function nxs_framework_theme_styles()
     '20120208', 
     'all' );
   
-  // chosen.min.css
-  wp_register_style('nxs-chosen-style', 
-    nxs_getframeworkurl() . '/css/chosen.min.css', 
-    array(), 
-    '20120208', 
-    'all' );
-    
-  wp_register_style('nxs-framework-style-admin', 
-    nxs_getframeworkurl() . '/css/admin.css', 
-    array(), 
-    '20121108003',    
-    'all' );
-    
 	// enqueing:
 	
 	// indien we in de WP backend zitten, dan geen css reset!
@@ -248,14 +235,8 @@ function nxs_framework_theme_styles()
 		wp_enqueue_style('nxs-framework-style-css-reset');
 	}
 	
-  wp_enqueue_style('nxs-framework-style-admin');
   wp_enqueue_style('nxs-framework-style');
-  
-  if (is_user_logged_in())
-  {
-  	wp_enqueue_style('nxs-chosen-style');
-  }
-  
+    
 	if (!$iswordpressbackendshowing)
 	{
 		$sitemeta = nxs_getsitemeta();  

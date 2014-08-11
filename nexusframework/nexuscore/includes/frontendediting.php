@@ -276,6 +276,7 @@
 	function nxs_js_geturlencodedjsonencodedquery_vars() { return "<?php echo $urlencodedjsonencodedquery_vars; ?>"; }
 	function nxs_js_issiteresponsive() { return <?php echo ($sitemeta["responsivedesign"] == "true"); ?>; }
 	function nxs_js_isinfrontend() { return <?php echo (!is_admin()); ?>; }
+	function nxs_js_isuserloggedin() { return <?php if (is_user_logged_in()) { echo "true"; } else { echo "false"; } ?>; } 
 	function nxs_js_getlocale() { return "<?php echo get_locale(); ?>"; }
 	function nxs_js_enableguieffects() { return <?php echo $guieffectsenabled;?>; }
 	function nxs_js_getcontainerpostid() { return <?php echo $containerpostid;?>; }
