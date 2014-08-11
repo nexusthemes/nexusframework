@@ -272,6 +272,20 @@ function nxs_js_disabledocumentscrollwhenhoveringoverelement(e)
 });
 }
 
+function nxs_js_menu_mini_expand(placeholderid) 
+{
+	var expander = jQuery("#nxs-menu-mini-nav-expander-" + placeholderid);
+	jQuery(expander).toggleClass("nxs-expand");
+	if (jQuery(expander).hasClass("nxs-expand"))
+	{
+		jQuery(expander).slideDown();
+	}
+	else
+	{
+		jQuery(expander).slideUp();
+	}
+}
+
 // kudos to http://stackoverflow.com/questions/3885817/how-to-check-if-a-number-is-float-or-integer
 function nxs_js_isint(n)
 {
@@ -7134,7 +7148,9 @@ function nxs_js_displayStyleSheetProperties()
 // css is the stylesheet contents to add / inject
 // the stylesheetcontainer is an object that references the object of for example <style type="text/css" id="myObject"></style>
 function nxs_js_setcss(css, containerbaseid)
-{	
+{
+	nxs_js_log("* setting css for " + containerbaseid);
+	
 	if(jQuery.browser.msie)
   {
 		// great, thanks to MS we need multiple lame IE patches
@@ -7276,41 +7292,73 @@ function nxs_js_blendtemplatewithvariables_v2(template, lookup, keyprefix, keysu
 }
 
 //
-function nxs_js_updatecss_themecss_actualrequest()
+function nxs_js_updatecss_themecss_actualrequest(shouldusecacheifavailable, shouldupdatedom)
 {
-	// get active colorscheme 
-	var colorschemelookup = nxs_js_getruntimecolorschemelookup();
+	var actualcss = null;
+	var isdirty = false;
+	var storagekey = "nxs-dynamiccss-server-chunk";
+	var localstorageavailable = Modernizr.localstorage;
 	
-	//nxs_js_log("colorschemelookup:");
-	//nxs_js_log(colorschemelookup);
-
-	var runtimeurllookup = nxs_js_getruntimecsslookup();
+	// store css
+	if (shouldusecacheifavailable && localstorageavailable)
+	{
+		nxs_js_log("* Retrieving CSS from local storage, hopefull its there");
+		actualcss = localStorage.getItem(storagekey);
+	}
 	
-	// blend all lookups
-	var csslookup = jQuery.extend({}, colorschemelookup, runtimeurllookup);
-
-	// the framework css will not be blended with lookups;
-	// its required to contain end-css (if lookups
-	// need to be translated, use the specifiekd csslookup parameter)
-	var frameworkcss = nxs_js_get_frameworkcsstemplate(csslookup);
-
-	// 
-	var customcss = nxs_js_get_customcsstemplate(csslookup);
-
-	// blend the customcss (note! we intentionally only blend the 
-	// customcss, not the framework's css, this is done to keep performance high)
-	var blendedcustomcss = nxs_js_blendtemplatewithvariables(customcss, csslookup);
-
-	//nxs_js_log("blendedcustomcss:");
-	//nxs_js_log(blendedcustomcss);
-
-
-	// we concatenate the end result; framework first, customcss is able 
-	// to override styling as needed
-	var actualcss = frameworkcss + blendedcustomcss;
+	if (actualcss == null)
+	{
+		nxs_js_log("* Cached data is not available, (re)producing CSS the hard way");
 		
-	// update the css
-	nxs_js_setcss(actualcss, '#nxs-dynamiccss-server-chunk-');
+		// get active colorscheme 
+		var colorschemelookup = nxs_js_getruntimecolorschemelookup();
+		var runtimeurllookup = nxs_js_getruntimecsslookup();
+		
+		// blend all lookups
+		var csslookup = jQuery.extend({}, colorschemelookup, runtimeurllookup);
+	
+		// the framework css will not be blended with lookups;
+		// its required to contain end-css (if lookups
+		// need to be translated, use the specifiekd csslookup parameter)
+		var frameworkcss = nxs_js_get_frameworkcsstemplate(csslookup);
+		var customcss = nxs_js_get_customcsstemplate(csslookup);
+	
+		// blend the customcss (note! we intentionally only blend the 
+		// customcss, not the framework's css, this is done to keep performance high)
+		var blendedcustomcss = nxs_js_blendtemplatewithvariables(customcss, csslookup);
+	
+		// we concatenate the end result; framework first, customcss is able 
+		// to override styling as needed
+		var actualcss = frameworkcss + blendedcustomcss;
+		
+		isdirty = true;
+	}
+	
+	// store css
+	if (isdirty && localstorageavailable)
+	{
+		nxs_js_log("* Updating CSS cache");
+		localStorage.setItem(storagekey, actualcss);
+	}
+	else
+	{
+		nxs_js_log("* Leaving CSS cache as is (no update) because localstorage is n/a or because CSS is not dirty");
+	}
+	
+	if (shouldupdatedom)
+	{
+		// update the css in the DOM
+		nxs_js_setcss(actualcss, '#nxs-dynamiccss-server-chunk-');
+		
+		// if the dom was updated, and the cache was available and used, we will trigger another call
+		// to update the cache in certain amount of msecs from now, based on the actual data (non-cached)
+		// this way we have best of both worlds; an up to date cache, and a fast performing site :)
+		if (localstorageavailable && shouldusecacheifavailable)
+		{
+			nxs_js_log("* CSS cache will be updated in 5000 msecs from now on");
+			setTimeout(function() { nxs_js_log("* Waking up to update css cache"); nxs_js_updatecss_themecss_actualrequest(false, false); nxs_js_log("* Finished waking up (cache should now be up to date)"); }, 5000);
+		}
+	}
 }
 
 // helper function to get the css output for a lineair gradient between the 2 specified colors
@@ -7403,21 +7451,11 @@ function nxs_js_updatecss_manualcss_actualrequest()
 	
 	// get active colorscheme 
 	var colorschemelookup = nxs_js_getruntimecolorschemelookup();
-	
-	//nxs_js_log("colorschemelookup:");
-	//nxs_js_log(colorschemelookup);
-	
 	var runtimeurllookup = nxs_js_getruntimecsslookup();
-	
-	//nxs_js_log("runtimeurllookup:");
-	//nxs_js_log(runtimeurllookup);
-	
+
 	// blend all lookups
 	var csslookup = jQuery.extend({}, colorschemelookup, runtimeurllookup);
 	
-	//nxs_js_log("csslookup:");
-	//nxs_js_log(csslookup);
-		
 	var csstemplate = nxs_js_get_manualcsstemplate();
 	var actualcss = nxs_js_blendtemplatewithvariables(csstemplate, csslookup);
 	
@@ -10495,12 +10533,12 @@ function nxs_js_colorshake()
 	
 	if (!nxs_js_inwpbackend())
 	{
-		nxs_js_updatecss_themecss_actualrequest();
+		nxs_js_updatecss_themecss_actualrequest(true, true);
 		nxs_js_updatecss_manualcss_actualrequest();
+		
 		jQuery("#nxs-load-cover").hide();
 	}
 }
-
 
 // kudos to https://github.com/mikesherov/jquery-idletimer/
 

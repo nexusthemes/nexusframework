@@ -1431,7 +1431,7 @@
 		{
 			// if the colortheme is adjusted, we need to update both
 			// the css of the serverside theme, as well as the manual overriden css
-			nxs_js_updatecss_themecss_actualrequest();
+			nxs_js_updatecss_themecss_actualrequest(false, true);	// dont use the cache, DO update the dom
 			nxs_js_updatecss_manualcss_actualrequest();
 		}
 		

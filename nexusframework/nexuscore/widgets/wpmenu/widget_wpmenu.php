@@ -346,19 +346,6 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 			'item-fontsize' . $submenu_fontsize . 
 		'" );
 	</script>';
-	
-	$minified_expand_script = '
-	<script type="text/javascript">
-		function nxs_js_menu_mini_expand(placeholderid) {
-			var expander = jQuery("#nxs-menu-mini-nav-expander-" + placeholderid);
-			jQuery(expander).toggleClass("nxs-expand");
-			if (jQuery(expander).hasClass("nxs-expand")) {
-				jQuery(expander).slideDown();
-			} else {
-				jQuery(expander).slideUp();
-			}
-		}
-	</script>';
 		
 	$outer_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $menuitem_color);
 	
@@ -408,7 +395,6 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 			
 			// Script
 			echo $script;
-			echo $minified_expand_script;
 		}
 		
 	/* ------------------------------------------------------------------------------------------------- */

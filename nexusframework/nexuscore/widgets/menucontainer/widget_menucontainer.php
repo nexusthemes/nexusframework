@@ -419,22 +419,6 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 	$menuitem_sub_active_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-menuitem-sub-active-", $menuitem_sub_active_color);
 	$menuitem_sub_hover_color_cssclass 	= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-sub-hover-", $menuitem_sub_hover_color);
 	
-	$minified_expand_script = '
-		<script type="text/javascript">
-			function nxs_js_menu_mini_expand(placeholderid) {
-				var expander = jQuery("#nxs-menu-mini-nav-expander-" + placeholderid);
-				jQuery(expander).toggleClass("nxs-expand");
-				if (jQuery(expander).hasClass("nxs-expand"))
-				{
-					jQuery(expander).slideDown();
-				}
-				else
-				{
-					jQuery(expander).slideUp();
-				}
-			}
-		</script>';
-
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 			
@@ -891,8 +875,6 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                         echo $cache;
 					
 					echo '</div> <!-- END nxs-menu-mini-nav-expander -->';
-					
-                	echo $minified_expand_script;
 					
 				echo '</div> <!-- END nxs-menu-minified -->';
 				
