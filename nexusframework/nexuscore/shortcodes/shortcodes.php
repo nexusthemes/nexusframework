@@ -424,8 +424,6 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	
 	// ------------------------------------------
 	
-	// $widgetmetadata = $nxs_global_placeholder_render_statebag["widgetmetadata"];
-	
 	$ph_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $widgetmetadata["ph_colorzen"]);
 	$ph_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $widgetmetadata["ph_linkcolorvar"]);
 	
@@ -437,6 +435,9 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	$ph_border_radius = nxs_getcssclassesforlookup("nxs-border-radius-", $widgetmetadata["ph_border_radius"]);
 	$ph_borderwidth = nxs_getcssclassesforlookup("nxs-border-width-", $widgetmetadata["ph_border_width"]);
 	$ph_cssclass = $widgetmetadata["ph_cssclass"];
+	
+	// css classes that were added while rendering the widget at runtime
+	$ph_runtimecssclass = $nxs_global_placeholder_render_statebag["ph_runtimecssclass"];
 
 	// unistyle css classes	
 	if (isset($widgetmetadata["unistyle"]) && $widgetmetadata["unistyle"] != "")
@@ -512,7 +513,7 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	{
 		$output = "";
 		
-		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgettype_cssclass);
+		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgettype_cssclass, $ph_runtimecssclass);
 		
 		$output .= "<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "'>";
 		$output .= $menutopleft;	// will be empty if not allowed, or not needed
@@ -673,14 +674,9 @@ function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='')
 	{
 		$widgetclass = $nxs_global_placeholder_render_statebag["widgetclass"];
 	}
-	else
 	
 	$healthclass = "";
-	if ($nxs_global_placeholder_render_statebag["placeholderrenderresult"] == "OK")
-	{
-		$healthclass = "";
-	}
-	else
+	if ($nxs_global_placeholder_render_statebag["placeholderrenderresult"] != "OK")
 	{
 		// a problem occured (for example; widget not found)
 		$healthclass = "nxs-render-error";
@@ -703,8 +699,7 @@ function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='')
 	
 	if ($nxs_global_current_render_mode == "default")
 	{
-		//$result = $droplayerhtml . $cursorlayerhtml . $inlinehtml; // orig
-		$result = $inlinehtml; // new approach; the dropcursor and cellcursor are drawn by the placeholdercontainer, not by the placeholdercontainer
+		$result = $inlinehtml;
 	}
 	else if ($nxs_global_current_render_mode == "anonymous")
 	{

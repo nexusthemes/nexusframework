@@ -24,22 +24,22 @@ function nxs_popup_genericpopup_effectspicker_getpopup($args)
 					
 					<div class="content2">
 						<div class="box">
-							<div class="box-title"><h4><?php nxs_l18n_e("Fonts", "nxs_td"); ?></h4></div>
+							<div class="box-title"><h4><?php nxs_l18n_e("Effects", "nxs_td"); ?></h4></div>
 							<div class="box-content">
 								<?php
-									echo $nxs_effectspicker_currentvalue;
+									//echo $nxs_effectspicker_currentvalue;
 									if ($nxs_effectspicker_currentvalue != "")
 									{
-										echo "AAP:<br />";
-										$jsonobject = json_decode($nxs_effectspicker_currentvalue);
-										var_dump($jsonobject);
-										echo "NOOT:<br />";
 										$jsonobject = json_decode($nxs_effectspicker_currentvalue, true);
-										var_dump($jsonobject);
-										echo "MIES:<br />";
-										$jsonobject = json_decode('{ "name": "Johnson" }');
-										var_dump($jsonobject);
-										echo "<br />";
+										$items =$jsonobject["items"];
+										$count = count($items);
+										echo "num of effects: {$count}<br />";
+										foreach ($items as $item)
+										{
+											echo "effect:";
+											var_dump($item);
+											echo "<br />";
+										}
 									}
 								?>
 							</div>
@@ -64,7 +64,14 @@ function nxs_popup_genericpopup_effectspicker_getpopup($args)
 	
 		function nxs_js_selectitem_v2() 
 		{
-			var str = '{ "name": "PIET" }';
+			var data = {};	// object
+			data['items'] = [];	// array
+			data['items'].push({"type":"lazyloadslide", "translatex":"f@1-0", "delay":"d@1-0", "speed":"s@1-0", "effect":"ease"});
+			data['items'].push({"type":"someother", "key":"value"});
+			
+			var str = JSON.stringify(data);
+			
+			//var str = "{ \"name\": \"PIET\" }";
 			nxs_js_log(str);
 			nxs_js_selectitem(str);
 		}

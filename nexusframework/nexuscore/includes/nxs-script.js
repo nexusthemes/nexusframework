@@ -142,7 +142,7 @@ jQuery(window).ready
 		nxs_js_initiatemenustate();
 		
 		// no background scrolling when hovering over admin top menu
-		nxs_js_disabledocumentscrollwhenoveringoverelement("#vg_manualcss");
+		nxs_js_disabledocumentscrollwhenhoveringoverelement("#vg_manualcss");
 		
 		nxs_js_reenable_all_window_events();
 		nxs_js_register_windowresizedend_event();
@@ -190,8 +190,58 @@ function nxs_js_setupwindowscrolllistener()
 	);
 }
 
+// FX --- BEGIN
+
+function nxs_js_getwindowheight() 
+{
+  var myWidth = 0, myHeight = 0;
+  if( typeof( window.innerWidth ) == 'number' ) {
+      //Non-IE
+      myHeight = window.innerHeight;
+  } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+      //IE 6+ in 'standards compliant mode'
+      myHeight = document.documentElement.clientHeight;
+  } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+      //IE 4 compatible
+      myHeight = document.body.clientHeight;
+	}
+
+	return myHeight
+}
+
+function nxs_js_appearbox(element, element_top, bottom_of_window) 
+{
+  /* If the object is completely visible in the window, fade it it */
+  var requirespercentage = 50;
+  var buffer = element.outerHeight() * requirespercentage / 100;
+  if( bottom_of_window > element_top + buffer) 
+  {
+  	var delay = 0;	// 0 is good for multitasking, alternative; element.data('delay')
+    setTimeout
+    (
+      function()
+      {
+        element.removeClass('nxs-fx-untriggered'); // .animate({'opacity':'1'}, element.data('speed'))
+      }, 
+      delay
+    );            
+  }
+}
+
+function nxs_js_appearboxwhenvisible(dom)
+{
+	var element_offset = dom.offset();
+  var element_top = element_offset.top;
+  
+  bottom_of_window = $(window).scrollTop() + nxs_js_getwindowheight();
+  
+  nxs_js_appearbox(dom, element_top, bottom_of_window);
+}
+
+// FX END
+
 // kudos to http://stackoverflow.com/questions/16323770/stop-page-from-scrolling-if-hovering-div
-function nxs_js_disabledocumentscrollwhenoveringoverelement(e)
+function nxs_js_disabledocumentscrollwhenhoveringoverelement(e)
 {
 	jQuery(e).on('DOMMouseScroll mousewheel', function(ev) {
     var $this = $(this),
@@ -1559,8 +1609,8 @@ function nxs_js_redirect_top(url)
 					// find unistyle siblings
 					if (jQuery(this).hasClass("nxs-unistyled"))
 					{
-						var unistylename = nxs_js_findclassidentificationwithprefix(this, "nxs-unistyle-")
-						var widgettypename = nxs_js_findclassidentificationwithprefix(this, "nxs-widgettype-")
+						var unistylename = nxs_js_findclassidentificationwithprefix(this, "nxs-unistyle-");
+						var widgettypename = nxs_js_findclassidentificationwithprefix(this, "nxs-widgettype-");
 						jQuery(".nxs-unistyle-" + unistylename + ".nxs-widgettype-" + widgettypename).prepend("<div class='nxs-sibling-unistyle-indicator'>Unistyle: " + unistylename + "</div>");
 					}
 				});
@@ -1632,6 +1682,9 @@ function nxs_js_redirect_top(url)
 				}
 				);
 			}
+			
+			// allow extensions to extend this
+			jQuery(window).trigger('nxs_js_reregister_click_and_hover_events');
 		}
 		
 		// returns the index of the current row element within the container of rows (nearest to 'element')

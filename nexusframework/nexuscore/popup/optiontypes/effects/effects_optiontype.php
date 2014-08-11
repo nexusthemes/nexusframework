@@ -18,7 +18,6 @@ function nxs_popup_optiontype_effects_renderhtmlinpopup($optionvalues, $args, $r
 	<div class="content2">
 	    <div class="box">';
 	    	echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip);
-	    	//$value = '{ \"name\": \"Johnson\" }';
 	    	?>
           <div class="box-content">
           	<ul>
@@ -35,6 +34,7 @@ function nxs_popup_optiontype_effects_renderhtmlinpopup($optionvalues, $args, $r
         <div class="nxs-clear"></div>
       </div>
   ';
+  $escapedvalue = nxs_render_html_escape_singlequote($value);
   ?>
   <script type="text/javascript">
 		function nxs_js_starteffectspicker_<?php echo $id;?>()
@@ -43,7 +43,7 @@ function nxs_popup_optiontype_effects_renderhtmlinpopup($optionvalues, $args, $r
 			nxs_js_popup_setsessiondata("nxs_effectspicker_invoker", nxs_js_popup_getcurrentsheet()); 
 			nxs_js_popup_setsessiondata("nxs_effectspicker_sampletext", "<?php echo $sampletext;?>"); 
 			nxs_js_popup_setsessiondata("nxs_effectspicker_targetvariable", "<?php echo $id;?>"); 
-			nxs_js_popup_setsessiondata("nxs_effectspicker_currentvalue", "<?php echo $value;?>");
+			nxs_js_popup_setsessiondata("nxs_effectspicker_currentvalue", '<?php echo $escapedvalue;?>');
 			
 			nxs_js_popup_navigateto("effectspicker");
 		}

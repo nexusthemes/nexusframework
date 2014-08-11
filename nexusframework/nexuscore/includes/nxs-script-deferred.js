@@ -294,7 +294,7 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						)
 						
 						// ensure the "back" document is not scrollable when the popup shows
-						nxs_js_disabledocumentscrollwhenoveringoverelement('.nxs-popup-content-canvas-cropper');
+						nxs_js_disabledocumentscrollwhenhoveringoverelement('.nxs-popup-content-canvas-cropper');
 						
 						// enable "chosen" script to enhance dropdownlists
 						//nxs_js_log("chosen select done");

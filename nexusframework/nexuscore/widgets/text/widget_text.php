@@ -467,6 +467,14 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
 	}
 	
+	//
+	// process FX
+	//
+	if ($fx != "")
+	{
+		// voor nu gaan we er voor het gemak nog even vanuit dat er maar 1 effect is
+		$nxs_global_placeholder_render_statebag["ph_runtimecssclass"] .= "nxs-fx-lazyload nxs-fx-widgetslidein nxs-fx-untriggered";
+	}
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */

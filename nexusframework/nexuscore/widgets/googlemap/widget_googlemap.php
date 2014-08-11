@@ -72,11 +72,8 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	//
 	// render actual control / html
 	//
-	
 	ob_start();
-	
 	?>
-		
 		<div id="map_canvas_<?php echo $placeholderid;?>" class="nxs-runtime-autocellsize nxs-minheight <?php echo $minheight_cssclass; ?>"></div>
 
 		<script type='text/javascript'>
@@ -201,14 +198,6 @@ function nxs_widgets_googlemap_home_rendersheet($args)
 		$maptypeid = "ROADMAP";
 	}
 
-	/*
-	// temporary fix problem with language
-	$lat = "52.0";
-	$lng = "5.12";
-	$zoom = "9";
-	$maptypeid = "ROADMAP";
-	*/
-
 	// clientpopupsessiondata bevat key values van de client side, deze overschrijven reeds bestaande variabelen
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
@@ -219,7 +208,6 @@ function nxs_widgets_googlemap_home_rendersheet($args)
 	ob_start();
 
 	?>
-
     <div class="nxs-admin-wrap">
       <div class="block">
       
