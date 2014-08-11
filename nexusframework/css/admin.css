@@ -404,55 +404,6 @@ via onderstaande regels toepasselijk voor alle onderdelen (header, footer, sideb
 table.ui-datepicker-calendar th 					{ text-align: center; }
 table.ui-datepicker-calendar td 					{ text-align: center !important; padding: 8px 12px; }
 
-/* ADMIN DATEPICKER
-----------------------------------------------------------------------------------------------------*/
-.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget			{ outline: dashed thin; }
-@keyframes dash {  
-	0% 		{ outline-color: white; }
-	50%		{ outline-color: gray; }
-	100% 	{ outline-color: white; }
-}
-@-webkit-keyframes dash {
-	0% 		{ outline-color: white; }
-	50%		{ outline-color: gray; }
-	100% 	{ outline-color: white; }
-}
-.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget {
-	-webkit-animation: 	dash 2s linear infinite;
-	animation: 			dash 2s linear infinite;
-}
-.nxs-editor-active .logged-in .nxs-not-unistyled.nxs-widgettype-undefined .nxs-widget {
-	-webkit-animation: 	none;
-	animation: 			none;
-}
-.nxs-editor-active .nxs-admin-wrap .nxs-not-unistyled .nxs-widget,
-.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-sharing,
-.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-youtube,
-.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-vimeo,
-.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-custom-html,
-.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-definitionlist,
-.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-google-map { outline: none; }
-
-.nxs-sibling-unistyle-indicator
-{
-	position:absolute;
-	font-family: arial;
-	font-size: 10px;
-	bottom: 0px;
-	padding: 5px;
-	margin: 5px;
-	background-color: #DFDFDF !important;
-	color: black;
-	border-color: black;
-	border-style:solid;
-	border-width:0px;
-	z-index:114;
-	border-radius: 3px;
-	right: 0px;
-	pointer-events: none;
-	text-shadow: none;
-}
-
 
 /* ADMIN SEO TAB
 ----------------------------------------------------------------------------------------------------*/
