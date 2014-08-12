@@ -421,7 +421,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
-			
+	
 	if (count($poststructure) == 0) {
 		nxs_renderplaceholderwarning(nxs_l18n__("No menu items[nxs:warning]", "nxs_td"));
 	} else {

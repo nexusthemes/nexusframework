@@ -5439,7 +5439,7 @@ function nxs_getthemeversion($expire = false)
 
 		// Cache the value for 1 hour
 		set_transient('nxs_theme_version', $value, 60 * 60 * 1);
-	}	
+	}
 	
 	return $value;
 }

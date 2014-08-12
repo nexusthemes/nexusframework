@@ -341,6 +341,7 @@
 	function nxs_js_getmaxservercsschunks() { return <?php echo nxs_getmaxservercsschunks(); ?>; }
 	function nxs_js_geturlcurrentpage() { return "<?php echo nxs_geturlcurrentpage(); ?>"; }
 	function nxs_js_gettemplateurl() { return "<?php echo get_bloginfo('template_url'); ?>"; }
+	function nxs_js_getthemeversion() { return "<?php echo nxs_getthemeversion(false); ?>"; }
 	function nxs_js_getframeworkurl() { return "<?php echo nxs_getframeworkurl(); ?>"; }
 	function nxs_js_userhasadminpermissions() { return <?php if (nxs_has_adminpermissions()) { echo "true"; } else { echo "false"; } ?>; }
 	
@@ -397,9 +398,9 @@ if (is_admin)
 	<?php 
 }
 ?>
-<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js"></script>
-<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-deferred.js" defer></script>
-<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-admin-deferred.js" defer></script>
+<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(false); ?>"></script>
+<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-deferred.js?v=<?php echo nxs_getthemeversion(false); ?>" defer></script>
+<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-admin-deferred.js?v=<?php echo nxs_getthemeversion(false); ?>" defer></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	google.load('webfont','1');
