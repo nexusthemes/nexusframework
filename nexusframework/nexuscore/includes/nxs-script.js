@@ -7296,7 +7296,7 @@ function nxs_js_updatecss_themecss_actualrequest(shouldusecacheifavailable, shou
 {
 	var actualcss = null;
 	var isdirty = false;
-	var storagekey = "nxs-dynamiccss-server-chunk";
+	var storagekey = nxs_js_get_adminurladminajax() + "nxs-dynamiccss-server-chunk";
 	var localstorageavailable = Modernizr.localstorage;
 	
 	// store css
