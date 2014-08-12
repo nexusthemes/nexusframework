@@ -4172,7 +4172,20 @@ function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
 	return $result;
 }
 
+function nxs_row_getunifiedstylinggroup()
+{
+	return "row";
+}
+
 function nxs_getpagerowmetadata($postid, $pagerowid)
+{
+	$behaviourargs = array();
+	$behaviourargs["lookupunistyle"] = true;
+	
+	return nxs_getpagerowmetadata_v2($postid, $pagerowid, $behaviourargs);
+}
+
+function nxs_getpagerowmetadata_v2($postid, $pagerowid, $behaviourargs)
 {
 	$metadatakey = 'nxs_pr_' . $pagerowid;
 	$result = array();
@@ -4181,6 +4194,23 @@ function nxs_getpagerowmetadata($postid, $pagerowid)
 	if ($result == "")
 	{
 		$result = array();
+	}
+	
+	// optionally process unistyle
+	// if the row has a unistyle, the properties of the unistyle should 
+	// override the properties stored in the row itself
+	// this method is pretty fast since the unistyle configurations are cached in mem
+	if ($behaviourargs["lookupunistyle"] == true && $result["unistyle"] != "")
+	{
+		$unistyle = $result["unistyle"];
+
+		// unistyle lookup should override the result
+		$unistylegroup = nxs_row_getunifiedstylinggroup();
+		if ($unistylegroup != "")
+		{
+			$unistyleproperties = nxs_unistyle_getunistyleproperties($unistylegroup, $unistyle);
+			$result = array_merge($result, $unistyleproperties);
+		}
 	}
 	
 	return $result;
@@ -6043,12 +6073,19 @@ function nxs_allocatenewpagerowid($postid)
 
 function nxs_mergepagerowmetadata_internal($postid, $pagerowid, $updatedvalues)
 {
+	$behaviourargs = array();
+	$behaviourargs["updateunistyle"] = true;
+	return nxs_mergepagerowmetadata_internal_v2($postid, $pagerowid, $updatedvalues, $behaviourargs);
+}
+
+function nxs_mergepagerowmetadata_internal_v2($postid, $pagerowid, $updatedvalues, $behaviourargs)
+{
 	$metadatakey = 'nxs_pr_' . $pagerowid;
 	$result = array();
 	$existing = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
 	if ($existing == "")
 	{
-		// 2012 07 23; bug fix; first time the widget is initialized, the meta data is empty(""),
+		// first time the widget is initialized, the meta data is empty(""),
 		// in this case we only set the new values and ignore the old one
 		$allvalues = $updatedvalues;
 	}
@@ -6057,7 +6094,47 @@ function nxs_mergepagerowmetadata_internal($postid, $pagerowid, $updatedvalues)
 		$allvalues = array_merge($existing, $updatedvalues);
 	}
 	
+	//
+	// step 1; store the metadata of the row itself
+	//
 	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($allvalues));
+	
+	//
+	// step 2; update the metadata of the unistyle
+	//
+	$unistyle = $allvalues["unistyle"];
+	if (isset($unistyle) && $unistyle != "" && $behaviourargs["updateunistyle"] == true)
+	{
+		$filetobeincluded = NXS_FRAMEWORKPATH . "/nexuscore/row/row.php";
+		if (!file_exists($filetobeincluded)) { nxs_webmethod_return_nack("file not found"); }
+		require_once($filetobeincluded);
+		
+		$sheet = "home";
+		$args = array();
+		$options = nxs_pagerow_home_getoptions($args);
+		
+		// we store 'all' unistyleable fields (not just the fieldids that are unistyleable, also
+		// the derived globalids. To determine which global fields there are, we look over
+		// all fields, and we include all ones starting with unistylablefields,
+		// for example "foo" and "foo_globalid"; all ones are added, "foo*").
+		$unistyleablefields = array();
+		$fieldids = nxs_unistyle_getunistyleablefieldids($options);
+		foreach ($fieldids as $currentfieldid)
+		{
+			// find derivations of this field, also the globalids
+			foreach ($allvalues as $currentkey => $currentvalue)
+			{
+				if (nxs_stringstartswith($currentkey, $currentfieldid))
+				{
+					$unistyleablefields[$currentkey] = $currentvalue;
+				}
+			}
+		}
+		
+		$unigroup = $options["unifiedstyling"]["group"];
+		if (!isset($unigroup) || $unigroup == "") { nxs_webmethod_return_nack("unigroup not set"); }
+		nxs_unistyle_persistunistyle($unigroup, $unistyle, $unistyleablefields);
+	}
 }
 
 function nxs_overridepagerowmetadata($postid, $pagerowid, $metadata)
