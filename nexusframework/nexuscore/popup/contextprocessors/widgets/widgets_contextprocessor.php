@@ -217,7 +217,7 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
 					return;
 				}
 			
-				// behavious else:
+				// behaviour else:
 			
 				// mark row of this widget as dirty
 				jQuery(".nxs-post-<?php echo $postid;?> .nxs-widget-<?php echo $placeholderid;?>").closest(".nxs-row-container").addClass("nxs-dirty");
@@ -236,17 +236,8 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
 	      }
 	      ?>
 	      
-	      // TODO: create generic function in frontendediting.js for this function
-	      // update all row containers that are dirty using AJAX invocations
-	      // TODO: this can be further optimized; rather than launching one AJAX call
-	      // for each row container, it would be possible to do one call for all
-	      jQuery(".nxs-row-container.nxs-dirty").each
-				(
-					function(index, element) 
-					{
-						nxs_js_rerender_row_for_element(element);
-					}
-      	);
+	      // rerender all dirty items!
+	      nxs_js_rerender_dirty_rowcontainers();
 	
 				// close the pop up
 	      nxs_js_closepopup_unconditionally();

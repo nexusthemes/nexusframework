@@ -10002,7 +10002,7 @@ function nxs_getcssclassesforsitepage()
 function nxs_getcssclassesforrowcontainer($rowcontainerid)
 {
 	$metadata = nxs_get_postmeta($rowcontainerid);
-				
+	
 	$rc_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata["rc_colorzen"]);;
 	$rc_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $metadata["rc_linkcolorvar"]);
 	$rc_margin_top = nxs_getcssclassesforlookup("nxs-margin-top-", $metadata["rc_margin_top"]);
@@ -10055,7 +10055,19 @@ function nxs_getcssclassesforrow($metadata)
 	
 	$r_cssclass = $metadata["r_cssclass"];
 	
-	$result = nxs_concatenateargswithspaces($r_colorzen, $r_linkcolorvar, $r_margin_top, $r_padding_top, $r_padding_bottom, $r_margin_bottom, $r_border_top_width, $r_border_bottom_width, $r_border_right_width, $r_border_left_width, $r_border_radius, $r_cssclass);
+	// unistyle css classes	
+	if (isset($metadata["unistyle"]) && $metadata["unistyle"] != "")
+	{
+		$r_unistyleindicator_cssclass = "nxs-unistyled";
+		$r_unistyle_cssclass = "nxs-unistyle-" . nxs_stripspecialchars($metadata["unistyle"]);
+	}
+	else
+	{
+		$r_unistyleindicator_cssclass = "nxs-not-unistyled";
+		$r_unistyle_cssclass = "";
+	}
+	
+	$result = nxs_concatenateargswithspaces($r_unistyleindicator_cssclass, $r_unistyle_cssclass, $r_colorzen, $r_linkcolorvar, $r_margin_top, $r_padding_top, $r_padding_bottom, $r_margin_bottom, $r_border_top_width, $r_border_bottom_width, $r_border_right_width, $r_border_left_width, $r_border_radius, $r_cssclass);
 	
 	return $result;
 }

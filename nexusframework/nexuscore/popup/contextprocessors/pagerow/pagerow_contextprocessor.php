@@ -143,6 +143,14 @@ function nxs_popup_contextprocessor_pagerow_render_nxs_js_savegenericpopup($args
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	if ($pagerowid == "") { nxs_webmethod_return_nack("pagerowid not set in context"); }
+	$temp_array = nxs_getpagerowmetadata($postid, $pagerowid);
+	$runtimemetadata = $args["clientpopupsessiondata"];
+	if ($runtimemetadata == "")
+	{
+		$runtimemetadata = array();
+	}
+	$mixedattributes = array_merge($temp_array, $runtimemetadata);
+	$unistyle = $mixedattributes["unistyle"];
 	
 	?>
 	function nxs_js_savegenericpopup()
@@ -151,9 +159,31 @@ function nxs_popup_contextprocessor_pagerow_render_nxs_js_savegenericpopup($args
 		(
 			function(response)
 			{
+				// mark 'this' row (container) as dirty
+				jQuery("#nxs-pagerow-<?php echo $pagerowid;?> .nxs-row-container").addClass("nxs-dirty");
 				
-	      // update UI, the 'current' id will be overriden because null is specified as third parameter
-	      nxs_js_rerender_row_for_pagerow("<?php echo $postid;?>", "<?php echo $pagerowid;?>");
+	      <?php
+	      // if this widget has a unistyle it means potential other rows of the screen need to be refreshed too
+	      if ($unistyle != "")
+	      {
+	      	?>
+	      	var selector = ".nxs-row.nxs-unistyle-<?php echo $unistyle; ?> .nxs-row-container";
+	      	nxs_js_log("komt ie:");
+	      	nxs_js_log(selector);
+	      	// mark all rows with same unistyle as dirty
+	      	jQuery(selector).addClass("nxs-dirty");
+	      	<?php
+	      }
+	      else
+	      {
+	      	?>
+	      	nxs_js_log("komt ie niet");
+	      	<?php
+	      }
+	      ?>
+	      
+	      // rerender all dirty items!
+	      nxs_js_rerender_dirty_rowcontainers();
 	
 				// close the pop up
 	      nxs_js_closepopup_unconditionally();

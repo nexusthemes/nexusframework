@@ -234,12 +234,12 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	{
 		$output .= "</div> <!-- nxs-fullwidth -->";
 		$output .= "</div> <!-- nxs-row-container -->";
-		$output .= "</div> <!-- nxs-row -->";
+		$output .= "</div>";
 	}
 	else
 	{
 		$output .= "</div> <!-- nxs-row-container -->";		
-		$output .= "</div> <!-- nxs-row -->";
+		$output .= "</div>";
 	}
 
 	// global variable no longer needed

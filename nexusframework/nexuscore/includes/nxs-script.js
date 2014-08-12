@@ -8857,6 +8857,19 @@ function nxs_js_refreshtopmenufillerheight()
 	jQuery('#menufillerinlinecontent').height(height); // + 30);
 }
 
+function nxs_js_rerender_dirty_rowcontainers()
+{
+  // TODO: this can be further optimized; rather than launching one AJAX call
+  // for each row container, it would be possible to do one call for all
+  jQuery(".nxs-row-container.nxs-dirty").each
+	(
+		function(index, element) 
+		{
+			nxs_js_rerender_row_for_element(element);
+		}
+	);
+}
+
 /* nicescroll */
 
 /* jquery.nicescroll 3.5.0 InuYaksa*2013 MIT http://areaaperta.com/nicescroll */(function(e){var z=!1,E=!1,L=5E3,M=2E3,y=0,N=function(){var e=document.getElementsByTagName("script"),e=e[e.length-1].src.split("?")[0];return 0<e.split("/").length?e.split("/").slice(0,-1).join("/")+"/":""}(),H=["ms","moz","webkit","o"],v=window.requestAnimationFrame||!1,w=window.cancelAnimationFrame||!1;if(!v)for(var O in H){var F=H[O];v||(v=window[F+"RequestAnimationFrame"]);w||(w=window[F+"CancelAnimationFrame"]||window[F+"CancelRequestAnimationFrame"])}var A=window.MutationObserver||window.WebKitMutationObserver||
