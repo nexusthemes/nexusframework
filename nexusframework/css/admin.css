@@ -364,6 +364,7 @@ span.nxs-title { line-height: 20px; }
 .nxs-toggle-hide { display: none; }
 .nxs-admin-wrap .nxs-placeholder					{ margin-bottom: 0px !important; }
 .mceIframeContainer iframe 							{ min-height: 200px; }
+.nxs-editor-active .nxs-widgettype-undefined .nxs-widget { outline: dashed thin; }
 
 /* ADMIN FONT */
 .nxs-admin-font,
@@ -531,6 +532,7 @@ input.nxsbutton2,
 	-webkit-border-radius: 	11px;
 }
 .nxs-admin-wrap input[type="file"] 					{ z-index: 0; }
+
 
 /* BUTTONS
 ----------------------------------------------------------------------------------------------------
