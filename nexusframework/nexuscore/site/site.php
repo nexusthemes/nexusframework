@@ -2735,6 +2735,33 @@ function nxs_site_marketingmanagementhome_getoptions($args)
 
 /* MARKETING MANAGEMENT
 ---------------------------------------------------------------------------------------------------- */
+
+function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	ob_start();
+	if ($runtimeblendeddata["cacheaction"] == "clear")
+	{
+		$path = nxs_cache_getcachefolder();
+		nxs_cache_clear();
+		?>
+		Cache cleared <?php echo $path; ?>
+		<?php
+	}
+	?>
+	<a href="#" class='nxsbutton1 nxs-float-right' onclick='nxs_js_triggerclearcache(); return false;'><?php nxs_l18n_e('Clear', 'nxs_td'); ?></a>
+	<script type='text/javascript'>
+		function nxs_js_triggerclearcache()
+		{
+			nxs_js_popup_setshortscopedata("cacheaction","clear");
+			nxs_js_popup_refresh();
+		}
+	</script>
+	<?php
+	$result = ob_get_contents();
+	ob_end_clean();
+	return $result;
+}
+
 function nxs_site_cachemanagementhome_getoptions($args)
 {	
 	$options = array
@@ -2763,6 +2790,14 @@ function nxs_site_cachemanagementhome_getoptions($args)
 					"604800"	=>nxs_l18n__("1 week", "nxs_td"), 
 					"never"	=>nxs_l18n__("Never", "nxs_td"), 
 				)
+			),
+			array
+			( 
+				"id" 				=> "clearcache",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_site_cachemanagementhome_clearcache_popupcontent",
+				"label" 			=> nxs_l18n__("Clear cache", "nxs_td"),
+				"placeholder" 		=> "Clears any existing items in the cache",
 			),
 		)
 	);

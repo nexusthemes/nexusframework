@@ -41,18 +41,12 @@ function nxs_site_wipe()
 		//echo "<br /><br />";
 	}
 	
-  //
-  //echo "patch finished";
-	
-  //echo "<br /><br />";
-  
-  //$output = ob_get_contents();
-	//ob_end_clean();
-	
-	//echo "output:" . $output;
-	
-	//echo "-----------<br />";
-	//echo "DO NOT FORGET TO ALSO REMOVE THE WP-CONTENT FILES (IMAGES/ATTACHMENTS!!!!)";
+  // now we remove the content of the site in the upload folder
+	$x = wp_upload_dir();
+	$uploadfolderforthissite = $x["basedir"];
+	nxs_recursive_removedirectory($uploadfolderforthissite);
+
+	// todo: clear the site's title too
 }
 
 function nxs_license_notifyregistersuccess()

@@ -386,6 +386,12 @@ function nxs_getwidgets_functions_AF($result, $args)
 		}
 	}	
 	
+	if ($nxsposttype == "post") 
+	{
+		$result[] = array("widgetid" => "wordpresstitle");
+	}
+
+	
 	/* PAGETEMPLATES 
 	---------------------------------------------------------------------------------------------------- */
 	
@@ -400,6 +406,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "pagebackground");
 		$result[] = array("widgetid" => "pagepopup");
 	}
+	
+	
 	
 	/* CAPABILITIES WIDGET FILTER
 	---------------------------------------------------------------------------------------------------- */

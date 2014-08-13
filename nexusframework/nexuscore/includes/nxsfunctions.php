@@ -245,12 +245,28 @@ function nxs_cache_getmd5hash()
 	return $result;
 }
 
-function nxs_cache_getcachedfilename()
+function nxs_cache_getcachefolder()
 {
 	$md5hash = nxs_cache_getmd5hash();
 	$uploaddir = wp_upload_dir();
 	$basedir = $uploaddir["basedir"];
-	$cachedfile = $basedir . "/" . "nxscache" . "/" . $md5hash . ".cache";
+	$result = $basedir . DIRECTORY_SEPARATOR . "nxscache";
+	return $result;
+}
+
+function nxs_cache_clear()
+{
+	if (nxs_has_adminpermissions())
+	{
+		$path = nxs_cache_getcachefolder();
+		nxs_recursive_removedirectory($path);
+	}
+}
+
+function nxs_cache_getcachedfilename()
+{
+	$md5hash = nxs_cache_getmd5hash();
+	$cachedfile = nxs_cache_getcachefolder() . DIRECTORY_SEPARATOR . $md5hash . ".cache";
 	return $cachedfile;
 }
 
@@ -10852,6 +10868,20 @@ function nxs_sanitize_chars($chars)
 // kudos to http://stackoverflow.com/questions/11267086/php-unlink-all-files-within-a-directory-and-then-deleting-that-directory
 function nxs_recursive_removedirectory($directory)
 {
+	if ($directory == "")
+	{
+		return;
+	}
+	if (!file_exists($directory))
+	{
+		return;
+	}
+	if (!is_dir($directory))
+	{
+		return;
+	}
+	
+	//
   foreach(glob("{$directory}/*") as $file)
   {
 		if(is_dir($file)) 

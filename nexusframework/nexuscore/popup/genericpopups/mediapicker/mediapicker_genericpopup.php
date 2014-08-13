@@ -61,7 +61,10 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 	
 	if (!isset($mediapicker_paging_itemsperpage) || $mediapicker_paging_itemsperpage == "" || $mediapicker_paging_itemsperpage == 0)
 	{
+		// default
 		$mediapicker_paging_itemsperpage = 5;
+		// allow overriden defaults
+		$mediapicker_paging_itemsperpage = apply_filters("nxs_filter_default_mediapicker_paging_itemsperpage", $mediapicker_paging_itemsperpage);
 	}
 	
 	$firstrownrtoshow = $mediapicker_paging_itemsperpage*($medialist_pagenr - 1);
@@ -287,7 +290,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 							</select>
 						</div>
 						
-						<!-- pagesize -->
+						<!-- date created -->
 						<div class="nxs-paginationconfig nxs-float-right">
 							<span><?php echo nxs_l18n__("Created", "nxs_td"); ?></span>
 							<select id="mediapicker_filter_date" onchange="nxs_js_popup_mediapicker_changedatefilter(this);">
