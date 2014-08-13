@@ -146,7 +146,7 @@ function nxs_widgets_callout_home_getoptions($args)
 			array(
 				"id" 				=> "button_text",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Button title", "nxs_td"),
+				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Button text goes here", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Put a text on the call-to-action button.", "nxs_td"),
 				"unicontentablefield" => true,
