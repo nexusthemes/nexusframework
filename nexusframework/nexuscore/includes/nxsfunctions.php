@@ -10849,6 +10849,23 @@ function nxs_sanitize_chars($chars)
     return $chars;
 }
 
+// kudos to http://stackoverflow.com/questions/11267086/php-unlink-all-files-within-a-directory-and-then-deleting-that-directory
+function nxs_recursive_removedirectory($directory)
+{
+  foreach(glob("{$directory}/*") as $file)
+  {
+		if(is_dir($file)) 
+		{ 
+			nxs_recursive_removedirectory($file);
+		} 
+		else 
+		{
+			unlink($file);
+		}
+  }
+  rmdir($directory);
+}
+
 // kudos to http://stackoverflow.com/questions/5707806/recursive-copy-of-directory
 function nxs_recursive_copyfolders($source, $dest)
 {

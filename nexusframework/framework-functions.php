@@ -327,6 +327,12 @@ function nxs_init()
 		  	phpinfo();
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "wp_upload_dir")
+		  {
+		  	$x = wp_upload_dir();
+		  	var_dump($x);
+		  	die();
+		  }
 		  else if ($_REQUEST["nxs"] == "errorlog")
 		  {
 			  $errorpath = ini_get('error_log');
