@@ -137,6 +137,13 @@ function nxs_pagerow_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
+			array(
+				"id" 				=> "r_widescreen",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Widescreen row (not available for rows next to sidebars,and if rows have more than 1 colum)", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "wrapper_styling_end",
 				"type" 				=> "wrapperend"

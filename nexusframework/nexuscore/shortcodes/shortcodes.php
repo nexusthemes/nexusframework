@@ -47,15 +47,11 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		
 	extract($nxs_global_row_render_statebag, EXTR_PREFIX_ALL, "grs_");
 	
+	$pagerowtemplate = $rowattributes["pagerowtemplate"];
+
 	$additionalrowclasses = "";
 	
 	$upgradetofullwidth = $nxs_global_row_render_statebag["upgradetowidescreen"];	
-	if ($upgradetofullwidth == "yes")
-	{
-		//var_dump($nxs_global_row_render_statebag);
-		$additionalrowclasses .= " widescreen-row ";
-		
-	}
 		
 	/*
 	$suppressfilleratrow0 = $nxs_global_row_render_statebag["suppressfilleratrow0"];
@@ -69,7 +65,6 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		$additionalrowclasses .= $nxs_global_row_render_statebag["rrs_cssclass"];
 	}
 	
-	$pagerowtemplate = $rowattributes["pagerowtemplate"];
 	
 	
 	if ($pagerowtemplate == "141214")
@@ -126,6 +121,23 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		
 		$metadata = nxs_getpagerowmetadata($nxs_global_current_postid_being_rendered, $pagerowid);
 		$cssclass = nxs_getcssclassesforrow($metadata);
+		
+		if ($metadata["r_widescreen"] != "")
+		{
+			$upgradetofullwidth = "yes";
+		}
+	}
+	
+	if ($upgradetofullwidth == "yes")
+	{
+		if ($pagerowtemplate == "one")
+		{
+			$additionalrowclasses .= " widescreen-row ";
+		}
+		else
+		{
+			// not allowed
+		}
 	}
 	
 	if (isset($grs_upgradetofullwidth) && $grs_upgradetofullwidth) 
