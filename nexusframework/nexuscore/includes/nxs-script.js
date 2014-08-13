@@ -7338,7 +7338,22 @@ function nxs_js_updatecss_themecss_actualrequest(shouldusecacheifavailable, shou
 	if (isdirty && localstorageavailable)
 	{
 		nxs_js_log("* Updating CSS cache");
-		localStorage.setItem(storagekey, actualcss);
+		try
+		{
+			localStorage.setItem(storagekey, actualcss);
+		}
+		catch(err)
+		{
+			// most likely reason; if a multisite
+			// hosts multiple sites using sub folders,
+			// the localstorage is shared with all sites,
+			// if users accesses many sites, eventually will run
+			// out of local storage, in that case we clear the 
+			// localstorage to wipe cache of "other sites" too,
+			// next time hopefully there will be enough storage left
+			nxs_js_log("* Error storing cached CSS");
+			localStorage.clear();
+		}
 	}
 	else
 	{
