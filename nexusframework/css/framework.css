@@ -1944,6 +1944,7 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow3 { border-right: 0; }
 .nxs-banner .image-wrapper.last								{ border-right: 0; }
 
+.nxs-main .nxs-banner .image-wrapper.placeinrow5			{ border-right: 3.6em solid transparent !important; }
 
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
