@@ -383,28 +383,15 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	
 	// if both external and article link are set
 	$verifydestinationcount = 0;
-	if ($destination_url != "")
-	{
+	if ($destination_url != "") {
 		$verifydestinationcount++;
-	}
-	if ($destination_articleid != "") 
-	{
+	} if ($destination_articleid != "") {
 		$verifydestinationcount++;
-	}
-	if ($destination_js != "") 
-	{
+	} if ($destination_js != "") {
 		$verifydestinationcount++;
-	}
-	if ($verifydestinationcount > 1)
-	{
+	} if ($verifydestinationcount > 1) {
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Button: both external URL and article reference are set (ambiguous URL)", "nxs_td");
-	}
-	
-	// if both external and article link are set
-	if ($destination_url == "" && $destination_articleid == "" && $destination_js == "" && $button_text != "") {
-		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Button: button is set, but no reference is set (no URL)", "nxs_td");
 	}
 	
 	// fixed font size
@@ -438,11 +425,13 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$title_heading = "h1";
 	}
 	
-	// Title fontsize
+	// Title heightiq, size, font
+	$heightiqprio = "p1";
+	$title_heightiqgroup = "callout-title";
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
 	$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $title_fontzen);
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass);
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
 	
 	// Title
 	$htmltitle = '<'.$title_heading.' class="'.$cssclasses.'">'.$title.'</'.$title_heading.'>';
@@ -454,20 +443,15 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$subtitle_heading = "h1";
 	}
 	
-	// Subitle fontsize
+	// Subtitle heightiq, size, font
+	$heightiqprio = "p1";
+	$subtitle_heightiqgroup = "callout-subtitle";
 	$subtitle_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $subtitle_fontsize);
 	$subtitle_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $subtitle_fontzen);
-	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", "nxs-subtitle", $subtitle_fontsize_cssclass, $subtitle_fontzen_cssclass);
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", "nxs-subtitle", $subtitle_fontsize_cssclass, $subtitle_fontzen_cssclass, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$subtitle_heightiqgroup}");
 	
 	// Subitle
-	$htmlsubtitle = '<'.$subtitle_heading.' class="' . $cssclasses .'">'.$subtitle.'</'.$subtitle_heading.'>';
-	
-	
-	// Button
-	$button_alignment = "";								
-	$button_heighiq = "";
-	$htmlbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $button_heighiq, $button_fontzen);
+	$htmlsubtitle = '<'.$subtitle_heading.' class="' . $cssclasses .'">'.$subtitle.'</'.$subtitle_heading.'>';	
 	
 	// Image metadata
 	if ($image_imageid != "") {
@@ -512,6 +496,79 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	// Filler
 	$htmlfiller = '<div class="nxs-clear nxs-filler"></div>';
 	
+	/* LINK
+	---------------------------------------------------------------------------------------------------- */
+	if ($destination_articleid != "") {
+		$url = nxs_geturl_for_postid($destination_articleid);
+		$onclick = "";
+	} else if ($destination_url != "") {
+		if (nxs_stringstartswith($destination_url, "tel:")) {
+			// a phone link; if parenthesis or spaces are used; absorb them
+			$url = $destination_url;
+			$url = str_replace(" ", "", $url);
+			$url = str_replace("(", "", $url);
+			$url = str_replace(")", "", $url);
+		} else {
+			// regular link
+			$url = $destination_url;
+		}
+		$onclick = "";
+	} else if ($destination_js != "") {
+		$url = "#";
+		$onclick = "onclick='" . nxs_render_html_escape_singlequote($destination_js) . "' ";
+	} else {
+		// unsupported
+		$url = "";
+		$onclick = "";
+	}
+	
+	// Onclick
+	if ($onclick != "") {
+		$onclick = " " . $onclick . " ";
+ 	}
+ 
+ 	if ($destination_target == "@@@empty@@@" || $destination_target == "") {
+ 		// auto
+ 		if ($destination_articleid != "") {
+ 			// local link = self
+ 			$destination_target = "_self";
+ 		} else {
+ 			$homeurl = nxs_geturl_home();
+ 			if (nxs_stringstartswith($url, $homeurl)) {
+ 				$destination_target = "_self";
+ 			} else {
+ 				$destination_target = "_blank";
+ 			}
+ 		}
+ 	}
+ 	
+	// Link blank vs. self
+	if ($destination_target == "_self") {
+ 		$destination_target = "_self";
+ 	} else if ($destination_target == "_blank") {
+ 		$destination_target = "_blank";
+ 	} else {
+ 		$destination_target = "_self";
+	}
+	
+	// if both external and article link are set
+	if ($url != "" && $button_text == "") {
+		$button_text = "Place button text here";
+	}
+	
+	// Button
+	if ($url != ""){
+		$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
+		$button_color = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
+		$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
+		$button_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $button_fontzen);
+		
+		$htmlbutton = '
+		<p class="' . $button_alignment . ' nxs-padding-bottom0">
+			<span class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '">' . $button_text . '</span>
+		</p>';
+	}
+	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
@@ -525,29 +582,37 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	} 
 	else
 	{
-		echo '
-		<div class="image-background '.$hclass.' '.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
-			<div class="text-wrapper '.$bgcolor_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.' '.$border_radius_cssclass.' '.$float.'" style="'.$callout_text_width.' '.$center.'">';
-				
-				if ($title != "") 		{echo $htmltitle;}
-				
-				if ($title != "" && $subtitle != "") {
-					echo '<div class="nxs-clear nxs-filler"></div>';
-				}
-				
-				if ($subtitle != "")	{echo $htmlsubtitle;}
-				
-				if (($title != "" && $htmlbutton != "") || ($subtitle != "" && $htmlbutton != "")) {
-					echo '<div class="nxs-clear nxs-filler"></div>';
-				}
-				
-				if ($htmlbutton != "")		{echo $htmlbutton;}
-				
-				echo '
+		if ($url != ""){
+			echo '<a target="'.$destination_target.'" '.$onclick.' href="' . $url . '">';
+		}
+		
+			echo '
+			<div class="image-background '.$hclass.' '.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
+				<div class="text-wrapper '.$bgcolor_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.' '.$border_radius_cssclass.' '.$float.'" style="'.$callout_text_width.' '.$center.'">';
+					
+					if ($title != "") 		{echo $htmltitle;}
+					
+					if ($title != "" && $subtitle != "") {
+						echo '<div class="nxs-clear nxs-filler"></div>';
+					}
+					
+					if ($subtitle != "")	{echo $htmlsubtitle;}
+					
+					if (($title != "" && $htmlbutton != "") || ($subtitle != "" && $htmlbutton != "")) {
+						echo '<div class="nxs-clear nxs-filler"></div>';
+					}
+					
+					if ($url != "")		{echo $htmlbutton;}
+					
+					echo '
+					<div class="nxs-clear"></div>
+				</div>
 				<div class="nxs-clear"></div>
-			</div>
-			<div class="nxs-clear"></div>
-		</div>';
+			</div>';
+		
+		if ($destination_target != ""){
+			echo '</a>';
+		}
 	} 
 	
 	/* ------------------------------------------------------------------------------------------------- */
