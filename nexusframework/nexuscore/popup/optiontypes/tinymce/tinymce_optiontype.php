@@ -121,7 +121,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 						function nxs_loadplugins_tinymce_editor()
 						{
 							var scripturl = '<?php echo nxs_getframeworkurl(); ?>/js/tinymcev4/nxslinkv4.js';
-							var functiontoinvoke = 'nxs_launch_tinymce_editor()';
+							var functiontoinvoke = 'nxs_js_launch_tinymce_editor()';
 							nxs_js_lazyexecute(scripturl, false, functiontoinvoke);
 							nxs_js_log("lazyexecuted " + scripturl);
 						}
@@ -143,20 +143,22 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								}
 							);
 							
+							<?php do_action("nxs_action_tinymce_registereventhandlers"); ?>
+							
 							// set focus to the tinymce editor
 							nxs_tinymce_claimfocus();
 							
 							nxs_js_log("finished setup of handlers");
 						}
 		
-						function nxs_launch_tinymce_editor()
+						function nxs_js_launch_tinymce_editor()
 						{
-							nxs_js_log("nxs_launch_tinymce_editor");
+							nxs_js_log("nxs_js_launch_tinymce_editor");
 							
 							// bugfix: when multiple tinymce instances are on the same popup,
 							// it appears the first one loads perfect, but the ones following
 							// give an error because the tinyMCE instance is not yet defined
-							// this is solved by using a lazy load approacy
+							// this is solved by using a lazy load approach
 							if(typeof tinyMCE != 'undefined')
 							{
 								//nxs_js_log('looks like tinyMCE exists');
@@ -164,7 +166,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							else
 							{
 								// nxs_js_log('Delayed execution required for TinyMCE, having to wait till tinyMCE object is initialized... retrying...');
-								setTimeout(nxs_launch_tinymce_editor, 100);
+								setTimeout(nxs_js_launch_tinymce_editor, 100);
 								return;
 							}
 						
@@ -191,7 +193,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 						        "searchreplace visualblocks code fullscreen",
 						        "insertdatetime media table contextmenu paste link"
 							    ],
-						      toolbar: "undo redo | styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code",
+						      toolbar: "undo redo | styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code | <?php do_action("nxs_action_tinymce_toolbar"); ?>",
 							    setup: nxs_tinymce_registereventhandlers,							    
 								}
 							);
