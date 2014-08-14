@@ -380,6 +380,24 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Minimal: title, subtitle or button", "nxs_td");
 	}
+
+	// if both external and article link are set
+	if ($button_text == "") 
+	{
+		if 
+		(
+			$destination_articleid != "" ||
+			$destination_url != "" ||
+			$destination_js != ""
+		)
+		{
+			// ignore
+			$destination_articleid = "";
+			$destination_url = "";
+			$destination_js = "";
+		}
+	}
+	
 	
 	// if both external and article link are set
 	$verifydestinationcount = 0;
@@ -549,11 +567,6 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
  		$destination_target = "_blank";
  	} else {
  		$destination_target = "_self";
-	}
-	
-	// if both external and article link are set
-	if ($url != "" && $button_text == "") {
-		$button_text = "Place button text here";
 	}
 	
 	// Button
