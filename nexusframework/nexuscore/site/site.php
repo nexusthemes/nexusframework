@@ -3151,13 +3151,9 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
 		</table>
 		<div class="padding"></div>
 		';
-	} 
-
+	}
 	?>
-	
-	
 	<script type='text/javascript'>
-		
 		function nxs_js_store_lookuptable()
 		{
 			var name = jQuery("#lookuptable_new_name").val();
@@ -3179,6 +3175,10 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
 					nxs_js_popup_setshortscopedata('action', 'changelookuptableitem');
 					nxs_js_popup_setshortscopedata('name', name);
 					nxs_js_popup_setshortscopedata('newvalue', newvalue);
+					
+					// ensure page is refresh when user hits save
+					nxs_js_popup_setsessioncontext("onsaverefreshpage", true);
+					
 					nxs_js_popup_refresh();
 				}
 				else
@@ -3201,6 +3201,10 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
     	{
 				nxs_js_popup_setshortscopedata('action', 'deletelookuptableitem');
 				nxs_js_popup_setshortscopedata('name', name);
+				
+					// ensure page is refresh when user hits save
+					nxs_js_popup_setsessioncontext("onsaverefreshpage", true);
+				
 				nxs_js_popup_refresh();
 			}
 		}

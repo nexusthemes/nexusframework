@@ -7758,13 +7758,16 @@ function nxs_unistyle_getgroups()
 		}
 	}
 	
-		// make distinct list (some widgets share the same name)
+	// set 3
+	// also include the "row" group
+	$result[] = nxs_row_getunifiedstylinggroup();
+	
+	// some widgets share the same name; we don't want duplicates, so make distinct list
 	$result = array_unique($result);
 	
 	// sort
 	ksort($result);
 
-	
 	return $result;
 }
 
@@ -7787,6 +7790,8 @@ function nxs_unistyle_deleteunistyle($group, $name)
 	foreach ($postids as $currentrow)
 	{
 		$currentpostid = $currentrow["postid"];
+		
+		// step 1; cleanup unistyles used in widgets
 		$placeholderidstometadatainpost = nxs_getswidgetmetadatainpost($currentpostid);
 		foreach ($placeholderidstometadatainpost as $currentplaceholderid => $currentmetadata)
 		{
@@ -7804,6 +7809,9 @@ function nxs_unistyle_deleteunistyle($group, $name)
 			}
 			
 		}
+		
+		// step 2; TODO: cleanup unistyles used in rows
+		//
 	}
 	
 	// remove the old one
@@ -7846,10 +7854,9 @@ function nxs_unistyle_renameunistyle($group, $oldname, $newname)
 	foreach ($postids as $currentrow)
 	{
 		$currentpostid = $currentrow["postid"];
+		
+		// step 1; rename the unistyles in the metadata of widgets in this post
 		$placeholderidstometadatainpost = nxs_getswidgetmetadatainpost($currentpostid);
-		
-		//var_dump($placeholderidstometadatainpost);
-		
 		foreach ($placeholderidstometadatainpost as $currentplaceholderid => $currentmetadata)
 		{
 			$currentwidgetid = $currentmetadata["type"];
@@ -7865,6 +7872,9 @@ function nxs_unistyle_renameunistyle($group, $oldname, $newname)
 				}
 			}
 		}
+		
+		// step 2; TODO: rename the unistyles in the metadta of rows in this post
+		//
 	}
 	
 	// remove the old one

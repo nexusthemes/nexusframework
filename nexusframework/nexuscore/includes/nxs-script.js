@@ -7294,10 +7294,13 @@ function nxs_js_blendtemplatewithvariables_v2(template, lookup, keyprefix, keysu
 //
 function nxs_js_updatecss_themecss_actualrequest(shouldusecacheifavailable, shouldupdatedom)
 {
+	
 	var actualcss = null;
 	var isdirty = false;
 	var storagekey = nxs_js_get_adminurladminajax() + "nxs-dynamiccss-server-chunk";
 	var localstorageavailable = Modernizr.localstorage;
+	
+	localstorageavailable = false; // overruled for now
 	
 	// store css
 	if (shouldusecacheifavailable && localstorageavailable)
