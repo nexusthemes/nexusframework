@@ -30,6 +30,10 @@ body														{ height: 100%; }
 	/* overflow should be visible in order to draggable items to elements below the visible area */
 	overflow: visible;
 }
+a { 
+	/* overriding default browser colorization */
+	color: inherit; 
+}
 
 /* FALLBACK MODERNIZR TOGGLE
 ---------------------------------------------------------------------------------------------------- */
@@ -1260,10 +1264,15 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 
 /* CALLOUT
 ------------------------------------------------------------------------------------------ */
-.nxs-callout .nxs-title										{ font-weight: normal !important; text-transform: none !important; line-height: 1.0em !important; }
+.nxs-callout .nxs-title { 
+	font-weight: normal !important; 
+	text-transform: none !important; 
+	margin-bottom: 0.1em; /* prevent baseline cuts */
+}
 .nxs-callout .nxs-subtitle									{ line-height: 1.5em !important; }
 .nxs-callout a.nxs-button									{ display: inline-block; font-weight: normal !important; }
 .nxs-callout .nxs-filler									{ padding: 10px 0; }
+.nxs-callout a:hover .nxs-title								{ opacity: 1; }
 
 /* LOGO 
 ------------------------------------------------------------------------------------------ */
