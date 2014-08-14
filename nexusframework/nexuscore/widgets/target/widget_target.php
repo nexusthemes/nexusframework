@@ -472,11 +472,11 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	} else {
 		
 		echo '
-		<div class="'.$layout.' '.$transition.' nxs-icon-size-'.$icon_size.'">';
+		<div class="nxs-width100 '.$layout.' '.$transition.' nxs-icon-size-'.$icon_size.'">';
 							
 				echo $icon;
 				echo'
-				<div class="content '.$icon_color.' nxs-applylinkvarcolor">';
+				<div class="content '.$icon_color.'">';
 					if ($destination_url != "") { echo '<a href="'.$destination_url.'">'; }
 					
 					echo $title;
@@ -491,6 +491,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 					if ($destination_url != "") { echo '</a>'; }
 					echo'
 				</div>';
+				if ($button != "") { echo '<div class="nxs-clear padding"></div>'; }
 				echo $button;
 			
 		echo '
