@@ -1772,12 +1772,11 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	-o-transition: 		background 300ms linear;
 	transition: 		background 300ms linear;
 }
-.nxs-target a 												{ display: block; }
+.nxs-target a,
+.nxs-target .content,
+.nxs-target .main 											{ display: block;  }
 .nxs-target .nxs-button										{ display: inline-block; }
 .nxs-target .icon {
-	width: 48px;
-	line-height: 48px;
-	font-size: 32px;
 	float: left;
 	text-align: center;
 	-webkit-transition: font-size 300ms linear;
@@ -1786,11 +1785,11 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	-o-transition: 		font-size 300ms linear;
 	transition: 		font-size 300ms linear;
 }
-.nxs-target .icon-top .icon 								{ margin-bottom: 10px; }
-.nxs-target .content 										{ display: block; margin-left: 58px; }
-.nxs-target .main 											{ display: block;  }
-.nxs-target .icon 											{ font-size: 32px; }
-.nxs-target:hover .icon 									{ font-size: 48px; }
+
+/* If icon is colored */
+.nxs-target .icon.colored 									{ padding: 10px; }
+
+/* transitions */
 .nxs-target:hover .main	{ 
 	opacity: 1;
 	-webkit-animation: 	moveFromTop 300ms ease-in-out;
@@ -1804,9 +1803,6 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	-moz-animation: 	moveFromBottom 300ms ease-in-out;
 	-ms-animation: 		moveFromBottom 300ms ease-in-out;
 }
-/* If icon is colored */
-.nxs-target .content.colored 								{ margin-left: 83px; }
-.nxs-target .icon.colored 									{ padding: 10px; }
 
 @-webkit-keyframes moveFromBottom {
 from	{ opacity: 0; -webkit-transform: translateY(200%); }
@@ -1833,8 +1829,33 @@ from 	{ opacity: 0; -ms-transform: translateY(-200%); }
 to 		{ opacity: 1; -ms-transform: translateY(0%); }
 }
 
+/* Layout */
+.nxs-target .icon-top-left .icon,
+.nxs-target .icon-top .icon 								{ margin-bottom: 20px; }
+
+.nxs-target .icon-top .content,
+.nxs-target .icon-top-left .content,
+.nxs-target .icon-top-center .content		 				{ margin-left: 0px !important; }
+
 .nxs-target .icon-top .icon		 							{ padding: 10px; width: 100%; padding-left: 0px; padding-right: 0px; }
-.nxs-target .icon-top .content		 						{ margin-left: 0px !important; }
+.nxs-target .icon-top-left .icon		 					{ display: block; clear: both; float: none; }
+.nxs-target .icon-top-center .icon		 					{ display: block; clear: both; float: none; margin: 0 auto 20px; }
+
+/* size */
+.nxs-target 	  	.nxs-icon-size-1-0 .icon 					{ font-size: 32px; width: 48px; line-height: 48px; }
+.nxs-target:hover 	.nxs-icon-size-1-0 .icon 					{ font-size: 48px; }
+.nxs-target 	  	.nxs-icon-size-1-0 .content 				{ margin-left: 58px; }
+.nxs-target 		.nxs-icon-size-1-0 .content.colored 		{ margin-left: 83px; }
+.nxs-target 		.nxs-icon-size-1-0.icon-top-left .icon,
+.nxs-target 		.nxs-icon-size-1-0.icon-top-center .icon	{ height: 48px; width: 48px; }
+
+.nxs-target 	  	.nxs-icon-size-2-0 .icon 					{ font-size: 64px; width: 96px; line-height: 96px; }
+.nxs-target:hover 	.nxs-icon-size-2-0 .icon 					{ font-size: 96px; }
+.nxs-target 	  	.nxs-icon-size-2-0 .content 				{ margin-left: 116px; }
+.nxs-target 		.nxs-icon-size-2-0 .content.colored 		{ margin-left: 138px; }
+.nxs-target 		.nxs-icon-size-2-0.icon-top-left .icon,
+.nxs-target 		.nxs-icon-size-2-0.icon-top-center .icon	{ height: 96px; width: 96px; }
+
 
 /* no transition */
 .nxs-m-touch .nxs-target,
@@ -2163,6 +2184,7 @@ h3#order_review_heading,
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
+	display: inline-block;
 
 	/* Better Font Rendering =========== */ 
 	-webkit-font-smoothing: antialiased;
