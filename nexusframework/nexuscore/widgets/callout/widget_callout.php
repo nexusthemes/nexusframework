@@ -50,7 +50,7 @@ function nxs_widgets_callout_home_getoptions($args)
 			// TITLES
 				
 			array( 
-				"id" 				=> "wrapper_title_begin",
+				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title and subtitle", "nxs_td"),
 			),
@@ -130,14 +130,14 @@ function nxs_widgets_callout_home_getoptions($args)
 			),
 
 			array( 
-				"id" 				=> "wrapper_title_end",
+				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
 			
 			// BUTTON
 			
 			array( 
-				"id" 				=> "wrapper_action_begin",
+				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Button", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
@@ -146,7 +146,7 @@ function nxs_widgets_callout_home_getoptions($args)
 			array(
 				"id" 				=> "button_text",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
+				"label" 			=> nxs_l18n__("Button title", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Button text goes here", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Put a text on the call-to-action button.", "nxs_td"),
 				"unicontentablefield" => true,
@@ -171,6 +171,21 @@ function nxs_widgets_callout_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),
+			
+			// LINK
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Link", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
@@ -207,14 +222,14 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unistylablefield"	=> true
 			),			
 			array( 
-				"id" 				=> "wrapper_action_end",
+				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
 
 			// BACKGROUND IMAGE
 			
 			array( 
-				"id" 				=> "wrapper_input_begin",
+				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Background image", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
@@ -286,7 +301,7 @@ function nxs_widgets_callout_home_getoptions($args)
 			),
 			
 			array( 
-				"id" 				=> "wrapper_input_end",
+				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
 
@@ -380,24 +395,6 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Minimal: title, subtitle or button", "nxs_td");
 	}
-
-	// if both external and article link are set
-	if ($button_text == "") 
-	{
-		if 
-		(
-			$destination_articleid != "" ||
-			$destination_url != "" ||
-			$destination_js != ""
-		)
-		{
-			// ignore
-			$destination_articleid = "";
-			$destination_url = "";
-			$destination_js = "";
-		}
-	}
-	
 	
 	// if both external and article link are set
 	$verifydestinationcount = 0;
@@ -411,6 +408,13 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Button: both external URL and article reference are set (ambiguous URL)", "nxs_td");
 	}
+	
+	// if both external and article link are set
+	if ($destination_url == "" && $destination_articleid == "" && $destination_js == "" && $button_text != "") {
+		$shouldrenderalternative = true;
+		$alternativehint = nxs_l18n__("Button: button is set, but no reference is set (no URL)", "nxs_td");
+	}
+	
 	
 	// fixed font size
 	if ($fixed_font != "") { $fixed_font = 'fixed-font'; }
@@ -570,7 +574,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Button
-	if ($url != ""){
+	if ($url != "" && $button_text != ""){
 		$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
 		$button_color = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
 		$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
@@ -623,7 +627,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 				<div class="nxs-clear"></div>
 			</div>';
 		
-		if ($destination_target != ""){
+		if ($url != ""){
 			echo '</a>';
 		}
 	} 
