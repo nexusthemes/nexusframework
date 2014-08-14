@@ -64,6 +64,13 @@ function nxs_widgets_target_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "title_alignment",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("title_halignment"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
@@ -152,13 +159,13 @@ function nxs_widgets_target_home_getoptions($args)
 			),
 			
 			
-			/* MISCELLANEOUS
+			/* ICON
 			---------------------------------------------------------------------------------------------------- */
 			
 			array( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Miscellaneous", "nxs_td"),
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
 			),
 			
 			array(
@@ -181,6 +188,47 @@ function nxs_widgets_target_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "icon_size",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Icon size", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"	=>nxs_l18n__("Auto", "nxs_td"),
+					"1-0"			=>nxs_l18n__("1x", "nxs_td"),
+					"2-0"			=>nxs_l18n__("2x", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "layout",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Layout", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"		=>nxs_l18n__("Auto", "nxs_td"),
+					"default"			=>nxs_l18n__("default", "nxs_td"),
+					"icon-top-left"		=>nxs_l18n__("icon top left", "nxs_td"),
+					"icon-top-center"	=>nxs_l18n__("icon top center", "nxs_td"),
+					"icon-top"			=>nxs_l18n__("icon top fullwidth", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+			),
+			
+			/* LINK
+			---------------------------------------------------------------------------------------------------- */
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Link", "nxs_td"),
+			),
+			
+			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
@@ -195,17 +243,6 @@ function nxs_widgets_target_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
-			),
-			array(
-				"id" 				=> "layout",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Metadata layout", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"default"		=>nxs_l18n__("default", "nxs_td"),
-					"icon-top"		=>nxs_l18n__("icon top", "nxs_td"),
-				),
-				"unistylablefield"	=> true
 			),
 			array(
 				"id" 				=> "transition",
@@ -323,9 +360,6 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("Button: both external URL and article reference are set (ambiguous URL)", "nxs_td");
 	}
 	
-	if 		($layout == "icon-top") { $layout = "icon-top"; }
-	else if ($layout == "default") { $layout = "default"; }
-	
 	if 		($transition != "") { $transition = "no-transition"; }
 	
 	/* LINK
@@ -353,7 +387,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
 		
 	// Icon
-	if ($icon != "") {$icon = '<span class="icon nxs-border-width-1-0 ' . $icon . ' ' . $color_cssclass . ' ' . $icon_color . ' ' . $border_radius_cssclass . '"></span>';}
+	if ($icon != "") {$icon = '<span class="icon nxs-border-width-1-0 '.$icon.' '.$color_cssclass.' '.$icon_color.' '.$border_radius_cssclass.'"></span>';}
 		
 	
 	/* TITLE
@@ -365,21 +399,16 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	} else {
 		$title_heading = "h1";
 	}
-
-	// Title alignment
-	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
 	
-	// Title fontsize
+	// Title alignment, fontsize, heightiq
+	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
-
-	// Title height (across titles in the same row)
 	$heightiqprio = "p1";
 	$title_heightiqgroup = "title";
-  	$titlecssclasses = $title_fontsize_cssclass;
-	$titlecssclasses = nxs_concatenateargswithspaces($titlecssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
+	$titlecssclasses = nxs_concatenateargswithspaces($title_alignment_cssclass, $title_fontsize_cssclass, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
 	
 	// Title
-	$title = '<' . $title_heading . ' class="nxs-title main ' . $title_fontsize_cssclass . ' ' . $titlecssclasses . '">' . $title . '</' . $title_heading . '>';
+	$title = '<'.$title_heading.' class="nxs-title main '.$titlecssclasses.'">'.$title.'</'.$title_heading.'>';
 	
 	
 	/* TEXT
@@ -395,7 +424,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Text	
-	$text = '<div class="sub nxs-text nxs-default-p nxs-padding-bottom0 ' . $text_alignment_cssclass . ' ' . $textcssclasses . '">' . $text . '</div>';
+	$text = '<div class="sub nxs-text nxs-default-p nxs-padding-bottom0 '.$text_alignment_cssclass.' '.$textcssclasses.'">'.$text.'</div>';
 	
 	
 	/* BUTTON
@@ -412,17 +441,22 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	
 	// Button	
 	if ($destination_articleid != "") {
-		$button = '<a href="' . $destination_url .'" class="nxs-button ' . $button_color_cssclass . ' ' . $button_scale_cssclass . '">' . $button_text . '</a>';
+		$button = '<a href="'.$destination_url .'" class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.'">'.$button_text.'</a>';
 	} else if ($destination_url != "") {
-		$button = '<a href="' . $destination_url .'" class="nxs-button ' . $button_color_cssclass . ' ' . $button_scale_cssclass . '" target="_blank">' . $button_text . '</a>';
+		$button = '<a href="'.$destination_url .'" class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.'" target="_blank">'.$button_text.'</a>';
 	}
 	
 	// Applying alignment to button
 	if ($button_text != "") {
-		$button = '<p class="' . $button_alignment . ' nxs-padding-bottom0">' . $button . '</p>';
+		$button = '<p class="'.$button_alignment.' nxs-padding-bottom0">'.$button.'</p>';
 	} else {
 		$button = "";	
 	}
+	
+	/* ICON
+	---------------------------------------------------------------------------------------------------- */
+	// Fallback
+	if($icon_size == ""){$icon_size = "1-0";}
 	
 	
 	/* OUTPUT
@@ -438,13 +472,12 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	} else {
 		
 		echo '
-		<div class="' . $layout . ' ' . $transition . '">';
+		<div class="'.$layout.' '.$transition.' nxs-icon-size-'.$icon_size.'">';
 							
-			
 				echo $icon;
 				echo'
-				<div class="content ' . $icon_color . ' nxs-applylinkvarcolor">';
-					if ($destination_url != "") { echo '<a href="' . $destination_url . '">'; }
+				<div class="content '.$icon_color.' nxs-applylinkvarcolor">';
+					if ($destination_url != "") { echo '<a href="'.$destination_url.'">'; }
 					
 					echo $title;
 					if ($title != "" && $text != "") { echo '<div class="nxs-padding-bottom10"></div>'; } 
@@ -476,7 +509,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page
 	$result["html"] = $html;	
-	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
+	$result["replacedomid"] = 'nxs-widget-'.$placeholderid;
 	return $result;
 }
 
