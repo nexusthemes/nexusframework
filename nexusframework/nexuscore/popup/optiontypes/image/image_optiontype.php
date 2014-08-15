@@ -32,9 +32,31 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 					<?php
 						}
 					?>
-
                     <a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxs-float-left">
-                    	<img src='<?php echo $imageurl; ?>' class="nxs-icon-left" />
+											<?php
+											if (isset($value) && $value != 0) 
+											{
+												if (nxs_postexistsbyid($value))
+												{
+													?>
+		                    	<img src='<?php echo $imageurl; ?>' class="nxs-icon-left" />
+		                    	<p><?php echo $value; ?></p>
+	                    		<?php
+	                    	}
+	                    	else
+	                    	{
+	                    		?>
+	                  			<span>Error; configured image (ID: $value) was removed from the media manager</span>
+	                  			<?php
+	                    	}
+	                  	}
+	                  	else
+	                  	{
+	                  		?>
+	                  		<span>None</span>
+	                  		<?php
+	                  	}
+	                    ?>
                     </a>
                                   
 					<?php

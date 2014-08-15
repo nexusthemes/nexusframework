@@ -357,6 +357,11 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 								// wp_get_attachment_url($attachmentID);
 								$lookup = wp_get_attachment_image_src($currentimage->ID, 'thumbnail', true);
 								$url = $lookup[0];
+								
+								$fullimagemetadata = wp_get_attachment_image_src($currentimage->ID, 'full', true);
+								$fullimagewidth 	= $fullimagemetadata[1] . "px";
+								$fullimageheight 	= $fullimagemetadata[2] . "px";	
+								
 								$rowclass = "";
 								
 								if ($rownr % 2 == 0) {
@@ -375,6 +380,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 									<td>
 										<p>Titel: <?php echo $currentimage->post_title; ?></p>
 										<p>Type: <?php echo $currentimage->post_mime_type; ?></p>
+										<p>Dimensions (width x height): <?php echo "{$fullimagewidth} x {$fullimageheight}"; ?></p>
 									</td>
 								
 								</tr>

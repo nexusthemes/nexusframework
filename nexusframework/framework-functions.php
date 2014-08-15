@@ -419,6 +419,8 @@ function nxs_init()
 			{
 				$postid = $_REQUEST["postid"];
 				echo "dumppost $postid<br />";
+				$exists = nxs_postexistsbyid($postid);
+				if ($exists) { echo "post exist<br />"; } else { echo "post does not exist<br />"; }
 				$needleglobalid = nxs_get_globalid($postid, false);
 				echo "globalid: $needleglobalid<br />";
 				echo "post_meta_all: $needleglobalid<br />";
