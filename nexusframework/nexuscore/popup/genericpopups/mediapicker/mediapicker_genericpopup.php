@@ -132,9 +132,22 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 							<div class="nxs-filterconfig nxs-float-right">
 								<span><?php echo nxs_l18n__("Title contains", "nxs_td"); ?></span>
 								<input id="mediapicker_filter_title" value="<?php echo nxs_render_html_escape_doublequote($mediapicker_filter_title); ?>">
-								</select>
 								<a class='nxsbutton1' href='#' onclick='nxs_js_popup_mediapicker_updatefilter(); return false;'>Filter</a>
 							</div>	
+							<script type='text/javascript'>
+								jQuery("#mediapicker_filter_title").keyup
+								(
+									function (e) 
+									{
+    								if (e.keyCode == 13) 
+    								{
+        							// Do something;
+        							nxs_js_popup_mediapicker_updatefilter();
+        							return false;
+        						}
+        					}
+        				);
+							</script>
 							
 							<div class="nxs-clear padding"></div>
 						</div>
