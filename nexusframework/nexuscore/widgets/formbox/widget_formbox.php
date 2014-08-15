@@ -456,7 +456,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	}
 	
 	if (count($structure) == 0) {
-		$alternativemessage = nxs_l18n__("Warning:no items found", "nxs_td");
+		$alternativemessage = nxs_l18n__("Warning: add at least one form fieldg", "nxs_td");
 	}
 		
 	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);

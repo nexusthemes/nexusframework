@@ -419,9 +419,21 @@ function nxs_init()
 			{
 				$postid = $_REQUEST["postid"];
 				echo "dumppost $postid<br />";
-				
+				$needleglobalid = nxs_get_globalid($postid, false);
+				echo "globalid: $needleglobalid<br />";
+				echo "post_meta_all: $needleglobalid<br />";
 				$origpost_meta_all = nxs_get_post_meta_all($postid);
-				var_dump($origpost_meta_all);
+				foreach ($origpost_meta_all as $key => $val)
+				{
+					echo "meta key: $key<br />";
+					echo "meta val: <br />";
+					echo "<pre>";
+					var_dump($val);
+					echo "</pre>";
+					echo "<br />";
+					echo "<br />";
+					echo "<hr />";
+				}
 				
 				die();
 			}
@@ -594,11 +606,16 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"golfclub;" => array
+		(
+			"href"=>"/wordpress-themes/sports/golf-club-wordpress-theme/",
+			"title"=>"Golf club WordPress theme",
+		),
 		"pettingzoo;" => array
 		(
 			"href"=>"/wordpress-themes/agriculture/petting-zoo-wordpress-theme/",
 			"title"=>"Petting zoo WordPress theme",
-		),	
+		),
 		"funeralhome;" => array
 		(		
 			"href"=>"/wordpress-themes/death-care/funeral-home-wordpress-theme/",

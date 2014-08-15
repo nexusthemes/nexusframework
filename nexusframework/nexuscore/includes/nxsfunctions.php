@@ -6659,25 +6659,6 @@ function nxs_get_post_meta_all($post_id)
 	}
 	
 	return $result;
-	
-	//var_dump($result);
-	//die();
-	//return $result;
-
-	/*
-  global $wpdb;
-  $data   =   array();
-  $wpdb->query("
-      SELECT `meta_key`, `meta_value`
-      FROM $wpdb->postmeta
-      WHERE `post_id` = $post_id
-  ");
-  foreach($wpdb->last_result as $k => $v)
-  {
-      $data[$v->meta_key] =   $v->meta_value;
-  };
-  return $data;
-  */
 }
 
 function nxs_resetthumbnaildimensions()
