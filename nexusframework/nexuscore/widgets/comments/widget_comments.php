@@ -464,7 +464,7 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 				
 				<!-- EMAIL -->
 				<div class="nxs-float-left nxs-width20"><label>' . nxs_l18n__("Email address[nxs:tooltip]", "nxs_td") . ' *:</label></div>
-				<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text" placeholder="'; nxs_l18n_e("We wont publish your email address[nxs:placeholder]", "nxs_td"); echo '"></div>
+				<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text" placeholder="'; nxs_l18n_e("We won't publish your email address", "nxs_td"); echo '"></div>
 				<div class="nxs-clear padding"></div>
 				
 				<!-- WEBSITE -->
