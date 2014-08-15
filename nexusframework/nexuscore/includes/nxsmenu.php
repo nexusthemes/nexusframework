@@ -196,7 +196,7 @@
 		                  		<div>	
 		     		            
                           <?php
-		     		              	$palettenames = nxs_colorization_getpalettenames();
+		     		              	$palettenames = nxs_colorization_getpalettenames(false);
 		     		              	$shouldrenderpalette = count($palettenames) > 1;
 														if ($shouldrenderpalette)
 														{

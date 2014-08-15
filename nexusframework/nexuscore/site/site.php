@@ -4027,7 +4027,7 @@ function nxs_site_managecolorization_customhtml($optionvalues, $args, $runtimebl
 		}
 	}
 	
-	$palettenames = nxs_colorization_getpalettenames();
+	$palettenames = nxs_colorization_getpalettenames(true);
 	
 	$foundatleastone = false;
 	

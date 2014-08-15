@@ -7508,9 +7508,12 @@ function nxs_localization_getlocalizablefieldids($options)
 // get list of possible unistyle names that can be selected
 // for a speficic group
 // for example will return the names "foo" and "bar" for "textwidget"
-function nxs_colorization_getpalettenames()
+function nxs_colorization_getpalettenames($addnonefirstelement)
 {
-	$result = array("@@@nxsempty@@@"=>"none");
+	if ($addnonefirstelement)
+	{
+		$result = array("@@@nxsempty@@@"=>"none");
+	}
 	
 	$sitemeta = nxs_getsitemeta();
 	$metakeystart = "colorization_palette_";
