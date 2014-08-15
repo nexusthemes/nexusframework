@@ -631,6 +631,23 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
+	// fix tel links
+	if ($destination_url != "") 
+	{
+		if (nxs_stringstartswith($destination_url, "tel:")) {
+			// a phone link; if parenthesis or spaces are used; absorb them
+			$url = $destination_url;
+			$url = str_replace(" ", "", $url);
+			$url = str_replace("(", "", $url);
+			$url = str_replace(")", "", $url);
+		} else {
+			// regular link
+			$url = $destination_url;
+		}
+		
+		$destination_url = $url;
+	}
+	
 	// Linked title
 	if ($destination_articleid != "") {
 		$titlehtml = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';

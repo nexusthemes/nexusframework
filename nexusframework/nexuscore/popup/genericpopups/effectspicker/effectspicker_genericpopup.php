@@ -66,8 +66,7 @@ function nxs_popup_genericpopup_effectspicker_getpopup($args)
 		{
 			var data = {};	// object
 			data['items'] = [];	// array
-			data['items'].push({"type":"lazyloadslide", "translatex":"f@1-0", "delay":"d@1-0", "speed":"s@1-0", "effect":"ease"});
-			data['items'].push({"type":"someother", "key":"value"});
+			data['items'].push({"type":"fx001", "v":"1.0", "translatex":"f@1-0", "delay":"d@1-0", "speed":"s@1-0", "effect":"ease"});
 			
 			var str = JSON.stringify(data);
 			
