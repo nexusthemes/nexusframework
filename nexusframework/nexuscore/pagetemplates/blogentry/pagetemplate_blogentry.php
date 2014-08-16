@@ -1769,6 +1769,8 @@ function nxs_pagetemplate_blogentry_updatedata($args)
 {
 	extract($args);
 	
+	nxs_disabledwprevisions();
+	
 	$wpposttype = nxs_getwpposttype($postid);
 	if ($wpposttype == "page")
 	{

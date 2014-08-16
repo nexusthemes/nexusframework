@@ -1,56 +1,56 @@
 <?php
 
-/* LAZYLOAD WIDGET
+/* LAZYLOAD EFFECT
 ---------------------------------------------------------------------------------------------------- */
-function nxs_ext_lazyload_widget($widget)
+function nxs_ext_lazyload_effect($effect)
 {
-	$action = "nxs_ext_inject_widget_" . $widget;
+	$action = "nxs_ext_inject_effect_" . $effect;
 	$ishandledbyplugin = has_action($action);
 	if ($ishandledbyplugin) {
-		// it appears this widget was already handled by a plugin,
-		// we will assume the plugin will override the widget of the framework
-		// in this case we won't inject the widget from the framework
+		// it appears this effect was already handled by a plugin,
+		// we will assume the plugin will override the effect of the framework
+		// in this case we won't inject the effect from the framework
 	} else {
-		add_action($action, "nxs_ext_inject_widget");
+		add_action($action, "nxs_ext_inject_effect");
 	}
 }
 
-function nxs_ext_inject_widget($widget)
+function nxs_ext_inject_effect($effect)
 {
-	$filetobeincluded = NXS_FRAMEWORKPATH . '/nexuscore/widgets/' . $widget . '/widget_' . $widget . '.php';
+	$filetobeincluded = NXS_FRAMEWORKPATH . '/nexuscore/effects/' . $effect . '/effect_' . $effect . '.php';
 	if (!is_readable($filetobeincluded))
 	{
-		nxs_webmethod_return_nack("unable to inject widget $widget; File does not exist, or is not readable; $filetobeincluded");
+		nxs_webmethod_return_nack("unable to inject effect $effect; File does not exist, or is not readable; $filetobeincluded");
 	}
 	require_once($filetobeincluded);
 }
 
-/* LAZYLOAD THEME WIDGET
+/* LAZYLOAD THEME EFFECT
 ---------------------------------------------------------------------------------------------------- */
-function nxs_ext_lazyload_theme_widget($widget)
+function nxs_ext_lazyload_theme_effect($effect)
 {
-	$action = "nxs_ext_inject_widget_" . $widget;
+	$action = "nxs_ext_inject_effect_" . $effect;
 	$ishandledbyplugin = has_action($action);
 	if ($ishandledbyplugin) {
-		// it appears this widget was already handled by a plugin,
-		// we will assume the plugin will override the widget of the framework
-		// in this case we won't inject the widget from the framework
+		// it appears this effect was already handled by a plugin,
+		// we will assume the plugin will override the effect of the framework
+		// in this case we won't inject the effect from the framework
 	} else {
-		add_action($action, "nxs_ext_inject_theme_widget");
+		add_action($action, "nxs_ext_inject_theme_effect");
 	}
 }
 
-function nxs_ext_inject_theme_widget($widget)
+function nxs_ext_inject_theme_effect($effect)
 {
-	$filetobeincluded = NXS_THEMEPATH . '/widgets/' . $widget . '/widget_' . $widget . '.php';
+	$filetobeincluded = NXS_THEMEPATH . '/effects/' . $effect . '/effect_' . $effect . '.php';
 	require_once($filetobeincluded);
 }
 
-/* EXISTS / REQUIRE WIDGETS
+/* EXISTS / REQUIRE EFFECTS
 ---------------------------------------------------------------------------------------------------- */
-function nxs_widgetexists($widget)
+function nxs_effectexists($effect)
 {
-	$action = "nxs_ext_inject_widget_" . $widget;
+	$action = "nxs_ext_inject_effect_" . $effect;
 	if (!has_action($action))
 	{
 		$result = false;
@@ -63,35 +63,35 @@ function nxs_widgetexists($widget)
 	return $result;
 }
 
-function nxs_requirewidget($widget)
+function nxs_requireeffect($effect)
 {
-	if (!(defined('nxs_widgets_loaded')))
+	if (!(defined('nxs_effects_loaded')))
 	{
-		nxs_webmethod_return_nack("nxs_requirewidget invoked before nxs_widgets_loaded");		
+		nxs_webmethod_return_nack("nxs_requireeffect invoked before nxs_effects_loaded");		
 	}
 	
 	$result = array();
 
-	// loads widget extensions in memory
-	$action = "nxs_ext_inject_widget_" . $widget;
+	// loads effect extensions in memory
+	$action = "nxs_ext_inject_effect_" . $effect;
 	if (!has_action($action))
 	{
 		// we gaan wel door, iemand kan per ongeluk of met opzet bijv. een plugin hebben uitgeschakeld		
 		if (nxs_has_adminpermissions())
 		{
-			echo "Warning; looks like widget '" . $widget . "' is missing (maybe you deactivated a required plugin?) [nxs_requirewidget]; no action $action";
+			echo "Warning; looks like effect '" . $effect . "' is missing (maybe you deactivated a required plugin?) [nxs_requireeffect]; no action $action";
 			// nxs_dumpstacktrace();
 		}
 		else
 		{
-			echo "<!-- Warning; looks like widget '" . $widget . "' is missing (maybe you deactivated a required plugin?) [nxs_requirewidget] -->";
+			echo "<!-- Warning; looks like effect '" . $effect . "' is missing (maybe you deactivated a required plugin?) [nxs_requireeffect] -->";
 		}
 		
 		$result["result"] = "NACK";
 	}
 	else
 	{
-		do_action($action, $widget);
+		do_action($action, $effect);
 		
 		$result["result"] = "OK";
 	}
@@ -99,24 +99,24 @@ function nxs_requirewidget($widget)
 	return $result;
 }
 
-function nxs_enableconceptualwidgets()
+function nxs_enableconceptualeffects()
 {
-	$enableconceptualwidgets = false;
+	$enableconceptualeffects = false;
 	if (nxs_hassitemeta())
 	{
 		$sitemeta = nxs_getsitemeta();
-		if ($sitemeta["widgetsmanagement_enableconceptual"] == "show")
+		if ($sitemeta["effectsmanagement_enableconceptual"] == "show")
 		{
-			$enableconceptualwidgets = true;
+			$enableconceptualeffects = true;
 		}
 	}
-	return $enableconceptualwidgets;
+	return $enableconceptualeffects;
 }
 
-/* ENQUEUE WIDGETS
+/* ENQUEUE EFFECTS
 ---------------------------------------------------------------------------------------------------- */
-add_action("nxs_getwidgets", "nxs_getwidgets_functions_AF", 10, 2);	// default prio 10, 2 parameters (result, args)
-function nxs_getwidgets_functions_AF($result, $args)
+add_action("nxs_geteffects", "nxs_geteffects_functions_AF", 10, 2);	// default prio 10, 2 parameters (result, args)
+function nxs_geteffects_functions_AF($result, $args)
 {
 	$nxsposttype = $args["nxsposttype"];
 	$pagetemplate = $args["pagetemplate"];
@@ -125,34 +125,34 @@ function nxs_getwidgets_functions_AF($result, $args)
 		nxs_webmethod_return_nack("nxsposttype not set");
 	}
 	
-	$enableconceptualwidgets = nxs_enableconceptualwidgets();
+	$enableconceptualeffects = nxs_enableconceptualeffects();
 	
-	// BUSINESS RULES WIDGETS
+	// BUSINESS RULES EFFECTS
 	
 	if ($nxsposttype == "busrulesset") {
-		$result[] = array("widgetid" => "busrulepostid");
-		$result[] = array("widgetid" => "busrulecategory");
-		$result[] = array("widgetid" => "busrulepostauthor");
-		$result[] = array("widgetid" => "busrulearchivetype");
-		$result[] = array("widgetid" => "busrulecatchall");
-		$result[] = array("widgetid" => "busrulehome");
-		$result[] = array("widgetid" => "busrule404");
-		$result[] = array("widgetid" => "busrulearchivecat");
-		$result[] = array("widgetid" => "busrulearchive");
-		$result[] = array("widgetid" => "busrulesearch");
-		$result[] = array("widgetid" => "busrulemaintenance");
-		$result[] = array("widgetid" => "busruleposttype");
-		$result[] = array("widgetid" => "busrulehaspostcontent");
+		$result[] = array("effectid" => "busrulepostid");
+		$result[] = array("effectid" => "busrulecategory");
+		$result[] = array("effectid" => "busrulepostauthor");
+		$result[] = array("effectid" => "busrulearchivetype");
+		$result[] = array("effectid" => "busrulecatchall");
+		$result[] = array("effectid" => "busrulehome");
+		$result[] = array("effectid" => "busrule404");
+		$result[] = array("effectid" => "busrulearchivecat");
+		$result[] = array("effectid" => "busrulearchive");
+		$result[] = array("effectid" => "busrulesearch");
+		$result[] = array("effectid" => "busrulemaintenance");
+		$result[] = array("effectid" => "busruleposttype");
+		$result[] = array("effectid" => "busrulehaspostcontent");
 		
 		// WOOCOMMERCE
 		 
 		global $woocommerce;
 		if (isset($woocommerce))
 		{
-			$result[] = array("widgetid" => "woobusrulewoopage");
-			$result[] = array("widgetid" => "woobusruleproduct");
-			$result[] = array("widgetid" => "woobusrulecategory");
-			$result[] = array("widgetid" => "woobusrulearchiveprodcat");
+			$result[] = array("effectid" => "woobusrulewoopage");
+			$result[] = array("effectid" => "woobusruleproduct");
+			$result[] = array("effectid" => "woobusrulecategory");
+			$result[] = array("effectid" => "woobusrulearchiveprodcat");
 		}		
 	}
 	
@@ -162,13 +162,13 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$args = array();
 			$args["nxsposttype"] = "post";
 			$args["pagetemplate"] = "blogentry";
-			// return the widgets for regular post / blogentry
-			return nxs_getwidgets_functions_AF($result, $args);
+			// return the effects for regular post / blogentry
+			return nxs_geteffects_functions_AF($result, $args);
 		}
 	}
 	
 	if ($nxsposttype == "subheader") {
-		$result[] = array("widgetid" => "wordpresstitle");
+		$result[] = array("effectid" => "wordpresstitle");
 	}
 	
 	if 
@@ -178,7 +178,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$nxsposttype == "pagelet"
 	)
 	{
-		$result[] = array("widgetid" => "comments");
+		$result[] = array("effectid" => "comments");
 	}
 
 	
@@ -199,84 +199,84 @@ function nxs_getwidgets_functions_AF($result, $args)
 		
 
 		// Default
-		$result[] = array("widgetid" => "text");
-		$result[] = array("widgetid" => "image");
-		$result[] = array("widgetid" => "blog");
+		$result[] = array("effectid" => "text");
+		$result[] = array("effectid" => "image");
+		$result[] = array("effectid" => "blog");
 		
 		// Video
-		$result[] = array("widgetid" => "youtube");
-		$result[] = array("widgetid" => "vimeo");		
+		$result[] = array("effectid" => "youtube");
+		$result[] = array("effectid" => "vimeo");		
 		
 		// Social
-		$result[] = array("widgetid" => "fblikebox");
-		$result[] = array("widgetid" => "social");
-		$result[] = array("widgetid" => "socialsharing");
-		$result[] = array("widgetid" => "twittertweets");
+		$result[] = array("effectid" => "fblikebox");
+		$result[] = array("effectid" => "social");
+		$result[] = array("effectid" => "socialsharing");
+		$result[] = array("effectid" => "twittertweets");
 		
 		// Google
-		$result[] = array("widgetid" => "googledoc");
-		$result[] = array("widgetid" => "googlemap");
+		$result[] = array("effectid" => "googledoc");
+		$result[] = array("effectid" => "googlemap");
 		
 		// Forms
-		$result[] = array("widgetid" => "contactbox");
-		$result[] = array("widgetid" => "formbox");
+		$result[] = array("effectid" => "contactbox");
+		$result[] = array("effectid" => "formbox");
 		
 		// Testimonials
-		$result[] = array("widgetid" => "bio");
-		$result[] = array("widgetid" => "quote");
+		$result[] = array("effectid" => "bio");
+		$result[] = array("effectid" => "quote");
 		
 		// Reference
-		$result[] = array("widgetid" => "signpost");
-		$result[] = array("widgetid" => "tumbler");
-		$result[] = array("widgetid" => "radial");
-		$result[] = array("widgetid" => "target");
+		$result[] = array("effectid" => "signpost");
+		$result[] = array("effectid" => "tumbler");
+		$result[] = array("effectid" => "radial");
+		$result[] = array("effectid" => "target");
 		
 		// Miscellaneous
-		$result[] = array("widgetid" => "menucontainer");
-		$result[] = array("widgetid" => "logo");
-		$result[] = array("widgetid" => "callout");
-		$result[] = array("widgetid" => "csv");
-		$result[] = array("widgetid" => "search");
-		$result[] = array("widgetid" => "eventsbox");
-		$result[] = array("widgetid" => "carousel");
-		$result[] = array("widgetid" => "banner");
-		$result[] = array("widgetid" => "flickr");
+		$result[] = array("effectid" => "menucontainer");
+		$result[] = array("effectid" => "logo");
+		$result[] = array("effectid" => "callout");
+		$result[] = array("effectid" => "csv");
+		$result[] = array("effectid" => "search");
+		$result[] = array("effectid" => "eventsbox");
+		$result[] = array("effectid" => "carousel");
+		$result[] = array("effectid" => "banner");
+		$result[] = array("effectid" => "flickr");
 		
 		// Never
-		$result[] = array("widgetid" => "wordpresssidebar");
-		$result[] = array("widgetid" => "categories");
-		$result[] = array("widgetid" => "archive");
-		$result[] = array("widgetid" => "htmlcustom");
-		$result[] = array("widgetid" => "squeezebox");
-		$result[] = array("widgetid" => "googlebusinessphoto");		
-		$result[] = array("widgetid" => "rssfeed");
+		$result[] = array("effectid" => "wordpresssidebar");
+		$result[] = array("effectid" => "categories");
+		$result[] = array("effectid" => "archive");
+		$result[] = array("effectid" => "htmlcustom");
+		$result[] = array("effectid" => "squeezebox");
+		$result[] = array("effectid" => "googlebusinessphoto");		
+		$result[] = array("effectid" => "rssfeed");
 		
 		
 		
-		if ($enableconceptualwidgets)
+		if ($enableconceptualeffects)
 		{
-			$result[] = array("widgetid" => "wpmenu");
+			$result[] = array("effectid" => "wpmenu");
 		}
 		
-		// $result[] = array("widgetid" => "fbcomments");
-		// $result[] = array("widgetid" => "template2");
-		// $result[] = array("widgetid" => "stack");
-		// $result[] = array("widgetid" => "searchresults");	// deprecated in favor of archive widget
-		// $result[] = array("widgetid" => "contact"); 			// deprecated in favor of contact box widget
+		// $result[] = array("effectid" => "fbcomments");
+		// $result[] = array("effectid" => "template2");
+		// $result[] = array("effectid" => "stack");
+		// $result[] = array("effectid" => "searchresults");	// deprecated in favor of archive effect
+		// $result[] = array("effectid" => "contact"); 			// deprecated in favor of contact box effect
 		
 		// WOOCOMMERCE
 		global $woocommerce;
 		if (isset($woocommerce))
 		{
-			$result[] = array("widgetid" => "wooproductdetail");
-			$result[] = array("widgetid" => "woomessages");
-			$result[] = array("widgetid" => "wooprodlist");
-			$result[] = array("widgetid" => "woocheckout");
-			$result[] = array("widgetid" => "woothankyou");
-			$result[] = array("widgetid" => "woocart");
-			$result[] = array("widgetid" => "wooaddtocart");
-			$result[] = array("widgetid" => "woogotocart");
-			$result[] = array("widgetid" => "wooproductreference");
+			$result[] = array("effectid" => "wooproductdetail");
+			$result[] = array("effectid" => "woomessages");
+			$result[] = array("effectid" => "wooprodlist");
+			$result[] = array("effectid" => "woocheckout");
+			$result[] = array("effectid" => "woothankyou");
+			$result[] = array("effectid" => "woocart");
+			$result[] = array("effectid" => "wooaddtocart");
+			$result[] = array("effectid" => "woogotocart");
+			$result[] = array("effectid" => "wooproductreference");
 		}
 		
 	}
@@ -293,14 +293,14 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$nxsposttype == "pagelet"
 	)	
 	{		
-		$result[] = array("widgetid" => "gallerybox");
-		$result[] = array("widgetid" => "definitionlistbox");
-		$result[] = array("widgetid" => "sliderbox");
+		$result[] = array("effectid" => "gallerybox");
+		$result[] = array("effectid" => "definitionlistbox");
+		$result[] = array("effectid" => "sliderbox");
 		
 		
-		if ($enableconceptualwidgets)
+		if ($enableconceptualeffects)
 		{
-			$result[] = array("widgetid" => "filmrollbox");
+			$result[] = array("effectid" => "filmrollbox");
 		}
 	} 
 	
@@ -308,9 +308,9 @@ function nxs_getwidgets_functions_AF($result, $args)
 	---------------------------------------------------------------------------------------------------- */
 	if ($nxsposttype == "menu")
 	{
-		$result[] = array("widgetid" => "menuitemarticle");
-		$result[] = array("widgetid" => "menuitemcustom");
-		$result[] = array("widgetid" => "menuitemcategory");
+		$result[] = array("effectid" => "menuitemarticle");
+		$result[] = array("effectid" => "menuitemcustom");
+		$result[] = array("effectid" => "menuitemcategory");
 	}
 	
 	/* GENERIC LISTS POSTTYPE
@@ -320,75 +320,75 @@ function nxs_getwidgets_functions_AF($result, $args)
 		
 		// GALLERY
 		if ($nxssubposttype == "gallery") {	
-			$result[] = array("widgetid" => "galleryitem");
+			$result[] = array("effectid" => "galleryitem");
 		}
 		
 		// SLIDER
 		if ($nxssubposttype == "sliderbox") {
-			$result[] = array("widgetid" => "slide");
+			$result[] = array("effectid" => "slide");
 		}
 		
-		if ($enableconceptualwidgets)
+		if ($enableconceptualeffects)
 		{
 			// FILMROLL
 			if ($nxssubposttype == "filmrollbox") {
-				$result[] = array("widgetid" => "slide");
+				$result[] = array("effectid" => "slide");
 			}
 		}
 		
 		// SUPERSIZED SLIDER
 		if ($nxssubposttype == "pageslider") {
-			$result[] = array("widgetid" => "slide");		
+			$result[] = array("effectid" => "slide");		
 		}
 		
 		// GOOGLE BUSINESS PHOTOS
 		if ($nxssubposttype == "googlebusphotoslides"){
-			$result[] = array("widgetid" => "googlebusphotoitem");
+			$result[] = array("effectid" => "googlebusphotoitem");
 		}
 		
 		// CONTACT FORM
 		if ($nxssubposttype == "contact"){
-			$result[] = array("widgetid" => "contactitemtext");
-			$result[] = array("widgetid" => "contactitemdate");
-			$result[] = array("widgetid" => "contactitemdatetime");
-			$result[] = array("widgetid" => "contactitemselect");
-			$result[] = array("widgetid" => "contactitemsecret");
-			// $result[] = array("widgetid" => "contactitemhidden");
-			// $result[] = array("widgetid" => "contactitemattachment");
+			$result[] = array("effectid" => "contactitemtext");
+			$result[] = array("effectid" => "contactitemdate");
+			$result[] = array("effectid" => "contactitemdatetime");
+			$result[] = array("effectid" => "contactitemselect");
+			$result[] = array("effectid" => "contactitemsecret");
+			// $result[] = array("effectid" => "contactitemhidden");
+			// $result[] = array("effectid" => "contactitemattachment");
 		}
 		
 		// FORM
 		if ($nxssubposttype == "form") 
 		{
-			$result[] = array("widgetid" => "contactitemtext");
-			$result[] = array("widgetid" => "contactitemdate");
-			$result[] = array("widgetid" => "contactitemselect");
-			$result[] = array("widgetid" => "contactitemdatetime");
-			$result[] = array("widgetid" => "contactitemsecret");
-			// $result[] = array("widgetid" => "contactitemhidden");
-			// $result[] = array("widgetid" => "contactitemattachment");
+			$result[] = array("effectid" => "contactitemtext");
+			$result[] = array("effectid" => "contactitemdate");
+			$result[] = array("effectid" => "contactitemselect");
+			$result[] = array("effectid" => "contactitemdatetime");
+			$result[] = array("effectid" => "contactitemsecret");
+			// $result[] = array("effectid" => "contactitemhidden");
+			// $result[] = array("effectid" => "contactitemattachment");
 		}
 		
 		// DEFINITION LIST
 		if ($nxssubposttype == "definitionlist") {
-			$result[] = array("widgetid" => "definitionlistitemtext");
+			$result[] = array("effectid" => "definitionlistitemtext");
 		}
 		
 		// ---
 		// Carousel
 		if ($nxssubposttype == "carousel") {
-			$result[] = array("widgetid" => "carouselitem");
+			$result[] = array("effectid" => "carouselitem");
 		} 
 		
 		// Banner
 		if ($nxssubposttype == "banner") {
-			$result[] = array("widgetid" => "banneritem");
+			$result[] = array("effectid" => "banneritem");
 		}
 	}	
 	
 	if ($nxsposttype == "post") 
 	{
-		$result[] = array("widgetid" => "wordpresstitle");
+		$result[] = array("effectid" => "wordpresstitle");
 	}
 
 	
@@ -397,26 +397,26 @@ function nxs_getwidgets_functions_AF($result, $args)
 	
 	// EVENTS
 	if ($pagetemplate == "eventsbox") {
-		$result[] = array("widgetid" => "eventsboxitem");
+		$result[] = array("effectid" => "eventsboxitem");
 	}
 	
 	// PAGEDECORATOR
 	if ($pagetemplate == "pagedecorator") {
-		$result[] = array("widgetid" => "pageslider");
-		$result[] = array("widgetid" => "pagebackground");
-		$result[] = array("widgetid" => "pagepopup");
+		$result[] = array("effectid" => "pageslider");
+		$result[] = array("effectid" => "pagebackground");
+		$result[] = array("effectid" => "pagepopup");
 	}
 	
 	
 	
-	/* CAPABILITIES WIDGET FILTER
+	/* CAPABILITIES EFFECT FILTER
 	---------------------------------------------------------------------------------------------------- */
 	if (nxs_cap_hasdesigncapabilities()) {
 		// all are allowed
 	} else {
 		$subsetresult = array();
 		
-		$allowedwidgetids = array(
+		$allowedeffectids = array(
 			"contactitemtext", 
 			"contactitemdate", 
 			"contactitemdatetime",
@@ -437,8 +437,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 			);
 		
 		foreach ($result as $currentitem) {
-			$widgetid = $currentitem["widgetid"];
-			if (in_array($widgetid, $allowedwidgetids)) {
+			$effectid = $currentitem["effectid"];
+			if (in_array($effectid, $allowedeffectids)) {
 				$subsetresult[] = $currentitem;
 			}
 		}
@@ -448,9 +448,9 @@ function nxs_getwidgets_functions_AF($result, $args)
 	return $result;
 }
 
-function nxs_widgets_registerhooksforpagewidget($widget, $args)
+function nxs_effects_registerhooksforpageeffect($effect, $args)
 {
-	$functionnametoinvoke = 'nxs_widgets_' . $widget . '_registerhooksforpagewidget';
+	$functionnametoinvoke = 'nxs_effects_' . $effect . '_registerhooksforpageeffect';
 	//
 	// invokefunction
 	//
@@ -464,190 +464,190 @@ function nxs_widgets_registerhooksforpagewidget($widget, $args)
 	}
 }
 
-/* LAZYLOADING WIDGETS
+/* LAZYLOADING EFFECTS
 ---------------------------------------------------------------------------------------------------- */
-function nxs_lazyload_widgets()
+function nxs_lazyload_effects()
 {
-	if (defined('nxs_widgets_loaded'))
+	if (defined('nxs_effects_loaded'))
 	{
 		return;
 	}
 
-	$enableconceptualwidgets = nxs_enableconceptualwidgets();
+	$enableconceptualeffects = nxs_enableconceptualeffects();
 
-	define('nxs_widgets_loaded', true);
+	define('nxs_effects_loaded', true);
 	
-	do_action("nxs_lazyload_widgets");
-	// lazy load widgets. Note, if plugins load a widget with the same name, that widget will load first, ignoring this one same for widgets loaded by themes
+	do_action("nxs_lazyload_effects");
+	// lazy load effects. Note, if plugins load a effect with the same name, that effect will load first, ignoring this one same for effects loaded by themes
 	
-	// WIDGETS
-	nxs_ext_lazyload_widget("generic");
-	nxs_ext_lazyload_widget("undefined");
-	nxs_ext_lazyload_widget("comments");
-	nxs_ext_lazyload_widget("menucontainer");
-	nxs_ext_lazyload_widget("wordpresssidebar");
-	nxs_ext_lazyload_widget("menuitemgeneric");
-	nxs_ext_lazyload_widget("menuitemarticle");
-	nxs_ext_lazyload_widget("menuitemcustom");
-	nxs_ext_lazyload_widget("menuitemcategory");
-	nxs_ext_lazyload_widget("socialsharing");
-	nxs_ext_lazyload_widget("categories");
-	nxs_ext_lazyload_widget("htmlcustom");
-	nxs_ext_lazyload_widget("googlemap");
-	nxs_ext_lazyload_widget("slide");
-	nxs_ext_lazyload_widget("sliderbox");
+	// EFFECTS
+	nxs_ext_lazyload_effect("generic");
+	nxs_ext_lazyload_effect("undefined");
+	nxs_ext_lazyload_effect("comments");
+	nxs_ext_lazyload_effect("menucontainer");
+	nxs_ext_lazyload_effect("wordpresssidebar");
+	nxs_ext_lazyload_effect("menuitemgeneric");
+	nxs_ext_lazyload_effect("menuitemarticle");
+	nxs_ext_lazyload_effect("menuitemcustom");
+	nxs_ext_lazyload_effect("menuitemcategory");
+	nxs_ext_lazyload_effect("socialsharing");
+	nxs_ext_lazyload_effect("categories");
+	nxs_ext_lazyload_effect("htmlcustom");
+	nxs_ext_lazyload_effect("googlemap");
+	nxs_ext_lazyload_effect("slide");
+	nxs_ext_lazyload_effect("sliderbox");
 	
-	if ($enableconceptualwidgets)
+	if ($enableconceptualeffects)
 	{
-		nxs_ext_lazyload_widget("filmrollbox");
+		nxs_ext_lazyload_effect("filmrollbox");
 	}
 	
-	nxs_ext_lazyload_widget("youtube");
-	nxs_ext_lazyload_widget("vimeo");
-	nxs_ext_lazyload_widget("twittertweets");
-	nxs_ext_lazyload_widget("gallerybox");
-	nxs_ext_lazyload_widget("galleryitem");
-	nxs_ext_lazyload_widget("definitionlistbox");
-	nxs_ext_lazyload_widget("definitionlistitemtext");
-	nxs_ext_lazyload_widget("contactbox");
-	nxs_ext_lazyload_widget("formbox");
-	nxs_ext_lazyload_widget("contactitemtext");
-	nxs_ext_lazyload_widget("contactitemsecret");
-	nxs_ext_lazyload_widget("contactitemdate");
-	nxs_ext_lazyload_widget("contactitemdatetime");	
-	nxs_ext_lazyload_widget("contactitemselect");
-	nxs_ext_lazyload_widget("contactitemhidden");
-	nxs_ext_lazyload_widget("contactitemattachment");
-	nxs_ext_lazyload_widget("blog");
-	nxs_ext_lazyload_widget("archive");
-	nxs_ext_lazyload_widget("logo");
-	nxs_ext_lazyload_widget("signpost");
-	nxs_ext_lazyload_widget("social");
-	nxs_ext_lazyload_widget("callout");
-	nxs_ext_lazyload_widget("bio");
-	nxs_ext_lazyload_widget("tumbler");
-	nxs_ext_lazyload_widget("text");
-	nxs_ext_lazyload_widget("fblikebox");
-	nxs_ext_lazyload_widget("googledoc");
-	nxs_ext_lazyload_widget("rssfeed");
-	nxs_ext_lazyload_widget("template2");
-	nxs_ext_lazyload_widget("image");
-	nxs_ext_lazyload_widget("search");
-	nxs_ext_lazyload_widget("contact");
-	nxs_ext_lazyload_widget("stack");
-	nxs_ext_lazyload_widget("wordpresstitle");
-	nxs_ext_lazyload_widget("quote");
-	nxs_ext_lazyload_widget("radial");
-	nxs_ext_lazyload_widget("squeezebox");
-	nxs_ext_lazyload_widget("googlebusinessphoto");
-	nxs_ext_lazyload_widget("googlebusphotoitem");
-	nxs_ext_lazyload_widget("eventsbox");
-	nxs_ext_lazyload_widget("eventsboxitem");
-	nxs_ext_lazyload_widget("csv");
+	nxs_ext_lazyload_effect("youtube");
+	nxs_ext_lazyload_effect("vimeo");
+	nxs_ext_lazyload_effect("twittertweets");
+	nxs_ext_lazyload_effect("gallerybox");
+	nxs_ext_lazyload_effect("galleryitem");
+	nxs_ext_lazyload_effect("definitionlistbox");
+	nxs_ext_lazyload_effect("definitionlistitemtext");
+	nxs_ext_lazyload_effect("contactbox");
+	nxs_ext_lazyload_effect("formbox");
+	nxs_ext_lazyload_effect("contactitemtext");
+	nxs_ext_lazyload_effect("contactitemsecret");
+	nxs_ext_lazyload_effect("contactitemdate");
+	nxs_ext_lazyload_effect("contactitemdatetime");	
+	nxs_ext_lazyload_effect("contactitemselect");
+	nxs_ext_lazyload_effect("contactitemhidden");
+	nxs_ext_lazyload_effect("contactitemattachment");
+	nxs_ext_lazyload_effect("blog");
+	nxs_ext_lazyload_effect("archive");
+	nxs_ext_lazyload_effect("logo");
+	nxs_ext_lazyload_effect("signpost");
+	nxs_ext_lazyload_effect("social");
+	nxs_ext_lazyload_effect("callout");
+	nxs_ext_lazyload_effect("bio");
+	nxs_ext_lazyload_effect("tumbler");
+	nxs_ext_lazyload_effect("text");
+	nxs_ext_lazyload_effect("fblikebox");
+	nxs_ext_lazyload_effect("googledoc");
+	nxs_ext_lazyload_effect("rssfeed");
+	nxs_ext_lazyload_effect("template2");
+	nxs_ext_lazyload_effect("image");
+	nxs_ext_lazyload_effect("search");
+	nxs_ext_lazyload_effect("contact");
+	nxs_ext_lazyload_effect("stack");
+	nxs_ext_lazyload_effect("wordpresstitle");
+	nxs_ext_lazyload_effect("quote");
+	nxs_ext_lazyload_effect("radial");
+	nxs_ext_lazyload_effect("squeezebox");
+	nxs_ext_lazyload_effect("googlebusinessphoto");
+	nxs_ext_lazyload_effect("googlebusphotoitem");
+	nxs_ext_lazyload_effect("eventsbox");
+	nxs_ext_lazyload_effect("eventsboxitem");
+	nxs_ext_lazyload_effect("csv");
 	
-	if ($enableconceptualwidgets)
+	if ($enableconceptualeffects)
 	{
-		nxs_ext_lazyload_widget("wpmenu");
+		nxs_ext_lazyload_effect("wpmenu");
 	}
 	
-	nxs_ext_lazyload_widget("target");
-	nxs_ext_lazyload_widget("flickr");
-	nxs_ext_lazyload_widget("carousel");
-	nxs_ext_lazyload_widget("carouselitem");
-	nxs_ext_lazyload_widget("banner");
-	nxs_ext_lazyload_widget("banneritem");
+	nxs_ext_lazyload_effect("target");
+	nxs_ext_lazyload_effect("flickr");
+	nxs_ext_lazyload_effect("carousel");
+	nxs_ext_lazyload_effect("carouselitem");
+	nxs_ext_lazyload_effect("banner");
+	nxs_ext_lazyload_effect("banneritem");
 
 	// PAGEDECORATORS
-	nxs_ext_lazyload_widget("pageslider");
-	nxs_ext_lazyload_widget("pagebackground");
-	nxs_ext_lazyload_widget("pagepopup");
+	nxs_ext_lazyload_effect("pageslider");
+	nxs_ext_lazyload_effect("pagebackground");
+	nxs_ext_lazyload_effect("pagepopup");
 	
 	// BUSINESS RULES
-	nxs_ext_lazyload_widget("busrulecatchall");	
-	nxs_ext_lazyload_widget("busrulepostid");	
-	nxs_ext_lazyload_widget("busrulecategory");	
-	nxs_ext_lazyload_widget("busrulepostauthor");	
-	nxs_ext_lazyload_widget("busrulearchivetype");	
-	nxs_ext_lazyload_widget("busrulehome");
-	nxs_ext_lazyload_widget("busrule404");
-	nxs_ext_lazyload_widget("busrulearchivecat");	
-	nxs_ext_lazyload_widget("busrulearchive");	
-	nxs_ext_lazyload_widget("busrulesearch");	
-	nxs_ext_lazyload_widget("busrulemaintenance");	
-	nxs_ext_lazyload_widget("busruleposttype");
-	nxs_ext_lazyload_widget("busrulehaspostcontent");
+	nxs_ext_lazyload_effect("busrulecatchall");	
+	nxs_ext_lazyload_effect("busrulepostid");	
+	nxs_ext_lazyload_effect("busrulecategory");	
+	nxs_ext_lazyload_effect("busrulepostauthor");	
+	nxs_ext_lazyload_effect("busrulearchivetype");	
+	nxs_ext_lazyload_effect("busrulehome");
+	nxs_ext_lazyload_effect("busrule404");
+	nxs_ext_lazyload_effect("busrulearchivecat");	
+	nxs_ext_lazyload_effect("busrulearchive");	
+	nxs_ext_lazyload_effect("busrulesearch");	
+	nxs_ext_lazyload_effect("busrulemaintenance");	
+	nxs_ext_lazyload_effect("busruleposttype");
+	nxs_ext_lazyload_effect("busrulehaspostcontent");
 	
 	// WOOCOMMERCE
 	global $woocommerce;
 	if (isset($woocommerce))
 	{
-		// widgets
-		nxs_ext_lazyload_widget("wooproductdetail");
-		nxs_ext_lazyload_widget("woomessages");
-		nxs_ext_lazyload_widget("woocheckout");
-		nxs_ext_lazyload_widget("woothankyou");
-		nxs_ext_lazyload_widget("woocart");
-		nxs_ext_lazyload_widget("wooprodlist");
-		nxs_ext_lazyload_widget("wooaddtocart");
-		nxs_ext_lazyload_widget("woogotocart");
-		nxs_ext_lazyload_widget("wooproductreference");
+		// effects
+		nxs_ext_lazyload_effect("wooproductdetail");
+		nxs_ext_lazyload_effect("woomessages");
+		nxs_ext_lazyload_effect("woocheckout");
+		nxs_ext_lazyload_effect("woothankyou");
+		nxs_ext_lazyload_effect("woocart");
+		nxs_ext_lazyload_effect("wooprodlist");
+		nxs_ext_lazyload_effect("wooaddtocart");
+		nxs_ext_lazyload_effect("woogotocart");
+		nxs_ext_lazyload_effect("wooproductreference");
 		
 		// business rules
-		nxs_ext_lazyload_widget("woobusrulewoopage");
-		nxs_ext_lazyload_widget("woobusruleproduct");
-		nxs_ext_lazyload_widget("woobusrulecategory");
-		nxs_ext_lazyload_widget("woobusrulearchiveprodcat");
+		nxs_ext_lazyload_effect("woobusrulewoopage");
+		nxs_ext_lazyload_effect("woobusruleproduct");
+		nxs_ext_lazyload_effect("woobusrulecategory");
+		nxs_ext_lazyload_effect("woobusrulearchiveprodcat");
 	}
 	
 	// DEPRECATED
 	
-	// nxs_ext_lazyload_widget("fbcomments");
-	// nxs_ext_lazyload_widget("searchresults");	// deprecated in favor of archive widget
+	// nxs_ext_lazyload_effect("fbcomments");
+	// nxs_ext_lazyload_effect("searchresults");	// deprecated in favor of archive effect
 }
 
-// if framework is loaded by the plugins, we load the widgets after all plugins are available
-// lazyloading the widgets cannot be executed directly, as plugins might not be loaded yet 
+// if framework is loaded by the plugins, we load the effects after all plugins are available
+// lazyloading the effects cannot be executed directly, as plugins might not be loaded yet 
 // (for example woocommerce)
-add_action("plugins_loaded", "nxs_lazyload_widgets");
-// if framework is loaded by the theme, we load the widgets after the theme is setup
-add_action("after_setup_theme", "nxs_lazyload_widgets");
+add_action("plugins_loaded", "nxs_lazyload_effects");
+// if framework is loaded by the theme, we load the effects after the theme is setup
+add_action("after_setup_theme", "nxs_lazyload_effects");
 
 /* *************** */
 
-// USAGE: nxs_lazyload_plugin_widget(__FILE__, "nameofwidget");
+// USAGE: nxs_lazyload_plugin_effect(__FILE__, "nameofeffect");
 
-function nxs_lazyload_plugin_widget($file, $widget)
+function nxs_lazyload_plugin_effect($file, $effect)
 {
 	// store file loc in lookup (mem)
-	global $nxs_gl_widget_file;
-	if ($nxs_gl_widget_file == null)
+	global $nxs_gl_effect_file;
+	if ($nxs_gl_effect_file == null)
 	{
-		$nxs_gl_widget_file = array();
+		$nxs_gl_effect_file = array();
 	}
-	$nxs_gl_widget_file[$widget] = $file;
+	$nxs_gl_effect_file[$effect] = $file;
 	
-	$action = "nxs_ext_inject_widget_" . $widget;
-	add_action($action, "nxs_inject_plugin_widget");
+	$action = "nxs_ext_inject_effect_" . $effect;
+	add_action($action, "nxs_inject_plugin_effect");
 }
 
-function nxs_inject_plugin_widget($widget)
+function nxs_inject_plugin_effect($effect)
 {
-	global $nxs_gl_widget_file;
-	$file = $nxs_gl_widget_file[$widget];
+	global $nxs_gl_effect_file;
+	$file = $nxs_gl_effect_file[$effect];
 	$path = plugin_dir_path($file);
-	$filetobeincluded = $path . '/widgets/' . $widget . '/widget_' . $widget . '.php';
+	$filetobeincluded = $path . '/effects/' . $effect . '/effect_' . $effect . '.php';
 	require_once($filetobeincluded);
 }
 
 /* *************** */
 
-function nxs_getobsoletewidgetids()
+function nxs_getobsoleteeffectids()
 {
 	$result = array();
 	
 	$result[] = "contactbox";
 	
-	if (!nxs_enableconceptualwidgets())
+	if (!nxs_enableconceptualeffects())
 	{
 		$result[] = "googlebusinessphoto";
 		$result[] = "squeezebox";

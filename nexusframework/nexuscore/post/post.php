@@ -464,6 +464,8 @@ function nxs_ws_page_updatedata($args)
 	}
 	else if ($updatesectionid == "edittitle")
 	{
+		nxs_disabledwprevisions();
+		
 		// update title, slug and categories
 		$my_post = array();
 		$my_post['ID'] = $postid;

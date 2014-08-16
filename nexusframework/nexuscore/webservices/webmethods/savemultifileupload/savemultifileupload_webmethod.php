@@ -85,6 +85,7 @@ function nxs_webmethod_savemultifileupload()
 			// and generates the thumbnails. If you wanted to attch this image to a post, you 
 			// could pass the post id as a third param and it'd magically happen.
 	    $imageid = wp_insert_attachment( $attachment, $file_name_and_location );
+	    $imageid_globalid = nxs_get_globalid($imageid, true);	
 	    
 	    $resultaat .= "nieuwe imageid: {$imageid};";
 	    
@@ -173,6 +174,8 @@ function nxs_webmethod_savemultifileupload()
 				$args["placeholderid"] = $placeholderid;
 				
 				$args["image_imageid"] = $imageid;	// the image we just uploaded
+				$args["image_imageid_globalid"] = nxs_get_globalid($imageid, true);	
+				
 				//$args["title"] = "Title";
 				//$args["text"] = "Text";
 				

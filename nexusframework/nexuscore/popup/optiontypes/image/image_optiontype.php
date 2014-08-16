@@ -47,7 +47,6 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 							{
 								?>
               	<img src='<?php echo $imageurl; ?>' class="nxs-icon-left" />
-              	<p><?php echo $value; ?></p>
             		<?php
             	}
             	else

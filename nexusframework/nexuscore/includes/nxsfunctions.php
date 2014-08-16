@@ -39,6 +39,12 @@ function nxs_is_login_page()
   return in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
 }
 
+function nxs_disabledwprevisions()
+{
+	// prevent revisions from being created
+	remove_action('pre_post_update', 'wp_save_post_revision');
+}
+
 function nxs_getframeworkurl()
 {
 	$templateurl = get_bloginfo('template_url');
@@ -2252,6 +2258,7 @@ function nxs_getstacktrace()
 	return $result;
 }
 
+// posttitle
 function nxs_gettitle_for_postid($postid)
 {
 	$postdata = get_post($postid);
@@ -2711,6 +2718,8 @@ function nxs_getwpcontent_for_postid($postid)
 
 function nxs_setwpcontent_for_postid($postid, $wpcontent)
 {
+	nxs_disabledwprevisions();
+	
   $my_post = array();
   $my_post['ID'] = $postid;
   $my_post['post_content'] = $wpcontent;

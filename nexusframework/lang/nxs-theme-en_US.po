@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Nexus Theme\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-22 17:44+0100\n"
-"PO-Revision-Date: 2014-07-15 13:07+0100\n"
+"PO-Revision-Date: 2014-08-15 16:31+0100\n"
 "Last-Translator: Gert-Jan Bark <info@nexusthemes.com>\n"
 "Language-Team: Nexus Themes <info@nexusthemes.com>\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Basepath: H:\\Proj\\Wordpress\\DEV\\!NexusThemes\\nexusframework\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.6.6\n"
+"X-Generator: Poedit 1.6.7\n"
 "X-Poedit-SearchPath-0: H:\\Proj\\Wordpress\\DEV\\!NexusThemes"
 "\\nexusframework\n"
 
@@ -3819,7 +3819,7 @@ msgstr "With this option you can upload a custom image for the Twitter icon."
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:252
 msgid "Custom Facebook icon"
-msgstr "Cistom Facebook icon"
+msgstr "Custom Facebook icon"
 
 #: H:\Proj\Wordpress\DEV\!NexusThemes\nexusframework/nexuscore/widgets/bio/widget_bio.php:253
 msgid "With this option you can upload a custom image for the Facebook icon."
