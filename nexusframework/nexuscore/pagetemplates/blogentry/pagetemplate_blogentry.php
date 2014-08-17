@@ -305,60 +305,68 @@ function nxs_pagetemplate_handlecontent()
 										<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
 											<ul class="nxs-placeholder-list"> 
 												<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-whole '>
-													<?php if (nxs_has_adminpermissions()) { ?>
-													<div class='nxs-hover-menu-positioner'>
-														<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
-													    <ul class="">
-													      <li title='Edit' class='nxs-hovermenu-button'>
-													      	<a href='#' title='Edit' class="nxs-defaultwidgetclickhandler" onclick="nxs_js_popup_postcontent_neweditsession('wpcontent'); return false;">
-													        	<span class="nxs-icon-text"></span>
-													        </a>
-													    	</li>
-													    	<li title='Edit' class='nxs-hovermenu-button'>
-													      	<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress">
-													        	<span class="nxs-icon-wordpresssidebar"></span>
-													        </a>
-													    	</li>
-													  	</ul>
+													<?php 
+													if (nxs_has_adminpermissions()) 
+													{ 
+														?>
+														<div class='nxs-hover-menu-positioner'>
+															<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
+														    <ul class="">
+														      <li title='Edit' class='nxs-hovermenu-button'>
+														      	<a href='#' title='Edit' class="nxs-defaultwidgetclickhandler" onclick="nxs_js_popup_postcontent_neweditsession('wpcontent'); return false;">
+														        	<span class="nxs-icon-text"></span>
+														        </a>
+														    	</li>
+														    	<li title='Edit' class='nxs-hovermenu-button'>
+														      	<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress">
+														        	<span class="nxs-icon-wordpresssidebar"></span>
+														        </a>
+														    	</li>
+														  	</ul>
+															</div>
 														</div>
-													</div>
-													<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'>
-														<span class='nxs-runtime-autocellsize'></span>
-													</div>
-													<div title='Edit' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'>
-														<span class='nxs-runtime-autocellsize'></span>
-													</div>
-													<?php } ?>
+														<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'>
+															<span class='nxs-runtime-autocellsize'></span>
+														</div>
+														<div title='Edit' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'>
+															<span class='nxs-runtime-autocellsize'></span>
+														</div>
+														<?php 
+													} 
+													?>
 													<div class="ABC nxs-height100  ">
 														<div class="XYZ ">
 															<div class="nxs-placeholder-content-wrap nxs-crop ">
 																<div id="nxs-widget-l1206856119" class="nxs-widget nxs-widget-l11223344556 nxs-text ">
 																	<div>
 																		<?php
-																		// feature image
-																		$featuredimageid = get_post_thumbnail_id($contentpostid);
-																		if ($featuredimageid != "" && $featuredimageid != 0)
+																		$renderstyle = 2;
+																		if ($renderstyle == 1)
 																		{
-																			$image_size = "c@2-0";
-																			$wpsize = nxs_getwpimagesize($image_size);
-																			
-																			$imagemetadata = wp_get_attachment_image_src($featuredimageid, $wpsize, true);
-																			$imageurl = $imagemetadata[0];
-																			$hasfeatureimage = true;
-																		}
-																		if ($hasfeatureimage)
-																		{
-																			?>
-																			<div class="nxs-image-wrapper nxs-shadow nxs-icon-width-2-0 nxs-icon-left ">
-																				<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="nxs-overflow">
-																					<img src="<?php echo $imageurl; ?>" alt="" title="" class=" ">
+																			// feature image
+																			$featuredimageid = get_post_thumbnail_id($contentpostid);
+																			if ($featuredimageid != "" && $featuredimageid != 0)
+																			{
+																				$image_size = "c@2-0";
+																				$wpsize = nxs_getwpimagesize($image_size);
+																				
+																				$imagemetadata = wp_get_attachment_image_src($featuredimageid, $wpsize, true);
+																				$imageurl = $imagemetadata[0];
+																				$hasfeatureimage = true;
+																			}
+																			if ($hasfeatureimage)
+																			{
+																				?>
+																				<div class="nxs-image-wrapper nxs-shadow nxs-icon-width-2-0 nxs-icon-left ">
+																					<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="nxs-overflow">
+																						<img src="<?php echo $imageurl; ?>" alt="" title="" class=" ">
+																					</div>
 																				</div>
-																			</div>
-																			<?php
-																		}
-																		?>
-																		<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
-																			<?php 
+																				<?php
+																			}
+																			?>
+																			<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+																				<?php 
 																				if ($wpbackendblogcontent != "")
 																				{
 																					// apply shortcodes, and output the result
@@ -371,8 +379,25 @@ function nxs_pagetemplate_handlecontent()
 																						echo "<p class='nxs-hidewheneditorinactive' style='min-height: 30px;'>" . nxs_l18n__("Click here to start editing your content.", "nxs_td") . "</p>"; 
 																					}
 																				}
+																				?>
+																			</div>
+																			<?php
+																		}
+																		else if ($renderstyle == 2)
+																		{
 																			?>
-																		</div>
+																			<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+																				<?php
+																				the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentyfourteen' ) );
+																				?>
+																			</div>
+																			<?php
+																		}
+																		else
+																		{
+																			// not supported yet
+																		}
+																		?>
 																	</div>
 																	<div class="nxs-clear">
 																	</div>

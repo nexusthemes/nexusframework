@@ -1295,10 +1295,12 @@ function nxs_after_theme_activate_notice_admin()
 
 add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');
 
-// ensures all templates are processed by our drag'drop system, enabling configurable (sub)headers, sidebars, (sub)footers and pagedecorators
+// ensures all templates are processed by our drag'drop system, 
+// enabling configurable (sub)headers, sidebars, (sub)footers and pagedecorators
+// uses nxs_gettemplateproperties()
 function nxs_template_include($template)
-{
-	// force all pages to be handled by page-template.php	(using prio 20)
+{	
+	// force all pages to be handled by page-template.php
 	// note, this overrides all regular templates (like woocommerce), on purpose
 
 	if (!nxs_hastemplateproperties())
@@ -1319,6 +1321,10 @@ function nxs_template_include($template)
 	}
 	else
 	{
+		// store the original template that was about to render this request
+		global $nxs_gl_templates_wp;
+		$nxs_gl_templates_wp = $template;
+		
 		if (is_attachment())
 		{
 			// leave template as-is
@@ -1328,10 +1334,10 @@ function nxs_template_include($template)
 			$template = NXS_FRAMEWORKPATH . '/page-template.php';
 		}
 	}
-		
+	
 	return $template;
 }
-add_filter('template_include', 'nxs_template_include', 30);
+add_filter('template_include', 'nxs_template_include', 9999);
 
 add_action("init", "nxs_init_handledebug", 30);
 
