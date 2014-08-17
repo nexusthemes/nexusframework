@@ -2929,6 +2929,7 @@ function nxs_getsitemeta_internal($nackwhenerror)
  					$backendurl = wp_login_url();
  				}
  				// add a reason
+ 				
 				$backendurl = nxs_addqueryparametertourl_v2($backendurl, "nxstrigger", "noactivesitesettings", true, true);
 				
  				wp_redirect($backendurl);
@@ -3106,6 +3107,11 @@ function nxs_isdataconsistencyvalidationrequired()
 	if (is_admin())
 	{
 		// skip consistency check for admin / backend pages
+		$result = false;
+	}
+	else if (nxs_isnxswebservicerequest())
+	{
+		// while activating the theme, we don't want the data consistency check
 		$result = false;
 	}
 	else
