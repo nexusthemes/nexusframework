@@ -92,13 +92,16 @@ function nxs_widgets_banner_home_getoptions($args)
 				"type" 				=> "staticgenericlist_link",
 				"label" 			=> nxs_l18n__("banner items", "nxs_td"),
 			),
+			/*
+			isn't functioning properly
+			
 			array(
 				"id" 				=> "image_border_width",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Border size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("border_width"),
 				"unistylablefield"	=> true
-			),
+			),*/
 			array(
 				"id" 				=> "image_filter",
 				"type" 				=> "select",
