@@ -608,6 +608,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"sushi;" => array
+		(
+			"href"=>"/wordpress-themes/restaurant/sushi-wordpress-theme/",
+			"title"=>"Sushi WordPress theme",
+		),
 		"golfclub;" => array
 		(
 			"href"=>"/wordpress-themes/sports/golf-club-wordpress-theme/",
