@@ -112,12 +112,15 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Show thumb tray", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			/*
+			deprecated
+			
 			array(
 				"id" 				=> "ken_burns",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Ken Burns effect", "nxs_td"),
 				"unistylablefield"	=> true
-			),
+			),*/
 			
 			array( 
 				"id" 				=> "wrapper_slides_end",
