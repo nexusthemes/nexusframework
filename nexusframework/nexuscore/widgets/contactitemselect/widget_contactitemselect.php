@@ -200,10 +200,8 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 	<div ' . $class . '>
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title">
-					<h4>Select input element: ' . $formlabel . '</h4>
-				</div>
-				<div class="box-content"></div>
+	        	<div class="box-title nxs-width20"><h4><span class="nxs-icon-drawer2" style="font-size: 16px;" /> Select</h4></div>
+				<div class="box-content nxs-width80">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
 		</div>
@@ -250,30 +248,11 @@ function nxs_widgets_contactitemselect_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Element ID", "nxs_td"),
 				"placeholder" => nxs_l18n__("Enter a unique ID for this element", "nxs_td"),
 			),
-			/*
-			can only be set by code
-			array
-			( 
-				"id" 				=> "overriddenelementid",
-				"type" 				=> "input",
-				"visibility"	=> "text",
-				"label" 			=> nxs_l18n__("Override default element ID", "nxs_td"),
-				"placeholder" => nxs_l18n__("Leave blank to use default", "nxs_td"),
-			),
-			*/
 			array
 			( 
 				"id" 				=> "isrequired",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Is required", "nxs_td"),
-			),
-
-			array
-			( 
-				"id" 				=> "placeholder",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Placeholder", "nxs_td"),
-				"placeholder" => nxs_l18n__("Placeholder goes here", "nxs_td"),
 			),
 
 			array
