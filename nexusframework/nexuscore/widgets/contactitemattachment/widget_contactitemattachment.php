@@ -156,10 +156,8 @@ function nxs_widgets_contactitemattachment_render_webpart_render_htmlvisualizati
 	<div ' . $class . '>
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title">
-					<h4>Attachment input element: ' . $formlabel . '</h4>
-				</div>
-				<div class="box-content"></div>
+	        	<div class="box-title nxs-width20"><h4><span class="nxs-icon-attachment" style="font-size: 16px;" /> Attachment</h4></div>
+				<div class="box-content nxs-width80">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
 		</div>
