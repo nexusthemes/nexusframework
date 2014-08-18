@@ -273,10 +273,8 @@ function nxs_widgets_contactitemdatetime_render_webpart_render_htmlvisualization
 	<div ' . $class . '>
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title">
-					<h4>Datetime input element: ' . $formlabel . '</h4>
-				</div>
-				<div class="box-content"></div>
+	        	<div class="box-title nxs-width20"><h4><span class="nxs-icon-clock" style="font-size: 16px;" /> Date and time</h4></div>
+				<div class="box-content nxs-width80">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
 		</div>
