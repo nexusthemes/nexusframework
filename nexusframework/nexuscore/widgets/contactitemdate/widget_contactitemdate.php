@@ -202,10 +202,8 @@ function nxs_widgets_contactitemdate_render_webpart_render_htmlvisualization($ar
 	<div ' . $class . '>
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title">
-					<h4>Date input element: ' . $formlabel . '</h4>
-				</div>
-				<div class="box-content"></div>
+	        	<div class="box-title nxs-width20"><h4><span class="nxs-icon-calendar-2" style="font-size: 16px;" /> Date</h4></div>
+				<div class="box-content nxs-width80">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
 		</div>
