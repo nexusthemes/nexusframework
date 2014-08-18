@@ -409,6 +409,15 @@ via onderstaande regels toepasselijk voor alle onderdelen (header, footer, sideb
 table.ui-datepicker-calendar th 					{ text-align: center; }
 table.ui-datepicker-calendar td 					{ text-align: center !important; padding: 8px 12px; }
 
+/* UNISTYLE BLINK
+----------------------------------------------------------------------------------------------------*/
+.nxs-editor-active .nxs-admin-wrap .nxs-not-unistyled .nxs-widget,
+.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-sharing,
+.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-youtube,
+.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-vimeo,
+.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-custom-html,
+.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-definitionlist,
+.nxs-editor-active .logged-in .nxs-not-unistyled .nxs-widget.nxs-google-map { outline: none; }
 
 /* ADMIN SEO TAB
 ----------------------------------------------------------------------------------------------------*/
