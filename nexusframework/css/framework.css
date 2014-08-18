@@ -2201,6 +2201,19 @@ h3#order_review_heading,
 }
 
 /* ICONS */
+.nxs-icon-aries:before 				{ content: "\2648"; }
+.nxs-icon-taurus:before 			{ content: "\2649"; }
+.nxs-icon-gemini:before 			{ content: "\264a"; }
+.nxs-icon-cancer:before 			{ content: "\264b"; }
+.nxs-icon-leo:before 				{ content: "\264c"; }
+.nxs-icon-virgo:before 				{ content: "\264d"; }
+.nxs-icon-libra:before 				{ content: "\264e"; }
+.nxs-icon-scorpio:before 			{ content: "\264f"; }
+.nxs-icon-sagittarius:before 		{ content: "\2650"; }
+.nxs-icon-capricorn:before 			{ content: "\2651"; }
+.nxs-icon-aquarius:before 			{ content: "\2652"; }
+.nxs-icon-pisces:before 			{ content: "\2653"; }
+
 .nxs-icon-home:before 				{ content: "\e600"; }
 .nxs-icon-office:before 			{ content: "\e601"; }
 .nxs-icon-newspaper:before 			{ content: "\e602"; }
@@ -2491,18 +2504,6 @@ h3#order_review_heading,
 .nxs-icon-truck2:before				{ content: "\e742"; }
 .nxs-icon-toyota:before 			{ content: "\e743"; }
 .nxs-icon-hardhat:before 			{ content: "\e747"; }
-.nxs-icon-aries:before 				{ content: "\e748"; }
-.nxs-icon-taurus:before 			{ content: "\e749"; }
-.nxs-icon-gemini:before 			{ content: "\e74a"; }
-.nxs-icon-cancer:before 			{ content: "\e74b"; }
-.nxs-icon-leo:before 				{ content: "\e74c"; }
-.nxs-icon-virgo:before 				{ content: "\e74d"; }
-.nxs-icon-libra:before 				{ content: "\e74e"; }
-.nxs-icon-scorpio:before 			{ content: "\e74f"; }
-.nxs-icon-sagittarius:before 		{ content: "\e750"; }
-.nxs-icon-capricorn:before 			{ content: "\e751"; }
-.nxs-icon-aquarius:before 			{ content: "\e752"; }
-.nxs-icon-pisces:before 			{ content: "\e753"; }
 .nxs-icon-spray-can:before 			{ content: "\e72b"; }
 .nxs-icon-vacuum-cleaner:before 	{ content: "\e72d"; }
 .nxs-icon-sofa:before 				{ content: "\e73f"; }
