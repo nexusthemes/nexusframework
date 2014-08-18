@@ -608,6 +608,26 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"financialadvisor;" => array
+		(
+			"href"=>"/wordpress-themes/business/financial-advisor-wordpress-theme/",
+			"title"=>"Financial advisor WordPress theme",
+		),
+		"interiordesign;" => array
+		(
+			"href"=>"/wordpress-themes/interior-furniture/interior-design-wordpress-theme/",
+			"title"=>"Interior design WordPress theme",
+		),
+		"carwash;" => array
+		(
+			"href"=>"/wordpress-themes/automotive/car-wash-wordpress-theme/",
+			"title"=>"Car wash WordPress theme",
+		),
+		"paintball;" => array
+		(
+			"href"=>"/wordpress-themes/sports/paintball-wordpress-theme/",
+			"title"=>"Paintball WordPress theme",
+		),
 		"sushi;" => array
 		(
 			"href"=>"/wordpress-themes/restaurant/sushi-wordpress-theme/",
