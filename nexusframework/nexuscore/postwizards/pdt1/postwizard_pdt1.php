@@ -141,7 +141,7 @@ function nxs_postwizard_pdt1_home_getsheethtml($args)
 	      
 	      <div class="content2">
 	        <div class="box">
-	          <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='create(); return false;'><?php nxs_l18n_e("Create page[nxs:popup,button]", "nxs_td"); ?></a>
+	          <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='create(); return false;'><?php nxs_l18n_e("Create", "nxs_td"); ?></a>
 	          <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup]", "nxs_td"); ?></a>            
 	          <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick="nxs_js_popup_sessiondata_clear_dirty(); nxs_js_popup_site_neweditsession('newposthome'); return false;"><?php nxs_l18n_e("Back[nxs:popup,button]", "nxs_td"); ?></a>
 	       	</div>

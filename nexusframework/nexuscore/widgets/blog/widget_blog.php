@@ -914,7 +914,15 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 	
 		$publishedargs = array();
 		$publishedargs["post_status"] = "publish";
-		$publishedargs["post_type"] = array("page", "post");
+
+		// query all posts types
+		$ptargs = array
+		(
+   		'public'   => true
+   	);
+		$post_types = get_post_types($ptargs);
+		
+		$publishedargs["post_type"] = $post_types;
 		$publishedargs["category"] = $items_filter_catids;
 		
 		// Order of posts
