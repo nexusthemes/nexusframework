@@ -43,6 +43,27 @@ function nxs_popup_genericpopup_colorzenpicker_getpopup($args)
 	
 	?>
 	
+	<style>
+		.nxs-admin-wrap .color-sample-head p 
+		{
+			font-size: 15px;
+			text-align: center;
+			line-height: 1.2em;
+		}
+		
+		.nxs-admin-wrap .color-sample-head 
+		{
+			margin-right: 10px;
+			padding: 10px;
+			min-width: 50px;
+		}						
+		.nxs-admin-wrap .box-transparent-layer
+		{
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjA76PVpAAAAGElEQVQYV2P4//9/S0NDQwsDiPj//38LAGTRCwvADjD8AAAAAElFTkSuQmCC');
+			padding-top:5px;
+			padding-bottom:5px;			
+		}
+	</style>	
 	<div class="nxs-admin-wrap">
 		<div class="block">
 			<?php nxs_render_popup_header(nxs_l18n__("Color zen picker", "nxs_td")); ?>
@@ -57,24 +78,159 @@ function nxs_popup_genericpopup_colorzenpicker_getpopup($args)
 								<h4><?php nxs_l18n_e("Flat background colors", "nxs_td"); ?></h4>
 							</div>
 							<div class="box-content">
-								<?php
-								$alphas = nxs_getcoloralphas();
-								foreach($alphas as $currentalpha)
-								{
-									if ($currentalpha != 1)
+								<div class="box-transparent-layer">
+									<?php
+									$alphas = nxs_getcoloralphas();
+									foreach($alphas as $currentalpha)
 									{
-										// skip!
-										continue;
+										if ($currentalpha != 1)
+										{
+											// skip!
+											continue;
+											
+										}
+										else
+										{
+											$alphasuffix = "";
+											// for example -a1-0 for 100%, or -a0-8 for 80% alpha
+											// $alphasuffix = "-a" . nxs_getdashedtextrepresentation_for_numericvalue($currentalpha);
+										}
+										?>
 										
-									}
-									else
-									{
-										$alphasuffix = "";
-										// for example -a1-0 for 100%, or -a0-8 for 80% alpha
-										// $alphasuffix = "-a" . nxs_getdashedtextrepresentation_for_numericvalue($currentalpha);
+										<div style='float:left;'>
+											<div class="<?php echo $padding;?> color-sample-head border-radius-small">
+												<p>0%</p>
+											</div>										
+										</div>
+																			
+										<div>
+											<?php
+											$subtypes = array("1", "2");
+											foreach($subtypes as $currentsubtype)
+											{
+												if ($currentsubtype == "1")
+												{
+													$colortypes = array("base");
+												}
+												else
+												{
+													$colortypes = nxs_getcolorsinpalette();
+												}
+												foreach($colortypes as $currentcolortype)
+												{
+													$identification = $currentcolortype . $currentsubtype . $alphasuffix;
+													$activeclass = nxs_popup_genericpopup_colorzenpicker_getactiveclass($nxs_colorzenpicker_currentvalue, $identification);
+													
+													?>
+													<div onclick='nxs_js_selectcolorzenitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
+														<div class="nxs-colorzen-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
+															<p><?php echo $nxs_colorzenpicker_sampletext; ?></p>
+														</div>
+													</div>
+													<?php
+												}
+											}
+											?>
+										</div>
+										<div class="nxs-clear" />
+										<?php
 									}
 									?>
-									<ul>
+								</div>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
+					<?php } ?>
+					
+					<?php if ($nxs_colorzenpicker_colorset_flat_enabled == "true") { ?>
+					<!-- transparant colors -->
+					<div class="content2">
+						<div class="box">
+							<div class="box-title">
+								<h4><?php nxs_l18n_e("Transparent background colors", "nxs_td"); ?></h4>
+							</div>
+							<div class="box-content">
+								<div class="box-transparent-layer">
+									<?php
+									$alphas = nxs_getcoloralphas();
+									foreach($alphas as $currentalpha)
+									{
+										if ($currentalpha == 1)
+										{
+											// skip!
+											continue;
+										}
+										else
+										{
+											// for example -a1-0 for 100%, or -a0-8 for 80% alpha
+											$alphasuffix = "-a" . nxs_getdashedtextrepresentation_for_numericvalue($currentalpha);
+										}
+										$transparencypercentage = 100 - ($currentalpha * 100);
+										?>
+										<div style='float:left;'>
+											<div class="<?php echo $padding;?> color-sample-head border-radius-small">
+												<p><?php echo $transparencypercentage; ?>%</p>
+											</div>										
+										</div>
+										<div>
+											<?php
+											$subtypes = array("1", "2");
+											foreach($subtypes as $currentsubtype)
+											{
+												if ($currentsubtype == "1")
+												{
+													$colortypes = array("base");
+												}
+												else
+												{
+													$colortypes = nxs_getcolorsinpalette();
+												}
+												
+												
+												foreach($colortypes as $currentcolortype)
+												{
+													$identification = $currentcolortype . $currentsubtype . $alphasuffix;
+													$activeclass = nxs_popup_genericpopup_colorzenpicker_getactiveclass($nxs_colorzenpicker_currentvalue, $identification);
+													
+													?>
+													<div onclick='nxs_js_selectcolorzenitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
+														<div class="nxs-colorzen-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
+															<p><?php echo $nxs_colorzenpicker_sampletext; ?></p>
+														</div>
+													</div>
+													<?php
+												}
+											}
+											?>
+										</div>
+										<div class="nxs-clear padding" />
+										<?php
+									}
+									?>
+								</div>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
+					<?php } ?>
+					
+					<?php if ($nxs_colorzenpicker_colorset_lightgradient_enabled == "true") { ?>
+					<!-- light gradient background colors -->
+					<div class="content2">
+						<div class="box">
+							<div class="box-title">
+								<h4><?php nxs_l18n_e("Light gradient background colors", "nxs_td"); ?></h4>
+							</div>
+							<div class="box-content">
+								<div class="box-transparent-layer">
+									<div style='float:left;'>
+										<div class="<?php echo $padding;?> color-sample-head border-radius-small">
+											<p>0%</p>
+										</div>										
+									</div>
+										
+									<div>
 										<?php
 										$subtypes = array("1", "2");
 										foreach($subtypes as $currentsubtype)
@@ -89,71 +245,26 @@ function nxs_popup_genericpopup_colorzenpicker_getpopup($args)
 											}
 											foreach($colortypes as $currentcolortype)
 											{
-												$identification = $currentcolortype . $currentsubtype . $alphasuffix;
-												$activeclass = nxs_popup_genericpopup_colorzenpicker_getactiveclass($nxs_colorzenpicker_currentvalue, $identification);
-												
-												?>
-												<li onclick='nxs_js_selectcolorzenitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
-													<div class="nxs-colorzen-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
-														<p><?php echo $nxs_colorzenpicker_sampletext; ?></p>
+												$variations = array("ml");
+												foreach($variations as $currentvariation)
+												{
+													$identification = $currentcolortype . $currentsubtype . "-" . $currentvariation;
+													$activeclass = nxs_popup_genericpopup_colorzenpicker_getactiveclass($nxs_colorzenpicker_currentvalue, $identification);
+	
+													?>
+													<div onclick='nxs_js_selectcolorzenitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
+														<div class="nxs-colorzen-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
+															<p><?php echo $nxs_colorzenpicker_sampletext; ?></p>
+														</div>
 													</div>
-												</li>
-												<?php
+													<?php
+												}
 											}
 										}
 										?>
-									</ul>
-									<div class="nxs-clear" />
-									<?php
-								}
-								?>
-							</div>
-						</div>
-						<div class="nxs-clear"></div>
-					</div> <!-- END content -->
-					<?php } ?>
-										
-					<?php if ($nxs_colorzenpicker_colorset_lightgradient_enabled == "true") { ?>
-					<!-- light gradient background colors -->
-					<div class="content2">
-						<div class="box">
-							<div class="box-title">
-								<h4><?php nxs_l18n_e("Light gradient background colors", "nxs_td"); ?></h4>
-							</div>
-							<div class="box-content">
-								<ul>
-									<?php
-									$subtypes = array("1", "2");
-									foreach($subtypes as $currentsubtype)
-									{
-										if ($currentsubtype == "1")
-										{
-											$colortypes = array("base");
-										}
-										else
-										{
-											$colortypes = nxs_getcolorsinpalette();
-										}
-										foreach($colortypes as $currentcolortype)
-										{
-											$variations = array("ml");
-											foreach($variations as $currentvariation)
-											{
-												$identification = $currentcolortype . $currentsubtype . "-" . $currentvariation;
-												$activeclass = nxs_popup_genericpopup_colorzenpicker_getactiveclass($nxs_colorzenpicker_currentvalue, $identification);
-
-												?>
-												<li onclick='nxs_js_selectcolorzenitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
-													<div class="nxs-colorzen-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
-														<p><?php echo $nxs_colorzenpicker_sampletext; ?></p>
-													</div>
-												</li>
-												<?php
-											}
-										}
-									}
-									?>
-								</ul>
+										<div class="nxs-clear" />
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="nxs-clear"></div>				
@@ -168,69 +279,13 @@ function nxs_popup_genericpopup_colorzenpicker_getpopup($args)
 								<h4><?php nxs_l18n_e("Dark gradient background colors", "nxs_td"); ?></h4>
 							</div>
 							<div class="box-content">
-								<ul>
-									<?php
-									$subtypes = array("1", "2");
-									foreach($subtypes as $currentsubtype)
-									{
-										if ($currentsubtype == "1")
-										{
-											$colortypes = array("base");
-										}
-										else
-										{
-											$colortypes = nxs_getcolorsinpalette();
-										}
-										foreach($colortypes as $currentcolortype)
-										{
-											$variations = array("dm");
-											foreach($variations as $currentvariation)
-											{
-												$identification = $currentcolortype . $currentsubtype . "-" . $currentvariation;
-												$activeclass = nxs_popup_genericpopup_colorzenpicker_getactiveclass($nxs_colorzenpicker_currentvalue, $identification);
-												
-												?>
-												<li onclick='nxs_js_selectcolorzenitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
-													<div class="nxs-colorzen-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
-														<p><?php echo $nxs_colorzenpicker_sampletext; ?></p>
-													</div>
-												</li>
-												<?php
-											}
-										}
-									}
-									?>
-								</ul>
-							</div>
-						</div>
-						<div class="nxs-clear"></div>
-					</div> <!-- END content -->
-					<?php } ?>
-					
-					<?php if ($nxs_colorzenpicker_colorset_flat_enabled == "true") { ?>
-					<!-- flat background colors medium -->
-					<div class="content2">
-						<div class="box">
-							<div class="box-title">
-								<h4><?php nxs_l18n_e("Transparent background colors", "nxs_td"); ?></h4>
-							</div>
-							<div class="box-content">
-								<?php
-								$alphas = nxs_getcoloralphas();
-								foreach($alphas as $currentalpha)
-								{
-									if ($currentalpha == 1)
-									{
-										// skip!
-										continue;
-									}
-									else
-									{
-										// for example -a1-0 for 100%, or -a0-8 for 80% alpha
-										$alphasuffix = "-a" . nxs_getdashedtextrepresentation_for_numericvalue($currentalpha);
-									}
-									?>
-									<ul>
+								<div class="box-transparent-layer">
+									<div>
+										<div style='float:left;'>
+											<div class="<?php echo $padding;?> color-sample-head border-radius-small">
+												<p>0%</p>
+											</div>										
+										</div>
 										<?php
 										$subtypes = array("1", "2");
 										foreach($subtypes as $currentsubtype)
@@ -245,24 +300,26 @@ function nxs_popup_genericpopup_colorzenpicker_getpopup($args)
 											}
 											foreach($colortypes as $currentcolortype)
 											{
-												$identification = $currentcolortype . $currentsubtype . $alphasuffix;
-												$activeclass = nxs_popup_genericpopup_colorzenpicker_getactiveclass($nxs_colorzenpicker_currentvalue, $identification);
-												
-												?>
-												<li onclick='nxs_js_selectcolorzenitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
-													<div class="nxs-colorzen-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
-														<p><?php echo $nxs_colorzenpicker_sampletext; ?></p>
+												$variations = array("dm");
+												foreach($variations as $currentvariation)
+												{
+													$identification = $currentcolortype . $currentsubtype . "-" . $currentvariation;
+													$activeclass = nxs_popup_genericpopup_colorzenpicker_getactiveclass($nxs_colorzenpicker_currentvalue, $identification);
+													
+													?>
+													<div onclick='nxs_js_selectcolorzenitem("<?php echo $identification;?>"); return false;' class='nxs-float-left'>
+														<div class="nxs-colorzen-<?php echo $identification; ?> <?php echo $padding;?> border-radius-small color-sample <?php echo $activeclass; ?>">
+															<p><?php echo $nxs_colorzenpicker_sampletext; ?></p>
+														</div>
 													</div>
-												</li>
-												<?php
+													<?php
+												}
 											}
 										}
 										?>
-									</ul>
-									<div class="nxs-clear padding" />
-									<?php
-								}
-								?>
+										<div class="nxs-clear" />								
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="nxs-clear"></div>
