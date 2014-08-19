@@ -608,6 +608,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"logistics;" => array
+		(
+			"href"=>"/wordpress-themes/automotive/logistics-wordpress-theme/",
+			"title"=>"Logistics WordPress theme",
+		),
 		"limousine;" => array
 		(
 			"href"=>"/wordpress-themes/automotive/limousine-wordpress-theme/",
