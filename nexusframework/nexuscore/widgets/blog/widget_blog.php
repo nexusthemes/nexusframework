@@ -295,7 +295,7 @@ function nxs_widgets_blog_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Button", "nxs_td"),
 				"placeholder"		=> nxs_l18n__("Read more", "nxs_td"),
 				"localizablefield"	=> true,
-				"unistylablefield"	=> true
+				"unistylablefield"	=> false
 			),	
 			array(
 				"id" 				=> "item_button_scale",

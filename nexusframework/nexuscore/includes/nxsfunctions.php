@@ -5709,8 +5709,9 @@ function nxs_webmethod_return_nack($message)
 		$existingoutput[] = ob_get_clean();
 	}
 	
-	header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error");
-	header("Status: 500 Internal Server Error"); // for fast cgi
+	http_response_code(500);
+	//header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error");
+	//header("Status: 500 Internal Server Error"); // for fast cgi
 	
 	$output = array
 	(
@@ -5802,8 +5803,26 @@ function nxs_set_jsonheader()
 	}
 }
 
-function nxs_webmethod_return_ok($args)
+// For 4.3.0 <= PHP <= 5.4.0
+if (!function_exists('http_response_code'))
 {
+  function http_response_code($newcode = NULL)
+  {
+    static $code = 200;
+    if($newcode !== NULL)
+    {
+      header('X-PHP-Response-Code: '.$newcode, true, $newcode);
+      if(!headers_sent())
+      {
+        $code = $newcode;
+      }
+    }       
+    return $code;
+  }
+}
+
+function nxs_webmethod_return_ok($args)
+{		
 	if (headers_sent($filename, $linenum)) 
 	{
 		echo "nxs headers already send; $filename $linenum";
@@ -5820,8 +5839,20 @@ function nxs_webmethod_return_ok($args)
 	
 	nxs_set_jsonheader();
 	
-	header($_SERVER['SERVER_PROTOCOL'] . " 200 OK");
-	header("Status: 200 OK"); // for fast cgi
+	/*
+	if (nxs_isdebug())
+	{
+		//var_dump($args);
+		$x = $_SERVER['SERVER_PROTOCOL'];
+		echo "QQ8 $webmethod $x";
+		die();
+	}
+	*/
+	
+	http_response_code(200);
+
+	//header($_SERVER['SERVER_PROTOCOL'] . " 200 OK");
+	//header("Status: 200 OK"); // for fast cgi
 
 	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
 	{
@@ -5834,6 +5865,8 @@ function nxs_webmethod_return_ok($args)
 
 	// add 'result' to array
 	$args["result"] = "OK";
+	
+
 	
 	// sanitize malformed utf8 (if the case)
 	$args = nxs_array_toutf8string($args);

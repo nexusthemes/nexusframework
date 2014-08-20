@@ -5,7 +5,7 @@ function nxs_widgets_pagepopup_geticonid() {
 }
 
 function nxs_widgets_pagepopup_gettitle() {
-	return nxs_l18n__("pagepopup[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Page popup", "nxs_td");
 }
 
 function nxs_widgets_pagepopup_registerhooksforpagewidget($args)

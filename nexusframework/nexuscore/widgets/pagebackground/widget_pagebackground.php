@@ -5,7 +5,7 @@ function nxs_widgets_pagebackground_geticonid() {
 }
 
 function nxs_widgets_pagebackground_gettitle() {
-	return nxs_l18n__("pagebackground[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Page background", "nxs_td");
 }
 
 function nxs_widgets_pagebackground_registerhooksforpagewidget($args)
@@ -49,6 +49,15 @@ function nxs_widgets_pagebackground_beforeend_head()
 		nxs_js_log("setting color to " + hexcolor);
 		jQuery("html").css("background-color", hexcolor);
 		';
+		
+		/*
+		if (nxs_isdebug())
+		{
+			var_dump($key);
+			var_dump($metadata);
+			die();
+		}
+		*/
 	}
 
 	$backgroundimagehtml = "";
@@ -105,6 +114,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 		(
 			function()
 			{
+				// background page decorator
 				<?php
 				echo $backgroundcolorhtml;
 				echo $backgroundimagehtml;
