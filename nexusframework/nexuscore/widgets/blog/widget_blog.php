@@ -159,7 +159,10 @@ function nxs_widgets_blog_home_getoptions($args)
 				"id" 				=> "item_text_truncatelength",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Text max length", "nxs_td"),
-				"dropdown" 			=> nxs_convertindexarraytoassociativearray(array("", "0","100","110","120","130","140","150","160","170","180","190","200","210","220","230","240","250","260","270","280","290","300","400","500","600")),
+				"dropdown" 			=> nxs_convertindexarraytoassociativearray
+				(
+					array("", "0","100","110","120","130","140","150","160","170","180","190","200","210","220","230","240","250","260","270","280","290","300","400","500","600")
+				),
 				"unistylablefield"	=> true
 			),
 						
@@ -1342,16 +1345,28 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					
 					// Excerpt
 					$currentexcerpt = "";
-					if ($item_text_truncatelength != "") {
-						$textblocks = nxs_get_text_blocks_on_page_v2($currentpostid, "");
+					if ($item_text_truncatelength != "") 
+					{
+						// if the excerpt is set, use that one
+						$postforexcerpt = get_post($currentpostid);
+						$currentexcerpt = $postforexcerpt->post_excerpt;
 						
-						//$currentexcerpt = "TEST;$currentpostid;" . $currentexcerpt;
-						//var_dump($textblocks);
-
-						// concatenate the blocks if multiple ones exist
-						foreach ($textblocks as $currenttextblock) 
+						if (empty($currentexcerpt))
 						{
-							$currentexcerpt .= $currenttextblock;
+							$textblocks = nxs_get_text_blocks_on_page_v2($currentpostid, "");
+							
+							//$currentexcerpt = "TEST;$currentpostid;" . $currentexcerpt;
+							//var_dump($textblocks);
+	
+							// concatenate the blocks if multiple ones exist
+							foreach ($textblocks as $currenttextblock) 
+							{
+								$currentexcerpt .= $currenttextblock;
+							}
+						}
+						else
+						{
+							// stick to the excerpt as defined in the post
 						}
 					}
 					

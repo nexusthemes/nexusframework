@@ -92,7 +92,10 @@ function nxs_js_formbox_send(postid, placeholderid)
 						
 						nxs_js_htmldialogmessageok(response.validationerrorhead, msg);
 						
-						//nxs_js_alert(msg);
+						// broadcast event that the form was not handled correctly,
+						// allowing clientside handlers to act
+						nxs_js_log("broadcasting nxs_js_trigger_formvalidationfailed");
+						jQuery(window).trigger('nxs_js_trigger_formvalidationfailed');
 					}
 					else
 					{

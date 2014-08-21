@@ -365,6 +365,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemselect");
 			$result[] = array("widgetid" => "contactitemdatetime");
 			$result[] = array("widgetid" => "contactitemsecret");
+			$result[] = array("widgetid" => "formitemcaptcha");
 			// $result[] = array("widgetid" => "contactitemhidden");
 			// $result[] = array("widgetid" => "contactitemattachment");
 		}
@@ -422,6 +423,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			"contactitemdatetime",
 			"contactitemselect", 
 			"contactitemsecret", 
+			"formitemcaptcha", 			
 			"definitionlistitemtext", 
 			"eventsboxitem", 
 			"gallerybox", 
@@ -518,6 +520,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("contactitemselect");
 	nxs_ext_lazyload_widget("contactitemhidden");
 	nxs_ext_lazyload_widget("contactitemattachment");
+	nxs_ext_lazyload_widget("formitemcaptcha");
 	nxs_ext_lazyload_widget("blog");
 	nxs_ext_lazyload_widget("archive");
 	nxs_ext_lazyload_widget("logo");
