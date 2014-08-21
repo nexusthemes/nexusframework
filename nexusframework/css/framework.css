@@ -1844,7 +1844,7 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 .nxs-target .icon-top-left .content,
 .nxs-target .icon-top-center .content		 				{ margin-left: 0px !important; }
 
-.nxs-target .icon-top .icon		 							{ padding: 10px; width: 100%; padding-left: 0px; padding-right: 0px; }
+.nxs-target .icon-top .icon		 							{ padding: 10px; width: 99% !important; padding-left: 0px; padding-right: 0px; }
 .nxs-target .icon-top-left .icon		 					{ display: block; clear: both; float: none; }
 .nxs-target .icon-top-center .icon		 					{ display: block; clear: both; float: none; margin: 0 auto 20px; }
 
