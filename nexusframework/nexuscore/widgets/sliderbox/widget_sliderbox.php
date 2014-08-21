@@ -173,7 +173,20 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 			array( 
 				"id" 				=> "bgcolor",
 				"type" 				=> "colorzen",
-				"label" 			=> nxs_l18n__("Wrapper background", "nxs_td"),
+				"label" 			=> nxs_l18n__("Background color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "metadata_color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Description background color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id"     			=> "metadata_padding",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Description padding", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
 				"unistylablefield"	=> true
 			),
 			
@@ -329,6 +342,10 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 	if ($bgcolor == "") { $bgcolor = 'base2-a0-6'; }
 	$bgcolor_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $bgcolor);
 	
+	// Metadata background color and padding
+	$metadata_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata_color);
+	$metadata_padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $metadata_padding);
+	
 	// SLIDESHOW BORDER
 	
 		// Multiplier
@@ -342,6 +359,12 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		$factor = 3;
 		$border_width = $multiplier * $factor; 
 		$slide_border_width = 'box-shadow: inset 0 0 0 '.$border_width.'px white;';
+		
+		$factor = 4.5;
+		$metadata_margin_top = 'margin-top: -'.($multiplier * $factor).'px;';
+		
+		$factor = 6;
+		$metadata_margin_left = 'margin-left: '.($multiplier * $factor).'px;';
 	
 	// Title fontsize
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
@@ -636,6 +659,9 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					$title = '<h2 class="nxs-slide-title nxs-title '.$title_fontsize_cssclass.'">'.nxs_render_html_escape_gtlt($slidedataset["title"]).'</h2>'; 
 				}
 				
+				// Filler
+				if ($title != "" && $text != ""){ $filler = '<div class="nxs-clear padding"></div>'; }
+				
 				// Text
 				if ($slidedataset["text"] != "") { 
 					$text = '
@@ -652,9 +678,12 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					<div class="nxs-slide-description '.$metadata_layout.'">
 						
 						<div id="slide_description_content_'.$placeholderid.'_'.$slideindex.'" class="nxs-slide-description-content '.$bgcolor_cssclass.'" style="right: '.$border_width.'px; top: '.$border_width.'px; ">
-							<div class="text-container" style="height: '.$fullwidth_height.';">' .
-								$title .
-								$text.'
+							<div class="text-container" style="height: '.$fullwidth_height.';">
+								<div class="wrapper '.$metadata_color_cssclass.' '.$metadata_padding_cssclass.'" style="'.$metadata_margin_top.' '.$metadata_margin_left.'">' .
+									$title .
+									$filler	.								
+									$text.'
+								</div>
 							</div>
 						</div>
 					
@@ -676,6 +705,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		    
 				// Resetting variables for next slide
 				$title = ''; 
+				$filler = '';
 				$text = '';
 				$description = '';
 
