@@ -22,8 +22,11 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
 	$result["markclientsideelements"] = array();
 		
 	// TODO: retrieve public and private key from configured properties
-	$publickey = "6Lfw-fgSAAAAAB1jhlOKAo4mYJzGlQAUjp3nDZIz";	// $metadata["recaptcha_publickey"];
-	$privatekey = "6Lfw-fgSAAAAAMZG_6j-oQPrcFfyvqD0h9ANEUq8";	// $metadata["recaptcha_privatekey"];
+	$publickey = $metadata["recaptcha_publickey"];
+	if ($publickey == "") { $result["validationerrors"][] = nxs_l18n__("Public key of ReCaptcha is not configured", "nxs_td"); };
+
+	$privatekey = $metadata["recaptcha_privatekey"];
+	if ($privatekey == "") { $result["validationerrors"][] = nxs_l18n__("Private key of ReCaptcha is not configured", "nxs_td"); };
 	
 	// $metadata contains the submitted data
 	if ($_REQUEST["recaptcha_response_field"]) 
@@ -41,12 +44,12 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
     if ($resp->is_valid) 
     {
     	// echo "You got it!";
-    	$result["validationerrors"][] = nxs_l18n__("Captcha was correctly entered", "nxs_td");
+    	// $result["validationerrors"][] = nxs_l18n__("Captcha was correctly entered", "nxs_td");
     } 
     else 
     {
     	$result["validationerrors"][] = nxs_l18n__("Wrong Captcha", "nxs_td");
-      # set the error code so that we can display it
+      // set the error code so that we can display it
       // $error = $resp->error;
     }
 	}
@@ -86,9 +89,9 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
 	
 	//
 	require_once(NXS_FRAMEWORKPATH . '/plugins/recaptcha/recaptchalib.php');
-
-	// TODO: get publickey from the configuration
-	$publickey = "6Lfw-fgSAAAAAB1jhlOKAo4mYJzGlQAUjp3nDZIz";	// $metadata["recaptcha_publickey"];
+  
+  $publickey = $metadata["recaptcha_publickey"];
+  $privatekey = $metadata["recaptcha_privatekey"];
   
 	$result = array();
 	$result["result"] = "OK";
@@ -120,7 +123,17 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
 	
   <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
   <?php
-  echo recaptcha_get_html($publickey);
+  
+  if ($publickey != "" && $privatekey != "")
+  {
+  	echo recaptcha_get_html($publickey);
+  }
+  else
+  {
+  	?>
+  	<br />Configure the ReCaptcha widget first
+  	<?php
+  }
   
   ?>
   <script type='text/javascript'>
@@ -205,7 +218,7 @@ function nxs_widgets_formitemcaptcha_render_webpart_render_htmlvisualization($ar
 		<div class="content2">
 			<div class="box">
 	        	<div class="box-title">
-					<h4>Text input element: ' . $formlabel . '</h4>
+					<h4>ReCaptcha element</h4>
 				</div>
 				<div class="box-content"></div>
 			</div>
@@ -237,72 +250,18 @@ function nxs_widgets_formitemcaptcha_home_getoptions($args)
 		"fields" => array
 		(
 			// GENERAL			
-			
 			array
 			( 
-				"id" 				=> "formlabel",
+				"id" 				=> "recaptcha_publickey",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Label", "nxs_td"),
-				"placeholder" => nxs_l18n__("Label goes here", "nxs_td"),
+				"label" 			=> nxs_l18n__("ReCaptcha public key", "nxs_td"),
 			),
 			
 			array
 			( 
-				"id" 				=> "elementid",
+				"id" 				=> "recaptcha_privatekey",
 				"type" 				=> "input",
-				"visibility"	=> "hide",
-				"label" 			=> nxs_l18n__("Element ID", "nxs_td"),
-				"placeholder" => nxs_l18n__("Enter a unique ID for this element", "nxs_td"),
-			),
-			/*
-			can only be set by code			
-			array
-			( 
-				"id" 				=> "overriddenelementid",
-				"type" 				=> "input",
-				"visibility"	=> "text",
-				"label" 			=> nxs_l18n__("Override default element ID", "nxs_td"),
-				"placeholder" => nxs_l18n__("Leave blank to use default", "nxs_td"),
-			),
-			*/
-			array
-			( 
-				"id" 				=> "secretvalue",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Secret value", "nxs_td"),
-			),
-			
-			array
-			( 
-				"id" 				=> "placeholder",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Placeholder", "nxs_td"),
-			),
-
-			array
-			( 
-				"id" 				=> "initialtext",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Initial text", "nxs_td"),
-			),
-			
-			array(
-				"id" 				=> "numofrows",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Number of lines", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"1"	=> "1", 
-					"2"	=> "2",
-					"3"	=> "3",
-					"4"	=> "4",
-					"5"	=> "5",
-					"6"	=> "6",
-					"7"	=> "7",
-					"8"	=> "8",
-					"9"	=> "9",
-					"10"	=> "10"
-				),
+				"label" 			=> nxs_l18n__("ReCaptcha private key", "nxs_td"),
 			),
 		)
 	);
@@ -314,8 +273,7 @@ function nxs_widgets_formitemcaptcha_initplaceholderdata($args)
 {
 	extract($args);
 
-	$args["elementid"] = nxs_generaterandomstring(6);
-	$args["numofrows"] = "1";
+	//$args["foo"] = "bar";
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
