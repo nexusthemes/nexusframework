@@ -225,6 +225,12 @@ three other one-fourths. This is necessary for individual rows to be completely 
 
 /* SLIDER
 ------------------------------------------------------------------------------------------ */
+@media only screen and ( max-width: 479px ) {
+.nxs-text .nxs-table .nxs-title.nxs-align-right { text-align: left; }
+}
+
+/* SLIDER
+------------------------------------------------------------------------------------------ */
 @media only screen and ( max-width: 1199px ) { 
 .nxs-slide-description-content h2 									{ font-size: 23px; }
 .nxs-slide-description-content p 									{ font-size: 14px; }
