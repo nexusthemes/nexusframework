@@ -239,6 +239,27 @@ function nxs_widgets_formitemcaptcha_render_webpart_render_htmlvisualization($ar
 	return $result;
 }
 
+function nxs_widgets_formitemcaptcha_help($optionvalues, $args, $runtimeblendeddata) 
+{
+	ob_start();
+	
+	//$headingid = "heading";
+	
+	extract($optionvalues);
+	
+	//$containerpostid = $args["clientpopupsessioncontext"]["containerpostid"];
+		
+	?>
+	<div>
+		reCAPTCHA is a free service from Google. To use reCAPTCHA you must get an API key from <a target='_blank' href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>
+	</div>
+  <div class="nxs-clear"></div>
+  <?php
+	$result = ob_get_contents();
+	ob_end_clean();
+	return $result;
+}
+
 // Define the properties of this widget
 function nxs_widgets_formitemcaptcha_home_getoptions($args) 
 {
@@ -249,7 +270,20 @@ function nxs_widgets_formitemcaptcha_home_getoptions($args)
 	
 		"fields" => array
 		(
-			// GENERAL			
+			// HELP
+			
+			
+			// KEYS			
+			array
+			( 
+				"id" 				=> "help",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_widgets_formitemcaptcha_help",
+				"label" 			=> nxs_l18n__("Help", "nxs_td"),
+			),
+
+			
+			// KEYS			
 			array
 			( 
 				"id" 				=> "recaptcha_publickey",
