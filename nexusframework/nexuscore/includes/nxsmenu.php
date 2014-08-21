@@ -799,7 +799,26 @@
 		  } 
 		  else
 		  {
-		  	$wordpressbackendurl = get_admin_url() . "admin.php?page=nxs_backend_overview&type=" . $nxsposttype . "&posttype=" . $posttype; 
+		  	if (is_tax())
+		  	{
+			  	global $wp_query;
+			  	//var_dump($wp_query);
+			  	//die();
+			  	$tax_query = $wp_query->tax_query;
+			  	$queries = $tax_query->queries;
+			  	$taxonomy = $queries[0]["taxonomy"];	// example; product_cat
+			  	$terms = $queries[0]["terms"];
+			  	$firstterm = $terms[0];	// example; automative
+			  	$termmeta = get_term_by("slug", $firstterm, $taxonomy);
+			  	$termid = $termmeta->term_id;
+			  	
+					// When any custom taxonomy archive page is being displayed.
+		  		$wordpressbackendurl = get_admin_url() . "edit-tags.php?action=edit&taxonomy={$taxonomy}&tag_ID={$termid}";
+		  	}
+		  	else
+		  	{
+		  		$wordpressbackendurl = get_admin_url() . "admin.php?page=nxs_backend_overview&type=" . $nxsposttype . "&posttype=" . $posttype; 
+		  	}
 		  }
 		  
 		  do_action('nxs_ext_injectmenuitem');

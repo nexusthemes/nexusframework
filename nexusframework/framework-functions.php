@@ -608,6 +608,21 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"mortgagebroker;" => array
+		(
+			"href"=>"/wordpress-themes/business/mortgage-broker-wordpress-theme/",
+			"title"=>"Mortgage broker WordPress theme",
+		),
+		"hairsalon;" => array
+		(
+			"href"=>"/wordpress-themes/beauty/hair-salon-wordpress-theme/",
+			"title"=>"Hair salon WordPress theme",
+		),
+		"drivingschool;" => array
+		(
+			"href"=>"/wordpress-themes/automotive/driving-school-wordpress-theme/",
+			"title"=>"Driving school WordPress theme",
+		),
 		"logistics;" => array
 		(
 			"href"=>"/wordpress-themes/automotive/logistics-wordpress-theme/",
