@@ -15,11 +15,35 @@ function nxs_js_formbox_send(postid, placeholderid)
 		{
 			var newid = jQuery(this).attr("id");
 			nxs_js_log(newid);
-			var newvalue = jQuery(this).val();
+
+			var newvalue;
+			if (jQuery('#' + newid).is(':checkbox'))
+			{
+				nxs_js_log('checkbox found');
+				
+				if (jQuery('#' + newid).is(':checked'))
+				{
+					newvalue = 'checked';
+				}
+				else
+				{
+					newvalue = '';
+				}
+				
+				nxs_js_log(newvalue);
+			}
+			else
+			{
+				nxs_js_log('not a checkbox found');
+				newvalue = jQuery(this).val();
+			}
+			
 			nxs_js_log(newvalue);
 			datatopost[newid] = newvalue;
 		}
 	);
+	
+	// skjdfhskdljhf();
 	
 	// find textareas
 	jQuery("#nxs-widget-" + placeholderid).find("textarea").each

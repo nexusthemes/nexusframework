@@ -463,7 +463,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	$button_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
 	$button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
 	
-	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=a" . nxs_getthemeversion(false). "', true, 'nxs_js_formbox_send(" .  $postid . ", &quot;" . $placeholderid . "&quot;);');";
+	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(false). "', true, 'nxs_js_formbox_send(" .  $postid . ", &quot;" . $placeholderid . "&quot;);');";
 
 	// Button
 	$htmlbutton = '
