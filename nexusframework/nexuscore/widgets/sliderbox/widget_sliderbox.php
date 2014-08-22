@@ -94,6 +94,7 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 				"dropdown" 			=> array
 				(
 					"@@@nxsempty@@@" => nxs_l18n__("None", "nxs_td"),
+					"200px" => nxs_l18n__("200px", "nxs_td"),
 					"300px" => nxs_l18n__("300px", "nxs_td"),
 					"400px" => nxs_l18n__("400px", "nxs_td"),
 					"500px" => nxs_l18n__("500px", "nxs_td"),
