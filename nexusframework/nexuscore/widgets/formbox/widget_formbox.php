@@ -421,7 +421,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	
 	if (!(isset($destination_articleid) && $destination_articleid != "" && $destination_articleid != 0)) 
 	{
-		$alternativemessage = nxs_l18n__("Minimal: destination article", "nxs_td");
+		$alternativemessage = nxs_l18n__("Warning: the 'thank you page' of this widget is not yet configured", "nxs_td");
 	} 
 	
 	if ($internal_email == "") 
