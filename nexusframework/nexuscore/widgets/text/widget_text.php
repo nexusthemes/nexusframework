@@ -154,6 +154,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array( 
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
+				"allow_featuredimage" => true,
 				"label" 			=> nxs_l18n__("Choose image", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
 				"unicontentablefield" => true,
@@ -244,6 +245,20 @@ function nxs_widgets_text_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("button_halignment"),
 				"unistylablefield"	=> true,
 			),
+			array( 
+				"id" 				=> "wrapper_button_end",
+				"type" 				=> "wrapperend"
+			),
+			
+			/* LINK
+			---------------------------------------------------------------------------------------------------- */
+			
+			array( 
+				"id" 				=> "wrapper_begin_link",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Link", "nxs_td"),
+			),
+			
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
@@ -260,6 +275,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			
 			array(
 				"id" 				=> "destination_js",
 				"type" 				=> "input",
@@ -268,7 +284,8 @@ function nxs_widgets_text_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true,
 				"requirecapability" => nxs_cap_getdesigncapability(),
-			),			
+			),
+		
 			array(
 				"id" 				=> "destination_target",
 				"type" 				=> "select",
@@ -283,8 +300,8 @@ function nxs_widgets_text_home_getoptions($args)
 			),
 			
 			array( 
-				"id" 				=> "wrapper_button_end",
-				"type" 				=> "wrapperend"
+				"id" 				=> "wrapper_end_link",
+				"type" 				=> "wrapperend",
 			),
 			
 			// MISCELLANEOUS
@@ -444,6 +461,12 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	// Widget specific variables
 	extract($mixedattributes);
+	
+	if ($image_imageid == "featuredimg")
+	{
+		$image_imageid = get_post_thumbnail_id($containerpostid);
+	}
+
 
 	//
 	$hovermenuargs = array();

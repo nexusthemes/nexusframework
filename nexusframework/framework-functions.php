@@ -333,6 +333,13 @@ function nxs_init()
 		  	var_dump($x);
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "diskfree")
+		  {
+		  	echo "disk free space:<br />";
+		  	$x = disk_free_space(".");
+		  	var_dump($x);
+		  	die();
+		  }
 		  else if ($_REQUEST["nxs"] == "errorlog")
 		  {
 			  $errorpath = ini_get('error_log');

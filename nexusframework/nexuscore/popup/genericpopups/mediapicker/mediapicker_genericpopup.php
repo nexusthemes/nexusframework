@@ -114,7 +114,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 		
 		<div class="block">
 	
-			<?php nxs_render_popup_header(nxs_l18n__("Change file", "nxs_td")); ?>
+			<?php nxs_render_popup_header(nxs_l18n__("Change media", "nxs_td")); ?>
 	
 			<div class="nxs-popup-content-canvas-cropper">
 				
@@ -414,6 +414,14 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 	
 				<div class="box">
 					<a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel", "nxs_td"); ?></a>
+					<?php
+					if ($allow_featuredimage == true)
+					{
+						?>
+						<a href='#' class="nxsbutton1 nxs-float-right" onclick='nxs_js_usefeaturedimg(); return false;'><?php nxs_l18n_e("Use 'featured image'", "nxs_td"); ?></a>
+						<?php
+					}
+					?>
 				</div>
 				<div class="nxs-clear margin"></div>
 	
@@ -430,6 +438,11 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 			var value = jQuery('#mediapicker_filter_title').val();
 			nxs_js_popup_setsessioncontext('mediapicker_filter_title', value);
 			nxs_js_popup_refresh_v2(true);
+		}
+		
+		function nxs_js_usefeaturedimg()
+		{
+			nxs_js_selectattachment("featuredimg");
 		}
 		
 		function nxs_js_popup_mediapicker_changepagesize(element)

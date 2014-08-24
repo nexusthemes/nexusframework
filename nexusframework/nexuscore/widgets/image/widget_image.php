@@ -301,6 +301,10 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
 	}
 	
+	if ($image_imageid == "featuredimg")
+	{
+		$image_imageid = get_post_thumbnail_id($containerpostid);
+	}
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */

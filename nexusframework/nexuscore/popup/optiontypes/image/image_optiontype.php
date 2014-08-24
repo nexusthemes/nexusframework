@@ -1,6 +1,8 @@
 <?php
 function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $runtimeblendeddata) 
 {
+	$allow_featuredimage = false;
+	
 	extract($optionvalues);
 	extract($args);
 	extract($runtimeblendeddata);
@@ -10,49 +12,78 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 		?>
 		<div class="content2">
 			<div class="box">
-				
+				<?php
+				if ($value == "featuredimg")
+				{
+					$imgidtopreview = get_post_thumbnail_id($postid);
+					//var_dump($postid);
+					//var_dump($containerpostid);
+					//var_dump($imgidtopreview);
+				}
+				else
+				{
+					$imgidtopreview = $value;
+				}
+				?>
 				<?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
         		
-                <div class="box-content">
+        <div class="box-content">
 					<script type='text/javascript'>
-                    	nxs_js_popup_setsessiondata('<?php echo $id; ?>', '<?php echo $$id; ?>');
-                    </script>
-                              
-                    <?php
-						$imagemetadata= wp_get_attachment_image_src($value, 'thumbnail', true);
+          	nxs_js_popup_setsessiondata('<?php echo $id; ?>', '<?php echo $$id; ?>');
+          </script>
+                      
+          <?php
+						$imagemetadata = wp_get_attachment_image_src($imgidtopreview, 'thumbnail', true);
 						$imageurl = $imagemetadata[0];	// index 0 = url		
-                    ?>
-
-                    <a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select</a>
-                    
+						//var_dump($imageurl);
+          ?>
+          <a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select</a>
 					<?php
-						if (isset($value) && $value != 0) {
-					?>
+					if (isset($value) && $value != 0) 
+					{
+						?>
 						<a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("<?php echo $id;?>", ""); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;' class="nxsbutton1 nxs-float-right">None</a>
-					<?php
+						<?php
 					}
-					$imageexists = nxs_postexistsbyid($value);
+					
+					$imageexists = nxs_postexistsbyid($imgidtopreview);
 					if (!$imageexists)
 					{
 						?>
-						<span>Error; configured image (ID: <?php echo $value; ?>) was removed from the media manager</span><br />
+						<span>Error; configured image (ID: <?php echo $imgidtopreview; ?>) was removed from the media manager</span><br />
 						<?php
 					}
 					?>
           <a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxs-float-left">
 						<?php
-						if (isset($value) && $value != 0) 
+						if (isset($value))
 						{
-							if (nxs_postexistsbyid($value))
+							if ($value !== 0) 
 							{
-								?>
-              	<img src='<?php echo $imageurl; ?>' class="nxs-icon-left" />
-            		<?php
-            	}
-            	else
-            	{
-            		// nothing
-            	}
+								if ($value == "featuredimg")
+								{
+									echo "Featured image<br />";
+								}
+								
+								//echo "VALUE IS SET";
+							
+								if (nxs_postexistsbyid($imgidtopreview))
+								{
+									?>
+	              	<img src='<?php echo $imageurl; ?>' class="nxs-icon-left" />
+	            		<?php
+	            	}
+	            	else
+	            	{
+	            		echo "nee:".$imgidtopreview;
+	            		// nothing
+	            	}
+							}
+							else
+							{
+          			// nothing
+							}
+							
           	}
           	else
           	{
@@ -65,7 +96,7 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 					if ($imageexists && $imagemetadata != "") 
 					{
 						// resetting the image to "full" for correct metadata "width" and "height" inclusion 
-						$imagemetadata= wp_get_attachment_image_src($value, 'full', true);
+						$imagemetadata= wp_get_attachment_image_src($imgidtopreview, 'full', true);
 						
 						if ($imagemetadata[1] > 1999 || $imagemetadata[2] > 1999) {	
 							
@@ -86,7 +117,7 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 						}
 					} 
 					
-					$mimetype = get_post_mime_type($value);
+					$mimetype = get_post_mime_type($imgidtopreview);
 					if ($mimetype == "") {
 						$mimetype = __("Unknown mimetype");
 					} else {
@@ -131,8 +162,14 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
         
         </div>
         
-        <?php }
-	//
+        <?php 
+    }
+	
+	?>
+	<script type='text/javascript'>
+   	nxs_js_popup_setsessioncontext("allow_featuredimage", "<?php echo $allow_featuredimage; ?>");
+  </script>
+	<?php
 }
 
 function nxs_popup_optiontype_image_renderstorestatecontroldata($optionvalues)
