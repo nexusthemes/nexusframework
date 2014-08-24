@@ -133,6 +133,7 @@ function nxs_widgets_image_home_getoptions($args)
 			( 
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
+				"allow_featuredimage" => true,
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
 				"unicontentablefield" => true,
@@ -303,6 +304,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	
 	if ($image_imageid == "featuredimg")
 	{
+		$orig_image_imageid = $image_imageid;
 		$image_imageid = get_post_thumbnail_id($containerpostid);
 	}
 	
@@ -311,12 +313,23 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	// Check if specific variables are empty
 	// If so > $shouldrenderalternative = true, which triggers the error message
 	$shouldrenderalternative = false;
-	if (
-	$image_imageid == "" &&
-	$title == "" &&
-	nxs_has_adminpermissions()) {
-		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Missing required field: at least the title or the image should be configured.", "nxs_td");
+	if 
+	(
+		$image_imageid == "" &&
+		$title == "" &&
+		nxs_has_adminpermissions()
+	) 
+	{
+		if ($orig_image_imageid == "featuredimg")
+		{
+			$shouldrenderalternative = true;
+			$alternativehint = nxs_l18n__("Warning: featured image is used but not configured.", "nxs_td");
+		}
+		else
+		{
+			$shouldrenderalternative = true;
+			$alternativehint = nxs_l18n__("Missing required field: at least the title or the image should be configured.", "nxs_td");
+		}
 	}
 	
 	// Image metadata
