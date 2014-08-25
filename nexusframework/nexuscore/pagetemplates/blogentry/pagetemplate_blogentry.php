@@ -424,6 +424,13 @@ function nxs_pagetemplate_handlecontent()
 						$shouldrenderoriginaltemplate = true;
 					}
 					
+					// dont use this approach on nexusthemes.com
+					$homeurl = nxs_geturl_home();
+					if (nxs_stringcontains($homeurl, "nexusthemes.com"))
+					{
+						$shouldrenderoriginaltemplate = false;
+					}
+					
 					if ($shouldrenderoriginaltemplate)
 					{
 						rewind_posts();
