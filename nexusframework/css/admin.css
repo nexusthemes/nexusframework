@@ -187,10 +187,10 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 .nxs-admin-wrap span.nxs-title 						{ display: block; float: left; color: #555555; font-style: italic; font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif !important; }
 .nxs-admin-wrap span.title a, 
 .nxs-admin-wrap span.nxs-title a					{ color: #222222; }
-.nxs-admin-wrap #TB_window span.title a,
-.nxs-admin-wrap #TB_window span.nxs-title a 		{ color: #222222; text-decoration: underline; }
-.nxs-admin-wrap #TB_window span.title a:visited,
-.nxs-admin-wrap #TB_window span.nxs-title a:visited	{ color: #111111; }
+.nxs-admin-wrap #nxsbox_window span.title a,
+.nxs-admin-wrap #nxsbox_window span.nxs-title a 		{ color: #222222; text-decoration: underline; }
+.nxs-admin-wrap #nxsbox_window span.title a:visited,
+.nxs-admin-wrap #nxsbox_window span.nxs-title a:visited	{ color: #111111; }
 .nxs-admin-wrap table .edit label 					{ cursor: pointer; margin: .3em 0; display: block; }
 .nxs-admin-wrap table .edit .label-row 				{ margin: 0 0 6px; }
 .nxs-admin-wrap table .edit .input-wrap 			{ display: block; margin-left: 6em; }
@@ -903,20 +903,20 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 
 /* ADMIN LAYOUT HELPERS
 ----------------------------------------------------------------------------------------------------*/
-#TB_overlay 										{ position: fixed; z-index:100;	top: 0px; left: 0px; height:100%; width:100%; }
-.TB_overlayMacFFBGHack 								{ background: url('../images/macFFBgHack.png') repeat; }
-.TB_overlayBG {
+#nxsbox_overlay 										{ position: fixed; z-index:100;	top: 0px; left: 0px; height:100%; width:100%; }
+.nxsbox_overlayMacFFBGHack 								{ background: url('../images/macFFBgHack.png') repeat; }
+.nxsbox_overlayBG {
 	background-color:#000;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
 	filter:alpha(opacity=75);
 	-moz-opacity: 0.75;
 	opacity: 0.75;
 }
-* html #TB_overlay { /* ie6 hack */
+* html #nxsbox_overlay { /* ie6 hack */
      position: absolute;
      height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
 }
-#TB_window {
+#nxsbox_window {
 	text-shadow: none;
 	position: fixed;
 	z-index: 102;
@@ -924,11 +924,11 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	visibility: hidden;
 	text-align:left;
 }
-* html #TB_window { /* ie6 hack */
+* html #nxsbox_window { /* ie6 hack */
 position: absolute;
 margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
 }
-#TB_window img#TB_Image {
+#nxsbox_window img#nxsbox_Image {
 	display:block;
 	margin: 15px 0 0 15px;
 	border-right: 1px solid #ccc;
@@ -936,20 +936,20 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	border-top: 1px solid #666;
 	border-left: 1px solid #666;
 }
-#TB_caption											{ height:25px; padding:7px 30px 10px 25px; float:left; }
-#TB_closeWindow										{ height:25px; padding:11px 25px 10px 0; float:right; }
-#TB_closeAjaxWindow									{ padding:6px 10px 0; text-align:right; float:right; }
-#TB_ajaxWindowTitle									{ float:left; padding:6px 10px 0; }
-#TB_title											{ background-color:#e8e8e8;	height:27px; }
-#TB_ajaxContent										{ clear:both; padding:2px 15px 15px 15px; overflow:auto; text-align:left; line-height:1.4em; }
-#TB_ajaxContent.TB_modal							{ padding:15px; }
-#TB_ajaxContent p									{ padding:5px 0px 5px 0px;}
-#TB_load											{ position: fixed; display:none; z-index:103; top: 50%; left: 50%; background-color: #E8E8E8; border: 1px solid #555; margin: -45px 0pt 0pt -125px;	padding: 40px 15px 15px; }
-* html #TB_load { /* ie6 hack */
+#nxsbox_caption											{ height:25px; padding:7px 30px 10px 25px; float:left; }
+#nxsbox_closeWindow										{ height:25px; padding:11px 25px 10px 0; float:right; }
+#nxsbox_closeAjaxWindow									{ padding:6px 10px 0; text-align:right; float:right; }
+#nxsbox_ajaxWindowTitle									{ float:left; padding:6px 10px 0; }
+#nxsbox_title											{ background-color:#e8e8e8;	height:27px; }
+#nxsbox_ajaxContent										{ clear:both; padding:2px 15px 15px 15px; overflow:auto; text-align:left; line-height:1.4em; }
+#nxsbox_ajaxContent.nxsbox_modal							{ padding:15px; }
+#nxsbox_ajaxContent p									{ padding:5px 0px 5px 0px;}
+#nxsbox_load											{ position: fixed; display:none; z-index:103; top: 50%; left: 50%; background-color: #E8E8E8; border: 1px solid #555; margin: -45px 0pt 0pt -125px;	padding: 40px 15px 15px; }
+* html #nxsbox_load { /* ie6 hack */
 position: absolute;
 margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
 }
-#TB_HideSelect{
+#nxsbox_HideSelect{
 	z-index:99;
 	position:fixed;
 	top: 0;
@@ -962,21 +962,21 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	height:100%;
 	width:100%;
 }
-* html #TB_HideSelect { /* ie6 hack */
+* html #nxsbox_HideSelect { /* ie6 hack */
      position: absolute;
      height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
 }
-#TB_iframeContent									{ clear:both; border:none; margin-bottom:-1px; _margin-bottom:1px; }
+#nxsbox_iframeContent									{ clear:both; border:none; margin-bottom:-1px; _margin-bottom:1px; }
 
-/* ADMIN THICKBOX OVERRULE
+/* ADMIN NXSBOX OVERRULE
 ----------------------------------------------------------------------------------------------------*/
-#TB_title											{ visibility: hidden !important; }
-#TB_ajaxContent  									{ padding: 0 !important; margin-left: 15px; margin-top: 8px; }
-#TB_ajaxContent p 									{ padding: 0 !important; }
-/*#TB_window 											{ background: transparent !important; border: none !important; opacity: 0; box-shadow: none !important;	text-shadow: none; }*/
-.nxs-frontend #TB_window							{ opacity: 0; } 
-#TB_overlay 										{ top: 0px !important; left: 0px !important; }
-#TB_window.nxs-active {	
+#nxsbox_title											{ visibility: hidden !important; }
+#nxsbox_ajaxContent  									{ padding: 0 !important; margin-left: 15px; margin-top: 8px; }
+#nxsbox_ajaxContent p 									{ padding: 0 !important; }
+/*#nxsbox_window 											{ background: transparent !important; border: none !important; opacity: 0; box-shadow: none !important;	text-shadow: none; }*/
+.nxs-frontend #nxsbox_window							{ opacity: 0; } 
+#nxsbox_overlay 										{ top: 0px !important; left: 0px !important; }
+#nxsbox_window.nxs-active {	
 	/*transition: 		opacity 0.2s 0.2s linear;
 	-o-transition: 		opacity 0.2s 0.2s linear; 
 	-moz-transition: 	opacity 0.2s 0.2s linear;
@@ -987,7 +987,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	-webkit-transition: none !important;
 	opacity: 1; 
 }
-#TB_window .nxs-icon-left							{ margin-bottom: 0px !important; }
+#nxsbox_window .nxs-icon-left							{ margin-bottom: 0px !important; }
 
 /* ADMIN MENU COLORPICKER 
 ----------------------------------------------------------------------------------------------------*/
@@ -1372,8 +1372,8 @@ img.nxs-preview-thumbnail 									{ max-width: 48px; max-height: 48px; }
 .nxs-popup-dyncontentcontainer .nxs-fraction li:hover 		{ cursor: pointer !important; }
 .nxs-popup-dyncontentcontainer .nxs-fraction li p:hover 	{ cursor: pointer !important; }
 
-#TB_overlay 												{ z-index: 130; }
-#TB_window 													{ z-index: 140; }
+#nxsbox_overlay 												{ z-index: 130; }
+#nxsbox_window 													{ z-index: 140; }
 
 /*hover sidebar*/
 .nxs-sidebar-cursor 										{ position: absolute; z-index: 100; }

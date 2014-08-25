@@ -8,10 +8,9 @@
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php		
 	nxs_hideadminbar();
-	wp_enqueue_style('thickbox');
+	wp_enqueue_style('nxsbox');
 	wp_head(); 
 	?>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	<?php if (is_user_logged_in()) { ?>
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
 	<script type="text/javascript">

@@ -39,10 +39,9 @@
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php		
 	nxs_hideadminbar();
-	wp_enqueue_style('thickbox');
+	wp_enqueue_style('nxsbox');
 	wp_head(); 
 	?>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	<link rel="shortcut icon" href="<?php echo $faviconurl; ?>" type="image/x-icon" />
 	<!-- -->
 	<script type="text/javascript">	document.documentElement.className = 'js'; </script>

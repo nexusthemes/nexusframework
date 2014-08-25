@@ -4,7 +4,7 @@
 //
 
 ?>
-<div id="nxs_ajax_thickbox" style="display:none">
+<div id="nxs_ajax_nxsbox" style="display:none">
 	<div class="nxs-popup-dyncontentcontainer nxs-do-selectable nxs-shadow1"></div>
 </div>
 <script type="text/javascript">
@@ -394,7 +394,7 @@ if (is_admin)
 { 
 	// WP backend is showing
 	?>
-	<script type='text/javascript'> var thickboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingthickbox.png" }; </script>	
+	<script type='text/javascript'> var nxsboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingnxsbox.png" }; </script>	
 	<?php 
 }
 ?>

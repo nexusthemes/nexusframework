@@ -59,7 +59,7 @@
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 
 	nxs_hideadminbar();	
-	wp_enqueue_style('thickbox');
+	wp_enqueue_style('nxsbox');
 	// the wp_head alters the $post variable,
 	// to prevent this from happening, we store the post
 	$beforepost = $post;
@@ -68,8 +68,6 @@
 	// to prevent this from happening, we restore the post
 	$post = $beforepost;
 	?>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-	
 	<?php	if (isset($faviconurl)) { ?>
 	<link rel="shortcut icon" href="<?php echo $faviconurl; ?>" type="image/x-icon" />
 	<?php	} ?>

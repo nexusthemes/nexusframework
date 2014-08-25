@@ -415,6 +415,89 @@ function nxs_pagetemplate_handlecontent()
 							<?php
 						}
 					}
+					
+					// 
+					$shouldrenderoriginaltemplate = false;
+					global $nxs_gl_templates_wp;
+					if (nxs_stringcontains($nxs_gl_templates_wp, "woo"))
+					{
+						$shouldrenderoriginaltemplate = true;
+					}
+					
+					if ($shouldrenderoriginaltemplate)
+					{
+						rewind_posts();
+
+						// reguliere post/page
+						?>
+						<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-content-<?php echo $contentpostid  . " " . $cssclass; ?>'>
+							<div class="nxs-postrows">
+								<div class="nxs-row   " id="nxs-pagerow-content">
+									<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
+										<ul class="nxs-placeholder-list"> 
+											<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-whole '>
+												<?php 
+												if (nxs_has_adminpermissions()) 
+												{ 
+													?>
+													<div class='nxs-hover-menu-positioner'>
+														<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
+													    <ul class="">
+													      <li title='Edit' class='nxs-hovermenu-button'>
+													      	<a href='#' title='Edit' class="nxs-defaultwidgetclickhandler" onclick="nxs_js_popup_postcontent_neweditsession('wpcontent'); return false;">
+													        	<span class="nxs-icon-text"></span>
+													        </a>
+													    	</li>
+													    	<li title='Edit' class='nxs-hovermenu-button'>
+													      	<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress">
+													        	<span class="nxs-icon-wordpresssidebar"></span>
+													        </a>
+													    	</li>
+													  	</ul>
+														</div>
+													</div>
+													<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'>
+														<span class='nxs-runtime-autocellsize'></span>
+													</div>
+													<div title='Edit' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'>
+														<span class='nxs-runtime-autocellsize'></span>
+													</div>
+													<?php 
+												} 
+												?>
+												<div class="ABC nxs-height100  ">
+													<div class="XYZ ">
+														<div class="nxs-placeholder-content-wrap nxs-crop ">
+															<div id="nxs-widget-l1206856119" class="nxs-widget nxs-widget-l11223344556 nxs-text ">
+																<div>
+																	<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+																		<?php
+																		//if (have_posts()) { echo "yes we have posts!"; } else { echo "no we dont have posts"; }
+																		?>
+																		<br />
+																		<?php
+																		// delegate to the original template handler
+																		include($nxs_gl_templates_wp);
+																		?>
+																	</div>
+																</div>
+																<div class="nxs-clear">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</li>
+										</ul>
+										<div class="nxs-clear"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<?php
+					}
+					
+					rewind_posts();
 				}
 				else
 				{
@@ -614,7 +697,7 @@ function nxs_pagetemplate_handleheader()
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 
 	nxs_hideadminbar();	
-	wp_enqueue_style('thickbox');
+	wp_enqueue_style('nxsbox');
 	// the wp_head alters the $post variable,
 	// to prevent this from happening, we store the post
 	$beforepost = $post;
@@ -625,9 +708,6 @@ function nxs_pagetemplate_handleheader()
 	// to prevent this from happening, we restore the post
 	$post = $beforepost;
 	?>
-	
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-	
 	<?php	if (isset($faviconurl)) { ?>
 	<link rel="shortcut icon" href="<?php echo $faviconurl; ?>" type="image/x-icon" />
 	<?php	} ?>

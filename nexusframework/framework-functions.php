@@ -1143,15 +1143,20 @@ function nxs_clearunwantedscripts()
 		// the theme could break if pointing to an incompatible version
 		// therefore we remove jquery scripts added by third party plugins, such as NGG
   	//wp_deregister_script('jquery');
-  	// we use our own thickbox
   	
-  	wp_deregister_script('thickbox');
-  	wp_deregister_style('thickbox');
   	
+  	// 25 aug 2014; removed; woocommerce adds various scripts that are dependent upon
+  	// jquery, and we ignore those too when using the approach below...
+
   	function nxs_modify_scripts() 
   	{
-	  	wp_dequeue_script('jquery');
-	  	wp_deregister_script('jquery');
+  		wp_deregister_script('jquery');
+			wp_deregister_script('jquery-ui');
+			$dependencies = false;
+      wp_register_script('jquery', "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js", $dependencies);
+      wp_enqueue_script('jquery');
+      
+      wp_enqueue_script('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js', array('jquery'), '1.11.1');
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
   }
@@ -1356,7 +1361,7 @@ add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');
 // enabling configurable (sub)headers, sidebars, (sub)footers and pagedecorators
 // uses nxs_gettemplateproperties()
 function nxs_template_include($template)
-{	
+{
 	// force all pages to be handled by page-template.php
 	// note, this overrides all regular templates (like woocommerce), on purpose
 
@@ -1382,6 +1387,7 @@ function nxs_template_include($template)
 		global $nxs_gl_templates_wp;
 		$nxs_gl_templates_wp = $template;
 		
+		
 		if (is_attachment())
 		{
 			// leave template as-is
@@ -1391,7 +1397,7 @@ function nxs_template_include($template)
 			$template = NXS_FRAMEWORKPATH . '/page-template.php';
 		}
 	}
-	
+		
 	return $template;
 }
 add_filter('template_include', 'nxs_template_include', 9999);

@@ -15,7 +15,8 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 				<?php
 				if ($value == "featuredimg")
 				{
-					$imgidtopreview = get_post_thumbnail_id($postid);
+					$containerpostid = $_REQUEST["clientpopupsessioncontext"]["containerpostid"];
+					$imgidtopreview = get_post_thumbnail_id($containerpostid);
 					//var_dump($postid);
 					//var_dump($containerpostid);
 					//var_dump($imgidtopreview);

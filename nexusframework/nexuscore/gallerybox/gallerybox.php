@@ -133,7 +133,7 @@ function nxs_gallerybox_detail_rendersheet($args)
     	)
     	
     	//			
-			jQuery('#TB_window').addClass("nxs-gallerypopup");
+			jQuery('#nxsbox_window').addClass("nxs-gallerypopup");
 			
 			// navigation using left/right arrow
 			jQuery(document).unbind("keydown.nxsgallerynav");
@@ -156,7 +156,7 @@ function nxs_gallerybox_detail_rendersheet($args)
 		
 		function nxs_js_execute_before_popup_closes()
 		{
-			jQuery('#TB_window').removeClass("nxs-gallerypopup");
+			jQuery('#nxsbox_window').removeClass("nxs-gallerypopup");
 			
 			jQuery(document).unbind("keydown.nxsgallerynav");
 		}

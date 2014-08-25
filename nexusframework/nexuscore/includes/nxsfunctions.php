@@ -9236,10 +9236,7 @@ function nxs_render_htmlstarttag()
 function nxs_render_htmlcorescripts()
 {
 	?>
-	<script type='text/javascript'> var thickboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingthickbox.png" }; </script>	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script><?php
-	// see http://css-tricks.com/snippets/javascript/css-for-when-javascript-is-enabled/
-	?>
+	<script type='text/javascript'> var nxsboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingnxsbox.png" }; </script>	
 	<script type="text/javascript">	
 		document.documentElement.className = 'js'; <?php do_action('nxs_ext_injectinlinejsscriptfunctions'); ?>		
 	</script>

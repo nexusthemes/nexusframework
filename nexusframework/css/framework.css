@@ -1693,7 +1693,7 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-main .nxs-server-gallery ul.series li:nth-child(4n)	{ margin-right: 0%; }
 }
 
-/* Datepickers (used in popups, note datepicker is not child of TB_window */
+/* Datepickers (used in popups, note datepicker is not child of nxsbox_window */
 table.ui-datepicker-calendar .ui-datepicker-current-day
 {
 	border-color: blue;
@@ -1703,7 +1703,7 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 
 /* Server gallery popup */
 .nxs-gallerypopup											{  }
-.nxs-gallerypopup #TB_ajaxContent { 
+.nxs-gallerypopup #nxsbox_ajaxContent { 
 	position: relative !important; 
 	left: 0px; 
 	top: 0px; 

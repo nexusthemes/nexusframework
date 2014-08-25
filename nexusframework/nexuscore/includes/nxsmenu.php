@@ -1197,7 +1197,7 @@
 				});
 
 				//				
-				jQuery("#nxs-admin-tabs" ).tabs('select',oldindex);
+				jQuery("#nxs-admin-tabs" ).tabs( "option", "active", oldindex);
 
 	
 				// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende

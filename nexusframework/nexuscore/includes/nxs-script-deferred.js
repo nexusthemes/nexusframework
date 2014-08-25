@@ -267,19 +267,19 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						// remove any previously defined nxs-active indicators (for text-widgets; if these
 						// are removed, the nxs-active indicator somehow remains (so this basically is
 						// a workaround).
-						jQuery("#TB_window.nxs-active").removeClass("nxs-active");
+						jQuery("#nxsbox_window.nxs-active").removeClass("nxs-active");
 												
 						jQuery('.nxs-popup-dyncontentcontainer').html(response.html);
 													
 						// width=1, see #1283672893762
-						tb_show(response.title, "#TB_inline?height=1&width=1&inlineId=nxs_ajax_thickbox&modal=true", "");
-						jQuery("#TB_overlay").show();
-						jQuery("#TB_window").show();
+						nxsbox_show(response.title, "#nxsbox_inline?height=1&width=1&inlineId=nxs_ajax_nxsbox&modal=true", "");
+						jQuery("#nxsbox_overlay").show();
+						jQuery("#nxsbox_window").show();
 						
 						//
 						// enable dragging of the window
 						//
-						jQuery("#TB_window").draggable
+						jQuery("#nxsbox_window").draggable
 						(
 							{
 								handle: ".nxs-admin-header",
@@ -366,10 +366,10 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						nxs_js_popup_processautodirtyhandling();
 													
 						// close de popup als er 'naast' de pop up wordt geklikt (we undo-en de modal eigenschap)
-						// dit is een workaround/fix; de modal van de thickbox zorgt er voor dat de MCE editor
+						// dit is een workaround/fix; de modal van de nxsbox zorgt er voor dat de MCE editor
 						// niet goed her-initiatiseert
-						jQuery("#TB_overlay").unbind("click.popupzekerweten");
-						jQuery("#TB_overlay").bind("click.popupzekerweten", function(e) 
+						jQuery("#nxsbox_overlay").unbind("click.popupzekerweten");
+						jQuery("#nxsbox_overlay").bind("click.popupzekerweten", function(e) 
 						{
 							nxs_js_log('345897');
 							// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
@@ -398,8 +398,8 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 							}
 						);
 						
-						jQuery("#TB_window").unbind("click.stoppropagation");
-						jQuery("#TB_window").bind("click.stoppropagation", function(e) 
+						jQuery("#nxsbox_window").unbind("click.stoppropagation");
+						jQuery("#nxsbox_window").bind("click.stoppropagation", function(e) 
 						{
 							// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
 							// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
@@ -702,8 +702,8 @@ function nxs_js_popup_registerautosubmitwhenuserpressesenter()
 {
 	//nxs_js_log('executing nxs_js_popup_registerautosubmitwhenuserpressesenter');
 	
-	jQuery("#TB_window .nxs-admin-wrap .nxs_defaultenter").unbind("keyup.defaultenter");
-	jQuery("#TB_window .nxs-admin-wrap .nxs_defaultenter").bind("keyup.defaultenter", function(e)
+	jQuery("#nxsbox_window .nxs-admin-wrap .nxs_defaultenter").unbind("keyup.defaultenter");
+	jQuery("#nxsbox_window .nxs-admin-wrap .nxs_defaultenter").bind("keyup.defaultenter", function(e)
 	{
 		if (e.keyCode == 13)
 		{
@@ -784,7 +784,7 @@ function nxs_js_popup_negativebounce(message)
 		//alert(message); // optionally use this line if you want a 'true' popup that stalls all threads
 		nxs_js_alert(message);
 	}
-	jQuery('#TB_window').effect("shake", { times:3, distance: 10 }, 50);
+	jQuery('#nxsbox_window').effect("shake", { times:3, distance: 10 }, 50);
 }
 
 
@@ -921,7 +921,7 @@ function nxs_js_closepopup_unconditionally()
 	{
 		nxs_js_popupsession_startnewcontext();
 
-		nxs_js_teardownpopupdom();	// removes dom elements, and prepares for the next thickbox
+		nxs_js_teardownpopupdom();	// removes dom elements, and prepares for the next nxsbox
 		nxs_js_hidepopupoverlay();	// removed the popup overlay "sheet"
 		
 		// re-enable hover menu's
@@ -931,7 +931,7 @@ function nxs_js_closepopup_unconditionally()
 
 function nxs_js_hidepopupoverlay()
 {
-	jQuery("#TB_overlay").hide();
+	jQuery("#nxsbox_overlay").hide();
 }
 
 function nxs_js_broadcastpopupcloses()
@@ -952,23 +952,23 @@ function nxs_js_teardownpopupdom()
 	nxs_js_log("broadcast b");
 	nxs_js_broadcastpopupcloses();
 
-	jQuery("#TB_window").removeClass("nxs-active");
-	jQuery("#TB_window").removeClass("nxs-wasdragged");
+	jQuery("#nxsbox_window").removeClass("nxs-active");
+	jQuery("#nxsbox_window").removeClass("nxs-wasdragged");
 	
-	// its important to actually hide the thickboxes,
+	// its important to actually hide the nxsboxes,
 	// otherwise the GUI event like hover will be intercepted
-	jQuery("#TB_window").hide();
+	jQuery("#nxsbox_window").hide();
 	
-	//nxs_js_log('found:' + jQuery("#TB_window.thickboxwindow").length);
-	jQuery("#TB_window.thickboxwindow").each(function(i)
+	//nxs_js_log('found:' + jQuery("#nxsbox_window.nxsboxwindow").length);
+	jQuery("#nxsbox_window.nxsboxwindow").each(function(i)
 	{
-		//nxs_js_log('removing useless thickbox');
+		//nxs_js_log('removing useless nxsbox');
 		jQuery(this).remove();
 	});
 	
 	nxs_js_popupshows = false;
 
-	jQuery("body").append("<div id='TB_window' class='thickboxwindow' style='display:none;'></div>");
+	jQuery("body").append("<div id='nxsbox_window' class='nxsboxwindow' style='display:none;'></div>");
 	
 	//
 }

@@ -8,11 +8,9 @@
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php		
 	nxs_hideadminbar();
-	wp_enqueue_style('thickbox');
+	wp_enqueue_style('nxsbox');
 	wp_head(); 
 	?>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-	
 	<?php
 	//
 	nxs_render_headstyles();

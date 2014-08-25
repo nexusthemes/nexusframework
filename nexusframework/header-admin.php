@@ -16,10 +16,9 @@
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php		
 	nxs_hideadminbar();
-	wp_enqueue_style('thickbox');
+	wp_enqueue_style('nxsbox');
 	wp_head(); 
 	?>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 </head>
 <body <?php body_class("nxs-admin-wrap"); ?>>
 	<?php include(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsmenu.php'); ?>
