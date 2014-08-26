@@ -231,15 +231,15 @@ function nxs_license_checkupdate($value)
 			else
 			{
 				// skip for now... 
-	    	$durationinsecs = 60 * 60 * 12;	// 12 hours
+	    	$durationinsecs = 60 * 60 * 12;	// x hours
 			}
 		}
 		else
 		{
 			// skip for now... 
-	    $durationinsecs = 60 * 60 * 4;	// 4 hours
+	    $durationinsecs = 60 * 60 * 8;	// x hours
 
- 	  	error_log("instructing to prevent stressing");
+ 	  	//error_log("instructing to prevent stressing");
 	    set_transient("nxs_themeupdate", "nostressing", $durationinsecs);
 		}
 	}
@@ -261,7 +261,7 @@ function nxs_license_periodictriggerupdate()
 	{
 		nxs_license_actualtriggerupdate();
 		
-		$hours = 4; // poll max 
+		$hours = 9; // poll max 
 		set_transient("nxs_themeupdater_freq", "cached", 60 * 60 * $hours);
 	}
 }
@@ -664,12 +664,12 @@ function nxs_license_getnolicensetip_invoke()
 		
 		if ($successful)
 	  {
-  		$hours = 4; // poll max 
+  		$hours = 10; // poll max 
 	 		set_transient("nxs_nolicensetip", $response_data, 60 * 60 * $hours);
 	  }
 	  else
 	  {
-	  	$hours = 4; // poll max 
+	  	$hours = 11; // poll max 
 			set_transient("nxs_nolicensetip", "", 60 * 60 * $hours);
 	  }
 	}

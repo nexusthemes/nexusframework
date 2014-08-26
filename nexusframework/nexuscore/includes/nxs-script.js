@@ -8903,7 +8903,6 @@ function nxs_js_get_frameworkcsstemplate(csslookup)
 function nxs_js_popuptogglewrapper(domelement, id)
 {
 	var container = jQuery(domelement).closest(".nxs-option-toggler");
-	jQuery('#' + id).toggle(); 
 	jQuery(container).toggleClass("nxs-toggled-open"); 
 	jQuery(container).toggleClass("nxs-toggled-closed");
 	
