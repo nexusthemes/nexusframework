@@ -279,231 +279,114 @@ function nxs_pagetemplate_handlecontent()
 					$shouldrender = true;
 					if ($site_wpcontent_show == "never")
 					{
-						$shouldrender = false;
+						// ignore
 					}
-					
-					if ($shouldrender)
+					else
 					{
-						$wpbackendblogcontent = get_post_field('post_content', $contentpostid);
-						$wpbackendblogcontent = wpautop($wpbackendblogcontent, true);
-
-						$wordpressbackendurl = get_edit_post_link($contentpostid, array());
+						// 
+						$shouldrenderoriginaltemplate = true;
+						global $nxs_gl_templates_wp;
 						
-						$shouldrender = true;
-						if ($site_wpcontent_show == "onlywhenset" && $wpbackendblogcontent == "")
+						// dont use this approach on nexusthemes.com
+						$homeurl = nxs_geturl_home();
+						if (nxs_stringcontains($homeurl, "nexusthemes.com"))
 						{
-							$shouldrender = false;
+							$shouldrenderoriginaltemplate = false;
 						}
 						
-						if ($shouldrender)
+						// todo: add a filter here
+						
+						if ($shouldrenderoriginaltemplate)
 						{
-							// reguliere post/page
-							?>
-							<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-content-<?php echo $contentpostid  . " " . $cssclass; ?>'>
-								<div class="nxs-postrows">
-									<div class="nxs-row   " id="nxs-pagerow-content">
-										<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
-											<ul class="nxs-placeholder-list"> 
-												<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-whole '>
-													<?php 
-													if (nxs_has_adminpermissions()) 
-													{ 
-														?>
-														<div class='nxs-hover-menu-positioner'>
-															<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
-														    <ul class="">
-														      <li title='Edit' class='nxs-hovermenu-button'>
-														      	<a href='#' title='Edit' class="nxs-defaultwidgetclickhandler" onclick="nxs_js_popup_postcontent_neweditsession('wpcontent'); return false;">
-														        	<span class="nxs-icon-text"></span>
-														        </a>
-														    	</li>
-														    	<li title='Edit' class='nxs-hovermenu-button'>
-														      	<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress">
-														        	<span class="nxs-icon-wordpresssidebar"></span>
-														        </a>
-														    	</li>
-														  	</ul>
-															</div>
-														</div>
-														<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'>
-															<span class='nxs-runtime-autocellsize'></span>
-														</div>
-														<div title='Edit' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'>
-															<span class='nxs-runtime-autocellsize'></span>
-														</div>
+							rewind_posts();
+							
+							// delegate to the original template handler
+							ob_start();
+							include($nxs_gl_templates_wp);
+							$wpmaintcontenthtml = ob_get_contents();
+							ob_end_clean();
+							
+							// TODO: determine here whether we need to output this yes or no,
+							// depending on the configuration of backend content, and whether or not
+							// there actually is something relevant to render
+							$wpmaintcontenthtmlsize = strlen($wpmaintcontenthtml);
+							if ($wpmaintcontenthtmlsize > 0)
+							{
+								// reguliere post/page
+								?>
+								<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-content-<?php echo $contentpostid  . " " . $cssclass; ?>'>
+									<div class="nxs-postrows">
+										<div class="nxs-row   " id="nxs-pagerow-content">
+											<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
+												<ul class="nxs-placeholder-list"> 
+													<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-whole '>
 														<?php 
-													} 
-													?>
-													<div class="ABC nxs-height100  ">
-														<div class="XYZ ">
-															<div class="nxs-placeholder-content-wrap nxs-crop ">
-																<div id="nxs-widget-l1206856119" class="nxs-widget nxs-widget-l11223344556 nxs-text ">
-																	<div>
-																		<?php
-																		$renderstyle = 2;
-																		if ($renderstyle == 1)
-																		{
-																			// feature image
-																			$featuredimageid = get_post_thumbnail_id($contentpostid);
-																			if ($featuredimageid != "" && $featuredimageid != 0)
-																			{
-																				$image_size = "c@2-0";
-																				$wpsize = nxs_getwpimagesize($image_size);
-																				
-																				$imagemetadata = wp_get_attachment_image_src($featuredimageid, $wpsize, true);
-																				$imageurl = $imagemetadata[0];
-																				$hasfeatureimage = true;
-																			}
-																			if ($hasfeatureimage)
-																			{
-																				?>
-																				<div class="nxs-image-wrapper nxs-shadow nxs-icon-width-2-0 nxs-icon-left ">
-																					<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="nxs-overflow">
-																						<img src="<?php echo $imageurl; ?>" alt="" title="" class=" ">
-																					</div>
-																				</div>
-																				<?php
-																			}
-																			?>
-																			<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
-																				<?php 
-																				if ($wpbackendblogcontent != "")
-																				{
-																					// apply shortcodes, and output the result
-																					echo nxs_applyshortcodes($wpbackendblogcontent);
-																				}
-																				else
-																				{
-																					if (nxs_has_adminpermissions()) 
-																					{
-																						echo "<p class='nxs-hidewheneditorinactive' style='min-height: 30px;'>" . nxs_l18n__("Click here to start editing your content.", "nxs_td") . "</p>"; 
-																					}
-																				}
-																				?>
-																			</div>
-																			<?php
-																		}
-																		else if ($renderstyle == 2)
-																		{
-																			?>
+														if (nxs_has_adminpermissions()) 
+														{ 
+															?>
+															<div class='nxs-hover-menu-positioner'>
+																<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
+															    <ul class="">
+															      <li title='Edit' class='nxs-hovermenu-button'>
+															      	<a href='#' title='Edit' class="nxs-defaultwidgetclickhandler" onclick="nxs_js_popup_postcontent_neweditsession('wpcontent'); return false;">
+															        	<span class="nxs-icon-text"></span>
+															        </a>
+															    	</li>
+															    	<li title='Edit' class='nxs-hovermenu-button'>
+															      	<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress">
+															        	<span class="nxs-icon-wordpresssidebar"></span>
+															        </a>
+															    	</li>
+															  	</ul>
+																</div>
+															</div>
+															<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'>
+																<span class='nxs-runtime-autocellsize'></span>
+															</div>
+															<div title='Edit' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'>
+																<span class='nxs-runtime-autocellsize'></span>
+															</div>
+															<?php 
+														} 
+														?>
+														<div class="ABC nxs-height100  ">
+															<div class="XYZ ">
+																<div class="nxs-placeholder-content-wrap nxs-crop ">
+																	<div id="nxs-widget-l1206856119" class="nxs-widget nxs-widget-l11223344556 nxs-text ">
+																		<div>
 																			<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
 																				<?php
-																				the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentyfourteen' ) );
+																				//if (have_posts()) { echo "yes we have posts!"; } else { echo "no we dont have posts"; }
+																				?>
+																				<br />
+																				<?php
+																				echo $wpmaintcontenthtml;
 																				?>
 																			</div>
-																			<?php
-																		}
-																		else
-																		{
-																			// not supported yet
-																		}
-																		?>
-																	</div>
-																	<div class="nxs-clear">
+																		</div>
+																		<div class="nxs-clear">
+																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-												</li>
-											</ul>
-											<div class="nxs-clear"></div>
+													</li>
+												</ul>
+												<div class="nxs-clear"></div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<?php
+								<?php
+							}
+							else
+							{
+								?>
+								<!-- wp back end content is empty, nothing to do here -->
+								<?php
+							}
 						}
 					}
-					
-					// 
-					$shouldrenderoriginaltemplate = false;
-					global $nxs_gl_templates_wp;
-					if (nxs_stringcontains($nxs_gl_templates_wp, "woo"))
-					{
-						$shouldrenderoriginaltemplate = true;
-					}
-					
-					// dont use this approach on nexusthemes.com
-					$homeurl = nxs_geturl_home();
-					if (nxs_stringcontains($homeurl, "nexusthemes.com"))
-					{
-						$shouldrenderoriginaltemplate = false;
-					}
-					
-					if ($shouldrenderoriginaltemplate)
-					{
-						rewind_posts();
-
-						// reguliere post/page
-						?>
-						<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-content-<?php echo $contentpostid  . " " . $cssclass; ?>'>
-							<div class="nxs-postrows">
-								<div class="nxs-row   " id="nxs-pagerow-content">
-									<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
-										<ul class="nxs-placeholder-list"> 
-											<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-whole '>
-												<?php 
-												if (nxs_has_adminpermissions()) 
-												{ 
-													?>
-													<div class='nxs-hover-menu-positioner'>
-														<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
-													    <ul class="">
-													      <li title='Edit' class='nxs-hovermenu-button'>
-													      	<a href='#' title='Edit' class="nxs-defaultwidgetclickhandler" onclick="nxs_js_popup_postcontent_neweditsession('wpcontent'); return false;">
-													        	<span class="nxs-icon-text"></span>
-													        </a>
-													    	</li>
-													    	<li title='Edit' class='nxs-hovermenu-button'>
-													      	<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress">
-													        	<span class="nxs-icon-wordpresssidebar"></span>
-													        </a>
-													    	</li>
-													  	</ul>
-														</div>
-													</div>
-													<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'>
-														<span class='nxs-runtime-autocellsize'></span>
-													</div>
-													<div title='Edit' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'>
-														<span class='nxs-runtime-autocellsize'></span>
-													</div>
-													<?php 
-												} 
-												?>
-												<div class="ABC nxs-height100  ">
-													<div class="XYZ ">
-														<div class="nxs-placeholder-content-wrap nxs-crop ">
-															<div id="nxs-widget-l1206856119" class="nxs-widget nxs-widget-l11223344556 nxs-text ">
-																<div>
-																	<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
-																		<?php
-																		//if (have_posts()) { echo "yes we have posts!"; } else { echo "no we dont have posts"; }
-																		?>
-																		<br />
-																		<?php
-																		// delegate to the original template handler
-																		include($nxs_gl_templates_wp);
-																		?>
-																	</div>
-																</div>
-																<div class="nxs-clear">
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</li>
-										</ul>
-										<div class="nxs-clear"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<?php
-					}
-					
 					rewind_posts();
 				}
 				else
