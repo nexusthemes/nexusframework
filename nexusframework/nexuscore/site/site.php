@@ -1230,7 +1230,7 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
 		'numberposts' => -1,	//$itemsperpage,
 		'offset' => 0,
 		'post_type' => 'attachment',
-		'post_mime_type' => 'image/x-icon',	// only fetch ico images
+		'post_mime_type' => array('image/x-icon',	'image/vnd.microsoft.icon'), // only fetch ico images
 		'post_parent' => null, // no parent
 	);
 	
@@ -1360,6 +1360,13 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
 			                      <?php
 			                  }
 			                }
+			                ?>
+			                <tr>
+			                	<td>
+			                		<a href='#' class='nxsbutton1' onclick="nxs_js_selectattachment(''); nxs_js_savegenericpopup(); return false;">None</a>
+			                	</td>
+			                </tr>
+			                <?php
 		                  ?>
 		              </tbody>
 		          </table>
@@ -1371,6 +1378,7 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
 		      		      
       <div class="content2">
         <div class="box">
+        	
 		      <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Save[nxs:popup,button]", "nxs_td"); ?></a>
 		    	<a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>            
 		      <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:popup,button]", "nxs_td"); ?></a>
