@@ -201,6 +201,27 @@ function nxs_widgets_signpost_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),
+			
+			// MISCELLANEOUS
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Miscellaneous", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
+			array( 
+				"id" 				=> "remove_shadow",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Remove shadow", "nxs_td"),
+				"unistylablefield"	=> true
+			),	
 
 			array( 
 				"id" 				=> "wrapper_end",
@@ -296,12 +317,6 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Title is required.", "nxs_td");
 	}
-
-	/* text is required
-	if (!isset($text) || $text == "") {
-		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Text is required.", "nxs_td");
-	}*/
 	
 	// Image
 	if ($image_imageid != "") {     
@@ -326,6 +341,9 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 	
 	// Container height
 	$container_height = $container_height . "px";
+	
+	// Image shadow
+	if ($remove_shadow != "") {$remove_shadow = "box-shadow: none;";  }
 	
 	/* FALLBACK & DEFAULT
 	---------------------------------------------------------------------------------------------------- */
@@ -379,7 +397,7 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 		echo '  
 			<!-- DEFAULT SCENARIO -->
 			
-			<div class="transition nxs-default" style="height: '.$container_height.';">';
+			<div class="transition nxs-default" style="height: '.$container_height.';'.$remove_shadow.'">';
 			
 				if($destination_articleid_signpost != ""){
 					echo'<a '.$destination_target_html.' href="'.$destination_articleid_signpost.'"><div class="border '. $image_border_width_cssclass.'"></div></a>';
