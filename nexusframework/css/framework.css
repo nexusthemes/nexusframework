@@ -93,6 +93,10 @@ a {
 	-ms-backface-visibility:     hidden;
 }
 
+/* IOS background cover fix */
+html.nxs-touchdevice										{ background-size: auto !important; height: 100% !important; }
+.nxs-m-touch #supersized li a img 							{ width: auto !important; height: 100% !important; }
+
 /* grayscale transition */
 img.nxs-grayscale { 
 	filter: 		grayscale(100%);
@@ -1154,7 +1158,6 @@ ul#thumb-list li img {
 ul#thumb-list li.current-thumb img, 
 ul#thumb-list li:hover img									{ opacity:1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter:alpha(opacity=100); }
 ul#thumb-list li:hover										{ cursor:pointer; }
-				
 
 /* GALLERY 
 ---------------------------------------------------------------------------------------------------- */
@@ -1843,19 +1846,19 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 .nxs-target .icon-top-center .icon		 					{ display: block; clear: both; float: none; margin: 0 auto 20px; }
 
 /* size */
-.nxs-target 	  	.nxs-icon-size-1-0 .icon 					{ font-size: 32px; width: 48px; line-height: 48px; }
-.nxs-target:hover 	.nxs-icon-size-1-0 .icon 					{ font-size: 48px; }
-.nxs-target 	  	.nxs-icon-size-1-0 .content 				{ margin-left: 58px; }
-.nxs-target 		.nxs-icon-size-1-0 .content.colored 		{ margin-left: 83px; }
-.nxs-target 		.nxs-icon-size-1-0.icon-top-left .icon,
-.nxs-target 		.nxs-icon-size-1-0.icon-top-center .icon	{ height: 48px; width: 48px; }
+.nxs-target 	  	.icon-size-1-0 .icon 					{ font-size: 32px; width: 48px; line-height: 48px; }
+.nxs-target:hover 	.icon-size-1-0 .icon 					{ font-size: 48px; }
+.nxs-target 	  	.icon-size-1-0 .content 				{ margin-left: 58px; }
+.nxs-target 		.icon-size-1-0 .content.colored 		{ margin-left: 83px; }
+.nxs-target 		.icon-size-1-0.icon-top-left .icon,
+.nxs-target 		.icon-size-1-0.icon-top-center .icon	{ height: 48px; width: 48px; }
 
-.nxs-target 	  	.nxs-icon-size-2-0 .icon 					{ font-size: 64px; width: 96px; line-height: 96px; }
-.nxs-target:hover 	.nxs-icon-size-2-0 .icon 					{ font-size: 96px; }
-.nxs-target 	  	.nxs-icon-size-2-0 .content 				{ margin-left: 116px; }
-.nxs-target 		.nxs-icon-size-2-0 .content.colored 		{ margin-left: 138px; }
-.nxs-target 		.nxs-icon-size-2-0.icon-top-left .icon,
-.nxs-target 		.nxs-icon-size-2-0.icon-top-center .icon	{ height: 96px; width: 96px; }
+.nxs-target 	  	.icon-size-2-0 .icon 					{ font-size: 64px; width: 96px; line-height: 96px; }
+.nxs-target:hover 	.icon-size-2-0 .icon 					{ font-size: 96px; }
+.nxs-target 	  	.icon-size-2-0 .content 				{ margin-left: 116px; }
+.nxs-target 		.icon-size-2-0 .content.colored 		{ margin-left: 138px; }
+.nxs-target 		.icon-size-2-0.icon-top-left .icon,
+.nxs-target 		.icon-size-2-0.icon-top-center .icon	{ height: 96px; width: 96px; }
 
 
 /* no transition */
@@ -2408,10 +2411,12 @@ h3#order_review_heading,
 .nxs-icon-arrow-down-left2:before 	{ content: "\e6d4"; }
 .nxs-icon-arrow-left2:before 		{ content: "\e6d5"; }
 .nxs-icon-arrow-up-left3:before 	{ content: "\e6d6"; }
+.nxs-icon-circle-arrow-up,
 .nxs-icon-arrow-up3:before 			{ content: "\e6d7"; }
 .nxs-icon-arrow-up-right3:before 	{ content: "\e6d8"; }
 .nxs-icon-arrow-right3:before 		{ content: "\e6d9"; }
 .nxs-icon-arrow-down-right3:before 	{ content: "\e6da"; }
+.nxs-icon-circle-arrow-down,
 .nxs-icon-arrow-down3:before 		{ content: "\e6db"; }
 .nxs-icon-arrow-down-left3:before 	{ content: "\e6dc"; }
 .nxs-icon-arrow-left3:before 		{ content: "\e6dd"; }
