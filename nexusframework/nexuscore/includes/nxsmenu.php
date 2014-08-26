@@ -1185,11 +1185,14 @@
 					}
 				);
 				
-				jQuery('.tabs').bind('tabsshow', function(event, ui) 
+				jQuery(".tabs").on('tabsactivate', function(event, ui)
 				{
+					nxs_js_log("tabsactivate!");
+					var index = ui.newTab.index();
+					nxs_js_log(index);
 					nxs_js_refreshtopmenufillerheight();
 					
-					if (ui.index == 3)
+					if (index == 3)
 					{
 						// SEO tab activated
 						nxs_js_refresh_seoanalysis();
