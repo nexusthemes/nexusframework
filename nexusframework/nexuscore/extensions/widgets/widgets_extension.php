@@ -167,7 +167,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		}
 	}
 	
-	if ($nxsposttype == "subheader") {
+	if ($nxsposttype == "subheader" || $nxsposttype == "header") {
 		$result[] = array("widgetid" => "wordpresstitle");
 	}
 	
