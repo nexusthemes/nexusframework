@@ -228,7 +228,7 @@
 		    <thead>
 	        <tr>
 	            <th scope="col" class="check">
-	            	<input type="checkbox" onchange="jQuery('input[type=\'checkbox\']').attr('checked', this.checked);">
+	            	<input type="checkbox" onchange="jQuery('input[type=\'checkbox\']').prop('checked', this.checked);">
 	            </th>
 	            <th scope="col" class="nxs-title">
 	            	<span><?php nxs_l18n_e("Title[nxs:button]", "nxs_td"); ?></span>&nbsp;
@@ -244,7 +244,7 @@
 		    <tfoot>
 	        <tr>
 	            <th scope="col" class="check">
-	            	<input type="checkbox" onchange="jQuery('input[type=\'checkbox\']').attr('checked', this.checked);">
+	            	<input type="checkbox" onchange="jQuery('input[type=\'checkbox\']').prop('checked', this.checked);">
 	            </th>
 	            <th scope="col" class="nxs-title">
 	            	<span><?php nxs_l18n_e("Title[nxs:button]", "nxs_td"); ?></span>&nbsp;

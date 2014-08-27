@@ -614,7 +614,17 @@ function nxs_render_postfooterlink()
 	}
 	
 	$lookup = array
-	(
+	(	
+		"spasalon;" => array
+		(
+			"href"=>"/wordpress-themes/beauty/spa-salon-wordpress-theme/",
+			"title"=>"Spa salon WordPress theme",
+		),
+		"barbershop;" => array
+		(
+			"href"=>"/wordpress-themes/beauty/barber-shop-wordpress-theme/",
+			"title"=>"Barber shop WordPress theme",
+		),
 		"mortgagebroker;" => array
 		(
 			"href"=>"/wordpress-themes/business/mortgage-broker-wordpress-theme/",

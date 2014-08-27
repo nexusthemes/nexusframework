@@ -85,12 +85,12 @@ function nxs_popup_optiontype_categories_renderhtmlinpopup($optionvalues, $args,
 				{
 					click: function(e) 
 					{
-						if (jQuery(this).attr("checked"))
+						if (jQuery(this).prop("checked"))
 						{
 							// turn off all checkboxes
-							jQuery("#<?php echo $id; ?> input").attr("checked", false); 
+							jQuery("#<?php echo $id; ?> input").prop("checked", false); 
 							// turn on the current one
-							jQuery(this).attr("checked", true);
+							jQuery(this).prop("checked", true);
         			// nxs_js_log(e);
         		}
     			}

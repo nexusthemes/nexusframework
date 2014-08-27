@@ -30,9 +30,8 @@ function nxs_js_to_verstuurcontactformulier(postid, placeholderid)
 	var voorwaardenbox = jQuery("#" + placeholderid + "_voorwaarden");
 	if (jQuery(voorwaardenbox).length != 0)
 	{
-		//nxs_js_log(jQuery(voorwaardenbox).attr('checked'));
 		// box is aanwezig; check of de gebruiker akkoord is
-		if (!jQuery(voorwaardenbox).attr('checked'))
+		if (!jQuery(voorwaardenbox).prop('checked'))
 		{
 			nxs_js_alert(nxs_js_gettrans('First accept the conditions'));
 			jQuery("#" + placeholderid + "_voorwaarden").focus();

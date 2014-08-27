@@ -5178,14 +5178,17 @@ function nxs_js_redirect_top(url)
 			if (jQuery('#' + ulcontainerelementid).length > 0)
 			{
 				var derivedselectedids = '';
-				jQuery('#' + ulcontainerelementid + " ." + checkboxitemsclassname).each(function(index)
-				{
-					if (jQuery(this).attr('checked'))
+				jQuery('#' + ulcontainerelementid + " ." + checkboxitemsclassname).each
+				(
+					function(index)
 					{
-						var currentcheckboxelementid = jQuery(this).attr('id');
-						derivedselectedids = derivedselectedids + "[" + currentcheckboxelementid.split("_")[1] + "]";
+						if (jQuery(this).prop('checked'))
+						{
+							var currentcheckboxelementid = jQuery(this).attr('id');
+							derivedselectedids = derivedselectedids + "[" + currentcheckboxelementid.split("_")[1] + "]";
+						}
 					}
-				});
+				);
 				nxs_js_popup_setsessiondata(sessiondatakey, derivedselectedids);
 			}
 			else

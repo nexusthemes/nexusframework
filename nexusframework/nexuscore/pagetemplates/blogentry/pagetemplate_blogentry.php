@@ -264,7 +264,7 @@ function nxs_pagetemplate_handlecontent()
 					}
 				
 					//
-					// ---------------------------- BEGIN RENDER BLOG CONTENT
+					// ---------------------------- BEGIN RENDER BACKEND CONTENT
 					//
 										
 					$sitemeta = nxs_getsitemeta();
@@ -275,7 +275,7 @@ function nxs_pagetemplate_handlecontent()
 						// turn to default
 						$site_wpcontent_show = "onlywhenset";
 					}
-					
+										
 					$shouldrender = true;
 					if ($site_wpcontent_show == "never")
 					{
@@ -291,13 +291,19 @@ function nxs_pagetemplate_handlecontent()
 						$homeurl = nxs_geturl_home();
 						if (nxs_stringcontains($homeurl, "nexusthemes.com"))
 						{
-							$shouldrenderoriginaltemplate = false;
+							$wpposttype = nxs_getwpposttype($contentpostid);
+							if ($wpposttype == "product")
+							{
+								$shouldrenderoriginaltemplate = false;
+							}
 						}
 						
 						// todo: add a filter here
 						
 						if ($shouldrenderoriginaltemplate)
 						{
+							echo "<!-- GJGJGJ shouldrenderoriginaltemplate; $nxs_gl_templates_wp -->";
+
 							rewind_posts();
 							
 							// delegate to the original template handler
@@ -386,6 +392,10 @@ function nxs_pagetemplate_handlecontent()
 								<?php
 							}
 						}
+						else
+						{
+							?><!-- GJGJGJ: should not render original template;  --><?php
+						}
 					}
 					rewind_posts();
 				}
@@ -442,7 +452,7 @@ function nxs_pagetemplate_handlecontent()
 					echo nxs_getrenderedhtmlincontainer($containerpostid, $existingsidebarid, "default");
 					echo "</div> <!-- end nxs-sidebar-container -->";
 					echo "</aside>";
-				} 
+				}
 				?>
 				
 				<div class="nxs-clear">
