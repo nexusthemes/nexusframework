@@ -462,11 +462,18 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
+	// Overruling of parameters
 	if ($image_imageid == "featuredimg")
 	{
 		$image_imageid = get_post_thumbnail_id($containerpostid);
 	}
-
+	
+	global $nxs_global_row_render_statebag;
+	$pagerowtemplate = $nxs_global_row_render_statebag["pagerowtemplate"];
+	if ($pagerowtemplate == "one")
+	{
+		$text_heightiq = "";	// off!
+	}
 
 	//
 	$hovermenuargs = array();

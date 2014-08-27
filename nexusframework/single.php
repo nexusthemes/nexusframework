@@ -1,3 +1,3 @@
-<?php
-require(NXS_FRAMEWORKPATH . '/page-template.php');
+<?php	
+	require_once(NXS_FRAMEWORKPATH . '/content.php');
 ?>

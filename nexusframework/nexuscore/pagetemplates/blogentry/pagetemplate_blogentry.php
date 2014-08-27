@@ -325,7 +325,7 @@ function nxs_pagetemplate_handlecontent()
 										<div class="nxs-row   " id="nxs-pagerow-content">
 											<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
 												<ul class="nxs-placeholder-list"> 
-													<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-whole '>
+													<li class='nxs-placeholder nxs-containshovermenu1 nxs-one-whole '>
 														<?php 
 														if (nxs_has_adminpermissions()) 
 														{ 

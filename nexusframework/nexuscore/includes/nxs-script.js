@@ -3039,11 +3039,27 @@ function nxs_js_redirect_top(url)
 						// afhankelijk van of de editor aan- of uitstaat...
 						if (nxs_js_nxseditoractive)
 						{
-							jQuery(element).height(87);	// defaults to height when no height is set
+							if (jQuery(element).hasClass("nxs-column-1-1"))
+							{
+								// if a row has just one column, we wont set the height of the row
+								// to allow DOM updates to not mess up the layout
+							}
+							else
+							{
+								jQuery(element).height(87);	// defaults to height when no height is set
+							}
 						}
 						else
 						{
-							jQuery(element).height(0);	// defaults to height when no height is set
+							if (jQuery(element).hasClass("nxs-column-1-1"))
+							{
+								// if a row has just one column, we wont set the height of the row
+								// to allow DOM updates to not mess up the layout
+							}
+							else
+							{
+								jQuery(element).height(0);	// defaults to height when no height is set
+							}
 						}
 					}
 					
@@ -3077,8 +3093,9 @@ function nxs_js_redirect_top(url)
 				// step 2; derive heights on a per-row basis, and set the heights of the nxs-runtime-autocellsizes
 				jQuery.each
 				(
-					jQuery(".nxs-row"), function(index, rowelement)
-					{
+					jQuery(".nxs-row"), 
+					function(index, rowelement)
+					{						
 						jQuery(rowelement).find(".nxs-heightiq").css({height:""});
 					
 						// get list of "things" to align
@@ -3136,7 +3153,17 @@ function nxs_js_redirect_top(url)
 							{
 								heightToSet = heightToSet - 2;
 							}
-							jQuery(element).height(heightToSet);
+							
+							if (jQuery(element).hasClass("nxs-column-1-1"))
+							{
+								// absorb; if a row has just one column, there's no advantage
+								// of setting the height. To allow DOM updates in the widget
+								// to be reflected we dont set the height
+							}
+							else
+							{
+								jQuery(element).height(heightToSet);
+							}
 						}
 						);
 						
@@ -3190,7 +3217,8 @@ function nxs_js_redirect_top(url)
 				
 				jQuery.each
 				(
-					jQuery(".nxs-row"), function(index, rowelement)
+					jQuery(".nxs-row"), 
+					function(index, rowelement)
 					{
 						var columnindex = 1;
 					
@@ -3202,7 +3230,6 @@ function nxs_js_redirect_top(url)
 							{
 								jQuery(currentinnerplaceholder).css('height', 'auto');
 								jQuery(currentinnerplaceholder).css('margin-top', '0');
-								// var height = jQuery(currentinnerplaceholder).css('height'); // hier zit fout-> padding meenemen
 								var height = jQuery(currentinnerplaceholder).outerHeight(true);
 								jQuery(currentinnerplaceholder).closest('.nxs-placeholder').css('height', height);							
 							}

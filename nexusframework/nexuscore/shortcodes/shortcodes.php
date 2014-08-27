@@ -140,15 +140,18 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		}
 	}
 	
+	$cssclassrowtemplate = "nxs-rowtemplate-" . $nxs_global_row_render_statebag["pagerowtemplate"];
+	
 	if (isset($grs_upgradetofullwidth) && $grs_upgradetofullwidth) 
 	{
-		$output .= "<div class='nxs-row {$cssclass}' {$rowidattribute}>";
+		
+		$output .= "<div class='nxs-row {$cssclass} {$cssclassrowtemplate}' {$rowidattribute}>";
 		$output .= "<div class='nxs-row-container nxs-row2'>";
 		$output .= "<div class='nxs-fullwidth nxs-containsimmediatehovermenu " . $additionalrowclasses . " '>";
 	}
 	else
 	{
-		$output .= "<div class='nxs-row {$cssclass} " . $additionalrowclasses . " ' {$rowidattribute}>";
+		$output .= "<div class='nxs-row {$cssclass} {$cssclassrowtemplate} " . $additionalrowclasses . " ' {$rowidattribute}>";
 		$output .= "<div class='nxs-row-container nxs-containsimmediatehovermenu nxs-row1'>";
 	}
 	
