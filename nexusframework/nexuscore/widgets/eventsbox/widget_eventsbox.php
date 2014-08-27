@@ -465,7 +465,7 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 			// ensure we don't show too many items
 			if ($skipitem == false)
 			{
-				if ($items_filter_maxcount == "")
+				if ($items_filter_maxcount == "" || $items_filter_maxcount == 0 || $items_filter_maxcount == "@@@empty@@@")
 				{
 					// good; show it!
 					$nritemsshowing++;

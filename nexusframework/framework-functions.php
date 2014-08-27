@@ -253,6 +253,8 @@ function nxs_framework_theme_styles()
 		}
 	}
 	
+	wp_enqueue_script( 'jquery-migrate', nxs_getframeworkurl() . '/js/migrate/jquery-migrate.js', array( 'jquery' ), nxs_getthemeversion(false), TRUE );
+	
   do_action('nxs_action_after_enqueue_baseframeworkstyles');
 }
 add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');
