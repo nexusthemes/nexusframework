@@ -183,8 +183,8 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 				<?php
 			}
 			?>
-			<?php
-			if (nxs_stringcontains($items, "pinterest"))
+			<?php      
+			if (false) // nxs_stringcontains($items, "pinterest"))
 			{
 				?>
 				<!-- pinterest -->
