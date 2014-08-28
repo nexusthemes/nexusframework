@@ -93,6 +93,12 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 	
 	ob_start();
 
+	$colorzencssclass = "";
+	if ($form_metadata["items_colorzen"] != "")
+	{
+		$colorzencssclass = "nxs-colorzen nxs-colorzen-" . $form_metadata["items_colorzen"];
+	}
+
 	?>
 	
   <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
@@ -101,13 +107,13 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
   if ($metadata_numofrows == "" || $metadata_numofrows == 0 || $metadata_numofrows == 1)
   {
   	?>
-	  <input type="text" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" value="<?php echo $value;?>" />
+	  <input type="text" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" value="<?php echo $value;?>" />
 		<?php 
 	} 
 	else
 	{
 		?>
-	  <textarea style='min-height: 0px;' rows="<?php echo $metadata_numofrows; ?>" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name"><?php echo $value;?></textarea>
+	  <textarea style='min-height: 0px;' rows="<?php echo $metadata_numofrows; ?>" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>"><?php echo $value;?></textarea>
 		<?php 
 	}
 	

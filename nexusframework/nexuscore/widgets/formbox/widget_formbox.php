@@ -294,6 +294,13 @@ function nxs_widgets_formbox_home_getoptions($args)
 			),
 			
 			array( 
+				"id" 				=> "items_colorzen",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Form fields color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),		
@@ -635,6 +642,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 			 		$hookargs = array();
 			 		$hookargs["postid"] = $postid;
 			 		$hookargs["placeholderid"] = $placeholderid;
+			 		$hookargs["form_metadata"] = $mixedattributes;	// metadata of form itself
 			 		$hookargs["metadata"] = $currentplaceholdermetadata;
 			 		
 			 		$subresult = nxs_widgets_renderinformbox($widget, $hookargs);

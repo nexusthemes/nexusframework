@@ -17,6 +17,8 @@ function nxs_getcoloralphas() {
 	$result[] = 0.7;
 	$result[] = 0.6;
 	$result[] = 0.5;
+	$result[] = 0.2;
+	$result[] = 0.1;
 	$result[] = 0.0;
 	
 	// enable themes to overrule the alphas
