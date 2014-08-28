@@ -471,8 +471,10 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				
 				if ($destination_articleid != 0 && $destination_articleid != "") {
 					$destinationurl = nxs_geturl_for_postid($destination_articleid);
+					$target = "";
 				} else {
-					$destinationurl = "";
+					$destinationurl = $placeholdermetadata["destination_url"];
+					$target = "_blank";
 				}
 				
 				$slidesdataset[] = array
@@ -481,6 +483,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					"text" => $text,
 					"imageurl" => $imageurl,
 					"destinationurl" => $destinationurl,
+					"target" => $target,
 					"width" => $width,
 					"height" => $height,
 				);
@@ -695,12 +698,29 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				echo'
 				<div id="nxs-slide-'.$placeholderid.'-'.$slideindex.'" class="nxs-slide" style ="'.$slide.'">';
 				
-					if ($slidedataset["destinationurl"] != "") { echo '<a href="'.$slidedataset["destinationurl"].'">'; }
+					if ($slidedataset["destinationurl"] != "") 
+					{ 
+						if ($slidedataset["target"] == "")
+						{
+							$targethtml = "";
+						}
+						else
+						{
+							$target = $slidedataset["target"];
+							$targethtml = "target='$target'";
+						}
+						
+						$destinationurl = $slidedataset["destinationurl"];
+						echo "<a href='$destinationurl' $targethtml >"; 
+					}
 					
-						echo $slide_image;
-						echo $description;
+					echo $slide_image;
+					echo $description;
 					
-					if ($slidedataset["destinationurl"] != "") { echo '</a>'; }
+					if ($slidedataset["destinationurl"] != "") 
+					{ 
+						echo '</a>'; 
+					}
 			
 				echo '</div> <!-- end .slide -->';
 		    
