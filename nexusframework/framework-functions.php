@@ -616,7 +616,12 @@ function nxs_render_postfooterlink()
 	}
 	
 	$lookup = array
-	(	
+	(
+		"pcepair;" => array
+		(
+			"href"=>"/wordpress-themes/computer-repair/pc-repair-wordpress-theme/",
+			"title"=>"PC repair WordPress theme",
+		),
 		"spasalon;" => array
 		(
 			"href"=>"/wordpress-themes/beauty/spa-salon-wordpress-theme/",

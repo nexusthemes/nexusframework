@@ -723,7 +723,19 @@ function nxs_licenseregister_invoke()
   if ( is_wp_error( $response )) 
   {
   	$successful = false;
-  	//var_dump($response);
+  	
+  	$firstmsg = $response->get_error_message();
+  	if ($firstmsg == "couldn't connect to host")
+  	{
+  		echo "It looks like your host cannot connect to $url<br />";
+  		echo "To solve this problem:<br />";
+  		echo "Contact your host to ensure they are not blocking access to our servers<br /><br />";
+  	}
+  	else
+  	{
+	  	var_dump($url);
+  		var_dump($response);	
+  	}
   }
   
   $body = wp_remote_retrieve_body($response); 
