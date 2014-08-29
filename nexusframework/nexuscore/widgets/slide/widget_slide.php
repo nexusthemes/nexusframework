@@ -125,7 +125,14 @@ function nxs_widgets_slide_render_webpart_render_htmlvisualization($args)
 	}
 
 	// Link
-	$destination_articleid = nxs_geturl_for_postid($destination_articleid);
+	if ($destination_articleid != "")
+	{
+		$theurl = nxs_geturl_for_postid($destination_articleid);
+	}
+	else
+	{
+		$theurl = $destination_url;
+	}
 
 	global $nxs_global_placeholder_render_statebag;
 
@@ -153,7 +160,7 @@ function nxs_widgets_slide_render_webpart_render_htmlvisualization($args)
     	</div>
     	<div class="box-content nxs-width20 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($title); ?></div>
     	<div class="box-content nxs-width40 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($text); ?></div>
-    	<div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($destination_articleid); ?></div>
+    	<div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($theurl); ?></div>
     	<div class="nxs-clear"></div>
     </div> <!--END content-->
 	
