@@ -66,16 +66,27 @@ function nxs_license_getlicenseserverurl($purpose)
 
 function nxs_license_notifynolicense()
 {
-	$url = admin_url('admin.php?page=nxs_admin_license');
-  ?>
-  <div class="error">
-    <p>
-    	You are not receiving theme updates for this WordPress theme because the site is not connected to a valid license.
-    	<br />
-    	Please <a href='<?php echo $url;?>'>register</a> your license to enable theme updates.
-    </p>
-  </div>
-  <?php
+	if ($_REQUEST["oneclickcontent"] == "true")
+	{
+		// during the installation, we will skip this warning message
+	}
+	else if ($_REQUEST["step"] == "1")
+	{
+		// during the installation, we will skip this warning message
+	}
+	else
+	{
+		$url = admin_url('admin.php?page=nxs_admin_license');
+	  ?>
+	  <div class="error">
+	    <p>
+	    	You are not receiving theme updates for this WordPress theme because the site is not connected to a valid license.
+	    	<br />
+	    	Please <a href='<?php echo $url;?>'>register</a> your license to enable theme updates.
+	    </p>
+	  </div>
+	  <?php
+	}
 }
 
 function nxs_license_notifyunregistersuccess()
