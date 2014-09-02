@@ -361,11 +361,17 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		$border_width = $multiplier * $factor; 
 		$slide_border_width = 'box-shadow: inset 0 0 0 '.$border_width.'px white;';
 		
-		$factor = 4.5;
-		$metadata_margin_top = 'margin-top: -'.($multiplier * $factor).'px;';
+		// Metadata layout
+		if ($metadata_layout != "") {
+			// margin-top
+			$factor = 4.5;
+			$metadata_margin_top = 'margin-top: -'.($multiplier * $factor).'px;';
+			// margin-left
+			$factor = 6;
+			$metadata_margin_left = 'margin-left: '.($multiplier * $factor).'px;';
+		}
 		
-		$factor = 6;
-		$metadata_margin_left = 'margin-left: '.($multiplier * $factor).'px;';
+		
 	
 	// Title fontsize
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
