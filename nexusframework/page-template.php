@@ -2,7 +2,8 @@
 global $post;
 
 // important! prevent WordPress from wrapping the content in <p> tags
-remove_filter('the_content', 'wpautop');
+//echo "GJ;removing filter";
+//remove_filter('the_content', 'wpautop');
 
 nxs_handle_maintenancemode();
 nxs_handle_404();
