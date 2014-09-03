@@ -801,9 +801,14 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 			$title_schemaorg_attribute = 'itemprop="' . $title_schemaorgitemprop . '"';
 		} else {
 			$title_schemaorg_attribute = "";	
-		}		
+		}
 		
 		// Title
+		if (strlen($title) > 0 && strlen(trim($title)) == 0)
+		{
+			// string of spaces is replaced by a nbsp; (otherwise the title is not rendered properly)
+			$title = "&nbsp;";
+		}
 		$titlehtml = '<'.$title_heading.' ' . $title_schemaorg_attribute . ' class="nxs-title '.$title_alignment_cssclass.' '.$title_fontsize_cssclass.' '.$titlecssclasses.'">'.$title.'</'.$title_heading.'>';
 		
 		// Filler
@@ -1147,7 +1152,10 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					echo $icon;
 					
 					// Title
-					if ($title != "") {	echo $titlehtml; }
+					if ($title != "")
+					{
+						echo $titlehtml; 
+					}
 					
 					echo '
 				</div>
