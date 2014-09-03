@@ -1072,7 +1072,6 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 	global $user_ID;
   get_currentuserinfo();
   $nxs_user_email = $current_user->user_email;
-  $nxs_user_googleplus = get_the_author_meta('nxs_googleplus', $user_ID);
 	
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
@@ -1104,21 +1103,7 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 		        </div>
 		        <div class="nxs-clear"></div>
 		      </div> <!--END content-->
-		      
-		      <!-- google+ settings -->
-		      <div class="content2">
-		        <div class="box">
-		            <div class="box-title">
-		                <h4><?php nxs_l18n_e("Google+[nxs:popup,label]", "nxs_td"); ?></h4>
-		             </div>
-		            <div class="box-content">
-		            	<input id='nxs_user_googleplus' placeholder='<?php nxs_l18n_e("https://plus.google.com/101834797161834314384[nxs:placeholder]", "nxs_td"); ?>'' type='text' value='<?php echo $nxs_user_googleplus;?>' />
-		              <span class="nxs-title"><?php nxs_l18n_e("Google+ help[nxs:tip]", "nxs_td"); ?></span>
-		            </div>
-		        </div>
-		        <div class="nxs-clear"></div>
-		      </div> <!--END content-->
-		      
+
 		    </div>
 		  </div>
       
@@ -1139,7 +1124,6 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 		{
 			var valuestobeupdated = {};
 			valuestobeupdated["nxs_user_email"] = jQuery('#nxs_user_email').val();
-			valuestobeupdated["nxs_user_googleplus"] = jQuery('#nxs_user_googleplus').val();
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
 			jQuery.ajax
@@ -2143,7 +2127,6 @@ function nxs_site_dashboardhome_rendersheet($args)
   get_currentuserinfo();
   
   $nxs_user_email = $current_user->user_email;
-  $nxs_user_googleplus = get_the_author_meta('nxs_googleplus', $user_ID);
   	
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
@@ -2401,19 +2384,6 @@ function nxs_site_dashboardhome_rendersheet($args)
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
 
-	        <!-- Google Plus -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title"><h4><?php nxs_l18n_e("Google+[nxs:popup,label]", "nxs_td"); ?></h4></div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dashboarduserhome'); return false;" class="nxsbutton1 nxs-float-right nxs-margin-top5"><?php nxs_l18n_e("Change[nxs:popup,button]", "nxs_td"); ?></a> 
-                <span class='title'><?php echo $nxs_user_googleplus; ?></span>
-                <div class="nxs-clear margin"></div>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-
 	       	<!-- responsive design -->
 	        <div class="content2">
             <div class="box">
@@ -2621,21 +2591,7 @@ function nxs_site_supportoptions_rendersheet($args)
             </div>
             <div class="nxs-clear margin"></div>
 	        </div>
-	        
-					<!-- Google Chat is niet langer ondersteund door Google :( -->
-					<!--
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Google Chat[nxs:popup,label]", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<iframe src="http://www.google.com/talk/service/badge/Show?tk=z01q6amlqp07pvu119flkd55q49s751lnturrfi2h0ovphdsa3bpvhaiee661taspd8ortrjalincoq9tf0jrfdjbuh1ul2s462bhnl49i99696npvhgmjj3ae9ng2hhfmn2masbkaqtlg97lh0ml7l002i9pa6mtiju562jl78926getc6du8fkf0lergrro6c&amp;w=300&amp;h=18" frameborder="0" allowtransparency="true" width="300" height="18"></iframe>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div>
-					-->						        
+	      	        
 	      </div>
 	    </div>
 		        

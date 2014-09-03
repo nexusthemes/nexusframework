@@ -1158,6 +1158,10 @@ function nxs_js_redirect_top(url)
 		function nxs_js_process_updated_editor_state()
 		{
 			var growl = true;
+			if (jQuery("body").hasClass("nxs-plugin-catalogitem"))
+			{
+				growl = false;
+			}
 			nxs_js_process_updated_editor_state_internal(growl);
 		}
 		
