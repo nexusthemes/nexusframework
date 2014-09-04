@@ -497,16 +497,37 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 					echo '<div class="nxs-evententry nxs-applylinkvarcolor">';
 						
 						// Date
-						if ($destination_url != "") { echo '<a href="' . $destination_url . '" target="_new" >'; }
-							echo '
-							<div class="nxs-date nxs-date-size-'.$date_size.'">
-								<h4 class="icon nxs-border-width-1-0 month ' . $month_color_cssclass . '">' . $month . '</h4>
-								<h4 class="icon nxs-border-width-1-0 day ' . $day_color_cssclass . '">' . $day . '</h4>	
-							</div>';
+						if ($destination_url != "") 
+						{ 
+							if ($destination_articleid != "")
+							{
+								// internal link
+								echo '<a href="' . $destination_url . '">'; 
+							}
+							else
+							{
+								// external link
+								echo '<a href="' . $destination_url . '" target="_blank">'; 
+							}
+						}
+						echo '
+						<div class="nxs-date nxs-date-size-'.$date_size.'">
+							<h4 class="icon nxs-border-width-1-0 month ' . $month_color_cssclass . '">' . $month . '</h4>
+							<h4 class="icon nxs-border-width-1-0 day ' . $day_color_cssclass . '">' . $day . '</h4>	
+						</div>';
 						if ($destination_url != "") { echo '</a>'; }
 					
 						// Title
-						if ($destination_url != "") { echo '<a href="' . $destination_url . '" target="_new">'; }
+						if ($destination_articleid != "")
+						{
+							// internal link
+							echo '<a href="' . $destination_url . '">'; 
+						}
+						else
+						{
+							// external link
+							echo '<a href="' . $destination_url . '" target="_blank">'; 
+						}
 						echo '<' . $eventitem_heading . ' class="nxs-title title">' . $title . '</a></' . $eventitem_heading . '>';
 						if ($destination_url != "") { echo '</a>'; }
 						
