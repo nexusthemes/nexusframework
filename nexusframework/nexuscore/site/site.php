@@ -2699,6 +2699,25 @@ function nxs_site_marketingmanagementhome_getoptions($args)
 
 /* MARKETING MANAGEMENT
 ---------------------------------------------------------------------------------------------------- */
+function nxs_site_webfontshome_getoptions($args)
+{	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Google webfonts management", "nxs_td"),
+		"fields" => array
+		(
+			array( 
+				"id" 			=> "googlewebfonts",
+				"label"			=> nxs_l18n__("Google Webfonts", "nxs_td"),
+				"type" 			=> "textarea",
+			),
+		)
+	);
+	return $options;
+}
+
+/* CACHE MANAGEMENT
+---------------------------------------------------------------------------------------------------- */
 
 function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $args, $runtimeblendeddata) 
 {

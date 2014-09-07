@@ -320,7 +320,7 @@ function nxs_getmappedfontfams($val)
 	else
 	{
 		// default; we will assume that the val represents the fontfamily itself (this is the new style)
-		//$result[] = $val;
+		$result[] = $val;
 	}
 	
 	// $result = array();
@@ -330,7 +330,6 @@ function nxs_getmappedfontfams($val)
 
 function nxs_getfonts() 
 {
-	
 	$result = array(
 		"Arial, Arial, Helvetica, sans-serif" 					=> array("text" => "Arial, Arial, Helvetica, sans-serif"),
 		"Arial Black, Arial Black, Gadget, sans-serif" 			=> array("text"  => "Arial Black, Arial Black, Gadget, sans-serif"),
@@ -358,7 +357,18 @@ function nxs_getfonts()
 		"'Great Vibes', serif" 									=> array("text"  => "'Great Vibes',serif",),
 		"'Oswald', sans-serif" 									=> array("text"  => "'Oswald', sans-serif",),
 		"'Open Sans', sans-serif" 								=> array("text"  => "'Open Sans', sans-serif",),
+		"'Noto+Sans::latin,greek-ext,greek'" 								=> array("text"  => "'Noto+Sans::latin,greek-ext,greek'",),
 	);
+	
+	// add fonts as configured in the site management
+	$nackwhenerror = false;
+	$sitemeta = nxs_getsitemeta_internal($nackwhenerror);
+	$googlewebfonts = $sitemeta["googlewebfonts"];
+	$googlewebfontspieces = explode("\n", $googlewebfonts);
+	foreach ($googlewebfontspieces as $googlewebfontspiece)
+	{
+		$result[$googlewebfontspiece] = array("text" => "custom:" . $googlewebfontspiece);
+	}
 	
 	//
 	// todo: enable filter such that framework/plugins/themes can extend the list of fonts

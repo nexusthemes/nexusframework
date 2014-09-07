@@ -82,7 +82,16 @@
       			{
       				$isfirstfont = false;
       			}
-      			echo "'{$currentfont}'";
+      			
+      			if (nxs_stringcontains($currentfont, "'"))
+      			{
+      				echo "{$currentfont}";
+      			}
+      			else
+      			{
+      				// als het font al quotes bevat, dan niet wrappen in single QUOTES!!!!!
+      				echo "'{$currentfont}'";
+      			}
       		}
       		?>
       	] 
@@ -174,8 +183,8 @@
 		          <div class="tabs nxs-vertical-tabs" >
 		              
 		              <ul class="nxs-vertical-tabs nxs-clear">
-		                  <li><a href="#tabs-kleuren"><?php nxs_l18n_e("Colors[nxs:adminmenu,subtab]", "nxs_td"); ?></a></li>
-		                  <li><a href="#tabs-lettertypen"><?php nxs_l18n_e("Fonts[nxs:adminmenu,subtab]", "nxs_td"); ?></a></li>
+	                  <li><a href="#tabs-kleuren"><?php nxs_l18n_e("Colors[nxs:adminmenu,subtab]", "nxs_td"); ?></a></li>
+	                  <li><a href="#tabs-lettertypen"><?php nxs_l18n_e("Fonts[nxs:adminmenu,subtab]", "nxs_td"); ?></a></li>
 		              </ul>
 		              
 		              <div class="content nxs-margin-tabs nxs-padding10">
@@ -460,7 +469,7 @@
 		                      
 		                      <div class="nxs-float-left nxs-margin-right10">
 		                          <div class="block">
-		                              <div class="nxs-admin-header"><h3><?php nxs_l18n_e("Fonts[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
+		                            <div class="nxs-admin-header"><h3><?php nxs_l18n_e("Fonts[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
 		                              <?php
 	                              	$fontidentifiers = nxs_font_getfontidentifiers();
 	                              	foreach ($fontidentifiers as $currentfontidentifier)
@@ -503,6 +512,7 @@
 		                  
 		                  		<div class="nxs-clear padding"></div>
 		                  		
+		                  		<a href="#" onclick="nxs_js_popup_site_neweditsession('webfontshome'); return false;" class="nxsbutton1 nxs-float-left"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
 		     		              <a id='nxs_menu_savelettertypenbutton' style='display: none;' href='#' class="nxsbutton nxs-float-left" onclick='nxs_js_font_savefonts(); return false;'><?php nxs_l18n_e("Save[nxs:btn]", "nxs_td"); ?></a>
 		     		              
 		     		              <div class="nxs-clear"></div>
@@ -1520,6 +1530,23 @@
 		
 		// lettertypen
 		
+		function nxs_js_font_getcleanfontfam(fontfamily)
+		{
+			// some fonts have extensions like Playball::latin
+			// this function removes those "noise"
+
+			fontfamily = fontfamily.replace(/\+/g, " ");
+			fontfamily = fontfamily.replace(/\'/g, "");
+
+			var splitted = fontfamily.split(':');
+			var result = splitted[0];
+			
+			nxs_js_log("0--0-0-0-0-0");
+			nxs_js_log(result);
+			
+			return result;
+		}
+		
 		function nxs_js_font_updatefonts()
 		{
 			// mutaties hierin ook doorvoeren in header-post.php
@@ -1529,15 +1556,15 @@
 			var u;
 			// old style :)
 			u = "";
-			u = u + "body { font-family: " + jQuery("#vg_fontfam_1").val() + "; }";
-			u = u + ".nxs-title, .nxs-logo { font-family: " + jQuery("#vg_fontfam_2").val() + "; }";	
+			u = u + "body { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_1").val()) + "; }";
+			u = u + ".nxs-title, .nxs-logo { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_2").val()) + "; }";	
 			// new style :)
 			<?php
 			$fontidentifiers = nxs_font_getfontidentifiers();
 			foreach ($fontidentifiers as $currentfontidentifier)
 			{
 				?>
-				u = u + ".nxs-fontzen-<?php echo $currentfontidentifier; ?> { font-family: " + jQuery("#vg_fontfam_<?php echo $currentfontidentifier; ?>").val() + "; }";	
+				u = u + ".nxs-fontzen-<?php echo $currentfontidentifier; ?> { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_<?php echo $currentfontidentifier; ?>").val()) + "; }";	
 				<?php
 			}
 			?>

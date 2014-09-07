@@ -9244,6 +9244,16 @@ function nxs_render_htmlcorescripts()
 	<?php 
 }
 
+function nxs_font_getcleanfontfam($fontfamily)
+{
+	// some fonts have noise appended, for example Playball::blabla
+	$pieces = explode(":", $fontfamily);
+	$result = $pieces[0];
+	// replace + with space
+	$result = str_replace("+", " ", $result);
+	return $result;
+}
+
 function nxs_render_headstyles()
 {
 	// mutaties hierin ook doorvoeren in nxsmenu.php en header-post.php
@@ -9254,16 +9264,16 @@ function nxs_render_headstyles()
 		$css = "";	
 
 		// lettertypen
-		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_1"]);		
+		$hetfont = str_replace("\'", "'", nxs_font_getcleanfontfam($sitemeta["vg_fontfam_1"]));
 		$css .= "body { font-family: " . $hetfont . "; }";
-		$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_2"]);		
+		$hetfont = str_replace("\'", "'", nxs_font_getcleanfontfam($sitemeta["vg_fontfam_2"]));
 		$css .= ".nxs-title, .nxs-logo { font-family: " . $hetfont . "; }";
 		
 		// new style
 		$fontidentifiers = nxs_font_getfontidentifiers();
 		foreach ($fontidentifiers as $currentfontidentifier)
 		{
-			$hetfont = str_replace("\'", "'", $sitemeta["vg_fontfam_{$currentfontidentifier}"]);	
+			$hetfont = str_replace("\'", "'", nxs_font_getcleanfontfam($sitemeta["vg_fontfam_{$currentfontidentifier}"]));
 			$css .= ".nxs-fontzen-{$currentfontidentifier} { font-family: $hetfont }";	
 		}
 

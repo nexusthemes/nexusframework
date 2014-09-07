@@ -444,7 +444,17 @@ if (count($fontsbeingused) > 0)
 	      			{
 	      				$isfirstfont = false;
 	      			}
-	      			echo "'{$currentfont}'";
+	      			
+	      			if (nxs_stringcontains($currentfont, "'"))
+	      			{
+	      				echo "{$currentfont}";
+	      			}
+	      			else
+	      			{
+	      				// als het font al quotes bevat, dan niet wrappen in single QUOTES!!!!!
+	      				echo "'{$currentfont}'";
+	      			}
+
 	      		}
 	      		?>
 	      		
