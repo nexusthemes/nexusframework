@@ -367,7 +367,11 @@ function nxs_getfonts()
 	$googlewebfontspieces = explode("\n", $googlewebfonts);
 	foreach ($googlewebfontspieces as $googlewebfontspiece)
 	{
-		$result[$googlewebfontspiece] = array("text" => "custom:" . $googlewebfontspiece);
+		$googlewebfontspiece = trim($googlewebfontspiece);
+		if ($googlewebfontspiece != "")
+		{
+			$result[$googlewebfontspiece] = array("text" => "custom:" . $googlewebfontspiece);
+		}
 	}
 	
 	//

@@ -9251,6 +9251,7 @@ function nxs_font_getcleanfontfam($fontfamily)
 	$result = $pieces[0];
 	// replace + with space
 	$result = str_replace("+", " ", $result);
+	$result = str_replace("'", "", $result);
 	return $result;
 }
 
