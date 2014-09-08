@@ -357,7 +357,7 @@ function nxs_getfonts()
 		"'Great Vibes', serif" 									=> array("text"  => "'Great Vibes',serif",),
 		"'Oswald', sans-serif" 									=> array("text"  => "'Oswald', sans-serif",),
 		"'Open Sans', sans-serif" 								=> array("text"  => "'Open Sans', sans-serif",),
-		"'Noto+Sans::latin,greek-ext,greek'" 								=> array("text"  => "'Noto+Sans::latin,greek-ext,greek'",),
+		//"'Noto+Sans::latin,greek-ext,greek'" 								=> array("text"  => "'Noto+Sans::latin,greek-ext,greek'",),
 	);
 	
 	// add fonts as configured in the site management
