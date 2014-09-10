@@ -18,6 +18,7 @@ function nxs_postcontent_wpcontent_getoptions($args)
 			array(
 				"id" 				=> "wpcontent",
 				"type" 				=> "tinymce",
+				"wpautop" => true,
 				"focus" 	=> "true",
 				"validelementsallowed" => "any",
 				"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),

@@ -1106,7 +1106,7 @@ function nxs_js_redirect_top(url)
 			}
 			else
 			{
-				nxs_js_log("window does not have class");
+				//nxs_js_log("window does not have class");
 				jQuery('#nxsbox_ajaxContent').css('margin-left', wleft + 'px');
 			}
 		}

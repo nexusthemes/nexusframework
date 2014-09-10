@@ -18,6 +18,12 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 	// so we therefore introduce/use the NXS_UNIQUEIDFORREQUEST variable that is set
 	// when the system uses the framework for the first time
 	$internaltextareaid = "nxs_i_textarea_" . $id . "_" . "UNIQUE"; // NXS_UNIQUEIDFORREQUEST;
+	
+	if ($wpautop === true)
+	{
+		$value = wpautop($value);
+	}
+	
 	//
 	
 	?>

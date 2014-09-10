@@ -617,6 +617,21 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"beautyspa;" => array
+		(
+			"href"=>"/wordpress-themes/beauty/beauty-spa-wordpress-theme/",
+			"title"=>"Beauty spa WordPress theme",
+		),	
+		"hairstylist;" => array
+		(
+			"href"=>"/wordpress-themes/beauty/hair-stylist-wordpress-theme/",
+			"title"=>"Hair stylist WordPress theme",
+		),	
+		"photographyportfolio;" => array
+		(
+			"href"=>"/wordpress-themes/photographer/photography-portfolio-wordpress-theme/",
+			"title"=>"Photography portfolio WordPress theme",
+		),	
 		"pcepair;" => array
 		(
 			"href"=>"/wordpress-themes/computer-repair/pc-repair-wordpress-theme/",
