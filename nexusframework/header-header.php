@@ -49,7 +49,16 @@
 	
 	//
 	nxs_render_headstyles();
-	echo $sitemeta["vg_injecthead"];
+	
+	if (nxs_has_adminpermissions() && $_REQUEST["customhtml"] == "off")
+	{
+		// suppress
+	}
+	else
+	{
+		echo $sitemeta["vg_injecthead"];
+	}
+
 	?>
 	
 	<?php if (is_user_logged_in()) { ?>

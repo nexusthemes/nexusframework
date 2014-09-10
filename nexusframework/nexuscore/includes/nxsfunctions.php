@@ -3298,20 +3298,6 @@ function nxs_merge_postmeta($postid, $modifiedmetadata)
 		unset($nxs_gl_cache_postmeta[$postid]);
 	}
 	
-	/*
-	$metadatakey = 'nxs_core';
-
-	echo "--------- RAW:";	
-	$dump = get_post_meta($postid, $metadatakey, true);
-	var_dump($dump);
-	die();
-	
-	echo "--------- DUMP :";	
-	$verifyresult = nxs_get_postmeta($postid);
-	var_dump($verifyresult["vg_injecthead"]);
-	die();
-	*/
-	
 	// TODO: handle updateresult (false means error for example)
 }
 

@@ -126,12 +126,6 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Hide events in past", "nxs_td"),
 			),
 			
-			array( 
-				"id" 				=> "items_filter_hideeventsinpast",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Hide events in past", "nxs_td"),
-			),
-
 			array(
 				"id" 				=> "items_filter_maxcount",
 				"type" 				=> "select",

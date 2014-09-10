@@ -126,7 +126,15 @@
 	<?php } ?>
 	
 	<?php
-	echo $sitemeta["vg_injecthead"];
+	if (nxs_has_adminpermissions() && $_REQUEST["customhtml"] == "off")
+	{
+		// suppress
+	}
+	else
+	{
+		echo $sitemeta["vg_injecthead"];
+	}
+	
 	do_action('nxs_beforeend_head');
 	?>
 	
