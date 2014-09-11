@@ -660,14 +660,21 @@
 				$licensekey = esc_attr(get_option('nxs_licensekey'));
 				if ($licensekey == "")
 				{
-					$url = admin_url('admin.php?page=nxs_admin_license');
-					?>
-					<li>
-						<a href="<?php echo $url;?>" class='site nxs-hidewheneditorinactive' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
-							<span class='nxs-icon-key blink'></span>
-						</a>
-					</li>
-					<?php
+					if (NXS_FRAMEWORKSHARED === "true")
+					{
+						// nothing to do here
+					}
+					else
+					{
+						$url = admin_url('admin.php?page=nxs_admin_license');
+						?>
+						<li>
+							<a href="<?php echo $url;?>" class='site nxs-hidewheneditorinactive' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
+								<span class='nxs-icon-key blink'></span>
+							</a>
+						</li>
+						<?php
+					}
 				}
 				else
 				{

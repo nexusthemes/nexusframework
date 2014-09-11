@@ -418,7 +418,9 @@ function nxs_storecacheoutput($buffer)
 		// enhance the output so we know its cached
 		$cached = $buffer;
 		$cached = str_replace("</body>", "</body><!-- CACHED " . NXS_UNIQUEIDFORREQUEST . " -->", $cached);			
-		//$cached = utf8_encode($cached);
+		
+		// allow plugins to enhance the cached output even further
+		$cached = apply_filters("nxs_getcachedoutput", $cached);
 		
 		// fix: first encode the cached data to UTF8
 		file_put_contents($file, $cached, LOCK_EX);

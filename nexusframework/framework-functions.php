@@ -617,6 +617,12 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+	
+		"homebuilder;" => array
+		(
+			"href"=>"/wordpress-themes/construction/home-builder-wordpress-theme/",
+			"title"=>"Home builder WordPress theme",
+		),	
 		"beautyspa;" => array
 		(
 			"href"=>"/wordpress-themes/beauty/beauty-spa-wordpress-theme/",
