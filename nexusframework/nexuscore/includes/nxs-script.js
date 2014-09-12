@@ -1,9 +1,9 @@
 /*************************************************************************/
 /*************************************************************************/
 /*
-    Copyright 2012 Nexus Themes
+    Copyright 2012-2014 Nexus Themes
 
-    This theme package is released under the the GNU Public License 2.0. 
+    This file is released under the GNU Public License 2.0. 
 */
 /*************************************************************************/
 /*************************************************************************/
@@ -124,6 +124,7 @@ var nxs_js_menuid_preventendlessloop;
 var nxs_js_menuid_siblingcounters;
 
 var nxs_js_alert_identifier = 0;
+var nxsboxL10n = {  };
 
 jQuery(window).ready
 (
@@ -1400,7 +1401,7 @@ function nxs_js_redirect_top(url)
 		{
 			// handle incoming event for the placeholder,
 			// note; its possible (as it appears) the event is triggered by objects 
-			// outside the framework (such as WooCommerc). We therefore first ensure 
+			// outside the framework (such as WooCommerce). We therefore first ensure 
 			// we need to act upon this event (and absorb the event), or allow the 
 			// event to propagate further
 			
@@ -2819,7 +2820,7 @@ function nxs_js_redirect_top(url)
 
 		function nxs_gui_set_runtime_dimensions_enqueuerequest(trigger)
 		{		
-			// nxs_js_log('enqueued for:' + trigger);
+			//nxs_js_log('enqueued for:' + trigger);
 		
 			var skip = false;
 			if (nxs_js_isruntimedimensionsrefreshqueued())
@@ -2933,6 +2934,7 @@ function nxs_js_redirect_top(url)
 			
 			jQuery.each(domelements, function(index, currentdomelement)
 			{
+				//nxs_js_log("align heights of elements to: " + heighest);
 				jQuery(currentdomelement).height(heighest);
 			}
 			);
@@ -3062,6 +3064,7 @@ function nxs_js_redirect_top(url)
 							}
 							else
 							{
+								//nxs_js_log("c) setting height to 0");
 								jQuery(element).height(0);	// defaults to height when no height is set
 							}
 						}
@@ -3084,7 +3087,10 @@ function nxs_js_redirect_top(url)
 			
 			// allow widgets and/or plugins to extend the functionality of this function (act / bind to the hook / event)
   		jQuery(window).trigger('nxs_recalculateruntimedimensions_afterclear');
-			
+
+			// reset heights of placeholder elements
+			jQuery(".nxs-dyn-height").css('height', 'auto').removeClass("nxs-dyn-height");
+
 			var arerowsspreadalongmultirows = (widthofbrowserwindow <= 959 && nxs_js_issiteresponsive());
 			
 			if (!arerowsspreadalongmultirows || !nxs_js_issiteresponsive())
@@ -3166,6 +3172,7 @@ function nxs_js_redirect_top(url)
 							}
 							else
 							{
+								//nxs_js_log("b) setting height to :" + heightToSet);
 								jQuery(element).height(heightToSet);
 							}
 						}
@@ -3235,7 +3242,8 @@ function nxs_js_redirect_top(url)
 								jQuery(currentinnerplaceholder).css('height', 'auto');
 								jQuery(currentinnerplaceholder).css('margin-top', '0');
 								var height = jQuery(currentinnerplaceholder).outerHeight(true);
-								jQuery(currentinnerplaceholder).closest('.nxs-placeholder').css('height', height);							
+								jQuery(currentinnerplaceholder).closest('.nxs-placeholder').css('height', height).addClass("nxs-dyn-height");
+								//nxs_js_log("f) setting height to: " + height);
 							}
 						);
 					}
@@ -3270,6 +3278,7 @@ function nxs_js_redirect_top(url)
 					var width = jQuery(parent).outerWidth(true);
 					jQuery(this).width(width);
 					var height = jQuery(parent).outerHeight(true);
+					//nxs_js_log('d) height will be set to: ' + height);
 					jQuery(this).height(height);
 				}
 			);
@@ -4184,6 +4193,7 @@ function nxs_js_redirect_top(url)
 			// add and upgrade gui elements
 			//
 			var sourcedragtype = jQuery('#nxs-drag-container-helper').data('sourcedragtype');
+			//nxs_js_log("sourcedragtype:" + sourcedragtype);
 			
 			if (sourcedragtype == 'placeholderswap')
 			{
@@ -4261,6 +4271,7 @@ function nxs_js_redirect_top(url)
 			else if (sourcedragtype == 'toolboxpagerowtemplate')
 			{
 				// note! its not allowed to drop a pagerowtemplate on an existing placeholder ...
+				// nxs_js_log("nxs_js_gui_add_virtual_droppable_pagerows()");	
 				nxs_js_gui_add_virtual_droppable_pagerows();
 			}							
 			else

@@ -530,32 +530,10 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					function nxs_js_resetsliderboxheight_to_screenheight()
 					{
 						var updatedheight = nxs_js_resetsliderboxheight_getheight() + "px";
-						nxs_js_log(updatedheight);
-						
-						/*						
-						var cssselector = '#slideset_<?php echo $placeholderid; ?>';
-						var cssvalue = "" + updatedheight + "px !important";
-						nxs_js_log("cssselector:[" + cssselector + "], value:[" + cssvalue + "]");
-						jQuery(cssselector).css('height', cssvalue);
-						
-						var cssselector = '#slideset_<?php echo $placeholderid; ?> .nxs-slide-img';
-						var cssvalue = updatedheight + "px !important";
-						nxs_js_log("cssselector:[" + cssselector + "], value:[" + cssvalue + "]");					
-						jQuery(cssselector).css('min-height', cssvalue);
-						*/
-						
-						
 						jQuery(".nxs-slideset").css("height", updatedheight);
-						nxs_js_log(jQuery(".nxs-slideset").css("height"));
-						
 						jQuery(".nxs-slide").css("height", updatedheight);
-						nxs_js_log(jQuery(".nxs-slide").css("height"));
-						
 						jQuery(".nxs-slide-img").css("height", updatedheight);
-						nxs_js_log(jQuery(".nxs-slide-img").css("height"));
-						
 						jQuery(".slide-wrapper").css("height", updatedheight);
-						nxs_js_log(jQuery(".slide-wrapper").css("height"));
 					}
 					
 					jQuery(window).ready
@@ -847,16 +825,19 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 										
 					// step 1; set height of slideset
 					jQuery(slideset).height(heighttorender);
+					//nxs_js_log("slideset height to render:" + heighttorender);
 
 					// step 2a; set height of background 'sheet'
 					var backgroundsheet = jQuery('#slide_description_background_<?php echo $placeholderid . "_"; ?>' + visibleslideindex);
 					jQuery(backgroundsheet).css("height", heighttorender);
+					//nxs_js_log("background height: " + heighttorender);
 					
 					// step 2b; set height of nxs-slide-l1262155070-1 div
 					var identifier = '#slide-slide-<?php echo $placeholderid . "-"; ?>' + visibleslideindex;
 					//nxs_js_log("identifier:" + identifier);
 					var slidecontainer = jQuery('#slide-slide-<?php echo $placeholderid . "-"; ?>' + visibleslideindex);
 					jQuery(slidecontainer).css("height", heighttorender);
+					//nxs_js_log("slidecontainer height: " + heighttorender);
 					
 					//nxs_js_log("value:" + heighttorender);
 					//nxs_js_log(slidecontainer);
