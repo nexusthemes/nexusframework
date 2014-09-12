@@ -20,15 +20,25 @@ function nxs_popup_optiontype_icon_renderhtmlinpopup($optionvalues, $args, $runt
 	    echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip);
 				?>
 		<div class="box-content">
-          	<ul>
+      <ul>
 				<li onclick='nxs_js_starticonpicker_<?php echo $id;?>(); return false;' style='cursor: pointer' class='nxs-float-left'>
-	          		<?php if (isset($value) && $value != "") { ?>
-          			<span class="<?php echo $value; ?> nxs-icon">
-						<?php } else { ?>
-								
-								<?php } ?>
-							</li>
-          	</ul>
+	        <?php 
+	        if (isset($value) && $value != "") 
+	        { 
+	        	?>
+	      		<span class="<?php echo $value; ?> nxs-icon">
+						<?php 
+					} 
+					else 
+					{ 
+						// nothing (yet)
+						?>
+						<a href="#" onclick="nxs_js_starticonpicker_<?php echo $id; ?>(); return false;"><?php echo nxs_l18n__("None", "nxs_td"); ?></a>
+						<?php
+					} 
+					?>
+				</li>
+      </ul>
           	<?php
           	echo '
           	<input type="hidden" name="' . $id . '" id="' . $id . '" value="' . $value . '"></input>

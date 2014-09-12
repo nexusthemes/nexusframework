@@ -407,6 +407,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "pageslider");
 		$result[] = array("widgetid" => "pagebackground");
 		$result[] = array("widgetid" => "pagepopup");
+		$result[] = array("widgetid" => "pagevideo");
+		$result[] = array("widgetid" => "pagegap");
 	}
 	
 	
@@ -567,6 +569,8 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("pageslider");
 	nxs_ext_lazyload_widget("pagebackground");
 	nxs_ext_lazyload_widget("pagepopup");
+	nxs_ext_lazyload_widget("pagevideo");
+	nxs_ext_lazyload_widget("pagegap");
 	
 	// BUSINESS RULES
 	nxs_ext_lazyload_widget("busrulecatchall");	
