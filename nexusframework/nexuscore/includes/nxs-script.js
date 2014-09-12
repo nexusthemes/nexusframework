@@ -1664,6 +1664,10 @@ function nxs_js_redirect_top(url)
 					jQuery(this).find(".nxs-cell-cursor").addClass("nxs-hovering");
 					jQuery(this).find(".nxs-hover-menu").addClass("nxs-hovering");
 					jQuery(this).addClass("nxs-hovering");
+					
+					// update height of child items (cursors) that should have the same size
+					var height = jQuery(this).height();
+					jQuery(this).find(".nxs-runtime-autocellsize").height(height);
 				});
 				// OK
 				jQuery(".nxs-widgets-editable .nxs-placeholder").unbind("mouseleave.glowwidget");
