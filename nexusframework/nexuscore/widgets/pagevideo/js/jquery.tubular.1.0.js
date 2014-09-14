@@ -17,7 +17,7 @@
     // defaults
     var defaults = {
         ratio: 16/9, // usually either 4/3 or 16/9 -- tweak as needed
-        videoId: 'ZCAnLxRvNNc', // toy robot in space is a good default, no?
+        videoId: 'u9hyOQEwB4c',
         mute: true,
         repeat: true,
         width: $(window).width(),
@@ -38,12 +38,38 @@
             $body = $('body') // cache body node
             $node = $(node); // cache wrapper node
 
+				var containerstyleatts = "";
+				if (options.nxs_position == "fixed")
+				{
+					containerstyleatts += "position: fixed;";
+				}
+				else
+				{
+					// scroll if user scrolls
+					containerstyleatts += "position: absolute;";
+				}
+				
+				if (options.nxs_top == "top")
+				{
+					containerstyleatts += "top: 0px;";
+				}
+				else
+				{
+					// inline positioned
+					//var heightheader = jQuery('#nxs-header').height();
+					//containerstyleatts += "top: " + heightheader + "px;";
+				}
+
         // build container
-        var tubularContainer = '<div id="tubular-container" style="pointer-events:none; overflow: hidden; position: fixed; z-index: 0; width: 100%; height: 100%"><div id="tubular-player" style="position: absolute"></div></div><div id="tubular-shield" style="width: 100%; height: 100%; z-index: 2; position: absolute; left: 0; top: 0;"></div>';
+        var tubularContainer = '<div id="tubular-container" style="pointer-events:none; overflow: hidden;'+containerstyleatts+' z-index: 0; width: 100%; height: 100%"><div id="tubular-player" style="position: absolute"></div></div><div id="tubular-shield" style="width: 100%; height: 100%; z-index: 2; position: absolute; left: 0; top: 0;"></div>';
 
         // set up css prereq's, inject tubular container and set up wrapper defaults
         $('html,body').css({'width': '100%', 'height': '100%'});
+        
         $body.prepend(tubularContainer);
+        
+        //$node.prepend(tubularContainer);
+        
         $node.css({position: 'relative', 'z-index': options.wrapperZIndex});
 
         // set up iframe player, use global scope so YT api can talk

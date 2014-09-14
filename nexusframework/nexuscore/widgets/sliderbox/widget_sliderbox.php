@@ -544,7 +544,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 						}
 					);
 					
-					jQuery(window).bind
+					jQuery(document).bind
 					(
 						'nxs_event_resizeend', 
 						function() 

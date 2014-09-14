@@ -1601,6 +1601,23 @@ function nxs_geturlcontents($args)
   return $output;
 }
 
+function nxs_isdesktop()
+{
+	return !nxs_ishandheld();
+}
+
+function nxs_ishandheld()
+{
+	$filetoinclude = NXS_FRAMEWORKPATH . '/plugins/mobiledetect/Mobile_Detect.php';
+	require_once($filetoinclude);
+	
+	$mobiledetector = new Mobile_Detect();
+	$isTablet = $mobiledetector->isTablet();
+	$isMobile = $mobiledetector->isMobile();
+	$result = $isTablet || $isMobile;
+	return $result;
+}
+
 function nxs_storemedia($args)
 {	
 	//error_log("nxs_storemedia INVOKED");

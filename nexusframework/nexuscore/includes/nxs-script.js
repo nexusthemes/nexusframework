@@ -469,7 +469,7 @@ function nxs_js_hook_windowsresizeend_event()
 {
 	// nxs_js_log('hooked to nxs_event_resizeend');
 	
-	jQuery(window).bind
+	jQuery(document).bind
 	(
 		'nxs_event_resizeend', 
 		function() 
@@ -487,7 +487,7 @@ function nxs_js_hook_windowsresizeend_event()
 {
 	// nxs_js_log('hooked to nxs_event_scrolled');
 	
-	jQuery(window).bind
+	jQuery(document).bind
 	(
 		'nxs_event_resizeend', 
 		function() 
@@ -526,7 +526,8 @@ function nxs_js_register_windowresizedend_event()
 		  (
 		  	function() 
 		  	{
-		  		jQuery(this).trigger('nxs_event_resizeend');
+		  		nxs_js_log('broadcasting nxs_event_resizeend');
+		  		jQuery(document).trigger('nxs_event_resizeend');
 		  	}
 		  	, 
 		  	250
@@ -7708,14 +7709,14 @@ function nxs_js_getviewports()
 
 function nxs_js_setupviewportlistener()
 {
-	jQuery(window).bind('nxs_event_resizeend', function() { nxs_js_setupviewportlistener_actual(); });
+	jQuery(document).bind('nxs_event_resizeend', function() { nxs_js_setupviewportlistener_actual(); });
 	// initial call is used to set things up
 	nxs_js_setupviewportlistener_actual();
 }
 
 function nxs_js_setupviewportlistener_actual()
 {
-	//nxs_js_log("nxs_js_setupviewportlistener_actual");
+	nxs_js_log("nxs_js_setupviewportlistener_actual");
 
 	var previousactiveviewport = nxs_js_activeviewport;
 	//nxs_js_log("previous:" + previousactiveviewport);
@@ -7731,7 +7732,7 @@ function nxs_js_setupviewportlistener_actual()
 		if (previousactiveviewport != -1)
 		{
 			nxs_js_log('broadcasting nxs_event_viewportchanged');
-			jQuery(this).trigger('nxs_event_viewportchanged');
+			jQuery(document).trigger('nxs_event_viewportchanged');
 		}
 		else
 		{

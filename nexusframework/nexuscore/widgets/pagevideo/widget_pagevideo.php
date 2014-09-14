@@ -16,18 +16,24 @@ function nxs_widgets_pagevideo_getunifiedstylinggroup() {
 
 function nxs_widgets_pagevideo_registerhooksforpagewidget($args)
 {
-	$pagedecoratorid = $args["pagedecoratorid"]; 
-	$pagedecoratorwidgetplaceholderid = $args["pagedecoratorwidgetplaceholderid"];
-	
-	global $nxs_pagevideo_pagedecoratorid;
-	$nxs_pagevideo_pagedecoratorid = $pagedecoratorid;
-	global $nxs_pagevideo_pagedecoratorwidgetplaceholderid;
-	$nxs_pagevideo_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
-	
-	add_action('nxs_beforeend_head', 'nxs_widgets_pagevideo_beforeend_head');
-	add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pagevideo_betweenheadandcontent');
+	if ( nxs_ishandheld())
+	{
+		// ignore; not available on mobiles/tablets
+	}
+	else
+	{
+		$pagedecoratorid = $args["pagedecoratorid"]; 
+		$pagedecoratorwidgetplaceholderid = $args["pagedecoratorwidgetplaceholderid"];
+		
+		global $nxs_pagevideo_pagedecoratorid;
+		$nxs_pagevideo_pagedecoratorid = $pagedecoratorid;
+		global $nxs_pagevideo_pagedecoratorwidgetplaceholderid;
+		$nxs_pagevideo_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
+		
+		add_action('nxs_beforeend_head', 'nxs_widgets_pagevideo_beforeend_head');
+		add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pagevideo_betweenheadandcontent');
+	}
 }
-
 
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
@@ -51,6 +57,27 @@ function nxs_widgets_pagevideo_home_getoptions($args)
 				"id" 				=> "wrapper_pagevideo_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Page video", "nxs_td"),
+			),
+			
+			array
+			( 
+				"id" 				=> "youtubeid",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Youtube ID", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Enter the ID of the Youtube movie here.", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			
+			array(
+				"id" 				=> "layoutposition",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Layout position", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Default", "nxs_td"),
+					"betweenheadandcontent" => nxs_l18n__("Between head and content", "nxs_td"),
+				),
+				"unistylablefield"	=> true
 			),
 			
 			array( 
@@ -226,32 +253,46 @@ function nxs_widgets_pagevideo_betweenheadandcontent()
 	/* EXPRESSIONS
 	----------------------------------------------------------------------------------------------------*/
 	
+	if ($youtubeid == "")
+	{
+		$youtubeid = "KlAV4kIQBQ8";
+	}
+	$script = "";
+	if ($layoutposition == "betweenheadandcontent")
+	{
+		$script .= "
+		<script type='text/javascript'>
+			function nxs_js_pagevideo_updateheight()
+			{
+				var headerheight = jQuery('#nxs-header').height() + 'px'
+				jQuery('#tubular-container').css('top', headerheight);
+				nxs_js_log('setting tubular-container top to ' + headerheight);
+			}
+
+			jQuery(document).bind('nxs_event_resizeend', function() { nxs_js_pagevideo_updateheight(); } );
+			// first time
+			jQuery(window).load(function(){ nxs_js_pagevideo_updateheight(); });
+		</script>
+		";
+	}
+	
 	/* OUTPUT
 	----------------------------------------------------------------------------------------------------*/
 
 	?>
 	<div id="wrapper" class="clearfix"></div>
+	<div id="ytcontainer" class="clearfix"></div>
 	<script src='<?php echo nxs_getframeworkurl(); ?>/nexuscore/widgets/pagevideo/js/jquery.tubular.1.0.js'></script>
   
 	<script type="text/javascript">
   	// '9bZkp7q19f0'
     $('document').ready(function() {
-			var options = { videoId: 'ab0TSkLe-E0', start: 3 };
+			var options = { videoId: '<?php echo $youtubeid; ?>', start: 3 };
 			$('#wrapper').tubular(options);
-			// f-UGhWj1xww cool sepia hd
-			// 49SKbS7Xwf4 beautiful barn sepia
 		});
   </script>
-	
-	<script type='text/javascript'>
-		jQuery(window).ready(
-			function() 
-			{
-				nxs_js_log("This page contains a page video");
-			}
-		);
-	</script>
 	<?php
+	echo $script;
 }
 
 ?>

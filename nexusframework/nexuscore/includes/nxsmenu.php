@@ -669,8 +669,8 @@
 						$url = admin_url('admin.php?page=nxs_admin_license');
 						?>
 						<li>
-							<a href="<?php echo $url;?>" class='site nxs-hidewheneditorinactive' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
-								<span class='nxs-icon-key blink'></span>
+							<a href="<?php echo $url;?>" class='site nxs-hidewheneditorinactive blink' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
+								<span class='nxs-icon-key'></span>
 							</a>
 						</li>
 						<?php
@@ -685,7 +685,7 @@
 						?>
 						<li>
 							<a href="<?php echo $url; ?>" class='site nxs-hidewheneditorinactive' title="<?php nxs_l18n_e("Theme update available", "nxs_td"); ?>">
-								<span class='nxs-icon-loop2'></span>
+								<span class='nxs-icon-loop2 blink'></span>
 							</a>
 						</li>
 						<?php

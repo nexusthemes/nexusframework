@@ -774,7 +774,7 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 					}
 				);
 				
-				jQuery(window).bind
+				jQuery(document).bind
 				(
 					'nxs_event_resizeend', 
 					function() 

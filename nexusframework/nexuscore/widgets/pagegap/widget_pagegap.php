@@ -24,10 +24,23 @@ function nxs_widgets_pagegap_registerhooksforpagewidget($args)
 	global $nxs_pagegap_pagedecoratorwidgetplaceholderid;
 	$nxs_pagegap_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
 	
-	add_action('nxs_beforeend_head', 'nxs_widgets_pagegap_beforeend_head');
-	add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pagegap_betweenheadandcontent');
+	$enabled = true;
+	$pagevideo_metadata = nxs_getwidgetmetadata($nxs_pagegap_pagedecoratorid, $nxs_pagegap_pagedecoratorwidgetplaceholderid);
+	$condition_enable = $pagevideo_metadata["condition_enable"];
+	if ($condition_enable == "desktoponly")
+	{
+		if (!nxs_isdesktop())
+		{
+			$enabled = false;
+		}
+	}
+	
+	if ($enabled)
+	{
+		add_action('nxs_beforeend_head', 'nxs_widgets_pagegap_beforeend_head');
+		add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pagegap_betweenheadandcontent');
+	}
 }
-
 
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
@@ -50,7 +63,45 @@ function nxs_widgets_pagegap_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_pagegap_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Page video", "nxs_td"),
+				"label" 			=> nxs_l18n__("Page gap", "nxs_td"),
+			),
+			
+			array(
+				"id" 				=> "condition_enable",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Enable", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Always", "nxs_td"),
+					"desktoponly" => nxs_l18n__("Desktops only", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "layoutposition",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Layout position", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Default", "nxs_td"),
+					"betweenheadandcontent" => nxs_l18n__("Between head and content", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "height",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Height", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Default", "nxs_td"),
+					"screenheight" => nxs_l18n__("Screenheight", "nxs_td"),
+					"screenheight90%" => nxs_l18n__("90% of screen height", "nxs_td"),
+					"ratioofscreenwidth16:9" => nxs_l18n__("16:9 ratio of screen width", "nxs_td"),
+				),
+				"unistylablefield"	=> true
 			),
 			
 			array( 
@@ -222,14 +273,58 @@ function nxs_widgets_pagegap_betweenheadandcontent()
 	
 	/* EXPRESSIONS
 	----------------------------------------------------------------------------------------------------*/
+	$styleatts = "";
+	
+	$styleatts .= "width: 100%;";
+	
+	if ($height == "screenheight" || $height == "screenheight90%")
+	{
+		$perc = 100;
+		if ($height == "screenheight90%")
+		{
+			$perc = 90;
+		}
+		
+		$heightformulescript = "
+			var viewportheight = jQuery(window).height();
+			height = viewportheight * " . $perc . " / 100;
+		";
+	}
+	else if ($height == "ratioofscreenwidth16:9")
+	{
+		$heightformulescript = "
+			var viewportwidth = jQuery(window).width();
+			height = viewportwidth / 16 * 9;
+		";
+	}
+		
+	$script .= "
+	<script type='text/javascript'>	
+		function nxs_js_gap_updateheight()
+		{
+			var height;
+			" . $heightformulescript . "
+			jQuery('#nxs-gap').height(height);
+		}
+		jQuery(document).bind('nxs_event_resizeend', function() { nxs_js_gap_updateheight(); } );
+		jQuery(document).bind('nxs_event_viewportchanged', function() { nxs_js_gap_updateheight(); } );
+		// first time
+		
+		$( window ).load(function() {
+		  // Run code
+		  nxs_js_gap_updateheight();
+		});
+		
+	</script>
+	";
 	
 	/* OUTPUT
 	----------------------------------------------------------------------------------------------------*/
 
 	?>
-	<div id='nxs-gap' style='height: 600px; width: 100%;'>&nbsp;
-	</div>
+	<div id='nxs-gap' style='<?php echo $styleatts; ?>'>&nbsp;</div>
 	<?php
+	echo $script;
 }
 
 ?>
