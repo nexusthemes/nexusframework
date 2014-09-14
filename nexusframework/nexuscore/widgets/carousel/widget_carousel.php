@@ -412,10 +412,12 @@ function nxs_widgets_carousel_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// Logo
-		echo '
-		<div class="logo-wrapper nxs-absolute nxs-logo">
-			<img src="'.$imageurl.'" class="nxs-absolute '.$halign.' '.$max_height_percentage.'">
-		</div>';
+		if ($imageurl != "") {
+			echo '
+			<div class="logo-wrapper nxs-absolute nxs-logo">
+				<img src="'.$imageurl.'" class="nxs-absolute '.$halign.' '.$max_height_percentage.'">
+			</div>';
+		}
 		
 		// Objects
 		if ($object1_color != "" || $object2_color != ""){
