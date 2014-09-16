@@ -20,24 +20,31 @@ function nxs_widgets_pageslider_registerhooksforpagewidget($args)
 	$pagedecoratorwidgetplaceholderid = $args["pagedecoratorwidgetplaceholderid"];
 	
 	$widget_metadata = nxs_getwidgetmetadata($pagedecoratorid, $pagedecoratorwidgetplaceholderid);
-
-	$pagesliderid = $widget_metadata['items_genericlistid'];
 	
-	if (isset($pagesliderid))
+	if ($widget_metadata["hide_for_touchdevices"] != "" && nxs_ishandheld())
 	{
-		// for now we use a global variable to store the pagesliderid, this is not the best solution,
-		// but works for now
+		// ignore; not available on mobiles/tablets
+	}
+	else
+	{
+		$pagesliderid = $widget_metadata['items_genericlistid'];
 		
-		global $nxs_pageslider_pagedecoratorid;
-		$nxs_pageslider_pagedecoratorid = $pagedecoratorid;
-		global $nxs_pageslider_pagedecoratorwidgetplaceholderid;
-		$nxs_pageslider_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
-		
-		global $nxs_pageslider_pagesliderid;
-		$nxs_pageslider_pagesliderid = $pagesliderid;
-		
-		add_action('nxs_beforeend_head', 'nxs_widgets_pageslider_beforeend_head');
-		add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pageslider_betweenheadandcontent');
+		if (isset($pagesliderid))
+		{
+			// for now we use a global variable to store the pagesliderid, this is not the best solution,
+			// but works for now
+			
+			global $nxs_pageslider_pagedecoratorid;
+			$nxs_pageslider_pagedecoratorid = $pagedecoratorid;
+			global $nxs_pageslider_pagedecoratorwidgetplaceholderid;
+			$nxs_pageslider_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
+			
+			global $nxs_pageslider_pagesliderid;
+			$nxs_pageslider_pagesliderid = $pagesliderid;
+			
+			add_action('nxs_beforeend_head', 'nxs_widgets_pageslider_beforeend_head');
+			add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pageslider_betweenheadandcontent');
+		}
 	}
 }
 
@@ -485,12 +492,9 @@ function nxs_widgets_pageslider_beforeend_head()
 				(
 					function() 
 					{
+						// handling of "is handheld" is already taken care of;
+						// if we reach this point we should always render the slider
 						var shouldrenderslider = true;
-						
-						<?php if ($hide_for_touchdevices != "") { ?>
-						shouldrenderslider = !nxs_js_deviceistouchdevice();
-						<?php } ?>
-						
 						if(shouldrenderslider)
 						{
 										

@@ -80,6 +80,19 @@ function nxs_widgets_pagevideo_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
+			array(
+				"id" 				=> "translationtop",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Translation top", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Default", "nxs_td"),
+					"top_-1_0" => nxs_l18n__("-1x", "nxs_td"), // 80 pixels
+					"top_1_0" => nxs_l18n__("1x", "nxs_td"), // 80 pixels
+				),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "wrapper_pagevideo_end",
 				"type" 				=> "wrapperend"
@@ -258,14 +271,25 @@ function nxs_widgets_pagevideo_betweenheadandcontent()
 		$youtubeid = "KlAV4kIQBQ8";
 	}
 	$script = "";
+	$deltatop = "0";
+	if (nxs_stringstartswith($translationtop, "top_"))
+	{
+		$pieces = explode("_", $translationtop);
+		$factor = $pieces[1];	// bijv. 3 bij top_3_0
+		$deltatop = $factor * 80; // bijv. 240 bij factor 3
+	}
+
 	if ($layoutposition == "betweenheadandcontent")
 	{
 		$script .= "
 		<script type='text/javascript'>
 			function nxs_js_pagevideo_updateheight()
 			{
-				var headerheight = jQuery('#nxs-header').height() + 'px'
-				jQuery('#tubular-container').css('top', headerheight);
+				var headerheight = jQuery('#nxs-header').height();
+				headerheight += " . $deltatop . ";
+				var headerheightstring = headerheight + 'px';
+				
+				jQuery('#tubular-container').css('top', headerheightstring);
 				nxs_js_log('setting tubular-container top to ' + headerheight);
 			}
 

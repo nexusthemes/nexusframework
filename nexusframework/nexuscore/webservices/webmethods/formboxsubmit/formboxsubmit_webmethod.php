@@ -46,6 +46,8 @@ function nxs_webmethod_formboxsubmit()
 		// error?
 		nxs_webmethod_return_nack("form structure not found? [" . $items_genericlistid . "]");
 	}
+	
+	$replytoemailaddress = "";
  	
  	$atleastoneerrorfound = false;
  	
@@ -62,6 +64,17 @@ function nxs_webmethod_formboxsubmit()
 		$currentplaceholderid = nxs_parsepagerow($rowcontent);
 		$currentplaceholdermetadata = nxs_getwidgetmetadata($items_genericlistid, $currentplaceholderid);
 		$widget = $currentplaceholdermetadata["type"];
+		
+		// special type; contactitemreplyto is used to 
+		if ($widget == "contactitemreplyto")
+		{
+			nxs_requirewidget("contactbox");
+			$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
+			
+			$elementid = $currentplaceholdermetadata["elementid"];
+			$key = $prefix . $elementid;
+			$replytoemailaddress = $_REQUEST[$key];
+		}
 		
 		if ($widget != "")
 		{
@@ -122,13 +135,13 @@ function nxs_webmethod_formboxsubmit()
 	{
 	 	$url = nxs_geturl_for_postid($containerpostid)	;
 
-		// send the mail!
+		// Get widget properties
 		$metadata = nxs_getwidgetmetadata($postid, $placeholderid);
 		
 		// Localize atts
 		$metadata = nxs_localization_localize($metadata);
 
-		// Lookup atts
+		// Lookup translation
 		$metadata = nxs_filter_translatelookup($metadata, array("internal_email", "sender_email"));
 
 	 	extract($metadata);
@@ -189,6 +202,12 @@ function nxs_webmethod_formboxsubmit()
 		if ($internal_email != "" && nxs_isvalidemailaddress($internal_email))
 		{
 			$headers = 'From: ' . $sender_name . ' <' . $sender_email . '>' . "\r\n";
+			
+			if ($replytoemailaddress != "")
+			{	
+				$headers = "Reply-to: {$replytoemailaddress}\r\n";
+			}
+			
 			$body = "";
 			
 			if ($mail_body_includesourceurl != "")

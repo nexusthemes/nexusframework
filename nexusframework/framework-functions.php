@@ -616,8 +616,27 @@ function nxs_render_postfooterlink()
 	}
 	
 	$lookup = array
-	(
-	
+	(	
+		"defenseattorney;" => array
+		(
+			"href"=>"/wordpress-themes/legal-wordpress-themes/defense-attorney-wordpress-theme/",
+			"title"=>"Beauty salon WordPress theme",
+		),
+		"beautysalon;" => array
+		(
+			"href"=>"/wordpress-themes/beauty/beauty-salon-wordpress-theme/",
+			"title"=>"Beauty salon WordPress theme",
+		),
+		"homeimprovement;" => array
+		(
+			"href"=>"/wordpress-themes/construction/home-improvement-wordpress-theme/",
+			"title"=>"Home improvement WordPress theme",
+		),		
+		"securitycompany;" => array
+		(
+			"href"=>"/wordpress-themes/business/security-company-wordpress-theme/",
+			"title"=>"Security company WordPress theme",
+		),		
 		"homebuilder;" => array
 		(
 			"href"=>"/wordpress-themes/construction/home-builder-wordpress-theme/",

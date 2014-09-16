@@ -97,6 +97,12 @@ function nxs_widgets_pagegap_home_getoptions($args)
 				"dropdown" 			=> array
 				(
 					"@@@nxsempty@@@" => nxs_l18n__("Default", "nxs_td"),
+					"height_1_0" => nxs_l18n__("1x", "nxs_td"), // 80 pixels
+					"height_2_0" => nxs_l18n__("2x", "nxs_td"), // 160 pixels
+					"height_3_0" => nxs_l18n__("3x", "nxs_td"), // 240 pixels
+					"height_4_0" => nxs_l18n__("4x", "nxs_td"), // 320 pixels
+					"height_5_0" => nxs_l18n__("5x", "nxs_td"), // 400 pixels
+					"height_6_0" => nxs_l18n__("6x", "nxs_td"), // 480 pixels
 					"screenheight" => nxs_l18n__("Screenheight", "nxs_td"),
 					"screenheight90%" => nxs_l18n__("90% of screen height", "nxs_td"),
 					"ratioofscreenwidth16:9" => nxs_l18n__("16:9 ratio of screen width", "nxs_td"),
@@ -295,6 +301,15 @@ function nxs_widgets_pagegap_betweenheadandcontent()
 		$heightformulescript = "
 			var viewportwidth = jQuery(window).width();
 			height = viewportwidth / 16 * 9;
+		";
+	}
+	else if (nxs_stringstartswith($height, "height_"))
+	{
+		$pieces = explode("_", $height);
+		$factor = $pieces[1];	// bijv. 3 bij height_3_0
+		$height = $factor * 80; // bijv. 240 bij factor 3
+		$heightformulescript = "
+			height = " . $height;";
 		";
 	}
 		
