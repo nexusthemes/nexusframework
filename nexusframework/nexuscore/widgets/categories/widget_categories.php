@@ -115,8 +115,8 @@ function nxs_widgets_categories_home_getoptions($args)
 			array( 
 				"id" 				=> "items_show_hierarchical",
 				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Alphabetical order", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("To show categories in alphabetical order, check this box", "nxs_td"),
+				"label" 			=> nxs_l18n__("Hierarchical order", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("To show categories in a hierarchy, check this box", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(

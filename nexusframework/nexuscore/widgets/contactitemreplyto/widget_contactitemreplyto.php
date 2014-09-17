@@ -32,6 +32,8 @@ function nxs_widgets_contactitemreplyto_getformitemsubmitresult($args)
 	nxs_requirewidget("contactbox");
 	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
 	
+	
+	
 	if ($overriddenelementid != "")
 	{
 		$key = $overriddenelementid;
@@ -178,7 +180,7 @@ function nxs_widgets_contactitemreplyto_render_webpart_render_htmlvisualization(
 	<div ' . $class . '>
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title nxs-width20"><h4><span class="nxs-icon-drawer2" style="font-size: 16px;" /> Reply to</h4></div>
+	        	<div class="box-title nxs-width20"><h4><span class="nxs-icon-reply" style="font-size: 16px;" /> Reply to</h4></div>
 				<div class="box-content nxs-width80">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
