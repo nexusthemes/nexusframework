@@ -135,6 +135,28 @@ function nxs_after_theme_setup()
 		nxs_reinitializetheme();
 	}
 	
+	// fix; the wp backend can use customize.php, which uses ajax
+	// call to get the content of the homepage. For some reason these ajax
+	// calls result in a sort of endless loop, producing time outs and resource problems
+	// on the client site. This particular code fixes this problem
+	if (is_admin())
+	{
+ 		if (is_user_logged_in())
+	 	{
+	 		$lowercaseurl = strtolower(nxs_geturlcurrentpage());
+	 		if (nxs_stringcontains($lowercaseurl, "customize.php"))
+	 		{
+	 	 		// if user is logged in, and if customize.php is requested, intercept it
+		 		// and redirect
+				$url = nxs_geturl_home();
+				$url = nxs_addqueryparametertourl_v2($url, "nxstrigger", "wpcustomize", true, true);
+				
+ 				wp_redirect($url);
+ 				die();
+	 		}
+	 	}
+ 	}
+	
 	if (nxs_hassitemeta())
 	{
 		$sitemeta	= nxs_getsitemeta();
@@ -549,7 +571,6 @@ function nxs_init_themeboot()
  			}
  		}
  	}
- 	
  	
 }
 
