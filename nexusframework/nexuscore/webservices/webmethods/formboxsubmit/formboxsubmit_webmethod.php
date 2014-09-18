@@ -199,7 +199,18 @@ function nxs_webmethod_formboxsubmit()
 		}
 		
 		//
-		if ($internal_email != "" && nxs_isvalidemailaddress($internal_email))
+		if ($internal_email == "info@example.org")
+	 	{
+	 		$responseargs = array();
+ 		
+	 		$responseargs["validationerrorhead"] = nxs_l18n__("Cannot submit this form; the recipient is not yet properly configured", "nxs_td");
+	 		$validationerrors = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to e-mail address info@example.org", "nxs_td");
+		 	$responseargs["validationerrors"] = $validationerrors;
+		 	$responseargs["markclientsideelements"] = $markclientsideelements;
+			nxs_webmethod_return_ok($responseargs);
+	 	}
+		else if ($internal_email != "" && nxs_isvalidemailaddress($internal_email))
 		{
 			$headers = 'From: ' . $sender_name . ' <' . $sender_email . '>' . "\r\n";
 			

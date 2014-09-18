@@ -478,6 +478,10 @@ function nxs_widgets_pageslider_beforeend_head()
 	
 	// Transition duration
 	$item_transitionduration = '300';
+	if ($item_durationvisibility == '')
+	{
+		$item_durationvisibility = '3000';
+	}
 	
 	if ($aantalslides > 0)
 	{
