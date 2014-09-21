@@ -45,6 +45,9 @@ define('DONOTCACHEPAGE', 'true');
 add_theme_support("post-thumbnails");	// if sites use feature images we support them, the size of the thumbnails is set in the 'aftertheme'
 add_action('after_setup_theme', 'nxs_addsupportforadditionalimageformats');
 
+// whenever the current blog is switched, we clear the sitemeta
+add_action("switch_blog", "nxs_sitemeta_clearcache");
+
 function nxs_showphpwarnings()
 {
 	// suppresses warnings

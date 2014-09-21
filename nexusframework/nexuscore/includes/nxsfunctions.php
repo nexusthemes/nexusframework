@@ -2941,6 +2941,15 @@ function nxs_hassitemeta()
 	return $result;
 }
 
+function nxs_sitemeta_clearcache()
+{
+	global $nxs_gl_cache_sitemeta;
+	$nxs_gl_cache_sitemeta = null;
+	
+	global $nxs_gl_cache_postmeta;
+	$nxs_gl_cache_postmeta = null;
+}
+
 function nxs_getsitemeta_internal($nackwhenerror)
 {
 	global $nxs_gl_cache_sitemeta;
@@ -3050,8 +3059,7 @@ function nxs_mergesitemeta_internal($modifiedmetadata, $performsanitycheck)
 	}
 	// very important step; wipe the cache
 	
-	global $nxs_gl_cache_sitemeta;
-	$nxs_gl_cache_sitemeta = null;
+	nxs_sitemeta_clearcache();
 }
 
 
@@ -3076,10 +3084,9 @@ function nxs_wipe_sitemetakey_internal($keytoberemoved, $performsanitycheck)
 		// store site settings as pagemeta of specific postid
 		nxs_wipe_postmetakey($postid, $keytoberemoved);
 	}
-	// very important step; wipe the cache
 	
-	global $nxs_gl_cache_sitemeta;
-	$nxs_gl_cache_sitemeta = null;
+	// very important step; wipe the cache
+	nxs_sitemeta_clearcache();
 }
 
 // turn off sanitycheck to update all activesitesettings, if multiple
@@ -3104,9 +3111,7 @@ function nxs_wipe_sitemetakeys_internal($keystoberemoved, $performsanitycheck)
 		nxs_wipe_postmetakeys($postid, $keystoberemoved);
 	}
 	// very important step; wipe the cache
-	
-	global $nxs_gl_cache_sitemeta;
-	$nxs_gl_cache_sitemeta = null;
+	nxs_sitemeta_clearcache();
 }
 
 // wordt aangeroepen tijdens de 'init' fase
