@@ -565,11 +565,32 @@ function nxs_widgets_pageslider_beforeend_head()
 												$destinationurl = "";
 											}
 											
-											if ($destinationurl != "") {
-												$link = '<div class="nxs-clear nxs-margin-top20"><a class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.' '.$metadata_transition.'" href="'.$destinationurl.'">'.$button_text.'</a></div>';
-											} else {
-												$link = '';
+											$link = '';
+											
+											$slide_button_text = $placeholdermetadata['button_text'];
+											$slide_button_scale = $placeholdermetadata['button_scale'];
+											$slide_button_alignment = $placeholdermetadata['button_alignment'];
+											$slide_button_color = $placeholdermetadata['button_color'];
+											
+											$slide_button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $slide_button_scale);
+											$slide_button_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $slide_button_alignment);
+											$slide_button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $slide_button_color);
+
+											if ($slide_button_text != '')
+											{
+												if ($destinationurl != "") 
+												{
+													$link .= '<div class="nxs-clear nxs-margin-top20"><a class="nxs-button '.$slide_button_color_cssclass.' '.$slide_button_scale_cssclass.' '.$metadata_transition.'" href="'.$destinationurl.'">'.$slide_button_text.'</a></div>';
+												}
 											}
+											
+											if ($button_text != "")
+											{
+												if ($destinationurl != "") {
+													$link .= '<div class="nxs-clear nxs-margin-top20"><a class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.' '.$metadata_transition.'" href="'.$destinationurl.'">'.$button_text.'</a></div>';
+												}
+											}
+											
 											
 											$lookup = wp_get_attachment_image_src($imageid, 'full', true);
 											$imageurl = $lookup[0];

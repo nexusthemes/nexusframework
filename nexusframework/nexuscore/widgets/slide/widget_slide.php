@@ -66,7 +66,58 @@ function nxs_widgets_slide_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
-			),		
+			),
+			
+			// BUTTON
+			
+			array( 
+				"id" 				=> "wrapper_button_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Button", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
+			array(
+				"id" 				=> "button_text",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
+				"placeholder"		=> "Read more",
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),	
+			
+			array(
+				"id" 				=> "button_scale",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_scale"),
+				"unistylablefield"	=> true,
+			),
+			array( 
+				"id" 				=> "button_color",
+				"type" 				=> "colorzen", // "select",
+				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "button_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			/*
+			array(
+				"id" 				=> "button_alignment",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_halignment"),
+				"unistylablefield"	=> true,
+			),
+			*/
+			array( 
+				"id" 				=> "wrapper_button_end",
+				"type" 				=> "wrapperend"
+			),
 		)
 	);
 	

@@ -440,7 +440,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		// ensure its valid
 		if (!nxs_isvalidemailaddress($internal_email))
 		{
-			$alternativemessage = nxs_l18n__("Warning: internal email is not filled with a valid email address", "nxs_td");
+			$alternativemessage = nxs_l18n__("Warning: internal email is not filled with a valid email address", "nxs_td") . " ($internal_email)";
 		}	
 	}
 	
