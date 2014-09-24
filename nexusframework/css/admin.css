@@ -4,6 +4,10 @@ Version: 2.1.0 Author: Nexus Studios Author URI: http://www.nexusthemes.com/ */
 /* ADMIN STYLES
 ------------------------------------------------------------------------------------------ */
 
+/* Popup icon fix */
+.box-content .chosen-container-single .chosen-single abbr { background: url(../images/chosen-sprite.png) -42px 1px no-repeat !important; }
+.box-content .chosen-container-single .chosen-single div b { background: url(../images/chosen-sprite.png) no-repeat 0 2px !important; }
+
 /* FONT ICONS */
 .nxs-widget-icon { 
 	float: left; 
