@@ -362,13 +362,14 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		$slide_border_width = 'box-shadow: inset 0 0 0 '.$border_width.'px white;';
 		
 		// Metadata layout
-		if ($metadata_layout != "") {
+		if  ($metadata_layout != "") {
 			// margin-top
 			$factor = 4.5;
 			$metadata_margin_top = 'margin-top: -'.($multiplier * $factor).'px;';
 			// margin-left
 			$factor = 6;
-			$metadata_margin_left = 'margin-left: '.($multiplier * $factor).'px;';
+			$metadata_margin_left = 'margin-left: -'.($multiplier * $factor).'px;';
+			$metadata_alignment = "left: ".$border_width."px;";
 		}
 		
 		
@@ -665,7 +666,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					$description = '
 					<div class="nxs-slide-description '.$metadata_layout.'">
 						
-						<div id="slide_description_content_'.$placeholderid.'_'.$slideindex.'" class="nxs-slide-description-content '.$bgcolor_cssclass.'" style="right: '.$border_width.'px; top: '.$border_width.'px; ">
+						<div id="slide_description_content_'.$placeholderid.'_'.$slideindex.'" class="nxs-slide-description-content '.$bgcolor_cssclass.'" style="right: '.$border_width.'px; '.$metadata_alignment.' top: '.$border_width.'px; ">
 							<div class="text-container" style="height: '.$fullwidth_height.';">
 								<div class="wrapper '.$metadata_color_cssclass.' '.$metadata_padding_cssclass.'" style="'.$metadata_margin_top.' '.$metadata_margin_left.'">' .
 									$title .
