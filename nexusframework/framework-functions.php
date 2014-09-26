@@ -1387,7 +1387,10 @@ function nxs_setuprolesandcapabilities()
 	// * design-specific widgets can be placed on undefined widgets,
 	// * various menu items are enabled
 	$role = get_role('administrator');
-	$res = $role->add_cap(nxs_cap_getdesigncapability());
+	if ($role != null)
+	{
+		$res = $role->add_cap(nxs_cap_getdesigncapability());
+	}
 }
 
 //
