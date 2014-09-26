@@ -69,6 +69,18 @@ function nxs_widgets_pagevideo_home_getoptions($args)
 			),
 			
 			array(
+				"id" 				=> "screenposition",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Screen position", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Default (fixed)", "nxs_td"),
+					"absolute" => nxs_l18n__("Absolute", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
+			array(
 				"id" 				=> "layoutposition",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Layout position", "nxs_td"),
@@ -279,26 +291,43 @@ function nxs_widgets_pagevideo_betweenheadandcontent()
 		$deltatop = $factor * 80; // bijv. 240 bij factor 3
 	}
 
+	if ($screenposition == "absolute")
+	{
+		$position = "absolute";
+	}
+	else
+	{
+		$position = "fixed";
+	}
+
+	$script .= "
+		<script type='text/javascript'>
+			function nxs_js_pagevideo_updateheight()
+			{";
+
 	if ($layoutposition == "betweenheadandcontent")
 	{
 		$script .= "
-		<script type='text/javascript'>
-			function nxs_js_pagevideo_updateheight()
-			{
 				var headerheight = jQuery('#nxs-header').height();
 				headerheight += " . $deltatop . ";
 				var headerheightstring = headerheight + 'px';
 				
 				jQuery('#tubular-container').css('top', headerheightstring);
-				nxs_js_log('setting tubular-container top to ' + headerheight);
+		";
+	}
+	
+	// screen position
+	$script .= "jQuery('#tubular-player').css('position', '".$position."');";
+
+	
+	$script .= "	
 			}
 
 			jQuery(document).bind('nxs_event_resizeend', function() { nxs_js_pagevideo_updateheight(); } );
 			// first time
 			jQuery(window).load(function(){ nxs_js_pagevideo_updateheight(); });
 		</script>
-		";
-	}
+	";
 	
 	/* OUTPUT
 	----------------------------------------------------------------------------------------------------*/

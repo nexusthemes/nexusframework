@@ -619,7 +619,32 @@ function nxs_render_postfooterlink()
 	}
 	
 	$lookup = array
-	(	
+	(
+		"dancestudio;" => array
+		(
+			"href"=>"/wordpress-themes/dancing-wordpress-themes/dance-studio-wordpress-theme/",
+			"title"=>"Dance studio WordPress theme",
+		),	
+		"partyplanner;" => array
+		(
+			"href"=>"/wordpress-themes/entertainment-wordpress-themes/party-planner-wordpress-theme/",
+			"title"=>"Party planner WordPress theme",
+		),
+		"daycare;" => array
+		(
+			"href"=>"/wordpress-themes/education/daycare-wordpress-theme/",
+			"title"=>"Day care WordPress theme",
+		),
+		"musicstudio;" => array
+		(
+			"href"=>"/wordpress-themes/music/music-studio-wordpress-theme/",
+			"title"=>"Music Studio WordPress theme",
+		),
+		"marketingagency;" => array
+		(
+			"href"=>"/wordpress-themes/business/marketing-agency-wordpress-theme/",
+			"title"=>"Marketing agency WordPress theme",
+		),
 		"defenseattorney;" => array
 		(
 			"href"=>"/wordpress-themes/legal-wordpress-themes/defense-attorney-wordpress-theme/",
