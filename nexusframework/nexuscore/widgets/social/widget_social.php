@@ -156,6 +156,14 @@ function nxs_widgets_social_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("If you want to place a link to the Pinterest account, place it here. Use the full url!", "nxs_td"),
 				"unicontentablefield" => true,
 			),
+			array(
+				"id" 				=> "instagram_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Instagram link", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Use full url or leave blank to skip this item", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to place a link to the Instagram account, place it here. Use the full url!", "nxs_td"),
+				"unicontentablefield" => true,
+			),
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
@@ -225,6 +233,13 @@ function nxs_widgets_social_home_getoptions($args)
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Custom Pinterest icon", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Pinterest icon.", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "instagram_imageid",
+				"type" 				=> "image",
+				"label" 			=> nxs_l18n__("Custom Instagram icon", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Instagram icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
@@ -346,6 +361,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	$googleplus_url == "" &&
 	$youtube_url == "" &&
 	$pinterest_url == "" &&
+	$instagram_url == "" &&
 	nxs_has_adminpermissions()) {
 		$shouldrenderalternative = true;
 	}
@@ -359,6 +375,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		if ($googleplus_url != "") 	{ $googleplus_url = 	'<li><a target="_blank" href="' . $googleplus_url . '">	<span class="nxs-icon-google-plus"></span></a></li>'; }
 		if ($youtube_url != "") 	{ $youtube_url = 		'<li><a target="_blank" href="' . $youtube_url . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
 		if ($pinterest_url != "") 	{ $pinterest_url = 		'<li><a target="_blank" href="' . $pinterest_url . '">	<span class="nxs-icon-pinterest"></span></a></li>'; }
+		if ($instagram_url != "") 	{ $instagram_url = 		'<li><a target="_blank" href="' . $instagram_url . '">	<span class="nxs-icon-instagram"></span></a></li>'; }
 		
 		if 		($halign == 'left') 	{ $alignment = ''; } 
 		else if ($halign == 'center') 	{ $alignment = 'nxs-center'; } 
@@ -374,6 +391,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 					. $googleplus_url
 					. $youtube_url
 					. $pinterest_url
+					. $instagram_url
 					. '
 				</ul>
 			</div>
@@ -534,6 +552,28 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 			</a>';	
 	}
 	
+	// INSTAGRAM
+	// If the accountname is set and there's no custom icon
+	if ($instagram_url != "" && $instagram_imageid == "") {
+		
+		$instagram_url = '<a href="' . $instagram_url . '" target="_new" class="nxs-social-instagram" ><li></li></a>';
+	
+	// If both the accountname and a custom icon is set
+	} else if ($instagram_url != "" && $instagram_imageid != "") {
+	
+		$imagemetadata= wp_get_attachment_image_src($instagram_imageid, 'full', true);
+		
+		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
+		$instagram_imageurl 		= $imagemetadata[0];
+		$instagram_imagewidth 	= $imagemetadata[1] . "px";
+		$instagram_imageheight 	= $imagemetadata[2] . "px";
+	
+		$instagram_url = '
+			<a href="' . $instagram_url . '" target="_new" style="width: ' . $instagram_imagewidth . '; height: ' . $instagram_imageheight . ';">
+				<li style="background: url(' . $instagram_imageurl . ') no-repeat; width: ' . $instagram_imagewidth . '; height: ' . $instagram_imageheight . ';"></li>
+			</a>';	
+	}
+	
 	// Alignment
 	if 		($halign == 'left') {
 		$text_alignment = 'text-align: left;';
@@ -551,13 +591,13 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	else if ($halign == 'right') {$halign = 'nxs-float-right'; }
 	
 	// Social list
-	if ($rss_url == "" && $twitter_url == "" && $facebook_url == "" && $linkedin_url == "" && $googleplus_url == "" && $youtube_url == "" && $pinterest_url == "") {
+	if ($rss_url == "" && $twitter_url == "" && $facebook_url == "" && $linkedin_url == "" && $googleplus_url == "" && $youtube_url == "" && $pinterest_url == "" && $instagram_url == "") {
 		// do nothing
 	} else {
 		$social_list = '
 			<div class="' . $halign . '">
 				<ul class="nxs-social-list">
-					' . $rss_url . $twitter_url . $facebook_url . $linkedin_url . $googleplus_url . $youtube_url . $pinterest_url. '
+					' . $rss_url . $twitter_url . $facebook_url . $linkedin_url . $googleplus_url . $youtube_url . $pinterest_url. $instagram_url.  '
 				</ul>
 			</div>
 		';

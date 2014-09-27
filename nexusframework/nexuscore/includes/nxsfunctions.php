@@ -157,16 +157,31 @@ function nxs_after_theme_setup()
 	 	}
  	}
 	
-	if (nxs_hassitemeta())
+	//
+	if (nxs_shouldusecache_stage0())
 	{
-		$sitemeta	= nxs_getsitemeta();
-		if ($sitemeta["pagecaching_enabled"] != "")
-		{
-			nxs_setupcache();
-		}
+		nxs_setupcache();
 	}
 }
 
+// stage0; first consideration stage; whether or not to cache data on this site
+function nxs_shouldusecache_stage0()
+{
+	$result = false;
+	
+	$sitemeta	= nxs_getsitemeta();
+	if ($sitemeta["pagecaching_enabled"] != "")
+	{
+		$result = true;
+	}
+	
+	// allow plugins/extensions to intercept this
+	$result = apply_filters("nxs_shouldusecache_stage0", $result);
+	
+	return $result;
+}
+
+// stage1; second consideration stage; whether or not to cache data on this site
 function nxs_shouldusecache_stage1()
 {
 	$result = false;
@@ -298,6 +313,22 @@ function nxs_cache_getcachedfilename()
 	return $cachedfile;
 }
 
+function nxs_cache_getexpirationinsecs()
+{
+	$sitemeta	= nxs_getsitemeta();
+	$result = $sitemeta["pagecaching_expirationinsecs"];
+	if ($result == "")
+	{
+		$result = "86400";
+	}
+	
+	// allow plugins to override the behaviour
+	$result = apply_filters("nxs_cache_getexpirationinsecs", $result);
+	
+	return $result;
+}
+
+
 function nxs_ensurenocacheoutput($buffer)
 {
 	$file = nxs_cache_getcachedfilename();
@@ -419,13 +450,6 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
-	//
-	//
-	//
-	
-	//echo "gj";
-	//die();
-	
 	if($shouldstore) 
 	{
 		$file = nxs_cache_getcachedfilename();
@@ -470,12 +494,7 @@ function nxs_setupcache()
 			$diff = $now - $cachetime;
 			if ($diff > 0)
 			{
-				$sitemeta	= nxs_getsitemeta();
-				$pagecaching_expirationinsecs = $sitemeta["pagecaching_expirationinsecs"];
-				if ($pagecaching_expirationinsecs == "")
-				{
-					$pagecaching_expirationinsecs = "86400";
-				}
+				$pagecaching_expirationinsecs = nxs_cache_getexpirationinsecs();
 				
 				if ($pagecaching_expirationinsecs == "never")
 				{
@@ -518,17 +537,14 @@ function nxs_setupcache()
 		}
 		else
 		{
-			//echo "will store cache output";
 			ob_start("nxs_storecacheoutput");
 		}
 	}
 	else
 	{
 		// proceed as usual... don't cache anything
-		// echo "proceed as usual (no caching)";
 		ob_start("nxs_ensurenocacheoutput");
 	}
-	// die();
 }
 
 function file_get_contents_utf8($fn) 
@@ -3213,6 +3229,11 @@ function nxs_get_nxssubposttype($postid)
 			{
 				$term = $terms[0];
 				$result = $term->name;
+				
+				// fix; on rare installations system returns capitalized first letters, "Gallery" instead of "gallery",
+				// messing up the behaviour. Fix is to always lowercase the result
+
+				$result = strtolower($result); 
 			}
 			else
 			{
