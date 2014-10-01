@@ -236,7 +236,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"oven",
 										"palette",
 										"paw",
-										"plumger",
+										"plunger",
 										"safe",
 										"referee",
 										"searchresults",
