@@ -169,10 +169,13 @@ function nxs_shouldusecache_stage0()
 {
 	$result = false;
 	
-	$sitemeta	= nxs_getsitemeta();
-	if ($sitemeta["pagecaching_enabled"] != "")
+	if (nxs_hassitemeta())
 	{
-		$result = true;
+		$sitemeta	= nxs_getsitemeta();
+		if ($sitemeta["pagecaching_enabled"] != "")
+		{
+			$result = true;
+		}
 	}
 	
 	// allow plugins/extensions to intercept this
