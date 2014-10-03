@@ -296,7 +296,8 @@
 	*/
 	?>
 	function nxs_js_get_adminurladminajax() { return "<?php 	
-		$result = get_bloginfo("url");
+		// fix 20141002; we should use the wpurl instead of url
+		$result = get_bloginfo("wpurl");
 		if (!nxs_stringendswith($result, '/'))
 		{
 			// fix bug detected on Gerbers server
@@ -304,6 +305,9 @@
 		}
 		
 		$result .= "index.php?nxs-webmethod-queryparameter=true";
+		
+		
+		
 		echo $result;
 		?>";
 	}
