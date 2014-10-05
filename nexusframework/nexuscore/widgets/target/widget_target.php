@@ -422,10 +422,12 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 		$text_heightiqgroup = "text";
 		$textcssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
 	}
-	
+
 	// Text	
 	$text = '<div class="sub nxs-text nxs-default-p nxs-padding-bottom0 '.$text_alignment_cssclass.' '.$textcssclasses.'">'.$text.'</div>';
-	
+
+	// apply shortcode on text widget
+	$text = do_shortcode($text);
 	
 	/* BUTTON
 	---------------------------------------------------------------------------------------------------- */
