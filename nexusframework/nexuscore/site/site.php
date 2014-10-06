@@ -3775,7 +3775,7 @@ function nxs_site_clipboardcopyselector_customhtml()
 		{
 			var d = {
 						"action": "nxs_ajax_webmethods",
-						"webmethod": "clipboardcopy",
+						"webmethod": nxs_js_getclipboardhandler() + "copy",
 						"clipboardcontext" : context,
 						"containerpostid": nxs_js_getcontainerpostid(),
 					};

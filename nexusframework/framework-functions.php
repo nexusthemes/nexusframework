@@ -427,6 +427,18 @@ function nxs_init()
 				echo "Current locale is set to:" . $locale;
 				die();
 			}
+			else if ($_REQUEST["nxs"] == "isssl")
+			{
+				if (is_ssl()) 
+				{
+					echo "this request is served through ssl";
+				}
+				else
+				{
+					echo "regular http";
+				}
+				die();
+			}
 			else if ($_REQUEST["nxs"] == "dumppost")
 			{
 				$postid = $_REQUEST["postid"];
