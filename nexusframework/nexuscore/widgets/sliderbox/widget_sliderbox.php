@@ -711,7 +711,6 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		    
 				// Resetting variables for next slide
 				$title = ''; 
-				$filler = '';
 				$text = '';
 				$description = '';
 
