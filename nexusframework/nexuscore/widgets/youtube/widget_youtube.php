@@ -121,13 +121,19 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-youtube";
 	
+	$scheme = "http";
+	if (is_ssl()) 
+	{
+		$scheme = "https";
+	}
+	
 	echo '
 	<div '.$class.'>';
 
  		echo '   
         <div class="video-container">
         
-            <iframe class="nxs-youtube-iframe" src="http://www.youtube.com/embed/'.$videoid.'?wmode=transparent'.$transcriptparameter . $additionalparameters.'" frameborder="0"></iframe>
+            <iframe class="nxs-youtube-iframe" src="'.$scheme.'://www.youtube.com/embed/'.$videoid.'?wmode=transparent'.$transcriptparameter . $additionalparameters.'" frameborder="0"></iframe>
         
         </div>
     </div>';

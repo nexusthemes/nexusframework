@@ -3852,11 +3852,7 @@ function nxs_site_clipboardcopyselector_getoptions($args){
 ---------------------------------------------------------------------------------------------------- */
 function nxs_site_clipboardpasteselector_customhtml()
 {
-	nxs_ensure_sessionstarted();
-	$clipboardmeta = $_SESSION["nxs_clipboardmeta"];
- 	$serializedmetadata = $clipboardmeta["serializedmetadata"];		
- 	$clipboardcontext = $clipboardmeta["clipboardcontext"];
- 	if ($clipboardcontext == "maincontent:contentbuilder")
+ 	if (true)
  	{
  		?>
 		<a href="#" class="nxsbutton nxs-float-left" onclick="nxs_js_clipboard_pastecontent(); return false;"><?php nxs_l18n_e("Paste main content (content builder) of page", "nxs_td"); ?></a>
@@ -3881,8 +3877,8 @@ function nxs_site_clipboardpasteselector_customhtml()
 							data: 
 							{
 								"action": "nxs_ajax_webmethods",
-								"webmethod": "clipboardpaste",
-								"clipboardcontext" : "<?php echo $clipboardcontext; ?>",
+								"webmethod": nxs_js_getclipboardhandler() + "paste",
+								"clipboardcontext" : "maincontent:contentbuilder",
 								"destinationpostid": articlecontainerpostid,
 								"clientpopupsessioncontext": nxs_js_getescaped_popupsession_context(),
 								"clientqueryparameters": nxs_js_escaped_getqueryparametervalues()

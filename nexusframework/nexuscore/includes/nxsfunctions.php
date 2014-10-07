@@ -2021,7 +2021,8 @@ function nxs_parserowidfrompagerow($parsedrowfromstructure)
 	return $parsedrowfromstructure["pagerowid"];
 }
 
-function nxs_getswidgetmetadatainpost($postid)
+// widgets metadata 
+function nxs_getwidgetsmetadatainpost($postid)
 {
 	$result = array();
 	
@@ -7943,7 +7944,7 @@ function nxs_unistyle_renameunistyle($group, $oldname, $newname)
 		$currentpostid = $currentrow["postid"];
 		
 		// step 1; rename the unistyles in the metadata of widgets in this post
-		$placeholderidstometadatainpost = nxs_getswidgetmetadatainpost($currentpostid);
+		$placeholderidstometadatainpost = nxs_getwidgetsmetadatainpost($currentpostid);
 		foreach ($placeholderidstometadatainpost as $currentplaceholderid => $currentmetadata)
 		{
 			$currentwidgetid = $currentmetadata["type"];
@@ -8267,7 +8268,7 @@ function nxs_unicontent_deleteunicontent($group, $name)
 	foreach ($postids as $currentrow)
 	{
 		$currentpostid = $currentrow["postid"];
-		$placeholderidstometadatainpost = nxs_getswidgetmetadatainpost($currentpostid);
+		$placeholderidstometadatainpost = nxs_getwidgetsmetadatainpost($currentpostid);
 		foreach ($placeholderidstometadatainpost as $currentplaceholderid => $currentmetadata)
 		{
 			$currentwidgetid = $currentmetadata["type"];
@@ -8325,7 +8326,7 @@ function nxs_unicontent_renameunicontent($group, $oldname, $newname)
 	foreach ($postids as $currentrow)
 	{
 		$currentpostid = $currentrow["postid"];
-		$placeholderidstometadatainpost = nxs_getswidgetmetadatainpost($currentpostid);
+		$placeholderidstometadatainpost = nxs_getwidgetsmetadatainpost($currentpostid);
 		
 		//var_dump($placeholderidstometadatainpost);
 		
