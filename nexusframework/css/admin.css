@@ -1181,7 +1181,9 @@ input.color-picker 									{ width: 70px; }
 	background-repeat: repeat;
 }
 /* */
-.nxs-window-blur .nxs-hovering { display: none !important; }
+.nxs-window-blur .nxs-hovering .nxs-cursor { display: none !important; }
+.nxs-window-blur .nxs-hover-menu { display: none !important; }
+.nxs-window-blur .nxs-admin-wrap { display: none !important; }
 
 .nxs-cell-cursor span										{ display: block; }
 .nxs-hovering.nxs-suppress,
