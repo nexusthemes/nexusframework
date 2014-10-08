@@ -299,6 +299,21 @@ function nxs_widgets_callout_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("When checked, font sizes will be a fixed size for smaller resolutions", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "responsive_display",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Responsive display", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Never", "nxs_td"),
+					"callout480" => nxs_l18n__("480", "nxs_td"),
+					"callout720" => nxs_l18n__("720", "nxs_td"),
+					"callout960" => nxs_l18n__("960", "nxs_td"),
+					"callout1200" => nxs_l18n__("1200", "nxs_td"),
+				),
+				"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			
 			array( 
 				"id" 				=> "wrapper_end",
@@ -378,7 +393,9 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
 	} else {
 		// Appending custom widget class
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
+		// Responsive display
+		if ($responsive_display == "") { $responsive_display = 'callout720'; }
+		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display;
 	}
 	
 	
