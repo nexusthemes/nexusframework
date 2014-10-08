@@ -196,6 +196,9 @@ function nxs_widgets_target_home_getoptions($args)
 					"@@@empty@@@"	=>nxs_l18n__("Auto", "nxs_td"),
 					"1-0"			=>nxs_l18n__("1x", "nxs_td"),
 					"2-0"			=>nxs_l18n__("2x", "nxs_td"),
+					"3-0"			=>nxs_l18n__("3x", "nxs_td"),
+					"4-0"			=>nxs_l18n__("4x", "nxs_td"),
+					"5-0"			=>nxs_l18n__("5x", "nxs_td"),
 				),
 				"unistylablefield"	=> true
 			),
@@ -243,12 +246,6 @@ function nxs_widgets_target_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
-			),
-			array(
-				"id" 				=> "transition",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Remove transition effect", "nxs_td"),
-				"unistylablefield"	=> true
 			),
 			
 			array( 
@@ -360,8 +357,6 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("Button: both external URL and article reference are set (ambiguous URL)", "nxs_td");
 	}
 	
-	if 		($transition != "") { $transition = "no-transition"; }
-	
 	/* LINK
 	---------------------------------------------------------------------------------------------------- */
 	
@@ -369,6 +364,9 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	if ($destination_articleid != "") {
 		$destination_url = nxs_geturl_for_postid($destination_articleid);
 	}
+	
+	// Hover class
+	if ($destination_articleid != "") { $hover_state = 'hover'; }
 	
 	
 	/* ICON
@@ -474,7 +472,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	} else {
 		
 		echo '
-		<div class="nxs-width100 '.$layout.' '.$transition.' icon-size-'.$icon_size.'">';
+		<div class="nxs-width100 '.$layout.' '.$hover_state.' icon-size-'.$icon_size.'">';
 							
 				echo $icon;
 				echo'
