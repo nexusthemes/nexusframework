@@ -2,12 +2,11 @@
 /*************************************************************************/
 /*
     Copyright 2012-2014 Nexus Themes
-
-    This file is released under the GNU Public License 2.0. 
 */
 /*************************************************************************/
 /*************************************************************************/
 
+var nxs_js_windowhasfocus = true;
 var nxs_js_mapslazyloaded = false;
 var nxs_js_mapslazyloading = false;
 var nxs_js_maps = { };
@@ -164,6 +163,23 @@ jQuery(window).ready
 		jQuery(window).bind("load", function() 
 		{
 			nxs_js_reenable_all_window_events();
+			
+			jQuery(window).blur(function(){
+			  nxs_js_windowhasfocus = false;
+			  nxs_js_log("no focus");
+
+	  		jQuery("html").removeClass("nxs-window-focus");			  
+ 			  jQuery("html").addClass("nxs-window-blur");
+			});
+			jQuery(window).focus(function()
+			{			
+			  nxs_js_windowhasfocus = true;
+			  nxs_js_log("has focus");
+			  
+ 			  jQuery("html").removeClass("nxs-window-blur");
+	  		jQuery("html").addClass("nxs-window-focus");			  
+
+			});
 		});
 
 		// see http://stackoverflow.com/questions/6677181/how-to-know-when-font-face-has-been-applied
