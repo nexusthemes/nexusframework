@@ -1180,6 +1180,8 @@ input.color-picker 									{ width: 70px; }
 	background-image: url(../images/widget-cursor-sheet-hover.png);
 	background-repeat: repeat;
 }
+/* */
+.nxs-window-blur .nxs-hovering { display: none !important; }
 
 .nxs-cell-cursor span										{ display: block; }
 .nxs-hovering.nxs-suppress,
