@@ -2590,6 +2590,10 @@ h3#order_review_heading,
 .nxs-icon-headset:before 			{ content: "\e381"; }
 .nxs-icon-mobilelove:before 		{ content: "\e382"; }
 .nxs-icon-rocket:before 			{ content: "\e383"; }
+.nxs-icon-hands:before 				{ content: "\e384"; }
+.nxs-icon-joint:before 				{ content: "\e385"; }
+.nxs-icon-spinal:before 			{ content: "\e386"; }
+.nxs-icon-ear:before 				{ content: "\e387"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
