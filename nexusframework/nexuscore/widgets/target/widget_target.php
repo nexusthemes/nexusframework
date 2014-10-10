@@ -472,7 +472,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	} else {
 		
 		echo '
-		<div class="nxs-width100 '.$layout.' '.$hover_state.' icon-size-'.$icon_size.'">';
+		<div class="nxs-applylinkvarcolor nxs-width100 '.$layout.' '.$hover_state.' icon-size-'.$icon_size.'">';
 							
 				echo $icon;
 				echo'
