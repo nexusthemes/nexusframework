@@ -1776,7 +1776,6 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	-o-transition: 		background 300ms linear;
 	transition: 		background 300ms linear;
 }
-.nxs-target a,
 .nxs-target .content,
 .nxs-target .main 											{ display: block;  }
 .nxs-target .nxs-button										{ display: inline-block; }
