@@ -266,12 +266,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"disabled",
 										"file2",
 										"move",
-										
-										/* Crappicons */
-										"landrover",
-										"mustang",
-										"toyota",
-										"truck2",
+										"ribbon",
+										"headset",
+										"mobilelove",
+										"rocket",
 										
 										
 									);
@@ -598,10 +596,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 									$iconset = "nxs-icon";
 									$icontypes = array
 									(									
-										//"landrover",
-										//"toyota",
-										//"mustang",
-										//"truck2",
 										"truck",
 										"car",
 										"airplane",
@@ -609,6 +603,12 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"dry-van",
 										"flat-bed",
 										"truck3",
+										
+										/* Crappicons */
+										"landrover",
+										"mustang",
+										"toyota",
+										"truck2",
 									);
 										
 									foreach($icontypes as $currenticontype)
