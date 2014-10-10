@@ -270,7 +270,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"headset",
 										"mobilelove",
 										"rocket",
-										
+										"hands",
+										"joint",
+										"spinal",
+										"ear",										
 										
 									);
 										
