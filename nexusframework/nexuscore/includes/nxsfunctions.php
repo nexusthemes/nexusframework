@@ -7880,7 +7880,7 @@ function nxs_unistyle_deleteunistyle($group, $name)
 		$currentpostid = $currentrow["postid"];
 		
 		// step 1; cleanup unistyles used in widgets
-		$placeholderidstometadatainpost = nxs_getswidgetmetadatainpost($currentpostid);
+		$placeholderidstometadatainpost = nxs_getwidgetsmetadatainpost($currentpostid);
 		foreach ($placeholderidstometadatainpost as $currentplaceholderid => $currentmetadata)
 		{
 			$currentwidgetid = $currentmetadata["type"];

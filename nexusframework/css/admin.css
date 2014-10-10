@@ -1183,7 +1183,6 @@ input.color-picker 									{ width: 70px; }
 /* */
 .nxs-window-blur .nxs-hovering .nxs-cursor { display: none !important; }
 .nxs-window-blur .nxs-hover-menu { display: none !important; }
-.nxs-window-blur .nxs-admin-wrap { display: none !important; }
 
 .nxs-cell-cursor span										{ display: block; }
 .nxs-hovering.nxs-suppress,

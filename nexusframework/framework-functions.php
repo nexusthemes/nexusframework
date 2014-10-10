@@ -632,6 +632,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"danceschool;" => array
+		(
+			"href"=>"/wordpress-themes/dancing-wordpress-themes/dance-school-wordpress-theme/",
+			"title"=>"Dance school WordPress theme",
+		),	
 		"dancestudio;" => array
 		(
 			"href"=>"/wordpress-themes/dancing-wordpress-themes/dance-studio-wordpress-theme/",
