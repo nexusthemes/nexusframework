@@ -2587,6 +2587,10 @@ h3#order_review_heading,
 .nxs-icon-file2:before 				{ content: "\e377"; }
 .nxs-icon-apartment:before 			{ content: "\e378"; }
 .nxs-icon-move:before 				{ content: "\e379"; }
+.nxs-icon-ribbon:before 			{ content: "\e380"; }
+.nxs-icon-headset:before 			{ content: "\e381"; }
+.nxs-icon-mobilelove:before 		{ content: "\e382"; }
+.nxs-icon-rocket:before 			{ content: "\e383"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
