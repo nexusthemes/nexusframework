@@ -405,7 +405,7 @@ if (is_admin)
 <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(false); ?>"></script>
 <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-deferred.js?v=<?php echo nxs_getthemeversion(false); ?>" defer></script>
 <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-admin-deferred.js?v=<?php echo nxs_getthemeversion(false); ?>" defer></script>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="//www.google.com/jsapi"></script>
 <script type="text/javascript">
 	google.load('webfont','1');
 </script>
