@@ -632,6 +632,26 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"chiropractor;" => array
+		(
+			"href"=>"/wordpress-themes/medical-wordpress-themes/chiropractor-wordpress-theme/",
+			"title"=>"Chiropractor WordPress theme",
+		),	
+		"optometrist;" => array
+		(
+			"href"=>"/wordpress-themes/medical-wordpress-themes/optometrist-wordpress-theme/",
+			"title"=>"Optometrist WordPress theme",
+		),	
+		"photographystudio;" => array
+		(
+			"href"=>"/wordpress-themes/photographer/photography-studio-wordpress-theme/",
+			"title"=>"Photography studio WordPress theme",
+		),	
+		"webdesignagency;" => array
+		(
+			"href"=>"/wordpress-themes/business/web-design-agency-wordpress-theme/",
+			"title"=>"Web design agency WordPress theme",
+		),	
 		"danceschool;" => array
 		(
 			"href"=>"/wordpress-themes/dancing-wordpress-themes/dance-school-wordpress-theme/",
