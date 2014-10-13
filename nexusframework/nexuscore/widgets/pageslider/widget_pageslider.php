@@ -430,6 +430,10 @@ function nxs_widgets_pageslider_beforeend_head()
 	global $nxs_pageslider_pagedecoratorwidgetplaceholderid;	
 	$pageslider_metadata = nxs_getwidgetmetadata($nxs_pageslider_pagedecoratorid, $nxs_pageslider_pagedecoratorwidgetplaceholderid);
 	
+	// Lookup atts
+	$pageslider_metadata = nxs_filter_translatelookup($pageslider_metadata, array("title","text", "button_text","destination_url"));	
+
+	
 		// Unistyle
 	$unistyle = $pageslider_metadata["unistyle"];
 	if (isset($unistyle) && $unistyle != "") 
@@ -549,6 +553,9 @@ function nxs_widgets_pageslider_beforeend_head()
 										$placeholdermetadata = nxs_getwidgetmetadata($nxs_pageslider_pagesliderid, $slideplaceholderid);
 										$placeholdertype = $placeholdermetadata["type"];					
 										
+										// Lookup atts
+										$placeholdermetadata = nxs_filter_translatelookup($placeholdermetadata, array("title","text", "button_text","destination_url"));	
+
 										if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) {
 											// fix Wendy
 										} else if ($placeholdertype == "slide") {
