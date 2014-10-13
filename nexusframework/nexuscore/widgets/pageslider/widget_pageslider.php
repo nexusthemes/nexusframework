@@ -578,14 +578,13 @@ function nxs_widgets_pageslider_beforeend_head()
 
 											if ($slide_button_text != '')
 											{
-												if ($destinationurl != "") 
-												{
-													$link .= '<div class="nxs-clear nxs-margin-top20"><a class="nxs-button '.$slide_button_color_cssclass.' '.$slide_button_scale_cssclass.' '.$metadata_transition.'" href="'.$destinationurl.'">'.$slide_button_text.'</a></div>';
+												if ($destinationurl != "") {
+													$link .= '<div class="nxs-clear nxs-margin-top20"><a class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.' '.$metadata_transition.'" href="'.$destinationurl.'">'.$slide_button_text.'</a></div>';
 												}
 											}
 											
-											if ($button_text != "")
-											{
+											// Legacy option
+											if ($button_text != "") {
 												if ($destinationurl != "") {
 													$link .= '<div class="nxs-clear nxs-margin-top20"><a class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.' '.$metadata_transition.'" href="'.$destinationurl.'">'.$button_text.'</a></div>';
 												}
