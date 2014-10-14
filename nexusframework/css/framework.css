@@ -2592,8 +2592,9 @@ h3#order_review_heading,
 .nxs-icon-rocket:before 			{ content: "\e383"; }
 .nxs-icon-hands:before 				{ content: "\e384"; }
 .nxs-icon-joint:before 				{ content: "\e385"; }
-.nxs-icon-spinal:before 			{ content: "\e386"; }
+.nxs-icon-pelvis:before 			{ content: "\e386"; }
 .nxs-icon-ear:before 				{ content: "\e387"; }
+.nxs-icon-spinal:before 			{ content: "\e388"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
