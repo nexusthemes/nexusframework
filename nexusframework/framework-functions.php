@@ -632,6 +632,11 @@ function nxs_render_postfooterlink()
 	
 	$lookup = array
 	(
+		"fitnessclub;" => array
+		(
+			"href"=>"/wordpress-themes/fitness-wordpress-themes/fitness-club-wordpress-theme/",
+			"title"=>"Fitness Club WordPress theme",
+		),	
 		"chiropractor;" => array
 		(
 			"href"=>"/wordpress-themes/medical-wordpress-themes/chiropractor-wordpress-theme/",

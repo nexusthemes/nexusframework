@@ -53,7 +53,7 @@ function nxs_postwizard_pdt2_home_getsheethtml($args)
 	<div class="nxs-admin-wrap">
 		<div class="block">	
 
-     	<?php nxs_render_popup_header(nxs_l18n__("Webpost title[nxs:popup]", "nxs_td")); ?>
+     	<?php nxs_render_popup_header(nxs_l18n__("Blogpost", "nxs_td")); ?>
 
 			<div class="nxs-popup-content-canvas-cropper">
 				<div class="nxs-popup-content-canvas">
@@ -67,7 +67,7 @@ function nxs_postwizard_pdt2_home_getsheethtml($args)
 		             </div>
 		            <div class="box-content">
 		            	<a href="#" onclick="nxs_js_popup_sessiondata_clear_dirty(); nxs_js_popup_site_neweditsession('newposthome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change wizard[nxs:popup,button]", "nxs_td"); ?></a>
-		            	<span class='title'><?php nxs_l18n_e("Webpost title[nxs:popup]", "nxs_td"); ?></span>
+		            	<span class='title'><?php nxs_l18n_e("Blogpost", "nxs_td"); ?></span>
 		            </div>
 		        </div>
 		        <div class="nxs-clear"></div>
