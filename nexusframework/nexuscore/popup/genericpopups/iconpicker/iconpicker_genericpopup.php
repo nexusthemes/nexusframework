@@ -272,8 +272,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"rocket",
 										"hands",
 										"joint",
-										"spinal",
-										"ear",										
+										"pelvis",
+										"ear",
+										"spinal"										
 										
 									);
 										
