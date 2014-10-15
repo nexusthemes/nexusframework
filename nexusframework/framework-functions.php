@@ -1224,15 +1224,25 @@ function nxs_render_postfooterlink()
 	$baseurl .= ".";
 	$baseurl .= "com";
 	
-	$url = $baseurl;
-	$url .= $href;
-	
 	$nexuslink = "<a target='_blank' href='" . $baseurl . "' title='WordPress themes'>WordPress themes</a>";
 
+	if (!function_exists('nxs_theme_getmeta'))
+	{
+		// downwards compatibility		
+		$themeurl = $baseurl . $href;
+		$themetitle = $title;
+	}
+	else
+	{
+		$meta = nxs_theme_getmeta();
+		$themeurl = $meta["url"];
+		$themetitle = $meta["title"];
+	}
+	
 	?>
   <p id="nxs-copyright" class="nxs-clear padding nxs-applylinkvarcolor">
 	  <?php
-		$themelink = "<a target='_blank' href='" . $url . "' title='" . $title . "'>" . $title . "</a>";
+		$themelink = "<a target='_blank' href='" . $themeurl . "' title='" . $themetitle . "'>" . $themetitle . "</a>";
 		//echo $themelink;
 		
 		if (is_user_logged_in())
@@ -1243,14 +1253,11 @@ function nxs_render_postfooterlink()
 		{
 			$authenticatelink = "<a href=\"#\" onclick=\"nxs_js_popup_site_neweditsession('loginhome'); return false;\">Login</a>";
 		}
-		//echo $authenticatelink;
 		
 		$footerhtmltemplate = str_replace("{{{authenticatelink}}}", $authenticatelink, $footerhtmltemplate);
-		
 		$footerhtmltemplate = str_replace("{{{themelink}}}", $themelink, $footerhtmltemplate);
-		
 		$footerhtmltemplate = str_replace("{{{nexuslink}}}", $nexuslink, $footerhtmltemplate);
-
+		
 		echo $footerhtmltemplate;
 		?>
 	</p>
@@ -1294,9 +1301,6 @@ function nxs_addsupportforadditionalimageformats()
 	add_image_size('nxs_cropped_200x200', 200, 200, TRUE );
 	add_image_size('nxs_cropped_320x200', 320, 200, TRUE );	// used by the gallerybox
 	add_image_size('nxs_cropped_320x512', 320, 512, TRUE );	// used by the gallerybox
-	 
-	//$i = get_intermediate_image_sizes();
-	//var_dump($i);
 }
 
 add_filter('image_size_names_choose', 'nxs_custom_sizes');
