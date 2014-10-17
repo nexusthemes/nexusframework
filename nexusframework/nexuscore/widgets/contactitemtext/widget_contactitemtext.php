@@ -107,13 +107,13 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
   if ($metadata_numofrows == "" || $metadata_numofrows == 0 || $metadata_numofrows == 1)
   {
   	?>
-	  <input type="text" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" value="<?php echo $value;?>" />
+	  <input type="text" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" value="<?php echo $value;?>" placeholder="<?php echo $metadata_placeholder; ?>" />
 		<?php 
 	} 
 	else
 	{
 		?>
-	  <textarea style='min-height: 0px;' rows="<?php echo $metadata_numofrows; ?>" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>"><?php echo $value;?></textarea>
+	  <textarea style='min-height: 0px;' rows="<?php echo $metadata_numofrows; ?>" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" placeholder="<?php echo $metadata_placeholder; ?>"><?php echo $value;?></textarea>
 		<?php 
 	}
 	
