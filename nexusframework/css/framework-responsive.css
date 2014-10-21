@@ -219,11 +219,8 @@ three other one-fourths. This is necessary for individual rows to be completely 
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------ */
 
-/* SLIDER
+/* TEXT
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 719px ) {
-#nxs-heeader .nxs-text .nxs-title.nxs-align-right { text-align: left; }
-}
 @media only screen and ( max-width: 479px ) {
 .nxs-text .nxs-table .nxs-title.nxs-align-right { text-align: left; }
 }
@@ -234,11 +231,9 @@ three other one-fourths. This is necessary for individual rows to be completely 
 .nxs-slide-description-content h2 									{ font-size: 23px; }
 .nxs-slide-description-content p 									{ font-size: 14px; }
 }
-/*@media only screen and ( max-width: 959px ) { 
-.nxs-slide-description,
-.main-controllers-bg,
-.nxs-slider-controller												{ display: none; }
-}*/
+@media only screen and ( max-width: 719px ) { 
+#slidecaption .nxs-button											{ font-size: 23px; }
+}
 
 /* CONTAINER ALIGNMENT (middle and bottom)
 ------------------------------------------------------------------------------------------ */
