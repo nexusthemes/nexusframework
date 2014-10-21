@@ -463,6 +463,23 @@ function nxs_init()
 				
 				die();
 			}
+			else if ($_REQUEST["nxs"] == "dumpsitemeta")
+			{
+				$sitemeta = nxs_getsitemeta();
+				foreach ($sitemeta as $key => $val)
+				{
+					echo "meta key: $key<br />";
+					echo "meta val: <br />";
+					echo "<pre>";
+					var_dump($val);
+					echo "</pre>";
+					echo "<br />";
+					echo "<br />";
+					echo "<hr />";
+				}
+				
+				die();
+			}
 		}
 	}
 	

@@ -13,6 +13,7 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 	$publishedargs["order"] 		= "DESC"; //$order;
 	$publishedargs["numberposts"] 	= -1;	// allemaal!
 	$items = get_posts($publishedargs);
+	$post = get_post($value);
 							 
 							$isfound = false;
 							              
@@ -25,7 +26,7 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 										<select id="'. $id .'" class="chosen-select" name="'. $id .'" onchange="nxs_js_popup_sessiondata_make_dirty();">
 										';
 										 
-										if ($value == "" || $value == "0") 
+										if ($value == "" || $value == "0" || $post == null) 
 										{
 											$selected = "selected='selected'";
 											$isfound = true;
@@ -64,23 +65,28 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 										
 										if ($isfound == false)
 										{
-											$post = get_post($value);
-											$post_mime_type = $post->post_mime_type;
-											$title = $post->post_title;
-											
-											// if its still not found if we reach this far, 
-											// it could be that the selected postid points to somewhere else
-											// (for example a PDF attachment)
-											$selected = "selected='selected'";
-											if ("application/pdf" == $post_mime_type)
+											if ($post == null)
 											{
-												echo "<option value='$value' $selected	>PDF: $title (ID: {$value})</option>";
+												// nothing
 											}
 											else
 											{
-												echo "<option value='$value' $selected	>Attachment (ID: {$value})</option>";
+												$post_mime_type = $post->post_mime_type;
+												$title = $post->post_title;
+												
+												// if its still not found if we reach this far, 
+												// it could be that the selected postid points to somewhere else
+												// (for example a PDF attachment)
+												$selected = "selected='selected'";
+												if ("application/pdf" == $post_mime_type)
+												{
+													echo "<option value='$value' $selected	>PDF: $title (ID: {$value})</option>";
+												}
+												else
+												{
+													echo "<option value='$value' $selected	>Attachment (ID: {$value}, Mime: {$post_mime_type}, Title: {$title})</option>";
+												}
 											}
-											
 										}
 											
 										 echo '
