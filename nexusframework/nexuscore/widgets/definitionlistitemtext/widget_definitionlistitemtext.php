@@ -73,6 +73,9 @@ function nxs_widgets_definitionlistitemtext_render_webpart_render_htmlvisualizat
 	$hovermenuargs["placeholderid"] = $placeholderid;
 	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
 	$hovermenuargs["metadata"] = $mixedattributes;
+	$hovermenuargs["enable_deletewidget"] = false;
+	$hovermenuargs["enable_deleterow"] = true;
+
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
 		
 	/* ADMIN EXPRESSIONS

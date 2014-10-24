@@ -200,7 +200,7 @@ function nxs_widgets_definitionlistbox_render_webpart_render_htmlvisualization($
 					$currentplaceholdermetadata = nxs_getwidgetmetadata($items_genericlistid, $currentplaceholderid);
 					$widget = $currentplaceholdermetadata["type"];
 					
-					if ($widget != "")
+					if ($widget != "" && $widget != "undefined")
 					{
 						$requirewidgetresult = nxs_requirewidget($widget);
 					 	if ($requirewidgetresult["result"] == "OK")
