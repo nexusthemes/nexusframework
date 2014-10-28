@@ -1037,8 +1037,6 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 							<fieldset>
 								<legend>HTML File Upload</legend>
 								
-								<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
-								
 								<div>
 									<label for="file">Files to upload:</label>
 									<input type="file" id="file" name="file[]" multiple="multiple" onchange="nxs_js_storefile();" />
@@ -1084,6 +1082,45 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 								// refresh current page (if the footer is updated we could decide to
 								// update only the footer, but this is needless; an update of the page is ok too)
 								nxs_js_refreshcurrentpage();
+							}
+							else if (response.result == "ALTFLOW")
+							{
+								nxs_js_log(response);
+								var altflowid = response.altflowid;
+								if (altflowid == "UPLOADERROR1")
+								{
+									nxs_js_alert("The uploaded file exceeds the upload_max_filesize directive in php.ini");
+								}
+								else if (altflowid == "UPLOADERROR2")
+								{
+									nxs_js_alert("The uploaded file(s) exceed(s) the MAX_FILE_SIZE directive. Upload a smaller ");
+								}
+								else if (altflowid == "UPLOADERROR3")
+								{
+									nxs_js_alert("The uploaded file(s) were only partially uploaded.");
+								}
+								else if (altflowid == "UPLOADERROR4")
+								{
+									nxs_js_alert("No file was uploaded.");
+								}
+								// 5 doesn't exist?
+								else if (altflowid == "UPLOADERROR6")
+								{
+									nxs_js_alert("Missing a temporary folder.");
+								}
+								else if (altflowid == "UPLOADERROR7")
+								{
+									nxs_js_alert("Failed to write file to disk.");
+								}
+								else if (altflowid == "UPLOADERROR8")
+								{
+									nxs_js_alert("A PHP extension stopped the file upload.");
+								}
+								else
+								{
+									nxs_js_popup_notifyservererror();
+									nxs_js_log(response);
+								}
 							}
 							else
 							{
