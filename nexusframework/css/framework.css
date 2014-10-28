@@ -2498,7 +2498,7 @@ h3#order_review_heading,
 .nxs-icon-mobile2:before 			{ content: "\e260"; }
 .nxs-icon-bars2:before 				{ content: "\e261"; }
 .nxs-icon-eye-blocked:before 		{ content: "\e262"; }
-.nxs-icon-contrast:before 			{ content: "\e262"; }
+.nxs-icon-contrast:before 			{ content: "\e263"; }
 .nxs-icon-google-drive:before 		{ content: "\e264"; }
 
 /* Custom */
@@ -2589,7 +2589,7 @@ h3#order_review_heading,
 .nxs-icon-ribbon:before 			{ content: "\e380"; }
 .nxs-icon-headset:before 			{ content: "\e381"; }
 .nxs-icon-mobilelove:before 		{ content: "\e382"; }
-.nxs-icon-rocket:before 			{ content: "\e383"; }
+.nxs-icon-rocket2:before 			{ content: "\e383"; }
 .nxs-icon-hands:before 				{ content: "\e384"; }
 .nxs-icon-joint:before 				{ content: "\e385"; }
 .nxs-icon-pelvis:before 			{ content: "\e386"; }
