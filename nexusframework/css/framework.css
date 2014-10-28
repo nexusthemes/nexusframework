@@ -2595,13 +2595,13 @@ h3#order_review_heading,
 .nxs-icon-pelvis:before 			{ content: "\e386"; }
 .nxs-icon-ear:before 				{ content: "\e387"; }
 .nxs-icon-spinal:before 			{ content: "\e388"; }
-.nxs-icon-spinal:changecontent 		{ content: "\e389"; }
-.nxs-icon-spinal:firework 			{ content: "\e390"; }
-.nxs-icon-spinal:buildingblock 		{ content: "\e391"; }
-.nxs-icon-spinal:brakes	 			{ content: "\e392"; }
-.nxs-icon-spinal:tire 				{ content: "\e393"; }
-.nxs-icon-spinal:brokenglass 		{ content: "\e394"; }
-.nxs-icon-spinal:steeringwheel 		{ content: "\e395"; }
+.nxs-icon-changecontent:before 		{ content: "\e389"; }
+.nxs-icon-firework:before 			{ content: "\e390"; }
+.nxs-icon-buildingblock:before 		{ content: "\e391"; }
+.nxs-icon-brakes:before	 			{ content: "\e392"; }
+.nxs-icon-tire:before 				{ content: "\e393"; }
+.nxs-icon-brokenglass:before 		{ content: "\e394"; }
+.nxs-icon-steeringwheel:before 		{ content: "\e395"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
