@@ -269,7 +269,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"ribbon",
 										"headset",
 										"mobilelove",
-										"rocket",
+										"rocket2",
 										"hands",
 										"joint",
 										"pelvis",
