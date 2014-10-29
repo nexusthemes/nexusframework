@@ -337,12 +337,12 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-fullwidthslider .nxs-widget.nxs-slider							{ margin-bottom: 0px !important; }
 }
 @media only screen and ( max-width: 1199px ) { 
-#slidecaption h2					 								{ font-size: 40px !important; }
+.fixed #slidecaption .nxs-title			 							{ font-size: 40px !important; }
 }
 @media only screen and ( max-width: 959px ) {   
 .caption-aligner													{ width: 680px !important; position: relative; margin: 0 auto; }
-#slidecaption h2					 								{ font-size: 35px !important; }
-#slidecaption p					 									{ font-size: 18px !important; }
+.fixed #slidecaption .nxs-title			 							{ font-size: 35px !important; }
+.fixed #slidecaption p				 								{ font-size: 18px !important; }
 }
 @media only screen and ( max-width: 719px )	{
 #nxs-supersized .caption-aligner .nxs-placeholder					{ text-align: center; }
@@ -351,8 +351,8 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 #nxs-supersized.has-height,
 .caption-aligner													{ height: 400px !important; }
 .caption-aligner													{ width: 440px !important; border-radius: 0px; padding: 0px; }
-#slidecaption h2					 								{ font-size: 30px !important; }
-#slidecaption p					 									{ font-size: 17px !important; }
+.fixed #slidecaption .nxs-title										{ font-size: 30px !important; }
+.fixed #slidecaption p												{ font-size: 17px !important; }
 #progress-back,
 #thumb-tray,
 #controls-wrapper,
@@ -361,9 +361,18 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 }
 @media only screen and ( max-width: 479px )	{ 
 .caption-aligner													{ width: 280px !important; }
-#slidecaption h2					 								{ font-size: 26px !important; }
-#slidecaption p					 									{ font-size: 16px !important; }
+.fixed #slidecaption .nxs-title			 							{ font-size: 26px !important; }
+.fixed #slidecaption p					 							{ font-size: 16px !important; }
 }
+
+/* RESPONSIVE DISPLAY */
+@media only screen and ( max-width: 1439px ) { .pageslider1440 .caption-aligner { width: 90% !important; }}
+@media only screen and ( max-width: 1199px ) { .pageslider1200 .caption-aligner { width: 90% !important; }}
+@media only screen and ( max-width: 959px )  { .pageslider960 .caption-aligner { width: 90% !important; }}
+@media only screen and ( max-width: 719px )  { .pageslider720 .caption-aligner { width: 90% !important; }}
+@media only screen and ( max-width: 479px )	 { .pageslider480 .caption-aligner { width: 90% !important; }}
+
+
 
 /* GALLERY
 ------------------------------------------------------------------------------------------ */
