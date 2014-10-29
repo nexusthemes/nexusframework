@@ -197,6 +197,8 @@ function nxs_widgets_menucontainer_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Menu fontsize", "nxs_td"),
 				"dropdown" 			=> array(
+					"1.4x"	=>"1.4x",
+					"1.3x"	=>"1.3x",
 					"1.2x"	=>"1.2x",
 					"1.1x"	=>"1.1x",
 					"1x"	=>"1x", 
@@ -397,6 +399,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 	
 	// Menu fontsize
 	if 		($menu_fontsize == '1x')		{ $menu_fontsize = "10"; }
+	else if ($menu_fontsize == '1.4x') 		{ $menu_fontsize = "14"; }
+	else if ($menu_fontsize == '1.3x') 		{ $menu_fontsize = "13"; }
 	else if ($menu_fontsize == '1.2x') 		{ $menu_fontsize = "12"; } 
 	else if ($menu_fontsize == '1.1x') 		{ $menu_fontsize = "11"; } 
 	else if ($menu_fontsize == '0.9x') 		{ $menu_fontsize = "09"; } 
