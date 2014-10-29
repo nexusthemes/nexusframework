@@ -763,6 +763,8 @@ ul.nxs-menu li ul li {
 .nxs-ie-8 ul.nxs-menu li ul li:hover ul 					{ display: block; }
 
 /* Menu item font sizes */
+ul.item-fontsize14 li a										{ font-size: 24px; }
+ul.item-fontsize13 li a										{ font-size: 22px; }
 ul.item-fontsize12 li a										{ font-size: 20px; }
 ul.item-fontsize11 li a										{ font-size: 18px; }
 ul.item-fontsize10 li a										{ font-size: 16px; }
@@ -982,7 +984,7 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 /* SUPERSIZED SLIDER 
 ---------------------------------------------------------------------------------------------------- */
 #nxs-supersized 											{ position: relative; }
-#nxs-supersized.nxs-sitewide-element						{ width: 100% !important; }
+#nxs-supersized.nxs-sitewide-element						{ width: 90% !important; }
 
 #nxs-supersized .caption-aligner 							{ display: table; }
 #nxs-supersized .caption-aligner #slidecaption 				{ text-align: center; display: table-cell; vertical-align: middle; list-style: none; }
