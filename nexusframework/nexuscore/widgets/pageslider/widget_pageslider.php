@@ -215,6 +215,28 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Wrapper background", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "fixed_font",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Fixed font", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, font sizes will be a fixed size for smaller resolutions", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "responsive_display",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Responsive display", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Always", "nxs_td"),
+					"pageslider480" => nxs_l18n__("480", "nxs_td"),
+					"pageslider720" => nxs_l18n__("720", "nxs_td"),
+					"pageslider960" => nxs_l18n__("960", "nxs_td"),
+					"pageslider1200" => nxs_l18n__("1200", "nxs_td"),
+				),
+				"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			
 			array( 
 				"id" 				=> "wrapper_captions_end",
@@ -759,13 +781,16 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 		";
 	}
 	
+	// fixed font size
+	if ($fixed_font != "") { $fixed_font = 'fixed'; }
+	
 	/* OUTPUT
 	----------------------------------------------------------------------------------------------------*/
 	
 	echo $script;
     
 	echo '
-	<div id="nxs-supersized" class="nxs-sitewide-element nxs-containshovermenu1 '.$csswidescreenclass.' '.$remove_thumbnail_navigation.' '.$height.'" style="'.$supersized_style.'">';
+	<div id="nxs-supersized" class="nxs-sitewide-element nxs-containshovermenu1 '.$fixed_font.' '.$responsive_display.' '.$csswidescreenclass.' '.$remove_thumbnail_navigation.' '.$height.'" style="'.$supersized_style.'">';
         
         // SLIDE CAPTIONS
 		if ($show_metadata != "") {
