@@ -2021,10 +2021,20 @@ function nxs_parserowidfrompagerow($parsedrowfromstructure)
 	return $parsedrowfromstructure["pagerowid"];
 }
 
-// widgets metadata 
 function nxs_getwidgetsmetadatainpost($postid)
 {
+	$filter = array();
+	$filter["postid"] = $postid;
+	return nxs_getwidgetsmetadatainpost_v2($filter);
+}
+
+// widgets metadata 
+function nxs_getwidgetsmetadatainpost_v2($filter)
+{
 	$result = array();
+	
+	$postid = $filter["postid"];
+	$widgettype = $filter["widgettype"];
 	
 	$rows = nxs_parsepoststructure($postid);
 	$index = 0;
@@ -2035,7 +2045,20 @@ function nxs_getwidgetsmetadatainpost($postid)
 		foreach ($placeholderids as $placeholderid)
 		{
 			$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
-			$result[$placeholderid] = $placeholdermetadata;
+			$shouldinclude = true;
+			if ($widgettype != "")
+			{
+				if ($placeholdermetadata["type"] != $widgettype)
+				{
+					// wrong type; ignore!
+					$shouldinclude = false;
+				}
+			}
+			
+			if ($shouldinclude)
+			{
+				$result[$placeholderid] = $placeholdermetadata;
+			}
 		}
 	}
 	
