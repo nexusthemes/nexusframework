@@ -32,9 +32,11 @@ function nxs_popup_optiontype_icon_renderhtmlinpopup($optionvalues, $args, $runt
 					else 
 					{ 
 						// nothing (yet)
+						/*
 						?>
 						<a href="#" onclick="nxs_js_starticonpicker_<?php echo $id; ?>(); return false;"><?php echo nxs_l18n__("None", "nxs_td"); ?></a>
 						<?php
+						*/
 					} 
 					?>
 				</li>

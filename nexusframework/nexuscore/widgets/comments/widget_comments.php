@@ -44,7 +44,7 @@ function nxs_widgets_comments_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If your callout has an eye-popping title put it here.", "nxs_td"),
-				"localizablefield"	=> true
+				"unistylablefield"	=> false
 			),
 			array
 			( 
@@ -331,10 +331,10 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = array_merge($temp_array, $args);	
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
-	$mixedattributes = array_merge($temp_array, $args);
+	// $mixedattributes = array_merge($temp_array, $args);
 	
 	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
+	// $mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
@@ -444,6 +444,8 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 			$avatar_size
 		);
 		
+		$title = $mixedattributes['title'];
+		
 		echo'
 		<div class="template" style="display: none;">
 			<div class="nxs-form ' . $concatenated_comments_css . '" id="nxs_commentform_' . $placeholderid . '">';
@@ -464,7 +466,7 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 				
 				<!-- EMAIL -->
 				<div class="nxs-float-left nxs-width20"><label>' . nxs_l18n__("Email address[nxs:tooltip]", "nxs_td") . ' *:</label></div>
-				<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text" placeholder="'; nxs_l18n_e("We won't publish your email address", "nxs_td"); echo '"></div>
+				<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text"></div>
 				<div class="nxs-clear padding"></div>
 				
 				<!-- WEBSITE -->
