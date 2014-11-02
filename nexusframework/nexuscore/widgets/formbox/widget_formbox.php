@@ -742,6 +742,21 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	
 	$args["formidentifier"] = "default";
 	
+	// if there's a page/post with title "Thank You",
+	// we will assume that one is the one we should default to
+	$thankyoupageid = nxs_getpostid_for_title_and_wpposttype("thank you", "page");
+	if ($thankyoupageid == "")
+	{
+		$thankyoupageid = nxs_getpostid_for_title_and_wpposttype("thank you", "post");
+	}
+	
+	if ($thankyoupageid != "")
+	{
+		// its found!
+		$args["destination_articleid"] = $thankyoupageid;
+		$args["destination_articleid_globalid"] = nxs_get_globalid($thankyoupageid, true);
+	}
+	
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_formbox_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);

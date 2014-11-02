@@ -2828,7 +2828,7 @@ function nxs_getpostid_for_title_and_nxstype($title, $nxsposttype)
 {
 	$posttype = nxs_getposttype_by_nxsposttype($nxsposttype);
 	$post = get_page_by_title($title, "OBJECT", $posttype);
-	return $post->ID;	
+	return $post->ID;
 }
 
 function nxs_getpostid_for_title_and_wpposttype($title, $wpposttype)
