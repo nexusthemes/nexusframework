@@ -9937,7 +9937,7 @@ function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $desti
 	
 	$result = '';
 	$result .= '<p class="' . $button_alignment . ' nxs-padding-bottom0">';
-	$result .= '<a target="' . $destination_target . '"' . $onclick . 'class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '" href="' . $url . '">' . $button_text . '</a>';
+	$result .= '<a target="' . $destination_target . '" ' . $onclick . ' class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '" href="' . $url . '">' . $button_text . '</a>';
 	$result .= '</p>';
 	
 	return $result;
