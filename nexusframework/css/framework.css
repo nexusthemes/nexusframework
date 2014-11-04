@@ -2604,6 +2604,11 @@ h3#order_review_heading,
 .nxs-icon-tire:before 				{ content: "\e393"; }
 .nxs-icon-brokenglass:before 		{ content: "\e394"; }
 .nxs-icon-steeringwheel:before 		{ content: "\e395"; }
+.nxs-icon-puzzle:before 			{ content: "\e396"; }
+.nxs-icon-googleanalytic:before 	{ content: "\e397"; }
+.nxs-icon-ghost:before 				{ content: "\e398"; }
+.nxs-icon-handshake:before 			{ content: "\e399"; }
+.nxs-icon-frontenddesign:before 	{ content: "\e400"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
