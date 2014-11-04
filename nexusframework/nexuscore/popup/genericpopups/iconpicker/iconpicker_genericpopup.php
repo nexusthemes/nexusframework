@@ -281,7 +281,12 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"brakes",
 										"tire",
 										"brokenglass",
-										"steeringwheel",									
+										"steeringwheel",
+										"puzzle",
+										"googleanalytic",
+										"ghost",
+										"handshake",
+										"frontenddesign",									
 										
 									);
 										
