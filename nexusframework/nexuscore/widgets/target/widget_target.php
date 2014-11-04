@@ -422,7 +422,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	}
 
 	// Text	
-	$text = '<div class="sub nxs-text nxs-default-p nxs-padding-bottom0 '.$text_alignment_cssclass.' '.$textcssclasses.'">'.$text.'</div>';
+	$text = '<div class="nxs-applylinkvarcolor sub nxs-text nxs-default-p nxs-padding-bottom0 '.$text_alignment_cssclass.' '.$textcssclasses.'">'.$text.'</div>';
 
 	// apply shortcode on text widget
 	$text = do_shortcode($text);
@@ -472,32 +472,41 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	} else {
 		
 		echo '
-		<div class="nxs-applylinkvarcolor nxs-width100 '.$layout.' '.$hover_state.' icon-size-'.$icon_size.'">';
-							
+		<div class=" nxs-width100 '.$layout.' '.$hover_state.' icon-size-'.$icon_size.'">';
+				
+			// Icon			
+			if ($destination_url != "") { echo '<a href="'.$destination_url.'">'; }
 				echo $icon;
-				echo'
-				<div class="content '.$icon_color.'">';
+			if ($destination_url != "") { echo '</a>'; }
+
+			echo'
+			<div class="content '.$icon_color.'">';
+				// Title
+				echo '<div class="nxs-applylinkvarcolor">';
+				
 					if ($destination_url != "") { echo '<a href="'.$destination_url.'">'; }
-					
-					echo $title;
-					if ($title != "" && $text != "") { echo '<div class="nxs-padding-bottom10"></div>'; } 
-					echo $text;
-					if (
-						($title != "" && $button != "") || 
-						($text != "" && $button != "")) { 
-						echo '<div class="nxs-margin"></div>'; 
-					}
-					
+						echo $title;
 					if ($destination_url != "") { echo '</a>'; }
-					echo'
-				</div>';
-				if ($button != "") { echo '<div class="nxs-clear padding"></div>'; }
+				
+				echo '</div>';
+					
+					if ($title != "" && $text != "") { echo '<div class="nxs-padding-bottom10"></div>'; } 
+				
+				// Text
+				echo $text;
+				
+				if (($title != "" && $button != "") || ($text != "" && $button != "")) { 
+					echo '<div class="nxs-margin"></div>'; 
+				}
+				
+				// Button
 				echo $button;
 			
-		echo '
+				echo'
+			</div>
 		</div>
 			
-			<div class="nxs-clear"></div>';
+		<div class="nxs-clear"></div>';
 		
 	}
 	
