@@ -791,6 +791,20 @@ function nxs_licenseregister_invoke()
   	else
   	{
   		update_option('nxs_licensekey', "");
+  		
+  		if (nxs_stringcontains($response["body"], "Access Denied"))
+  		{
+  			?>
+  			<p>
+  				Unable to reach the license server at<br />
+  				<?php echo $url; ?><br />
+  				The most likely explanation why this happens, is that your host blocks
+  				access to our server. Contact your hosting company and ask them to 
+  				verify if they block access to servers, and if they do, whether they
+  				can enable ('white-list') our server.
+  			</p>
+  			<?php
+  		}
   		?>
   		<p>
   			Unable to complete your registration<!-- 1 -->.<br />If you made a valid purchase

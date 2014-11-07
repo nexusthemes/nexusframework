@@ -38,6 +38,44 @@ function nxs_widgets_csv_home_getoptions()
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_csv_getunifiedcontentgroup(),),
 		"fields" => array
 		(
+			// SEPERATOR
+			
+			array( 
+				"id" 				=> "wrapper_sep_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Seperators", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
+			array(
+				"id" 				=> "col_seperator",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Column seperator", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Comma", "nxs_td"),
+					"semicolon"=>nxs_l18n__(";", "nxs_td"),
+				),
+			),
+			
+			/*
+			array(
+				"id" 				=> "line_seperator",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Line seperator", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Slash n", "nxs_td"),
+				),
+			),
+			*/			
+			
+			array( 
+				"id" 				=> "wrapper_sep_end",
+				"type" 				=> "wrapperend",
+			),
+			
+		
 			// TITLE
 			
 			array( 
@@ -211,6 +249,18 @@ function nxs_csv_parsedata($mixedattributes)
 		// default: ,
 		$col_seperator = ",";
 	}
+	else 
+	{
+		if ($col_seperator == "@@@empty@@@")
+		{
+			$col_seperator = ",";
+		}
+		else if ($col_seperator == "semicolon")
+		{
+			$col_seperator = ";";
+		}
+	}
+	
 	if (!isset($line_seperator))
 	{
 		$line_seperator = "\n";
