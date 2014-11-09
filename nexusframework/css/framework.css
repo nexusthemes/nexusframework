@@ -2609,6 +2609,15 @@ h3#order_review_heading,
 .nxs-icon-ghost:before 				{ content: "\e398"; }
 .nxs-icon-handshake:before 			{ content: "\e399"; }
 .nxs-icon-frontenddesign:before 	{ content: "\e400"; }
+.nxs-icon-ring:before 				{ content: "\e401"; }
+.nxs-icon-musicnote:before 			{ content: "\e402"; }
+.nxs-icon-mask:before 				{ content: "\e403"; }
+.nxs-icon-receptionbell:before 		{ content: "\e404"; }
+.nxs-icon-it:before 				{ content: "\e405"; }
+.nxs-icon-footsteps:before 			{ content: "\e406"; }
+.nxs-icon-taxi:before 				{ content: "\e407"; }
+.nxs-icon-carside:before 			{ content: "\e408"; }
+.nxs-icon-golf:before 				{ content: "\e409"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
