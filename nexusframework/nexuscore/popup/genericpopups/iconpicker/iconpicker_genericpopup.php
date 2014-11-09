@@ -286,7 +286,16 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"googleanalytic",
 										"ghost",
 										"handshake",
-										"frontenddesign",									
+										"frontenddesign",
+										"ring",
+										"musicnote",
+										"mask",
+										"receptionbell",
+										"it",
+										"footsteps",
+										"taxi",
+										"carside",
+										"golf",									
 										
 									);
 										
@@ -619,6 +628,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"dry-van",
 										"flat-bed",
 										"truck3",
+										"taxi",
+										"carside",
 										
 										/* Crappicons */
 										"landrover",
