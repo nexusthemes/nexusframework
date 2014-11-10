@@ -124,6 +124,13 @@ function nxs_license_checkupdate($value)
 	}
 	
 	$themeobject = wp_get_theme();
+	
+	$parent = $themeobject->parent();
+	if ($parent != null)
+	{
+		$themeobject = $parent;
+	}
+	
 	$theme = $themeobject->name;
 	
 	// ---
@@ -158,6 +165,13 @@ function nxs_license_checkupdate($value)
 		
 		$site = nxs_geturl_home();
 		$themeobject = wp_get_theme();
+		
+		$parent = $themeobject->parent();
+		if ($parent != null)
+		{
+			$themeobject = $parent;
+		}
+		
 		$version = $themeobject->version;
 	
 		$serviceparams = array
@@ -707,6 +721,13 @@ function nxs_licenseregister_invoke()
 	
 	$site = nxs_geturl_home();
 	$themeobject = wp_get_theme();
+	
+	$parent = $themeobject->parent();
+	if ($parent != null)
+	{
+		$themeobject = $parent;
+	}
+	
 	$version = $themeobject->version;
 	$theme = $themeobject->name;
 
