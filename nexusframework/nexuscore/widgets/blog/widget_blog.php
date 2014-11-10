@@ -1220,8 +1220,6 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					$item_image_alt = $currentpost->post_title;
 					$item_image_title = $currentpost->post_title;
 					$htmlforimage = nxs_gethtmlforimage($item_image_imageid, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title, $grayscale, $enlarge);
-					
-					
 									
 					// Rendering of individual blogentry
 					echo '
@@ -1262,13 +1260,16 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					$currentpostid = $currentpost->ID;
 					
 					$currentposturl = nxs_geturl_for_postid($currentpostid);
+					
+					$post_password_required = post_password_required($currentpostid);
+					
 					$currentencodedposturl = urlencode($currentposturl);
 					$currentposttitle = $currentpost->post_title;
 					$currentpostdate = strtotime($currentpost->post_date);
 					$localizeddate = date_i18n(get_option('date_format'), $currentpostdate);
 					$currentencodedtitle = urlencode($currentposttitle);
 					$item_destination_articleid = $currentpostid;
-	
+					
 					// Blog title		
 					if ($hide_title != "")
 					{
@@ -1351,6 +1352,12 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					$item_image_title = $currentposttitle;
 					$htmlforimage = nxs_gethtmlforimage($item_image_imageid, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title, $grayscale, $enlarge);
 					
+					if ($post_password_required)
+					{
+						// suppress
+						$htmlforimage = "";
+					}
+					
 					// Excerpt
 					$currentexcerpt = "";
 					if ($item_text_truncatelength != "") 
@@ -1392,7 +1399,8 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 						}
 					}
 		
-					if ($item_text_truncatelength != "" && $item_text_truncatelength != "0") {
+					if ($item_text_truncatelength != "" && $item_text_truncatelength != "0") 
+					{
 						$tekst = '<p class="nxs-default-p nxs-padding-bottom0"><span>' . $currentexcerpt . '</span></p>';
 					}
 					
@@ -1483,6 +1491,13 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 									. $googleplus
 									. '
 								</ul>';
+					}
+
+					// password
+					if ($post_password_required)
+					{
+						$currentexcerpt = "Protected content";
+						$tekst = '<p class="nxs-default-p nxs-padding-bottom0"><span>' . $currentexcerpt . '</span></p>';
 					}
 									
 					/* RENDERING OF INDIVIDUAL BLOGENTRY

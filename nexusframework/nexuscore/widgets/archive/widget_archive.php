@@ -1055,6 +1055,8 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 					$currenttitle = $currentpost->post_title;
 					$currentencodedtitle = urlencode($currenttitle);
 					$item_destination_articleid = $currentpostid;
+					
+					$post_password_required = post_password_required($currentpostid);
 	
 					// archive title			
 					if ($hide_title == "") {
@@ -1220,6 +1222,15 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 									. '
 								</ul>';
 					}
+					
+					// password handling
+					if ($post_password_required)
+					{
+						// suppress
+						$htmlforimage = "";
+						$currentexcerpt = "Protected content";
+						$tekst = '<p class="nxs-default-p nxs-padding-bottom0"><span>' . $currentexcerpt . '</span></p>';
+					}					
 									
 					/* RENDERING OF INDIVIDUAL ARCHIVEENTRY
 					---------------------------------------------------------------------------------------------------- */
