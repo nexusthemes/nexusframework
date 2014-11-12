@@ -411,17 +411,15 @@ if (is_admin)
 </script>
 <?php
 $fontsbeingused = array();
-// add font fam for the "active" font1
-$fontfams = nxs_getmappedfontfams($sitemeta['vg_fontfam_1']);
-foreach ($fontfams as $fontfam)
+$fontidentifiers = nxs_font_getfontidentifiers();
+foreach ($fontidentifiers as $currentfontidentifier)
 {
-	$fontsbeingused[]= $fontfam;
-}
-// add font fam for the "active" font2
-$fontfams = nxs_getmappedfontfams($sitemeta['vg_fontfam_2']);
-foreach ($fontfams as $fontfam)
-{
-	$fontsbeingused[]= $fontfam;
+	$vg_fontfam = $sitemeta["vg_fontfam_{$currentfontidentifier}"];
+	$fontfams = nxs_getmappedfontfams($vg_fontfam);
+	foreach ($fontfams as $fontfam)
+	{
+		$fontsbeingused[]= $fontfam;
+	}
 }
 ?>
 <?php
