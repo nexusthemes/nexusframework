@@ -1260,6 +1260,29 @@ function nxs_stringcontains($haystack, $needle)
 	}
 }
 
+/** 
+ * Convert a date format to a jQuery UI DatePicker format  
+ * 
+ * @param string $dateFormat a date format 
+ * @return string 
+ */ 
+function nxs_date_getdatepickerformat() 
+{ 
+	$result = get_option("date_format");
+	
+  $chars = array( 
+      // Day
+      'd' => 'dd', 'j' => 'd', 'l' => 'DD', 'D' => 'D',
+      // Month 
+      'm' => 'mm', 'n' => 'm', 'F' => 'MM', 'M' => 'M', 
+      // Year 
+      'Y' => 'yy', 'y' => 'y', 
+  ); 
+
+  $result = strtr((string)$result, $chars); 
+  return $result;
+} 
+
 function nxs_insertarrayindex($array, $new_element, $index) 
 {
 	$start = array_slice($array, 0, $index); 

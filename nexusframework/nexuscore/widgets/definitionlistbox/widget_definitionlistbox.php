@@ -85,7 +85,7 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 		)
 	);
 	
-	// nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
+	nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
 	
 	return $options;
 }
