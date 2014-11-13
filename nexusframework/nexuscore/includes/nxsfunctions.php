@@ -5572,69 +5572,92 @@ function nxs_append_posttemplate($postid, $pagetemplate)
 
 function nxs_getthemeversion($expire = false) 
 {
-	if ($expire == true || NXS_DEFINE_NXSSERVERVALUECACHING)
-	{
-		delete_transient('nxs_theme_version');
-	}
+	global $nxs_global_themeversion;
 	
-	$value = get_transient('nxs_theme_version');
-	if (!$value)
+	if ($nxs_global_themeversion != "")
 	{
-		// refetching
-		
-		//
-		// fetching is different depending on the WP version
-		//
-		
-		if (function_exists('wp_get_theme'))
-		{
-			// WP >= 3.4
-			$nxstheme = wp_get_theme();
-			$value = $nxstheme->Version;
-		}
-		else
-		{
-			// if WP <= 3.3
-		 	$theme_name = get_stylesheet_uri();
-			$info = get_theme_data($theme_name);
-			$value = $info['Version'];
-		}
-
-		// Cache the value for 1 hour
-		set_transient('nxs_theme_version', $value, 60 * 60 * 1);
+		$value = $nxs_global_themeversion;
 	}
+	else
+	{		
+		if ($expire == true || NXS_DEFINE_NXSSERVERVALUECACHING)
+		{
+			delete_transient('nxs_theme_version');
+		}
+		
+		$value = get_transient('nxs_theme_version');
+		if (!$value)
+		{
+			// refetching
+			
+			//
+			// fetching is different depending on the WP version
+			//
+			
+			if (function_exists('wp_get_theme'))
+			{
+				// WP >= 3.4
+				$nxstheme = wp_get_theme();
+				$value = $nxstheme->Version;
+			}
+			else
+			{
+				// if WP <= 3.3
+			 	$theme_name = get_stylesheet_uri();
+				$info = get_theme_data($theme_name);
+				$value = $info['Version'];
+			}
 	
+			// Cache the value for 1 hour
+			set_transient('nxs_theme_version', $value, 60 * 60 * 1);
+		}
+		
+		$nxs_global_themeversion = $value;
+	}
 	return $value;
 }
 
 function nxs_getthemename($expire = false) 
 {
-	if ($expire == true || NXS_DEFINE_NXSSERVERVALUECACHING == false)
-	{
-		delete_transient('nxs_theme_name');
-	}
+	global $nxs_global_themename;
 	
-	$value = get_transient('nxs_theme_name');
-	if (!$value)
+	if ($nxs_global_themename != "")
 	{
-		if (function_exists('wp_get_theme'))
+		$value = $nxs_global_themename;
+	}
+	else
+	{
+		if ($expire == true || NXS_DEFINE_NXSSERVERVALUECACHING == false)
 		{
-			// WP >= 3.4
-			$nxstheme = wp_get_theme();
-			$value = $nxstheme->Name;
-		}
-		else
-		{
-			// if WP <= 3.3
-		 	$theme_name = get_stylesheet_uri();
-			$info = get_theme_data($theme_name);
-			$value = $info[ 'Name'];
+			delete_transient('nxs_theme_name');
+			// $nxs_global_themename = "";
 		}
 
-		// Cache the value for 12 hours.
-		set_transient( 'nxs_theme_name', $value, 60 * 60 * 12 );
-	}
+		$value = get_transient('nxs_theme_name');
+		if (!$value)
+		{
+			if (function_exists('wp_get_theme'))
+			{
+				// WP >= 3.4
+				$nxstheme = wp_get_theme();
+				$value = $nxstheme->Name;
+			}
+			else
+			{
+				// if WP <= 3.3
+			 	$theme_name = get_stylesheet_uri();
+				$info = get_theme_data($theme_name);
+				$value = $info[ 'Name'];
+			}
 	
+			// Cache the value for 12 hours.
+			//set_transient( 'nxs_theme_name', $value, 60 * 60 * 12 );
+			
+			echo "WAARDE WORDT:" . $value;
+		}
+		
+		$nxs_global_themename = $value;
+	}
 	return $value;
 }
 
