@@ -130,7 +130,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"glass",
 										"food",
 										"leaf",
-										"rocket",
 										"dashboard2",
 										"hammer",
 										"fire",
@@ -138,8 +137,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"magnet",
 										"trash",
 										"briefcase",
-										"airplane",
-										"truck",
 										"road",
 										"accessibility",
 										"target",
@@ -171,7 +168,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"heart-broken",
 										"thumbs-up",
 										"thumbs-up2",
-										
 										"point-up",
 										"point-down",
 										"point-right",
@@ -224,9 +220,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"logo",
 										"signpost",
 										"wordpresstitle",
-										"bus",
-										"car",
-										"train1",
 										"faucet",
 										"hardhat",
 										"herring",
@@ -248,7 +241,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"dry-van",
 										"snowflake",
 										"flat-bed",
-										"truck3",
 										"trolley",
 										"spray-can",
 										"sofa",
@@ -269,7 +261,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"ribbon",
 										"headset",
 										"mobilelove",
-										"rocket2",
 										"hands",
 										"joint",
 										"pelvis",
@@ -293,8 +284,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"receptionbell",
 										"it",
 										"footsteps",
-										"taxi",
-										"carside",
 										"golf",									
 										
 									);
@@ -585,7 +574,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"fox", 
 										"mouse", 
 										"mole", 
-										
 										"pigeon", 
 										"rabbit", 
 										"squirrel",
@@ -630,6 +618,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"truck3",
 										"taxi",
 										"carside",
+										"bus",
+										"rocket",
+										"rocket2",
 										
 										/* Crappicons */
 										"landrover",
