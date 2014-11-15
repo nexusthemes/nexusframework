@@ -284,7 +284,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"receptionbell",
 										"it",
 										"footsteps",
-										"golf",									
+										"golf",
+										"fuel",
+										"jumpstart",									
 										
 									);
 										
@@ -579,7 +581,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"squirrel",
 										"rat",
 										"dog",
-										"cat",  
+										"cat",
+										"spider",
+										"worm",  
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -621,6 +625,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"bus",
 										"rocket",
 										"rocket2",
+										"towtruck",
+										"cartruck",
 										
 										/* Crappicons */
 										"landrover",
