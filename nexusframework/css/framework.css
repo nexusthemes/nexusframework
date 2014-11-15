@@ -2618,6 +2618,12 @@ h3#order_review_heading,
 .nxs-icon-taxi:before 				{ content: "\e407"; }
 .nxs-icon-carside:before 			{ content: "\e408"; }
 .nxs-icon-golf:before 				{ content: "\e409"; }
+.nxs-icon-spider:before 			{ content: "\e410"; }
+.nxs-icon-worm:before 				{ content: "\e411"; }
+.nxs-icon-towtruck:before 			{ content: "\e412"; }
+.nxs-icon-cartruck:before 			{ content: "\e413"; }
+.nxs-icon-fuel:before 				{ content: "\e414"; }
+.nxs-icon-jumpstart:before 			{ content: "\e415"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
