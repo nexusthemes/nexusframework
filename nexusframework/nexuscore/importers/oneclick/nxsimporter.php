@@ -16,10 +16,6 @@ define('NXS_DEFINE_IMPORTERID', 'nxsimporter');
 
 nxs_resetthumbnaildimensions();
 
-// update the theme version
-nxs_getthemeversion($expire = true);
-nxs_getthemename($expire = true);
-
 // Load Importer API
 require_once ABSPATH . 'wp-admin/includes/taxonomy.php';
 require_once ABSPATH . 'wp-admin/includes/import.php';

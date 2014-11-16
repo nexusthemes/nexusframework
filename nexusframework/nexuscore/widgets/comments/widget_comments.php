@@ -131,7 +131,17 @@ function nxs_widgets_comments_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Image size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("image_size"),
 				"unistylablefield"	=> true
-			),	
+			),
+			array( 
+				"id" 				=> "formfields",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Fields", "nxs_td"),
+				"dropdown" 			=> array(
+					"name|email|website"=>nxs_l18n__("Name | Email | Website", "nxs_td"),
+					"name|email"=>nxs_l18n__("Name | Email", "nxs_td"), 
+				),
+				"unistylablefield"	=> true
+			),
 		),
 	);
 	
@@ -169,7 +179,8 @@ function nxs_widgets_comments_helper_render_comment_recursive(
 	$border_width,
 	$avatar_border_width,
 	$avatar_shadow,
-	$avatar_size
+	$avatar_size,
+	$formfields
 	) {
 		
 	/* EXPRESSIONS RECURSIVE FUNCTION
@@ -239,10 +250,17 @@ function nxs_widgets_comments_helper_render_comment_recursive(
 				<div class="metadata nxs-applylinkvarcolor">
 					<h4>' . $currentcomment->comment_author . '</h4>
 					<div class="nxs-margin-top5"></div>
-					<span class="nxs-default-p nxs-padding-bottom0">' . $datehtml . '</span>
-					<div class="nxs-margin-top5"></div>
-					<span class="nxs-default-p nxs-padding-bottom0"><a target="_blank" rel="no-follow" href="' . $currentcomment->comment_author_url . '">' . $currentcomment->comment_author_url . '</a></span>
-					<div class="nxs-clear nxs-filler"></div>
+					<span class="nxs-default-p nxs-padding-bottom0">' . $datehtml . '</span>';
+
+				if ($formfields == "" || $formfields == "name|email|website")
+				{
+					echo '					
+						<div class="nxs-margin-top5"></div>
+						<span class="nxs-default-p nxs-padding-bottom0"><a target="_blank" rel="no-follow" href="' . $currentcomment->comment_author_url . '">' . $currentcomment->comment_author_url . '</a></span>
+						<div class="nxs-clear nxs-filler"></div>';
+				}
+				
+				echo '
 				</div>
 		    
 				<!-- COMMENT -->
@@ -286,7 +304,8 @@ function nxs_widgets_comments_helper_render_comment_recursive(
 				$border_width,
 				$avatar_border_width,
 				$avatar_shadow,
-				$avatar_size
+				$avatar_size,
+				$formfields
 			);
 			
 		} else if ($currentcomment->comment_approved == 0){
@@ -342,6 +361,7 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 	
 	$title = $mixedattributes['title'];
 	$initialcommentstate = $mixedattributes['initialcommentstate'];
+	$formfields = $mixedattributes['formfields'];
 
 	global $nxs_global_placeholder_render_statebag;
 
@@ -441,7 +461,8 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 			$border_width,
 			$avatar_border_width,
 			$avatar_shadow,
-			$avatar_size
+			$avatar_size,
+			$formfields
 		);
 		
 		$title = $mixedattributes['title'];
@@ -468,12 +489,18 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 				<div class="nxs-float-left nxs-width20"><label>' . nxs_l18n__("Email address[nxs:tooltip]", "nxs_td") . ' *:</label></div>
 				<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text"></div>
 				<div class="nxs-clear padding"></div>
+				';
 				
-				<!-- WEBSITE -->
-				<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Website[nxs:tooltip]", "nxs_td"); echo ':</label></div>
-				<div class="nxs-float-right nxs-width80"><input id="website" name="website" type="text"></div>
-				<div class="nxs-clear padding"></div>
-				
+				if ($formfields == "" || $formfields == "name|email|website")
+				{
+					echo '
+					<!-- WEBSITE -->
+					<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Website[nxs:tooltip]", "nxs_td"); echo ':</label></div>
+					<div class="nxs-float-right nxs-width80"><input id="website" name="website" type="text"></div>
+					<div class="nxs-clear padding"></div>';
+				}
+
+				echo '
 				<!-- COMMENT -->
 				<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Comment[nxs:tooltip]", "nxs_td"); echo ' *:</label></div>
 				<div class="nxs-float-right nxs-width80"><textarea id="comment" name="comment"></textarea></div>

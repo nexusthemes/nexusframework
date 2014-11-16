@@ -72,6 +72,11 @@ function nxs_returntrue()
 	return true;
 }
 
+function nxs_returnfalse()
+{
+	return false;
+}
+
 // kudos to http://www.php.net//manual/en/function.shuffle.php
 function nxs_shuffle_assoc($list) 
 { 
@@ -162,6 +167,13 @@ function nxs_after_theme_setup()
 	{
 		nxs_setupcache();
 	}
+	
+	// we disable the admin bar, as 
+	show_admin_bar(false);
+	//add_filter("wp_admin_bar_class", "nxs_returnfalse");
+	
+	//
+	add_action("wp_footer", "remove_admin_bar_menus");
 }
 
 // stage0; first consideration stage; whether or not to cache data on this site
@@ -5570,7 +5582,7 @@ function nxs_append_posttemplate($postid, $pagetemplate)
 	nxs_after_postcontents_updated($postid);
 }
 
-function nxs_getthemeversion($expire = false) 
+function nxs_getthemeversion() 
 {
 	global $nxs_global_themeversion;
 	
@@ -5579,37 +5591,15 @@ function nxs_getthemeversion($expire = false)
 		$value = $nxs_global_themeversion;
 	}
 	else
-	{		
-		if ($expire == true || NXS_DEFINE_NXSSERVERVALUECACHING)
+	{
+		if (function_exists("nxs_theme_getmeta"))
 		{
-			delete_transient('nxs_theme_version');
+			$thememeta = nxs_theme_getmeta();
+			$value = $thememeta["version"];
 		}
-		
-		$value = get_transient('nxs_theme_version');
-		if (!$value)
+		else
 		{
-			// refetching
-			
-			//
-			// fetching is different depending on the WP version
-			//
-			
-			if (function_exists('wp_get_theme'))
-			{
-				// WP >= 3.4
-				$nxstheme = wp_get_theme();
-				$value = $nxstheme->Version;
-			}
-			else
-			{
-				// if WP <= 3.3
-			 	$theme_name = get_stylesheet_uri();
-				$info = get_theme_data($theme_name);
-				$value = $info['Version'];
-			}
-	
-			// Cache the value for 1 hour
-			set_transient('nxs_theme_version', $value, 60 * 60 * 1);
+			$value = "0.1.0.0";
 		}
 		
 		$nxs_global_themeversion = $value;
@@ -5617,47 +5607,26 @@ function nxs_getthemeversion($expire = false)
 	return $value;
 }
 
-function nxs_getthemename($expire = false) 
+// obsolete function; should eventually be removed
+function nxs_getthemename()
 {
-	global $nxs_global_themename;
-	
-	if ($nxs_global_themename != "")
+	return nxs_getthemeid();
+}
+
+function nxs_getthemeid() 
+{
+	if (function_exists("nxs_theme_getmeta"))
 	{
-		$value = $nxs_global_themename;
+		$thememeta = nxs_theme_getmeta();
+		$value = $thememeta["id"];
 	}
 	else
 	{
-		if ($expire == true || NXS_DEFINE_NXSSERVERVALUECACHING == false)
-		{
-			delete_transient('nxs_theme_name');
-			// $nxs_global_themename = "";
-		}
-
-		$value = get_transient('nxs_theme_name');
-		if (!$value)
-		{
-			if (function_exists('wp_get_theme'))
-			{
-				// WP >= 3.4
-				$nxstheme = wp_get_theme();
-				$value = $nxstheme->Name;
-			}
-			else
-			{
-				// if WP <= 3.3
-			 	$theme_name = get_stylesheet_uri();
-				$info = get_theme_data($theme_name);
-				$value = $info[ 'Name'];
-			}
-	
-			// Cache the value for 12 hours.
-			//set_transient( 'nxs_theme_name', $value, 60 * 60 * 12 );
-			
-			echo "WAARDE WORDT:" . $value;
-		}
-		
-		$nxs_global_themename = $value;
+		$value = "unknown";
 	}
+	
+	$nxs_global_themeid = $value;
+
 	return $value;
 }
 

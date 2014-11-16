@@ -263,7 +263,15 @@ function nxs_csv_parsedata($mixedattributes)
 	
 	if (!isset($line_seperator))
 	{
-		$line_seperator = "\n";
+		if (nxs_stringcontains($csv_data, "\n"))
+		{
+			$line_seperator = "\n";
+		}
+		else
+		{
+			// important step; the exporter replaces \n's to \r's
+			$line_seperator = "\r";
+		}
 	}
 	if (!isset($skip_empty_rows))
 	{
