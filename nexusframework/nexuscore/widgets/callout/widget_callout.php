@@ -305,11 +305,12 @@ function nxs_widgets_callout_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Responsive display", "nxs_td"),
 				"dropdown" 			=> array
 				(
-					"@@@nxsempty@@@" => nxs_l18n__("Never", "nxs_td"),
-					"callout480" => nxs_l18n__("480", "nxs_td"),
-					"callout720" => nxs_l18n__("720", "nxs_td"),
-					"callout960" => nxs_l18n__("960", "nxs_td"),
-					"callout1200" => nxs_l18n__("1200", "nxs_td"),
+					"@@@nxsempty@@@" => nxs_l18n__("Select an Option", "nxs_td"),
+					"never" 		=> nxs_l18n__("Never", "nxs_td"),
+					"callout480" 	=> nxs_l18n__("480", "nxs_td"),
+					"callout720" 	=> nxs_l18n__("720", "nxs_td"),
+					"callout960" 	=> nxs_l18n__("960", "nxs_td"),
+					"callout1200" 	=> nxs_l18n__("1200", "nxs_td"),
 				),
 				"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
 				"unistylablefield"	=> true
