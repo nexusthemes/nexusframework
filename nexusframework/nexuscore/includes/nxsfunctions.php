@@ -3526,6 +3526,17 @@ function nxs_wpseo_video_index_content($content, $vid)
   return $content;
 }
 
+function nxs_seo_getanalyticsua()
+{
+	$meta = nxs_getsitemeta_internal(false);
+	$result = $sitemeta["analyticsUA"];
+	if ($result == "UA-38116525-1")
+	{
+		$result = "";
+	}
+	return $result;
+}
+
 function nxs_wpseo_pre_analysis_post_content($content)
 {
 	global $nxs_doing_seo;

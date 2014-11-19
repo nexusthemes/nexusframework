@@ -465,16 +465,8 @@ function nxs_pagetemplate_handleheader()
 	{
 		$faviconid = "";
 	}
-	
-	if (isset($sitemeta["analyticsUA"]))
-	{
-		$analyticsUA = $sitemeta["analyticsUA"];
-	}
-	else
-	{
-		$analyticsUA = "";
-	}
-	
+
+	$analyticsUA = nxs_seo_getanalyticsua();	
 ?>
 <!DOCTYPE html>
 <?php nxs_render_htmlstarttag(); ?>
