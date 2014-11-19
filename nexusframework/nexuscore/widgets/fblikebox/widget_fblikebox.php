@@ -207,32 +207,55 @@ function nxs_widgets_fblikebox_render_webpart_render_htmlvisualization($args)
 	} else {
 		
 		global $locale;
-		
-			echo '
-			<div id="fb-root"></div>
-			<script>(function(d, s, id) {
-			  var js, fjs = d.getElementsByTagName(s)[0];
-			  if (d.getElementById(id)) return;
-			  js = d.createElement(s); js.id = id;
-			  js.src = "//connect.facebook.net/' . $locale . '/all.js#xfbml=1";
-			  fjs.parentNode.insertBefore(js, fjs);
-			}(document, \'script\', \'facebook-jssdk\'));
-			</script>';
-		
-			// Likebox
-			echo '
-			<div class="fb-like-box-wrapper '.$likebox_color_cssclass.'" style="height: '.$likebox_height.'">
-				<div class="fb-like-box" 
-					data-href="'.$likebox_url.'" 
-					data-height="'.$likebox_height.'" 
-					data-colorscheme="'.$likebox_colorscheme.'" 
-					data-show-faces="'.$likebox_faces.'" 
-					data-header="true" 
-					data-stream="'.$likebox_stream.'" 
-					data-show-border="'.$likebox_border.'">
-				</div>
+
+		// Likebox
+		echo '
+		<div class="fb-like-box-wrapper '.$likebox_color_cssclass.'" style="height: '.$likebox_height.'">
+			<div class="fb-like-box" 
+				data-href="'.$likebox_url.'" 
+				data-height="'.$likebox_height.'" 
+				data-colorscheme="'.$likebox_colorscheme.'" 
+				data-show-faces="'.$likebox_faces.'" 
+				data-header="true" 
+				data-stream="'.$likebox_stream.'" 
+				data-show-border="'.$likebox_border.'">
 			</div>
-		';
+		</div>
+		
+		<script>
+    	window.fbAsyncInit = function() 
+    	{
+    		nxs_js_log("**** fbAsyncInit invoked");
+    		
+    		if (typeof(FB) != "undefined" && FB != null ) 
+				{
+					FB.XFBML.parse();
+
+      		nxs_js_log("**** FB.XFBML.parse finished");
+
+      		// tell the layout engine to post process the layout
+					// after the DOM is updated
+					nxs_gui_set_runtime_dimensions_enqueuerequest("nxs-framework-fbpostprocessor");
+
+				}
+    		
+    	}
+    </script>
+		
+		';		
+		
+		echo '
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/' . $locale . '/all.js#xfbml=1";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, \'script\', \'facebook-jssdk\'));
+		</script>';
+	
+			
 		
 	}
 	

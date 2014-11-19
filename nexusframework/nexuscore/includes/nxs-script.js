@@ -2934,6 +2934,26 @@ function nxs_js_redirect_top(url)
 		  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 		}
 		
+		function nxs_js_shouldsetelementheight(element)
+		{
+			var result = true;
+		
+			if (jQuery(element).hasClass("nxs-column-1-1"))
+			{
+				result = false;
+			}
+			else if (jQuery(element).hasClass("nxs-widgettype-twittertweets"))
+			{
+				result = false;
+			}
+			else if (jQuery(element).hasClass("nxs-widgettype-fblikebox"))
+			{
+				result = false;
+			}
+		
+			return result;	
+		}
+		
 		function nxs_js_alignheightofelementswithindomelement(domelement, innerselector)
 		{
 			//nxs_js_log('aligning height for row');
@@ -3065,7 +3085,7 @@ function nxs_js_redirect_top(url)
 						// afhankelijk van of de editor aan- of uitstaat...
 						if (nxs_js_nxseditoractive)
 						{
-							if (jQuery(element).hasClass("nxs-column-1-1"))
+							if (!nxs_js_shouldsetelementheight(element))
 							{
 								// if a row has just one column, we wont set the height of the row
 								// to allow DOM updates to not mess up the layout
@@ -3077,7 +3097,7 @@ function nxs_js_redirect_top(url)
 						}
 						else
 						{
-							if (jQuery(element).hasClass("nxs-column-1-1"))
+							if (!nxs_js_shouldsetelementheight(element))
 							{
 								// if a row has just one column, we wont set the height of the row
 								// to allow DOM updates to not mess up the layout
@@ -3184,7 +3204,7 @@ function nxs_js_redirect_top(url)
 								heightToSet = heightToSet - 2;
 							}
 							
-							if (jQuery(element).hasClass("nxs-column-1-1"))
+							if (!nxs_js_shouldsetelementheight(element))
 							{
 								// absorb; if a row has just one column, there's no advantage
 								// of setting the height. To allow DOM updates in the widget
@@ -3253,7 +3273,7 @@ function nxs_js_redirect_top(url)
 					{
 						var columnindex = 1;
 					
-						// remove height
+						// set height
 						var innerplaceholders = jQuery(rowelement).find(".XYZ");
 						jQuery.each
 						(
@@ -3262,8 +3282,24 @@ function nxs_js_redirect_top(url)
 								jQuery(currentinnerplaceholder).css('height', 'auto');
 								jQuery(currentinnerplaceholder).css('margin-top', '0');
 								var height = jQuery(currentinnerplaceholder).outerHeight(true);
-								jQuery(currentinnerplaceholder).closest('.nxs-placeholder').css('height', height).addClass("nxs-dyn-height");
-								//nxs_js_log("f) setting height to: " + height);
+								
+								var element = jQuery(currentinnerplaceholder).closest('.nxs-placeholder');
+								jQuery(element).each
+								(
+									function(index)
+									{
+										var element = this;
+										if (nxs_js_shouldsetelementheight(element))
+										{
+											jQuery(element).css('height', height).addClass("nxs-dyn-height");
+											//nxs_js_log("f) setting height to: " + height);
+										}
+										else
+										{
+											// skip the element
+										}
+									}
+								);
 							}
 						);
 					}
@@ -6030,10 +6066,16 @@ function nxs_js_redirect_top(url)
 		
 		function nxs_js_fb_postprocessor()
 		{
+			nxs_js_log("fb post processor");
+
 			if (typeof(FB) != 'undefined' && FB != null ) 
 			{
 				FB.XFBML.parse();
 			}
+			
+			// tell the layout engine to post process the layout
+			// after the DOM is updated
+			nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-fbpostprocessor');
 		}
 		
 		var nxs_js_googleplusinjected = false;
