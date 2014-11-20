@@ -323,6 +323,14 @@ function nxs_widgets_comments_helper_render_comment_recursive(
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
 
+function nxs_widgets_comments_render_webpart_render_htmlvisualization_native()
+{
+	if ( comments_open() || get_comments_number() ) 
+	{
+		comments_template();
+	}
+}
+
 function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 {
 	// Importing variables
@@ -374,323 +382,331 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 	
 	// Turn on output buffering
 	ob_start();
+	nxs_widgets_comments_render_webpart_render_htmlvisualization_native();
+	$html = ob_get_contents();
+	ob_end_clean();
 	
-	/* EXPRESSIONS
-	---------------------------------------------------------------------------------------------------- */
-	
-	$args = array(
-		"post_id" => $nxs_global_current_containerpostid_being_rendered, 
-		"status" => 'approve',
+	if ($html == "")
+	{
+		ob_start();
 		
-	);
+		/* EXPRESSIONS
+		---------------------------------------------------------------------------------------------------- */
+		
+		$args = array(
+			"post_id" => $nxs_global_current_containerpostid_being_rendered, 
+			"status" => 'approve',
+			
+		);
+		
+		if ($comment_order == "past to present")
+		{
+			$args["order"] = "ASC";
+		}
+		else if ($comment_order == "present to past")
+		{
+			$args["order"] = "DESC";
+		}
+		else
+		{
+			$args["order"] = "ASC";
+		}
+		
+		$comments = get_comments($args);
+		
+		$class = "class='nxs-comments'";
+		
+		// Default variables
+		$button_color_cssclass 	= nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
+		$button_scale_cssclass 	= nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
+		$comment_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $comment_color);
+		$padding_cssclass 		= nxs_getcssclassesforlookup("nxs-padding-", $padding);
+		$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
+		$border_width_cssclass 	= nxs_getcssclassesforlookup("nxs-border-width-", $border_width);
+		
+		// Concatenations
+		$concatenated_comments_css = nxs_concatenateargswithspaces(
+			$comment_color_cssclass, 
+			$padding_cssclass, 
+			$border_radius_cssclass, 
+			$border_width_cssclass, 
+			$debthmarginclass
+		);
+		$concatenated_button_css = nxs_concatenateargswithspaces(
+			$button_color_cssclass, 
+			$button_scale_cssclass
+		);
+		
+		/* OUTPUT
+		---------------------------------------------------------------------------------------------------- */
+		
+		echo'
+		
+		<div ' . $class . '>
+			
+			<div class="reply nxs-clear">
+		    	<a style="display: none;" class="nxsbutton nxs-float-left" href="#" onclick="preparecomment_' . $placeholderid .'(0, true); return false;">Reageer</a>
+		    	<div class="nxs-clear padding"></div>
+		    	<div class="nxs-reply-container" id="nxs_replycontainer_0"></div>
+				<div class="nxs-clear"></div>
+			</div>';
+			
+			$count = nxs_widgets_comments_helper_countapproved_recursive($comments, "0", 0);
+			if ($count == 0){
+				// nothing yet
+			} else if ($count == 1) {
+				echo "<div class='nxs-clear nxs-padding-top20'></div>";
+				echo '<h3 class="nxs-title">1 ' . nxs_l18n__("comment[nxs:span]", "nxs_td") . "</h3>";
+			} else {
+				echo "<div class='nxs-clear nxs-padding-top20'></div>";
+				echo '<h3 class="nxs-title">' . $count . " " . nxs_l18n__("comments[nxs:span]", "nxs_td") . "</h3>";
+			}
+			
+			echo '<div class="nxs-clear"></div>';
+			
+			nxs_widgets_comments_helper_render_comment_recursive(
+				$nxs_global_current_containerpostid_being_rendered, 
+				$placeholderid, 
+				$comments, 0, 0, 
+				$button_color, 
+				$button_scale, 
+				$comment_color, 
+				$padding, 
+				$border_radius, 
+				$border_width,
+				$avatar_border_width,
+				$avatar_shadow,
+				$avatar_size,
+				$formfields
+			);
+			
+			$title = $mixedattributes['title'];
+			
+			echo'
+			<div class="template" style="display: none;">
+				<div class="nxs-form ' . $concatenated_comments_css . '" id="nxs_commentform_' . $placeholderid . '">';
+				
+					if (isset($title)) {
+						echo '<h3 class="nxs-title">' . $title . '</h3>';
+					}
+				
+					echo '
+			
+					<input id="postid" name="postid" type="hidden" value="' . $nxs_global_current_containerpostid_being_rendered . '" />
+					<input id="replytocommentid" type="hidden" name="replytocommentid" value="0" />
+			
+					<!-- NAME -->
+			    	<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Name[nxs:tooltip]", "nxs_td"); echo ' *:</label></div>
+			    	<div class="nxs-float-right nxs-width80"><input id="naam" name="naam" type="text"></div>
+			    	<div class="nxs-clear padding"></div>
+					
+					<!-- EMAIL -->
+					<div class="nxs-float-left nxs-width20"><label>' . nxs_l18n__("Email address[nxs:tooltip]", "nxs_td") . ' *:</label></div>
+					<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text"></div>
+					<div class="nxs-clear padding"></div>
+					';
+					
+					if ($formfields == "" || $formfields == "name|email|website")
+					{
+						echo '
+						<!-- WEBSITE -->
+						<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Website[nxs:tooltip]", "nxs_td"); echo ':</label></div>
+						<div class="nxs-float-right nxs-width80"><input id="website" name="website" type="text"></div>
+						<div class="nxs-clear padding"></div>';
+					}
 	
-	if ($comment_order == "past to present")
-	{
-		$args["order"] = "ASC";
-	}
-	else if ($comment_order == "present to past")
-	{
-		$args["order"] = "DESC";
+					echo '
+					<!-- COMMENT -->
+					<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Comment[nxs:tooltip]", "nxs_td"); echo ' *:</label></div>
+					<div class="nxs-float-right nxs-width80"><textarea id="comment" name="comment"></textarea></div>
+					<div class="nxs-clear padding"></div>
+					
+					<!-- BUTTONS -->
+					<a class="nxs-button ' . $concatenated_button_css . ' nxs-margin-right15" href="#" onclick="postcomment_' . $placeholderid .'(); return false;">'; nxs_l18n_e("Send[nxs:tooltip]", "nxs_td"); echo '</a>
+					<a class="nxs-button ' . $concatenated_button_css . '" href="#" onclick="cancelcomment_' . $placeholderid .'(); return false;">'; nxs_l18n_e("Cancel[nxs:tooltip]", "nxs_td"); echo '</a>
+					<div class="nxs-clear"></div>
+					
+			  </div>
+			  
+			</div>
+		
+		</div>';
+		
+		?>
+	    
+		<script type='text/javascript'>
+			function preparecomment_<?php echo $placeholderid; ?>(replytocommentid, shouldscrollandfocus)
+			{
+				// alles inklappen
+				jQuery(".nxs-reply-container").slideUp(400, function() {
+					// ensure there's one visible
+					jQuery("#nxs_replycontainer_" + replytocommentid).show();
+					
+					nxs_js_reenable_all_window_events();
+				});
+				
+				jQuery('#nxs_commentform_<?php echo $placeholderid; ?>').show();
+				
+				// behalve degene waar het om gaat
+				jQuery("#nxs_replycontainer_" + replytocommentid).show();
+				
+				// get template
+				var template = jQuery("#nxs_commentform_<?php echo $placeholderid;?>").parent().html();
+				// wipe previous location
+				jQuery("#nxs_commentform_<?php echo $placeholderid;?>").parent().html("");
+				// add contact form on the right place
+				jQuery("#nxs_replycontainer_" + replytocommentid).html(template);
+	
+				//nxs_js_log(template);
+	
+				
+				jQuery("#nxs_replycontainer_" + replytocommentid).hide();
+				jQuery("#nxs_replycontainer_" + replytocommentid).slideDown(500, function()
+				{
+					if (shouldscrollandfocus){
+						jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #naam').focus();
+					}
+					jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #replytocommentid').val(replytocommentid);
+					
+					if (shouldscrollandfocus)
+					{
+						jQuery('html, body').animate({scrollTop: jQuery("#nxs_replycontainer_" + replytocommentid).offset().top}, 400);
+					}
+					
+					nxs_js_reenable_all_window_events();
+				});
+			}
+	
+			jQuery(window).load(function()
+			{
+				//nxs_js_log('comment; window loaded');
+				// eerste reageer block standaard tonen
+				preparecomment_<?php echo $placeholderid; ?>(0, false);
+			});
+					
+			function deletecomment_<?php echo $placeholderid; ?>(postid, commentid, element)
+			{
+				var answer = confirm("<?php nxs_l18n_e("Are you sure you want to remove this comment?[nxs:tooltip]", "nxs_td"); ?>");
+				if (!answer)
+				{
+					return;
+				}
+				
+				nxs_js_removecomment(postid, commentid, function()
+				{
+					nxs_js_refreshelementscontainerforelement(element, "anonymous", function() 
+					{
+						nxs_js_alert("<?php nxs_l18n_e("Comment was removed[nxs:growl]", "nxs_td"); ?>");
+						nxs_gui_set_runtime_dimensions_enqueuerequest("nxs-widget-comment-commentremoved");
+					});
+				},
+				function()
+				{
+					nxs_js_alert("<?php nxs_l18n_e("Comment was not removed[nxs:growl]", "nxs_td"); ?>");
+				});
+			}
+			
+			function postcomment_<?php echo $placeholderid; ?>()
+			{
+				var postid = <?php echo $nxs_global_current_postid_being_rendered; ?>;
+				var placeholderid = '<?php echo $placeholderid; ?>';
+				var replytocommentid = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #replytocommentid').val();
+				var containerpostid = '<?php echo $nxs_global_current_containerpostid_being_rendered; ?>';
+				
+				var name = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #naam').val();
+				var email = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #email').val();
+				var website = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #website').val();
+				var comment = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #comment').val();
+	
+				if (nxs_js_isemptyorwhitespace(name))
+				{
+					nxs_js_alert("<?php nxs_l18n_e("Please enter your name[nxs:growl]", "nxs_td"); ?>");
+					jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #naam').focus();
+					return;
+				}
+				if (!nxs_js_validateemail(email) || nxs_js_isemptyorwhitespace(email))
+				{
+					nxs_js_alert("<?php nxs_l18n_e("Please enter a valid email address[nxs:growl]", "nxs_td"); ?>");
+					jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #email').focus();
+					return;
+				}
+				if (nxs_js_isemptyorwhitespace(comment))
+				{
+					nxs_js_alert("<?php nxs_l18n_e("Please enter your comment first[nxs:growl]", "nxs_td"); ?>");
+					jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #comment').focus();
+					return;
+				}
+				
+				nxs_js_postcomment
+				(
+					postid, 
+					containerpostid,
+					placeholderid,
+					replytocommentid, 
+					name, 
+					email, 
+					website, 
+					comment, 
+					function(response)
+					{
+						jQuery('#nxs_commentform_<?php echo $placeholderid; ?>').slideUp(300, function()
+						{
+							// wipe comment
+							jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #comment').val('');
+							
+							var element = jQuery('#nxs_commentform_<?php echo $placeholderid; ?>');
+							if (response.initialcommentstate == 1)
+							{
+								//
+								// issue 949;
+								// in most cases, the comments will be on a pagelet that will also contain
+								// social sharing buttons. These social sharing buttons don't like
+								// ajax refreshes (our previous implementation). Thus we do a client side 
+								// refresh (less good, but the best implementation for now).
+								//
+								nxs_js_refreshcurrentpage();
+							}
+							else
+							{
+								// commentaar wordt pas geplaatst na akkoord, we hoeven de pagina niet te verversen
+								nxs_js_alert("<?php nxs_l18n_e("Thanks for your comment. Its awaiting approval.[nxs:growl]", "nxs_td"); ?>");
+							}						
+						});
+					}, 
+					function()
+					{
+						nxs_js_alert("<?php nxs_l18n_e("Your comment was not added because an error occured[nxs:growl]", "nxs_td"); ?>");
+					}
+				);
+			}
+			
+			function cancelcomment_<?php echo $placeholderid; ?>()
+			{
+				jQuery('#nxs_commentform_<?php echo $placeholderid; ?>').slideUp(300, function()
+				{
+					// done
+					preparecomment_<?php echo $placeholderid; ?>(0, false);
+				});
+			}
+			
+			function nxs_js_execute_after_ajaxrefresh_widget_<?php echo $placeholderid; ?>()
+			{
+				preparecomment_<?php echo $placeholderid; ?>(0, false);
+				
+				nxs_js_reenable_all_window_events();
+			}
+			
+		</script>
+		<?php		
+		/* ------------------------------------------------------------------------------------------------- */
+		
+		$html = ob_get_contents();
+		ob_end_clean();
 	}
 	else
 	{
-		$args["order"] = "ASC";
+		// a plugin (like for example Disqus) already handled the output
 	}
-	
-	$comments = get_comments($args);
-	
-	$class = "class='nxs-comments'";
-	
-	// Default variables
-	$button_color_cssclass 	= nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
-	$button_scale_cssclass 	= nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
-	$comment_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $comment_color);
-	$padding_cssclass 		= nxs_getcssclassesforlookup("nxs-padding-", $padding);
-	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
-	$border_width_cssclass 	= nxs_getcssclassesforlookup("nxs-border-width-", $border_width);
-	
-	// Concatenations
-	$concatenated_comments_css = nxs_concatenateargswithspaces(
-		$comment_color_cssclass, 
-		$padding_cssclass, 
-		$border_radius_cssclass, 
-		$border_width_cssclass, 
-		$debthmarginclass
-	);
-	$concatenated_button_css = nxs_concatenateargswithspaces(
-		$button_color_cssclass, 
-		$button_scale_cssclass
-	);
-	
-	/* OUTPUT
-	---------------------------------------------------------------------------------------------------- */
-	
-	echo'
-	
-	<div ' . $class . '>
-		
-		<div class="reply nxs-clear">
-	    	<a style="display: none;" class="nxsbutton nxs-float-left" href="#" onclick="preparecomment_' . $placeholderid .'(0, true); return false;">Reageer</a>
-	    	<div class="nxs-clear padding"></div>
-	    	<div class="nxs-reply-container" id="nxs_replycontainer_0"></div>
-			<div class="nxs-clear"></div>
-		</div>';
-		
-		$count = nxs_widgets_comments_helper_countapproved_recursive($comments, "0", 0);
-		if ($count == 0){
-			// nothing yet
-		} else if ($count == 1) {
-			echo "<div class='nxs-clear nxs-padding-top20'></div>";
-			echo '<h3 class="nxs-title">1 ' . nxs_l18n__("comment[nxs:span]", "nxs_td") . "</h3>";
-		} else {
-			echo "<div class='nxs-clear nxs-padding-top20'></div>";
-			echo '<h3 class="nxs-title">' . $count . " " . nxs_l18n__("comments[nxs:span]", "nxs_td") . "</h3>";
-		}
-		
-		echo '<div class="nxs-clear"></div>';
-		
-		nxs_widgets_comments_helper_render_comment_recursive(
-			$nxs_global_current_containerpostid_being_rendered, 
-			$placeholderid, 
-			$comments, 0, 0, 
-			$button_color, 
-			$button_scale, 
-			$comment_color, 
-			$padding, 
-			$border_radius, 
-			$border_width,
-			$avatar_border_width,
-			$avatar_shadow,
-			$avatar_size,
-			$formfields
-		);
-		
-		$title = $mixedattributes['title'];
-		
-		echo'
-		<div class="template" style="display: none;">
-			<div class="nxs-form ' . $concatenated_comments_css . '" id="nxs_commentform_' . $placeholderid . '">';
-			
-				if (isset($title)) {
-					echo '<h3 class="nxs-title">' . $title . '</h3>';
-				}
-			
-				echo '
-		
-				<input id="postid" name="postid" type="hidden" value="' . $nxs_global_current_containerpostid_being_rendered . '" />
-				<input id="replytocommentid" type="hidden" name="replytocommentid" value="0" />
-		
-				<!-- NAME -->
-		    	<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Name[nxs:tooltip]", "nxs_td"); echo ' *:</label></div>
-		    	<div class="nxs-float-right nxs-width80"><input id="naam" name="naam" type="text"></div>
-		    	<div class="nxs-clear padding"></div>
-				
-				<!-- EMAIL -->
-				<div class="nxs-float-left nxs-width20"><label>' . nxs_l18n__("Email address[nxs:tooltip]", "nxs_td") . ' *:</label></div>
-				<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text"></div>
-				<div class="nxs-clear padding"></div>
-				';
-				
-				if ($formfields == "" || $formfields == "name|email|website")
-				{
-					echo '
-					<!-- WEBSITE -->
-					<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Website[nxs:tooltip]", "nxs_td"); echo ':</label></div>
-					<div class="nxs-float-right nxs-width80"><input id="website" name="website" type="text"></div>
-					<div class="nxs-clear padding"></div>';
-				}
-
-				echo '
-				<!-- COMMENT -->
-				<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Comment[nxs:tooltip]", "nxs_td"); echo ' *:</label></div>
-				<div class="nxs-float-right nxs-width80"><textarea id="comment" name="comment"></textarea></div>
-				<div class="nxs-clear padding"></div>
-				
-				<!-- BUTTONS -->
-				<a class="nxs-button ' . $concatenated_button_css . ' nxs-margin-right15" href="#" onclick="postcomment_' . $placeholderid .'(); return false;">'; nxs_l18n_e("Send[nxs:tooltip]", "nxs_td"); echo '</a>
-				<a class="nxs-button ' . $concatenated_button_css . '" href="#" onclick="cancelcomment_' . $placeholderid .'(); return false;">'; nxs_l18n_e("Cancel[nxs:tooltip]", "nxs_td"); echo '</a>
-				<div class="nxs-clear"></div>
-				
-		  </div>
-		  
-		</div>
-	
-	</div>';
-	
-	?>
-    
-	<script type='text/javascript'>
-		function preparecomment_<?php echo $placeholderid; ?>(replytocommentid, shouldscrollandfocus)
-		{
-			// alles inklappen
-			jQuery(".nxs-reply-container").slideUp(400, function() {
-				// ensure there's one visible
-				jQuery("#nxs_replycontainer_" + replytocommentid).show();
-				
-				nxs_js_reenable_all_window_events();
-			});
-			
-			jQuery('#nxs_commentform_<?php echo $placeholderid; ?>').show();
-			
-			// behalve degene waar het om gaat
-			jQuery("#nxs_replycontainer_" + replytocommentid).show();
-			
-			// get template
-			var template = jQuery("#nxs_commentform_<?php echo $placeholderid;?>").parent().html();
-			// wipe previous location
-			jQuery("#nxs_commentform_<?php echo $placeholderid;?>").parent().html("");
-			// add contact form on the right place
-			jQuery("#nxs_replycontainer_" + replytocommentid).html(template);
-
-			//nxs_js_log(template);
-
-			
-			jQuery("#nxs_replycontainer_" + replytocommentid).hide();
-			jQuery("#nxs_replycontainer_" + replytocommentid).slideDown(500, function()
-			{
-				if (shouldscrollandfocus){
-					jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #naam').focus();
-				}
-				jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #replytocommentid').val(replytocommentid);
-				
-				if (shouldscrollandfocus)
-				{
-					jQuery('html, body').animate({scrollTop: jQuery("#nxs_replycontainer_" + replytocommentid).offset().top}, 400);
-				}
-				
-				nxs_js_reenable_all_window_events();
-			});
-		}
-
-		jQuery(window).load(function()
-		{
-			//nxs_js_log('comment; window loaded');
-			// eerste reageer block standaard tonen
-			preparecomment_<?php echo $placeholderid; ?>(0, false);
-		});
-				
-		function deletecomment_<?php echo $placeholderid; ?>(postid, commentid, element)
-		{
-			var answer = confirm("<?php nxs_l18n_e("Are you sure you want to remove this comment?[nxs:tooltip]", "nxs_td"); ?>");
-			if (!answer)
-			{
-				return;
-			}
-			
-			nxs_js_removecomment(postid, commentid, function()
-			{
-				nxs_js_refreshelementscontainerforelement(element, "anonymous", function() 
-				{
-					nxs_js_alert("<?php nxs_l18n_e("Comment was removed[nxs:growl]", "nxs_td"); ?>");
-					nxs_gui_set_runtime_dimensions_enqueuerequest("nxs-widget-comment-commentremoved");
-				});
-			},
-			function()
-			{
-				nxs_js_alert("<?php nxs_l18n_e("Comment was not removed[nxs:growl]", "nxs_td"); ?>");
-			});
-		}
-		
-		function postcomment_<?php echo $placeholderid; ?>()
-		{
-			var postid = <?php echo $nxs_global_current_postid_being_rendered; ?>;
-			var placeholderid = '<?php echo $placeholderid; ?>';
-			var replytocommentid = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #replytocommentid').val();
-			var containerpostid = '<?php echo $nxs_global_current_containerpostid_being_rendered; ?>';
-			
-			var name = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #naam').val();
-			var email = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #email').val();
-			var website = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #website').val();
-			var comment = jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #comment').val();
-
-			if (nxs_js_isemptyorwhitespace(name))
-			{
-				nxs_js_alert("<?php nxs_l18n_e("Please enter your name[nxs:growl]", "nxs_td"); ?>");
-				jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #naam').focus();
-				return;
-			}
-			if (!nxs_js_validateemail(email) || nxs_js_isemptyorwhitespace(email))
-			{
-				nxs_js_alert("<?php nxs_l18n_e("Please enter a valid email address[nxs:growl]", "nxs_td"); ?>");
-				jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #email').focus();
-				return;
-			}
-			if (nxs_js_isemptyorwhitespace(comment))
-			{
-				nxs_js_alert("<?php nxs_l18n_e("Please enter your comment first[nxs:growl]", "nxs_td"); ?>");
-				jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #comment').focus();
-				return;
-			}
-			
-			nxs_js_postcomment
-			(
-				postid, 
-				containerpostid,
-				placeholderid,
-				replytocommentid, 
-				name, 
-				email, 
-				website, 
-				comment, 
-				function(response)
-				{
-					jQuery('#nxs_commentform_<?php echo $placeholderid; ?>').slideUp(300, function()
-					{
-						// wipe comment
-						jQuery('#nxs_commentform_<?php echo $placeholderid; ?> #comment').val('');
-						
-						var element = jQuery('#nxs_commentform_<?php echo $placeholderid; ?>');
-						if (response.initialcommentstate == 1)
-						{
-							//
-							// issue 949;
-							// in most cases, the comments will be on a pagelet that will also contain
-							// social sharing buttons. These social sharing buttons don't like
-							// ajax refreshes (our previous implementation). Thus we do a client side 
-							// refresh (less good, but the best implementation for now).
-							//
-							nxs_js_refreshcurrentpage();
-						}
-						else
-						{
-							// commentaar wordt pas geplaatst na akkoord, we hoeven de pagina niet te verversen
-							nxs_js_alert("<?php nxs_l18n_e("Thanks for your comment. Its awaiting approval.[nxs:growl]", "nxs_td"); ?>");
-						}						
-					});
-				}, 
-				function()
-				{
-					nxs_js_alert("<?php nxs_l18n_e("Your comment was not added because an error occured[nxs:growl]", "nxs_td"); ?>");
-				}
-			);
-		}
-		
-		function cancelcomment_<?php echo $placeholderid; ?>()
-		{
-			jQuery('#nxs_commentform_<?php echo $placeholderid; ?>').slideUp(300, function()
-			{
-				// done
-				preparecomment_<?php echo $placeholderid; ?>(0, false);
-			});
-		}
-		
-		function nxs_js_execute_after_ajaxrefresh_widget_<?php echo $placeholderid; ?>()
-		{
-			preparecomment_<?php echo $placeholderid; ?>(0, false);
-			
-			nxs_js_reenable_all_window_events();
-		}
-		
-	</script>
-	
-    
-	<?php 
-	
-	/* ------------------------------------------------------------------------------------------------- */
-	
-	$html = ob_get_contents();
-	ob_end_clean();
-
 	
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;

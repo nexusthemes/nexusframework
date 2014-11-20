@@ -814,10 +814,13 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		// Filler
 		$htmlfiller = nxs_gethtmlforfiller();
 		
-		// Single blog item heightiq	
-		$heightiqprio = "p1";
-		$title_heightiqgroup = "title";
-		$cssclasses = nxs_concatenateargswithspaces("nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");		
+		if ($title_heightiq != "")
+		{
+			// Single blog item heightiq	
+			$heightiqprio = "p1";
+			$title_heightiqgroup = "title";
+			$cssclasses = nxs_concatenateargswithspaces("nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
+		}
 		
 		// Minimal vs. extended
 		if 			($items_layout == "minimal") 	{ $blogtype = 'nxs-blog-minimal'; } 
@@ -1411,7 +1414,8 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 								<a class="nxs-button ' . $item_button_scale . ' ' . $item_button_color_cssclass . '" href="' . $currentposturl . '">' . $item_button_text . $item_button_icon_right . '</a>
 							</p>';
 					}
-					
+
+					/*					
 					// Social media and comments button
 					if ($item_showcommentscount != "" && $commentsprovider != ""){
 						nxs_requirecommentsprovider($commentsprovider);
@@ -1419,6 +1423,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 						$postcommentcounthtml = nxs_commentsprovider_getpostcommentcounthtml($currentpostid);
 						$comments = '<li>' . $postcommentcounthtml . '</li>'; 
 					}
+					*/
 					
 					// share counters
 					

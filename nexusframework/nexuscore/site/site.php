@@ -2323,19 +2323,6 @@ function nxs_site_dashboardhome_rendersheet($args)
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
 	        
-	        <!-- comments provider -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Comment provider", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('selectcommentprovider'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change[nxs:popup,button]", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-	        
 	       	<!-- favicon -->
 	       	<div class="content2">
             <div class="box">

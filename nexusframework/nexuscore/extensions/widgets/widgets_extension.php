@@ -143,18 +143,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "busrulemaintenance");
 		$result[] = array("widgetid" => "busruleposttype");
 		$result[] = array("widgetid" => "busrulehaspostcontent");
-		$result[] = array("widgetid" => "busruleauthentication");
-		
-		// WOOCOMMERCE
-		 
-		global $woocommerce;
-		if (isset($woocommerce))
-		{
-			$result[] = array("widgetid" => "woobusrulewoopage");
-			$result[] = array("widgetid" => "woobusruleproduct");
-			$result[] = array("widgetid" => "woobusrulecategory");
-			$result[] = array("widgetid" => "woobusrulearchiveprodcat");
-		}		
+		$result[] = array("widgetid" => "busruleauthentication");		
 	}
 	
 	if ($nxsposttype == "genericlist") {
@@ -264,22 +253,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		// $result[] = array("widgetid" => "stack");
 		// $result[] = array("widgetid" => "searchresults");	// deprecated in favor of archive widget
 		// $result[] = array("widgetid" => "contact"); 			// deprecated in favor of contact box widget
-		
-		// WOOCOMMERCE
-		global $woocommerce;
-		if (isset($woocommerce))
-		{
-			$result[] = array("widgetid" => "wooproductdetail");
-			$result[] = array("widgetid" => "woomessages");
-			$result[] = array("widgetid" => "wooprodlist");
-			$result[] = array("widgetid" => "woocheckout");
-			$result[] = array("widgetid" => "woothankyou");
-			$result[] = array("widgetid" => "woocart");
-			$result[] = array("widgetid" => "wooaddtocart");
-			$result[] = array("widgetid" => "woogotocart");
-			$result[] = array("widgetid" => "wooproductreference");
-		}
-		
 	}
 	
 	/* EXCLUDING SIDEBAR POSTTYPE
@@ -592,28 +565,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("busrulemaintenance");	
 	nxs_ext_lazyload_widget("busruleposttype");
 	nxs_ext_lazyload_widget("busrulehaspostcontent");
-	
-	// WOOCOMMERCE
-	global $woocommerce;
-	if (isset($woocommerce))
-	{
-		// widgets
-		nxs_ext_lazyload_widget("wooproductdetail");
-		nxs_ext_lazyload_widget("woomessages");
-		nxs_ext_lazyload_widget("woocheckout");
-		nxs_ext_lazyload_widget("woothankyou");
-		nxs_ext_lazyload_widget("woocart");
-		nxs_ext_lazyload_widget("wooprodlist");
-		nxs_ext_lazyload_widget("wooaddtocart");
-		nxs_ext_lazyload_widget("woogotocart");
-		nxs_ext_lazyload_widget("wooproductreference");
-		
-		// business rules
-		nxs_ext_lazyload_widget("woobusrulewoopage");
-		nxs_ext_lazyload_widget("woobusruleproduct");
-		nxs_ext_lazyload_widget("woobusrulecategory");
-		nxs_ext_lazyload_widget("woobusrulearchiveprodcat");
-	}
 	
 	// DEPRECATED
 	

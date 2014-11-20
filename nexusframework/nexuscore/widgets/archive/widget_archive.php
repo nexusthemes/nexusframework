@@ -1159,6 +1159,7 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 							</p>';
 					}
 					
+					/*
 					// Social media and comments button
 					if ($item_showcommentscount != "" && $commentsprovider != ""){
 						nxs_requirecommentsprovider($commentsprovider);
@@ -1166,6 +1167,7 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 						$postcommentcounthtml = nxs_commentsprovider_getpostcommentcounthtml($currentpostid);
 						$comments = '<li>' . $postcommentcounthtml . '</li>'; 
 					}
+					*/
 					
 					if ($twitter != "") {
 						$twitter = '

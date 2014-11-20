@@ -88,5 +88,4 @@ nxs_ext_lazyload_popup_optiontype("wooprod_link");
 nxs_ext_lazyload_popup_optiontype("lock");
 nxs_ext_lazyload_popup_optiontype("widgettypeconverter");
 nxs_ext_lazyload_popup_optiontype("effects");
-
 ?>

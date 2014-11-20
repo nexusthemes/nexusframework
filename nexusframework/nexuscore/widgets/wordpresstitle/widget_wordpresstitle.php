@@ -281,6 +281,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 			</span>';
 	}
 	
+	/*
 	// Comments count
 	if ($showcommentcount != "" && $commentsprovider != "") {
 		nxs_requirecommentsprovider($commentsprovider);
@@ -293,6 +294,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 				</li>
 			</ul>';
 	}
+	*/
 	
 	// SHARING BUTTONS
 	

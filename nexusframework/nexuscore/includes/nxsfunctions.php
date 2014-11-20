@@ -10633,36 +10633,6 @@ function nxs_addwoocommercesupport()
 	add_filter( 'woocommerce_enqueue_styles', '__return_false' );
 }
 
-function nxs_woo_isitemincart($product_id)
-{
-	global $woocommerce;
-
-	$found = false;
-	//check if product already in cart
-	if ( sizeof( $woocommerce->cart->get_cart() ) > 0 ) 
-	{
-		foreach ( $woocommerce->cart->get_cart() as $cart_item_key => $values ) 
-		{
-			$_product = $values['data'];
-			if ( $_product->id == $product_id )
-			{
-				$found = true;
-			}
-			else
-			{
-				//echo "no match;" . $_product->id . " versus " . $product_id;
-			}
-		}
-	} 
-	else 
-	{
-		// not found	
-		//echo "cart is empty";
-	}
-	
-	return $found;
-}
-
 function nxs_is_nxswebservice()
 {
 	$result = defined('NXS_DEFINE_NXSWEBWEBMETHOD');
