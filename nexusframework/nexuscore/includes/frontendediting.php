@@ -77,10 +77,6 @@
 			}
 		}
 		?>
-		
-		//nxs_js_log('u:');
-		//nxs_js_log(u);
-		
 		return u;
 	}
 	
@@ -100,10 +96,6 @@
 			?>
 			'nxs-trailer': 'unused'	// no trailing comma!
 		}
-		
-		//nxs_js_log('nxs_js_getruntimecsslookup:');
-		//nxs_js_log(result);
-		
 		return result;
 	}
 	

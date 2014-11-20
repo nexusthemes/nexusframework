@@ -234,12 +234,21 @@ function nxs_webmethod_formboxsubmit()
 			$mailresult = wp_mail($internal_email, $subject_email, $body, $headers);
 			if (!$mailresult)
 			{
+				global $ts_mail_errors;
+				global $phpmailer;
+				if (!isset($ts_mail_errors)) $ts_mail_errors = array();
+				if (isset($phpmailer)) 
+				{
+					$ts_mail_errors[] = $phpmailer->ErrorInfo;
+				}
+				
 				$responseargs = array();
  		
 		 		$responseargs["validationerrorhead"] = nxs_l18n__("Cannot submit this form; error sending mail", "nxs_td");
 		 		$validationerrors = array();
 		 		$validationerrors []= nxs_l18n__("Please notify the site administrator; error sending mail", "nxs_td");
 			 	$responseargs["validationerrors"] = $validationerrors;
+			 	$responseargs["debugerrors"] = $ts_mail_errors;
 			 	$responseargs["markclientsideelements"] = $markclientsideelements;
 				nxs_webmethod_return_ok($responseargs);
 			}
