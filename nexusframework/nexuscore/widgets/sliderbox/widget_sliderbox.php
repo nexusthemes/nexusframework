@@ -446,8 +446,8 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		$slidesdataset = array();
 		
 		$structure = nxs_parsepoststructure($items_genericlistid);
-		
-		$slideindex = 0;
+
+		// build the list of slides		
 		$heighttallestslide = 0;
 		foreach ($structure as $pagerow) {
 			$content = $pagerow["content"];
@@ -461,14 +461,17 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				// ignore
 			} else if ($placeholdertype == "undefined") {
 				// ignore
-			} else if ($placeholdertype == "slide") {
+			} 
+			else if ($placeholdertype == "slide") 
+			{
 				$image_imageid = $placeholdermetadata['image_imageid'];
 				$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
 				$imageurl = $lookup[0];
 				$width = $lookup[1];
 				$height = $lookup[2];		
 				
-				if ($height > $heighttallestslide) {
+				if ($height > $heighttallestslide) 
+				{
 					$heighttallestslide = $height;
 				}
 				
@@ -494,7 +497,146 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					"width" => $width,
 					"height" => $height,
 				);
-			} else {
+			} 
+			else if ($placeholdertype == "slidesincat") 
+			{
+				// NOTE: this placeholder itself is not an individual slide, but 
+				// a set of slides instead
+				
+				$catidsinbrackets = $placeholdermetadata["items_filter_catids"];
+				$items_filter_skipcount = $placeholdermetadata["items_filter_skipcount"];
+				$items_filter_maxcount = $placeholdermetadata["items_filter_maxcount"];
+				$items_order = $placeholdermetadata["items_order"];				
+				$item_image_fallbackimageid = $placeholdermetadata["item_image_fallbackimageid"];
+				$item_text_truncatelength = $placeholdermetadata["item_text_truncatelength"];
+				$item_text_appendchars = $placeholdermetadata["item_text_appendchars"];
+				
+				if ($items_filter_skipcount != "") 
+				{
+					$items_filter_skipcount = intval($items_filter_skipcount);
+					$offset = $items_filter_skipcount;
+				} 
+				else 
+				{
+					$offset = 0;
+				}
+				
+				
+				if ($items_filter_maxcount == "") {
+					$numberposts = -1;	// allemaal!
+				} else {
+					$numberposts = intval($items_filter_maxcount);
+				}
+
+				
+				$reccatidsforcatidincommasep = nxs_convert_stringwithbracketlist_to_stringwithcommas($catidsinbrackets);
+				$reccatidsforcatid = explode(',', $reccatidsforcatidincommasep);
+				$reccatidsforpost = array_unique($reccatidsforcatid);
+				//var_dump($reccatidsforpost);
+				
+				$args = array
+				( 
+					"numberposts" => -1,
+					"offset" => $offset,
+					'category' => $reccatidsforpost,
+					'numberposts' => $numberposts
+				);
+				
+				// Order of posts
+				if (!isset($items_order) || $items_order == "" || $items_order == "present to past") {
+					$args["orderby"] = "post_date";
+					$args["order"] = "DESC";
+				} else if ($items_order == "past to present") {
+					$args["orderby"] = "post_date";
+					$args["order"] = "ASC"; 
+				} else if ($items_order == "title az") {
+					$args["orderby"] = "title";
+					$args["order"] = "ASC"; 
+				} else if ($items_order == "title za") {
+					$args["orderby"] = "title";
+					$args["order"] = "DESC"; 
+				} else if ($items_order == "random") {
+					$args["orderby"] = "rand";
+				} 
+				else
+				{
+					// unknown
+				}
+				
+				// get all posts and posts that have this category
+				$postsforslides = get_posts( $args );
+				
+				foreach ($postsforslides as $slidepost)
+				{
+					$postid = $slidepost->ID;
+					$destination_articleid = $postid;
+					$title = $slidepost->post_title;
+					
+					$image_imageid =  get_post_thumbnail_id($postid);
+					if ($image_imageid == "")
+					{
+						// fallback
+						$image_imageid = $item_image_fallbackimageid;
+					}
+					
+					if ($image_imageid > 0)
+					{
+						$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
+						$imageurl = $lookup[0];
+						$width = $lookup[1];
+						$height = $lookup[2];		
+						
+						if ($height > $heighttallestslide) 
+						{
+							$heighttallestslide = $height;
+						}
+						
+						$destinationurl = nxs_geturl_for_postid($postid);
+						$text = $slidepost->post_excerpt;
+						if (empty($text))
+						{
+							$textblocks = nxs_get_text_blocks_on_page_v2($postid, "");
+							
+							// concatenate the blocks if multiple ones exist
+							foreach ($textblocks as $currenttextblock) 
+							{
+								$text .= $currenttextblock;
+							}
+						}
+						
+						// truncate
+						// Blog truncation
+						if ($item_text_truncatelength != "" && $item_text_truncatelength != "0") 
+						{
+							$textbefore = $text;
+							$text = nxs_truncate_string($text, intval($item_text_truncatelength));
+							if ($textbefore == $text)
+							{
+							}
+							else
+							{
+								$text .= $item_text_appendchars;
+							}
+						}
+						
+						$target = "";
+						
+						$slidesdataset[] = array
+						(
+							"title" => $title,
+							"text" => $text,
+							"imageurl" => $imageurl,
+							"destinationurl" => $destinationurl,
+							"target" => $target,
+							"width" => $width,
+							"height" => $height,
+						);
+					}
+				}
+				
+				wp_reset_postdata();
+			}
+			else {
 				echo "Placeholdertype is not (yet?) supported;a[" . $placeholdertype . "]";
 			}
 		}

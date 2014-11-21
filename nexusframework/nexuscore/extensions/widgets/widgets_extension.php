@@ -298,8 +298,10 @@ function nxs_getwidgets_functions_AF($result, $args)
 		}
 		
 		// SLIDER
-		if ($nxssubposttype == "sliderbox") {
+		if ($nxssubposttype == "sliderbox") 
+		{
 			$result[] = array("widgetid" => "slide");
+			$result[] = array("widgetid" => "slidesincat");
 		}
 		
 		if ($enableconceptualwidgets)
@@ -478,6 +480,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("htmlcustom");
 	nxs_ext_lazyload_widget("googlemap");
 	nxs_ext_lazyload_widget("slide");
+	nxs_ext_lazyload_widget("slidesincat");
 	nxs_ext_lazyload_widget("sliderbox");
 	
 	if ($enableconceptualwidgets)

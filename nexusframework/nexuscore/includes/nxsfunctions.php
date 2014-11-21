@@ -2734,7 +2734,7 @@ function nxs_getwpposttype($postid)
 	$postdata = get_page($postid);
 	if ($postdata == null)
 	{
-		nxs_webmethod_return_nack("postid not found" . $postid);
+		nxs_webmethod_return_nack("postid not found;" . $postid);
 	}
 	$result = $postdata->post_type;
 	return $result;
