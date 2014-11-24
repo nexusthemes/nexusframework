@@ -583,7 +583,11 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"dog",
 										"cat",
 										"spider",
-										"worm",  
+										"worm",
+										"ant",
+										"mosquito",
+										"flea",  
+										"mite",  
 									);
 										
 									foreach($icontypes as $currenticontype)
