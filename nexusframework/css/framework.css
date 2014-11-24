@@ -2624,6 +2624,10 @@ h3#order_review_heading,
 .nxs-icon-cartruck:before 			{ content: "\e413"; }
 .nxs-icon-fuel:before 				{ content: "\e414"; }
 .nxs-icon-jumpstart:before 			{ content: "\e415"; }
+.nxs-icon-ant:before 				{ content: "\e416"; }
+.nxs-icon-mosquito:before 			{ content: "\e417"; }
+.nxs-icon-flea:before	 			{ content: "\e418"; }
+.nxs-icon-mite:before	 			{ content: "\e419"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
