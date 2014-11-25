@@ -586,7 +586,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"worm",
 										"ant",
 										"mosquito",
-										"flea2",  
+										"fleas",  
 										"mite",  
 									);
 										
