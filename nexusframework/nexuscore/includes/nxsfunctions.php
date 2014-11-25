@@ -11030,17 +11030,29 @@ function nxs_recursive_copyfolders($source, $dest)
 
 function nxs_recursive_copyfolders_v2($source, $dest, $skipitemscontaininglowercase)
 {
-	foreach (
-	 $iterator = new RecursiveIteratorIterator(
-	  new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
-	  RecursiveIteratorIterator::SELF_FIRST) as $item
+	foreach 
+	(
+		$iterator = new RecursiveIteratorIterator
+	 	(
+	 		new RecursiveDirectoryIterator
+	 		(
+	 			$source, 
+	 			RecursiveDirectoryIterator::SKIP_DOTS
+	 		), 
+	 		RecursiveIteratorIterator::SELF_FIRST
+	 	) as $item
 	) 
 	{
+		//var_dump($item);
+		//echo "item:<br />";
+		
 	  if ($item->isDir()) {
 	    mkdir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
 	  } 
 	  else 
 	  {
+	  	//echo "copying $name<br />";
+	  	
 	  	$name = $iterator->getSubPathName();
 	  	$lowername = strtolower($name);
 	  	$shouldinclude = true;
@@ -11055,7 +11067,24 @@ function nxs_recursive_copyfolders_v2($source, $dest, $skipitemscontaininglowerc
 	  	
 	  	if ($shouldinclude)
 	  	{
-	    	copy($item, $dest . DIRECTORY_SEPARATOR . $name);
+	  		$sourcepath = $source . DIRECTORY_SEPARATOR . $name;
+	  		$destinationpath = $dest . DIRECTORY_SEPARATOR . $name;
+	    	$r = copy($sourcepath, $destinationpath);
+	    	
+	    	// lenght limitations apply! if the folder becomes too long,
+	    	// the copying could fail
+	  		//$lengte = strlen($sourcepath);
+	  		//$lengte = strlen($destinationpath);
+	  		//echo "COPIED TO FILE; (name length:$lengte) $destinationpath <br />";
+
+	    	if ($r === false)
+	    	{
+	    		echo "error ; copying of $sourcepath failed";
+	    		$errors= error_get_last();
+	    		var_dump($errors);
+	    		die();
+	    	}
+
 	    }
 	    else
 	    {
