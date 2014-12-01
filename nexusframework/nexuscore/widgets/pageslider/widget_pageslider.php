@@ -206,6 +206,9 @@ function nxs_widgets_pageslider_home_getoptions($args)
 					"top left"		=>"top left",
 					"top center"	=>"top center",
 					"top right"		=>"top right",
+					"bottom left"	=>"bottom left",
+					"bottom center"	=>"bottom center",
+					"bottom right"	=>"bottom right",
 				),
 				"unistylablefield"	=> true
 			),
@@ -483,12 +486,9 @@ function nxs_widgets_pageslider_beforeend_head()
 	$description_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-text-fontsize-", $description_fontsize);
 	
 	// Caption alignment
-	if ($halign == 'left') 			{ $text_align = 'nxs-align-left'; } else 
-	if ($halign == 'center') 		{ $text_align = 'nxs-align-center'; } else 
-	if ($halign == 'right') 		{ $text_align = 'nxs-align-right'; } else
-	if ($halign == 'top left') 		{ $text_align = 'nxs-align-left'; } else
-	if ($halign == 'top center') 	{ $text_align = 'nxs-align-center'; } else
-	if ($halign == 'top right') 	{ $text_align = 'nxs-align-right'; }
+	if ($halign == 'left'   || $halign == 'top left'   || $halign == 'bottom left') 	{ $text_align = 'nxs-align-left'; } else 
+	if ($halign == 'center' || $halign == 'top center' || $halign == 'bottom center') 	{ $text_align = 'nxs-align-center'; } else 
+	if ($halign == 'right'  || $halign == 'top right'  || $halign == 'bottom right') 	{ $text_align = 'nxs-align-right'; } 
 	
 	// Background Color
 	if ($bgcolor == "") { $bgcolor = 'base2-a0-6'; }
@@ -745,9 +745,10 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 	if ($halign == 'left') 			{  } else
 	if ($halign == 'center') 		{ $halign = "nxs-center"; } else
 	if ($halign == 'right') 		{ $halign = "nxs-absolute nxs-right"; } else
-	if ($halign == 'top left') 		{ $top = "top: 0px;"; $inline = "nxs-inline"; } else
-	if ($halign == 'top center') 	{ $top = "top: 0px;"; $inline = "nxs-inline"; $halign = "nxs-center"; } else
-	if ($halign == 'top right') 	{ $top = "top: 0px;"; $inline = "nxs-inline"; $halign = "nxs-absolute nxs-right"; }
+	if ($halign == 'top left') 		{ $inline = "nxs-inline"; } else
+	if ($halign == 'top center') 	{ $inline = "nxs-inline"; $halign = "nxs-center"; } else
+	if ($halign == 'top right') 	{ $inline = "nxs-inline"; $halign = "nxs-absolute nxs-right"; } 
+	if ($halign == 'bottom left' || $halign == 'bottom center' || $halign == 'bottom center') { $vertical_align = 'vertical-align: bottom;'; } 
 	
 	// Thumbnail navigation
 	if ($remove_thumbnail_navigation != "") { $remove_thumbnail_navigation = "remove-thumbnail-navigation"; }
@@ -795,8 +796,8 @@ function nxs_widgets_pageslider_betweenheadandcontent()
         // SLIDE CAPTIONS
 		if ($show_metadata != "") {
 			echo '
-		  <div class="caption-aligner '.$caption_width.' '.$halign.'" style="'.$supersized_style.' '.$top.'">			
-			  <div id="slidecaption" class="nxs-placeholder '.$inline.'">
+		  <div class="caption-aligner '.$caption_width.' '.$halign.'" style="'.$supersized_style.'">			
+			  <div id="slidecaption" class="nxs-placeholder '.$inline.'" style="'.$vertical_align.'">
 				
 				  
 				
