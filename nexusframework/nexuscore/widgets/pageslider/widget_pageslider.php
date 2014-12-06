@@ -586,12 +586,18 @@ function nxs_widgets_pageslider_beforeend_head()
 											$bodytekst = $placeholdermetadata['text'];
 											
 											$imageid = $placeholdermetadata['image_imageid'];
+											$destination_url = $placeholdermetadata['destination_url'];
 											$targetpageid = $placeholdermetadata['destination_articleid'];
 											
 											if ($targetpageid != 0) {
 												$destinationurl = nxs_geturl_for_postid($targetpageid);
 											} else {
 												$destinationurl = "";
+											}
+											
+											if ($destination_url != "" && $destinationurl == "")
+											{
+												$destinationurl = $destination_url;
 											}
 											
 											$link = '';
