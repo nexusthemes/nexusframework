@@ -3045,7 +3045,7 @@ function nxs_getsitemeta_internal($nackwhenerror)
 				
 				//nxs_dumpstacktrace();
 				//die();
-				ob_clean();
+				nxs_saveobclean();
  				
 				if (is_user_logged_in())
 				{
@@ -7018,7 +7018,7 @@ function nxs_localization_distributetolang_recursive($destinationlang, $scope, $
 				}
 				else
 				{
-					ob_clean();
+					nxs_saveobclean();
 					var_dump($origpostid);
 					var_dump($origpostdata);
 					var_dump($origglobalid);
@@ -7074,7 +7074,7 @@ function nxs_localization_distributetolang_recursive($destinationlang, $scope, $
 			$destinationpostids = nxs_get_postidsaccordingtoglobalid($origglobalid);
 			if (count($destinationpostids) != 1)
 			{
-				//ob_clean();
+				//nxs_saveobclean();
 				
 				//var_dump($origpostid);
 				var_dump($origglobalid);

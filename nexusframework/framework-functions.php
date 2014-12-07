@@ -88,20 +88,41 @@ function nxs_isdebug()
 	return $result;
 }
 
+// 2013 08 03; fixing unwanted WP3.6 notice errors
+// third party plugins and other php code (like sunrise.php) can
+// cause warnings that mess up the output of the webmethod
+// for example when activating the theme
+// to solve this, at this stage we clean the output buffer
+// 2014 12 07; in some cases the ob_clean() invoked here
+// can cause weird bogus output (diamonds with question marks),
+// as-if the encoding is messed up (dproost)
+// to avoid this from happening we don't do a ob_clean when
+// there's nothing to clean up in the first place
+function nxs_saveobclean()
+{
+	if(ob_get_level() > 0)
+	{		
+		$current = ob_get_contents();
+		if ($current != "")
+		{
+	  	//echo "its not empty";
+	  	ob_clean();
+		}
+		else
+		{
+			// leave as-is
+		}
+	}
+	else
+	{
+		// ignore
+	}
+}
+
 if (!nxs_showphpwarnings())
 {
-	error_reporting(E_ERROR | E_PARSE);
-	
-	//echo "test";
-	// error_reporting(E_ERROR);
-
-	// 2013 08 03; fixing unwanted WP3.6 notice errors
-	// third party plugins and other php code (like sunrise.php) can
-	// cause warnings that mess up the output of the webmethod
-	// for example when activating the theme
-	// to solve this, at this stage we clean the output buffer
-
-	ob_clean();
+	error_reporting(E_ERROR | E_PARSE);	
+	nxs_saveobclean();
 }
 
 function nxs_getcharset()

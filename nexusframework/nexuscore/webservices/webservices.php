@@ -12,7 +12,7 @@ function nxs_handlewebmethods()
 			// cause warnings that mess up the output of the webmethod
 			// for example when activating the theme
 			// to solve this, at this stage we clean the output buffer
-			ob_clean();
+			nxs_saveobclean();
 		}
 
 		// flag we are processing a webmethod

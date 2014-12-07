@@ -107,7 +107,7 @@
 	
 	if ($_REQUEST["action"] == "downloadcsv")
 	{	
-		ob_clean();
+		nxs_saveobclean();
 		header('Content-type: text/plain');
 		header('Content-disposition: attachment; filename="' . $formname .'"');
 		

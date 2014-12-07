@@ -546,7 +546,7 @@ class NXS_importer extends WP_Importer {
 			if ($post['post_title'] == "sitesettings24 oct 2012 12uur22")
 			{
 				$scan = false;
-				ob_clean();
+				nxs_saveobclean();
 				//var_dump($post);
 			}
 			*/
@@ -741,7 +741,7 @@ class NXS_importer extends WP_Importer {
 						else if ($key == "nxs_core")
 						{
 							/*
-							ob_clean();
+							nxs_saveobclean();
 							
 							$x = $meta["value"];
 							
