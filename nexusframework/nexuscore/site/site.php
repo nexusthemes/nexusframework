@@ -116,11 +116,11 @@ function nxs_site_loginhome_rendersheet($args)
 				<div class="nxs-popup-content-canvas-cropper">
 					<div class="nxs-popup-content-canvas">
 		        <div class="content2">
-		            <div class="box">
-		                <div class="box-title"><h4><?php nxs_l18n_e("Username[nxs:popup,button]", "nxs_td"); ?></h4></div>
-		                <div class="box-content"><input id='gebruikersnaam' name='gebruikersnaam' type="textarea" class="nxs_defaultenter"></div>
-		            </div>
-		            <div class="nxs-clear margin"></div>
+	            <div class="box">
+	                <div class="box-title"><h4><?php nxs_l18n_e("Username[nxs:popup,button]", "nxs_td"); ?></h4></div>
+	                <div class="box-content"><input id='gebruikersnaam' name='gebruikersnaam' type="textarea" class="nxs_defaultenter"></div>
+	            </div>
+	            <div class="nxs-clear margin"></div>
 		        </div> <!--END content-->
 		        <div class="content2">
 		            <div class="box">
@@ -136,6 +136,7 @@ function nxs_site_loginhome_rendersheet($args)
             <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='login_js(); return false;'><?php nxs_l18n_e("Login[nxs:popup,button]", "nxs_td"); ?></a>
             <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>
             <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:popup,button]", "nxs_td"); ?></a>
+            <a id='nxs_popup_forgot' href='<?php echo wp_lostpassword_url(); ?>' class="nxs-float-right"><?php nxs_l18n_e("Lost your password?", "nxs_td"); ?></a>
           </div>
           <div class="nxs-clear"></div>
         </div> <!--END content-->
