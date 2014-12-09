@@ -224,7 +224,7 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 .nxs-admin-wrap #admin-container.center2 			{ width: 344px; margin: 0 auto; }
 .nxs-admin-wrap #menufillerinlinecontent 			{ line-height: 0; }
 .nxs-admin-wrap #login 								{ width: 390px;	margin: auto; }
-.nxs-admin-wrap #login #logo 						{ width: 385px;	height: 137px; background: url(../images/logo.png) no-repeat center center;	margin: 0px 0 10px; }
+.nxs-admin-wrap #login #logo 						{ width: 385px;	height: 100px; background: url(../images/logo.png) no-repeat center center;	margin: 0px 0 10px; -webkit-background-size: contain; /* For WebKit*/ -moz-background-size: contain;    /* Mozilla*/ -o-background-size: contain;      /* Opera*/ background-size: contain;         /* Generic*/	}
 .nxs-admin-wrap #wrap-header 						{ margin-bottom: 20px; min-height: 30px; } 
 .nxs-aligncenter960									{ width: 960px; margin: 0 auto; } /* admin header / footer aligner */
 .nxs-aligncenter338									{ width: 338px; margin: 0 auto; } /* admin sidebar aligner */
@@ -1390,7 +1390,7 @@ img.nxs-preview-thumbnail 									{ max-width: 48px; max-height: 48px; }
 
 #nxs-content ul.nxs-sidebar-widgets 						{ list-style: none; }
 span.nxs-title 												{ line-height: 20px; }
-.nxs-loginlogowrapper 										{ height: 150px; }
+.nxs-loginlogowrapper 										{ height: 80px; }
 
 /* prevent double scroll bar on nxs-container; rows have hover menu's,
    that fill in space that causes scrollbar, when the editor is on,
