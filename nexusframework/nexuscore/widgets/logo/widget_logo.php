@@ -133,6 +133,18 @@ function nxs_widgets_logo_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "subtitle_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Subtitle fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
@@ -452,12 +464,14 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	
 	// Title
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
-	$cssclasses = nxs_concatenateargswithspaces("title", "nxs-title", $title_fontsize_cssclass);
+	$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $title_fontzen);
+	$cssclasses = nxs_concatenateargswithspaces("title", "nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass);
 	if ($title != "") 		{ $title = '<span class="'.$cssclasses.'">'.$title.'</span>'; }
 
 	// Subtitle
 	$subtitle_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $subtitle_fontsize);
-	$cssclasses = nxs_concatenateargswithspaces("subtitle", "nxs-title", $subtitle_fontsize_cssclass);
+	$subtitle_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $subtitle_fontzen);
+	$cssclasses = nxs_concatenateargswithspaces("subtitle", "nxs-title", $subtitle_fontsize_cssclass, $subtitle_fontzen_cssclass);
 	if ($subtitle != "") 	{ $subtitle = '<span class="'.$cssclasses.'">'.$subtitle.'</span>'; }
 	
 	if ($image_background != "") { $image_background_cssclass = 'image-background'; }

@@ -5883,7 +5883,15 @@ function nxs_detect_ie()
   }
   else
   {
-    return false;
+  	// IE11 works in a slightly different way...
+  	if (preg_match("/Trident\/7.0;(.*)rv:11.0/", $_SERVER["HTTP_USER_AGENT"], $match) != 0)
+  	{
+  		return true;
+  	}
+  	else
+  	{
+    	return false;
+    }
   }
 }
 
@@ -5899,7 +5907,7 @@ function nxs_set_jsonheader()
 	}
 	else
 	{
-		// for IE, use text/javascript, implements bug 931
+		// for IE / Internet Explorer, use text/javascript, implements bug 931
 		// kudos to http://stackoverflow.com/questions/6114360/stupid-ie-prompts-to-open-or-save-json-result-which-comes-from-server
 		if(!headers_sent())
 		{

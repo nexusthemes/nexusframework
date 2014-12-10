@@ -343,6 +343,21 @@ function nxs_init()
   			echo "homeurl:" . get_home_url() . "<br />";
   			die();
   		}
+  		else if ($_REQUEST["nxs"] == "HTTP_USER_AGENT")
+  		{
+  			echo $_SERVER["HTTP_USER_AGENT"];
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "nxs_detect_ie")
+  		{
+  			if (nxs_detect_ie()) { echo "IE!";} else { echo "no ie"; }
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "FILE")
+  		{
+  			echo __FILE__;
+  			die();
+  		}
   		else if ($_REQUEST["nxs"] == "serversoftware") 
   		{
   			echo $_SERVER["SERVER_SOFTWARE"];
