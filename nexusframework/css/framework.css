@@ -181,9 +181,9 @@ a:hover .nxs-title,
 	display: inline-block;
 	border: 0;
 	border-radius: 3px;
-	-webkit-appearance: none;
-	-moz-appearance: 	none;
 	appearance: 		none;
+	-webkit-appearance: menulist-button !important;
+	-moz-appearance: 	menulist-button !important;
 }
 
 /* DEFAULT FILLER */
@@ -1996,6 +1996,7 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
+
 .woocommerce p.form-row  									{ clear: both; font-size: 15px; }
 .woocommerce p.form-row label 								{ width: 20%; display: block; float: left; line-height: 30px; }
 .woocommerce p.form-row select								{ margin-bottom: 20px; }
@@ -2013,6 +2014,57 @@ h3#order_review_heading,
 #order_review h3
 .woocommerce ul.woocommerce-error							{ margin-bottom: 10px; }
 .woocommerce .payment_box									{ margin-top: 5px; }
+
+.woocommerce ul 												{ list-style: none; }
+.woocommerce input[type=radio]
+{
+	-webkit-appearance: radio !important; 
+	width: inherit !important; 
+	box-shadow: none; 
+}
+.woocommerce input[type=checkbox]
+{
+	-webkit-appearance: checkbox !important; 
+	width: inherit !important; 
+	box-shadow: none !important;
+	float: left !important;
+	margin: 3px !important; 
+}
+.woocommerce input[type=submit]
+{
+	height: inherit !important;
+	line-height: 1 !important;
+	clear: both !important;
+	display: block !important;
+}
+.woocommerce .chosen-container a span
+{
+	color: black !important;
+}
+
+.woocommerce .single_add_to_cart_button
+{
+	display: block;
+	clear: both;
+}
+.woocommerce .quantity .minus,
+.woocommerce .quantity .plus
+{
+	float: left;
+	width: 10px;
+	text-indent: 0px;
+}
+.woocommerce .quantity .qty
+{
+	float: left;
+	width: 60px;
+}
+
+.woocommerce table tr td
+{
+	display:table-cell;
+	vertical-align:middle
+}
 
 
 /* DEFAULT NT BUTTONS
@@ -2112,6 +2164,7 @@ h3#order_review_heading,
 /* CONTACT */
 .nxs-form input,
 .nxs-form textarea											{ box-shadow: 0px 0px 0px 1px gray inset; -webkit-appearance: none; }
+
 /* Modernizr fallback */
 .nxs-m-no-boxshadow .nxs-form input,
 .nxs-m-no-boxshadow .nxs-form textarea						{ border: 1px solid gray; }

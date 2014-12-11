@@ -1464,15 +1464,23 @@ function nxs_js_redirect_top(url)
 				jQuery("a").unbind("click.reregister");
 				jQuery("a").bind("click.reregister", function(e) 
 				{
-				   //do something
-				   e.stopPropagation();
+					//do something
+					e.stopPropagation();
 				})
 				
 				jQuery("input").unbind("click.reregister");
 				jQuery("input").bind("click.reregister", function(e) 
 				{
-				   //do something
-				   e.stopPropagation();
+					if (nxs_js_nxseditoractive)
+					{
+						// if the editor is on, we don't want events in input elements
+						// to traverse
+				  	e.stopPropagation();
+				  }
+				  else
+			  	{
+			  		// if the editor is off we allow these events to be handled
+			  	}
 				})
 				
 				// allow user to click on any widget within an editable section
@@ -1510,7 +1518,16 @@ function nxs_js_redirect_top(url)
 					"click.reregister", 
 					function(e) 
 					{
-						e.stopPropagation();
+						if (nxs_js_nxseditoractive)
+						{
+							// if the editor is on, we don't want events in input elements
+							// to traverse
+					  	e.stopPropagation();
+					  }
+					  else
+				  	{
+				  		// if the editor is off we allow these events to be handled
+				  	}
 					}
 				);
 				
