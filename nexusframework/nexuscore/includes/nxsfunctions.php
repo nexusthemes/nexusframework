@@ -10634,9 +10634,7 @@ function nxs_addwoocommercesupport()
 	remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
 	remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10);
 	
-	// alter the initial folder to try to find a woocommerce template in
-	add_filter('woocommerce_locate_template','nxs_woocommerce_locate_template',100,1);
-	
+	// TODO: we could make this optional; perhaps some people like the default wc styles?
 	// since wooc 2.1.0 the css has to be turned off programmatically
 	add_filter( 'woocommerce_enqueue_styles', '__return_false' );
 }
@@ -10646,37 +10644,6 @@ function nxs_is_nxswebservice()
 	$result = defined('NXS_DEFINE_NXSWEBWEBMETHOD');
 	return $result;
 }
-
-function nxs_woocommerce_locate_template($template)
-{	
-	if (nxs_stringcontains($template, "/plugins/woocommerce/"))
-	{
-		// don't use the structure as defined by the woocommerce plugin,
-		// but use the ones defined in the framework
-		// $template sample:
-		// "/opt/bitnami/apps/wordpress/htdocs/wp-content/plugins/woocommerce/templates/single-product/product-thumbnails.php"
-		$pieces = explode("/plugins/woocommerce/", $template);
-		if (count($pieces)==2)
-		{
-			//echo "<br />before:" . $template;
-			$template = NXS_FRAMEWORKPATH . "/plugins/woocommerce/" . $pieces[1];
-			//echo "<br />became:" . $template;
-			//echo "<br />";
-		}
-		else
-		{
-			// weird structure, not supported, defaulting to structure of woocommerce plugin
-		}
-	}
-	else
-	{
-		// looks like the template is not defined by native woocommerce plugin,
-		// in that case we will assume this is ok
-	}
-
-	return $template;
-}
-
 
 function nxs_busrules_getgenericoptions()
 {
