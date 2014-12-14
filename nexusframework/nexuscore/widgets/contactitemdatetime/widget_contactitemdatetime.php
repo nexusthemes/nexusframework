@@ -128,30 +128,86 @@ function nxs_widgets_contactitemdatetime_renderincontactbox($args)
   <input type="text" id="<?php echo $key; ?>_date" name="<?php echo $key; ?>_date" class="field_name" style="width: inherit;">
   <select id="<?php echo $key; ?>_hh" name="<?php echo $key; ?>_hh">
   	<option value=''></option>
-  	<option value='00'>00</option>
-  	<option value='01'>01</option>
-  	<option value='02'>02</option>
-  	<option value='03'>03</option>
-  	<option value='04'>04</option>
-  	<option value='05'>05</option>
-  	<option value='06'>06</option>
-  	<option value='07'>07</option>
-  	<option value='08'>08</option>
-  	<option value='09'>09</option>
-  	<option value='10'>10</option>
-  	<option value='11'>11</option>
-  	<option value='12'>12</option>
-  	<option value='13'>13</option>
-  	<option value='14'>14</option>
-  	<option value='15'>15</option>
-  	<option value='16'>16</option>
-  	<option value='17'>17</option>
-  	<option value='18'>18</option>
-  	<option value='19'>19</option>
-  	<option value='20'>20</option>
-  	<option value='21'>21</option>
-  	<option value='22'>22</option>
-  	<option value='23'>23</option>
+  	<?php
+  	$timeformat = get_option('time_format');	
+  	// bijv. "g:i a", see http://codex.wordpress.org/Formatting_Date_and_Time
+  	
+  	if (
+  		strpos($timeformat, 'H') !== false ||	// 00..23
+  		strpos($timeformat, 'G') !== false	// 0..23
+  	) 
+  	{
+	  	?>
+	  	<option value='00'>00</option>
+	  	<option value='01'>01</option>
+	  	<option value='02'>02</option>
+	  	<option value='03'>03</option>
+	  	<option value='04'>04</option>
+	  	<option value='05'>05</option>
+	  	<option value='06'>06</option>
+	  	<option value='07'>07</option>
+	  	<option value='08'>08</option>
+	  	<option value='09'>09</option>
+	  	<option value='10'>10</option>
+	  	<option value='11'>11</option>
+	  	<option value='12'>12</option>
+	  	<option value='13'>13</option>
+	  	<option value='14'>14</option>
+	  	<option value='15'>15</option>
+	  	<option value='16'>16</option>
+	  	<option value='17'>17</option>
+	  	<option value='18'>18</option>
+	  	<option value='19'>19</option>
+	  	<option value='20'>20</option>
+	  	<option value='21'>21</option>
+	  	<option value='22'>22</option>
+	  	<option value='23'>23</option>
+	  	<?php
+	  }
+	  else 
+	  {
+	  	if (
+	  		strpos($timeformat, 'a') !== false
+	  	)
+	  	{
+	  		$am = "am";
+	  		$pm = "pm";
+	  	}
+	  	else
+	  	{
+	  		$am = "AM";
+	  		$pm = "PM";
+	  	}
+	  	
+	  	?>
+	  	<option value='01 <?php echo $am; ?>'>01 <?php echo $am; ?></option>
+	  	<option value='02 <?php echo $am; ?>'>02 <?php echo $am; ?></option>
+	  	<option value='03 <?php echo $am; ?>'>03 <?php echo $am; ?></option>
+	  	<option value='04 <?php echo $am; ?>'>04 <?php echo $am; ?></option>
+	  	<option value='05 <?php echo $am; ?>'>05 <?php echo $am; ?></option>
+	  	<option value='06 <?php echo $am; ?>'>06 <?php echo $am; ?></option>
+	  	<option value='07 <?php echo $am; ?>'>07 <?php echo $am; ?></option>
+	  	<option value='08 <?php echo $am; ?>'>08 <?php echo $am; ?></option>
+	  	<option value='09 <?php echo $am; ?>'>09 <?php echo $am; ?></option>
+	  	<option value='10 <?php echo $am; ?>'>10 <?php echo $am; ?></option>
+	  	<option value='11 <?php echo $am; ?>'>11 <?php echo $am; ?></option>
+	  	<option value='12 <?php echo $am; ?>'>12 <?php echo $am; ?></option>
+	  	
+	  	<option value='01 <?php echo $pm; ?>'>01 <?php echo $pm; ?></option>
+	  	<option value='02 <?php echo $pm; ?>'>02 <?php echo $pm; ?></option>
+	  	<option value='03 <?php echo $pm; ?>'>03 <?php echo $pm; ?></option>
+	  	<option value='04 <?php echo $pm; ?>'>04 <?php echo $pm; ?></option>
+	  	<option value='05 <?php echo $pm; ?>'>05 <?php echo $pm; ?></option>
+	  	<option value='06 <?php echo $pm; ?>'>06 <?php echo $pm; ?></option>
+	  	<option value='07 <?php echo $pm; ?>'>07 <?php echo $pm; ?></option>
+	  	<option value='08 <?php echo $pm; ?>'>08 <?php echo $pm; ?></option>
+	  	<option value='09 <?php echo $pm; ?>'>09 <?php echo $pm; ?></option>
+	  	<option value='10 <?php echo $pm; ?>'>10 <?php echo $pm; ?></option>
+	  	<option value='11 <?php echo $pm; ?>'>11 <?php echo $pm; ?></option>
+	  	<option value='12 <?php echo $pm; ?>'>12 <?php echo $pm; ?></option>
+	  	<?php
+	  }
+  	?>
   </select>
   <select id="<?php echo $key; ?>_mm" name="<?php echo $key; ?>_mm">
   	<option value=''></option>
