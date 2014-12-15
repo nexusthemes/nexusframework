@@ -188,12 +188,27 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
 				"id" 				=> "description_fontsize",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Description fontsize", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
+			
+			array(
+				"id" 				=> "description_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Description fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),			
+			
 			array(
 				"id" 				=> "halign",
 				"type" 				=> "select",
@@ -483,7 +498,19 @@ function nxs_widgets_pageslider_beforeend_head()
 	
 	// Title and description fontsizes
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
+	
+	if ($title_fontzen != "")
+	{
+		$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $title_fontzen);
+	}
+
 	$description_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-text-fontsize-", $description_fontsize);
+	if ($description_fontzen != "")
+	{
+		$description_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $description_fontzen);
+	}
+
+
 	
 	// Caption alignment
 	if ($halign == 'left'   || $halign == 'top left'   || $halign == 'bottom left') 	{ $text_align = 'nxs-align-left'; } else 
@@ -640,9 +667,9 @@ function nxs_widgets_pageslider_beforeend_head()
 												$kophtml = "";
 												if ($koptekst != "")
 												{
-													$kophtml = "<h2 class='nxs-title $title_fontsize_cssclass $metadata_transition'>" . nxs_render_html_escape_singlequote($koptekst) . "</h2>";
+													$kophtml = "<h2 class='nxs-title $title_fontsize_cssclass $title_fontzen_cssclass $metadata_transition'>" . nxs_render_html_escape_singlequote($koptekst) . "</h2>";
 												}
-												$bodyhtml = "<div class='nxs-placeholder $description_fontsize_cssclass'><div class='nxs-default-p nxs-padding-bottom0 $metadata_transition'><p>" . nxs_render_html_escape_singlequote($bodytekst) . "</p></div></div>";
+												$bodyhtml = "<div class='nxs-placeholder $description_fontsize_cssclass $description_fontzen_cssclass'><div class='nxs-default-p nxs-padding-bottom0 $metadata_transition'><p>" . nxs_render_html_escape_singlequote($bodytekst) . "</p></div></div>";
 												
 												$titlevalue = "<div class='slidecaption-container $text_padding_cssclass $bgcolor_cssclass $text_align $text_margin_cssclass'>{$kophtml}{$bodyhtml}{$link}</div>";
 												$titlevalue = str_replace("'", "\"", $titlevalue);
