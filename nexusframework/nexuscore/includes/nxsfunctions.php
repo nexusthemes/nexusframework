@@ -463,6 +463,12 @@ function nxs_storecacheoutput($buffer)
 			// useless to store
 			$shouldstore = false;
 		}
+		else if (!nxs_stringcontains($buffer, "</html>"))
+		{
+			// case 2435987; this would indicate a partially rendered page is outputted
+			// partially rendered pages should never be stored as cached items
+			$shouldstore = false;
+		}
 	}
 	
 	if($shouldstore) 
