@@ -343,6 +343,24 @@ function nxs_init()
   			echo "homeurl:" . get_home_url() . "<br />";
   			die();
   		}
+  		else if ($_REQUEST["nxs"] == "template")
+  		{
+				$t = get_template();
+				var_dump($t);
+				die();
+			}
+			else if ($_REQUEST["nxs"] == "get_update_themes")
+			{
+				$x = get_site_transient('update_themes');
+				var_dump($x);
+				die();
+			}
+			else if ($_REQUEST["nxs"] == "wp_get_theme")
+			{
+				$x = wp_get_theme();
+				var_dump($x);
+				die();
+			}
   		else if ($_REQUEST["nxs"] == "HTTP_USER_AGENT")
   		{
   			echo $_SERVER["HTTP_USER_AGENT"];

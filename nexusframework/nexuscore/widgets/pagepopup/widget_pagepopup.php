@@ -161,11 +161,22 @@ function nxs_widgets_pagepopup_beforeend_head()
 
 								html += "</div>";	// end padding
 
+								// the script below is cut off in a stupid way
+								// since otherwise the browsers are not able to 
+								// interpret it correctly ... (script in script)
+								html += "<" + "script>";
+								html += "f" + "unction nxs_js_execute_after_popup_shows() { ";
+								html += "j" + "Query('#nxsbox_window').addClass('nxs-gallerypopup'); }";
+								html += "</" + "script>";
+								
 								//nxs_js_htmldialogmessageok_v2("test", html, "none")
 								
 								nxs_js_popup_setsessiondata("nxs_customhtml_scaffoldingtype", "nothing");
 								nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", html);
 								nxs_js_popup_navigateto_v2("customhtml", false);
+								
+
+								
 							}
 							else
 							{

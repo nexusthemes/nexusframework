@@ -244,7 +244,15 @@ function nxs_license_checkupdate($value)
 						var_dump($update_data);
 						die();
 					}
-					$value -> response[$theme] = $update_data;
+					
+					
+					$template = get_template();
+					// the result should be stored in $template key,
+					// not in the $theme key, otherwise people that use
+					// custom theme folder names will get a notification
+					// that a theme has a new version, but in the updater
+					// they wont find anything
+					$value -> response[$template] = $update_data;
 				}
 				else
 				{
