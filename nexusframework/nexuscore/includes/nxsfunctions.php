@@ -10576,10 +10576,23 @@ function nxs_addfeedsupport()
 	// text
 	add_filter( "the_content_feed", "nxs_the_content_feed" ) ;
 	add_filter( "the_excerpt_rss", "nxs_the_excerpt_rss" ) ;
-	//
+	// image
 	add_filter( "the_content_feed", "nxs_ext_feed_img" );
 	add_filter( "the_excerpt_rss", "nxs_ext_feed_img" ) ;
-	
+	// title
+	add_filter( "the_content_feed", "nxs_ext_feed_title" );
+	add_filter( "the_excerpt_rss", "nxs_ext_feed_title" ) ;
+}
+
+function nxs_ext_feed_title($content)
+{
+	global $post;
+	$postid = $post->ID;
+	$title = nxs_gettitle_for_postid($postid);
+	$url = nxs_geturl_for_postid($postid);
+	$nxscontent = "<h1><a target='_blank' href='$url'>$title</a></h1>";
+	$content = $nxscontent . $content;
+  return $content;
 }
 
 function nxs_ext_feed_img($content)
@@ -10590,11 +10603,16 @@ function nxs_ext_feed_img($content)
 	$nxscontent = "";
 	if ($imageid != 0)
 	{
+		$url = nxs_geturl_for_postid($postid);
+	
 		$image_attributes = wp_get_attachment_image_src($imageid, "full", false);
 		$src = $image_attributes[0];
 		$width = $image_attributes[1];
 		$height = $image_attributes[2];
-		$nxscontent = "<img src='{$src}' width='{$width}' height='{$height}' />" . $content;
+		//$nxscontent = "<img src='{$src}' width='{$width}' height='{$height}' /><br />" . $content;
+		$nxscontent .= "<a target='_blank' href='$url'>";
+		$nxscontent .= "<img src='{$src}' style='width:200px; display: block; float: left; padding-right: 10px; padding-bottom: 5px;' />";
+		$nxscontent .= "</a>";
 	}
 	$content = $nxscontent . $content;
   return $content;
@@ -10605,10 +10623,10 @@ function nxs_the_excerpt_rss($content)
 	$content = nxs_the_content_feed($content, $feedtype);
 	$content = str_replace("\n", " ", $content);
 	$content = str_replace("&nbsp;", " ", $content);
-	$content = preg_replace('/[^A-Za-z0-9()!:.\' ]/', '', $content); // Removes special chars.
 	
+	$content = wp_strip_all_tags($content, true);
+	//$content = preg_replace('/[^A-Za-z0-9()!:.\' ]/', '', $content); // Removes special chars.
 	// prefix the image
-	
 	
 	return $content;
 }
