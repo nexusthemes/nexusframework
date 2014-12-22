@@ -674,6 +674,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-one-whole  .nxs-radial .nxs-default						{ height: 58.0em; }
 .nxs-main .nxs-two-third  .nxs-radial .nxs-default 						{ height: 37.4em; }
 .nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default					{ height: 27.2em; }
+.nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default .radial			{ height: 27.2em; }
 }
 @media only screen and ( max-width: 959px ) {
 .nxs-one-fourth .nxs-radial .nxs-default									{ height: 42.6em; }
@@ -691,7 +692,8 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-two-third .nxs-radial .nxs-default,
 .nxs-main .nxs-one-half .nxs-radial .nxs-default,
 .nxs-main .nxs-one-whole .nxs-radial .nxs-default,
-.nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default					{ height: 88.8em; }
+.nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default,
+.nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default .radial			{ height: 88.8em; }
 }
 @media only screen and ( max-width: 479px ) {
 .nxs-one-fourth .nxs-radial .nxs-default,
@@ -704,7 +706,8 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-two-third .nxs-radial .nxs-default,
 .nxs-main .nxs-one-half .nxs-radial .nxs-default,
 .nxs-main .nxs-one-whole .nxs-radial .nxs-default,
-.nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default					{ height: 300px; }
+.nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default,		
+.nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default .radial			{ height: 300px; }
 }
 
 
