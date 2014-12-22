@@ -363,11 +363,13 @@ function nxs_widgets_radial_render_webpart_render_htmlvisualization($args)
 				
 				// TITLE
 				
-				echo '
-				<div class="title-wrapper '.$title_bg_cssclass.'">
-					'.$htmltitle_default.'
-				</div>
+				if ($htmltitle_default != "") { echo '
+					<div class="title-wrapper '.$title_bg_cssclass.'">
+						'.$htmltitle_default.'
+					</div>';
+				}
 			
+			echo '
 			</div>
 		
 		</div>		
