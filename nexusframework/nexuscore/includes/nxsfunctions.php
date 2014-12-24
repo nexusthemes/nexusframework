@@ -10574,14 +10574,14 @@ function nxs_loadplugin_twittertweets()
 function nxs_addfeedsupport()
 {
 	// text
-	add_filter( "the_content_feed", "nxs_the_content_feed" ) ;
-	add_filter( "the_excerpt_rss", "nxs_the_excerpt_rss" ) ;
+	add_filter("the_content_feed", "nxs_the_content_feed");
+	add_filter("the_excerpt_rss", "nxs_the_excerpt_rss");
 	// image
-	add_filter( "the_content_feed", "nxs_ext_feed_img" );
-	add_filter( "the_excerpt_rss", "nxs_ext_feed_img" ) ;
+	add_filter("the_content_feed", "nxs_ext_feed_img");
+	add_filter("the_excerpt_rss", "nxs_ext_feed_img");
 	// title
-	add_filter( "the_content_feed", "nxs_ext_feed_title" );
-	add_filter( "the_excerpt_rss", "nxs_ext_feed_title" ) ;
+	add_filter("the_content_feed", "nxs_ext_feed_title");
+	add_filter("the_excerpt_rss", "nxs_ext_feed_title");
 }
 
 function nxs_ext_feed_title($content)
@@ -10592,6 +10592,7 @@ function nxs_ext_feed_title($content)
 	$url = nxs_geturl_for_postid($postid);
 	$nxscontent = "<h1><a target='_blank' href='$url'>$title</a></h1>";
 	$content = $nxscontent . $content;
+	
   return $content;
 }
 
@@ -10620,19 +10621,26 @@ function nxs_ext_feed_img($content)
 
 function nxs_the_excerpt_rss($content)
 {
+	
 	$content = nxs_the_content_feed($content, $feedtype);
 	$content = str_replace("\n", " ", $content);
 	$content = str_replace("&nbsp;", " ", $content);
 	
 	$content = wp_strip_all_tags($content, true);
+	
+	$content = wp_trim_words( $content, 5*40, '<a href="'. get_permalink() .'"> ...Read More</a>' );
+	
 	//$content = preg_replace('/[^A-Za-z0-9()!:.\' ]/', '', $content); // Removes special chars.
 	// prefix the image
 	
+	//$content = "GJGJ";
+
 	return $content;
 }
 
 function nxs_the_content_feed($content, $feedtype)
 {
+
 	// eerst de output van de nxs structuur,
 	// aangevuld met de $content
 	$nxscontent = "";
@@ -10646,6 +10654,10 @@ function nxs_the_content_feed($content, $feedtype)
 	}
 	
 	$content = $nxscontent . $content;
+
+	// 
+	$content = html_entity_decode($content, ENT_QUOTES, 'UTF-8')  ;
+	
   return $content;
 }
 
