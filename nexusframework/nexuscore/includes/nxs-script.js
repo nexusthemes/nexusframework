@@ -3441,6 +3441,16 @@ function nxs_js_redirect_top(url)
 			return line;
 		}
 		
+		function nxs_js_gui_getnewtempdroppablerow3(element, message)
+		{
+			var line = "";
+			line += "<div class='nxs-row nxs-not-unistyled  nxs-rowtemplate-one   nxs-listitemid-x-3'>";
+			line += "<div class='nxs-row1 nxs-remove-after-dragdrop nxs-accept-drop'><ul class='nxs-placeholder-list'><li class='nxs-one-whole' style='list-style: none;'>" + message + "</li></ul><div class='nxs-clear'></div></div>";
+			line += "</div>";
+			
+			return line;
+		}
+		
 		// registers draggable dom elements
 		function nxs_js_gui_setup_drag_listeners()
 		{
@@ -3554,7 +3564,10 @@ function nxs_js_redirect_top(url)
 					{
 						nxs_js_nxsisdragging = false;
 						jQuery("html").removeClass("nxs-dragging");
+						jQuery("body").removeClass("nxs-drop-tag");
 						jQuery(".nxs-item-being-dragged").removeClass("nxs-item-being-dragged");
+						
+						nxs_js_reenable_all_window_events();
 						
 						//nxs_js_log("removed nxs-dragging from html");
 					
@@ -3630,8 +3643,11 @@ function nxs_js_redirect_top(url)
 									(							
 										function(index, element)
 										{
-											// clean up
-											jQuery(element).hide();
+											if (!jQuery(element).hasClass("nxs-showinitially"))
+											{
+												// clean up
+												jQuery(element).hide();
+											}
 										}
 									);
 									//jQuery(".showing").show();
@@ -3672,7 +3688,7 @@ function nxs_js_redirect_top(url)
 									var aantal = jQuery(scaffolds).length;
 									if (aantal == 0)
 									{
-										nxs_js_log('Expected to show at least one scaffolding row...');
+										// nxs_js_log('Expected to show at least one scaffolding row...');
 									}
 									else if (aantal == 1)
 									{
@@ -3680,61 +3696,74 @@ function nxs_js_redirect_top(url)
 										jQuery(scaffolds).show();
 									 	jQuery(scaffolds).addClass("showing");
 									}
-									else if (aantal == 2)
+									else if (aantal >= 2)
 									{
+										//jQuery(scaffolds).show();
+										
 										var helperpositionleft = jQuery('#nxs-drag-container-helper').offset().left;
 										var rowpositionleft = jQuery(nearestrow).offset().left;
-										var showleft = true;
+										var showwhich = 0;
 										var deltaleft = helperpositionleft - rowpositionleft;
-										if (deltaleft > 160)
+										nxs_js_log("deltaleft:" + deltaleft + ";aantal:" + aantal);
+										
+										if (aantal == 4)
 										{
-											var showleft = false;
+											if (deltaleft >= 0 && deltaleft <= 30)
+											{
+												showwhich = 3;
+											}
+											else if (deltaleft >= 30 && deltaleft <= 60)
+											{
+												showwhich = 2;
+											}
+											else if (deltaleft >= 60 && deltaleft <= 90)
+											{
+												showwhich = 0;
+											}
+											else if (deltaleft >= 90)
+											{
+												showwhich = 1;
+											}
 										}
+										else if (aantal == 2)
+										{
+											if (deltaleft >= 30)
+											{
+												showwhich = 1;
+											}
+										}
+										else
+										{
+											if (deltaleft >= 100)
+											{
+												showwhich = 1;
+											}
+											else if (deltaleft <= 30)
+											{
+												showwhich = 2;
+											}
+										}							
+										
 										//nxs_js_log('rowpositionleft:' + rowpositionleft);							
 										//nxs_js_log('deltaleft:' + deltaleft);							
 										// based upon the mouse x we decide whether the show the left, or the right one
 										
-										if (showleft)
-										{
-											jQuery(jQuery(scaffolds)[0]).show();
-											jQuery(jQuery(scaffolds)[0]).addClass("showing");
-											
-											var marker = jQuery(jQuery(scaffolds)[0]).find(".nxs-drop-area");
-											jQuery(marker).css("background-color", "white");
-											jQuery(marker).css("outline-width", "thick");
-											jQuery(marker).css("outline-style", "dashed");
-											jQuery(marker).css("outline-color", "black");
-											jQuery(marker).html("<p style='align: center;'>Drop here</p>");
-
-											nxs_js_log("not show left;");
-											nxs_js_log(jQuery(scaffolds)[0]);
-										}
-										else
-										{
-											jQuery(jQuery(scaffolds)[0]).hide();
-											
-											jQuery(jQuery(scaffolds)[1]).show();
-											jQuery(jQuery(scaffolds)[1]).addClass("showing");
-											
-											/*
-											var marker = jQuery(jQuery(scaffolds)[1]);
-											jQuery(marker).css("background-color", "red");
-											jQuery(marker).css("outline-width", "thick");
-											jQuery(marker).css("outline-style", "solid");
-											jQuery(marker).css("outline-color", "black");
-											*/
-											
-											var marker = jQuery(jQuery(scaffolds)[1]).find(".nxs-drop-area");
-											jQuery(marker).css("background-color", "black");
-											jQuery(marker).css("outline-width", "thick");
-											jQuery(marker).css("outline-style", "dashed");
-											jQuery(marker).css("outline-color", "black");
-											jQuery(marker).html("<p style='align: center;'>Drop here (child)</p>");
-										}
+										jQuery(jQuery(scaffolds)[showwhich]).show();
+										jQuery(jQuery(scaffolds)[showwhich]).addClass("showing");
+										
+										var itembeingdragged = jQuery(".nxs-item-being-dragged");
+										var text = jQuery(itembeingdragged).text();
+										
+										var marker = jQuery(jQuery(scaffolds)[showwhich]).find(".nxs-drop-area");
+										jQuery(marker).css("background-color", "white");
+										jQuery(marker).css("outline-width", "thick");
+										jQuery(marker).css("outline-style", "dashed");
+										jQuery(marker).css("outline-color", "black");
+										jQuery(marker).html("<p style='align: center;'>" + text + "(Drop here)</p>");
 									}
 									else
 									{
-										//nxs_js_log('Expected max 2 scaffolding rows ...');
+										nxs_js_log('Expected max 2 scaffolding rows ...');
 									}
 								}
 							}
@@ -4053,7 +4082,14 @@ function nxs_js_redirect_top(url)
 		}
 		
 		function nxs_js_gui_add_virtual_droppable_pagerows_for_list()
-		{			
+		{
+			if (jQuery("body").hasClass("nxs-drop-tag"))
+			{
+				nxs_js_log("dont do it again!");
+				return;
+			}
+			jQuery("body").addClass("nxs-drop-tag");
+
 			nxs_js_identify_rows_as_recursivelistitems();
 			
 			var element = jQuery('#nxs-drag-container-helper').data('sourcedragelement');
@@ -4068,11 +4104,14 @@ function nxs_js_redirect_top(url)
 			(
 				function(pcindex, pagecontainer)
 				{
+					var rowcounter = 0;
 					var allrows = jQuery(pagecontainer).find(".nxs-row");
 					allrows.each
 					(
 						function(index, rowelement)
 						{
+							rowcounter++;
+							
 							var listitemid = jQuery(rowelement).data('listitemid');
 							//nxs_js_log('listitemid :' + listitemid);
 							
@@ -4098,7 +4137,10 @@ function nxs_js_redirect_top(url)
 								//nxs_js_log('droppable :' + listitemid + '(dit is geen child van het draggable item)');
 								
 								var depth = nxs_js_getmenuitemdepth_in_dom(rowelement);
+								var parentdepth = depth - 1;
+								var superparentdepth = depth - 2;
 								var childdepth = depth + 1;
+								
 								
 								var pagerowselement = jQuery(pagecontainer).find(".nxs-postrows")[0];
 								
@@ -4113,6 +4155,26 @@ function nxs_js_redirect_top(url)
 								jQuery(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
 								jQuery(current_element_accepting_drop).data('destinationdragmeta', index + "_" + childdepth);
 								jQuery(rowelement).append(current_element_accepting_drop);
+								
+								// promote to parent
+								if (depth > 1)
+								{
+									var line = "<div class='nxs-padding-menu-item'><div class='content2 nxs-border-dash nxs-drop-area nxs-margin-left" + (parentdepth - 1) * 30 + " nxs-show-no-hover-with-drag nxs-show-hover-with-drag'><div class='nxs-clear'>&nbsp;</div></div></div>";
+									var current_element_accepting_drop = jQuery(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
+									jQuery(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
+									jQuery(current_element_accepting_drop).data('destinationdragmeta', index + "_" + parentdepth);
+									jQuery(rowelement).append(current_element_accepting_drop);
+								}
+								
+								// promote to superparent
+								if (depth > 2)
+								{
+									var line = "<div class='nxs-padding-menu-item'><div class='content2 nxs-border-dash nxs-drop-area nxs-margin-left" + (superparentdepth - 1) * 30 + " nxs-show-no-hover-with-drag nxs-show-hover-with-drag'><div class='nxs-clear'>&nbsp;</div></div></div>";
+									var current_element_accepting_drop = jQuery(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
+									jQuery(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
+									jQuery(current_element_accepting_drop).data('destinationdragmeta', index + "_" + superparentdepth);
+									jQuery(rowelement).append(current_element_accepting_drop);
+								}
 							}
 						}
 					);
