@@ -3536,11 +3536,26 @@ function nxs_js_redirect_top(url)
 						nxs_js_ui_popscrollrevert(scrollrevertid);
 						//nxs_js_log("drag finishes	!");
 						
+						if (jQuery("body").hasClass("single-nxs_menu"))
+						{
+							// het is een menu; in dat geval, zetten we de betrokken menu items
+							// even op 50% zodat duidelijk is welke items betrokken zijn
+							var therow = jQuery(".nxs-widget-" + sourcedragmeta).closest(".nxs-row");
+							var classidentifier = nxs_js_findclassidentificationwithprefix(therow, 'nxs-listitemid-x');
+							
+							nxs_js_log(therow);
+							nxs_js_log(classidentifier);
+							
+							var selector = "div[class*='nxs-listitemid-x" + classidentifier + "']";
+							jQuery(selector).addClass("nxs-item-being-dragged");
+						}
           },
 					revert: function(socketObj) 
 					{
 						nxs_js_nxsisdragging = false;
 						jQuery("html").removeClass("nxs-dragging");
+						jQuery(".nxs-item-being-dragged").removeClass("nxs-item-being-dragged");
+						
 						//nxs_js_log("removed nxs-dragging from html");
 					
 						//nxs_js_log("revert starts!");
@@ -4149,8 +4164,10 @@ function nxs_js_redirect_top(url)
 								jQuery(rowelement).data('listitemid', sofarforthisrow);
 								jQuery(rowelement).data('recursionrequired', 'false');
 								
-								// 
-								jQuery(rowelement).addClass('nxs-listitemid-x' + sofarforthisrow);
+								var underscored = sofarforthisrow.split(".").join("-");
+								//nxs_js_log("has become;");
+								//nxs_js_log(underscored);
+								jQuery(rowelement).addClass('nxs-listitemid-x' + underscored);
 								
 								//nxs_js_log("setting (final) listitemid for row " + currentrowid + " to " + jQuery(rowelement).data('listitemid'));
 							}
