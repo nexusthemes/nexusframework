@@ -3461,7 +3461,7 @@ function nxs_js_redirect_top(url)
 					cursorAt: { top: 0, left: 0 },
 					appendTo: 'body',
 					start: function(event, ui) 
-					{
+					{						
 						// 
 						var scrollrevertid = nxs_js_ui_pushscrollrevert();
 					
@@ -3528,6 +3528,7 @@ function nxs_js_redirect_top(url)
 						jQuery('#nxs-drag-container-helper').data('sourcedragmeta', sourcedragmeta);
 						jQuery('#nxs-drag-container-helper').data('sourcedragelement', this);
 						
+
 						// hier
 						nxs_js_gui_add_drop_scaffolding();
 						nxs_js_gui_setup_drop_listeners();
@@ -3556,6 +3557,9 @@ function nxs_js_redirect_top(url)
 							if (sourcedragtype == 'placeholderswap')
 							{
 								nxs_js_alert(nxs_js_gettrans('Widget was not moved'));
+								
+								nxs_js_log("menu fix 2");
+								nxs_js_reenable_all_window_events();
 							}
 							else if (sourcedragtype == 'toolboxpagerowtemplate')
 							{
@@ -3667,7 +3671,7 @@ function nxs_js_redirect_top(url)
 										var rowpositionleft = jQuery(nearestrow).offset().left;
 										var showleft = true;
 										var deltaleft = helperpositionleft - rowpositionleft;
-										if (deltaleft > 60)
+										if (deltaleft > 160)
 										{
 											var showleft = false;
 										}
@@ -3679,11 +3683,38 @@ function nxs_js_redirect_top(url)
 										{
 											jQuery(jQuery(scaffolds)[0]).show();
 											jQuery(jQuery(scaffolds)[0]).addClass("showing");
+											
+											var marker = jQuery(jQuery(scaffolds)[0]).find(".nxs-drop-area");
+											jQuery(marker).css("background-color", "white");
+											jQuery(marker).css("outline-width", "thick");
+											jQuery(marker).css("outline-style", "dashed");
+											jQuery(marker).css("outline-color", "black");
+											jQuery(marker).html("<p style='align: center;'>Drop here</p>");
+
+											nxs_js_log("not show left;");
+											nxs_js_log(jQuery(scaffolds)[0]);
 										}
 										else
 										{
+											jQuery(jQuery(scaffolds)[0]).hide();
+											
 											jQuery(jQuery(scaffolds)[1]).show();
 											jQuery(jQuery(scaffolds)[1]).addClass("showing");
+											
+											/*
+											var marker = jQuery(jQuery(scaffolds)[1]);
+											jQuery(marker).css("background-color", "red");
+											jQuery(marker).css("outline-width", "thick");
+											jQuery(marker).css("outline-style", "solid");
+											jQuery(marker).css("outline-color", "black");
+											*/
+											
+											var marker = jQuery(jQuery(scaffolds)[1]).find(".nxs-drop-area");
+											jQuery(marker).css("background-color", "black");
+											jQuery(marker).css("outline-width", "thick");
+											jQuery(marker).css("outline-style", "dashed");
+											jQuery(marker).css("outline-color", "black");
+											jQuery(marker).html("<p style='align: center;'>Drop here (child)</p>");
 										}
 									}
 									else
@@ -4118,6 +4149,9 @@ function nxs_js_redirect_top(url)
 								jQuery(rowelement).data('listitemid', sofarforthisrow);
 								jQuery(rowelement).data('recursionrequired', 'false');
 								
+								// 
+								jQuery(rowelement).addClass('nxs-listitemid-x' + sofarforthisrow);
+								
 								//nxs_js_log("setting (final) listitemid for row " + currentrowid + " to " + jQuery(rowelement).data('listitemid'));
 							}
 							else if (currentChildDepthIndex > currentdepth)
@@ -4282,6 +4316,8 @@ function nxs_js_redirect_top(url)
 					if (jQuery(pagecontainer).hasClass("nxs-menu-container"))
 					{
 						nxs_js_gui_add_virtual_droppable_pagerows_for_list();
+						
+						
 					}
 					else if (jQuery(pagecontainer).hasClass("nxs-list-container"))
 					{

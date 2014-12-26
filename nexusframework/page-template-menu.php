@@ -26,7 +26,7 @@
 	<div class='padding'>
     <div class="block">
       <div class="nxs-admin-header">
-          <h3>Menu elementen</h3>
+          <h3>Menu items</h3>
           <div class="nxs-clear"></div>
       </div>
       <div class="nxs-clear"></div>		

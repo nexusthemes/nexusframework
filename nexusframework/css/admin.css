@@ -1348,10 +1348,10 @@ div.jGrowl 											{ display: none; }
 ----------------------------------------------------------------------------------------------------*/
 .nxs-draggable:hover 										{ cursor: move !important; }
 #nxs-drag-container-helper 									{ z-index: 9999999; display: block; opacity: 0.9; visibility: visible; }
-.nxs-show-no-hover-with-drag 								{ display: block; background: #555555; opacity: 0.5;  }
-.nxs-show-hover-with-drag 									{ opacity: 0.5; display: block; }
-.nxs-ui-state-hover .nxs-show-no-hover-with-drag 			{ background: #999; opacity: 0.1; }
-.nxs-ui-state-hover .nxs-show-hover-with-drag 				{ opacity: 0.8; background-color: #333333; }
+.x-nxs-show-no-hover-with-drag 								{ display: block; background: #555555; opacity: 0.5;  }
+.x-nxs-show-hover-with-drag 									{ opacity: 0.5; display: block; }
+.x-nxs-ui-state-hover .nxs-show-no-hover-with-drag 			{ background: #999; opacity: 0.1; }
+.x-nxs-ui-state-hover .nxs-show-hover-with-drag 				{ opacity: 0.8; background-color: #333333; }
 
 .nxs-hover-menu.outside-left-nomargin-top 					{ left: -37px; } 
 	
