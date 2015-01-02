@@ -134,6 +134,10 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 	$hovermenuargs["enable_decoratewidget"] = false;
 	$hovermenuargs["enable_deletewidget"] = false;
 	$hovermenuargs["enable_deleterow"] = true;
+	
+	//$hovermenuargs["enable_movewidget"] = "first";
+	//$hovermenuargs["enable_editwidget"] = "second";
+	
 	$hovermenuargs["metadata"] = $mixedattributes;	
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
@@ -172,7 +176,11 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
   }
   
   ?>
-	<div class="nxs-padding-menu-item">
+	<div class="nxs-padding-menu-item nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder" id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
+		<div class="nxs-drag-helper" style='display: none;'>
+			<div class='placeholder'>
+			</div>
+		</div>
 		<div class="content2 border <?php echo $positionerclass;?>">
 	    <div class="box-content nxs-float-left"><p><?php echo $title; ?></p></div>
 	    <div class="nxs-clear"></div>

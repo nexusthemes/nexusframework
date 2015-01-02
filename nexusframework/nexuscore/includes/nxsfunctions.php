@@ -8947,6 +8947,7 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
 	
 	// if (support
 	
+	$enable_editwidget = true;
 	$enable_movewidget = true;
 	$enable_deletewidget = true;
 	$enable_deleterow = false;
@@ -8974,6 +8975,8 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
 		$enable_deleterow = false;
 		$lockedwidget = true;
 	}
+	
+	
 
  	$widgeticonid = nxs_getwidgeticonid($placeholdertemplate);
  	
@@ -8995,80 +8998,104 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
  	{
 		?>
 	  <ul class="">
-	    <li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
-	  		<a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' <?php if ($defaultwidgetclickhandler=='edit') { echo 'class="nxs-defaultwidgetclickhandler"'; } ?> onclick="nxs_js_edit_widget(this); return false;">
-	      	<span class='<?php echo $widgeticonid; ?>'></span>
-	      </a>
+	  	<?php
+	  	if ($enable_movewidget === "first")
+	  	{
+	  		?>
+		    <li title='<?php nxs_l18n_e("Move[tooltip]", "nxs_td"); ?>' class='nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder' id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
+	      	<span class='nxs-icon-move'></span>
+	        <div class="nxs-drag-helper" style='display: none;'>
+	          <div class='placeholder'>
+	          	<span class='<?php echo $widgeticonid; ?>'></span>
+	          </div>
+	        </div>
+	        <!-- li is closed further on -->
+		    <?php
+	  	}
+	  	else if ($enable_editwidget === true)
+	  	{
+		  	?>
+		    <li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
+		  		<a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' <?php if ($defaultwidgetclickhandler=='edit') { echo 'class="nxs-defaultwidgetclickhandler"'; } ?> onclick="nxs_js_edit_widget(this); return false;">
+		      	<span class='<?php echo $widgeticonid; ?>'></span>
+		      </a>
+		      <!-- li is closed further on -->
+		    <?php
+	  	}
+	  	else
+	  	{
+	  		nxs_webmethod_return_nack("unsupported first widget menu item");
+	  	}
+	    ?>
 	      <ul class="">
-	      		<?php 
-	      		if ($enable_decoratewidget === true)
-	      		{
-	      			echo nxs_render_widgetbackgroundstyler($placeholdertemplate); 
-	      		}
+	      	<?php
+	      	if ($enable_editwidget === "second")
+	      	{
 	      		?>
+				    <li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
+				  		<a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' <?php if ($defaultwidgetclickhandler=='edit') { echo 'class="nxs-defaultwidgetclickhandler"'; } ?> onclick="nxs_js_edit_widget(this); return false;">
+				      	<span class='<?php echo $widgeticonid; ?>'></span>
+				      </a>
+						</li>	      		
 	      		<?php
-	      		if ($enable_movewidget === true)
-	      		{
-	      			$widgeticonid = nxs_getplaceholdericonid($placeholdertemplate);
-	      			?>
-			        <li title='<?php nxs_l18n_e("Move[tooltip]", "nxs_td"); ?>' class='nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder' id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
-			        	<span class='nxs-icon-move'></span>
-		            <div class="nxs-drag-helper" style='display: none;'>
-		                <div class='placeholder'>
-		                	<span class='<?php echo $widgeticonid; ?>'></span>
-		                </div>
-		            </div>					
-			        </li>
-			       	<?php
-			      }
-			      ?>
-			      <?php
-	      		if ($enable_deletewidget === true)
-	      		{
-	      			?>
-		        	<a class='nxs-no-event-bubbling' href='#' onclick='nxs_js_popup_placeholder_wipe("<?php echo $postid; ?>", "<?php echo $placeholderid; ?>"); return false;'>
-		           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'>
-		           		<span class='nxs-icon-trash'></span>
-		           	</li>
-		        	</a>		
-		        	<?php
-		        }
-		        ?>
-		        <?php
-	      		if ($enable_deleterow === true)
-	      		{
-	      			?>
-		        	<a class='nxs-no-event-bubbling nxs-defaultwidgetdeletehandler' href='#' onclick='nxs_js_row_remove(this); return false;'>
-		           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'><span class='nxs-icon-trash'></span></li>
-		        	</a>		
-		        	<?php
-		        }
-		        ?>
-		        <?php
-		        if ($lockedwidget === true)
-	      		{
-	      			/*
-	      			?>
-		        	<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_alert('Widget is locked; only designers can adjust it'); return false;">
-		           	<li title='<?php nxs_l18n_e("Locked", "nxs_td"); ?>'><span class='nxs-icon-contract'></span></li>
-		        	</a>		
-		        	<?php
-		        	*/
-		        }
-		        ?>
-		        <?php
-		        if ($enable_debugmeta === true)
-		        {
-		        	?>
-		        	<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_edit_widget_v2(this, 'debug'); return false; return false;">
-		           	<li title='<?php nxs_l18n_e("Debug[tooltip]", "nxs_td"); ?>'>
-		           		<span class='nxs-icon-search'></span>
-		           	</li>
+	      	}
+	      	?>
+      		<?php 
+      		if ($enable_decoratewidget === true)
+      		{
+      			echo nxs_render_widgetbackgroundstyler($placeholdertemplate); 
+      		}
+      		?>
+      		<?php
+      		if ($enable_movewidget === true)
+      		{
+      			$widgeticonid = nxs_getplaceholdericonid($placeholdertemplate);
+      			?>
+		        <li title='<?php nxs_l18n_e("Move[tooltip]", "nxs_td"); ?>' class='nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder' id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
+		        	<span class='nxs-icon-move'></span>
+	            <div class="nxs-drag-helper" style='display: none;'>
+                <div class='placeholder'>
+                	<span class='<?php echo $widgeticonid; ?>'></span>
+                </div>
+	            </div>					
+		        </li>
+		       	<?php
+		      }
+		      ?>
+		      <?php
+      		if ($enable_deletewidget === true)
+      		{
+      			?>
+	        	<a class='nxs-no-event-bubbling' href='#' onclick='nxs_js_popup_placeholder_wipe("<?php echo $postid; ?>", "<?php echo $placeholderid; ?>"); return false;'>
+	           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'>
+	           		<span class='nxs-icon-trash'></span>
+	           	</li>
+	        	</a>		
+	        	<?php
+	        }
+	        ?>
+	        <?php
+      		if ($enable_deleterow === true)
+      		{
+      			?>
+	        	<a class='nxs-no-event-bubbling nxs-defaultwidgetdeletehandler' href='#' onclick='nxs_js_row_remove(this); return false;'>
+	           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'><span class='nxs-icon-trash'></span></li>
+	        	</a>		
+	        	<?php
+	        }
+	        ?>
+	        <?php
+	        if ($enable_debugmeta === true)
+	        {
+	        	?>
+	         	<li title='<?php nxs_l18n_e("Debug[tooltip]", "nxs_td"); ?>'>
+	  	      	<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_edit_widget_v2(this, 'debug'); return false; return false;">
+		          		<span class='nxs-icon-search'></span>
 		        	</a>	
-		        		
-		        	<?php
-		        }
-		        ?>
+	         	</li>    		
+	        	<?php
+	        }
+	        ?>
 		    </ul>	
 	  	</li>
 		</ul>
@@ -9080,13 +9107,12 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
 		{
 			?>
 		  <ul class="">
-		  	
 			 	<li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
 		  		<a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>'  class="nxs-defaultwidgetclickhandler" onclick="nxs_js_edit_widget_v2(this, 'unlock'); return false;">
 		      	<span class='<?php echo $widgeticonid; ?>'></span>
 		      </a>
 	    	</li>
-	  	<li>
+	  		<li>
 		  		<a href='#' title='<?php nxs_l18n_e("Unlock", "nxs_td"); ?>' onclick="nxs_js_edit_widget_v2(this, 'unlock'); return false;">
 		      	<span class='nxs-icon-unlocked'></span>
 		      </a>

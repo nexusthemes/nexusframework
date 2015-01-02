@@ -1479,6 +1479,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 						';
 					}
 				
+					/*
 					if ($comments != "") {
 						$icon_font_list_comments ='	
 								<ul class="icon-font-list nxs-float-right nxs-relative comments">'
@@ -1486,6 +1487,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 									. '
 								</ul>';
 					}
+					*/
 					
 					if ($twitter != "" || $facebook != "" || $linkedin!= "" || $googleplus != "") {
 						$icon_font_list_sharing ='	

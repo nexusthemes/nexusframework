@@ -198,6 +198,13 @@ function nxs_widgets_twittertweets_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
+			array(
+				"id" 				=> "datetime_format",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Datetime format", "nxs_td"),
+			),	
+			// 
+			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
@@ -441,7 +448,12 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 								extract($currenttweet, EXTR_PREFIX_ALL, "curtweet");
 								extract($currenttweetowner, EXTR_PREFIX_ALL, "cuttweetowner");
 													
-								$datetime_format = apply_filters( 'displaytweets_datetime_format', "M j" );
+								//$datetime_format = apply_filters( 'displaytweets_datetime_format', "M j" );
+								if ($datetime_format == "")
+								{
+									// empty defaults to the format in the backend
+									$datetime_format = get_option("date_format");
+								}
 								$tweetdate = apply_filters( 'displaytweets_posted_since', date_i18n( $datetime_format , strtotime($curtweet_created_at)));
 								
 								echo ' 

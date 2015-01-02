@@ -1693,14 +1693,17 @@ function nxs_js_redirect_top(url)
 				jQuery(".nxs-widgets-editable .nxs-placeholder").unbind("mouseover.glowwidget");
 				jQuery(".nxs-widgets-editable .nxs-placeholder").bind("mouseover.glowwidget", function(e)
 				{
-					// add nxs-hovering
-					jQuery(this).find(".nxs-cell-cursor").addClass("nxs-hovering");
-					jQuery(this).find(".nxs-hover-menu").addClass("nxs-hovering");
-					jQuery(this).addClass("nxs-hovering");
-					
-					// update height of child items (cursors) that should have the same size
-					var height = jQuery(this).height();
-					jQuery(this).find(".nxs-runtime-autocellsize").height(height);
+					if (!nxs_js_nxsisdragging)
+					{
+						// add nxs-hovering
+						jQuery(this).find(".nxs-cell-cursor").addClass("nxs-hovering");
+						jQuery(this).find(".nxs-hover-menu").addClass("nxs-hovering");
+						jQuery(this).addClass("nxs-hovering");
+						
+						// update height of child items (cursors) that should have the same size
+						var height = jQuery(this).height();
+						jQuery(this).find(".nxs-runtime-autocellsize").height(height);
+					}
 				});
 				// OK
 				jQuery(".nxs-widgets-editable .nxs-placeholder").unbind("mouseleave.glowwidget");
@@ -1719,15 +1722,21 @@ function nxs_js_redirect_top(url)
 				jQuery(".nxs-layout-editable .nxs-row .nxs-row-container > .nxs-hover-menu").unbind("mouseover.glowrow");
 				jQuery(".nxs-layout-editable .nxs-row .nxs-row-container > .nxs-hover-menu").bind("mouseover.glowrow", function(e)
 				{
-					jQuery(this).closest(".nxs-row").find(".nxs-cell-cursor").addClass("nxs-hovering");
-					jQuery(this).closest(".nxs-row").find(".nxs-placeholder").addClass("nxs-hovering");
+					if (!nxs_js_nxsisdragging)
+					{
+						jQuery(this).closest(".nxs-row").find(".nxs-cell-cursor").addClass("nxs-hovering");
+						jQuery(this).closest(".nxs-row").find(".nxs-placeholder").addClass("nxs-hovering");
+					}
 				});
 				// OK
 				jQuery(".nxs-layout-editable .nxs-row .nxs-row-container > .nxs-hover-menu").unbind("mouseleave.glowrow");
 				jQuery(".nxs-layout-editable .nxs-row .nxs-row-container > .nxs-hover-menu").bind("mouseleave.glowrow", function(e)
 				{
-					jQuery(this).closest(".nxs-row").find(".nxs-cell-cursor").removeClass("nxs-hovering");
-					jQuery(this).closest(".nxs-row").find(".nxs-placeholder").removeClass("nxs-hovering");
+					if (!nxs_js_nxsisdragging)
+					{
+						jQuery(this).closest(".nxs-row").find(".nxs-cell-cursor").removeClass("nxs-hovering");
+						jQuery(this).closest(".nxs-row").find(".nxs-placeholder").removeClass("nxs-hovering");
+					}
 				}
 				);
 				
@@ -1736,10 +1745,12 @@ function nxs_js_redirect_top(url)
 				jQuery(".nxs-cursor").unbind("mouseover.glowwidget");
 				jQuery(".nxs-cursor").bind("mouseover.glowwidget", function(e)
 				{
-					//nxs_js_log('mouse over detected');
-					jQuery(this).addClass("nxs-hovering");
-					// geef ook nxs-hovering aan mogelijke hovermenu's die hier in zitten
-					jQuery(this).find(".nxs-hover-menu").addClass("nxs-hovering");
+					if (!nxs_js_nxsisdragging)
+					{
+						jQuery(this).addClass("nxs-hovering");
+						// geef ook nxs-hovering aan mogelijke hovermenu's die hier in zitten
+						jQuery(this).find(".nxs-hover-menu").addClass("nxs-hovering");
+					}
 				});
 				jQuery(".nxs-cursor").unbind("mouseleave.glowwidget");
 				jQuery(".nxs-cursor").bind("mouseleave.glowwidget", function(e)
@@ -1756,8 +1767,10 @@ function nxs_js_redirect_top(url)
 				jQuery(".nxs-containsimmediatehovermenu").unbind("mouseover.glowwidget");
 				jQuery(".nxs-containsimmediatehovermenu").bind("mouseover.glowwidget", function(e)
 				{
-					//nxs_js_log('mouse over detected');
-					jQuery(this).children(".nxs-hover-menu").addClass("nxs-hovering");
+					if (!nxs_js_nxsisdragging)
+					{
+						jQuery(this).children(".nxs-hover-menu").addClass("nxs-hovering");
+					}
 				});
 				jQuery(".nxs-containsimmediatehovermenu").unbind("mouseleave.glowwidget");
 				jQuery(".nxs-containsimmediatehovermenu").bind("mouseleave.glowwidget", function(e)
@@ -1767,6 +1780,7 @@ function nxs_js_redirect_top(url)
 				}
 				);
 			}
+			
 			
 			// allow extensions to extend this
 			jQuery(window).trigger('nxs_js_reregister_click_and_hover_events');
@@ -3472,6 +3486,7 @@ function nxs_js_redirect_top(url)
 					appendTo: 'body',
 					start: function(event, ui) 
 					{						
+						nxs_js_log("drag start!");
 						// 
 						var scrollrevertid = nxs_js_ui_pushscrollrevert();
 					
@@ -3553,9 +3568,6 @@ function nxs_js_redirect_top(url)
 							var therow = jQuery(".nxs-widget-" + sourcedragmeta).closest(".nxs-row");
 							var classidentifier = nxs_js_findclassidentificationwithprefix(therow, 'nxs-listitemid-x');
 							
-							nxs_js_log(therow);
-							nxs_js_log(classidentifier);
-							
 							var selector = "div[class*='nxs-listitemid-x" + classidentifier + "']";
 							jQuery(selector).addClass("nxs-item-being-dragged");
 						}
@@ -3584,10 +3596,7 @@ function nxs_js_redirect_top(url)
 	
 							if (sourcedragtype == 'placeholderswap')
 							{
-								nxs_js_alert(nxs_js_gettrans('Widget was not moved'));
-								
-								nxs_js_log("menu fix 2");
-								nxs_js_reenable_all_window_events();
+								nxs_js_alert(nxs_js_gettrans('Widget was not moved. To move the widget release it in a dashed area'));
 							}
 							else if (sourcedragtype == 'toolboxpagerowtemplate')
 							{
@@ -3601,6 +3610,7 @@ function nxs_js_redirect_top(url)
  							//nxs_js_log("revert finishes!");
             	
             	//nxs_js_log(this);
+            	nxs_js_reenable_all_window_events();
               return false;
             }
             else 
@@ -3609,11 +3619,13 @@ function nxs_js_redirect_top(url)
 
             	//nxs_js_log('drop was accepted');
               // Drop was accepted, don't revert with an animation
+              nxs_js_reenable_all_window_events();
               return false;
             }
           },
           stop: function(event, ui) 
 					{
+						nxs_js_log("drag stop!");
 						nxs_js_nxsisdragging = false;
 						jQuery("html").removeClass("nxs-dragging");
 						//nxs_js_log("removed nxs-dragging from html");
@@ -3621,9 +3633,16 @@ function nxs_js_redirect_top(url)
 						//nxs_js_log("stop starts!");
 						nxs_js_gui_cleanup_drag_scaffolding();
 						//nxs_js_log("stop finishes!");
+						nxs_js_reenable_all_window_events();
+						
+						// re-enable the drag handlers after 100 msecs,
+						// timer is required, otherwise the existing element
+						// cannot be re-dragged for some reason...
+						setTimeout(function() { nxs_js_reenable_all_window_events(); }, 100);
 					},
 					drag: function(event, ui)
 					{
+						nxs_js_log("event drag");
 						// Triggered while the mouse is moved during the dragging.
 					
 						jQuery(".nxs-layout-editable").each
@@ -3704,7 +3723,7 @@ function nxs_js_redirect_top(url)
 										var rowpositionleft = jQuery(nearestrow).offset().left;
 										var showwhich = 0;
 										var deltaleft = helperpositionleft - rowpositionleft;
-										nxs_js_log("deltaleft:" + deltaleft + ";aantal:" + aantal);
+										//nxs_js_log("deltaleft:" + deltaleft + ";aantal:" + aantal);
 										
 										if (aantal == 4)
 										{
@@ -3755,11 +3774,25 @@ function nxs_js_redirect_top(url)
 										var text = jQuery(itembeingdragged).text();
 										
 										var marker = jQuery(jQuery(scaffolds)[showwhich]).find(".nxs-drop-area");
-										jQuery(marker).css("background-color", "white");
-										jQuery(marker).css("outline-width", "thick");
-										jQuery(marker).css("outline-style", "dashed");
-										jQuery(marker).css("outline-color", "black");
-										jQuery(marker).html("<p style='align: center;'>" + text + "(Drop here)</p>");
+										
+										jQuery(marker).each
+										(
+											function() 
+											{
+												if (!jQuery(this).hasClass("nxs-done"))
+												{
+													jQuery(this).addClass("nxs-done")
+
+													nxs_js_log("adding triggers");
+													
+													jQuery(marker).css("background-color", "white");
+													jQuery(marker).css("outline-width", "thick");
+													jQuery(marker).css("outline-style", "dashed");
+													jQuery(marker).css("outline-color", "black");
+													var h = jQuery(marker).html("<p style='align: center;'>" + text + "(Drop here)</p>");
+												}
+											}
+										);
 									}
 									else
 									{

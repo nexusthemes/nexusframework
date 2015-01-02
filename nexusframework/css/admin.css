@@ -1353,9 +1353,11 @@ div.jGrowl 											{ display: none; }
 .x-nxs-ui-state-hover .nxs-show-no-hover-with-drag 			{ background: #999; opacity: 0.1; }
 .x-nxs-ui-state-hover .nxs-show-hover-with-drag 				{ opacity: 0.8; background-color: #333333; }
 .nxs-item-being-dragged { display: none !important; opacity: 0.2; }
-
+.single-nxs_menu .nxs-row,
+.single-nxs_menu .nxs-placeholder
+{ max-width: 300px; }
 .nxs-hover-menu.outside-left-nomargin-top 					{ left: -37px; } 
-	
+
 img.nxs-preview-thumbnail 									{ max-width: 48px; max-height: 48px; } 
 
 .nxs-menu-spacer 											{ width: 28px; display: block } 
