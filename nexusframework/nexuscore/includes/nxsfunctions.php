@@ -8173,6 +8173,13 @@ function nxs_lookuptable_persist($lookuptable)
 
 function nxs_lookuptable_getlookup()
 {
+	$includeruntimeitems = false;
+	$result = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+	return $result;
+}
+
+function nxs_lookuptable_getlookup_v2($includeruntimeitems)
+{
 	$sitemeta = nxs_getsitemeta();
 	$metakey = "lookuptable";
 	$result = $sitemeta[$metakey];
@@ -8180,6 +8187,11 @@ function nxs_lookuptable_getlookup()
 	if (!isset($result))
 	{
 		$result = array();
+	}
+	
+	if ($includeruntimeitems)
+	{
+		$result["currentyear"] = date("Y");
 	}
 	
 	return $result;
@@ -10883,7 +10895,8 @@ function nxs_filter_translatelookup($metadata, $fields)
 				{
 					// optimization; only do this when the lookup is not yet set,
 					// note this can be further optimized
-					$lookup = nxs_lookuptable_getlookup();
+					$includeruntimeitems = true;
+					$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
 					
 					foreach ($lookup as $key => $val)
 					{
