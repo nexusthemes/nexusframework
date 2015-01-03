@@ -539,6 +539,7 @@ function nxs_widgets_template_render_webpart_render_htmlvisualization($args)
 		$imagemetadata= wp_get_attachment_image_src($image_imageid, $wpsize, true);
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl 		= $imagemetadata[0];
+		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 		$imagewidth 	= $imagemetadata[1] . "px";
 		$imageheight 	= $imagemetadata[2] . "px";	
 	}

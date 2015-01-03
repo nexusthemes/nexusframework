@@ -575,6 +575,7 @@ function nxs_pagetemplate_handleheader()
 		$faviconid = $sitemeta["faviconid"];
 		$faviconlookup = wp_get_attachment_image_src($faviconid, 'full', true);
 		$faviconurl = $faviconlookup[0];
+		$faviconurl = nxs_img_getimageurlthemeversion($faviconurl);
 	}
 	else
 	{
@@ -808,8 +809,10 @@ function nxs_pagetemplate_blogentry_render($args)
 			if (wp_attachment_is_image($attachmentid))
 			{
 				$att_image = wp_get_attachment_image_src($attachmentid, "full"); 
+				$att_image_src = $att_image[0];
+				$att_image_src = nxs_img_getimageurlthemeversion($att_image_src);
 				?>
-			  <img src="<?php echo $att_image[0];?>" width="<?php echo $att_image[1];?>" height="<?php echo $att_image[2];?>"  class="attachment-medium" alt="<?php $post->post_excerpt; ?>" />
+			  <img src="<?php echo $att_image_src;?>" width="<?php echo $att_image[1];?>" height="<?php echo $att_image[2];?>"  class="attachment-medium" alt="<?php $post->post_excerpt; ?>" />
 				<?php 
 			}
 			else 

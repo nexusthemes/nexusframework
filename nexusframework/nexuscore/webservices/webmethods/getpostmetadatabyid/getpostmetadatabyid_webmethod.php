@@ -12,6 +12,7 @@ function nxs_webmethod_getpostmetadatabyid()
  	
  	$src = wp_get_attachment_image_src($id, 'thumbnail', true);
  	$url = $src[0];
+ 	$url = nxs_img_getimageurlthemeversion($url);
 	//
 	//
 	//

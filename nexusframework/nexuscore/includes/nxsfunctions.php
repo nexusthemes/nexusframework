@@ -2557,6 +2557,18 @@ function nxs_get_key_imageid_in_post($postid)
 	return $result;
 }
 
+// gets an improved version of the image, based on the themeversion
+function nxs_img_getimageurlthemeversion($result)
+{
+	if (function_exists("nxs_theme_getmeta"))
+	{
+		$meta = nxs_theme_getmeta();
+		$version = $meta["version"];
+		$result = nxs_addqueryparametertourl_v2($result, "nxsv", $version, true, true);
+	}
+	return $result;
+}
+
 function nxs_get_images_in_post($postid)
 {
 	$result = array();
@@ -10061,6 +10073,7 @@ function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $
 
 	// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 	$imageurl 		= $imagemetadata[0];
+	$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 	$imagewidth 	= $imagemetadata[1] . "px";
 	$imageheight 	= $imagemetadata[2] . "px";	
 	
@@ -10634,6 +10647,7 @@ function nxs_ext_feed_img($content)
 	
 		$image_attributes = wp_get_attachment_image_src($imageid, "full", false);
 		$src = $image_attributes[0];
+		$src = nxs_img_getimageurlthemeversion($src);
 		$width = $image_attributes[1];
 		$height = $image_attributes[2];
 		//$nxscontent = "<img src='{$src}' width='{$width}' height='{$height}' /><br />" . $content;

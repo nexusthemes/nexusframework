@@ -37,6 +37,7 @@ function nxs_widgets_galleryitem_render_webpart_render_htmlvisualization($args) 
 	
 	$lookup = wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
 	$url = $lookup[0];
+	$url = nxs_img_getimageurlthemeversion($url);
 
 	global $nxs_global_placeholder_render_statebag;
 
@@ -153,6 +154,8 @@ function nxs_widgets_galleryitem_getfullsizeurl($placeholdermetadata)
 	$imageid = $placeholdermetadata['image_imageid'];
 	$lookup = wp_get_attachment_image_src($imageid, 'full', true);
 	$fullimageurl = $lookup[0];
+	$fullimageurl = nxs_img_getimageurlthemeversion($fullimageurl);
+
 	return $fullimageurl;
 }
 
@@ -172,6 +175,7 @@ function nxs_widgets_galleryitem_renderingallery($args)
 	}
 	
 	$thumbimageurl = $lookup[0];
+	$thumbimageurl = nxs_img_getimageurlthemeversion($thumbimageurl);
 	
 	$item_title = $placeholdermetadata["title"];
 	$item_text = $placeholdermetadata["text"];

@@ -111,6 +111,7 @@ function nxs_widgets_carouselitem_render_webpart_render_htmlvisualization($args)
 	
 	$lookup = wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
 	$url = $lookup[0];
+	$url = nxs_img_getimageurlthemeversion($url);
 
 	if (nxs_has_adminpermissions())
 	{

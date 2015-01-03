@@ -411,6 +411,8 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$rss_imageurl 		= $imagemetadata[0];
+		$rss_imageurl = nxs_img_getimageurlthemeversion($rss_imageurl);
+		
 		$rss_imagewidth 	= $imagemetadata[1] . "px";
 		$rss_imageheight 	= $imagemetadata[2] . "px";
 	
@@ -433,6 +435,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$twitter_imageurl 		= $imagemetadata[0];
+		$twitter_imageurl = nxs_img_getimageurlthemeversion($twitter_imageurl);
 		$twitter_imagewidth 	= $imagemetadata[1] . "px";
 		$twitter_imageheight 	= $imagemetadata[2] . "px";
 	
@@ -455,6 +458,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$facebook_imageurl 		= $imagemetadata[0];
+		$facebook_imageurl = nxs_img_getimageurlthemeversion($facebook_imageurl);
 		$facebook_imagewidth 	= $imagemetadata[1] . "px";
 		$facebook_imageheight 	= $imagemetadata[2] . "px";	
 	
@@ -477,6 +481,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$linkedin_imageurl 		= $imagemetadata[0];
+		$linkedin_imageurl = nxs_img_getimageurlthemeversion($linkedin_imageurl);
 		$linkedin_imagewidth 	= $imagemetadata[1] . "px";
 		$linkedin_imageheight 	= $imagemetadata[2] . "px";	
 	
@@ -499,6 +504,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$google_imageurl 		= $imagemetadata[0];
+		$google_imageurl = nxs_img_getimageurlthemeversion($google_imageurl);
 		$google_imagewidth 		= $imagemetadata[1] . "px";
 		$google_imageheight 	= $imagemetadata[2] . "px";	
 	
@@ -521,6 +527,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$youtube_imageurl 		= $imagemetadata[0];
+		$youtube_imageurl = nxs_img_getimageurlthemeversion($youtube_imageurl);
 		$youtube_imagewidth 		= $imagemetadata[1] . "px";
 		$youtube_imageheight 	= $imagemetadata[2] . "px";	
 	
@@ -543,6 +550,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$pinterest_imageurl 		= $imagemetadata[0];
+		$pinterest_imageurl = nxs_img_getimageurlthemeversion($pinterest_imageurl);
 		$pinterest_imagewidth 	= $imagemetadata[1] . "px";
 		$pinterest_imageheight 	= $imagemetadata[2] . "px";
 	
@@ -565,6 +573,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$instagram_imageurl 		= $imagemetadata[0];
+		$instagram_imageurl = nxs_img_getimageurlthemeversion($instagram_imageurl);
 		$instagram_imagewidth 	= $imagemetadata[1] . "px";
 		$instagram_imageheight 	= $imagemetadata[2] . "px";
 	

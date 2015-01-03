@@ -232,6 +232,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
 				
 				$banner_imageurl 		= $lookup[0];
+				$banner_imageurl = nxs_img_getimageurlthemeversion($banner_imageurl);
 				$banner_imagewidth 		= $lookup[1]. "px";
 				$banner_imageheight 	= $lookup[2]. "px";		
 				

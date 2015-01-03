@@ -1322,6 +1322,7 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
 			                      // wp_get_attachment_url($attachmentID);
 			                      $lookup = wp_get_attachment_image_src($currentimage->ID, 'thumbnail', true);
 			                      $url = $lookup[0];
+			                      $url = nxs_img_getimageurlthemeversion($url);
 			                      $rowclass = "";
 			                      if ($rownr % 2 == 0)
 			                      {
@@ -2119,6 +2120,7 @@ function nxs_site_dashboardhome_rendersheet($args)
 		$favicondata = get_post($faviconid);
 		$faviconlookup = wp_get_attachment_image_src($faviconid, 'thumbnail', true);
 		$faviconurl = $faviconlookup[0];
+		$faviconurl = nxs_img_getimageurlthemeversion($faviconurl);
 	}
 	
 	$responsivedesign = $sitemeta["responsivedesign"];

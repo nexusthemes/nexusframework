@@ -151,6 +151,7 @@ function nxs_widgets_contactitemsecret_render_webpart_render_htmlvisualization($
 	
 	$lookup = wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
 	$url = $lookup[0];
+	$url = nxs_img_getimageurlthemeversion($url);
 
 	global $nxs_global_placeholder_render_statebag;
 	

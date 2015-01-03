@@ -36,6 +36,7 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
           <?php
 						$imagemetadata = wp_get_attachment_image_src($imgidtopreview, 'thumbnail', true);
 						$imageurl = $imagemetadata[0];	// index 0 = url		
+						$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 						//var_dump($imageurl);
           ?>
           <a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select</a>

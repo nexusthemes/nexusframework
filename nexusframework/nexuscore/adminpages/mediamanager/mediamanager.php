@@ -285,6 +285,7 @@
                             			// preview plaatje
       			                      $lookup = wp_get_attachment_image_src($currentitem->ID, 'thumbnail', true);
 						                      $url = $lookup[0];
+						                      $url = nxs_img_getimageurlthemeversion($url);
 						                      ?>
                                   <img src='<?php echo $url;?>' class="nxs-preview-thumbnail" />
 																	<?php 
@@ -323,6 +324,7 @@
                                 {
                                 	$lookup = wp_get_attachment_image_src($currentitem->ID, 'full', true);
 						                      $url = $lookup[0];
+						                      $url = nxs_img_getimageurlthemeversion($url);
                                 }
                                 else if (nxs_stringstartswith($mimetype, "application/pdf")) 
 																{ 

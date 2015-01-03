@@ -512,6 +512,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$rss_imageurl 		= $imagemetadata[0];
+		$rss_imageurl = nxs_img_getimageurlthemeversion($rss_imageurl);
 		$rss_imagewidth 	= $imagemetadata[1] . "px";
 		$rss_imageheight 	= $imagemetadata[2] . "px";
 	
@@ -534,6 +535,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$twitter_imageurl 		= $imagemetadata[0];
+		$twitter_imageurl = nxs_img_getimageurlthemeversion($twitter_imageurl);
 		$twitter_imagewidth 	= $imagemetadata[1] . "px";
 		$twitter_imageheight 	= $imagemetadata[2] . "px";
 	
@@ -556,6 +558,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$facebook_imageurl 		= $imagemetadata[0];
+		$facebook_imageurl = nxs_img_getimageurlthemeversion($facebook_imageurl);
 		$facebook_imagewidth 	= $imagemetadata[1] . "px";
 		$facebook_imageheight	= $imagemetadata[2] . "px";	
 	
@@ -578,6 +581,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$linkedin_imageurl 		= $imagemetadata[0];
+		$linkedin_imageurl = nxs_img_getimageurlthemeversion($linkedin_imageurl);
 		$linkedin_imagewidth 	= $imagemetadata[1] . "px";
 		$linkedin_imageheight 	= $imagemetadata[2] . "px";	
 	
@@ -600,6 +604,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$google_imageurl 		= $imagemetadata[0];
+		$google_imageurl = nxs_img_getimageurlthemeversion($google_imageurl);
 		$google_imagewidth 	= $imagemetadata[1] . "px";
 		$google_imageheight = $imagemetadata[2] . "px";	
 	
@@ -622,6 +627,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$youtube_imageurl 		= $imagemetadata[0];
+		$youtube_imageurl = nxs_img_getimageurlthemeversion($youtube_imageurl);
 		$youtube_imagewidth 	= $imagemetadata[1] . "px";
 		$youtube_imageheight 	= $imagemetadata[2] . "px";	
 	
@@ -646,6 +652,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$emailaddress_imageurl 		= $imagemetadata[0];
+		$emailaddress_imageurl = nxs_img_getimageurlthemeversion($emailaddress_imageurl);
 		$emailaddress_imagewidth 	= $imagemetadata[1] . "px";
 		$emailaddress_imageheight 	= $imagemetadata[2] . "px";	
 	
@@ -668,6 +675,8 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$skypechat_imageurl 		= $imagemetadata[0];
+		$skypechat_imageurl = nxs_img_getimageurlthemeversion($skypechat_imageurl);
+		
 		$skypechat_imagewidth 	= $imagemetadata[1] . "px";
 		$skypechat_imageheight 	= $imagemetadata[2] . "px";	
 	
