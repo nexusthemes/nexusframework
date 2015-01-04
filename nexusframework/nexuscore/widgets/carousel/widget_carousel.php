@@ -414,10 +414,18 @@ function nxs_widgets_carousel_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// Logo
-		if ($imageurl != "") {
+		$image_alt = trim($image_alt);
+	  $image_alt_attribute = "";
+	  if ($image_alt != "") 
+	  {
+	    $image_alt_attribute = 'alt="' . htmlspecialchars($image_alt) . '" ';
+	  }
+		
+		if ($imageurl != "") 
+		{
 			echo '
 			<div class="logo-wrapper nxs-absolute nxs-logo">
-				<img src="'.$imageurl.'" class="nxs-absolute '.$halign.' '.$max_height_percentage.'">
+				<img ' . $image_alt_attribute . ' src="'.$imageurl.'" class="nxs-absolute '.$halign.' '.$max_height_percentage.'">
 			</div>';
 		}
 		
