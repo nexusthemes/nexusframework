@@ -41,6 +41,7 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 										{
 											$currentpostid = $currentpost->ID;
 											$posttitle = nxs_cutstring($currentpost->post_title, 50);
+											$posttitle = htmlspecialchars($posttitle);
 										
 											if ($posttitle == "") 
 											{
