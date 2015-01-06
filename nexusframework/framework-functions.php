@@ -481,6 +481,13 @@ function nxs_init()
 				echo "Current locale is set to:" . $locale;
 				die();
 			}
+			else if ($_REQUEST["nxs"] == "mb_detect_order")
+			{
+				echo "mb_detect_order:<br />";
+				$r = mb_detect_order();
+				var_dump($r);
+				die();
+			}
 			else if ($_REQUEST["nxs"] == "isssl")
 			{
 				if (is_ssl()) 

@@ -2417,6 +2417,19 @@ function nxs_array_toutf8string($result)
 	return $result;
 }
 
+if(!function_exists('mb_detect_order')) 
+{
+	
+	function mb_detect_order($encoding_list)
+	{
+		$result = false;
+		if (is_null($encoding_list))
+		{
+			$result = array("ASCII", "UTF-8");	
+		}
+	}
+}
+
 // 17 aug 2013; workaround if mb_detect_encoding is not available (milos)
 // kudos to http://php.net/manual/de/function.mb-detect-encoding.php
 if(!function_exists('mb_detect_encoding')) 
