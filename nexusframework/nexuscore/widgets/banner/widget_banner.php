@@ -92,6 +92,7 @@ function nxs_widgets_banner_home_getoptions($args)
 				"type" 				=> "staticgenericlist_link",
 				"label" 			=> nxs_l18n__("banner items", "nxs_td"),
 			),
+
 			/*
 			isn't functioning properly
 			
@@ -113,6 +114,15 @@ function nxs_widgets_banner_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+
+			array(
+				"id" 				=> "halign",
+				"type" 				=> "select",
+				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
+				"label" 			=> nxs_l18n__("Horizontal alignment", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Align the banner items to the left, center or right from the placeholder.", "nxs_td"),
+				"unistylablefield"	=> true
+			), 
 			
 			array( 
 				"id" 				=> "wrapper_end",
@@ -201,7 +211,20 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 	
 	// Grayscale
 	if ($image_filter == "grayscale") { $image_filter = "nxs-grayscale"; }
-	
+
+	// Horizon alignment
+	if ($halign === "center") { 
+		$halign = 'nxs-margin-auto';
+	}
+	else if ($halign === "left") { 
+		$halign = '';
+	}
+	else if ($halign === "right") { 
+		$halign = 'nxs-margin-auto-right';
+	} 
+	else {
+		$halign = 'nxs-margin-auto';
+	}
 	
 	/* banner
 	---------------------------------------------------------------------------------------------------- */
@@ -309,7 +332,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// Banners
-		echo '<ul class="banners-wrapper nxs-table nxs-margin-auto">';
+		echo '<ul class="banners-wrapper nxs-table ' . $halign . '">';
 		
 			/* Single banner image
 			---------------------------------------------------------------------------------------------------- */
@@ -375,9 +398,12 @@ function nxs_widgets_banner_initplaceholderdata($args)
 		$args["items_genericlistid_globalid"] = nxs_get_globalid($response["postid"], true);
 	} else {
 	}
+
+	$args['halign'] = "center";
 	
-		
-	$args['unistyle'] = nxs_unistyle_getdefaultname(nxs_widgets_banner_getunifiedstylinggroup());
+	// current values as defined by unistyle prefail over the above "default" props
+	$unistylegroup = nxs_widgets_banner_getunifiedstylinggroup();
+	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 		
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
