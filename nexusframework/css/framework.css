@@ -176,14 +176,7 @@ a:hover .nxs-title,
 	font-size: 15px; 
 	padding: .4em; 
 	background-color: #fff; 
-	box-shadow: 0px 0px 0px 1px gray inset; 
-	position: relative;
-	display: inline-block;
-	border: 0;
-	border-radius: 3px;
-	appearance: 		none;
-	-webkit-appearance: menulist-button !important;
-	-moz-appearance: 	menulist-button !important;
+	box-shadow: 0px 0px 0px 1px gray inset;
 }
 
 /* DEFAULT FILLER */
