@@ -233,6 +233,8 @@ three other one-fourths. This is necessary for individual rows to be completely 
 }
 @media only screen and ( max-width: 719px ) { 
 #slidecaption .nxs-button											{ font-size: 23px; }
+.main-controllers-bg,
+.nxs-slider-controller												{ display: none; }
 }
 
 /* CONTAINER ALIGNMENT (middle and bottom)
