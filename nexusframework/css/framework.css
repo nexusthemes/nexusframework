@@ -853,9 +853,7 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 }
 .nxs-slider-controller a.activeSlide, 
 .nxs-slider-controller a:hover 								{ background: url('../images/controller2.png') no-repeat; }
-
 .main-controllers-bg										{ height: 50px; width: 100%; position: absolute; bottom: 0px; z-index: 70; }
-.nxs-slider-controller.fullwidth							{ width: 88.8em; bottom: 16px; }
 
 .slide-wrapper {
 	/* clicking through the absolute positioned layer with pointer-events to reach the anchor underneath 
@@ -872,6 +870,7 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 .nxs-slide 													{ width: 100% !important; margin: 0 auto; }
 .nxs-slide-description-background,
 .nxs-slider-controller										{ width: 22.8em; padding-left: 35px; padding-right: 35px; }
+.nxs-slider-controller.fullwidth							{ width: 88.8em; bottom: 16px; padding: 0px; }
 .nxs-slide-description-content 								{ width: 22.8em; }
 
 /* widescreen slider */
