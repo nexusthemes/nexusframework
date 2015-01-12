@@ -668,8 +668,8 @@
 					{
 						$url = admin_url('admin.php?page=nxs_admin_license');
 						?>
-						<li>
-							<a href="<?php echo $url;?>" class='site nxs-hidewheneditorinactive blink' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
+						<li class="nxs-hidewheneditorinactive">
+							<a href="<?php echo $url;?>" class='site blink' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
 								<span class='nxs-icon-key'></span>
 							</a>
 						</li>
@@ -683,8 +683,8 @@
 					if ($themeupdate["nxs_updates"] == "yes")
 					{
 						?>
-						<li>
-							<a href="<?php echo $url; ?>" class='site nxs-hidewheneditorinactive' title="<?php nxs_l18n_e("Theme update available", "nxs_td"); ?>">
+						<li class="nxs-hidewheneditorinactive">
+							<a href="<?php echo $url; ?>" class='site' title="<?php nxs_l18n_e("Theme update available", "nxs_td"); ?>">
 								<span class='nxs-icon-loop2 blink'></span>
 							</a>
 						</li>
