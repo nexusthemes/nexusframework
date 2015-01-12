@@ -38,7 +38,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
       <div class="">
 				<div class="nxs-optionid-<?php echo $id;?> nxs-optionid">
 				
-		      <textarea style='display: block;' id="<?php echo $internaltextareaid; ?>" nxs-option-id="<?php echo $id;?>" name="<?php echo $internaltextareaid; ?>" cols="50" rows="15" ><?php echo $value; ?></textarea>
+		      <textarea style='display: block;' id="<?php echo $internaltextareaid; ?>" nxs-option-id="<?php echo $id;?>" name="<?php echo $internaltextareaid; ?>" cols="50" rows="15" ><?php echo htmlspecialchars($value); ?></textarea>
 		      
 					<script type="text/javascript">
 						jQuery(window).bind 
@@ -65,7 +65,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								tinymce.remove();
 								
 								// remove textarea from dom
-								jQuery("textarea").remove();
+								jQuery(".nxsbox_window textarea").remove();
 								
 								//kljsdf();
 							}
