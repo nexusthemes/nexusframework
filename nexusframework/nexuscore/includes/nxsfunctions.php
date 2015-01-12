@@ -1055,6 +1055,24 @@ function nxs_addnewarticle($args)
 	{
 		$poststatus = "publish";	// if not specified, publish immediately
 	}
+
+	$original_slug = $slug;
+
+	$c = 2;
+	while ( true ) {
+		$check_post_id = nxs_getpostidbyslug($slug);
+
+		if ( !$check_post_id ) {
+			break;
+		}
+
+		if ( $c > 25 ) {
+			nxs_webmethod_return_nack("unable to find a available slug");
+		}
+		
+		$slug = $original_slug . '-' . $c;
+		$c ++;	
+	}
 	
 	// Create post object
   $my_post = array
@@ -1067,7 +1085,6 @@ function nxs_addnewarticle($args)
 		'post_excerpt' => '',
 		'post_type' => $posttype,
 	);
-	
 	$postid = wp_insert_post($my_post, $wp_error);
 	
 	if ($postid == 0)
@@ -1211,6 +1228,16 @@ function nxs_registernexustype($title, $ispublic)
 function nxs_cutstring($string, $length)
 {
 	return (strlen($string) > ($length + 3)) ? substr($string,0,$length).'...' : $string;
+}
+
+function nxs_getpostidbyslug($slug)
+{
+	global $wpdb;
+
+	$sql = "SELECT ID FROM $wpdb->posts WHERE post_name = %s LIMIT 1";
+	$result = $wpdb->get_var( $wpdb->prepare( $sql, $slug) );
+	
+	return $result;
 }
 
 function nxs_getcategoryidbyname($name)
