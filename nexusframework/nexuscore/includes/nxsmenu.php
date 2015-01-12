@@ -706,8 +706,8 @@
 				<?php
 			}
 			?>
-			<li class="nxs-hidewheneditorinactive" style="display: list-item;">
-				<a href="<?php bloginfo('url'); ?>" class='site nxs-hidewheneditorinactive' title="<?php nxs_l18n_e("Home[nxs:adminmenu,tooltip]", "nxs_td"); ?>">
+			<li class="nxs-hidewheneditorinactive">
+				<a href="<?php bloginfo('url'); ?>" title="<?php nxs_l18n_e("Home[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class='site' >
 					<span class='nxs-icon-home'></span>
 				</a>
 			</li>
