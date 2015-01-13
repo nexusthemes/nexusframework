@@ -177,56 +177,53 @@ function nxs_busrule_busrulearchivecat_process($args, &$statebag)
 	
 	if (is_archive())
 	{
-		$categories = get_the_category();
-		if ($categories)
+		$term = get_queried_object();
+		$taxonomy = $term->taxonomy;
+		$termid = $term->term_id;
+		
+		if ($taxonomy == "category")
 		{
-			$result["ismatch"] = "false";
 			$filter_atleastoneof_catids = $metadata["filter_atleastoneof_catids"];
-			
-			foreach($categories as $currentcategory) 
+			if (nxs_stringcontains($filter_atleastoneof_catids, "[{termid}]"))
 			{
-				$currentcategoryid = $currentcategory->term_id;
-				if (is_category($currentcategoryid))
-	  		{
-	  			$result["ismatch"] = "true";
-	  			
-	  			// process configured site wide elements
-	  			$sitewideelements = nxs_pagetemplates_getsitewideelements();
-	  			foreach($sitewideelements as $currentsitewideelement)
-	  			{
-	  				$selectedvalue = $metadata[$currentsitewideelement];
-	  				if ($selectedvalue == "")
-	  				{
-	  					// skip
-	  				} 
-						else if ($selectedvalue == "@leaveasis")
-	  				{
-	  					// skip
-	  				}
-	  				else if ($selectedvalue == "@suppressed")
-	  				{
-	  					// reset
-	  					$statebag["out"][$currentsitewideelement] = 0;
-	  				}
-	  				else
-	  				{
-	  					// set the value as selected
-							$statebag["out"][$currentsitewideelement] = $metadata[$currentsitewideelement];
-	  				}
-	  			}
-	
-					// instruct rule engine to stop further processing if configured to do so (=default)
-	  			$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
-	  			if ($flow_stopruleprocessingonmatch != "")
-	  			{
-						$result["stopruleprocessingonmatch"] = "true";
-					}
-					break;
-	  		}
-	  		else
-	  		{
-	  			// 
-	  		}
+  			$result["ismatch"] = "true";
+  			
+  			// process configured site wide elements
+  			$sitewideelements = nxs_pagetemplates_getsitewideelements();
+  			foreach($sitewideelements as $currentsitewideelement)
+  			{
+  				$selectedvalue = $metadata[$currentsitewideelement];
+  				if ($selectedvalue == "")
+  				{
+  					// skip
+  				} 
+					else if ($selectedvalue == "@leaveasis")
+  				{
+  					// skip
+  				}
+  				else if ($selectedvalue == "@suppressed")
+  				{
+  					// reset
+  					$statebag["out"][$currentsitewideelement] = 0;
+  				}
+  				else
+  				{
+  					// set the value as selected
+						$statebag["out"][$currentsitewideelement] = $metadata[$currentsitewideelement];
+  				}
+  			}
+
+				// instruct rule engine to stop further processing if configured to do so (=default)
+  			$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
+  			if ($flow_stopruleprocessingonmatch != "")
+  			{
+					$result["stopruleprocessingonmatch"] = "true";
+				}
+				break;
+			}
+			else
+			{
+				$result["ismatch"] = "false";
 			}
 		}
 		else

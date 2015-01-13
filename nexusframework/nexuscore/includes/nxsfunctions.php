@@ -980,11 +980,22 @@ function nxs_gettemplateproperties_internal()
 			}
 			else 
 			{
+				// store this item as one of the matching rules
+
+				
 				$busrule_processresult = nxs_busrule_process($placeholdertype, $placeholdermetadata, $statebag);
 				if ($busrule_processresult["result"] == "OK")
 				{
+					$traceitem = array
+					(
+						"placeholdertype" => $placeholdertype,
+						"ismatch" => $busrule_processresult["ismatch"],
+					);
+					$result["trace"][] = $traceitem;
+					
 					if ($busrule_processresult["ismatch"] == "true")
 					{
+						
 						$lastmatchingrule = $placeholdertype;
 						
 						// the process function is responsible for filling the out property
@@ -5843,19 +5854,20 @@ function nxs_setpageletid_forpageletinpost($postid, $pageletname, $pageletid)
 	nxs_merge_postmeta($postid, $modifiedmetadata);
 }
 
-function nxs_prettyprint_array($arr){
-    $retStr = '<ul>';
-    if (is_array($arr)){
-        foreach ($arr as $key=>$val){
-            if (is_array($val)){
-                $retStr .= '<li>' . $key . ' => ' . nxs_prettyprint_array($val) . '</li>';
-            }else{
-                $retStr .= '<li>' . $key . ' => ' . $val . '</li>';
-            }
-        }
-    }
-    $retStr .= '</ul>';
-    return $retStr;
+function nxs_prettyprint_array($arr)
+{
+  $retStr = '<ul>';
+  if (is_array($arr)){
+      foreach ($arr as $key=>$val){
+          if (is_array($val)){
+              $retStr .= '<li>' . $key . ' => ' . nxs_prettyprint_array($val) . '</li>';
+          }else{
+              $retStr .= '<li>' . $key . ' => ' . $val . '</li>';
+          }
+      }
+  }
+  $retStr .= '</ul>';
+  return $retStr;
 }
 
 // TODO : nxs_webmethod_return_nack should be renamed to nxs_throw_nack

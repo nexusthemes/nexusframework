@@ -334,6 +334,48 @@ function nxs_validatethemedata()
 	}
 }
 
+add_action('wp_footer', 'nxs_wp_footer_debug');
+function nxs_wp_footer_debug() 
+{
+	if (nxs_isdebug())
+	{
+		if ($_REQUEST["nxs"] == "tracelayout")
+		{
+			$layout = nxs_gettemplateproperties();
+			echo nxs_prettyprint_array($layout);
+			
+			global $nxs_global_current_containerpostid_being_rendered;
+			echo "we zijn ook;" . $nxs_global_current_containerpostid_being_rendered;
+			echo "we zijn;" . get_the_ID();
+			echo "home is;" . nxs_gethomepageid();
+			
+			if (is_archive())
+			{
+				echo "its an archive";
+				
+				$term = get_queried_object();
+				$taxonomy = $term->taxonomy;
+				if ($taxonomy == "category")
+				{
+					$termid = $term->term_id;
+					echo "termid:<br />";
+					var_dump($termid);
+					echo "<br />";
+					var_dump($term);
+					
+					
+				}
+				//
+				//echo single_cat_title('Currently browsing '); 
+				//$a = get_the_archive();
+				//var_dump($a);
+			}
+			//$categories = get_the_category();
+			die();
+		}
+	}
+}
+
 add_action('init', 'nxs_init');
 function nxs_init() 
 {	

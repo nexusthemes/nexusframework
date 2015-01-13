@@ -683,9 +683,9 @@
 					if ($themeupdate["nxs_updates"] == "yes")
 					{
 						?>
-						<li class="nxs-hidewheneditorinactive">
+						<li class="nxs-hidewheneditorinactive blink">
 							<a href="<?php echo $url; ?>" class='site' title="<?php nxs_l18n_e("Theme update available", "nxs_td"); ?>">
-								<span class='nxs-icon-loop2 blink'></span>
+								<span class='nxs-icon-loop2'></span>
 							</a>
 						</li>
 						<?php
