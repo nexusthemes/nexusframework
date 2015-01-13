@@ -6583,8 +6583,11 @@ function nxs_js_redirect_top(url)
 					  message += "<li class='nxs-seoindicator-" + calculatedresults[currentcalculatedresult].indicator + "'>";
 					  message += calculatedresults[currentcalculatedresult].msg;
 						message += "</li>";
-					  
-					  outputhtml += message;
+						  
+						if (calculatedresults[currentcalculatedresult].msg != null)
+						{
+						  outputhtml += message;
+						}
 					}
 					
 					outputhtml += "</ul>";
