@@ -179,15 +179,15 @@ function nxs_busrule_busrulearchivecat_process($args, &$statebag)
 	{
 		$term = get_queried_object();
 		$taxonomy = $term->taxonomy;
-		$termid = $term->term_id;
+		$wrappedtermid = "[" . $term->term_id . "]";
 		
 		if ($taxonomy == "category")
 		{
 			$filter_atleastoneof_catids = $metadata["filter_atleastoneof_catids"];
-			if (nxs_stringcontains($filter_atleastoneof_catids, "[{termid}]"))
+			if (nxs_stringcontains($filter_atleastoneof_catids, $wrappedtermid))
 			{
-  			$result["ismatch"] = "true";
-  			
+				$result["ismatch"] = "true";
+				
   			// process configured site wide elements
   			$sitewideelements = nxs_pagetemplates_getsitewideelements();
   			foreach($sitewideelements as $currentsitewideelement)
@@ -219,7 +219,6 @@ function nxs_busrule_busrulearchivecat_process($args, &$statebag)
   			{
 					$result["stopruleprocessingonmatch"] = "true";
 				}
-				break;
 			}
 			else
 			{
