@@ -455,6 +455,10 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 			$slideplaceholderid = nxs_parsepagerow($content);
 
 			$placeholdermetadata = nxs_getwidgetmetadata($items_genericlistid, $slideplaceholderid);
+			
+			// Lookup atts
+			$placeholdermetadata = nxs_filter_translatelookup($placeholdermetadata, array("title", "text"));	
+
 			$placeholdertype = $placeholdermetadata["type"];					
 			
 			if ($placeholdertype == "") {
@@ -477,6 +481,8 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				}
 				
 				$title = $placeholdermetadata['title'];
+				
+				
 				$text = $placeholdermetadata['text'];
 				$destination_articleid = $placeholdermetadata['destination_articleid'];
 				
