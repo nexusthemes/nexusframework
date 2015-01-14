@@ -3597,7 +3597,7 @@ function nxs_wpseo_video_index_content($content, $vid)
 
 function nxs_seo_getanalyticsua()
 {
-	$meta = nxs_getsitemeta_internal(false);
+	$sitemeta = nxs_getsitemeta_internal(false);
 	$result = $sitemeta["analyticsUA"];
 	if ($result == "UA-38116525-1")
 	{
@@ -5856,6 +5856,7 @@ function nxs_setpageletid_forpageletinpost($postid, $pageletname, $pageletid)
 
 function nxs_prettyprint_array($arr)
 {
+
   $retStr = '<ul>';
   if (is_array($arr)){
       foreach ($arr as $key=>$val){
