@@ -60,7 +60,12 @@ function nxs_widgets_blog_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),
-			
+			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			array(
 				"id" 				=> "title_alignment",
 				"type" 				=> "select",
@@ -220,6 +225,12 @@ function nxs_widgets_blog_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "item_title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "title_heightiq",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
@@ -231,6 +242,28 @@ function nxs_widgets_blog_home_getoptions($args)
 				"id" 				=> "wrapper_advanceditems_end",
 				"type" 				=> "wrapperend",
 				"unistylablefield"	=> true
+			),
+
+			// SINGLE BLOG TEXT
+
+			array( 
+				"id" 					=> "wrapper_output_begin",
+				"type" 					=> "wrapperbegin",
+				"initial_toggle_state"	=> "closed",
+				"label" 				=> nxs_l18n__("Single blog entry text", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+
+			array(
+				"id" 				=> "item_text_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Text fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
 			),
 			
 			// SINGLE BLOG ENTRY IMAGE
@@ -776,6 +809,12 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		// Title heading
 		if ($title_heading != "") 	{ $title_heading = "h" . $title_heading; } else 
 									{ $title_heading = "h1"; }
+
+		// Title font-zen
+		if ($title_fontzen != "") { 
+			$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $title_fontzen);
+		}
+		$title_fontzen_cssclass = nxs_concatenateargswithspaces($title_fontzen_cssclass);
 	
 		// Title alignment
 		$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
@@ -809,7 +848,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 			// string of spaces is replaced by a nbsp; (otherwise the title is not rendered properly)
 			$title = "&nbsp;";
 		}
-		$titlehtml = '<'.$title_heading.' ' . $title_schemaorg_attribute . ' class="nxs-title '.$title_alignment_cssclass.' '.$title_fontsize_cssclass.' '.$titlecssclasses.'">'.$title.'</'.$title_heading.'>';
+		$titlehtml = '<'.$title_heading.' ' . $title_schemaorg_attribute . ' class="nxs-title '.$title_fontzen_cssclass.' '.$title_alignment_cssclass.' '.$title_fontsize_cssclass.' '.$titlecssclasses.'">'.$title.'</'.$title_heading.'>';
 		
 		// Filler
 		$htmlfiller = nxs_gethtmlforfiller();
@@ -919,6 +958,18 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 			//nxs_webmethod_return_nack("to be implemented; derive title_heading from title_fontsize");
 			$itemheadingelement = "h1";
 		}
+
+		// Singe Entry Title Fontzen
+		if ($item_title_fontzen != "") { 
+			$item_title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $item_title_fontzen);
+		}
+		$item_title_fontzen_cssclass = nxs_concatenateargswithspaces($item_title_fontzen_cssclass);
+
+		// Singe Entry Text Fontzen
+		if ($item_text_fontzen != "") { 
+			$item_text_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $item_text_fontzen);
+		}
+		$item_text_fontzen_cssclass = nxs_concatenateargswithspaces($item_text_fontzen_cssclass);
 			
 		$items_filter_catids = nxs_convert_stringwithbracketlist_to_stringwithcommas($items_filter_catids); // bijv. [1][2][10] -> 1,2,10
 		$items_filter_catidsarray = explode(",", $items_filter_catids);
@@ -1210,7 +1261,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 	
 					// Blog title			
 					$blogtitel = '
-						<' . $itemheadingelement . ' class="nxs-title nxs-applylinkvarcolor">
+						<' . $itemheadingelement . ' class="nxs-title nxs-applylinkvarcolor ' . $item_title_fontzen_cssclass . '">
 							<a href="' . nxs_geturl_for_postid($currentpostid) . '">' . $currentpost->post_title . '</a>
 						</' . $itemheadingelement . '>';
 				
@@ -1294,7 +1345,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 						$title_value = str_replace("{{{date}}}", $localizeddate, $title_value);	
 					
 						$blogtitel = '
-						<' . $itemheadingelement . ' class="nxs-title nxs-applylinkvarcolor '.$cssclasses.'">
+						<' . $itemheadingelement . ' class="nxs-title nxs-applylinkvarcolor '. $cssclasses .' ' . $item_title_fontzen_cssclass . '">
 							<a href="' . $currentposturl . '">' . $title_value . '</a>
 						</' . $itemheadingelement . '>';
 					}
@@ -1404,7 +1455,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		
 					if ($item_text_truncatelength != "" && $item_text_truncatelength != "0") 
 					{
-						$tekst = '<p class="nxs-default-p nxs-padding-bottom0"><span>' . $currentexcerpt . '</span></p>';
+						$tekst = '<p class="nxs-default-p nxs-padding-bottom0 ' . $item_text_fontzen_cssclass . '"><span>' . $currentexcerpt . '</span></p>';
 					}
 					
 					// Blogentry button
@@ -1626,6 +1677,7 @@ function nxs_widgets_blog_initplaceholderdata($args)
 	$args['items_layout'] = 'extended';
 	$args['items_order'] = "present to past";
 	$args['title_heading'] = "2";
+	$args['title_fontzen'] = "";
 	$args['item_showdate'] = "true";
 	$args['item_showcats'] = "true";
 	
@@ -1634,6 +1686,8 @@ function nxs_widgets_blog_initplaceholderdata($args)
 	$args['item_button_text'] = nxs_l18n__("Read more", "nxs_td");
 	$args['item_button_color'] = "base2";
 	$args['item_title_heading'] = "3";
+	$args['item_title_fontzen'] = "";
+	$args['item_text_fontzen'] = "";
 	
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_blog_getunifiedstylinggroup();
