@@ -21,8 +21,8 @@ function nxs_widgets_definitionlistitemtext_renderindefinitionlistbox($args)
 	// Localize atts
 	$metadata = nxs_localization_localize($metadata);
 
-	
 	extract($metadata, EXTR_PREFIX_ALL, "metadata");
+	extract($container_metadata, EXTR_PREFIX_ALL, "container_metadata");
 	
 	$result = array();
 	$result["result"] = "OK";
@@ -33,10 +33,23 @@ function nxs_widgets_definitionlistitemtext_renderindefinitionlistbox($args)
 	
 	ob_start();
 
+	if ($container_metadata_items_title_fontzen != "")
+	{
+		$title_fontzen_cssclass = ' class="' . nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $container_metadata_items_title_fontzen) . '"';
+	}
+
+	if ($container_metadata_items_title_fontzen != "")
+	{
+		$description_fontzen_cssclass = ' class="' . nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $container_metadata_items_description_fontzen) . '"';
+		$patterns = '<li';
+		$replacements = '<li' . $description_fontzen_cssclass;
+		$metadata_text = str_replace($patterns, $replacements, $metadata_text);
+	}
+
 	?>
 	<span>
-		<em><?php echo $metadata_title; ?></em>
-		<?php echo $metadata_text; ?>
+		<em<?php echo $title_fontzen_cssclass; ?>><?php echo $metadata_title; ?></em>
+		<div<?php echo $description_fontzen_cssclass; ?>><?php echo $metadata_text; ?></div>
 	</span>
 	<?php
 	$html = ob_get_contents();

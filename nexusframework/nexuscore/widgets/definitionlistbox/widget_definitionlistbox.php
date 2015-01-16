@@ -28,7 +28,7 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> "Title",
+				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 			),
 			
@@ -38,6 +38,12 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 				"label" 			=> "Title",
 				"placeholder" 		=> "Title goes here",
 				"localizablefield"	=> true
+			),
+			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
 			),
 			array( 
 				"id" 				=> "wrapper_title_end",
@@ -56,13 +62,24 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 				"type" 				=> "staticgenericlist_link",
 				"label" 			=> nxs_l18n__("Definition elements", "nxs_td")
 			),
-			
+			array(
+				"id" 				=> "items_title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "items_description_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Description fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			array( 
 				"id" 				=> "wrapper_selection_end",
 				"type" 				=> "wrapperend"
 			),
 			
-			// 
+			// VISUALIZATION
 			
 			array( 
 				"id" 				=> "wrapper_selection_begin",
@@ -176,6 +193,16 @@ function nxs_widgets_definitionlistbox_render_webpart_render_htmlvisualization($
 	{
 		$listtypehtml = "ol";
 	}
+
+	/* TITLE
+	---------------------------------------------------------------------------------------------------- */
+	
+	if ($title_fontzen != "")
+	{
+		$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $title_fontzen);
+	}
+
+	$title_css_classes = nxs_concatenateargswithspaces("nxs-title", $title_fontzen_cssclass);
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -186,8 +213,9 @@ function nxs_widgets_definitionlistbox_render_webpart_render_htmlvisualization($
 	} 
 	else 
 	{
+		echo "<h2 class='{$title_css_classes}' style='margin-bottom: 10px;'>{$title}</h2>";
 		?>
-		<h2 style='margin-bottom: 10px; '><?php echo $title; ?></h2>
+
 		<div class="nxs-list nxs-applylinkvarcolor">
 	    <<?php echo $listtypehtml;?>>
 	    	<?php
@@ -208,6 +236,7 @@ function nxs_widgets_definitionlistbox_render_webpart_render_htmlvisualization($
 					 		$listboxitemargs = array();
 			 				$listboxitemargs["postid"] = $postid;
 			 				$listboxitemargs["placeholderid"] = $placeholderid;
+			 				$listboxitemargs["container_metadata"] = $mixedattributes;
 			 				$listboxitemargs["metadata"] = $currentplaceholdermetadata;
 					 		
 					 		// now that the widget is loaded, instruct the widget (listboxitem) to render its output
