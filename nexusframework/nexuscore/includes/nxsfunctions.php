@@ -3880,9 +3880,14 @@ function nxs_getrenderedhtmlincontainer($containerpostid, $postid, $rendermode)
 	}
 	else if ($poststatus === false)
 	{
-		$reconfigure = "<a class='nxsbutton1' href='#' onclick='nxs_js_popup_pagetemplate_neweditsession(&quot;layout&quot;); return false;'>Change</a>";
-		$result = nxs_getrowswarning(nxs_l18n__("Deleted section. Consider (re)configuring it.", "nxs_td") . $reconfigure);
-		
+		if ($postid == "SUPPRESSED")
+		{
+		}
+		else
+		{
+			$reconfigure = "<a class='nxsbutton1' href='#' onclick='nxs_js_popup_pagetemplate_neweditsession(&quot;layout&quot;); return false;'>Change</a>";
+			$result = nxs_getrowswarning(nxs_l18n__("Deleted section. Consider (re)configuring it.", "nxs_td") . $reconfigure);
+		}
 	}
 	else if ($poststatus == "draft" || $poststatus == "private" || $poststatus == "future")
  		{
@@ -4332,6 +4337,13 @@ function nxs_cleanupobsoletewidgetmetadata($postid, $persistchanges)
 			delete_post_meta($postid, $current_obsoletemetakey); 
 		}
 	}
+}
+
+function nxs_getwidgettype($postid, $placeholderid)
+{
+	$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+	$result = $placeholdermetadata["type"];
+	return $result;
 }
 
 // obsolete function; the getwidgetmetadata didn't process the 
@@ -5871,12 +5883,8 @@ function nxs_prettyprint_array($arr)
   return $retStr;
 }
 
-// TODO : nxs_webmethod_return_nack should be renamed to nxs_throw_nack
-// within this function, 
-function nxs_webmethod_return_nack($message)
+function nxs_outputbuffer_popall()
 {
-	// cleanup output that was possibly produced before,
-	// if we won't this could cause output to not be json compatible
 	$existingoutput = array();
 	
 	$numlevels = ob_get_level();
@@ -5884,6 +5892,17 @@ function nxs_webmethod_return_nack($message)
 	{
 		$existingoutput[] = ob_get_clean();
 	}
+	
+	return $existingoutput;
+}
+
+// TODO : nxs_webmethod_return_nack should be renamed to nxs_throw_nack
+// within this function, 
+function nxs_webmethod_return_nack($message)
+{
+	// cleanup output that was possibly produced before,
+	// if we won't this could cause output to not be json compatible
+	$existingoutput = nxs_outputbuffer_popall();
 	
 	http_response_code(500);
 	//header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error");

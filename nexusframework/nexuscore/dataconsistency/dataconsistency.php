@@ -797,7 +797,7 @@ function nxs_dataconsistency_sanitize_postwidgetmetadata($postid)
 	$rowindex = 0;
 	foreach ($parsedpoststructure as $pagerow)
 	{
-		$content = $pagerow["content"];		
+		$content = $pagerow["content"];
 		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
 						
 		foreach ($placeholderids as $placeholderid)

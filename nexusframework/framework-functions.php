@@ -344,11 +344,18 @@ function nxs_wp_footer_debug()
 			$layout = nxs_gettemplateproperties();
 			echo nxs_prettyprint_array($layout);
 			
+			global $nxs_gl_templates_wp;
+			echo "original template for WP;" . $nxs_gl_templates_wp;
+			
+			
 			global $nxs_global_current_containerpostid_being_rendered;
 			echo "we zijn ook;" . $nxs_global_current_containerpostid_being_rendered;
 			echo "we zijn;" . get_the_ID();
 			echo "home is;" . nxs_gethomepageid();
-			
+			echo "<br />";
+			echo "<br />";
+			echo "<br />";
+			echo "<br />";
 			if (is_archive())
 			{
 				echo "its an archive";
@@ -387,6 +394,12 @@ function nxs_init()
   		{
   			echo "siteurl:" . get_site_url() . "<br />";
   			echo "homeurl:" . get_home_url() . "<br />";
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "uploaddir")
+  		{
+  			$uploaddir = wp_upload_dir();
+  			var_dump($uploaddir);
   			die();
   		}
   		else if ($_REQUEST["nxs"] == "template")
@@ -544,6 +557,45 @@ function nxs_init()
 				{
 					echo "regular http";
 				}
+				die();
+			}
+			else if ($_REQUEST["nxs"] == "dumpglobalid")
+			{
+				$globalid = $_REQUEST["globalid"];
+				echo "dumpglobalid $globalid<br />";
+				$destinationpostids = nxs_get_postidsaccordingtoglobalid($globalid);
+				if (count($destinationpostids) == 0)
+				{
+					echo "not found";
+					die();
+				}
+				else if (count($destinationpostids) > 1)
+				{
+					echo "multiple posts match;";
+					var_dump($destinationpostids);
+					die();
+				}
+				// one match
+				$postid = $destinationpostids[0];
+				echo "dumppost $postid<br />";
+				$exists = nxs_postexistsbyid($postid);
+				if ($exists) { echo "post exist<br />"; } else { echo "post does not exist<br />"; }
+				$needleglobalid = nxs_get_globalid($postid, false);
+				echo "globalid: $needleglobalid<br />";
+				echo "post_meta_all: $needleglobalid<br />";
+				$origpost_meta_all = nxs_get_post_meta_all($postid);
+				foreach ($origpost_meta_all as $key => $val)
+				{
+					echo "meta key: $key<br />";
+					echo "meta val: <br />";
+					echo "<pre>";
+					var_dump($val);
+					echo "</pre>";
+					echo "<br />";
+					echo "<br />";
+					echo "<hr />";
+				}
+				
 				die();
 			}
 			else if ($_REQUEST["nxs"] == "dumppost")

@@ -121,7 +121,7 @@ function nxs_pagetemplate_handlecontent()
 	// don't show content if pagetemplate rules tells us to suppress the content
 	
 	if ($showcontent)
-	{
+	{		
 		?>
 		<div id="nxs-content" class="nxs-sitewide-element <?php echo $cssclass; ?>">
 			<?php 
@@ -237,8 +237,24 @@ function nxs_pagetemplate_handlecontent()
 				{
 					$contentpostid = get_the_ID();
 				}
+
+				// by default we render wp regular content
+				$renderdelegatedcontent = true;
+				// exception
+				if ($contentpost == 0)
+				{
+					if (!is_singular() && !is_archive())
+					{
+						$renderdelegatedcontent = true;
+						$contentpostid = "SUPPRESSED";
+					}
+					else
+					{
+						$renderdelegatedcontent = false;
+					}
+				}
 				
-				if ($contentpostid != 0)
+				if ($renderdelegatedcontent)
 				{
 					$cssclass = nxs_getcssclassesforrowcontainer($contentpostid);
 					?>
@@ -250,7 +266,8 @@ function nxs_pagetemplate_handlecontent()
 					//
 					// ---------------------------- BEGIN RENDER SHORTCUT TO ADD NEW ROW
 					//
-					if (nxs_has_adminpermissions())
+					
+					if (nxs_has_adminpermissions() && $contentpostid != "SUPPRESSED")
 					{
 						?>
 						<div class="nxs-hidewheneditorinactive">
@@ -407,6 +424,7 @@ function nxs_pagetemplate_handlecontent()
 				else
 				{
 					// suppressed
+
 				}
 					
 				//
@@ -839,8 +857,11 @@ function nxs_pagetemplate_blogentry_render($args)
 	}
 	else
 	{
-		// unexpected?
-		nxs_webmethod_return_nack("unsupported; no singular and no archive?");
+		// this happens if a plugin has a specific URL 
+		// rewritten to a specific template include.
+		// in that case we will render that specific content,
+		// even though the front end editor features will be suppressed
+		$containerpostid = "SUPPRESSED";
 	}
 
 	global $nxs_global_current_containerpostid_being_rendered;

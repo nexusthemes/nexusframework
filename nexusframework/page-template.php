@@ -17,8 +17,6 @@ rewind_posts();
 //
 if (is_singular())
 {
-
-	
 	// Iterate the post index in The Loop. Retrieves the next post, sets up the post, 
 	// sets the 'in the loop' property to true.
 	the_post();
@@ -45,10 +43,20 @@ if (is_singular())
 		}
 	}
 }
-else
+else if (is_archive())
 {
 	$args = array();
 	$pagetemplate = "archive";		
+	nxs_renderpagetemplate($pagetemplate, $args);
+}
+else
+{
+	// this happens if a plugin has a specific URL 
+	// rewritten to a specific template include.
+	// in that case we will render that specific content,
+	// even though the front end editor features will be suppressed	
+	$args = array();
+	$pagetemplate = "webpage";		
 	nxs_renderpagetemplate($pagetemplate, $args);
 }
 

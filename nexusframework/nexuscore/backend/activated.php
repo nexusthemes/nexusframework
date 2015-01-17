@@ -429,6 +429,10 @@
 						// solutions; http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28
 						nxs_js_alert_sticky("<?php echo nxs_l18n__("Hint: not enough memory. See http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28", "nxs_td"); ?>");
 					}
+					else if (lowercase.indexOf("maximum execution time") > -1 && lowercase.indexOf("exceeded") > -1)
+					{
+						nxs_js_alert_sticky("<?php echo nxs_l18n__("Problem: max time-out exceeded. Solution; Import the initial content manually.", "nxs_td"); ?>");
+					}
 					else
 					{
 						nxs_js_alert_sticky("<?php echo nxs_l18n__("Sorry, no hint available", "nxs_td"); ?>");
