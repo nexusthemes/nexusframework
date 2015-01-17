@@ -241,7 +241,7 @@ function nxs_pagetemplate_handlecontent()
 				// by default we render wp regular content
 				$renderdelegatedcontent = true;
 				// exception
-				if ($contentpost == 0)
+				if ($contentpostid == 0)
 				{
 					if (!is_singular() && !is_archive())
 					{
