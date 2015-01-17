@@ -29,6 +29,10 @@ function nxs_widgets_eventsboxitem_render_webpart_render_htmlvisualization($args
 	
 	$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
 	
+	if ($title == "") {
+		$title = "minimal: title or subtitle";
+	}
+
 	if ($destination_articleid != "") {
 		$destination_articleid = nxs_geturl_for_postid($destination_articleid);
 	}
@@ -76,6 +80,8 @@ function nxs_widgets_eventsboxitem_render_webpart_render_htmlvisualization($args
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-eventsboxitem-item";
 	
+
+
 	echo '
 	<div class="content2">
         <div class="box-content nxs-width10 nxs-float-left">'.nxs_render_html_escape_gtlt($date_dd_mm_yy).'</div>
@@ -172,7 +178,7 @@ function nxs_widgets_eventsboxitem_initplaceholderdata($args)
 	
 	// 
 	$args['ph_margin_bottom'] = "0-0";
-
+	$args['title'] = "minimal: title or subtitle";
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 
 
