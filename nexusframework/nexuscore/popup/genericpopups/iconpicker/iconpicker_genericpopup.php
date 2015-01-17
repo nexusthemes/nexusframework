@@ -495,6 +495,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"skype",
 										"linkedin",
 										"pinterest",
+										"houzz",
 										
 									);
 										
