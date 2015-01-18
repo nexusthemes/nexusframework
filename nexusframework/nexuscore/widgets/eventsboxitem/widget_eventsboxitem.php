@@ -30,7 +30,7 @@ function nxs_widgets_eventsboxitem_render_webpart_render_htmlvisualization($args
 	$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
 	
 	if ($title == "") {
-		$title = "minimal: title or subtitle";
+		$title = "minimal: title";
 	}
 
 	if ($destination_articleid != "") {
@@ -178,7 +178,7 @@ function nxs_widgets_eventsboxitem_initplaceholderdata($args)
 	
 	// 
 	$args['ph_margin_bottom'] = "0-0";
-	$args['title'] = "minimal: title or subtitle";
+	$args['title'] = "minimal: title";
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 
 
