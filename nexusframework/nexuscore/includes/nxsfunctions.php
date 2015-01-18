@@ -4830,37 +4830,6 @@ function nxs_invokenexusservicevalue_internal($data)
 	return $result;
 }
 
-function nxs_getactiveplugins()
-{
-	return nxs_getactiveplugins_cachecontrol(false);
-}
-
-function nxs_getactiveplugins_cachecontrol($bypasscache)
-{
-	$optionkey = 'nxs_activeplugins';
-	
-	$result = get_transient($optionkey);
-	if (!NXS_DEFINE_NXSSERVERVALUECACHING || $result == false || $bypasscache == true)
-	{
-		$result = "";
-		
-		$plugins = get_plugins();
-		foreach($plugins as $plugin_file => $plugin_data) 
-		{
-			if (is_plugin_active($plugin_file))
-			{
-				$result .= "[" . $plugin_data['Title'] . "|" . $plugin_data['Version'] . "]";
-			}
-		}
-		
-		// store
-		$transientdurationsecs = 60 * 60 * 24;	// max 1x per 24 uur
-		set_transient($optionkey, $result, $transientdurationsecs);
-	}
-	
-	return $result;
-}
-
 function nxs_invokenexusservicevalue($key, $subkey, $data)
 {
 	$result = array();

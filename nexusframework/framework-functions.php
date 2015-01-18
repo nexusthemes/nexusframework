@@ -109,7 +109,6 @@ function nxs_saveobclean()
 		$current = ob_get_contents();
 		if ($current != "")
 		{
-	  	//echo "its not empty";
 	  	ob_clean();
 		}
 		else
@@ -131,11 +130,6 @@ if (!nxs_showphpwarnings())
 
 function nxs_getcharset()
 {
-	// charset wordt (verkeerd geinterpreteerd bij Edwin als je NIET bent ingelogd (?)
-	// LET de aanroep
-	// 
-	// doet direct een ECHO
-	
 	$result = get_bloginfo('charset');	// "UTF-8";
 	return $result;
 }
@@ -152,7 +146,7 @@ define('NXS_UNIQUEIDFORREQUEST', rand());
 //
 if (!function_exists('curl_init'))
 { 
-	echo "This theme requires CURL (CURL is currently not installed!). <a target='_blank' href='http://nexusthemes.com/how-to-activate-curl/'>See instructions how to solve this</a>";
+	echo "This theme requires PHP5-CURL (CURL is currently not installed!).";
 	return;
 }
 
