@@ -389,6 +389,27 @@ function nxs_init()
   			echo "siteurl:" . get_site_url() . "<br />";
   			echo "homeurl:" . get_home_url() . "<br />";
   			die();
+  		}  		
+  		else if ($_REQUEST["nxs"] == "checkphoton")
+  		{
+  			if (function_exists("jetpack_photon_url"))
+  			{
+  				echo "Jetpack is installed and can generate photon URLs";
+  			}
+  			else
+  			{
+  				echo "No";
+  			}
+  			echo "<br />";
+  			if (class_exists( 'Jetpack' ) && method_exists( 'Jetpack', 'get_active_modules' ) && in_array( 'photon', Jetpack::get_active_modules() ))
+  			{
+  				echo "Photon is an active Jetpack module";
+  			}
+  			else
+  			{
+  				echo "No";
+  			}
+  			die();
   		}
   		else if ($_REQUEST["nxs"] == "uploaddir")
   		{
