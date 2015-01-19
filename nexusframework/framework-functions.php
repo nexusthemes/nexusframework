@@ -388,6 +388,7 @@ function nxs_init()
   		{
   			echo "siteurl:" . get_site_url() . "<br />";
   			echo "homeurl:" . get_home_url() . "<br />";
+  			echo "nxs homeurl:" . nxs_geturl_home() . "<br />";  			
   			die();
   		}  		
   		else if ($_REQUEST["nxs"] == "checkphoton")
