@@ -171,6 +171,18 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "text_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Text fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			array( 
 				"id" 				=> "bgcolor",
 				"type" 				=> "colorzen",
@@ -374,9 +386,12 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		
 		
 	
-	// Title fontsize
+	// Title fontsize,fontzen and Text fontzen
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
-	
+	$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $title_fontzen);
+	$text_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $text_fontzen);
+
+
 	// MAIN CONTROLLERS
 	if ($metadata != "" && $main_controllers != "") {
 		$main_controllers = '<div id="controllers_'.$placeholderid.'" class="nxs-slider-controller" style="bottom: '.($border_width + 16).'px; right: '.$border_width.'px; '.$margin_right.'"></div>';	
@@ -795,7 +810,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				
 				// Title
 				if ($slidedataset["title"] != "") { 
-					$title = '<h2 class="nxs-slide-title nxs-title '.$title_fontsize_cssclass.'">'.nxs_render_html_escape_gtlt($slidedataset["title"]).'</h2>'; 
+					$title = '<h2 class="nxs-slide-title nxs-title '.$title_fontsize_cssclass.' '.$title_fontzen_cssclass.'">'.nxs_render_html_escape_gtlt($slidedataset["title"]).'</h2>'; 
 				}
 				
 				// Filler
@@ -805,7 +820,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				if ($slidedataset["text"] != "") { 
 					$text = '
 						<div class="nxs-default-p">
-							<p class="nxs-padding-bottom0">'.nxs_render_html_escape_gtlt($slidedataset["text"]).'</p>
+							<p class="nxs-padding-bottom0 '.$text_fontzen_cssclass.'">'.nxs_render_html_escape_gtlt($slidedataset["text"]).'</p>
 						</div>'; 
 				}
 			
