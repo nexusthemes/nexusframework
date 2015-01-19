@@ -8,7 +8,11 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 	
 	$publishedargs = array();
 	$publishedargs["post_status"] 	= array("publish", "private");
-	$publishedargs["post_type"] 	= array("post", "page", "product");
+	
+	$posttypes = array("post", "page");
+	$posttypes = apply_filters("nxs_links_getposttypes", $posttypes);
+	$publishedargs["post_type"] = $posttypes;
+	
 	$publishedargs["orderby"] 		= "post_date";//$order_by;
 	$publishedargs["order"] 		= "DESC"; //$order;
 	$publishedargs["numberposts"] 	= -1;	// allemaal!
