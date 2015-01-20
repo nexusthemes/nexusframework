@@ -142,15 +142,6 @@ function nxs_getcharset()
 define('NXS_UNIQUEIDFORREQUEST', rand());
 
 //
-// prerequisites
-//
-if (!function_exists('curl_init'))
-{ 
-	echo "This theme requires PHP5-CURL (CURL is currently not installed!).";
-	return;
-}
-
-//
 // https "fix" for some servers
 //
 // kudos to https://gist.github.com/webaware/4688802

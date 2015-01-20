@@ -841,7 +841,14 @@ function nxs_pagetemplate_blogentry_render($args)
 		}
 	}
 	
-	if (is_singular())
+	if (is_404())
+	{
+		$templateproperties = nxs_gettemplateproperties();
+		global $nxs_global_current_containerpostid_being_rendered;
+		$nxs_global_current_containerpostid_being_rendered = $templateproperties["content_postid"];
+		$containerpostid = $nxs_global_current_containerpostid_being_rendered;
+	}
+	else if (is_singular())
 	{
 		// the containerpostid is the id of the (one and only) post
 		global $post;
