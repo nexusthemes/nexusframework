@@ -20,6 +20,7 @@ function nxs_widgets_definitionlistitemtext_renderindefinitionlistbox($args)
 	
 	// Localize atts
 	$metadata = nxs_localization_localize($metadata);
+	$metadata = nxs_filter_translatelookup($metadata, array("title", "text"));
 
 	extract($metadata, EXTR_PREFIX_ALL, "metadata");
 	extract($container_metadata, EXTR_PREFIX_ALL, "container_metadata");
@@ -77,8 +78,12 @@ function nxs_widgets_definitionlistitemtext_render_webpart_render_htmlvisualizat
 	// Localize atts
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "text", "metadata_text"));
+
 	$title = $mixedattributes['title'];
-	
+	$text = $mixedattributes['text'];
+
+
 	global $nxs_global_placeholder_render_statebag;
 
 	$hovermenuargs = array();

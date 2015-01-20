@@ -146,6 +146,9 @@ function nxs_widgets_definitionlistbox_render_webpart_render_htmlvisualization($
 	// Localize atts
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
+	// Lookup atts
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title"));
+
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
@@ -241,6 +244,7 @@ function nxs_widgets_definitionlistbox_render_webpart_render_htmlvisualization($
 					 		
 					 		// now that the widget is loaded, instruct the widget (listboxitem) to render its output
 					 		$subresult = nxs_widgets_renderindefinitionlistbox($widget, $listboxitemargs);
+					 		
 					 		if ($subresult["result"] == "OK")
 					 		{
 					 			// append subresult to the overall result
