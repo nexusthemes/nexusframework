@@ -78,7 +78,7 @@ function nxs_widgets_definitionlistitemtext_render_webpart_render_htmlvisualizat
 	// Localize atts
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "text", "metadata_text"));
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "text"));
 
 	$title = $mixedattributes['title'];
 	$text = $mixedattributes['text'];
