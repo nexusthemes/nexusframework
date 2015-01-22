@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
-?>function nxs_js_handlequestion()
+?>function nxs_js_supporthandlequestion()
 {
 	var q = jQuery("#nxs_chat_q").val();
 	
@@ -8,17 +8,17 @@ error_reporting(E_ERROR | E_PARSE);
 	jQuery("#nxs_chat_hints").empty();
 
 	// invoke local webmethod			
-	nxs_js_chat_invokeasyncwebmethod(q);
+	nxs_js_chat_supportinvokeasyncwebmethod(q);
 }
 
-function nxs_js_handlequestion_direct(q)
+function nxs_js_supporthandlequestion_direct(q)
 {
-	nxs_js_startchatstage2();
+	nxs_js_supportstartchatstage2();
 	jQuery("#nxs_chat_q").val(q);
-	nxs_js_chat_invokeasyncwebmethod(q);
+	nxs_js_chat_supportinvokeasyncwebmethod(q);
 }
 		
-function nxs_js_chat_invokeasyncwebmethod(q)
+function nxs_js_chat_supportinvokeasyncwebmethod(q)
 {
 	var ajaxurl = nxs_js_get_adminurladminajax();
 	jQuery.ajax
@@ -175,10 +175,10 @@ function nxs_js_chat_invokeasyncwebmethod(q)
 	);
 }
 
-function nxs_js_startchatstage2()
+function nxs_js_supportstartchatstage2()
 {
 	// get rid of existing content
-	jQuery("#nxs_chat_wrap").empty();
+	jQuery("#nxs_frameworkchat_wrap").empty();
 	
 	<?php 
 	
@@ -195,7 +195,7 @@ function nxs_js_startchatstage2()
 				<!-- Arrow button -->
 				<div class="nxs-float-left">
 					<ul class="question">
-						<li><a href="#" onclick="nxs_js_showchatstage1(); return false;"><span class="nxs-icon-arrow-down" /></a></li>
+						<li><a href="#" onclick="nxs_js_supportshowchatstage1(); return false;"><span class="nxs-icon-arrow-down" /></a></li>
 					</ul>
 				</div>
 				
@@ -206,7 +206,7 @@ function nxs_js_startchatstage2()
 				<input id="nxs_chat_q" type="text" name="nxs_chat_q" placeholder="Type here and hit &lt;ENTER&gt;" />
 				
 				<!-- Close button -->
-				<a class="nxsbutton nxs-margin-right10" href="#" id="nxs_chat_submit" onclick="nxs_js_handlequestion(); return false;">Go</a>
+				<a class="nxsbutton nxs-margin-right10" href="#" id="nxs_chat_submit" onclick="nxs_js_supporthandlequestion(); return false;">Go</a>
 			
 			</div>	
 			
@@ -232,7 +232,7 @@ function nxs_js_startchatstage2()
 	
 	?> 
 	
-	jQuery("#nxs_chat_wrap").append('<?php echo $result; ?>');
+	jQuery("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
 			
 	// set focus
 	jQuery("#nxs_chat_q").focus();
@@ -254,18 +254,18 @@ function nxs_js_startchatstage2()
   
 }
 
-function nxs_js_chatdelete()
+function nxs_js_supportchatdelete()
 {
-	jQuery("#nxs_chat_wrap").empty();
+	jQuery("#nxs_frameworkchat_wrap").empty();
 }
 		
-var nxs_chatprequestionloaded = false;
+var nxs_supportchatprequestionloaded = false;
 
 jQuery(window).load
 (
 	function()
 	{
-		nxs_js_log("window on load!");	
+		nxs_js_log("SUPPORT window on load!");	
 		
 		if (window!=window.top)
 		{
@@ -274,7 +274,7 @@ jQuery(window).load
 		}
 		else
 		{
-			if (nxs_chatprequestionloaded) 
+			if (nxs_supportchatprequestionloaded) 
 			{
 				nxs_js_log("been there before :)");		
 			}
@@ -283,25 +283,25 @@ jQuery(window).load
 				nxs_js_log("initializing chat!");
 				
 				// only load this 1x
-				nxs_chatprequestionloaded = true;
+				nxs_supportchatprequestionloaded = true;
 				
 				// wrap 
-				jQuery("body").append("<div id='nxs_chat_wrap' class='display720 nxs-hidewheneditorinactive' style='display: none;'></div>");
+				jQuery("body").append("<div id='nxs_frameworkchat_wrap' class='display720 nxs-hidewheneditorinactive' style='display: none;'></div>");
 				
 				nxs_js_process_updated_editor_state_internal(false);
 					
-				nxs_js_showchatstage1();
+				nxs_js_supportshowchatstage1();
 
-				nxs_js_log("Chat was loaded!");
+				nxs_js_log("Support chat was loaded!");
 			}
 		}
 	}
 );
 		
-function nxs_js_showchatstage1()
+function nxs_js_supportshowchatstage1()
 {
 	// empty the wrap
-	jQuery("#nxs_chat_wrap").empty();
+	jQuery("#nxs_frameworkchat_wrap").empty();
 	
 	<?php ob_start(); ?>
 	
@@ -314,16 +314,16 @@ function nxs_js_showchatstage1()
 				<!-- Arrow button -->
 				<div class="nxs-float-left">
 					<ul class="question">
-						<li><a href="#" onclick="nxs_js_startchatstage2(); return false;"><span class="nxs-icon-arrow-up" /></a></li>
+						<li><a href="#" onclick="nxs_js_supportstartchatstage2(); return false;"><span class="nxs-icon-arrow-up" /></a></li>
 					</ul>
 				</div>
 			
 				<!-- Text link -->
-				<a href="#" onclick="nxs_js_startchatstage2(); return false;" class="nxs-admin-font nxs-float-left nxs-width90">Need help? Ask questions here!</a>
+				<a href="#" onclick="nxs_js_supportstartchatstage2(); return false;" class="nxs-admin-font nxs-float-left nxs-width90">Need help? Ask questions here!</a>
 				
 				<!-- Close buttton -->
 				<div>
-					<a href="#" onclick="nxs_js_chatdelete(); return false;"><span class="nxs-popup-closer nxs-icon-remove-sign" /></a>
+					<a href="#" onclick="nxs_js_supportchatdelete(); return false;"><span class="nxs-popup-closer nxs-icon-remove-sign" /></a>
 				</div>
 				
 			</div>
@@ -342,5 +342,6 @@ function nxs_js_showchatstage1()
 	
 	?> 
 	
-	jQuery("#nxs_chat_wrap").append('<?php echo $result; ?>');
+	jQuery("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
 }
+
