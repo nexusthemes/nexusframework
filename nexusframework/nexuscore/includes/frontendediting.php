@@ -393,6 +393,14 @@ if (is_admin)
 	<script type='text/javascript'> var nxsboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingnxsbox.png" }; </script>	
 	<?php 
 }
+
+if (nxs_has_adminpermissions())
+{
+	// only logged in users can ask questions
+	?>
+	<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/support-deferred.js.php?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
+	<?php
+}
 ?>
 <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(); ?>"></script>
 <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-deferred.js?v=<?php echo nxs_getthemeversion(); ?>" defer></script>

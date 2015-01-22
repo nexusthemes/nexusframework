@@ -9,17 +9,6 @@ function nxs_requirewebmethod($webmethod)
 	if (!has_action($action))
 	{
 		nxs_webmethod_return_nack("Webmethod not found. Add action: $action");
-		/*
-		if (nxs_has_adminpermissions())
-		{
-			// we gaan wel door, iemand kan per ongeluk of met opzet bijv. een plugin hebben uitgeschakeld
-			echo "Warning; looks like webmethod '" . $webmethod . " is missing (maybe you deactivated a required plugin or forgot to ftp a new webmethod to your site?)";
-		}
-		else
-		{
-			echo "<!-- Warning; looks like webmethod '" . $webmethod . " is missing (maybe you deactivated a required plugin or forgot to ftp a new webmethod to your site?) -->";
-		}
-		*/
 	}
 	else
 	{
