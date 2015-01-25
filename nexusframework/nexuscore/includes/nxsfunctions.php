@@ -2615,7 +2615,10 @@ function nxs_img_getimageurlthemeversion($result)
 	{
 		$meta = nxs_theme_getmeta();
 		$version = $meta["version"];
-		$result = nxs_addqueryparametertourl_v2($result, "nxsv", $version, true, true);
+		$decimals = preg_replace("/[^0-9]/","",$version);
+		// we use the quality parameter, since that's the only one 
+		// to trick Photon
+		$result = nxs_addqueryparametertourl_v2($result, "quality", "100." . $decimals, true, true);
 	}
 	return $result;
 }

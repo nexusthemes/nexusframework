@@ -272,6 +272,12 @@ function nxs_framework_theme_styles()
 }
 add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');
 
+function nxs_session_hasstartedactivesession()
+{
+	$r = isset($_COOKIE[session_name()]);
+	return $r;
+}
+
 function nxs_ensure_sessionstarted()
 {
 	// init session
