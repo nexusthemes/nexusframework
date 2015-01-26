@@ -286,7 +286,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"footsteps",
 										"golf",
 										"fuel",
-										"jumpstart",									
+										"jumpstart",
+										"nexus",									
 										
 									);
 										
