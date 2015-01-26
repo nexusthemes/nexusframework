@@ -97,7 +97,7 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 													
 										$result = ob_get_contents();
 										
-										$result = str_replace("\r\n", " ", $result);
+										$result = preg_replace( "/\r|\n/", " ", $result );
 										
 										ob_end_clean();
 										
@@ -132,7 +132,7 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 													
 										$result = ob_get_contents();
 										
-										$result = str_replace("\r\n", " ", $result);
+										$result = preg_replace( "/\r|\n/", " ", $result );
 										
 										ob_end_clean();
 										
@@ -226,7 +226,7 @@ function nxs_js_supportstartchatstage2()
 				
 	$result = ob_get_contents();
 	
-	$result = str_replace("\r\n", " ", $result);
+	$result = preg_replace( "/\r|\n/", " ", $result );
 	
 	ob_end_clean();
 	
@@ -336,7 +336,7 @@ function nxs_js_supportshowchatstage1()
 				
 	$result = ob_get_contents();
 	
-	$result = str_replace("\r\n", " ", $result);
+	$result = preg_replace( "/\r|\n/", " ", $result );
 	
 	ob_end_clean();
 	

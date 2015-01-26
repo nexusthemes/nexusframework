@@ -5840,16 +5840,27 @@ function nxs_setpageletid_forpageletinpost($postid, $pageletname, $pageletid)
 
 function nxs_prettyprint_array($arr)
 {
-
+	$retStr = '<h1>Pretty print</h1>';
   $retStr = '<ul>';
   if (is_array($arr)){
       foreach ($arr as $key=>$val){
-          if (is_array($val)){
-              $retStr .= '<li>' . $key . ' => ' . nxs_prettyprint_array($val) . '</li>';
-          }else{
-              $retStr .= '<li>' . $key . ' => ' . $val . '</li>';
+          if (is_array($val))
+          {
+          	$retStr .= '<li>' . $key . ' => ' . nxs_prettyprint_array($val) . '</li>';
+          } 
+          else if (is_string($val))
+          {
+          	$retStr .= '<li>' . $key . ' => ' . $val . '</li>';
+          }
+          else
+          {
+          	$retStr .= '<li>' . $key . ' => {some object}</li>';
           }
       }
+  }
+  else
+  {
+  	$retStr .= '<li>Not an array</li>';
   }
   $retStr .= '</ul>';
   return $retStr;

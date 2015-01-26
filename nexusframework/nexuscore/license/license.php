@@ -80,7 +80,10 @@ function nxs_license_notifynolicense()
 	  ?>
 	  <div class="error">
 	    <p>
-	    	You are not receiving theme updates for this WordPress theme because the site is not connected to a valid license.
+	    	You are not receiving theme updates for this WordPress theme 
+	    	because the site is not connected to a valid license. To connect
+	    	your site to a valid license, enter the ordernumber of your order
+	    	on the register page.
 	    	<br />
 	    	Please <a href='<?php echo $url;?>'>register</a> your license to enable theme updates.
 	    </p>
