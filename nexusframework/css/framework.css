@@ -2681,6 +2681,7 @@ h3#order_review_heading,
 .nxs-icon-fleas:before	 			{ content: "\e418"; }
 .nxs-icon-mite:before	 			{ content: "\e419"; }
 .nxs-icon-houzz:before	 			{ content: "\e420"; }
+.nxs-icon-nexus:before	 			{ content: "\e421"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
