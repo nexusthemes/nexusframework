@@ -5734,7 +5734,7 @@ function nxs_js_redirect_top(url)
 		// be used to return alfa characters, or a combination. <div class="nxs-object-foobar123"> will
 		// return "foobar123"
 		// tags: identifier, id, identification, find, get, retrieve, subset, prefix, classname, getclass, derive
-		function nxs_js_findclassidentificationwithprefix(domelement, prefix)
+		function nxs_js_findclassidentificationwithprefix(domelement, prefix, returnifnotfound)
 		{
 		 	var classname = jQuery(domelement).attr("class");
 			var pattern = prefix + "([^\\s]*)";	// any set of chars till the moment a whitespace is found
@@ -5749,12 +5749,19 @@ function nxs_js_redirect_top(url)
 			}
 			else
 			{
-				// not found
-				nxs_js_log('warning; identification not found;');
-				nxs_js_log('domelement:');
-				nxs_js_log(domelement);
-				nxs_js_log('prefix:');
-				nxs_js_log(prefix);
+				if (typeof returnifnotfound !== 'undefined')
+				{
+					result = returnifnotfound;
+				}
+				else
+				{
+					// not found
+					nxs_js_log('warning; identification not found;');
+					nxs_js_log('domelement:');
+					nxs_js_log(domelement);
+					nxs_js_log('prefix:');
+					nxs_js_log(prefix);
+				}
 			}
 			
 		 	return result;
@@ -7839,21 +7846,42 @@ function nxs_js_getcookie(c_name)
 
 function nxs_js_tagcolumns()
 {
+	nxs_js_log("tagging columns...");
 	jQuery.each
 	(
-		jQuery(".nxs-row"), function(index, rowelement)
+		jQuery(".nxs-placeholder-list"), function(index, listelement)
 		{
 			// nxs_js_log('row found');
 			var columnindex = 1;
 		
-			var placeholders = jQuery(rowelement).find(".nxs-placeholder");
-			var columnmax = placeholders.length;
+			var placeholders = jQuery(listelement).children(".nxs-placeholder");
+			var columnmax = nxs_js_findclassidentificationwithprefix(listelement, "nxs-columnsperrow-", -1);
+			if (columnmax == -1)
+			{
+				// if not found
+				nxs_js_log("fallback :)");
+				columnmax = placeholders.length;
+			}
+			else
+			{
+				nxs_js_log("got it :)");
+			}
+			
 			jQuery.each
 			(
 				placeholders, function(index, currentplaceholder)
 				{
 					jQuery(currentplaceholder).addClass("nxs-column-" + columnindex + "-" + columnmax);
+					if (columnindex == columnmax)
+					{
+						// last column
+						jQuery(currentplaceholder).addClass("nxs-column-lastinrow");
+					}
 					columnindex++;
+					if (columnindex > columnmax)
+					{
+						columnindex = 1;
+					}
 				}
 			);
 		}

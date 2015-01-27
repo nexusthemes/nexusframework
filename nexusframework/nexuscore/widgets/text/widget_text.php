@@ -427,7 +427,14 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	}
 	
 	// Blend unistyle properties
 	$unistyle = $temp_array["unistyle"];
@@ -450,7 +457,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = array_merge($temp_array, $args);
 	
 	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
+	//$mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text", "destination_url"));
@@ -475,13 +482,16 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$text_heightiq = "";	// off!
 	}
 
-	//
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	if ($postid != "" && $placeholderid != "")
+	{
+		//
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 
 	// Turn on output buffering
 	ob_start();
@@ -489,12 +499,19 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Setting the widget name variable to the folder name
 	$widget_name = basename(dirname(__FILE__));
 		
-	global $nxs_global_placeholder_render_statebag;
-	if ($shouldrenderalternative == true) {
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
-	} else {
-		// Appending custom widget class
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		global $nxs_global_placeholder_render_statebag;
+		if ($shouldrenderalternative == true) {
+			$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
+		} else {
+			// Appending custom widget class
+			$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
+		}
 	}
 	
 	//
@@ -746,7 +763,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	if ($image_url != "" && $image_size != "auto-fit") {
 		$default_image = '';
-		$default_image .= '<div class="nxs-image-wrapper ' . $image_alignment_cssclass . ' ' . $image_size_cssclass . '" style="background: url('. $derived_imageurl . '); background-repeat:no-repeat; background-attachment:scroll; background-position:center; background-size: cover;">&nbsp;';
+		$default_image .= '<div class="nxs-image-wrapper ' . $image_alignment_cssclass . ' ' . $image_size_cssclass . '" style="background: url('. $derived_imageurl . '); background-repeat:no-repeat; background-attachment:scroll; background-position:center; background-size: cover;"><img style="visibility: hidden;" src="'. $derived_imageurl . '" />&nbsp;';
 		$default_image .= '</div>';
 	}
 	
