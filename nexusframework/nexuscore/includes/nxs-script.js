@@ -7726,7 +7726,8 @@ function nxs_js_getlineairgradientcss(colora, colorb)
 	}
 	else if (vendor == "msie" || vendor == "?")
 	{
-		result += "filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=" + colorb + ",EndColorStr=" + colora + ");";
+
+		result += "background: -ms-linear-gradient(" + colorb + ", " + colora + ");" + "filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=" + colorb + ",EndColorStr=" + colora + ");";
 	}
 	return result;
 }
