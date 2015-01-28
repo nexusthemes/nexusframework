@@ -1749,6 +1749,7 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 .nxs-events .nxs-title,
 .nxs-events .title											{ margin-bottom: 10px !important; }
 .nxs-events .subtitle										{ font-size: 15px; line-height: 1.625em; }
+.nxs-events ul, ol 											{ list-style: disc inside none;	margin-left: 10px;	}
 
 /* SQUEEZEBOX
 ------------------------------------------------------------------------------------------ */

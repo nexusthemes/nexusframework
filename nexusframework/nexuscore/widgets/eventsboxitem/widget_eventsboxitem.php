@@ -132,7 +132,7 @@ function nxs_widgets_eventsboxitem_home_getoptions($args)
 			array
 			( 
 				"id" 				=> "subtitle",
-				"type" 				=> "textarea",
+				"type" 				=> "tinymce",
 				"label" 			=> nxs_l18n__("Subtitle", "nxs_td"),
 				"placeholder" => nxs_l18n__("Subtitle goes here", "nxs_td"),
 			),

@@ -526,7 +526,7 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 						if ($destination_url != "") { echo '</a>'; }
 						
 						// Subtitle
-						echo'<p class="subtitle nxs-default-p nxs-padding-bottom0"><span>' . $subtitle . '</span></p>
+						echo'<div class="subtitle nxs-default-p nxs-padding-bottom0">' . $subtitle . '</div>
 						<div class="nxs-clear"></div>
 					</div>';
 			  }
