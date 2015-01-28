@@ -164,6 +164,14 @@ function nxs_widgets_social_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("If you want to place a link to the Instagram account, place it here. Use the full url!", "nxs_td"),
 				"unicontentablefield" => true,
 			),
+			array(
+				"id" 				=> "custom_1_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Custom link", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Use full url or leave blank to skip this item", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to place a link to a custom account, place it here. Use the full url!", "nxs_td"),
+				"unicontentablefield" => true,
+			),
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
@@ -175,7 +183,7 @@ function nxs_widgets_social_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Account icons", "nxs_td"),
+				"label" 			=> nxs_l18n__("Account visualisation", "nxs_td"),
 				"initial_toggle_state" 	=> "closed",
 				"unistylablefield"	=> true
 			),
@@ -189,58 +197,72 @@ function nxs_widgets_social_home_getoptions($args)
 			array( 
 				"id" 				=> "rss_imageid",
 				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Custom RSS icon", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the RSS icon.", "nxs_td"),
+				"label" 			=> nxs_l18n__("RSS icon", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the RSS icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
 				"id" 				=> "twitter_imageid",
 				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Custom Twitter icon", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Twitter icon.", "nxs_td"),
+				"label" 			=> nxs_l18n__("Twitter icon", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the Twitter icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
 				"id" 				=> "facebook_imageid",
 				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Custom Facebook icon", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Facebook icon.", "nxs_td"),
+				"label" 			=> nxs_l18n__("Facebook image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the Facebook icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
 				"id" 				=> "linkedin_imageid",
 				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Custom LinkedIn icon", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the LinkedIn icon.", "nxs_td"),
+				"label" 			=> nxs_l18n__("LinkedIn image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the LinkedIn icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
 				"id" 				=> "googleplus_imageid",
 				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Custom Google+ icon", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Google+ icon.", "nxs_td"),
+				"label" 			=> nxs_l18n__("Google+ image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the Google+ icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
 				"id" 				=> "youtube_imageid",
 				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Custom Youtube icon", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Youtube icon.", "nxs_td"),
+				"label" 			=> nxs_l18n__("Youtube image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the Youtube icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
 				"id" 				=> "pinterest_imageid",
 				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Custom Pinterest icon", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Pinterest icon.", "nxs_td"),
+				"label" 			=> nxs_l18n__("Pinterest image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the Pinterest icon.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
 				"id" 				=> "instagram_imageid",
 				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Custom Instagram icon", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("With this option you can upload a custom image for the Instagram icon.", "nxs_td"),
+				"label" 			=> nxs_l18n__("Instagram image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the Instagram icon.", "nxs_td"),
 				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "custom_1_icon",
+				"type" 				=> "icon",
+				"label" 			=> nxs_l18n__("Custom simple icon", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can select an icon for the Custom social link.", "nxs_td"),
+				"unicontentablefield" => true
+			),
+			array( 
+				"id" 				=> "custom_1_imageid",
+				"type" 				=> "image",
+				"label" 			=> nxs_l18n__("Custom image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("With this option you can upload a image for the Custom social link.", "nxs_td"),
+				"unicontentablefield" => true
 			),
 			array( 
 				"id" 				=> "wrapper_end",
@@ -352,31 +374,37 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If so > $shouldrenderalternative = true, which triggers the error message
 	$shouldrenderalternative = false;
 	if (
-	$title == "" &&
-	$text == "" &&
-	$rss_url == "" &&
-	$twitter_url == "" &&
-	$facebook_url == "" &&
-	$linkedin_url == "" &&
-	$googleplus_url == "" &&
-	$youtube_url == "" &&
-	$pinterest_url == "" &&
-	$instagram_url == "" &&
+	!$title &&
+	!$text &&
+	!$rss_url &&
+	!$twitter_url &&
+	!$facebook_url &&
+	!$linkedin_url &&
+	!$googleplus_url &&
+	!$youtube_url &&
+	!$pinterest_url &&
+	!$instagram_url &&
+	!$custom_1_url &&
 	nxs_has_adminpermissions()) {
 		$shouldrenderalternative = true;
 	}
 	
 	// ICON FONT
-	if ($use_icon != "") {
-		if ($rss_url != "") 		{ $rss_url = 			'<li><a target="_blank" href="' . $rss_url . '">		<span class="nxs-icon-rss"></span></a></li>'; }
-		if ($twitter_url != "") 	{ $twitter_url = 		'<li><a target="_blank" href="' . $twitter_url . '">	<span class="nxs-icon-twitter-2"></span></a></li>'; }
-		if ($facebook_url != "") 	{ $facebook_url = 		'<li><a target="_blank" href="' . $facebook_url . '">	<span class="nxs-icon-facebook"></span></a></li>'; }
-		if ($linkedin_url != "") 	{ $linkedin_url = 		'<li><a target="_blank" href="' . $linkedin_url . '">	<span class="nxs-icon-linkedin"></span></a></li>'; }
-		if ($googleplus_url != "") 	{ $googleplus_url = 	'<li><a target="_blank" href="' . $googleplus_url . '">	<span class="nxs-icon-google-plus"></span></a></li>'; }
-		if ($youtube_url != "") 	{ $youtube_url = 		'<li><a target="_blank" href="' . $youtube_url . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
-		if ($pinterest_url != "") 	{ $pinterest_url = 		'<li><a target="_blank" href="' . $pinterest_url . '">	<span class="nxs-icon-pinterest"></span></a></li>'; }
-		if ($instagram_url != "") 	{ $instagram_url = 		'<li><a target="_blank" href="' . $instagram_url . '">	<span class="nxs-icon-instagram"></span></a></li>'; }
-		
+	if ($use_icon) {
+		if ($rss_url) 			{ $rss_url = 		'<li><a target="_blank" href="' . $rss_url . '">		<span class="nxs-icon-rss"></span></a></li>'; }
+		if ($twitter_url) 		{ $twitter_url = 	'<li><a target="_blank" href="' . $twitter_url . '">	<span class="nxs-icon-twitter-2"></span></a></li>'; }
+		if ($facebook_url) 		{ $facebook_url = 	'<li><a target="_blank" href="' . $facebook_url . '">	<span class="nxs-icon-facebook"></span></a></li>'; }
+		if ($linkedin_url) 		{ $linkedin_url = 	'<li><a target="_blank" href="' . $linkedin_url . '">	<span class="nxs-icon-linkedin"></span></a></li>'; }
+		if ($googleplus_url)	{ $googleplus_url = '<li><a target="_blank" href="' . $googleplus_url . '">	<span class="nxs-icon-google-plus"></span></a></li>'; }
+		if ($youtube_url) 		{ $youtube_url = 	'<li><a target="_blank" href="' . $youtube_url . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
+		if ($pinterest_url) 	{ $pinterest_url = 	'<li><a target="_blank" href="' . $pinterest_url . '">	<span class="nxs-icon-pinterest"></span></a></li>'; }
+		if ($instagram_url) 	{ $instagram_url = 	'<li><a target="_blank" href="' . $instagram_url . '">	<span class="nxs-icon-instagram"></span></a></li>'; }
+		if ($custom_1_icon)		{
+			if ($custom_1_url)	{ $custom_1_url = 	'<li><a target="_blank" href="' . $custom_1_url . '">	<span class="nxs-social-custom ' . $custom_1_icon . '"></span></a></li>'; }
+		} else {
+			$custom_1_url = '';
+		}
+	
 		if 		($halign == 'left') 	{ $alignment = ''; } 
 		else if ($halign == 'center') 	{ $alignment = 'nxs-center'; } 
 		else if ($halign == 'right') 	{ $alignment = 'nxs-float-right'; }
@@ -392,6 +420,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 					. $youtube_url
 					. $pinterest_url
 					. $instagram_url
+					. $custom_1_url
 					. '
 				</ul>
 			</div>
@@ -583,6 +612,33 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 			</a>';	
 	}
 	
+
+	// CUSTOM ACCOUNT
+	// If the accountname is set and there's no icon or custom image
+	if ($custom_1_url && !$custom_1_icon && !$custom_1_imageid){
+		$custom_1_url = '';
+	
+	// if the accoutname is set and there's a custom icon and no custom image
+	} else if ($custom_1_url && $custom_1_icon && !$custom_1_imageid) {
+		$custom_1_url = '';
+
+	// If both the accountname and a custom image is set
+	} else if ($custom_1_url && $custom_1_imageid) {
+		$imagemetadata= wp_get_attachment_image_src($custom_1_imageid, 'full', true);
+		
+		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
+		$custom_1_imageurl = $imagemetadata[0];
+		$custom_1_imageurl = nxs_img_getimageurlthemeversion($custom_1_imageurl);
+		
+		$custom_1_imagewidth = $imagemetadata[1] . "px";
+		$custom_1_imageheight = $imagemetadata[2] . "px";
+	
+		$custom_1_url = '
+			<a href="' . $custom_1_url . '" target="_new" style="width: ' . $custom_1_imagewidth . '; height: ' . $custom_1_imageheight . ';">
+				<li style="background: url(' . $custom_1_imageurl . ') no-repeat; width: ' . $custom_1_imagewidth . '; height: ' . $custom_1_imageheight . ';"></li>
+			</a>';	
+	}
+	
 	// Alignment
 	if 		($halign == 'left') {
 		$text_alignment = 'text-align: left;';
@@ -600,13 +656,13 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	else if ($halign == 'right') {$halign = 'nxs-float-right'; }
 	
 	// Social list
-	if ($rss_url == "" && $twitter_url == "" && $facebook_url == "" && $linkedin_url == "" && $googleplus_url == "" && $youtube_url == "" && $pinterest_url == "" && $instagram_url == "") {
+	if ($rss_url == "" && $twitter_url == "" && $facebook_url == "" && $linkedin_url == "" && $googleplus_url == "" && $youtube_url == "" && $pinterest_url == "" && $instagram_url == "" && $custom_1_url == "") {
 		// do nothing
 	} else {
 		$social_list = '
 			<div class="' . $halign . '">
 				<ul class="nxs-social-list">
-					' . $rss_url . $twitter_url . $facebook_url . $linkedin_url . $googleplus_url . $youtube_url . $pinterest_url. $instagram_url.  '
+					' . $rss_url . $twitter_url . $facebook_url . $linkedin_url . $googleplus_url . $youtube_url . $pinterest_url. $instagram_url. $custom_1_url.  '
 				</ul>
 			</div>
 		';
