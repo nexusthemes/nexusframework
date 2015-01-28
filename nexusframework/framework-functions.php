@@ -1547,6 +1547,13 @@ function nxs_create_post_types_and_taxonomies()
 	
 	// posts and pages
 	// taxonomie: both posts and pages have a subtype (for example "webpage", "searchpage", "blogentry", "...", etc.)
+	if ($_REQUEST["nxs_showsubtype"] == "true") {
+		$show_ui = true;
+	}
+	else {
+		$show_ui = false;
+	}
+
 	register_taxonomy
 	(
 		'nxs_tax_subposttype',
@@ -1555,11 +1562,11 @@ function nxs_create_post_types_and_taxonomies()
 			'hierarchical' => false,
 			'label' => 'Sub type',
 			'query_var' => true,
-			'show_ui' => true,	// hide from ui
+			'show_ui' => $show_ui,	// hide from ui
 			'rewrite' => true
 		)
 	);
-	
+
 	$ispublic = false;
 	nxs_registernexustype_withtaxonomies("genericlist", array("nxs_tax_subposttype"), $ispublic);
 	
