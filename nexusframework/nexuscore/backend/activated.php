@@ -470,7 +470,8 @@
 
 				if (moresteps)
 				{
-					//nxs_js_log('more steps, there we go');
+					nxs_js_log('more steps, there we go');
+					nxs_js_log(currentstep);
 					
 					var ajaxurl = nxs_js_get_adminurladminajax();
 					jQuery.ajax
@@ -481,7 +482,7 @@
 							{
 								"action": "nxs_ajax_webmethods",
 								"webmethod": "sanitizecontent",
-								"currentstep": currentstep,
+								"chunkedsteps": currentstep,
 							},
 							async: true,
 							cache: false,
@@ -493,19 +494,17 @@
 								nxs_js_log(response);
 								if (response.result == "OK")
 								{
-									//nxs_js_log("next step:" + response.nextstep + "/" + response.maxstep);
-									if (currentstep < response.maxstep)
+									nxs_js_extendlog("<p>" + response.log + "</p>", true);
+									if (response.nextchunkedsteps == "finished")
 									{
-										currentstep = response.nextstep;
-										moresteps = true;
+										moresteps = false;
 									}
 									else
 									{
-										// no more
-										moresteps = false;
-										currentstep = 1;
+										// proceed to next step
+										currentstep = response.nextchunkedsteps;
+										moresteps = true;
 									}
-									nxs_js_extendlog("<p>" + response.log + "</p>", true);
 
 									// allow next async thread to execute next request
 									busy = false;

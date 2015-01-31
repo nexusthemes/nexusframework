@@ -1781,26 +1781,7 @@ function nxs_init_handledebug()
 			die();
 		}
 	}
-	
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "sanitize")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			$destinationlang = "nl";
-			$destinationblogid = nxs_localization_getblogidforlanguage($destinationlang);
-			// GLOBAL IDS / SANITY CHECK / DATA CONSISTENCY FIXER
-			require_once(NXS_FRAMEWORKPATH . '/nexuscore/dataconsistency/dataconsistency.php');
-			switch_to_blog($destinationblogid);
-			$report = nxs_ensuredataconsistency("*");
-			restore_current_blog();
-			echo "consistency report;<br />";
-			echo $report;
-			echo "<br />";
-			echo "back :)";
-			die();
-		}
-	}
-	
+
 	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "cleanimg")
 	{
 		if (nxs_has_adminpermissions())
