@@ -211,20 +211,6 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 	
 	// Grayscale
 	if ($image_filter == "grayscale") { $image_filter = "nxs-grayscale"; }
-
-	// Horizon alignment
-	if ($halign === "center") { 
-		$halign = 'nxs-margin-auto';
-	}
-	else if ($halign === "left") { 
-		$halign = '';
-	}
-	else if ($halign === "right") { 
-		$halign = 'nxs-margin-auto-right';
-	} 
-	else {
-		$halign = 'nxs-margin-auto';
-	}
 	
 	/* banner
 	---------------------------------------------------------------------------------------------------- */
@@ -332,7 +318,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// Banners
-		echo '<ul class="banners-wrapper nxs-table ' . $halign . '">';
+		echo '<ul class="banners-wrapper nxs-table banner-' . $halign . '">';
 		
 			/* Single banner image
 			---------------------------------------------------------------------------------------------------- */
@@ -345,8 +331,8 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				// Remove border for last item by placing class
 				if ($i == (count($banner)-1)) { $last = "last"; }
 				
-				echo '
-				<li class="image-wrapper '.$placeinrow.' '.$last.'" >
+				// their should be no spaces between the li because it is a inline-block element
+				echo '<li class="image-wrapper '.$placeinrow.' '.$last.'" >
 					<div class="nxs-table">
 						<div class="nxs-table-cell">
 							'.$banner[$i].'
@@ -356,10 +342,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 			}
 			/* ------------------------------------------------------------------------------------------------- */
 			
-			echo 
-			'<div class="nxs-clear"></div>
-			
-		</ul> <!-- END banners-wrapper -->';
+		echo '</ul> <!-- END banners-wrapper -->';
 	
 	}
 	

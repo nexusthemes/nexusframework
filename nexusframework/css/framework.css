@@ -1985,16 +1985,30 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 
 /* BANNER
 ---------------------------------------------------------------------------------------------------- */
-.nxs-banner .image-wrapper 									{ height: 11.8em; max-width: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; float: left; }
+
+.nxs-banner .banners-wrapper 								{ display: block; text-align: left; }
+.nxs-banner .banners-wrapper.banner-center 					{ text-align: center; }
+.nxs-banner .banners-wrapper.banner-right 					{ text-align: right; }
+
+.nxs-banner .image-wrapper 									{ display: inline-block; height: 11.8em; max-width: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; }
 .nxs-banner .image-wrapper .nxs-table						{ height: 11.8em; margin: 0 auto; }
-.nxs-banner .image-wrapper img	 							{ max-height: 100%; width: 100%; }
+.nxs-banner .image-wrapper img	 							{ display: block; max-height: 100%; width: 100%; }
+
 .nxs-banner .image-wrapper.placeinrow5,
 .nxs-main .nxs-banner .image-wrapper.placeinrow3,
+.nxs-two-third .nxs-banner .image-wrapper.placeinrow3,
+.nxs-one-third .nxs-banner .image-wrapper.placeinrow1,
+.nxs-one-third .nxs-banner .image-wrapper.placeinrow3,
 .nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow1,
-.nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow3 { border-right: 0; }
-.nxs-banner .image-wrapper.last								{ border-right: 0; }
+.nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow3,
+.nxs-one-half .image-wrapper.placeinrow2					{ border-right: 0; }
+.nxs-banner .image-wrapper.last								{ border-right: 0 !important; }
 
-.nxs-main .nxs-banner .image-wrapper.placeinrow5			{ border-right: 3.6em solid transparent !important; }
+.nxs-main .nxs-banner .image-wrapper.placeinrow5,
+.nxs-two-third .nxs-banner .image-wrapper.placeinrow5		{ border-right: 3.6em solid transparent !important; }
+.nxs-two-third .nxs-banner .image-wrapper.last,
+.nxs-main .nxs-banner .image-wrapper.last								{ border-right: 0 !important; }
+
 
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
