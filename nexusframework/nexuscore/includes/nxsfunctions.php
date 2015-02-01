@@ -3264,6 +3264,14 @@ function nxs_wipe_sitemetakeys_internal($keystoberemoved, $performsanitycheck)
 	nxs_sitemeta_clearcache();
 }
 
+//wordt aangeroepen nadat de categorieen in de WP backend aangepast zijn.
+function nxs_dataconsitency_after_edited_terms() {
+       	require_once(NXS_FRAMEWORKPATH . '/nexuscore/dataconsistency/dataconsistency.php');
+		nxs_ensuredataconsistency("*");
+}
+
+add_action('init', 'nxs_dataconsitency_after_edited_terms', 'edited_terms');
+
 // wordt aangeroepen tijdens de 'init' fase
 function nxs_performdataconsistencycheck()
 {
