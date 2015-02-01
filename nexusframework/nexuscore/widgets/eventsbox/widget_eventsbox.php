@@ -274,7 +274,7 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 	$items_genericlistid = $mixedattributes['items_genericlistid'];
 
 	// HOVER MENU HTML
-	
+
 	ob_start();
 
 	?>
@@ -430,9 +430,12 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 		$placeholdertype = $placeholdermetadata["type"];					
 			
 		if ($placeholdertype == "eventsboxitem") 
-		{			
+		{	
+
 			$title = $placeholdermetadata['title'];
 			$subtitle = $placeholdermetadata['subtitle'];
+			$button_heightiq = "";
+			$item_button = nxs_gethtmlforbutton($placeholdermetadata['button_text'], $placeholdermetadata['button_scale'], $placeholdermetadata['button_color'], $placeholdermetadata['destination_articleid'], $placeholdermetadata['destination_url'], $placeholdermetadata['destination_target'], $placeholdermetadata['button_alignment'], $placeholdermetadata['destination_js'], $placeholdermetadata['button_heightiq'], $placeholdermetadata['button_fontzen']);
 			$date_dd_mm_yy = $placeholdermetadata['date_dd_mm_yy'];
 			// split date 
 			$splitted = explode("-", $date_dd_mm_yy);
@@ -526,9 +529,13 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 						if ($destination_url != "") { echo '</a>'; }
 						
 						// Subtitle
-						echo'<div class="subtitle nxs-default-p nxs-padding-bottom0">' . $subtitle . '</div>
-						<div class="nxs-clear"></div>
-					</div>';
+						echo'<div class="subtitle nxs-default-p nxs-padding-bottom0">' . $subtitle . '</div>';
+						if ($item_button != "") 
+						{ 
+							echo $item_button; 
+						}
+						echo '<div class="nxs-clear"></div>
+							</div>';
 			  }
 			} else {
 				// item is skipped; ignore

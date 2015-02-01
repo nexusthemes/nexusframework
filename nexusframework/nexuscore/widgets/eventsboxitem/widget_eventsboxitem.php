@@ -36,7 +36,7 @@ function nxs_widgets_eventsboxitem_render_webpart_render_htmlvisualization($args
 	if ($destination_articleid != "") {
 		$destination_articleid = nxs_geturl_for_postid($destination_articleid);
 	}
-	
+		
 	$width = $lookup[1];
 	$height = $lookup[2];		
 	
@@ -121,34 +121,85 @@ function nxs_widgets_eventsboxitem_home_getoptions($args)
 				"label" 			=> nxs_l18n__("General", "nxs_td"),
 			),
 			
-			array
-			( 
+			array( 
 				"id" 				=> "title",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
 			),
 			
-			array
-			( 
+			array( 
 				"id" 				=> "subtitle",
 				"type" 				=> "tinymce",
 				"label" 			=> nxs_l18n__("Subtitle", "nxs_td"),
 				"placeholder" => nxs_l18n__("Subtitle goes here", "nxs_td"),
 			),
 			
-			array
-			( 
+			array( 
 				"id" 				=> "date_dd_mm_yy",
 				"type" 				=> "date",
 				"dateformat" 		=> "dd-mm-yy",
 				"label" 			=> nxs_l18n__("Date", "nxs_td"),
 			),
+			
+			
+			array( 
+				"id" 				=> "wrapper_input_end",
+				"type" 				=> "wrapperend"
+			),
+
+			// BUTTON
+			array( 
+				"id" 				=> "wrapper_button_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Button", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
+			array(
+				"id" 				=> "button_text",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
+				"placeholder"		=> "Read more",
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),	
+			
+			array(
+				"id" 				=> "button_scale",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_scale"),
+				"unistylablefield"	=> true,
+			),
+			array( 
+				"id" 				=> "button_color",
+				"type" 				=> "colorzen", // "select",
+				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "button_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "button_alignment",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_halignment"),
+				"unistylablefield"	=> true,
+			),
+				
+			
+			
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("Link the menu item to an article within your site.", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "destination_url",
@@ -156,11 +207,35 @@ function nxs_widgets_eventsboxitem_home_getoptions($args)
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
 				"placeholder"		=> nxs_l18n__("http://www.nexusthemes.com", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			
+			array(
+				"id" 				=> "destination_js",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Javascript", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Apply javascript when the button is pressed.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true,
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+		
+			array(
+				"id" 				=> "destination_target",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
-				"id" 				=> "wrapper_input_end",
+				"id" 				=> "wrapper_button_end",
 				"type" 				=> "wrapperend"
 			),
 
