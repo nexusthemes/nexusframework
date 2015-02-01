@@ -2,56 +2,66 @@
 
 function nxs_ensuredataconsistency($scope)
 {
-	ob_start();
+	error_log("nxs; todo: implement nxs_ensuredataconsistency after import");
 
+	// TODO: should be rewritten;
+	// after a data import, the system should only
+	// create an option, and when that option is set,
+	// a warning/error msg should show only in the wp backend
+	// its not a good idea to invoke this data consistency fixer here,
+	// if the site has huge amounts of posts, this could break
+	// the front-end
+	/*
+	nxs_webmethod_return_nack("postid empty? (uphd)");
+	
+	$chunkedsteps = array();
+	$chunkedsteps["scope"] = $scope;
+	
+	$result = nxs_ensuredataconsistency_chunked($scope);
+	
+	$report = $result["report"];
+	return $report;
+	*/
+}
+
+function nxs_ensuredataconsistency_chunked($chunkedsteps)
+{
 	// import phase; the global cache should be wiped when we reach this point,
 	// as the sitemeta might have been update	(for example the unistyle settings)
 	global $nxs_gl_cache_sitemeta;
 	$nxs_gl_cache_sitemeta = null;
 
-	// data consistency check step 1
-	if ($scope == "*")
-	{
-		?>
-		<h1>Data consistency report</h1>
+	$nextchunkedsteps = "";
 
-		<h2>Purpose</h2>
-		<p>
-			The data consistency report is a system log that is 100% technical. End-users are not expected
-			to be able to understand the report. More information can be found on <a target='_blank' href='http://nexusthemes.com?s=data%20consistency%20report'>our website</a>
-		</p>
-		<h2>Introduction</h2>
-		<p>
-			The data consistency report is the output of a Nexus Theme process called 'data consistency check'.
-			A 'data consistency check' is a (technical) mechanism build into the Nexus theme to 
-			optimize the data consistency automatically after certain triggers happen that could potentially effect 
-			the data consistency.
-			The following events trigger a data consistency check automatically;
-			<ol>
-				<li>After you have imported data to your WordPress site while the Nexus theme is active</li>
-				<li>After you switch to the Nexus Theme</li>
-			</ol>
-		</p>
-		<?php
-	}
-	else if ($scope == "1")
+	if ($chunkedsteps == "" || $chunkedsteps == 0)
 	{
-  	?><h2><?php echo nxs_l18n__("Initialization", "nxs_td"); ?></h2><?php
+		$scope = 1;
+	}
+	else
+	{
+		$scope = $chunkedsteps["scope"];
 	}
 	
-	// data consistency check step 2 - ensure each postid has max 1 globalid
-	if ($scope == "*")
+	//var_dump($_REQUEST);
+	//die();
+
+	ob_start();
+
+	// handle scopes
+	
+	if ($scope == "1")
 	{
-		?>
-		<h2> step 1 - ensure each postid has no duplicate globalids</h2>
-		<?php
+		// initialization
+  	?><h2><?php echo nxs_l18n__("Initialization", "nxs_td"); ?></h2><?php
+  	$nextchunkedsteps = array("scope"=>"2");
 	}
 	else if ($scope == "2")
 	{
+		// // data consistency check step 2 - ensure each postid has max 1 globalid
 		?><h2><?php echo nxs_l18n__("Verifying data - phase 1/4", "nxs_td"); ?></h2><?php
+		$nextchunkedsteps = array("scope"=>"3");
 	}
-	
-	if ($scope == "*" || $scope == "3")
+	else if ($scope == "3")
 	{
 		global $wpdb;
 		
@@ -113,23 +123,15 @@ function nxs_ensuredataconsistency($scope)
 				echo "<p>OK [each postids has max 1 globalid]</p>";
 			}
 		}
-	}
-	
-	// import phase; the global cache should be wiped when we reach this point,
-	// as the sitemeta might have been update	(for example the unistyle settings)
-	global $nxs_gl_cache_sitemeta;
-	$nxs_gl_cache_sitemeta = null;
-	
-	if ($scope == "*")
-	{
-		echo "<h2>step 2 - ensure each globalid is used multiple times</h2>";
+		$nextchunkedsteps = array("scope"=>"4");
 	}
 	else if ($scope == "4")
 	{
+		// step 2 - ensure each globalid is used multiple times
 		?><h2><?php echo nxs_l18n__("Verifying data - phase 2/4", "nxs_td"); ?></h2><?php
+		$nextchunkedsteps = array("scope"=>"5");
 	}
-		
-	if ($scope == "*" || $scope == "5")
+	else if ($scope == "5")
 	{
 		global $wpdb;
 	
@@ -194,25 +196,16 @@ function nxs_ensuredataconsistency($scope)
 				echo "<p>OK [globalids are unique; no duplicates found]</p>";
 			}
 		}
-	}
-
-	// import phase; the global cache should be wiped when we reach this point,
-	// as the sitemeta might have been update	(for example the unistyle settings)
-	global $nxs_gl_cache_sitemeta;
-	$nxs_gl_cache_sitemeta = null;
-	
-	if ($scope == "*")
-	{
-		echo "<h2>step 3 - ensure widget meta is consistent</h2>";
+		$nextchunkedsteps = array("scope"=>"6");
 	}
 	else if ($scope == "6")
 	{
+		// step 3 - ensure widget meta is consistent
 		?><h2><?php echo nxs_l18n__("Verifying data - phase 3/4", "nxs_td"); ?></h2><?php
+		$nextchunkedsteps = array("scope"=>"7");
 	}
-
-	if ($scope == "*" || $scope == "7")
+	else if ($scope == "7")
 	{
-
 		global $wpdb;
 
 		// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
@@ -239,22 +232,25 @@ function nxs_ensuredataconsistency($scope)
 			}
 		}
 		
-	}
-
-
-	if ($scope == "*")
-	{
-		echo "<h2>step 4 - ensure post meta is consistent</h2>";
+		$nextchunkedsteps = array("scope"=>"8");
 	}
 	else if ($scope == "8")
 	{
+		// step 4 - ensure post meta is consistent
 		?><h2><?php echo nxs_l18n__("Verifying data - phase 4/4", "nxs_td"); ?></h2><?php
+		$nextchunkedsteps = array("scope"=>"9");
 	}
-
-	if ($scope == "*" || $scope == "9")
+	else if ($scope == "9")
 	{
 		global $wpdb;
-
+		
+		$pagesize = 300;
+		$page = $chunkedsteps["page"];
+		if ($page == "")
+		{
+			$page = 0;
+		}
+		
 		// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
 		// as these can use the pagetemplate concept too. This saves development
 		// time for plugins, and increases consistency of data for end-users
@@ -263,33 +259,65 @@ function nxs_ensuredataconsistency($scope)
 				from $wpdb->posts
 			";
 			
-		$dbresult = $wpdb->get_results($q, ARRAY_A );
+		$dbresult = $wpdb->get_results($q, ARRAY_A );		
+		$totalsize = count($dbresult);
+		$totalpages = ceil((float)$totalsize / (float)$pagesize);
 		
-		if (count($dbresult) > 0)
+		$startoffset = $page * $pagesize;	// 0, 100, 200...
+		$upanduntilmaxoffset = ($page + 1) * $pagesize - 1;	// 99, 199, 299 ...
+		$postindex = -1;
+		
+		//echo " Page $page is from $startoffset up and until $upanduntilmaxoffset ";
+		
+  	foreach ($dbresult as $dbrow)
+  	{
+  		$postindex++;
+  		
+  		if ($postindex < $startoffset)
+  		{
+  			// skip it, was already processed in previous batch
+  			continue;
+  		}
+  		else if ($postindex > $upanduntilmaxoffset)
+  		{
+  			// past the end of this batch
+  			break;
+  		}
+  		
+  		$postid = $dbrow["postid"];
+  		nxs_dataconsistency_sanitize_postmetadata($postid);
+  	}
+		
+		if ($totalsize > $upanduntilmaxoffset)
 		{
-	  	foreach ($dbresult as $dbrow)
-	  	{
-	  		$postid = $dbrow["postid"];
-	  		nxs_dataconsistency_sanitize_postmetadata($postid);
-			}
+			// stick to the existing step, and proceed with the next page
+			$nextchunkedsteps = array("scope"=>"9", "page"=>$page + 1);
+			$fraction = $page + 1;
+			$allfractions = $totalpages;
+			?><h2><?php echo nxs_l18n__("... Fraction $fraction / $allfractions ...", "nxs_td"); ?></h2><?php
 		}
-		
+		else
+		{
+			// this step is totally finished
+			$nextchunkedsteps = array("scope"=>"9b");
+		}
+	}
+	else if ($scope == "9b")
+	{
 		// stage  2; sanitize special metadata of the site
 		
 		// unicontent data
 		nxs_dataconsistency_sanitize_unicontentdata();
 		
 		//echo "SUBPART 2 FINISHED";
+		$nextchunkedsteps = array("scope"=>"10");
 	}
-	
-	
-	
-	if ($scope == "*" || $scope == "10")
+	else if($scope == "10")
 	{
 		?><h2><?php echo nxs_l18n__("Cleaning up cache", "nxs_td"); ?></h2><?php
+		$nextchunkedsteps = array("scope"=>"11");
 	}
-
-	if ($scope == "*" || $scope == "11")
+	else if ($scope == "11")
 	{
 		$args = array();
 		$args["post_status"] = "publish";
@@ -307,64 +335,41 @@ function nxs_ensuredataconsistency($scope)
 			// get postids
 			nxs_after_postcontents_updated($postid);
 		}
+		$nextchunkedsteps = array("scope"=>"12");
 	}
-	
-	if ($scope == "*" || $scope == "12")
+	else if ($scope == "12")
 	{
 		// retouch homepage
 		nxs_wp_retouchhomepage();
 		?><h2><?php echo nxs_l18n__("Configured homepage", "nxs_td"); ?></h2><?php
+		$nextchunkedsteps = array("scope"=>"13");
 	}
-	
-	// import phase; the global cache should be wiped when we reach this point,
-	// as the sitemeta might have been update	(for example the unistyle settings)
-	global $nxs_gl_cache_sitemeta;
-	$nxs_gl_cache_sitemeta = null;
-	
-	if ($scope == "*" || $scope == "13")
+	else if ($scope == "13")
 	{
 		?><h2><?php echo nxs_l18n__("Done", "nxs_td"); ?></h2><?php
 
 		// this was the last step
 		nxs_set_dataconsistencyvalidationnolongerrequired();
+		$nextchunkedsteps = "finished";
 	}
 
-	$report = ob_get_contents();
+	$log = ob_get_contents();
 	ob_end_clean();
-		
-	if ($scope == "*")
-	{
-		// persist as post
-		
-		$name = "data consistency report"; // . nxs_gettimestampasstring();
-		$report_post = array
-	  (
-			'post_title' => $name,
-			'post_name' => $name,
-			'post_content' => $report,
-			'post_status' => 'publish',	// immediate publishing
-			'post_author' => wp_get_current_user()->ID,
-			'post_excerpt' => '',
-			'post_type' => nxs_getposttype_by_nxsposttype('systemlog'),
-		);
-		
-		$postid = wp_insert_post($report_post, $wp_error);
-		if ($postid == 0)
-		{
-			// unable ?!
-		}
-	}
-	else
-	{
-		//
-	}
 	
 	// import phase; the global cache should be wiped when we reach this point,
 	// as the sitemeta might have been update	(for example the unistyle settings)
 	global $nxs_gl_cache_sitemeta;
 	$nxs_gl_cache_sitemeta = null;
 	
-	return $report;
+	if ($nextchunkedsteps == "")
+	{
+		nxs_webmethod_return_nack("nextchunkedsteps is not set");
+	}
+	
+	$result = array();
+	$result["log"] = $log;
+	$result["nextchunkedsteps"] = $nextchunkedsteps;
+	return $result;
 }
 
 function nxs_getdatarequiringmodificationforglobalidfix($metadata)

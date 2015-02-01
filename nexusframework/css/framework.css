@@ -278,6 +278,7 @@ ul.nxs-default-list											{ line-height: 1.625em; font-size: 15px; margin-to
 .nxs-wpcontent-container img.alignleft 		{ margin: 0px 20px 10px 0px; }
 .nxs-wpcontent-container img.alignright 	{ margin: 0px 0px 10px 20px; }
 .nxs-wpcontent-container img.aligncenter 	{ margin-bottom: 10px; }
+.nxs-wpcontent-container img { max-width: 100%; height: auto; }
 
 /* TRANSITION / TRANSFORM FEATURES
 ---------------------------------------------------------------------------------------------------- */
