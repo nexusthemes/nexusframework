@@ -1,10 +1,5 @@
 <?php
 
-//$x = get_transient("nxs_themeupdate");
-//var_dump($x);
-
-//die();
-
 function nxs_site_wipe()
 {
 	if (!is_super_admin())
@@ -160,12 +155,15 @@ function nxs_license_checkupdate($value)
 	{
 		// 
 	}
+	
+	$licensekey = esc_attr(get_option('nxs_licensekey'));
+	if ($licensekey == "")
+	{
+		$shouldcheck = false;
+	}
 		
 	if ($shouldcheck)
 	{
-		$licensekey = get_option('nxs_licensekey');
-		//var_dump($licensekey);
-		
 		$site = nxs_geturl_home();
 		$themeobject = wp_get_theme();
 		
@@ -176,6 +174,13 @@ function nxs_license_checkupdate($value)
 		}
 		
 		$version = $themeobject->version;
+		
+		if (function_exists('nxs_theme_getmeta'))
+		{
+			$meta = nxs_theme_getmeta();
+			$version = $meta["version"];
+			$theme = $meta["id"];
+		}
 	
 		$serviceparams = array
 		(
@@ -216,16 +221,13 @@ function nxs_license_checkupdate($value)
 	  }
 	  
 	  $body = wp_remote_retrieve_body($response); 
-	  
-	  
-	  
-		$update_data = json_decode($body, true);
+	  $update_data = json_decode($body, true);
 		
 	  if ($successful ) 
 	  {
 	  	if ($update_data["result"] == "OK" || $update_data["result"] == "ALTFLOW")
 	  	{
-		 		$durationinsecs = 60 * 60 * 12;	// 12 hours
+		 		$durationinsecs = 60 * 60 * 24 * 14;	// 1x every 2 weeks
 		 		$before = get_transient("nxs_themeupdate");
 		 		
 		 		set_transient("nxs_themeupdate", $update_data, $durationinsecs);
@@ -247,7 +249,6 @@ function nxs_license_checkupdate($value)
 						var_dump($update_data);
 						die();
 					}
-					
 					
 					$template = get_template();
 					// the result should be stored in $template key,
