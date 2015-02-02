@@ -639,7 +639,6 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	
 	// EMAIL 
 	
-	// SEND EMAIL 
 	// If the emailaddress is set and there's no custom icon
 	if ($emailaddress != "" && $icon_emailaddress == "") {
 		

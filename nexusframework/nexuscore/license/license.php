@@ -668,6 +668,13 @@ function nxs_license_getnolicensetip_invoke()
 		$themeobject = wp_get_theme();
 		$version = $themeobject->version;
 		$theme = $themeobject->name;
+		
+		if (function_exists('nxs_theme_getmeta'))
+		{
+			$meta = nxs_theme_getmeta();
+			$version = $meta["version"];
+			$theme = $meta["id"];
+		}
 	
 		$serviceparams = array
 		(
@@ -743,6 +750,13 @@ function nxs_licenseregister_invoke()
 	$version = $themeobject->version;
 	$theme = $themeobject->name;
 
+	if (function_exists('nxs_theme_getmeta'))
+	{
+		$meta = nxs_theme_getmeta();
+		$version = $meta["version"];
+		$theme = $meta["id"];
+	}
+	
 	$serviceparams = array
 	(
 		'timeout' => 15,
