@@ -1992,24 +1992,25 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .nxs-banner .banners-wrapper.banner-right 					{ text-align: right; }
 
 .nxs-banner .image-wrapper 									{ display: inline-block; height: 11.8em; max-width: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; }
+.nxs-banner .image-wrapper:last-child						{ border-right: 0; }
 .nxs-banner .image-wrapper .nxs-table						{ height: 11.8em; margin: 0 auto; }
 .nxs-banner .image-wrapper img	 							{ display: block; max-height: 100%; width: 100%; }
 
-.nxs-banner .image-wrapper.placeinrow5,
-.nxs-main .nxs-banner .image-wrapper.placeinrow3,
-.nxs-two-third .nxs-banner .image-wrapper.placeinrow3,
-.nxs-one-third .nxs-banner .image-wrapper.placeinrow1,
-.nxs-one-third .nxs-banner .image-wrapper.placeinrow3,
-.nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow1,
-.nxs-sidebar-container .nxs-banner .image-wrapper.placeinrow3,
-.nxs-one-half .image-wrapper.placeinrow2					{ border-right: 0; }
-.nxs-banner .image-wrapper.last								{ border-right: 0 !important; }
+.nxs-main .nxs-banner .image-wrapper 						{ border-right: 3.6em solid transparent; }
 
-.nxs-main .nxs-banner .image-wrapper.placeinrow5,
-.nxs-two-third .nxs-banner .image-wrapper.placeinrow5		{ border-right: 3.6em solid transparent !important; }
-.nxs-two-third .nxs-banner .image-wrapper.last,
-.nxs-main .nxs-banner .image-wrapper.last								{ border-right: 0 !important; }
-
+.has-no-sidebar .nxs-one-whole .nxs-banner .image-wrapper:nth-child(6n),
+.has-no-sidebar .nxs-one-half .nxs-banner .image-wrapper:nth-child(3n),
+.has-no-sidebar .nxs-two-third .nxs-banner .image-wrapper:nth-child(4n),
+.has-no-sidebar .nxs-one-third .nxs-banner .image-wrapper:nth-child(2n),
+.has-no-sidebar .nxs-one-fourth .nxs-banner .image-wrapper:nth-child(1n),
+.has-no-sidebar .nxs-banner .image-wrapper:last-child,
+.nxs-main .nxs-one-whole .nxs-banner .image-wrapper:nth-child(4n),
+.nxs-main .nxs-one-half .nxs-banner .image-wrapper:nth-child(2n),
+.nxs-main .nxs-two-third .nxs-banner .image-wrapper:nth-child(2n),
+.nxs-main .nxs-one-third .nxs-banner .image-wrapper:nth-child(1n),
+.nxs-main .nxs-one-fourth .nxs-banner .image-wrapper:nth-child(1n),
+.nxs-sidebar-container .nxs-banner .image-wrapper:nth-child(2n),
+.nxs-main .nxs-banner .image-wrapper:last-child		{ border-right: 0; }
 
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */

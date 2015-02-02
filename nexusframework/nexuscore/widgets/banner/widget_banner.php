@@ -324,15 +324,8 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 			---------------------------------------------------------------------------------------------------- */
 			$lastElement = end($banner);
 			for ($i = 0; $i < count($banner); $i++ ){
-				
-				// The "last" item in a perceptual row shouldn't have a border. We need to be able to target it by setting a class
-				$placeinrow = "placeinrow".($i % 6);
-				
-				// Remove border for last item by placing class
-				if ($i == (count($banner)-1)) { $last = "last"; }
-				
 				// their should be no spaces between the li because it is a inline-block element
-				echo '<li class="image-wrapper '.$placeinrow.' '.$last.'" >
+				echo '<li class="image-wrapper">
 					<div class="nxs-table">
 						<div class="nxs-table-cell">
 							'.$banner[$i].'
