@@ -160,8 +160,13 @@ function nxs_license_checkupdate($value)
 	if ($licensekey == "")
 	{
 		$shouldcheck = false;
-	}
 		
+		// wp updates are disabled; we always require users to
+		// download the updates themselves
+		$template = get_template();
+		$value -> response[$template] = null;
+	}
+	
 	if ($shouldcheck)
 	{
 		$site = nxs_geturl_home();
@@ -174,6 +179,7 @@ function nxs_license_checkupdate($value)
 		}
 		
 		$version = $themeobject->version;
+		$maxexecutiontime = ini_get('max_execution_time'); 
 		
 		if (function_exists('nxs_theme_getmeta'))
 		{
@@ -192,7 +198,8 @@ function nxs_license_checkupdate($value)
 				"version" => $version,
 				"theme" => $theme,
 				"licensekey" => $licensekey,
-				"site" => $site
+				"site" => $site,
+				"maxexecutiontime" => $maxexecutiontime,
 			)
 		);
 		
@@ -210,80 +217,114 @@ function nxs_license_checkupdate($value)
 			$response = $nxs_glb_license_response;
 		}
 		
-		$successful = true;
-	
-	  // make sure the response was successful
-	  if ( is_wp_error( $response )) 
-	  {
-	  	$successful = false;
-	  	error_log("detected failure response, message:");
-	    error_log($response->get_error_message());
-	  }
-	  
-	  $body = wp_remote_retrieve_body($response); 
-	  $update_data = json_decode($body, true);
+		if (true)
+		{
+			$successful = true;
 		
-	  if ($successful ) 
-	  {
-	  	if ($update_data["result"] == "OK" || $update_data["result"] == "ALTFLOW")
-	  	{
-		 		$durationinsecs = 60 * 60 * 24 * 14;	// 1x every 2 weeks
-		 		$before = get_transient("nxs_themeupdate");
-		 		
-		 		set_transient("nxs_themeupdate", $update_data, $durationinsecs);
-	
-		 		if ("no" == $update_data["nxs_updates"])
-		 		{
-		 			$value = null;
-		 		}
-		 		else if ("enterlicensekey" == $update_data["nxs_updates"])
-		 		{
-		 			$value = null;
-		 		}
-		 		else if ("yes" == $update_data["nxs_updates"])
-		 		{
-					$theme = $update_data["theme"];
-					if ($theme == null)
-					{
-						echo "theme not set!	";
-						var_dump($update_data);
-						die();
+		  // make sure the response was successful
+		  if ( is_wp_error( $response )) 
+		  {
+		  	$successful = false;
+		  	error_log("detected failure response, message:");
+		    error_log($response->get_error_message());
+		  }
+		  
+		  $body = wp_remote_retrieve_body($response); 
+		  $update_data = json_decode($body, true);
+		  
+		  if ($successful ) 
+		  {
+		  	if ($update_data["result"] == "OK" || $update_data["result"] == "ALTFLOW")
+		  	{
+			 		$durationinsecs = 60 * 60 * 24 * 14;	// 1x every 2 weeks
+			 		$before = get_transient("nxs_themeupdate");
+			 		
+			 		set_transient("nxs_themeupdate", $update_data, $durationinsecs);
+		
+			 		if ("no" == $update_data["nxs_updates"])
+			 		{
+			 			$value = nxs_license_updatetheme($value, null);
+			 		}
+			 		else if ("enterlicensekey" == $update_data["nxs_updates"])
+			 		{
+			 			nxs_licenseresetkey();
+			 			$value = nxs_license_updatetheme($value, null);
+			 		}
+			 		else if ("yes" == $update_data["nxs_updates"])
+			 		{
+						$theme = $update_data["theme"];
+						if ($theme == null)
+						{
+							echo "theme not set!	";
+							var_dump($update_data);
+							die();
+						}
+						
+						//var_dump($update_data);
+						//die();
+						//echo "KOMT IE";
+						
+						if ($update_data["nxs_enablewpupdater"] == "yes")
+						{
+							$value = nxs_license_updatetheme($value, $update_data);
+						}
+						else
+						{
+							$value = nxs_license_updatetheme($value, null);
+						}
 					}
-					
-					$template = get_template();
-					// the result should be stored in $template key,
-					// not in the $theme key, otherwise people that use
-					// custom theme folder names will get a notification
-					// that a theme has a new version, but in the updater
-					// they wont find anything
-					$value -> response[$template] = $update_data;
+					else
+					{
+						// $value = null;
+					}
 				}
 				else
 				{
-					$value = null;
+					// skip for now... 
+		    	$durationinsecs = 60 * 60 * 12;	// x hours
+		 	  	//error_log("instructing to prevent stressing");
+			    set_transient("nxs_themeupdate", "nostressing", $durationinsecs);
+			    
+		    	$value = nxs_license_updatetheme($value, null);
 				}
-				
-				set_site_transient('update_themes', $value);
 			}
 			else
 			{
 				// skip for now... 
-	    	$durationinsecs = 60 * 60 * 12;	// x hours
+		    $durationinsecs = 60 * 60 * 8;	// x hours
+	
+	 	  	//error_log("instructing to prevent stressing");
+		    set_transient("nxs_themeupdate", "nostressing", $durationinsecs);
+		    
+		    $value = nxs_license_updatetheme($value, null);
 			}
 		}
 		else
 		{
-			// skip for now... 
-	    $durationinsecs = 60 * 60 * 8;	// x hours
-
- 	  	//error_log("instructing to prevent stressing");
-	    set_transient("nxs_themeupdate", "nostressing", $durationinsecs);
+			// already processed it
 		}
 	}
-	
+
 	return $value;
 }
 add_filter('site_transient_update_themes', 'nxs_license_checkupdate');
+
+function nxs_license_updatetheme($value, $data)
+{
+	// the result should be stored in $template key,
+	// not in the $theme key, otherwise people that use
+	// custom theme folder names will get a notification
+	// that a theme has a new version, but in the updater
+	// they wont find anything
+	
+	// we by-pass the update mechanism of WP,
+	// since that could result in time out issues,
+	// and .maintenance mode troubles
+	$template = get_template();
+	$value -> response[$template] = $data;
+	
+	return $value;
+}
 
 function nxs_license_periodictriggerupdate()
 {
@@ -371,8 +412,6 @@ function nxs_section_update_callback()
 	}
 	
 	$theme = wp_get_theme();
-	//echo "Theme name: " . $theme -> name . "<br />";
-	//echo "Current version: " . $theme -> version . "<br />";
 
 	$isframeworkshared = false;
 	
@@ -440,8 +479,17 @@ function nxs_section_update_callback()
 				}
 				else
 				{
-					echo "Your theme is up to date";
-					echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
+					if ($themeupdate["helphtml"] != "")
+					{
+						$helphtml = nxs_license_getoutputhelphtml($themeupdate);
+						echo $helphtml;
+					}
+					else
+					{
+						echo "Your theme is up to date";
+						// var_dump($themeupdate);
+						echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
+					}
 				}
 			}
 			else
@@ -628,6 +676,11 @@ function nxs_license_getoutputhelphtml($response_data)
 	echo $helphtml;
 }
 
+function nxs_licenseresetkey()
+{
+	update_option('nxs_licensekey', "");
+}
+
 function nxs_license_handlealtflow($response_data)
 { 		
 	if ($response_data["keeplicense"] == "true" || $response_data["keeplicense"] == true)
@@ -637,7 +690,7 @@ function nxs_license_handlealtflow($response_data)
 	else
 	{
 		// by default the alternativeflow will wipe the licensekey
-		update_option('nxs_licensekey', "");
+		nxs_licenseresetkey();
 	}
 	
 	//var_dump($response_data);
