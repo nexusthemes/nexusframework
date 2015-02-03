@@ -496,9 +496,9 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				}
 				
 				$title = $placeholdermetadata['title'];
-				
-				
+					
 				$text = $placeholdermetadata['text'];
+
 				$destination_articleid = $placeholdermetadata['destination_articleid'];
 				
 				if ($destination_articleid != 0 && $destination_articleid != "") {
@@ -507,6 +507,12 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				} else {
 					$destinationurl = $placeholdermetadata["destination_url"];
 					$target = "_blank";
+				}
+
+				$slide_button = "";
+				if($destinationurl != "" && $placeholdermetadata['button_text'] != "") {
+					$slide_button = nxs_gethtmlforbutton($placeholdermetadata['button_text'], $placeholdermetadata['button_scale'], $placeholdermetadata['button_color'], $placeholdermetadata['destination_articleid'], $placeholdermetadata['destination_url'], $placeholdermetadata['destination_target'], $placeholdermetadata['button_alignment'], $placeholdermetadata['destination_js'], $placeholdermetadata['button_heightiq'], $placeholdermetadata['button_fontzen']);
+					
 				}
 				
 				$slidesdataset[] = array
@@ -518,6 +524,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					"target" => $target,
 					"width" => $width,
 					"height" => $height,
+					"slide_button" => $slide_button,
 				);
 			} 
 			else if ($placeholdertype == "slidesincat") 
@@ -653,6 +660,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 							"target" => $target,
 							"width" => $width,
 							"height" => $height,
+							
 						);
 					}
 				}
@@ -823,7 +831,13 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 							<p class="nxs-padding-bottom0 '.$text_fontzen_cssclass.'">'.nxs_render_html_escape_gtlt($slidedataset["text"]).'</p>
 						</div>'; 
 				}
-			
+
+				// Button
+				if ($slidedataset["slide_button"] != "") { 
+					$slide_button = $slidedataset["slide_button"];
+					
+				}
+
 				// Description
 				if (
 					$slidedataset["title"] != "" && $metadata != "" || 
@@ -836,9 +850,11 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 								<div class="wrapper '.$metadata_color_cssclass.' '.$metadata_padding_cssclass.'" style="'.$metadata_margin_top.' '.$metadata_margin_left.'">' .
 									$title .
 									$filler	.								
-									$text.'
+									$text.
+									$slide_button.'
 								</div>
 							</div>
+							
 						</div>
 					
 					</div>'; 
@@ -865,12 +881,19 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					}
 					
 					echo $slide_image;
-					echo $description;
 					
-					if ($slidedataset["destinationurl"] != "") 
+					if ($slidedataset["destinationurl"] != "" && $slidedataset["slide_button"] != "") 
 					{ 
-						echo '</a>'; 
+						echo '</a>';
+						echo $description; 
 					}
+
+					else 
+					{
+
+						echo $description;
+						echo '</a>'; 
+					}						
 			
 				echo '</div> <!-- end .slide -->';
 		    
@@ -878,6 +901,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				$title = ''; 
 				$text = '';
 				$description = '';
+				$slide_button = '';
 
 			} // END foreach
 		

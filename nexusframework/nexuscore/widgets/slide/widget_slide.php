@@ -23,38 +23,34 @@ function nxs_widgets_slide_home_getoptions($args)
 {
 	// CORE WIDGET OPTIONS
 	
-	$options = array
-	(
+	$options = array(
 		"sheettitle" => nxs_widgets_slide_gettitle(),
 		"sheeticonid" => nxs_widgets_slide_geticonid(),
-		"fields" => array
-		(
+		"fields" => array(
 			// TITLE
 			
-			array
-			( 
+			array( 
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
 				"localizablefield"	=> true
 			),
-			array
-			(
+			array(
 				"id" 				=> "title",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
 				"localizablefield"	=> true
 			),
-			array
-			(
+			array(
 				"id" 				=> "text",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),
 				"placeholder" => nxs_l18n__("Text goes here", "nxs_td"),
 				"localizablefield"	=> true
 			),
+			
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
@@ -67,9 +63,22 @@ function nxs_widgets_slide_home_getoptions($args)
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 			),
+
+			array(
+				"id" 				=> "destination_target",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+
 			
 			// BUTTON
-			
 			array( 
 				"id" 				=> "wrapper_button_begin",
 				"type" 				=> "wrapperbegin",
@@ -105,7 +114,6 @@ function nxs_widgets_slide_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			/*
 			array(
 				"id" 				=> "button_alignment",
 				"type" 				=> "select",
@@ -113,7 +121,17 @@ function nxs_widgets_slide_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("button_halignment"),
 				"unistylablefield"	=> true,
 			),
-			*/
+			
+			array(
+				"id" 				=> "destination_js",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Javascript", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Apply javascript when the button is pressed.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true,
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+			
 			array( 
 				"id" 				=> "wrapper_button_end",
 				"type" 				=> "wrapperend"
