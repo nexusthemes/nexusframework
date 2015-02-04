@@ -807,6 +807,14 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 			$slideindex = 0;
 			
 			foreach ($slidesdataset as $slidedataset) {
+				// Resetting variables for next slide
+				$title = ''; 
+				$text = '';
+				$description = '';
+				$slide_button = '';
+				$filler_button = '';
+				
+
 				$slideindex++;
 				
 				// Image
@@ -833,15 +841,20 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				}
 
 				// Button
-				if ($slidedataset["slide_button"] != "") { 
+				if ($slidedataset["slide_button"] != "") {
+					if($slidedataset['title'] != "" || $slidedataset['text'] != "") {
+				 		$filler_button = '<div class="nxs-clear padding"></div>';
+					}
 					$slide_button = $slidedataset["slide_button"];
-					
 				}
+				
+					
+				
 
 				// Description
 				if (
 					$slidedataset["title"] != "" && $metadata != "" || 
-					$slidedataset["text"] != ""  && $metadata != "") { 
+					$slidedataset["text"] != ""  && $metadata != "" || $slidedataset["slide_button"] != ""  && $metadata != "") { 
 					$description = '
 					<div class="nxs-slide-description '.$metadata_layout.'">
 						
@@ -851,6 +864,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 									$title .
 									$filler	.								
 									$text.
+									$filler_button.
 									$slide_button.'
 								</div>
 							</div>
@@ -897,11 +911,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 			
 				echo '</div> <!-- end .slide -->';
 		    
-				// Resetting variables for next slide
-				$title = ''; 
-				$text = '';
-				$description = '';
-				$slide_button = '';
+
 
 			} // END foreach
 		
