@@ -530,8 +530,10 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 						
 						// Subtitle
 						echo'<div class="subtitle nxs-default-p nxs-padding-bottom0">' . $subtitle . '</div>';
+						
 						if ($item_button != "") 
 						{ 
+							echo '<div class="nxs-clear padding"></div>';	
 							echo $item_button; 
 						}
 						echo '<div class="nxs-clear"></div>
