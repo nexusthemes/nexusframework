@@ -29,7 +29,53 @@ global $wp_version;
 if (version_compare($wp_version, '3.3.0') < 0) 
 {
 	echo "NXS Framework requires at least WP 3.3.0";
-	die();
+	return;
+}
+
+function nxs_get_minimal_mb_memory_for_themes(){
+	return 64;
+}
+
+// check if the memory limit is at least 64M
+function nxs_has_enough_memory_available()
+{
+	$memory_limit = ini_get('memory_limit');
+	if (preg_match('/^(\d+)(.)$/', $memory_limit, $matches)) {
+	    if ($matches[2] == 'G') {
+	        $memory_limit = $matches[1] * 1024 * 1024 * 1024; // nnnG -> nnn GB
+	    } else if ($matches[2] == 'M') {
+	        $memory_limit = $matches[1] * 1024 * 1024; // nnnM -> nnn MV
+	    } else if ($matches[2] == 'K') {
+	        $memory_limit = $matches[1] * 1024; // nnnK -> nnn KB
+	    }
+	}
+
+	$max_limit_in_mb = nxs_get_minimal_mb_memory_for_themes();
+	$max_limit_in_bytes = $max_limit_in_mb * 1024 * 1024; // 64M
+
+	$result = ($memory_limit >= $max_limit_in_bytes); // at least 64M?
+	return $result;
+}
+
+function nxs_memory_notifynotenoughmemory()
+{
+	?>
+
+	<div class="error">
+	    <p>
+	    	This theme requires at least <?php echo nxs_get_minimal_mb_memory_for_themes(); ?>M of memory.
+	    </p>
+	  </div>
+
+	<?php
+}
+
+if (is_admin()){
+	if (!nxs_has_enough_memory_available())
+	{
+		add_action('admin_notices', 'nxs_memory_notifynotenoughmemory');
+		return;
+	}
 }
 
 // tell WP SUPER CACHE to not cache any page;
