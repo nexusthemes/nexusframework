@@ -195,7 +195,6 @@ function nxs_widgets_banneritem_initplaceholderdata($args)
 	extract($args);
 	
 	$args['ph_margin_bottom'] = "0-0";
-	$args['halign'] = "center";
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 

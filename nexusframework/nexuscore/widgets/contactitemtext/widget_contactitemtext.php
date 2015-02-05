@@ -165,11 +165,7 @@ function nxs_widgets_contactitemtext_render_webpart_render_htmlvisualization($ar
 	$hovermenuargs["enable_decoratewidget"] = false;
 	$hovermenuargs["enable_deletewidget"] = false;
 	$hovermenuargs["enable_deleterow"] = true;
-	
-	//$hovermenuargs["enable_movewidget"] = "first";
-	//$hovermenuargs["enable_editwidget"] = "second";
-	
-	$hovermenuargs["metadata"] = $mixedattributes;	
+	$hovermenuargs["metadata"] = $mixedattributes;
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
 	/* ADMIN EXPRESSIONS
@@ -183,11 +179,7 @@ function nxs_widgets_contactitemtext_render_webpart_render_htmlvisualization($ar
 	---------------------------------------------------------------------------------------------------- */
 	
 	echo '
-	<div class="nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder" id="draggableplaceholderid_' . $placeholderid . '" ' . $class . '>
-		<div class="nxs-drag-helper" style="display: none;">
-			<div class="placeholder">
-			</div>
-		</div>
+	<div ' . $class . '>
 		<div class="content2">
 			<div class="box">
 	        	<div class="box-title nxs-width20"><h4><span class="nxs-icon-text" style="font-size: 16px;" /> Text</h4></div>
