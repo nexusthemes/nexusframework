@@ -618,7 +618,7 @@ function nxs_widgets_blog_home_getoptions($args)
 				"id" 				=> "font_icon",
 				"type" 				=> "icon",
 				"label" 			=> nxs_l18n__("Minimal icon", "nxs_td"),
-				"unistylablefield"	=> true
+				"unicontentablefield" => true,
 			),
 			array( 
 				"id" 				=> "altflow_nomatches_alttext",
