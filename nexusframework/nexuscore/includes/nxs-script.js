@@ -3445,7 +3445,7 @@ function nxs_js_redirect_top(url)
  			
  			var content = virtuallayer1 + virtuallayer2 + virtuallayer3 + inlinelayer;
  			
-			var line = "<div class='nxs-row1 nxs-remove-after-dragdrop nxs-accept-drop'><div class='nxs-row-container'><ul class='nxs-placeholder-list'><li class='nxs-one-whole' style='list-style: none;'>" + content + "</li></ul><div class='nxs-clear'></div></div></div>";
+			var line = "<div class='nxs-row1 nxs-remove-after-dragdrop nxs-accept-drop nxs-layout-drop'><div class='nxs-row-container'><ul class='nxs-placeholder-list'><li class='nxs-one-whole' style='list-style: none;'>" + content + "</li></ul><div class='nxs-clear'></div></div></div>";
  			return line;
  		}
 		

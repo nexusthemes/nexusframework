@@ -1354,8 +1354,9 @@ div.jGrowl 											{ display: none; }
 .x-nxs-ui-state-hover .nxs-show-hover-with-drag 				{ opacity: 0.8; background-color: #333333; }
 .nxs-item-being-dragged { display: none !important; opacity: 0.2; }
 .single-nxs_menu .nxs-row,
-.single-nxs_menu .nxs-placeholder
-{ max-width: 300px; }
+.single-nxs_menu .nxs-placeholder 							{ max-width: 300px; }
+.single-nxs_genericlist .nxs-row,
+.single-nxs_genericlist .nxs-placeholder 					{ max-width: 450px; }
 .nxs-hover-menu.outside-left-nomargin-top 					{ left: -37px; } 
 
 img.nxs-preview-thumbnail 									{ max-width: 48px; max-height: 48px; } 
@@ -1376,6 +1377,18 @@ img.nxs-preview-thumbnail 									{ max-width: 48px; max-height: 48px; }
 /*
 	visualizatie van een placeholder die drops kan ontvangen en die optioneel een hover state kan hebben
 */
+.nxs-layout-drop											{ outline: 3px dashed #000; margin: 1.2em;}
+
+.nxs-layout-drop:hover,
+.nxs-layout-drop.nxs-ui-state-hover {
+	outline-color: #000;
+	-webkit-animation: 	blink 2s linear infinite;
+    -moz-animation: 	blink 2s linear infinite;
+    -ms-animation: 		blink 2s linear infinite;
+    -o-animation: 		blink 2s linear infinite;
+    animation: 			blink 2s linear infinite;
+}
+
 .nxs-accept-drop .nxs-drop-cursor 							{ background-color: black; opacity: 0.1; }
 .nxs-accept-drop.nxs-ui-state-hover .nxs-drop-cursor 		{ background-color: black; opacity: 0.5; }
 
