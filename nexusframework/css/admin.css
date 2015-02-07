@@ -1356,8 +1356,8 @@ div.jGrowl 											{ display: none; }
 .nxs-item-being-dragged { display: none !important; opacity: 0.2; }
 .single-nxs_menu .nxs-row,
 .single-nxs_menu .nxs-placeholder 							{ max-width: 300px; }
-.single-nxs_genericlist .nxs-row,
-.single-nxs_genericlist .nxs-placeholder 					{ max-width: 450px; }
+.single-nxs_genericlist .nxs-posttype-form .nxs-row,
+.single-nxs_genericlist .nxs-posttype-form .nxs-placeholder { max-width: 450px; }
 .nxs-hover-menu.outside-left-nomargin-top 					{ left: -37px; } 
 
 img.nxs-preview-thumbnail 									{ max-width: 48px; max-height: 48px; } 

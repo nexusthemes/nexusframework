@@ -5,6 +5,7 @@
 	// process meta data
 	$meta = nxs_get_postmeta($postid);
 	$nxssubposttype = nxs_get_nxssubposttype($postid);
+
 	//
 	//
 	//
@@ -45,7 +46,7 @@
       <div class="nxs-clear"></div>
       -->
 	
-			<div class='nxs-genericlist-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-post-<?php echo $postid; ?>'>
+			<div class='nxs-genericlist-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-post-<?php echo $postid; ?> nxs-posttype-<?php echo $nxssubposttype; ?>'>
 				<?php 
 	        // render the actual page contents (page rows)
 	        echo nxs_getrenderedhtml($postid, "default");
