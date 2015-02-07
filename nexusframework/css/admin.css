@@ -1346,6 +1346,7 @@ div.jGrowl 											{ display: none; }
 
 /* ADMIN GJ 
 ----------------------------------------------------------------------------------------------------*/
+.nxs-dragrow-handler,
 .nxs-draggable:hover 										{ cursor: move !important; }
 #nxs-drag-container-helper 									{ z-index: 9999999; display: block; opacity: 0.7; visibility: visible; }
 .x-nxs-show-no-hover-with-drag 								{ display: block; background: #555555; opacity: 0.5;  }

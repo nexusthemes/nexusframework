@@ -202,11 +202,11 @@ function nxs_widgets_contactitemdate_render_webpart_render_htmlvisualization($ar
 	---------------------------------------------------------------------------------------------------- */
 	
 	echo '
-	<div ' . $class . '>
+	<div class="nxs-dragrow-handler nxs-padding-menu-item">
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title nxs-width20"><h4><span class="nxs-icon-calendar-2" style="font-size: 16px;" /> Date</h4></div>
-				<div class="box-content nxs-width80">'.$formlabel.'</div>
+	        	<div class="box-title nxs-width40"><h4><span class="nxs-icon-calendar-2" style="font-size: 16px;" /> Date</h4></div>
+				<div class="box-content nxs-width60">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
 		</div>
