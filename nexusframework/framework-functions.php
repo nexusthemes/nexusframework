@@ -384,7 +384,6 @@ function nxs_wp_footer_debug()
 			global $nxs_gl_templates_wp;
 			echo "original template for WP;" . $nxs_gl_templates_wp;
 			
-			
 			global $nxs_global_current_containerpostid_being_rendered;
 			echo "we zijn ook;" . $nxs_global_current_containerpostid_being_rendered;
 			echo "we zijn;" . get_the_ID();

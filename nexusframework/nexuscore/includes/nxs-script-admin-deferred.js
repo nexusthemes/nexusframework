@@ -1772,3 +1772,159 @@ function nxs_js_gui_add_virtual_droppable_pagerows()
 	);
 }
 
+//
+// statemachine processor
+//
+
+var nxs_sm_statemachineid;
+var nxs_sm_timerid;	// timerid of the timer that invokes the statemachine
+var nxs_sm_currentstate = 0;
+var nxs_sm_isfinished = false;
+var nxs_sm_isprocessingstateonserverside = false;
+
+function nxs_js_sm_handleunexpectederrorwhileactivating(response)
+{
+	nxs_js_alert_sticky("Bad news; an error occured while activating the theme. Please first check our <a target='_blank' href='http://nexusthemes.com/support/how-to-install-a-wordpress-theme/'>installation guide</a>. The good news is that we can try to help you out, if you <a target='_blank' href='http://www.nexusthemes.com'>contact us</a>.");
+
+	jQuery("#waitwrap").hide();
+	jQuery("#errorwrap").show();
+	
+	if (response != null)
+	{
+		if (response.responseText != null)
+		{
+			var lowercase = response.responseText.toLowerCase();
+			if (lowercase.indexOf("under development") > -1)
+			{
+				nxs_js_alert_sticky("Hint: site is under development.");
+			}
+			else if (lowercase.indexOf("bytes exhausted (tried to allocate") > -1)
+			{
+				// solutions; http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28
+				nxs_js_alert_sticky("Hint: not enough memory. See http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28");
+			}
+			else if (lowercase.indexOf("maximum execution time") > -1 && lowercase.indexOf("exceeded") > -1)
+			{
+				nxs_js_alert_sticky("Problem: max time-out exceeded. Solution; Import the initial content manually.");
+			}
+			else
+			{
+				nxs_js_alert_sticky("Sorry, no hint available");
+			}
+		}
+	}
+}
+
+function nxs_js_extendlog(log, shouldscroll)
+{
+	// empty
+	jQuery("#nxsprocessingspacer").html("");
+	
+	jQuery('#nxsprocessingindicator').append(log);
+	if (shouldscroll)
+	{
+		nxs_js_logscrolldown();
+	}
+	
+	jQuery('img').load
+	(
+		function()
+		{
+			if (shouldscroll)
+			{
+				nxs_js_logscrolldown();
+			}
+		}
+	);
+}
+
+function nxs_js_logscrolldown()
+{
+	//nxs_js_log('scrolling down');
+	var height = jQuery('#nxsprocessingwrapper')[0].scrollHeight;
+	jQuery('#nxsprocessingwrapper').stop();
+  jQuery('#nxsprocessingwrapper').animate({scrollTop: height}, 1000);
+}
+		
+function nxs_js_sm_processsmstate()
+{
+	if (nxs_sm_statemachineid == null)
+	{
+		nxs_js_alert("error; nxs_sm_statemachineid not set");
+	}
+	
+	if (!nxs_sm_isprocessingstateonserverside)
+	{
+		nxs_sm_isprocessingstateonserverside = true;
+
+		if (!nxs_sm_isfinished)
+		{
+			var ajaxurl = nxs_js_get_adminurladminajax();
+			jQuery.ajax
+			(
+				{
+					type: 'POST',
+					data: 
+					{
+						"action": "nxs_ajax_webmethods",
+						"webmethod": "processsmstate",
+						"statemachineid": nxs_sm_statemachineid,
+						"currentstate": nxs_sm_currentstate,
+					},
+					cache: false,
+					dataType: 'JSON',
+					url: ajaxurl,
+					async: true,
+					success: function(response) 
+					{
+						nxs_js_log(response);
+						if (response.result == "OK")
+						{
+							nxs_js_extendlog("<p>" + response.log + "</p>", true);
+							if (response.nextstate == "finished")
+							{
+								nxs_sm_isfinished = true;
+							}
+							else
+							{
+								// proceed to next step
+								nxs_sm_currentstate = response.nextstate;
+								nxs_sm_isfinished = false;
+							}
+
+							// allow next async thread to execute next request
+							nxs_sm_isprocessingstateonserverside = false;
+						}
+						else
+						{
+							nxs_js_popup_notifyservererror();
+							nxs_js_log(response);
+						}
+					},
+					error: function(response)
+					{
+						nxs_js_popup_notifyservererror();
+						nxs_js_log(response);
+						// stop spinning! (!)
+						nxs_js_sm_handleunexpectederrorwhileactivating(response);
+					}
+				}
+			);
+		}
+		
+		if (nxs_sm_isfinished == true)
+		{
+			// no more!
+			clearInterval(nxs_sm_timerid);
+			jQuery('#nxsprocessingspacer').hide();
+			jQuery('#nxsprocessingspacer2').hide();
+			jQuery('#nxsspinner').hide();			
+			jQuery("#waitwrap").hide();
+			jQuery("#finishedwrap").show();
+		}
+	}
+	else
+	{
+		// busy!
+	}
+}
