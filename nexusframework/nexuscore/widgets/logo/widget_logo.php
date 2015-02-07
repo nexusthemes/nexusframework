@@ -160,6 +160,19 @@ function nxs_widgets_logo_home_getoptions($args)
 				"unicontentablefield" => true
 			),
 
+			array(
+				"id" 				=> "destination_target",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
@@ -395,14 +408,20 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
  
 	// Url
 	if ($destination_articleid != "") { 
-		$url = nxs_geturl_for_postid($destination_articleid); 
-		$target = "";
+		$url = nxs_geturl_for_postid($destination_articleid);
+		$target = 'target="_self"'; 
 	} 
 	
 	if ($destination_url != "") {
-		$url = $destination_url; 
-		$target = " target='_blank' ";
+		$url = $destination_url;
+		$target = 'target="_blank"';
+		
 	}
+
+	if ($destination_target != "@@@empty@@@") {
+		$target = "target='".$destination_target."'";
+	}
+
 	
 	// Positioning
 	if ($top != "" || $left != "") 	{ $absolute = 'nxs-absolute'; }
