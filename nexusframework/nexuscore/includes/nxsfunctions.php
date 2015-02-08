@@ -2614,13 +2614,27 @@ function nxs_img_getimageurlthemeversion($result)
 	if (function_exists("nxs_theme_getmeta"))
 	{
 		$meta = nxs_theme_getmeta();
-		$version = $meta["version"];
+		$version = $meta["version"] . nxs_img_getstamp();
 		$decimals = preg_replace("/[^0-9]/","",$version);
 		// we use the quality parameter, since that's the only one 
 		// to trick Photon
 		$result = nxs_addqueryparametertourl_v2($result, "quality", "100." . $decimals, true, true);
 	}
 	return $result;
+}
+
+function nxs_img_getstamp()
+{
+	global $nxs_gl_img_stamp;
+	if ($nxs_gl_img_stamp == "")
+	{
+		$nxs_gl_img_stamp = get_option("nxs_img_stamp");
+		if ($nxs_gl_img_stamp == "")
+		{
+			$nxs_gl_img_stamp = "0";
+		}
+	}
+	return $nxs_gl_img_stamp;
 }
 
 function nxs_get_images_in_post($postid)

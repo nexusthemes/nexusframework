@@ -166,7 +166,7 @@ jQuery(window).ready
 			
 			jQuery(window).blur(function(){
 			  nxs_js_windowhasfocus = false;
-			  nxs_js_log("no focus");
+			  //nxs_js_log("no focus");
 
 	  		jQuery("html").removeClass("nxs-window-focus");			  
  			  jQuery("html").addClass("nxs-window-blur");
@@ -174,7 +174,7 @@ jQuery(window).ready
 			jQuery(window).focus(function()
 			{			
 			  nxs_js_windowhasfocus = true;
-			  nxs_js_log("has focus");
+			  //nxs_js_log("has focus");
 			  
  			  jQuery("html").removeClass("nxs-window-blur");
 	  		jQuery("html").addClass("nxs-window-focus");			  
