@@ -172,10 +172,17 @@
         
 		<div id='finishedwrap' style='display:none;'>
 			<?php
-			$url = admin_url('admin.php?page=nxs_admin_license');
+			if ($licensekey == "") {
+				$url = admin_url('admin.php?page=nxs_admin_license');
+				$button_text = "Enable automatic updates";
+			}
+			else {
+				$url = nxs_geturl_home();
+				$button_text = "View Home";
+			}
 			?>
 			<div class='nxs-width100 nxs-align-center'>
-				<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo nxs_l18n__("Enable automatic updates", "nxs_td"); ?></a>
+				<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo nxs_l18n__($button_text, "nxs_td"); ?></a>
 			</div>			
 		</div>
 		
