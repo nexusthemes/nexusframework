@@ -211,6 +211,8 @@ function nxs_widgets_slide_render_webpart_render_htmlvisualization($args)
 	$hovermenuargs["placeholderid"] = $placeholderid;
 	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
 	$hovermenuargs["metadata"] = $mixedattributes;
+	$hovermenuargs["enable_deleterow"] = true;
+	$hovermenuargs["enable_deletewidget"] = false;
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
 	//
