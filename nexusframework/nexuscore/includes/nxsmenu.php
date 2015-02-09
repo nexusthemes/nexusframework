@@ -1556,7 +1556,7 @@
 		
 		function nxs_js_font_updatefonts()
 		{
-			// mutaties hierin ook doorvoeren in header-post.php
+			// (sync modifications here; *236i84325) (nxsfunctions.php)
 			
 			jQuery('#dynamicCssVormgevingLettertypen').html('');
 			// append
@@ -1565,6 +1565,9 @@
 			u = "";
 			u = u + "body { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_1").val()) + "; }";
 			u = u + ".nxs-title, .nxs-logo { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_2").val()) + "; }";	
+			// old style++
+			u = u + ".entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_2").val()) + "; }";	
+			
 			// new style :)
 			<?php
 			$fontidentifiers = nxs_font_getfontidentifiers();

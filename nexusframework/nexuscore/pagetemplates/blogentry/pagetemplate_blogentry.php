@@ -5,6 +5,50 @@ function nxs_pagetemplate_blogentry_gettitle($args)
 	return nxs_l18n__("Blogentry[nxs:title]", "nxs_td");
 }
 
+function nxs_render_loginforpasswordprotectedcontent()
+{
+	$html = get_the_password_form();
+	
+	$enhanced_html = $html;
+	// class="post-password-form" => class="post-password-form nxs-form"
+	$enhanced_html = str_replace("post-password-form", "nxs-form post-password-form", $enhanced_html);
+	?>
+	<div id="nxs-content" class="nxs-sitewide-element">
+		<div id="nxs-content-container" class="has-no-sidebar">
+			<div class="nxs-article-container nxs-elements-container">
+				<div class="nxs-postrows">
+					<div class="nxs-row nxs-padding-top-1-0 nxs-padding-bottom-1-0 ">
+						<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">
+							<ul class="nxs-placeholder-list"> 
+								<li class="nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-third nxs-unistyle-reference nxs-unistyled nxs-not-unicontented nxs-widgettype-text  nxs-column-1-3" style="height: 342px;">
+									<div class="ABC">
+										<div class="XYZ">
+											<div class="nxs-placeholder-content-wrap nxs-crop ">
+												<div id="nxs-widget-passwordidentifier" class="nxs-widget nxs-text">
+													<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left   nxs-heightiq nxs-heightiq-p1-text " style="height: 121px;">
+														<?php echo $enhanced_html; ?>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<div class="nxs-clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php
+}
+
+function nxs_template_getfractionmarker($id)
+{
+	return "<!-- FRACTIONMARKER.$id -->";
+}
+
 function nxs_pagetemplate_handlecontent()
 {
 	global $nxs_global_current_containerpostid_being_rendered;
@@ -79,81 +123,62 @@ function nxs_pagetemplate_handlecontent()
 	$contentpostid = $templateproperties["content_postid"];
 	if (post_password_required($contentpostid))
 	{
-		$html = get_the_password_form();
-		
-		$enhanced_html = $html;
-		// class="post-password-form" => class="post-password-form nxs-form"
-		$enhanced_html = str_replace("post-password-form", "nxs-form post-password-form", $enhanced_html);
-		?>
-		<div id="nxs-content" class="nxs-sitewide-element">
-			<div id="nxs-content-container" class="has-no-sidebar">
-				<div class="nxs-article-container nxs-elements-container">
-					<div class="nxs-postrows">
-						<div class="nxs-row nxs-padding-top-1-0 nxs-padding-bottom-1-0 ">
-							<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">
-								<ul class="nxs-placeholder-list"> 
-									<li class="nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize nxs-one-third nxs-unistyle-reference nxs-unistyled nxs-not-unicontented nxs-widgettype-text  nxs-column-1-3" style="height: 342px;">
-										<div class="ABC">
-											<div class="XYZ">
-												<div class="nxs-placeholder-content-wrap nxs-crop ">
-													<div id="nxs-widget-passwordidentifier" class="nxs-widget nxs-text">
-														<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left   nxs-heightiq nxs-heightiq-p1-text " style="height: 121px;">
-															<?php echo $enhanced_html; ?>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</li>
-								</ul>
-								<div class="nxs-clear"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<?php
+		nxs_render_loginforpasswordprotectedcontent();
 		$showcontent = false;
 	}
 	
-	
-	// don't show content if pagetemplate rules tells us to suppress the content
-	
 	if ($showcontent)
-	{		
+	{
+		// derive the layout
+		$templateproperties = nxs_gettemplateproperties();
+		if ($templateproperties["result"] == "OK")
+		{
+			$existingsidebarid = $templateproperties["sidebar_postid"];
+			$subheaderid = $templateproperties["subheader_postid"];
+			$contentpostid = $templateproperties["content_postid"];
+			$subfooterid = $templateproperties["subfooter_postid"];
+		}
+		else
+		{
+			$existingsidebarid = 0;
+			$subheaderid = 0;
+			$contentpostid = 0;
+			$subfooterid = 0;
+		}
+		
+		if ($existingsidebarid == "" || $existingsidebarid == 0)
+		{	
+			$toonsidebar = false;
+		}
+		else
+		{
+			$toonsidebar = true;
+		}
+		
+		// by default we render wp regular content
+		$renderdelegatedcontent = true;
+		// exception
+		if ($contentpostid == 0)
+		{
+			if (!is_singular() && !is_archive())
+			{
+				$renderdelegatedcontent = true;
+				$contentpostid = "SUPPRESSED";
+			}
+			else
+			{
+				$renderdelegatedcontent = false;
+			}
+		}
+		
+		$shouldrenderaddnewrowoption = false;
+		if (nxs_has_adminpermissions() && $contentpostid != "SUPPRESSED")
+		{
+			$shouldrenderaddnewrowoption = true;
+		}
 		?>
 		<div id="nxs-content" class="nxs-sitewide-element <?php echo $cssclass; ?>">
 			<?php 
-			
-			if (nxs_hastemplateproperties())
-			{
-				// derive the layout
-				$templateproperties = nxs_gettemplateproperties();
-				if ($templateproperties["result"] == "OK")
-				{
-					$existingsidebarid = $templateproperties["sidebar_postid"];
-				}
-				else
-				{
-					$existingsidebarid = 0;
-				}
-			}
-			else
-			{
-				$existingsidebarid = $pagemeta["sidebar_postid"];
-			}
-			
-			if ($existingsidebarid == "" || $existingsidebarid == 0)
-			{	
-				$toonsidebar = false;
-			}
-			else
-			{
-				$toonsidebar = true;
-			}
-			
-			
 			$hassidebar = ($existingsidebarid != ""); 
 			if ($hassidebar)
 			{
@@ -179,24 +204,6 @@ function nxs_pagetemplate_handlecontent()
 				// ---------------------------- BEGIN RENDER BLOG POST TOP / SUBHEADER
 				//
 	
-				if (nxs_hastemplateproperties())
-				{
-					// derive the layout
-					$templateproperties = nxs_gettemplateproperties();
-					if ($templateproperties["result"] == "OK")
-					{
-						$subheaderid = $templateproperties["subheader_postid"];
-					}
-					else
-					{
-						$subheaderid = 0;
-					}
-				}
-				else
-				{
-					$subheaderid = $pagemeta["subheader_postid"];
-				}
-				
 				if ($subheaderid != "")
 				{
 					$cssclass = nxs_getcssclassesforrowcontainer($subheaderid);
@@ -207,6 +214,11 @@ function nxs_pagetemplate_handlecontent()
 					</div>
 					<?php
 				}
+				
+				//
+				// ---------------------------- CONTENTSTART FRACTION MARKER
+				//
+				echo nxs_template_getfractionmarker("start");
 				
 				//
 				// ---------------------------- BEGIN RENDER ACTUAL ARTICLE
@@ -220,54 +232,24 @@ function nxs_pagetemplate_handlecontent()
 				// want to use a 'strict' template)
 				//
 				
-				if (nxs_hastemplateproperties())
-				{
-					// derive the layout
-					$templateproperties = nxs_gettemplateproperties();
-					if ($templateproperties["result"] == "OK")
-					{
-						$contentpostid = $templateproperties["content_postid"];
-					}
-					else
-					{
-						$contentpostid = 0;
-					}
-				}
-				else
-				{
-					$contentpostid = get_the_ID();
-				}
-
-				// by default we render wp regular content
-				$renderdelegatedcontent = true;
-				// exception
-				if ($contentpostid == 0)
-				{
-					if (!is_singular() && !is_archive())
-					{
-						$renderdelegatedcontent = true;
-						$contentpostid = "SUPPRESSED";
-					}
-					else
-					{
-						$renderdelegatedcontent = false;
-					}
-				}
-				
 				if ($renderdelegatedcontent)
 				{
 					$cssclass = nxs_getcssclassesforrowcontainer($contentpostid);
 					?>
 					<div class='nxs-article-container <?php echo $cssclass; ?>'>
-					<?php
-				  echo nxs_getrenderedhtml($contentpostid, "default");
-					echo "</div> <!-- END nxs-article-container -->";
+						<?php
+						
+				  	echo nxs_getrenderedhtml($contentpostid, "default");
+				  	
+				  	?>
+				  </div> <!-- END nxs-article-container -->
+				  <?php
 					
 					//
 					// ---------------------------- BEGIN RENDER SHORTCUT TO ADD NEW ROW
 					//
 					
-					if (nxs_has_adminpermissions() && $contentpostid != "SUPPRESSED")
+					if ($shouldrenderaddnewrowoption)
 					{
 						?>
 						<div class="nxs-hidewheneditorinactive">
@@ -316,11 +298,9 @@ function nxs_pagetemplate_handlecontent()
 							}
 						}
 						
-						// todo: add a filter here
-						
 						if ($shouldrenderoriginaltemplate)
 						{
-							echo "<!-- GJGJGJ shouldrenderoriginaltemplate; $nxs_gl_templates_wp -->";
+							echo "<!-- original template; $nxs_gl_templates_wp -->";
 
 							rewind_posts();
 							
@@ -338,7 +318,7 @@ function nxs_pagetemplate_handlecontent()
 							{
 								// reguliere post/page
 								?>
-								<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-content-<?php echo $contentpostid  . " " . $cssclass; ?>'>
+								<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable entry-content nxs-content-<?php echo $contentpostid  . " " . $cssclass; ?>'>
 									<div class="nxs-postrows">
 										<div class="nxs-row   " id="nxs-pagerow-content">
 											<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
@@ -410,40 +390,22 @@ function nxs_pagetemplate_handlecontent()
 								<?php
 							}
 						}
-						else
-						{
-							?><!-- GJGJGJ: should not render original template;  --><?php
-						}
 					}
 					rewind_posts();
 				}
 				else
 				{
 					// suppressed
-
 				}
+				
+				//
+				// ---------------------------- CONTENTEND FRACTION MARKER
+				//
+				echo nxs_template_getfractionmarker("end");
 					
 				//
 				// ---------------------------- BEGIN RENDER BLOG POST BOTTOM / SUBFOOTER
 				//			
-				
-				if (nxs_hastemplateproperties())
-				{
-					// derive the layout
-					$templateproperties = nxs_gettemplateproperties();
-					if ($templateproperties["result"] == "OK")
-					{
-						$subfooterid = $templateproperties["subfooter_postid"];
-					}
-					else
-					{
-						$subfooterid = 0;
-					}
-				}
-				else
-				{
-					$subfooterid = $pagemeta["subfooter_postid"];
-				}
 				
 				if ($subfooterid != "")
 				{
@@ -481,6 +443,41 @@ function nxs_pagetemplate_handlecontent()
 			
 		</div> <!-- END content -->
 		<?php
+	}
+}
+
+function nxs_pagetemplate_handlecontent_fraction($scope)
+{
+	// todo: this function can be improved by caching the output
+	// in a global variable such that the handlecontent is not invoked 2x...
+	
+	// renders a fraction of the regular handlecontent content
+	ob_start();
+	$content = nxs_pagetemplate_handlecontent();
+	$html = ob_get_contents();
+	ob_end_clean();
+	
+	if ($scope == "top")
+	{
+		// return everything from the buffer up to the fractionstart
+		$fraction = nxs_template_getfractionmarker("start");
+		$pos = strpos($html, $fraction);
+		$html = substr($html, 0, $pos + strlen($fraction));
+		echo $html;
+		echo "<div class='nxs-text nxs-default-p nxs-row1 entry-content'>";
+	}
+	else if ($scope == "bottom")
+	{
+		// return everything from the buffer from the fraction to the end
+		$fraction = nxs_template_getfractionmarker("end");
+		$pos = strpos($html, $fraction);
+		$html = substr($html, $pos);
+		echo "</div>";
+		echo $html;
+	}
+	else
+	{
+		nxs_webmethod_return_nack("unsupported scope");
 	}
 }
 

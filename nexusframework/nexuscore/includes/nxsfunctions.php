@@ -5868,7 +5868,16 @@ function nxs_prettyprint_array($arr)
           }
           else
           {
-          	$retStr .= '<li>' . $key . ' => {some object}</li>';
+          	$type = get_class($val);
+          	if ($type === false)
+          	{
+          		// primitive
+          		$retStr .= '<li>' . $key . ' => ' . $val . '</li>';
+          	}
+          	else
+          	{
+          		$retStr .= '<li>' . $key . ' => {some object of type ' . $type . ' }</li>';
+          	}
           }
       }
   }
@@ -9507,6 +9516,8 @@ function nxs_render_headstyles()
 		$css .= "body { font-family: " . $hetfont . "; }";
 		$hetfont = str_replace("\'", "'", nxs_font_getcleanfontfam($sitemeta["vg_fontfam_2"]));
 		$css .= ".nxs-title, .nxs-logo { font-family: " . $hetfont . "; }";
+		$css .= ".entry-content h1,.entry-content h2,.entry-content h3,.entry-content h4,.entry-content h5,.entry-content h6 { font-family: " . $hetfont . "; }";
+		
 		
 		// new style
 		$fontidentifiers = nxs_font_getfontidentifiers();

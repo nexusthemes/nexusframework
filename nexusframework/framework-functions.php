@@ -662,6 +662,8 @@ function nxs_init()
 				echo "dumppost $postid<br />";
 				$exists = nxs_postexistsbyid($postid);
 				if ($exists) { echo "post exist<br />"; } else { echo "post does not exist<br />"; }
+				$posttype = get_post_type($postid);
+				echo "post type:{$posttype}<br />";
 				$needleglobalid = nxs_get_globalid($postid, false);
 				echo "globalid: $needleglobalid<br />";
 				echo "post_meta_all: $needleglobalid<br />";
@@ -1737,6 +1739,8 @@ add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');
 // uses nxs_gettemplateproperties()
 function nxs_template_include($template)
 {
+	define('NXS_TEMPLATEINCLUDED', true);	
+
 	// force all pages to be handled by page-template.php
 	// note, this overrides all regular templates (like woocommerce), on purpose
 
@@ -1776,6 +1780,76 @@ function nxs_template_include($template)
 	return $template;
 }
 add_filter('template_include', 'nxs_template_include', 9999);
+
+add_filter('get_header', 'nxs_template_getheader');
+function nxs_template_getheader($name)
+{
+	if (true)
+	{
+		if (!defined('NXS_TEMPLATEINCLUDED'))
+		{
+			// if we reach this stage, it means some plugin used
+			// the template_redirect 
+			
+			if (is_singular())
+			{
+				// the containerpostid is the id of the (one and only) post
+				global $post;
+				$containerpostid = $post->ID;
+			}
+			else if (is_archive())
+			{
+				$containerpostid = "ARCHIVE";
+			}
+			else
+			{
+				// this happens if a plugin has a specific URL 
+				// rewritten to a specific template include.
+				// in that case we will render that specific content,
+				// even though the front end editor features will be suppressed
+				$containerpostid = "SUPPRESSED";
+			}
+			
+			global $nxs_global_current_containerpostid_being_rendered;
+			$nxs_global_current_containerpostid_being_rendered = $containerpostid;
+			
+			require_once(NXS_FRAMEWORKPATH . '/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php');
+			nxs_pagetemplate_handleheader();
+			
+			do_action('nxs_ext_betweenheadandcontent');
+			
+			nxs_pagetemplate_handlecontent_fraction("top");
+		}
+		else
+		{
+			// echo "template included :)";
+		}
+		//die();
+	}
+}
+
+add_filter('get_footer', 'nxs_template_getfooter');
+function nxs_template_getfooter($name)
+{
+	if (true)
+	{
+		if (!defined('NXS_TEMPLATEINCLUDED'))
+		{
+			// if we reach this stage, it means some plugin used
+			// the template_redirect 
+			require_once(NXS_FRAMEWORKPATH . '/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php');
+			
+			nxs_pagetemplate_handlecontent_fraction("bottom");
+			
+			nxs_pagetemplate_handlefooter();
+		}
+		else
+		{
+			// echo "template included :)";
+		}
+		//die();
+	}
+}
 
 add_action("init", "nxs_init_handledebug", 30);
 
