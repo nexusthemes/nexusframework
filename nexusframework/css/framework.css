@@ -2195,7 +2195,7 @@ h3#order_review_heading,
 .entry-content abbr[title] 									{ border-bottom: 1px dotted #2b2b2b; cursor: help; }
 .entry-content hr 											{ background-color: rgba(0, 0, 0, 0.1); border: 0; height: 1px; margin-bottom: 23px; }
 .entry-content p, .entry-content ul, .entry-content ol, .entry-content dd, .entry-content pre, .entry-content hr, .entry-content table { margin-bottom: 24px; }
-.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 { clear: both; font-weight: 700; margin: 36px 0 12px; }
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 { clear: both; font-weight: 700; /*margin: 36px 0 12px;*/ }
 .entry-content h1 											{ font-size: 26px; line-height: 1.3846153846; }
 .entry-content h2 											{ font-size: 24px; line-height: 1; }
 .entry-content h3 											{ font-size: 22px; line-height: 1.0909090909; }
