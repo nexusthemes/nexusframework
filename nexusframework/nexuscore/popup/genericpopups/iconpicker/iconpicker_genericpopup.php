@@ -287,7 +287,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"golf",
 										"fuel",
 										"jumpstart",
-										"nexus",									
+										"nexus",
+										"leather",
+										"iron",									
 										
 									);
 										
@@ -589,7 +591,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"ant",
 										"mosquito",
 										"fleas",  
-										"mite",  
+										"mite",
+										"silvefish",
+										"caterpillar",
+										"beetle"  
 									);
 										
 									foreach($icontypes as $currenticontype)
