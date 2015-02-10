@@ -63,7 +63,7 @@ function nxs_memory_notifynotenoughmemory()
 
 	<div class="error">
 	    <p>
-	    	This theme requires at least <?php echo nxs_get_minimal_mb_memory_for_themes(); ?>M of memory.
+	    	This theme requires at least <?php echo nxs_get_minimal_mb_memory_for_themes(); ?>M of memory. Currently there is only <?php echo ini_get('memory_limit'); ?> memory configured on the server.
 	    </p>
 	  </div>
 
