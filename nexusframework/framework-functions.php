@@ -284,6 +284,19 @@ function nxs_framework_theme_styles()
     array(), 
     nxs_getthemeversion(), 
     'all' );
+
+
+  if (is_child_theme()) {
+  	wp_register_style('nxs-framework-style-child', 
+    nxs_getframeworkurl() . '/css/style.css', 
+    array(), 
+    nxs_getthemeversion(), 
+    'all' );
+
+  	// enqueing:
+    wp_enqueue_style('nxs-framework-style-child');
+
+}
   
 	// enqueing:
 	
