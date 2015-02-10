@@ -46,7 +46,7 @@
       <div class="nxs-clear"></div>
       -->
 	
-			<div class='nxs-genericlist-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-post-<?php echo $postid; ?> nxs-posttype-<?php echo $nxssubposttype; ?>'>
+			<div class='nxs-genericlist-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-post-<?php echo $postid; ?> nxs-subposttype-<?php echo $nxssubposttype; ?>'>
 				<?php 
 	        // render the actual page contents (page rows)
 	        echo nxs_getrenderedhtml($postid, "default");
