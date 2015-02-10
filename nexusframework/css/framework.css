@@ -2701,7 +2701,11 @@ h3#order_review_heading,
 .nxs-icon-fleas:before	 			{ content: "\e418"; }
 .nxs-icon-mite:before	 			{ content: "\e419"; }
 .nxs-icon-houzz:before	 			{ content: "\e420"; }
-.nxs-icon-nexus:before	 			{ content: "\e421"; }
+.nxs-icon-silverfish:before	 		{ content: "\e421"; }
+.nxs-icon-leather:before	 		{ content: "\e422"; }
+.nxs-icon-iron:before	 			{ content: "\e423"; }
+.nxs-icon-caterpillar:before	 	{ content: "\e424"; }
+.nxs-icon-beetle:before		 		{ content: "\e425"; }
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
