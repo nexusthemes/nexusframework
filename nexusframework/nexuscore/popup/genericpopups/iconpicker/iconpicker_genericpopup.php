@@ -287,7 +287,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"golf",
 										"fuel",
 										"jumpstart",
-										"nexus",
 										"leather",
 										"iron",									
 										
@@ -592,7 +591,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"mosquito",
 										"fleas",  
 										"mite",
-										"silvefish",
+										"silverfish",
 										"caterpillar",
 										"beetle"  
 									);
