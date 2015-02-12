@@ -176,7 +176,11 @@ function nxs_widgets_menuitemcategory_render_webpart_render_htmlvisualization($a
   }
   
   ?>
-	<div class="nxs-padding-menu-item">
+	<div class="nxs-padding-menu-item nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder" id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
+		<div class="nxs-drag-helper" style='display: none;'>
+			<div class='placeholder'>
+			</div>
+		</div>
 		<div class="content2 border <?php echo $positionerclass;?>">
 	    <div class="box-content nxs-float-left"><p><?php echo $title; ?></p></div>
 	    <div class="nxs-clear"></div>
