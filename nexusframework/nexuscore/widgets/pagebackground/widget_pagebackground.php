@@ -275,7 +275,7 @@ function nxs_widgets_pagebackground_render_webpart_render_htmlvisualization($arg
 		---------------------------------------------------------------------------------------------------- */
 		
 		echo '
-		<div ' . $class . '>
+		<div class="nxs-dragrow-handler nxs-padding-menu-item">
 		<div class="content2">
 		 <div class="box">
 		        <div class="box-title">

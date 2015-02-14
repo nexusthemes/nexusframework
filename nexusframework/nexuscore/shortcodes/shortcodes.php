@@ -171,6 +171,14 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 			{
 				
 			}
+			else if ($nxs_global_current_nxsposttype_being_rendered == "genericlist")
+			{
+				
+			}
+			else if ($nxs_global_current_nxsposttype_being_rendered == "busrulesset")
+			{
+				
+			}
 			else
 			{
 				$shouldrenderrowhover = false;

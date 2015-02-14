@@ -174,30 +174,31 @@ function nxs_widgets_slidesincat_render_webpart_render_htmlvisualization($args)
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-slider-item";
 	
 	?>
-	    
-    <div class="content2">
-    	<div class="box-content nxs-width10 nxs-float-left">
-    		<?php
-    			$commaseperated = nxs_convert_stringwithbracketlist_to_stringwithcommas($items_filter_catids);	
-					if ($commaseperated == "")
-					{
-						$output = "Please select a category first";
-					}
-					else
-					{
-						$output = wp_list_categories("hide_empty=0&include=$commaseperated&style=none&echo=0");
-						//$output = str_replace("<br />", " ", $output);
-						$output = str_replace("<a ", "<a target='_blank' ", $output);
-						$output = "Slides using featured image, titles and descriptions of posts and pages in category " . $output;
-					}
-					echo $output;
-    		?>
-    	</div>
-    	<div class="box-content nxs-width20 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($title); ?></div>
-    	<div class="box-content nxs-width40 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($text); ?></div>
-    	<div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($theurl); ?></div>
-    	<div class="nxs-clear"></div>
-    </div> <!--END content-->
+	<div class="nxs-dragrow-handler nxs-padding-menu-item">
+	    <div class="content2">
+	    	<div class="box-content nxs-width10 nxs-float-left">
+	    		<?php
+	    			$commaseperated = nxs_convert_stringwithbracketlist_to_stringwithcommas($items_filter_catids);	
+						if ($commaseperated == "")
+						{
+							$output = "Please select a category first";
+						}
+						else
+						{
+							$output = wp_list_categories("hide_empty=0&include=$commaseperated&style=none&echo=0");
+							//$output = str_replace("<br />", " ", $output);
+							$output = str_replace("<a ", "<a target='_blank' ", $output);
+							$output = "Slides using featured image, titles and descriptions of posts and pages in category " . $output;
+						}
+						echo $output;
+	    		?>
+	    	</div>
+	    	<div class="box-content nxs-width20 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($title); ?></div>
+	    	<div class="box-content nxs-width40 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($text); ?></div>
+	    	<div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($theurl); ?></div>
+	    	<div class="nxs-clear"></div>
+	    </div> <!--END content-->
+	</div>
 	
 	<?php 
 	

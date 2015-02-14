@@ -83,15 +83,16 @@ function nxs_widgets_eventsboxitem_render_webpart_render_htmlvisualization($args
 
 
 	echo '
-	<div class="content2">
-        <div class="box-content nxs-width10 nxs-float-left">'.nxs_render_html_escape_gtlt($date_dd_mm_yy).'</div>
-		<div class="box-content nxs-width10 nxs-float-left">'.nxs_render_html_escape_gtlt($title).'</div>
-		<div class="box-content nxs-width40 nxs-float-left">'.nxs_render_html_escape_gtlt($subtitle).'</div>
-        <div class="box-content nxs-width20 nxs-float-left">'.nxs_render_html_escape_gtlt($destination_articleid).'</div>
-        <div class="box-content nxs-width20 nxs-float-left">'.nxs_render_html_escape_gtlt($destination_url).'</div>
-        <div class="nxs-clear"></div>
-    </div> <!--END content-->
-	'; 
+	<div class="nxs-dragrow-handler nxs-padding-menu-item"> 
+		<div class="content2">
+	        <div class="box-content nxs-width10 nxs-float-left">'.nxs_render_html_escape_gtlt($date_dd_mm_yy).'</div>
+			<div class="box-content nxs-width10 nxs-float-left">'.nxs_render_html_escape_gtlt($title).'</div>
+			<div class="box-content nxs-width40 nxs-float-left">'.nxs_render_html_escape_gtlt($subtitle).'</div>
+	        <div class="box-content nxs-width20 nxs-float-left">'.nxs_render_html_escape_gtlt($destination_articleid).'</div>
+	        <div class="box-content nxs-width20 nxs-float-left">'.nxs_render_html_escape_gtlt($destination_url).'</div>
+	        <div class="nxs-clear"></div>
+	    </div> <!--END content-->
+	</div>'; 
 	
 	$html = ob_get_contents();
 	ob_end_clean();

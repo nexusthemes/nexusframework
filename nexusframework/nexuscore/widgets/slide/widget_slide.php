@@ -224,17 +224,19 @@ function nxs_widgets_slide_render_webpart_render_htmlvisualization($args)
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-slider-item";
 	
 	?>
-	    
-    <div class="content2">
-    	<div class="box-content nxs-width10 nxs-float-left">
-    		<div class='fixed-image-container'><img src="<?php echo $url; ?>" /></div>
-    		<p><?php echo sprintf(nxs_l18n__("Dimensions %s px h:%s px[nxs:span]", "nxs_td"), $width, $height); ?></p>
-    	</div>
-    	<div class="box-content nxs-width20 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($title); ?></div>
-    	<div class="box-content nxs-width40 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($text); ?></div>
-    	<div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($theurl); ?></div>
-    	<div class="nxs-clear"></div>
-    </div> <!--END content-->
+	
+	<div class="nxs-dragrow-handler nxs-padding-menu-item">
+	    <div class="content2">
+	    	<div class="box-content nxs-width10 nxs-float-left">
+	    		<div class='fixed-image-container'><img src="<?php echo $url; ?>" /></div>
+	    		<p><?php echo sprintf(nxs_l18n__("Dimensions %s px h:%s px[nxs:span]", "nxs_td"), $width, $height); ?></p>
+	    	</div>
+	    	<div class="box-content nxs-width20 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($title); ?></div>
+	    	<div class="box-content nxs-width40 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($text); ?></div>
+	    	<div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($theurl); ?></div>
+	    	<div class="nxs-clear"></div>
+	    </div> <!--END content-->
+	</div>
 	
 	<?php 
 	

@@ -107,7 +107,7 @@ function nxs_widgets_definitionlistitemtext_render_webpart_render_htmlvisualizat
 	---------------------------------------------------------------------------------------------------- */
 	
 	echo '
-	<div ' . $class . '>
+	<div class="nxs-dragrow-handler nxs-padding-menu-item"> 
 		<div class="content2">
 			<div class="box">
 				<h4>' . $title . '</h4>

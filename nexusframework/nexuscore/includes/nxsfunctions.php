@@ -11076,52 +11076,54 @@ function nxs_widgets_busrule_pagetemplate_renderrow($iconids, $filteritemshtml, 
 	
 	$flow_stopruleprocessingonmatch = $mixedattributes["flow_stopruleprocessingonmatch"];
 	?>
-	<div class="content2">
-		<div class="box-content nxs-width20 nxs-float-left">
-		 	<div class="">
-		 		<?php
-		 		foreach ($iconids as $currenticonid)
-		 		{
-					//var_dump($currenticonid);
-		 			?>
-					<span class="<?php echo $currenticonid; ?>"></span>
+	<div class="nxs-dragrow-handler nxs-padding-menu-item">
+		<div class="content2">
+			<div class="box-content nxs-width20 nxs-float-left">
+			 	<div class="">
+			 		<?php
+			 		foreach ($iconids as $currenticonid)
+			 		{
+						//var_dump($currenticonid);
+			 			?>
+						<span class="<?php echo $currenticonid; ?>"></span>
+						<?php
+					}
+					?>
 					<?php
+						if ($flow_stopruleprocessingonmatch != "")
+				  	{
+							?>
+							<span class="nxs-icon-blocked"></span>
+							<?php
+				  	}
+				  	else
+				  	{
+				  		?>
+							<span class="nxs-icon-arrow-down"></span>
+							<?php
+				  	}
+					?>
+		    	</div>
+		  	</div>
+			<div class="box-content nxs-width30 nxs-float-left">
+				<?php
+				if ($filteritemshtml != "")
+				{
+					echo $filteritemshtml;
+				}
+				else
+				{
+					echo "&nbsp;";
 				}
 				?>
-				<?php
-					if ($flow_stopruleprocessingonmatch != "")
-			  	{
-						?>
-						<span class="nxs-icon-blocked"></span>
-						<?php
-			  	}
-			  	else
-			  	{
-			  		?>
-						<span class="nxs-icon-arrow-down"></span>
-						<?php
-			  	}
-				?>
-	    </div>
-	  </div>
-		<div class="box-content nxs-width30 nxs-float-left">
-			<?php
-			if ($filteritemshtml != "")
-			{
-				echo $filteritemshtml;
-			}
-			else
-			{
-				echo "&nbsp;";
-			}
-			?>
-		</div>
-	  <div class="box-content nxs-width50 nxs-float-left">
-	  	<?php
-			echo nxs_getbusinessruleimpact($mixedattributes);
-	  	?>
-		</div>
-	  <div class="nxs-clear"></div>
+			</div>
+		  	<div class="box-content nxs-width50 nxs-float-left">
+			  	<?php
+					echo nxs_getbusinessruleimpact($mixedattributes);
+			  	?>
+			</div>
+	  		<div class="nxs-clear"></div>
+	  	</div>
 	</div>
 	<?php
 }
