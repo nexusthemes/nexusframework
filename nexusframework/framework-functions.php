@@ -712,6 +712,34 @@ function nxs_init()
 				
 				die();
 			}
+  		else if ($_REQUEST["nxs"] == "listactiveplugins")
+  		{
+  			if ( ! function_exists( 'get_plugins' ) ) {
+					require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				}
+				
+				$all_plugins = get_plugins();
+				
+				// Save the data to the error log so you can see what the array format is like.
+				//error_log( print_r( $all_plugins, true ) );
+
+  			echo "list:";
+  			$apl=get_option('active_plugins');
+  			///var_dump($apl);
+				$plugins=get_plugins();
+				
+				$activated_plugins=array();
+				foreach ($apl as $p)
+				{
+					if(isset($plugins[$p]))
+					{
+				  	array_push($activated_plugins, $plugins[$p]);
+					}           
+				}
+				
+				echo nxs_prettyprint_array($activated_plugins);
+				die();
+  		}		
 		}
 	}
 	
