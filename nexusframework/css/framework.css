@@ -1611,6 +1611,7 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-moz-background-size: 	 cover !important;
 	-webkit-background-size: cover !important;
 }
+
 .nxs-radial .text-wrapper	 								{ display: table-cell; vertical-align: middle; }
 .nxs-radial .title-wrapper									{ text-align: center; padding: 10px 0; position: absolute; width: 100%; bottom: 15%; }
 .nxs-radial .transition.nxs-default p						{ text-align: center; width: 70%;  margin: 0 auto; }
@@ -1649,12 +1650,14 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 
 /* fallback triggers */
 .nxs-ie .nxs-radial .nxs-default,
-.nxs-vendor-mozilla .nxs-radial .nxs-default,
 .nxs-vendor-o .nxs-radial .nxs-default							{ display: none; }
 .nxs-ie .nxs-radial .nxs-fallback,
-.nxs-vendor-mozilla .nxs-radial .nxs-fallback,
 .nxs-vendor-o .nxs-radial .nxs-fallback 						{ display: block; }
 .nxs-radial .nxs-fallback .nxs-title							{ text-align: left; }
+
+/* mozilla overflow:hidden; with position:absolute; fix */
+.nxs-vendor-mozilla .nxs-radial .radial:last-of-type 			{ display: block; }
+
 
 /* SQUEEZEBOX
 ------------------------------------------------------------------------------------------ */
