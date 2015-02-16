@@ -23,21 +23,28 @@ function nxs_widgets_banneritem_home_getoptions($args)
 {
 	// CORE WIDGET OPTIONS
 	
-	$options = array
-	(
+	$options = array(
 		"sheettitle" => nxs_widgets_banneritem_gettitle(),
 		"sheeticonid" => nxs_widgets_banneritem_geticonid(),
-		"fields" => array
-		(
+		"fields" => array(
 			// TITLE
 			
-			array
-			( 
+			array( 
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
 				"localizablefield"	=> true
+			),
+
+			array(
+				"id" 				=> "image_alt",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image alt text", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("imagealtplaceholder", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true,
+				"requirecapability" => nxs_cap_getdesigncapability(),
 			),
 			/*
 			array

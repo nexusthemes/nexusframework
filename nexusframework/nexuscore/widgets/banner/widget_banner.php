@@ -245,6 +245,12 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				$banner_imagewidth 		= $lookup[1]. "px";
 				$banner_imageheight 	= $lookup[2]. "px";		
 				
+				$image_alt_attribute = "";
+				if ($placeholdermetadata['image_alt'] != "") {
+					$image_alt = $placeholdermetadata['image_alt'];
+				$image_alt_attribute = 'alt="'.$image_alt.'"';
+				}
+
 				$destination_articleid = $placeholdermetadata['destination_articleid'];
 				$destination_url = $placeholdermetadata['destination_url'];
 				
@@ -257,7 +263,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				}				
 				
 				// add image to html
-				$image = '<img class="image image-background '.$image_filter.'" src="'.$banner_imageurl.'" style="'.$image_border_width.'">';
+				$image = '<img class="image image-background '.$image_filter.'" '.$image_alt_attribute.' src="'.$banner_imageurl.'" style="'.$image_border_width.'">';
 				
 				// add item to banner array
 				if ($destinationurl != "") {
