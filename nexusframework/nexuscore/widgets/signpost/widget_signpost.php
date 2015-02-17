@@ -294,22 +294,10 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 	
 	$shouldrenderalternative = false;
 	
-	// destination article is required
-	if ((!isset($destination_articleid) || $destination_articleid == 0) && (!isset($destination_url) || $destination_url == "") && (!isset($destination_js) || $destination_js == "")) {
-		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Destination is required.", "nxs_td");
-	}
-	
 	// image is required
 	if (!isset($image_imageid) || $image_imageid == 0) {
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Image is required.", "nxs_td");
-	}
-	
-	// image is required
-	if (!isset($button_text) || $button_text == "") {
-		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Button text is required.", "nxs_td");
 	}
 	
 	// title is required
