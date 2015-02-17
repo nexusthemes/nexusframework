@@ -220,7 +220,7 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 ----------------------------------------------------------------------------------------------------*/
 #nxs-menu-wrap										{ z-index: 121; }
 .nxs-admin-wrap #admin-container 					{ padding: 10px 20px; position: relative; font-family: sans-serif !important; }
-.nxs-admin-wrap #admin-container.center 			{ width: 960px;	margin: 0 auto; }
+.nxs-admin-wrap #admin-container.center 			{ width: 960px;	margin: 0 auto 50px; }
 .nxs-admin-wrap #admin-container.center2 			{ width: 344px; margin: 0 auto; }
 .nxs-admin-wrap #menufillerinlinecontent 			{ line-height: 0; }
 .nxs-admin-wrap #login 								{ width: 390px;	margin: auto; }
