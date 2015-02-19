@@ -1366,7 +1366,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 							$currentpostdate = $currentpost->post_date;
 							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpostdate));
 							$datum = '
-							<div class="nxs-date">
+							<div class="nxs-date updated">
 								<h4 class="month nxs-border-width-1-0 ' . $month_color_cssclass . '">' 	. $monthhtml . '</h4>
 								<h4 class="day nxs-border-width-1-0 ' . $day_color_cssclass . '">' 	. mysql2date('j', $currentpostdate) . '</h4>	
 							</div>';
@@ -1391,7 +1391,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 							$authorurl = get_author_posts_url($currentpost->post_author);
 							$authorname = get_the_author_meta("display_name", $currentpost->post_author);
 							$auteur = '
-								<span class="nxs-author">
+								<span class="nxs-author author vcard">
 									<a href="' . $authorurl . '">' . $authorname . '</a>
 								</span>';
 						}
