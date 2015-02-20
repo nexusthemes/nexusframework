@@ -253,23 +253,31 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 
 				$destination_articleid = $placeholdermetadata['destination_articleid'];
 				$destination_url = $placeholdermetadata['destination_url'];
+				$destination_target = $placeholdermetadata['destination_target'];
 				
-				if ($destination_articleid != 0 && $destination_articleid != "") {
-					$destinationurl = nxs_geturl_for_postid($destination_articleid);
-				} else if ($destination_url != "") {
-					$destinationurl = $destination_url;
-				} else {
-					$destinationurl = "";
-				}				
+				// Url
+				if ($destination_articleid != "") { 
+					$url = nxs_geturl_for_postid($destination_articleid);
+					$target = 'target="_self"'; 
+				} 
+				
+				if ($destination_url != "") {
+					$url = $destination_url;
+					$target = 'target="_blank"';
+					
+				}
+			
+				if ($destination_target != "@@@empty@@@") {
+					$target = "target='".$destination_target."'";
+				}
+
 				
 				// add image to html
 				$image = '<img class="image image-background '.$image_filter.'" '.$image_alt_attribute.' src="'.$banner_imageurl.'" style="'.$image_border_width.'">';
 				
 				// add item to banner array
-				if ($destinationurl != "") {
-					// wrap link
-					$target = "_blank";
-					$image = '<a href="'.$destinationurl.'" target="'.$target.'">'.$image.'</a>';
+				if ($url != "") {
+					$image = '<a href="'.$url.'"'.$target.'">'.$image.'</a>';
 				}
 				
 				$banner[] = $image;				

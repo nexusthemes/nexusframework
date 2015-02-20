@@ -80,6 +80,22 @@ function nxs_widgets_banneritem_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"localizablefield"	=> true
 			),
+
+			array(
+				"id" 				=> "destination_target",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+
+		
+
 		
 		)
 	);
@@ -119,6 +135,8 @@ function nxs_widgets_banneritem_render_webpart_render_htmlvisualization($args)
 	$lookup = wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
 	$url = $lookup[0];
 	$url = nxs_img_getimageurlthemeversion($url);
+
+		
 
 	if (nxs_has_adminpermissions())
 	{
@@ -181,6 +199,9 @@ function nxs_widgets_banneritem_render_webpart_render_htmlvisualization($args)
 		    </div>
 		    <div class="box-content nxs-width30 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($title); ?></div>
 		    <div class="box-content nxs-width50 nxs-float-left"><?php echo nxs_render_html_escape_gtlt($text); ?></div>
+		    <div class="box-content nxs-width50 nxs-float-left"><?php echo $destination_articleid; ?></div>
+		    <div class="box-content nxs-width50 nxs-float-left"><?php echo $destination_url; ?></div>
+
 		  	<div class="nxs-clear"></div>
 		</div> <!--END content-->
 	</div>
