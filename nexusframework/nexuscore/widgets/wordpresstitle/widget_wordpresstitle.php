@@ -251,7 +251,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		$dayhtml = 		'<span class="nxs-day">' 	. mysql2date('j', $currentdate) . '</span>';
 		$monthhtml = 	'<span class="nxs-month">' 	. nxs_getlocalizedmonth(mysql2date('m', $currentdate)) . '</span>';
 		$yearhtml = 	'<span class="nxs-year">' 	. mysql2date('Y', $currentdate) . '</span>';
-		$datehtml = '<span class="updated">'.$dayhtml . " " . $monthhtml . " " . $yearhtml.'</span>';
+		$datehtml = $dayhtml . " " . $monthhtml . " " . $yearhtml;
 	}
 	
 	// Categories
@@ -279,7 +279,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		$authorurl = get_author_posts_url($currentpost->post_author);
 		$authorname = get_the_author_meta("display_name", $currentpost->post_author);
 		$author .= '
-			<span class="nxs-author author vcard">
+			<span class="nxs-author">
 				<a href="' . $authorurl . '">' . $authorname . '</a>
 			</span>';
 	}
