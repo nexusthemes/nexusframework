@@ -232,9 +232,24 @@ require_once(NXS_FRAMEWORKPATH . '/nexuscore/extensions/commentsproviders/commen
 
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/webservices/webservices.php'); 
 
+
 // handle webmethod, is this is a webmethod
 // note that if this _is_ a webmethod, the system will stop execution after this method
 add_action('init', 'nxs_handlewebmethods', 999999);
+
+
+if (is_admin() && nxs_isdataconsistencyvalidationrequired()) 
+{
+	add_action('admin_notices', 'nxs_dataconsistency_notify_data_inconsistent');
+}
+
+if nxs_isdataconsistencyvalidationrequired()) 
+{
+require_once(NXS_FRAMEWORKPATH . '/nexuscore/backend/data-verification.php');
+}
+
+//After category is updated, set a flag to do a data consistency check
+add_action('edited_terms', 'nxs_dataconsistency_after_edited_terms');
 
 
 // compliance with feeds
@@ -712,7 +727,7 @@ function nxs_init()
 				
 				die();
 			}
-  		else if ($_REQUEST["nxs"] == "listactiveplugins")
+			else if ($_REQUEST["nxs"] == "listactiveplugins")
   		{
   			if ( ! function_exists( 'get_plugins' ) ) {
 					require_once ABSPATH . 'wp-admin/includes/plugin.php';

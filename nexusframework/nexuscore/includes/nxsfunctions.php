@@ -3278,14 +3278,21 @@ function nxs_wipe_sitemetakeys_internal($keystoberemoved, $performsanitycheck)
 	nxs_sitemeta_clearcache();
 }
 
-// wordt aangeroepen tijdens de 'init' fase
-function nxs_performdataconsistencycheck()
-{
-	if (nxs_isdataconsistencyvalidationrequired())
-	{
-		require_once(NXS_FRAMEWORKPATH . '/nexuscore/dataconsistency/dataconsistency.php');
-		$isdataconsistent = nxs_ensuredataconsistency("*");
-	}
+//called after category is edited
+function nxs_dataconsistency_after_edited_terms() {
+	nxs_set_dataconsistencyvalidationrequired();
+}
+
+function nxs_dataconsistency_notify_data_inconsistent() {
+	$url = admin_url('admin.php?page=nxs_data_verification_page_content');
+	echo '<div class="error">
+	    <p>
+	    	Data verification required.
+	    	<br />
+	    	<A HREF="'.$url.'">Click here to verificate your data</A>
+	    	
+	    </p>
+	  </div>';
 }
 
 function nxs_set_dataconsistencyvalidationrequired()
@@ -3313,12 +3320,7 @@ function nxs_isdataconsistencyvalidationrequired()
 {
 	$result = false;
 	
-	if (is_admin())
-	{
-		// skip consistency check for admin / backend pages
-		$result = false;
-	}
-	else if (nxs_isnxswebservicerequest())
+	if (nxs_isnxswebservicerequest())
 	{
 		// while activating the theme, we don't want the data consistency check
 		$result = false;
