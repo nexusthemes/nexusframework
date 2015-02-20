@@ -255,13 +255,6 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			array(
-				"id" 				=> "ken_burns",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Ken Burns effect", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("When checked, slides will slowly zoom in ", "nxs_td"),
-				"unistylablefield"	=> true
-			),
 			
 			array( 
 				"id" 				=> "wrapper_captions_end",
@@ -804,8 +797,8 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 		<script type='text/javascript'>
 			jQuery(window).ready(
 				function() {
-					jQuery('html').addClass('nxs-pageslider kenburns');
-					 // kenburns is disabled for the time being ...
+					// jQuery('html').addClass('nxs-pageslider kenburns');
+					// kenburns is disabled for the time being ...
 					jQuery('html').addClass('nxs-pageslider');
 				}
 			);
