@@ -186,6 +186,17 @@ function nxs_widgets_image_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "image_border_radius",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Border radius", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"" 		=> nxs_l18n__("none", "nxs_td"),
+					"50%" 	=> nxs_l18n__("circle", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
 			
 			array( 
 				"id" 				=> "wrapper_input_end",
@@ -372,11 +383,15 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	if ($enlarge != "" && ($destination_articleid != "" || $destination_url != "")) { $enlarge = 'nxs-enlarge'; }
 	if ($grayscale != "" && ($destination_articleid != "" || $destination_url != "")) {	$grayscale = 'nxs-grayscale'; }
 	
+	// Border radius
+	if ($image_border_radius != "") {$border_radius = 'border-radius: '.$image_border_radius.';';}
+	
+	
 	// Original vs stretched images
 	if ($image_size == 'original') {
-		$html = '<img src="'.$imageurl.'" class=" '.$grayscale.' '.$enlarge.'" style="display: block;" alt="'.$image_alt.'">';
+		$html = '<img src="'.$imageurl.'" class=" '.$grayscale.' '.$enlarge.'" style="display: block; '.$border_radius.'" alt="'.$image_alt.'">';
 	} else {
-		$html = '<img src="'.$imageurl.'" class="nxs-stretch '.$grayscale.' '.$enlarge.'" style="display: block;" alt="'.$image_alt.'">';
+		$html = '<img src="'.$imageurl.'" class="nxs-stretch '.$grayscale.' '.$enlarge.'" style="display: block; '.$border_radius.'" alt="'.$image_alt.'">';
 	}
 
 	// Image max size
@@ -389,7 +404,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	
 	
 	if ($image_border_width != "" ) {
-		$html = '<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="'.$image_border_width.' nxs-overflow">'.$html.'</div>'; 
+		$html = '<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid; '.$border_radius.'" class="'.$image_border_width.' nxs-overflow">'.$html.'</div>'; 
 	}	
 	
 	$destination_articleid = nxs_geturl_for_postid($destination_articleid);
@@ -403,7 +418,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	{
 		// if image is 'set'
 		$image_imageid = '
-			<div class="nxs-relative nxs-overflow '.$image_shadow.' '.$image_alignment.'" style="max-width: '.$max_width.'">
+			<div class="nxs-relative nxs-overflow '.$image_shadow.' '.$image_alignment.'" style="max-width: '.$max_width.'; '.$border_radius.'">
 				'.$html.'
 			</div>';
 	}
