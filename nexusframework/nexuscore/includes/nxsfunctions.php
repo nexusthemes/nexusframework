@@ -9504,6 +9504,11 @@ function nxs_font_getcleanfontfam($fontfamily)
 	return $result;
 }
 
+function nxs_font_getskipfonts()
+{
+	return array("Arial", "Georgia", "Verdana", "Times New Roman");
+}
+
 function nxs_render_headstyles()
 {
 	// mutaties hierin ook doorvoeren in nxsmenu.php en header-post.php

@@ -243,10 +243,8 @@ if (is_admin() && nxs_isdataconsistencyvalidationrequired())
 	add_action('admin_notices', 'nxs_dataconsistency_notify_data_inconsistent');
 }
 
-if nxs_isdataconsistencyvalidationrequired()) 
-{
-require_once(NXS_FRAMEWORKPATH . '/nexuscore/backend/data-verification.php');
-}
+// todo: fix data verification part
+// require_once(NXS_FRAMEWORKPATH . '/nexuscore/backend/data-verification.php');
 
 //After category is updated, set a flag to do a data consistency check
 add_action('edited_terms', 'nxs_dataconsistency_after_edited_terms');

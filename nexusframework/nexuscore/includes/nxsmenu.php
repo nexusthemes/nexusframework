@@ -71,6 +71,16 @@
       	families: 
       	[
       		<?php
+      		// some fonts produce a 403 or 400, we skip these	
+      		$skipfonts = nxs_font_getskipfonts();
+      		foreach ($skipfonts as $skipfont)
+      		{
+      			if(($key = array_search($skipfont, $allfontfams)) !== false) 
+      			{
+				   	 unset($allfontfams[$key]);
+						}
+					}
+      		
       		$isfirstfont = true;
       		foreach ($allfontfams as $currentfont)
       		{
