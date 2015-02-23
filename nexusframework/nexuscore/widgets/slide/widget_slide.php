@@ -30,6 +30,13 @@ function nxs_widgets_slide_home_getoptions($args)
 			// TITLE
 			
 			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Slide", "nxs_td"),
+				"initial_toggle_state"	=> "open",
+			),
+			
+			array( 
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
@@ -63,7 +70,6 @@ function nxs_widgets_slide_home_getoptions($args)
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 			),
-
 			array(
 				"id" 				=> "destination_target",
 				"type" 				=> "select",
@@ -76,16 +82,6 @@ function nxs_widgets_slide_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
-
-			
-			// BUTTON
-			array( 
-				"id" 				=> "wrapper_button_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Button", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
-			),
-			
 			array(
 				"id" 				=> "button_text",
 				"type" 				=> "input",
@@ -94,6 +90,23 @@ function nxs_widgets_slide_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),	
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),
+
+			
+			/* Styling should be defined top level not on a per-slide basis
+			
+			// BUTTON
+			
+			array( 
+				"id" 				=> "wrapper_button_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Button", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
 			
 			array(
 				"id" 				=> "button_scale",
@@ -135,7 +148,7 @@ function nxs_widgets_slide_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_button_end",
 				"type" 				=> "wrapperend"
-			),
+			),*/
 		)
 	);
 	
