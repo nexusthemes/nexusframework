@@ -233,7 +233,6 @@ three other one-fourths. This is necessary for individual rows to be completely 
 .nxs-slide-description-content p 									{ font-size: 14px; }
 }
 @media only screen and ( max-width: 719px ) { 
-#slidecaption .nxs-button											{ font-size: 23px; }
 .main-controllers-bg,
 .nxs-slider-controller												{ display: none; }
 }
@@ -348,7 +347,9 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .fixed #slidecaption p				 								{ font-size: 18px !important; }
 }
 @media only screen and ( max-width: 719px )	{
-#nxs-supersized .caption-aligner .nxs-placeholder					{ text-align: center; }
+#nxs-supersized .caption-aligner .nxs-title,
+#nxs-supersized .caption-aligner p,
+#nxs-supersized .caption-aligner .slidecaption-container			{ text-align: center !important; }
 #nxs-supersized .caption-aligner .nxs-placeholder.nxs-inline		{ display: table-cell !important; }
 .slidecaption-container												{ margin: 0px !important; } 
 #nxs-supersized.has-height,
