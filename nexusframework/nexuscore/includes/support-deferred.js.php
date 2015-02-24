@@ -254,9 +254,16 @@ function nxs_js_supportstartchatstage2()
   
 }
 
-function nxs_js_supportchatdelete()
+function nxs_js_supportchathide()
 {
-	jQuery("#nxs_frameworkchat_wrap").empty();
+	nxs_js_supporthidechat();
+	nxs_js_setcookie('nxs_disable_chat', true);
+}
+
+function nxs_js_supportchatshow()
+{
+	nxs_js_supportshowchatstage1();
+	nxs_js_setcookie('nxs_disable_chat', false);
 }
 		
 var nxs_supportchatprequestionloaded = false;
@@ -289,8 +296,17 @@ jQuery(window).load
 				jQuery("body").append("<div id='nxs_frameworkchat_wrap' class='display720 nxs-hidewheneditorinactive' style='display: none;'></div>");
 				
 				nxs_js_process_updated_editor_state_internal(false);
-					
-				nxs_js_supportshowchatstage1();
+
+				var cookieval = nxs_js_getcookie('nxs_disable_chat');
+
+				if (cookieval === 'true')
+				{
+					nxs_js_supporthidechat();
+				}
+
+				else {
+					nxs_js_supportshowchatstage1();
+				}
 
 				nxs_js_log("Support chat was loaded!");
 			}
@@ -323,13 +339,37 @@ function nxs_js_supportshowchatstage1()
 				
 				<!-- Close buttton -->
 				<div>
-					<a href="#" onclick="nxs_js_supportchatdelete(); return false;"><span class="nxs-popup-closer nxs-icon-remove-sign" /></a>
+					<a href="#" onclick="nxs_js_supportchathide(); return false;"><span class="nxs-popup-closer nxs-icon-remove-sign" /></a>
 				</div>
 				
 			</div>
 		
 		</div>
 	
+	</div>
+	
+	<?php
+				
+	$result = ob_get_contents();
+	
+	$result = preg_replace( "/\r|\n/", " ", $result );
+	
+	ob_end_clean();
+	
+	?> 
+	
+	jQuery("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
+}
+
+function nxs_js_supporthidechat()
+{
+	// empty the wrap
+	jQuery("#nxs_frameworkchat_wrap").empty();
+	
+	<?php ob_start(); ?>
+	
+	<div id="nxs_chat_showchatwrap" class="nxs-admin-wrap">
+		<a href="#" onclick="nxs_js_supportchatshow(); return false;"><span class="nxs-icon-support" /></a>
 	</div>
 	
 	<?php

@@ -6047,7 +6047,7 @@ function nxs_js_rerender_facebookbom()
 function nxs_js_setcookie(name, value) 
 {
 	var expires = "";
-  document.cookie = name + "=" + value + expires + "; path=/";
+  	document.cookie = name + "=" + value + expires + "; path=/";
 }
 
 function nxs_js_getcookie(c_name) 

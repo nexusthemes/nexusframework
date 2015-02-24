@@ -996,14 +996,6 @@
 				<?php
 			}
 			?>
-			
-			
-			
-			<li class="nxs-hidewheneditorinactive">
-				<a target="_blank" href="http://nexusthemes.com/getting-started-with-nexus-themes/" title="<?php nxs_l18n_e("Help[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
-					<span class='nxs-icon-support'></span>
-				</a>
-			</li>
 		  <li class="nxs-hidewheneditorinactive">
 		  	<a href="#" title="<?php nxs_l18n_e("Log out[nxs:adminmenu,tooltip]", "nxs_td"); ?> <?php echo $current_user->user_login; ?>"	onclick="nxs_js_popup_site_neweditsession('logouthome'); return false;" class="site">
 		  		<span class='nxs-icon-logout'></span>

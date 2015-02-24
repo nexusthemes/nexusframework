@@ -724,6 +724,7 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6);
 	text-align: center
 }
+
 .nxs-admin-wrap ul.admin li a span {
 	color: black; 
 	font-size: 16px; 
@@ -1331,6 +1332,35 @@ div.jGrowl 											{ display: none; }
 	box-sizing: 	 	border-box;
 }
 #nxs_chat_topquestionwrap input[type=text] 									{ width: 400px; }
+
+#nxs_chat_showchatwrap a {
+	display: block;
+	width: 45px;
+	height: 45px;
+	position: fixed;
+	right: 13px;
+	bottom: 0px;
+	z-index: 1030;
+	text-align: center;
+	background-color: #FCFCFC;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6);
+}
+
+#nxs_chat_showchatwrap a span {
+	color: black; 
+	font-size: 16px; 
+	line-height: 45px; 
+	-webkit-transition: all .2s;
+	-moz-transition: 	all .2s;
+	-o-transition: 		all .2s;
+	transition: 		all .2s;
+	color: black; 
+	text-shadow: 1px 1px 1px white;
+}
+
+#nxs_chat_showchatwrap a:hover span 			{ font-size: 32px; line-height: 45px; }
 
 .nxs-hints.nxs-padding10 													{ padding-top: 0px; }
 .nxs-hints .block 															{ margin-bottom: 0px; max-height: 330px; overflow-y: scroll; }
