@@ -6313,6 +6313,12 @@ function nxs_js_menuitemclick(domelement, event)
 		{
 			// if item it touched for the 2nd time, hide all touched items
 			jQuery(closestwidget).find(".nxs-touched").removeClass("nxs-touched");
+
+			// if item has a link, redirect to link
+			var href = jQuery(domelement).attr('href');
+			if (href){
+				window.location.href = href;
+			}
 			return;
 		}
 	}
