@@ -1721,6 +1721,10 @@ table.ui-datepicker-calendar .ui-datepicker-current-day
 	border-style: solid;
 }
 
+table.ui-datepicker-calendar .ui-datepicker-unselectable {
+	color: #bbb;
+}
+
 /* Server gallery popup */
 .nxs-gallerypopup											{  }
 .nxs-gallerypopup #nxsbox_ajaxContent { 

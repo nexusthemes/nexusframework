@@ -119,19 +119,40 @@ function nxs_widgets_contactitemdate_renderincontactbox($args)
 					beforeShow: function(input, inst) 
 					{
 						// nxs_js_log($('.ui-datepicker-prev'));
-	          jQuery('.ui-datepicker-prev').removeClass('nxs-frontendbutton2').addClass('nxs-frontendbutton2');
-	          jQuery('.ui-datepicker-next').removeClass('nxs-frontendbutton2').addClass('nxs-frontendbutton2');
-	          jQuery('#ui-datepicker-div').removeClass('nxs-datepicker').addClass('nxs-datepicker');
-		    	},					
-					firstDay: 1,
-					inline: 1,
-					minDate: <?php if ($metadata_datefilter_istodayallowed == "") { echo "1"; } else { echo "0"; } ?>,
-					dateFormat: "<?php echo $dateformat; ?>",
-					dayNames: ['<?php nxs_l18n_e("Sunday", "nxs_td"); ?>', '<?php nxs_l18n_e("Monday", "nxs_td"); ?>', '<?php nxs_l18n_e("Tuesday", "nxs_td"); ?>', '<?php nxs_l18n_e("Wednesday", "nxs_td"); ?>', '<?php nxs_l18n_e("Thursday", "nxs_td"); ?>', '<?php nxs_l18n_e("Friday", "nxs_td"); ?>', '<?php nxs_l18n_e("Saturday", "nxs_td"); ?>'],
-					dayNamesMin: ['<?php nxs_l18n_e("Su", "nxs_td"); ?>', '<?php nxs_l18n_e("Mo", "nxs_td"); ?>', '<?php nxs_l18n_e("Tu", "nxs_td"); ?>', '<?php nxs_l18n_e("We", "nxs_td"); ?>', '<?php nxs_l18n_e("Th", "nxs_td"); ?>', '<?php nxs_l18n_e("Fr", "nxs_td"); ?>', '<?php nxs_l18n_e("Sa", "nxs_td"); ?>'],
-					monthNames: ['<?php nxs_l18n_e("January", "nxs_td"); ?>', '<?php nxs_l18n_e("February", "nxs_td"); ?>', '<?php nxs_l18n_e("March", "nxs_td"); ?>', '<?php nxs_l18n_e("April", "nxs_td"); ?>', '<?php nxs_l18n_e("May", "nxs_td"); ?>', '<?php nxs_l18n_e("June", "nxs_td"); ?>', '<?php nxs_l18n_e("July", "nxs_td"); ?>', '<?php nxs_l18n_e("August", "nxs_td"); ?>', '<?php nxs_l18n_e("September", "nxs_td"); ?>', '<?php nxs_l18n_e("October", "nxs_td"); ?>', '<?php nxs_l18n_e("November", "nxs_td"); ?>', '<?php nxs_l18n_e("December", "nxs_td"); ?>'],
-					nextText: '<?php nxs_l18n_e("Next", "nxs_td"); ?>',
-        	prevText: '<?php nxs_l18n_e("Previous", "nxs_td"); ?>'
+		          		jQuery('.ui-datepicker-prev').removeClass('nxs-frontendbutton2').addClass('nxs-frontendbutton2');
+		          		jQuery('.ui-datepicker-next').removeClass('nxs-frontendbutton2').addClass('nxs-frontendbutton2');
+		          		jQuery('#ui-datepicker-div').removeClass('nxs-datepicker').addClass('nxs-datepicker');
+			    	},					
+						firstDay: 1,
+						inline: 1,
+						<?php
+							if ($metadata_valid_dates === '')
+							{
+								// nothing
+							}
+							if ($metadata_valid_dates === 'any')
+							{
+								// nothing
+							}
+							if ($metadata_valid_dates === 'pastonly')
+							{
+								echo 'maxDate: -1,';
+							}
+							if ($metadata_valid_dates === 'todayandfuture')
+							{
+								echo 'minDate: 0,';
+							}
+							if ($metadata_valid_dates === 'tomorrowandfuture')
+							{
+								echo 'minDate: 1,';
+							}
+						?>
+						dateFormat: "<?php echo $dateformat; ?>",
+						dayNames: ['<?php nxs_l18n_e("Sunday", "nxs_td"); ?>', '<?php nxs_l18n_e("Monday", "nxs_td"); ?>', '<?php nxs_l18n_e("Tuesday", "nxs_td"); ?>', '<?php nxs_l18n_e("Wednesday", "nxs_td"); ?>', '<?php nxs_l18n_e("Thursday", "nxs_td"); ?>', '<?php nxs_l18n_e("Friday", "nxs_td"); ?>', '<?php nxs_l18n_e("Saturday", "nxs_td"); ?>'],
+						dayNamesMin: ['<?php nxs_l18n_e("Su", "nxs_td"); ?>', '<?php nxs_l18n_e("Mo", "nxs_td"); ?>', '<?php nxs_l18n_e("Tu", "nxs_td"); ?>', '<?php nxs_l18n_e("We", "nxs_td"); ?>', '<?php nxs_l18n_e("Th", "nxs_td"); ?>', '<?php nxs_l18n_e("Fr", "nxs_td"); ?>', '<?php nxs_l18n_e("Sa", "nxs_td"); ?>'],
+						monthNames: ['<?php nxs_l18n_e("January", "nxs_td"); ?>', '<?php nxs_l18n_e("February", "nxs_td"); ?>', '<?php nxs_l18n_e("March", "nxs_td"); ?>', '<?php nxs_l18n_e("April", "nxs_td"); ?>', '<?php nxs_l18n_e("May", "nxs_td"); ?>', '<?php nxs_l18n_e("June", "nxs_td"); ?>', '<?php nxs_l18n_e("July", "nxs_td"); ?>', '<?php nxs_l18n_e("August", "nxs_td"); ?>', '<?php nxs_l18n_e("September", "nxs_td"); ?>', '<?php nxs_l18n_e("October", "nxs_td"); ?>', '<?php nxs_l18n_e("November", "nxs_td"); ?>', '<?php nxs_l18n_e("December", "nxs_td"); ?>'],
+						nextText: '<?php nxs_l18n_e("Next", "nxs_td"); ?>',
+	        			prevText: '<?php nxs_l18n_e("Previous", "nxs_td"); ?>'
 				});
 				nxs_js_log('done..');
 			}
@@ -253,6 +274,13 @@ function nxs_widgets_contactitemdate_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Element ID", "nxs_td"),
 				"placeholder" => nxs_l18n__("Enter a unique ID for this element", "nxs_td"),
 			),
+			array
+			(
+				"id"     			=> "valid_dates",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Valid Dates", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("valid_dates"),
+			),
 			/*
 			can only be set by code			
 			array
@@ -270,11 +298,6 @@ function nxs_widgets_contactitemdate_home_getoptions($args)
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Is required", "nxs_td"),
 			),
-			array(
-				"id" 				=> "datefilter_istodayallowed",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Today allowed", "nxs_td"),
-			),
 		)
 	);
 	
@@ -286,7 +309,7 @@ function nxs_widgets_contactitemdate_initplaceholderdata($args)
 	extract($args);
 
 	$args["elementid"] = nxs_generaterandomstring(6);
-	$args["datefilter_istodayallowed"] = "true";
+	$args["valid_dates"] = "any";
 
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	

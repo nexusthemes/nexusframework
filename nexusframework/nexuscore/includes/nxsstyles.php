@@ -168,6 +168,16 @@ function nxs_getstyletypeoptions() {
 					"contain"	=>nxs_l18n__("contain", "nxs_td"), 
 				)
 		),
+		"valid_dates" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					"any"				=>nxs_l18n__("any", "nxs_td"),
+					"pastonly"			=>nxs_l18n__("past only", "nxs_td"), 
+					"todayandfuture"	=>nxs_l18n__("today and the future", "nxs_td"), 
+					"tomorrowandfuture"	=>nxs_l18n__("tomorrow and the future", "nxs_td"), 
+				)
+		),
 		"margin" => array (
 			"subtype" 			=> "multiplier",
 			"values" 			=> array("", 0, 0.1, 0.2, 0.3, 0.5, 0.7, 1, 1.5, 2, 2.5, 3, 3.5),
@@ -187,7 +197,7 @@ function nxs_getstyletypeoptions() {
 		"maxheight" => array (
 			"subtype" 			=> "multiplier",
 			"values" 			=> array("",  0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 3.0),
-		),
+		)
 	);
 	return $options;
 }
