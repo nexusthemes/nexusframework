@@ -501,11 +501,24 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 
 				$destination_articleid = $placeholdermetadata['destination_articleid'];
 				
+				// articel link avaible
 				if ($destination_articleid != 0 && $destination_articleid != "") {
 					$destinationurl = nxs_geturl_for_postid($destination_articleid);
-					$target = "";
-				} else {
+					$target = "_self";
+				}
+
+				else {
 					$destinationurl = $placeholdermetadata["destination_url"];
+					$target = "_blank";
+				}
+
+				// destination target set at current window
+				if ($placeholdermetadata["destination_target"] === "_self"){
+					$target = "_self";
+				}
+
+				// destination target set at new window
+				if ($placeholdermetadata["destination_target"] === "_blank"){
 					$target = "_blank";
 				}
 
@@ -743,7 +756,6 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					
 					//nxs_js_log('slider js loaded');
 					//nxs_js_log('initializing slider');
-					
 					var theSlider = jQuery('#slideset_<?php echo $placeholderid; ?>');
 					var options = {
 						timeout: <?php echo $item_durationvisibility; ?>,
@@ -756,7 +768,6 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 						//before: nxs_js_slidebox_slideupdated_<?php echo $placeholderid; ?>,
 						after: nxs_js_slidebox_slideupdated_<?php echo $placeholderid; ?>
 					}
-					
 					jQuery(theSlider).cycle(options);
 					
 					var shouldPauseOnHover = <?php echo $pause_transition; ?>;
