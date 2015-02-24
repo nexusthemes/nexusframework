@@ -369,7 +369,7 @@ function nxs_js_supporthidechat()
 	<?php ob_start(); ?>
 	
 	<div id="nxs_chat_showchatwrap" class="nxs-admin-wrap">
-		<a href="#" onclick="nxs_js_supportchatshow(); return false;"><span class="nxs-icon-support" /></a>
+		<a href="#" onclick="nxs_js_supportchatshow(); return false;"><span class="nxs-icon-question" /></a>
 	</div>
 	
 	<?php
