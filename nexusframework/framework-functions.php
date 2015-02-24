@@ -36,10 +36,27 @@ function nxs_get_minimal_mb_memory_for_themes(){
 	return 64;
 }
 
-// check if the memory limit is at least 64M
 function nxs_has_enough_memory_available()
 {
+	$shouldtrytoincrease = true;
+	return nxs_has_enough_memory_available_v2($shouldtrytoincrease);
+}
+
+function nxs_mem_increasememifneeded()
+{
+	$shouldtrytoincrease = true;
+	nxs_has_enough_memory_available_v2($shouldtrytoincrease);
+}
+
+// check if the memory limit is at least 64M
+function nxs_has_enough_memory_available_v2($shouldtrytoincrease)
+{
+	// we store the configured mem limit of ini in global
+	// variable as its possible that the value changes
+	// in time...
+	global $nxs_gl_memlimitini;
 	$memory_limit = ini_get('memory_limit');
+	$nxs_gl_memlimitini = $memory_limit;
 	if (preg_match('/^(\d+)(.)$/', $memory_limit, $matches)) {
 	    if ($matches[2] == 'G') {
 	        $memory_limit = $matches[1] * 1024 * 1024 * 1024; // nnnG -> nnn GB
@@ -54,19 +71,31 @@ function nxs_has_enough_memory_available()
 	$max_limit_in_bytes = $max_limit_in_mb * 1024 * 1024; // 64M
 
 	$result = ($memory_limit >= $max_limit_in_bytes); // at least 64M?
+	
+	if ($result === false)
+	{
+		if ($shouldtrytoincrease)
+		{
+			// increase it
+			$required_mem_in_mb = nxs_get_minimal_mb_memory_for_themes() . 'M';
+			ini_set('memory_limit', $required_mem_in_mb);
+			// recursion (1x)
+			$result = nxs_has_enough_memory_available_v2(false);
+		}
+	}
+	
 	return $result;
 }
 
 function nxs_memory_notifynotenoughmemory()
 {
+	global $nxs_gl_memlimitini;
 	?>
-
 	<div class="error">
-	    <p>
-	    	This theme requires at least <?php echo nxs_get_minimal_mb_memory_for_themes(); ?>M of memory. Currently there is only <?php echo ini_get('memory_limit'); ?> memory configured on the server.
-	    </p>
-	  </div>
-
+    <p>
+    	This theme requires at least <?php echo nxs_get_minimal_mb_memory_for_themes(); ?>M of memory. Currently there is only <?php echo $nxs_gl_memlimitini; ?> memory configured on the server.
+    </p>
+  </div>
 	<?php
 }
 
@@ -77,6 +106,9 @@ if (is_admin()){
 		return;
 	}
 }
+
+//
+nxs_mem_increasememifneeded();
 
 // tell WP SUPER CACHE to not cache any page;
 // if caching is wanted, user should use the 
