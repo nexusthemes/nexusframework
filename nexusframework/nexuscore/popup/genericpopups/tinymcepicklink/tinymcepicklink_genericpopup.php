@@ -96,12 +96,24 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 	
 	// published posts and pages
 	$publishedargs = array();
-	$publishedargs["post_status"] = "publish";
-	$publishedargs["post_type"] = array("post", "page");
+	$publishedargs["post_status"] 	= array("publish", "private");
+
+	$posttypes = array("post", "page");
+	$posttypes = apply_filters("nxs_links_getposttypes", $posttypes);
+	$publishedargs["post_type"] = $posttypes;
+
 	$publishedargs["orderby"] = "post_date";//$order_by;
 	$publishedargs["order"] = "DESC"; //$order;
 	$publishedargs["numberposts"] = -1;	// allemaal!
-  $publishedpages = get_posts($publishedargs);
+  	$publishedpages = get_posts($publishedargs);
+
+  	$id = 'linkpostid';
+  	$value = $linkpostid;
+
+  	$items = get_posts($publishedargs);
+	$post = get_post($value);
+
+  	$isfound = false;
 	
 	ob_start();
 
@@ -138,35 +150,77 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 		          	<h4><?php nxs_l18n_e("Article[nxs:popup,heading]", "nxs_td"); ?></h4>
 		        	</div>
 		          <div class="box-content">
-		            <select class="chosen-select" id='linkpostid' name='linkpostid' onchange='nxs_js_popup_sessiondata_make_dirty();'>
-		        		<?php 
-		        			if ($linkpostid == "")
-		        			{
-		        				$selected = "selected='selected'";
-		        			}
-		        			else
+		          	<!-- <?php echo $id ?> -->
+		            <select id="<?php echo $id ?>" class="chosen-select" name="<?php echo $id ?>" onchange="nxs_js_popup_sessiondata_make_dirty();">
+						<?php
+							if ($value == "" || $value == "0" || $post == null) 
+							{
+								$selected = "selected='selected'";
+								$isfound = true;
+							} 
+							
+							else 
+							{
+								$selected = "";
+							}
+						?>
+						<option value='<?php echo $selected ?>'><?php echo nxs_l18n__("No article selected[nxs:heading]", "nxs_td"); ?></option>
+						<?php
+							foreach ($items as $currentpost) 
+							{
+								$currentpostid = $currentpost->ID;
+								$posttitle = nxs_cutstring($currentpost->post_title, 50);
+								$posttitle = htmlspecialchars($posttitle);
+							
+								if ($posttitle == "") 
+								{
+									$posttitle = "(leeg, ID:" . $currentpostid . ")";
+								}                    
+							
+								$selected = "";
+								
+								if ($currentpostid == $value) 
+								{
+									$selected = "selected='selected'";
+									$isfound = true;
+								} 
+								else 
+								{
+									$selected = "";
+								}
+								echo "<option value='$value' $selected	>$posttitle</option>";
+							}
+						
+							if ($isfound == false)
+							{
+								if ($post == null)
+								{
+									// nothing
+								}
+								else
+								{
+									$post_mime_type = $post->post_mime_type;
+									$title = $post->post_title;
+									
+									// if its still not found if we reach this far, 
+									// it could be that the selected postid points to somewhere else
+									// (for example a PDF attachment)
+									$selected = "selected='selected'";
+									if ("application/pdf" == $post_mime_type)
 									{
-										$selected = "";
+										echo "<option value='$value' $selected	>PDF: $title (ID: {$value})</option>";
 									}
-		        			echo "<option value='' $selected>" . nxs_l18n__("Not yet selected[nxs:ddl]", "nxs_td") . "</option>";
-		        			
-									foreach ($publishedpages as $currentpost)
+									else
 									{
-										$currentpostid = $currentpost->ID;
-										$posttitle = nxs_cutstring($currentpost->post_title, 50);
-										$selected = "";
-										if ($currentpostid == $linkpostid)
-										{
-											$selected = "selected='selected'";
-										}
-										else
-										{
-											$selected = "";
-										}
-		            		echo "<option value='$currentpostid' $selected	>$posttitle</option>";
+										echo "<option value='$value' $selected	>Attachment (ID: {$value}, Mime: {$post_mime_type}, Title: {$title})</option>";
 									}
-		        		?>
-		        		</select>
+								}
+							}
+						?>
+					</select>
+					<div>
+						<a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id ?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select media item</a>
+					</div>
 		          </div>
 		        </div>
 		        <div class="nxs-clear margin"></div>
