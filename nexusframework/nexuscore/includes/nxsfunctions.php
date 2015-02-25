@@ -3289,7 +3289,7 @@ function nxs_dataconsistency_notify_data_inconsistent() {
 	    <p>
 	    	Data verification required.
 	    	<br />
-	    	<A HREF="'.$url.'">Click here to verificate your data</A>
+	    	<A HREF="'.$url.'">Click here to verify the data of the website</A>
 	    	
 	    </p>
 	  </div>';
