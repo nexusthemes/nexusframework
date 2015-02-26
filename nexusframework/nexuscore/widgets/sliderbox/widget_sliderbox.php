@@ -840,9 +840,6 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					$title = '<h2 class="nxs-slide-title nxs-title '.$title_fontsize_cssclass.' '.$title_fontzen_cssclass.'">'.nxs_render_html_escape_gtlt($slidedataset["title"]).'</h2>'; 
 				}
 				
-				// Filler
-				if ($title != "" && $text != ""){ $filler = '<div class="nxs-clear padding"></div>'; }
-				
 				// Text
 				if ($slidedataset["text"] != "") { 
 					$text = '
@@ -850,6 +847,9 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 							<p class="nxs-padding-bottom0 '.$text_fontzen_cssclass.'">'.nxs_render_html_escape_gtlt($slidedataset["text"]).'</p>
 						</div>'; 
 				}
+				
+				// Filler
+				if ($title != "" && $text != "" && $metadata_layout != "center") { $filler = '<div class="nxs-clear padding"></div>'; }
 
 				// Button
 				if ($slidedataset["slide_button"] != "") {
