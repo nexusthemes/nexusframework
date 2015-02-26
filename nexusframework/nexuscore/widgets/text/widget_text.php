@@ -602,11 +602,13 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	/* LINK
 	---------------------------------------------------------------------------------------------------- */
 	
+	/*
+	// fix; in some cases the destination_articleid is filled incorrectly
 	// Article link
 	if ($destination_articleid != "") {
 		$destination_url = nxs_geturl_for_postid($destination_articleid);
 	}
-	
+	*/
 	
 	/* TITLE
 	---------------------------------------------------------------------------------------------------- */
@@ -658,6 +660,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	$concatenatedcssclasses = nxs_concatenateargswithspaces("nxs-title", $title_alignment_cssclass, $title_fontsize_cssclass, $titlecssclasses, $title_fontzen_cssclass);
 	
+	
 	// Title
 	$titlehtml = "<{$title_heading} {$title_schemaorg_attribute} class='{$concatenatedcssclasses}'>{$title}</{$title_heading}>";
 	
@@ -701,6 +704,9 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	} else if ($destination_url != "") {
 		$titlehtml = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';
 	}
+	
+	
+
 	
 	// Applying link colors to title
 	if ($top_info_color_cssclass == "") { 

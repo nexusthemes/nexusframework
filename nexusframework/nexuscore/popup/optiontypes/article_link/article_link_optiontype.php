@@ -19,90 +19,101 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 	$items = get_posts($publishedargs);
 	$post = get_post($value);
 							 
-	$isfound = false;
+							$isfound = false;
 							              
-	?>
-	<div class="content2">
-		<div class="box">
-			<?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip) ?>
-			<div class="box-content">
-				<!-- <?php echo $id ?> -->
-				<select id="<?php echo $id ?>" class="chosen-select" name="<?php echo $id ?>" onchange="nxs_js_popup_sessiondata_make_dirty();">
-					<?php
-						if ($value == "" || $value == "0" || $post == null) 
-						{
-							$selected = "selected='selected'";
-							$isfound = true;
-						} 
-						
-						else 
-						{
-							$selected = "";
-						}
-					?>
-					<option value='<?php echo $selected ?>'><?php echo nxs_l18n__("No article selected[nxs:heading]", "nxs_td"); ?></option>
-					<?php
-						foreach ($items as $currentpost) 
-						{
-							$currentpostid = $currentpost->ID;
-							$posttitle = nxs_cutstring($currentpost->post_title, 50);
-							$posttitle = htmlspecialchars($posttitle);
-						
-							if ($posttitle == "") 
-							{
-								$posttitle = "(leeg, ID:" . $currentpostid . ")";
-							}                    
-						
-							$selected = "";
-							
-							if ($currentpostid == $value) 
-							{
-								$selected = "selected='selected'";
-								$isfound = true;
-							} 
-							else 
-							{
-								$selected = "";
-							}
-							echo "<option value='$currentpostid' $selected	>$posttitle</option>";
-						}
-					
-						if ($isfound == false)
-						{
-							if ($post == null)
-							{
-								// nothing
-							}
-							else
-							{
-								$post_mime_type = $post->post_mime_type;
-								$title = $post->post_title;
-								
-								// if its still not found if we reach this far, 
-								// it could be that the selected postid points to somewhere else
-								// (for example a PDF attachment)
-								$selected = "selected='selected'";
-								if ("application/pdf" == $post_mime_type)
-								{
-									echo "<option value='$value' $selected	>PDF: $title (ID: {$value})</option>";
-								}
-								else
-								{
-									echo "<option value='$value' $selected	>Attachment (ID: {$value}, Mime: {$post_mime_type}, Title: {$title})</option>";
-								}
-							}
-						}
-					?>
-				</select>
-				<!-- allow user to pick a media item -->
-				<div>
-					<a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select media item</a>
-				</div>	
-			</div>
-		</div>
-		<div class="nxs-clear"></div>
-	</div> <!--END content-->
-<?php
+							echo '
+							<div class="content2">
+								<div class="box">
+									' . nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip) . '
+									<div class="box-content">
+										<!-- ' . $id . ' -->
+										<select id="'. $id .'" class="chosen-select" name="'. $id .'" onchange="nxs_js_popup_sessiondata_make_dirty();">
+										';
+										 
+										if ($value == "" || $value == "0" || $post == null) 
+										{
+											$selected = "selected='selected'";
+											$isfound = true;
+										} 
+										else 
+										{
+											$selected = "";
+										}
+										echo "<option value='' $selected >" . nxs_l18n__("No article selected[nxs:heading]", "nxs_td") . "</option>";
+										
+										foreach ($items as $currentpost) 
+										{
+											$currentpostid = $currentpost->ID;
+											$posttitle = nxs_cutstring($currentpost->post_title, 50);
+											$posttitle = htmlspecialchars($posttitle);
+										
+											if ($posttitle == "") 
+											{
+												$posttitle = "(leeg, ID:" . $currentpostid . ")";
+											}                    
+										
+											$selected = "";
+											
+											if ($currentpostid == $value) 
+											{
+												$selected = "selected='selected'";
+												$isfound = true;
+											} 
+											else 
+											{
+												$selected = "";
+											}
+											echo "<option value='$currentpostid' $selected	>$posttitle</option>";
+										}
+										
+										//
+										
+										if ($isfound == false)
+										{
+											if ($post == null)
+											{
+												// nothing
+											}
+											else
+											{
+												$post_mime_type = $post->post_mime_type;
+												$title = $post->post_title;
+												
+												// if its still not found if we reach this far, 
+												// it could be that the selected postid points to somewhere else
+												// (for example a PDF attachment)
+												$selected = "selected='selected'";
+												if ("application/pdf" == $post_mime_type)
+												{
+													echo "<option value='$value' $selected	>PDF: $title (ID: {$value})</option>";
+												}
+												else
+												{
+													echo "<option value='$value' $selected	>Attachment (ID: {$value}, Mime: {$post_mime_type}, Title: {$title})</option>";
+												}
+											}
+										}
+											
+										 echo '
+										</select>
+										
+										<!-- allow user to pick a media item -->';
+										
+										echo '
+										
+										<div>';
+										?>
+											<a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select media item</a>
+										<?php
+										echo '
+										</div>
+										
+									</div>
+								</div>
+								<div class="nxs-clear"></div>
+							</div> <!--END content-->
+               ';
+	//
 }
 
 function nxs_popup_optiontype_article_link_renderstorestatecontroldata($optionvalues)

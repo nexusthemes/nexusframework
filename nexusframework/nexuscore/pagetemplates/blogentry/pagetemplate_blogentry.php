@@ -299,17 +299,18 @@ function nxs_pagetemplate_handlecontent()
 						}
 						
 						if ($shouldrenderoriginaltemplate)
-						{
-							echo "<!-- original template; $nxs_gl_templates_wp -->";
+						{							
+							echo "<!-- 4 original template; $nxs_gl_templates_wp -->";
 
 							rewind_posts();
-							
-							// delegate to the original template handler
+
 							ob_start();
+							// delegate to the original template handler
+							//ob_start();
 							include($nxs_gl_templates_wp);
 							$wpmaintcontenthtml = ob_get_contents();
 							ob_end_clean();
-							
+						
 							// TODO: determine here whether we need to output this yes or no,
 							// depending on the configuration of backend content, and whether or not
 							// there actually is something relevant to render
@@ -556,7 +557,7 @@ function nxs_pagetemplate_handleheader()
 {
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
-	
+		
 	$pagemeta = nxs_get_postmeta($containerpostid);
 	$page_cssclass = $pagemeta["page_cssclass"];
 
@@ -623,6 +624,8 @@ function nxs_pagetemplate_handleheader()
 	<?php
 
 	// dit wordt niet op goede plek ge-enqueued
+	
+
 	
 	// if responsiveness is turned on
 	if ($sitemeta["responsivedesign"] == "true")
@@ -706,9 +709,19 @@ function nxs_pagetemplate_handleheader()
 	<?php } ?>
 	
 	<?php do_action('nxs_bodybegin'); ?>
-
 	<?php include(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsmenu.php'); ?>
+	
+	<?php
+	// loading the frontendediting overrides the containerpostid,
+	// we therefore store it first
+	global $nxs_global_current_containerpostid_being_rendered;
+	$nxs_global_current_containerpostid_being_rendered = $containerpostid;
+	?>
 	<?php require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php'); ?>
+	<?php
+	// loading the frontendediting overrides the containerpostid?
+	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
+	?>
 	
 	<?php global $nxs_global_extendrootclass; ?>
  <div id="nxs-container" class="nxs-containsimmediatehovermenu nxs-no-click-propagation <?php echo $page_cssclass . " " . $nxs_global_extendrootclass; ?>">
@@ -735,7 +748,6 @@ function nxs_pagetemplate_handleheader()
 						?>
 						<div class="nxs-header-topfiller"></div>
 						<?php
-	
 						echo nxs_getrenderedhtmlincontainer($containerpostid, $existingheaderid, "default");
 					}
 					else

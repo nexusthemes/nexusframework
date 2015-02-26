@@ -1177,7 +1177,9 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		$button_html = "";
 		if ($destination_articleid != "") {
 			$destination_url = nxs_geturl_for_postid($destination_articleid); 
+			
 			$button_html = '<a href="' . $destination_url .'" class="nxs-button ' . $button_color_cssclass .' ' . $button_scale_cssclass .'">' . $button_text . '</a>';
+			
 		} else if ($destination_url != "") {
 			$button_html = '<a href="' . $destination_url .'" class="nx-button ' . $button_color_cssclass .' ' . $button_scale_cssclass .'" target="_blank">' . $button_text . '</a>';
 		}
