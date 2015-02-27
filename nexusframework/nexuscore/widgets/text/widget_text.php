@@ -536,6 +536,14 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	}
 	
 	if (
+		($image_imageid == "" && $callout_text != "") ||
+		($image_size != nxs_isimageautofit($image_size) && $callout_text != "")
+	) {
+		$shouldrenderalternative = true;
+		$alternativehint = nxs_l18n__("You need to upload an image with a 'stretch' configuration for the callout banner to be shown.", "nxs_td");
+	}
+	
+	if (
 		$image_imageid == "" &&
 		$image_url == "" &&
 		$title == "" &&
@@ -704,9 +712,6 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	} else if ($destination_url != "") {
 		$titlehtml = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';
 	}
-	
-	
-
 	
 	// Applying link colors to title
 	if ($top_info_color_cssclass == "") { 
