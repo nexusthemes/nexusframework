@@ -610,13 +610,10 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	/* LINK
 	---------------------------------------------------------------------------------------------------- */
 	
-	/*
-	// fix; in some cases the destination_articleid is filled incorrectly
 	// Article link
 	if ($destination_articleid != "") {
 		$destination_url = nxs_geturl_for_postid($destination_articleid);
 	}
-	*/
 	
 	/* TITLE
 	---------------------------------------------------------------------------------------------------- */
