@@ -319,6 +319,8 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	unset($temp_array["postid"]);
+	unset($temp_array["placeholderid"]);
 	
 	// Blend unistyle properties
 	$unistyle = $temp_array["unistyle"];
@@ -339,15 +341,16 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = $temp_array;
 	
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
 	
 	// Widget specific variables
 	extract($mixedattributes);
+
+	// in some configurations the mixedattributes contain faulty
+	// postid; in that case, 
+	//$postid = $args["postid"];
 	
 	$hovermenuargs = array();
 	$hovermenuargs["postid"] = $postid;
@@ -355,6 +358,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
 	$hovermenuargs["metadata"] = $mixedattributes;
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	
 	
 	// Turn on output buffering
 	ob_start();

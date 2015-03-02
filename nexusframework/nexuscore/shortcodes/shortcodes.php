@@ -94,7 +94,14 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	else
 	{
 		echo "Unsupported pagerowtemplate; " . $pagerowtemplate;
-		die();
+		//var_dump($rowattributes);
+		
+		//nxs_webmethod_return_nack("malformed row");
+		//die();
+		
+		// 
+		$pagerowtemplate = "one";
+		//die();
 	}
 	
 	if (isset($grs_upgradetoexceptionalresponsiverow) && $grs_upgradetoexceptionalresponsiverow == "true")

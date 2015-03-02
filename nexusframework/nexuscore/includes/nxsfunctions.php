@@ -8581,7 +8581,7 @@ function nxs_unicontent_getunicontentproperties($group, $name)
 	{
 		$result = array();
 	}
-	
+
 	return $result;
 }
 
@@ -11276,6 +11276,8 @@ function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 		$show_ui = true;
 	}
 	
+	$hasadmin = nxs_has_adminpermissions();
+	
 	register_post_type
 	( 
 		'nxs_' . $title,
@@ -11302,7 +11304,7 @@ function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 			
 			'taxonomies' => $taxonomies,
 			'hierarchical' => false,
-			'query_var' => true,
+			'query_var' => $hasadmin,	// only admin/authenticated users should be able to query
 			'rewrite' => false,
 		)
 	);

@@ -39,6 +39,9 @@
 		$faviconid = "";
 	}
 	$analyticsUA = nxs_seo_getanalyticsua();
+	
+	$meta = nxs_theme_getmeta();
+	$version = $meta["version"];
 ?>
 <!DOCTYPE html>
 <?php nxs_render_htmlstarttag(); ?>
@@ -46,7 +49,7 @@
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
 	<!-- Nexus Framework | http://nexusthemes.com -->	
-	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemename(); ?>" />
+	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemename(); ?> | <?php echo $version; ?>" />
 	<title><?php wp_title(''); ?></title>
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 

@@ -272,7 +272,8 @@ add_action('init', 'nxs_handlewebmethods', 999999);
 
 if (is_admin() && nxs_isdataconsistencyvalidationrequired()) 
 {
-	add_action('admin_notices', 'nxs_dataconsistency_notify_data_inconsistent');
+	// skip for now... to be implemented
+	// add_action('admin_notices', 'nxs_dataconsistency_notify_data_inconsistent');
 }
 
 // todo: fix data verification part
@@ -739,6 +740,31 @@ function nxs_init()
 				}
 				
 				die();
+			}
+			else if ($_REQUEST["nxs"] == "parsepost")
+			{
+				$postid = $_REQUEST["postid"];
+				echo "dumppost $postid<br />";
+				$poststructure = nxs_parsepoststructure($postid);
+				echo nxs_prettyprint_array($poststructure);
+				/*
+				sanitizes broken poststructure;
+				$i = 0;
+				$maxi = count($poststructure);
+				for ($i = 0; $i < $maxi; $i++)
+				{
+					if ($poststructure[$i]["pagerowtemplate"] == "")
+					{
+						unset($poststructure[$i]);
+					}
+				}
+				$poststructure = array_values($poststructure);
+				echo "becomes:<br />";
+				echo nxs_prettyprint_array($poststructure);
+				//die();
+				nxs_storebinarypoststructure($postid, $poststructure);
+				die();
+				*/
 			}
 			else if ($_REQUEST["nxs"] == "dumpsitemeta")
 			{
@@ -1586,10 +1612,19 @@ function nxs_render_postfooterlink()
 	<?php
 }
 
-add_action('init', 'nxs_performdataconsistencycheck');
+//add_action('init', 'nxs_performdataconsistencycheck');
 add_action('init', 'nxs_register_menus');
 add_action('init', 'nxs_create_post_types_and_taxonomies');
 add_action('init', 'nxs_clearunwantedscripts');
+
+function nxs_performdataconsistencycheck()
+{
+	if (nxs_isdataconsistencyvalidationrequired())
+	{
+		require_once(NXS_FRAMEWORKPATH . '/nexuscore/dataconsistency/dataconsistency.php');
+		$isdataconsistent = nxs_ensuredataconsistency("*");
+	}
+}
 
 function nxs_clearunwantedscripts()
 {
@@ -1664,12 +1699,14 @@ function nxs_create_post_types_and_taxonomies()
   // as register_taxonomy_for_object_type unfortunately doesn't handle this itself (weird!?!)
   add_action('pre_get_posts', 'nxs_pre_get_posts_categorypageextension');  
   
-	nxs_registernexustype("header", true);				// holds content that is positioned at the top of the screen
-	nxs_registernexustype("sidebar", true);				// holds content that is positioned at the side of the screen
-	nxs_registernexustype("footer", true);				// holds content that is positioned at the bottom of the screen
+  $hasadmin = nxs_has_adminpermissions();
+  
+	nxs_registernexustype("header", $hasadmin);				// holds content that is positioned at the top of the screen
+	nxs_registernexustype("sidebar", $hasadmin);				// holds content that is positioned at the side of the screen
+	nxs_registernexustype("footer", $hasadmin);				// holds content that is positioned at the bottom of the screen
 
-	nxs_registernexustype("subheader", true);			// holds content that is positioned below header, left of sidebar and above main content of the screen
-	nxs_registernexustype("subfooter", true); 		// holds content that is positioned: above footer, left of sidebar and below main content of the screen
+	nxs_registernexustype("subheader", $hasadmin);			// holds content that is positioned below header, left of sidebar and above main content of the screen
+	nxs_registernexustype("subfooter", $hasadmin); 		// holds content that is positioned: above footer, left of sidebar and below main content of the screen
 	
 	nxs_registernexustype("menu", false);					// since the WP menu's are not easily im/exportable, we use our own
 	
@@ -1694,7 +1731,7 @@ function nxs_create_post_types_and_taxonomies()
 		array(
 			'hierarchical' => false,
 			'label' => 'Sub type',
-			'query_var' => true,
+			'query_var' => $hasadmin,
 			'show_ui' => $show_ui,	// hide from ui
 			'rewrite' => true
 		)
@@ -1703,9 +1740,9 @@ function nxs_create_post_types_and_taxonomies()
 	$ispublic = false;
 	nxs_registernexustype_withtaxonomies("genericlist", array("nxs_tax_subposttype"), $ispublic);
 	
-	$ispublic = true;
-	nxs_registernexustype_withtaxonomies("templatepart", array("nxs_tax_subposttype"), $ispublic);	// holds content that is positioned in between subheader and subfooter
-	nxs_registernexustype_withtaxonomies("busrulesset", array("nxs_tax_subposttype"), $ispublic);		// holds a set of business rules
+	$hadadmin = nxs_has_adminpermissions();
+	nxs_registernexustype_withtaxonomies("templatepart", array("nxs_tax_subposttype"), $hadadmin);	// holds content that is positioned in between subheader and subfooter
+	nxs_registernexustype_withtaxonomies("busrulesset", array("nxs_tax_subposttype"), $hadadmin);		// holds a set of business rules
 }
 
 

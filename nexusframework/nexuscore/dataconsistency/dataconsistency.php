@@ -2,26 +2,20 @@
 
 function nxs_ensuredataconsistency($scope)
 {
-	error_log("nxs; todo: implement nxs_ensuredataconsistency after import");
-
-	// TODO: should be rewritten;
-	// after a data import, the system should only
-	// create an option, and when that option is set,
-	// a warning/error msg should show only in the wp backend
-	// its not a good idea to invoke this data consistency fixer here,
-	// if the site has huge amounts of posts, this could break
-	// the front-end
-	/*
-	nxs_webmethod_return_nack("postid empty? (uphd)");
-	
-	$chunkedsteps = array();
-	$chunkedsteps["scope"] = $scope;
-	
-	$result = nxs_ensuredataconsistency_chunked($scope);
+	$chunkedsteps == "";
+	$triesleft = 1000;
+	$log = "";
+	while ($chunkedsteps != "finished" && $triesleft > 0)
+	{
+		$result = nxs_ensuredataconsistency_chunked($chunkedsteps);
+		
+		$chunkedsteps = $result["nextchunkedsteps"];
+		$log .= $result["log"];
+		$triesleft--;
+	}
 	
 	$report = $result["report"];
 	return $report;
-	*/
 }
 
 function nxs_ensuredataconsistency_chunked($chunkedsteps)
