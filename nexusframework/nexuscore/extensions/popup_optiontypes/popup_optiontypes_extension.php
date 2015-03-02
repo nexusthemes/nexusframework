@@ -78,6 +78,7 @@ nxs_ext_lazyload_popup_optiontype("colorvariation");
 nxs_ext_lazyload_popup_optiontype("gotosheet");
 nxs_ext_lazyload_popup_optiontype("custom");
 nxs_ext_lazyload_popup_optiontype("backgroundpattern");
+nxs_ext_lazyload_popup_optiontype("backgroundposition");
 nxs_ext_lazyload_popup_optiontype("wrapperbegin");
 nxs_ext_lazyload_popup_optiontype("wrapperend");
 nxs_ext_lazyload_popup_optiontype("icon");

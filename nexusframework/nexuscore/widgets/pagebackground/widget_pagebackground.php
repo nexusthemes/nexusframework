@@ -64,7 +64,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 	if ($image_imageid != "") 
 	{
 		// Background image
-		$imagemetadata= wp_get_attachment_image_src($image_imageid, 'full', true);
+		$imagemetadata = wp_get_attachment_image_src($image_imageid, 'full', true);
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl = $imagemetadata[0];
 		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
@@ -72,6 +72,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 		jQuery("html").css("background-image", "url(' . $imageurl . ')");
 		';
 		
+		// background size
 		if ($image_isfixed != "")
 		{
 			$backgroundimagehtml .= '
@@ -98,6 +99,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 			';
 		}
 		
+		// background repeat
 		if ($image_repeat == "") { $repeatattribute = "no-repeat"; }
 		if ($image_repeat == "-") { $repeatattribute = "no-repeat"; }
 		if ($image_repeat == "repeatx") { $repeatattribute = "repeat-x"; }
@@ -106,6 +108,15 @@ function nxs_widgets_pagebackground_beforeend_head()
 		
 		$backgroundimagehtml .= '
 			jQuery("html").css("background-repeat", "' . $repeatattribute . '");
+			';
+
+		// background position
+		if (!$image_position) {
+			$image_position = "left top";
+		}
+
+		$backgroundimagehtml .= '
+			jQuery("html").css("background-position", "' . $image_position . '");
 			';
 	}
 	?>
@@ -120,6 +131,8 @@ function nxs_widgets_pagebackground_beforeend_head()
 				echo $backgroundcolorhtml;
 				echo $backgroundimagehtml;
 				?>
+
+				console.log("POSITION: <?php echo $image_position ?>");
 			}
 		);
 	</script>
@@ -143,13 +156,15 @@ function nxs_widgets_pagebackground_home_getoptions($args)
 		(
 			// SLIDES			
 			
-			array( 
+			array
+			( 
 				"id" 				=> "wrapper_input_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Display", "nxs_td"),
 			),
 			
-			array( 
+			array
+			( 
 				"id" 					=> "flatcolor_linkcolorvar",
 				"type" 				=> "colorvariation",
 				"scope" 			=> "background",
@@ -169,7 +184,8 @@ function nxs_widgets_pagebackground_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Image repeat", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("backgroundimage_repeat")
 			),
-			array(
+			array
+			(
 				"id" 				=> "image_isfixed",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Image fixed", "nxs_td"),
@@ -182,7 +198,14 @@ function nxs_widgets_pagebackground_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Image size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("backgroundimage_size")
 			),
-			array( 
+			array
+			(
+				"id" 				=> "image_position",
+				"type" 				=> "backgroundposition",
+				"label" 			=> nxs_l18n__("Image position", "nxs_td"),
+			),
+			array
+			( 
 				"id" 				=> "wrapper_input_end",
 				"type" 				=> "wrapperend"
 			),
@@ -308,9 +331,7 @@ function nxs_widgets_pagebackground_initplaceholderdata($args)
 {
 	extract($args);
 
-	/*
-	$args['property'] = "value";
-	*/
+	$args['image_position'] = "left top";
 		
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	

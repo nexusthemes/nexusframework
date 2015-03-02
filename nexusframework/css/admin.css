@@ -1073,6 +1073,76 @@ input.color-picker 									{ width: 70px; }
 .texture7 							{ background: url(../images/backgrounds/body-bg7.png); }
 .texture8 							{ background: url(../images/backgrounds/body-bg8.png); }
 
+/* ADMIN MENU BACKGROUND POSITION
+----------------------------------------------------------------------------------------------------*/
+
+.nxs-bgpos-list {
+	display: block;
+	width: 83px; height: 83px;
+	border: #bbb solid 1px;
+	border-radius: 3px;
+	margin: 0 15px 5px 0;
+	padding: 0;
+}
+
+.nxs-bgpos-list li {
+	border-bottom: #bbb solid 1px;
+	border-right: #bbb solid 1px;
+	display: block;
+	width: 27px;
+	height: 27px;
+	float: left;
+}
+
+.nxs-bgpos-list li.bgpos-item-active,
+.nxs-bgpos-list li.bgpos-item-hover {
+	background-color: #eee;
+	background: -webkit-gradient(linear,50% 0,50% 100%,color-stop(20%,#eee),color-stop(50%,#e6e6e6),color-stop(52%,#ddd),color-stop(100%,#e4e4e4));
+	background: -webkit-linear-gradient(top,#eee 20%,#e6e6e6 50%,#ddd 52%,#e4e4e4 100%);
+	background: -moz-linear-gradient(top,#eee 20%,#e6e6e6 50%,#ddd 52%,#e4e4e4 100%);
+	background: -o-linear-gradient(top,#eee 20%,#e6e6e6 50%,#ddd 52%,#e4e4e4 100%);
+	background: linear-gradient(top,#eee 20%,#e6e6e6 50%,#ddd 52%,#e4e4e4 100%);
+	background-clip: padding-box;
+	box-shadow: 0 0 3px #eee inset,0 1px 1px rgba(0,0,0,.1);
+	color: #444;
+}
+
+.nxs-bgpos-list li:nth-child(3n) { border-right: 0px; }
+.nxs-bgpos-list li:nth-child(1n+7) { border-bottom: 0px; }
+
+.nxs-bgpos-list li .nxs-bgpos-arrow {
+	display: none;
+	width: 27px; height: 27px;
+	background-size: 100% auto;
+	background-position: center;
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+.nxs-bgpos-list li.bgpos-item-active .nxs-bgpos-arrow {
+	opacity: 1;
+}
+
+.nxs-bgpos-list li.bgpos-item-active .nxs-bgpos-arrow,
+.nxs-bgpos-list li.bgpos-item-hover .nxs-bgpos-arrow {
+	display: block;
+}
+
+.nxs-bgpos-list li:nth-child(1) .nxs-bgpos-arrow { background-image: url(../images/left-top.png);}
+.nxs-bgpos-list li:nth-child(2) .nxs-bgpos-arrow { background-image: url(../images/center-top.png);}
+.nxs-bgpos-list li:nth-child(3) .nxs-bgpos-arrow { background-image: url(../images/right-top.png);}
+.nxs-bgpos-list li:nth-child(4) .nxs-bgpos-arrow { background-image: url(../images/left-center.png);}
+.nxs-bgpos-list li:nth-child(5) .nxs-bgpos-arrow { background-image: url(../images/center-center.png);}
+.nxs-bgpos-list li:nth-child(6) .nxs-bgpos-arrow { background-image: url(../images/right-center.png);}
+.nxs-bgpos-list li:nth-child(7) .nxs-bgpos-arrow { background-image: url(../images/left-bottom.png);}
+.nxs-bgpos-list li:nth-child(8) .nxs-bgpos-arrow { background-image: url(../images/center-bottom.png);}
+.nxs-bgpos-list li:nth-child(9) .nxs-bgpos-arrow { background-image: url(../images/right-bottom.png);}
+
+.nxs-bgpos-container .nxs-bgpos-key,
+.nxs-bgpos-container .nxs-bgpos-value {
+	display: none;
+}
+
 /* ADMIN MENU BACKGROUNDs
 ----------------------------------------------------------------------------------------------------*/
 .nxs-admin-wrap ul.backgrounds li 					{ display: block; width: 55px; height: 55px; float: left; margin: 0 5px 5px 0 !important; padding: 0; box-shadow: none; }
