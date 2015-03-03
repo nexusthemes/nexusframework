@@ -3129,6 +3129,11 @@ function nxs_getsitemeta_internal($nackwhenerror)
 				$textst = json_encode($st);
 				error_log("stack:" . $textst);
 				
+				if (nxs_isnxswebservicerequest())
+				{
+					nxs_webmethod_return_nack("tried to retrieve site settings, while no active site settings were found (webmethod)");
+				}
+				
 				//nxs_dumpstacktrace();
 				//die();
 				nxs_saveobclean();
@@ -3142,9 +3147,7 @@ function nxs_getsitemeta_internal($nackwhenerror)
  					$backendurl = wp_login_url();
  				}
  				// add a reason
- 				
 				$backendurl = nxs_addqueryparametertourl_v2($backendurl, "nxstrigger", "noactivesitesettings", true, true);
-				
  				wp_redirect($backendurl);
  				
  				//echo "This theme is not yet initialized. Click <a href='" . $backendurl . "'>here</a> to go to the backend";

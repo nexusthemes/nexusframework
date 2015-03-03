@@ -649,6 +649,9 @@ function nxs_init()
 				echo "<br /><br />keyvalues:<br />";
 				$sitemeta = nxs_getsitemeta_internal(false);
 				var_dump($sitemeta);
+				echo "<br /><br />json:<br />"; 
+				$jsonsitemeta = json_encode($sitemeta);
+				echo "$jsonsitemeta<br />";
 		  	die();
 		  }
 		 	else if ($_REQUEST["nxs"] == "locale")
