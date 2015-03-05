@@ -104,9 +104,8 @@ function nxs_widgets_twittertweets_home_getoptions($args)
 			
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "select",
+				"type" 				=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("title_halignment"),
 				"unistylablefield"	=> true
 			),
 						

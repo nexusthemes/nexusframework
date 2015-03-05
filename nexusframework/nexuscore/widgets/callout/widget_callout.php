@@ -123,9 +123,8 @@ function nxs_widgets_callout_home_getoptions($args)
 			),	
 			array(
 				"id" 				=> "halign",
-				"type" 				=> "select",
+				"type" 				=> "halign",
 				"label" 			=> nxs_l18n__("Horizontal alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
 				"unistylablefield"	=> true
 			),
 
@@ -626,7 +625,6 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			echo '
 			<div class="image-background '.$hclass.' '.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
 				<div class="text-wrapper '.$bgcolor_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.' '.$border_radius_cssclass.' '.$float.'" style="'.$callout_text_width.' '.$center.'">';
-					
 					if ($title != "") 		{echo $htmltitle;}
 					
 					if ($title != "" && $subtitle != "") {

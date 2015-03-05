@@ -37,9 +37,8 @@ function nxs_widgets_generic_title_getoptions($args)
 			
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "select",
+				"type" 				=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("title_halignment"),
 				"unistylablefield"	=> true
 			),
 						
