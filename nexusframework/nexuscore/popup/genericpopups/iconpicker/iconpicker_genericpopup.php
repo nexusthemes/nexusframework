@@ -288,7 +288,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"fuel",
 										"jumpstart",
 										"leather",
-										"iron",									
+										"iron",
+										"leftalign",
+										"centeralign",
+										"rightalign",									
 										
 									);
 										
