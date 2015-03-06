@@ -123,8 +123,9 @@ function nxs_widgets_callout_home_getoptions($args)
 			),	
 			array(
 				"id" 				=> "halign",
-				"type" 				=> "halign",
+				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Horizontal alignment", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
 				"unistylablefield"	=> true
 			),
 
@@ -389,14 +390,14 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	ob_start();
 	
 	global $nxs_global_placeholder_render_statebag;
-	
 	if ($shouldrenderalternative == true) {
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
 	} else {
 		// Appending custom widget class
 		// Responsive display
+		if ($responsive_display == "") { $responsive_display = 'never'; }
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display;
-	} 
+	}
 	
 	
 	/* EXPRESSIONS
@@ -625,6 +626,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			echo '
 			<div class="image-background '.$hclass.' '.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
 				<div class="text-wrapper '.$bgcolor_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.' '.$border_radius_cssclass.' '.$float.'" style="'.$callout_text_width.' '.$center.'">';
+					
 					if ($title != "") 		{echo $htmltitle;}
 					
 					if ($title != "" && $subtitle != "") {
