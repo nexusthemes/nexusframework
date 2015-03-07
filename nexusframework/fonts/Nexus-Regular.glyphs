@@ -38295,11 +38295,58 @@ unicode = E425;
 },
 {
 glyphname = uniE426;
-lastChange = "2015-02-10 12:36:54 +0000";
+lastChange = "2015-03-06 12:42:13 +0000";
 layers = (
 {
 layerId = "C6537DE0-68DF-4C5B-B6D5-25B465FDDD7D";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"0 640 LINE",
+"0 384 LINE",
+"2048 384 LINE",
+"2048 640 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 -256 LINE",
+"0 -512 LINE",
+"2048 -512 LINE",
+"2048 -256 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 192 LINE",
+"0 -64 LINE",
+"1280 -64 LINE",
+"1280 192 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 1088 LINE",
+"0 832 LINE",
+"1280 832 LINE",
+"1280 1088 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 1536 LINE",
+"0 1280 LINE",
+"2048 1280 LINE",
+"2048 1536 LINE"
+);
+}
+);
 width = 2048;
 }
 );
@@ -38307,11 +38354,58 @@ unicode = E426;
 },
 {
 glyphname = uniE427;
-lastChange = "2014-09-19 13:45:34 +0000";
+lastChange = "2015-03-06 12:44:23 +0000";
 layers = (
 {
 layerId = "C6537DE0-68DF-4C5B-B6D5-25B465FDDD7D";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"0 1536 LINE",
+"0 1280 LINE",
+"2048 1280 LINE",
+"2048 1536 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 -256 LINE",
+"0 -512 LINE",
+"2048 -512 LINE",
+"2048 -256 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"384 192 LINE",
+"384 -64 LINE",
+"1664 -64 LINE",
+"1664 192 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 640 LINE",
+"0 384 LINE",
+"2048 384 LINE",
+"2048 640 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"384 1088 LINE",
+"384 832 LINE",
+"1664 832 LINE",
+"1664 1088 LINE"
+);
+}
+);
 width = 2048;
 }
 );
@@ -38319,11 +38413,58 @@ unicode = E427;
 },
 {
 glyphname = uniE428;
-lastChange = "2014-09-19 13:45:34 +0000";
+lastChange = "2015-03-06 12:43:21 +0000";
 layers = (
 {
 layerId = "C6537DE0-68DF-4C5B-B6D5-25B465FDDD7D";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"0 1536 LINE",
+"0 1280 LINE",
+"2048 1280 LINE",
+"2048 1536 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 -256 LINE",
+"0 -512 LINE",
+"2048 -512 LINE",
+"2048 -256 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"768 192 LINE",
+"768 -64 LINE",
+"2048 -64 LINE",
+"2048 192 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 640 LINE",
+"0 384 LINE",
+"2048 384 LINE",
+"2048 640 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"768 1088 LINE",
+"768 832 LINE",
+"2048 832 LINE",
+"2048 1088 LINE"
+);
+}
+);
 width = 2048;
 }
 );
