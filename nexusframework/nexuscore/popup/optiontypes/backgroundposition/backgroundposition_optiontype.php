@@ -17,6 +17,10 @@ function nxs_popup_optiontype_backgroundposition_renderhtmlinpopup($optionvalues
 		"center bottom"		=> nxs_l18n__("center bottom", "nxs_td"), 
 		"right bottom"		=> nxs_l18n__("right bottom", "nxs_td")
 	);
+
+	if (!$value){
+		$value = "left top";
+	}
 	
 	?>
 
@@ -27,13 +31,11 @@ function nxs_popup_optiontype_backgroundposition_renderhtmlinpopup($optionvalues
 				<div id='nxs-bgpos-<?php echo $id; ?>' class="nxs-bgpos-container">
 					<ul class="nxs-bgpos-list nxs-float-left">
 						<?php
-							$isfound = false;
 							foreach ($items as $currentkey => $currentvalue) 
       						{
       							$selected = "";
 					      		if ($currentkey == $value) 
 					      		{
-					      			$isfound = true;
 					      			$selected = 'bgpos-item-active';
 					      			$bgpos_text = $currentvalue;
 					      		}

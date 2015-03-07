@@ -66,9 +66,8 @@ function nxs_widgets_bio_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "select",
+				"type" 				=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("title_halignment"),
 				"unistylablefield"	=> true
 			),
 			
@@ -360,9 +359,8 @@ function nxs_widgets_bio_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "text_alignment",
-				"type" 				=> "select",
+				"type" 				=> "halign",
 				"label" 			=> nxs_l18n__("Text alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("text_halignment"),
 				"unistylablefield"	=> true
 			),
 			

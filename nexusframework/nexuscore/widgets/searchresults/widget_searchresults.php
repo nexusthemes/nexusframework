@@ -122,9 +122,8 @@ function nxs_widgets_searchresults_home_getoptions($args)
 			),	
 			array(
 				"id" 				=> "item_button_alignment",
-				"type" 				=> "select",
+				"type" 				=> "halign",
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("button_halignment")
 			),
 			array(
 				"id" 				=> "font_icon",
@@ -172,26 +171,25 @@ function nxs_widgets_searchresults_home_getoptions($args)
 			),
 			
 			array(
-				"id" 					=> "title_alignment",
-				"type" 				=> "select",
+				"id" 				=> "title_alignment",
+				"type" 				=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
-				"dropdown" 		=> nxs_style_getdropdownitems("title_halignment")
 			),
 						
 			array(
-				"id" 					=> "title_fontsize",
+				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
-				"dropdown" 		=> nxs_style_getdropdownitems("fontsize")
+				"dropdown"	 		=> nxs_style_getdropdownitems("fontsize")
 			),
 			array(
-				"id" 					=> "title_heightiq",
+				"id" 				=> "title_heightiq",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
-				"tooltip" 		=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td")
+				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td")
 			),
 			array( 
-				"id" 					=> "wrapper_advancedtitle_end",
+				"id" 				=> "wrapper_advancedtitle_end",
 				"type" 				=> "wrapperend"
 			),
 			

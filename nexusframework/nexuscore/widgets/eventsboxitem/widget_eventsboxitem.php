@@ -187,9 +187,8 @@ function nxs_widgets_eventsboxitem_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "button_alignment",
-				"type" 				=> "select",
+				"type" 				=> "halign",
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("button_halignment"),
 				"unistylablefield"	=> true,
 			),
 				

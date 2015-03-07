@@ -2718,6 +2718,9 @@ h3#order_review_heading,
 .nxs-icon-iron:before	 			{ content: "\e423"; }
 .nxs-icon-caterpillar:before	 	{ content: "\e424"; }
 .nxs-icon-beetle:before		 		{ content: "\e425"; }
+.nxs-icon-leftalign:before			{ content: "\e426";	}
+.nxs-icon-centeralign:before		{ content: "\e427"; }
+.nxs-icon-rightalign:before			{ content: "\e427";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
