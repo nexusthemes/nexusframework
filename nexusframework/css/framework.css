@@ -435,6 +435,10 @@ to 			{ -webkit-transform: rotate(360deg); }
 /* GENERAL CSS STYLING
 ----------------------------------------------------------------------------------------------------*/
 
+/* position */
+.nxs-relative 												{ position: relative; }
+.nxs-absolute 												{ position: absolute; }
+
 /* HEIGHT */
 .nxs-height100												{ height: 100%; }
 
@@ -565,6 +569,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-center													{ display: table; margin: 0 auto; }
 
 /* ABSOLUTE */
+.nxs-top													{ top: 0px; }
 .nxs-right													{ right: 0px; }
 
 /* KITCHEN SINK */
@@ -2720,7 +2725,7 @@ h3#order_review_heading,
 .nxs-icon-beetle:before		 		{ content: "\e425"; }
 .nxs-icon-leftalign:before			{ content: "\e426";	}
 .nxs-icon-centeralign:before		{ content: "\e427"; }
-.nxs-icon-rightalign:before			{ content: "\e427";	}
+.nxs-icon-rightalign:before			{ content: "\e428";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
