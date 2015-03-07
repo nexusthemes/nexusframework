@@ -122,7 +122,8 @@ function nxs_widgets_searchresults_home_getoptions($args)
 			),	
 			array(
 				"id" 				=> "item_button_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
 			),
 			array(
@@ -172,7 +173,8 @@ function nxs_widgets_searchresults_home_getoptions($args)
 			
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
 			),
 						

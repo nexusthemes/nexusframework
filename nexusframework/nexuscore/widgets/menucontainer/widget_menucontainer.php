@@ -74,8 +74,8 @@ function nxs_widgets_menucontainer_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "halign",
-				"type" 				=> "select",
-				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Horizontal alignment", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Align the menu to the left, center or right from the placeholder.", "nxs_td"),
 				"unistylablefield"	=> true

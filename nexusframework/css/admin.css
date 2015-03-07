@@ -1073,78 +1073,6 @@ input.color-picker 									{ width: 70px; }
 .texture7 							{ background: url(../images/backgrounds/body-bg7.png); }
 .texture8 							{ background: url(../images/backgrounds/body-bg8.png); }
 
-/* ADMIN MENU BACKGROUND POSITION
-----------------------------------------------------------------------------------------------------*/
-
-.nxs-bgpos-list {
-	display: block;
-	width: 83px; height: 83px;
-	border: #bbb solid 1px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	margin: 0 15px 5px 0;
-	padding: 0;
-}
-
-.nxs-bgpos-list li {
-	border-bottom: #bbb solid 1px;
-	border-right: #bbb solid 1px;
-	display: block;
-	width: 27px;
-	height: 27px;
-	float: left;
-}
-
-.nxs-bgpos-list li.bgpos-item-active,
-.nxs-bgpos-list li.bgpos-item-hover {
-	background-color: #eee;
-	background: -webkit-gradient(linear,50% 0,50% 100%,color-stop(20%,#eee),color-stop(50%,#e6e6e6),color-stop(52%,#ddd),color-stop(100%,#e4e4e4));
-	background: -webkit-linear-gradient(top,#eee 20%,#e6e6e6 50%,#ddd 52%,#e4e4e4 100%);
-	background: -moz-linear-gradient(top,#eee 20%,#e6e6e6 50%,#ddd 52%,#e4e4e4 100%);
-	background: -o-linear-gradient(top,#eee 20%,#e6e6e6 50%,#ddd 52%,#e4e4e4 100%);
-	background: linear-gradient(top,#eee 20%,#e6e6e6 50%,#ddd 52%,#e4e4e4 100%);
-	background-clip: padding-box;
-	box-shadow: 0 0 3px #eee inset,0 1px 1px rgba(0,0,0,.1);
-	color: #444;
-}
-
-.nxs-bgpos-list li:nth-child(3n) { border-right: 0px; }
-.nxs-bgpos-list li:nth-child(1n+7) { border-bottom: 0px; }
-
-.nxs-bgpos-list li .nxs-bgpos-arrow {
-	display: none;
-	width: 27px; height: 27px;
-	background-size: 100% auto;
-	background-position: center;
-	cursor: pointer;
-	opacity: 0.5;
-}
-
-.nxs-bgpos-list li.bgpos-item-active .nxs-bgpos-arrow {
-	opacity: 1;
-}
-
-.nxs-bgpos-list li.bgpos-item-active .nxs-bgpos-arrow,
-.nxs-bgpos-list li.bgpos-item-hover .nxs-bgpos-arrow {
-	display: block;
-}
-
-.nxs-bgpos-list li:nth-child(1) .nxs-bgpos-arrow { background-image: url(../images/left-top.png);}
-.nxs-bgpos-list li:nth-child(2) .nxs-bgpos-arrow { background-image: url(../images/center-top.png);}
-.nxs-bgpos-list li:nth-child(3) .nxs-bgpos-arrow { background-image: url(../images/right-top.png);}
-.nxs-bgpos-list li:nth-child(4) .nxs-bgpos-arrow { background-image: url(../images/left-center.png);}
-.nxs-bgpos-list li:nth-child(5) .nxs-bgpos-arrow { background-image: url(../images/center-center.png);}
-.nxs-bgpos-list li:nth-child(6) .nxs-bgpos-arrow { background-image: url(../images/right-center.png);}
-.nxs-bgpos-list li:nth-child(7) .nxs-bgpos-arrow { background-image: url(../images/left-bottom.png);}
-.nxs-bgpos-list li:nth-child(8) .nxs-bgpos-arrow { background-image: url(../images/center-bottom.png);}
-.nxs-bgpos-list li:nth-child(9) .nxs-bgpos-arrow { background-image: url(../images/right-bottom.png);}
-
-.nxs-bgpos-container .nxs-bgpos-key,
-.nxs-bgpos-container .nxs-bgpos-value {
-	display: none;
-}
-
 /* ADMIN MENU BACKGROUNDs
 ----------------------------------------------------------------------------------------------------*/
 .nxs-admin-wrap ul.backgrounds li 					{ display: block; width: 55px; height: 55px; float: left; margin: 0 5px 5px 0 !important; padding: 0; box-shadow: none; }
@@ -1157,12 +1085,11 @@ input.color-picker 									{ width: 70px; }
 	box-shadow: 		inset 0 1px 1px white, 0 0 10px rgba(0, 0, 0, 0.4);  
 }
 
-/* ADMIN MENU HALIGN
+/* ADMIN MENU RADIOBUTTONS
 ----------------------------------------------------------------------------------------------------*/
 
-.nxs-halign-list {
+.nxs-radiobuttons-list {
 	display: block;
-	width: 98px; height: 28px;
 	border: #bbb solid 1px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -1172,7 +1099,7 @@ input.color-picker 									{ width: 70px; }
   	box-shadow: 0 1px 1px rgba(0,0,0,.1);
 }
 
-.nxs-halign-list li {
+.nxs-radiobuttons-list li {
 	position: relative;
 	display: block;
 	width: 32px;
@@ -1189,7 +1116,7 @@ input.color-picker 									{ width: 70px; }
 	color: #444;
 }
 
-.nxs-halign-list li.halign-item-hover {
+.nxs-radiobuttons-list li.radiobuttons-item-hover {
 	background-color: #f9f9f9;
 	background-image: -webkit-gradient(linear,50% 0,50% 100%,color-stop(20%,#eee),color-stop(80%,#fff));
 	background-image: -webkit-linear-gradient(#eee 20%,#fff 80%);
@@ -1198,8 +1125,8 @@ input.color-picker 									{ width: 70px; }
 	background-image: linear-gradient(#eee 20%,#fff 80%);
 }
 
-.nxs-halign-list li.halign-item-active,
-.nxs-halign-list li.halign-item-hover.halign-item-active {
+.nxs-radiobuttons-list li.radiobuttons-item-active,
+.nxs-radiobuttons-list li.radiobuttons-item-hover.radiobuttons-item-active {
 	background-color: #ddd;
 	background-image: -webkit-gradient(linear,50% 0,50% 100%,color-stop(20%,#c6c6c6),color-stop(80%,#ddd));
 	background-image: -webkit-linear-gradient(#c6c6c6 20%,#ddd 80%);
@@ -1209,7 +1136,7 @@ input.color-picker 									{ width: 70px; }
 	box-shadow: 0 1px 0 #d6d6d6 inset;
 }
 
-.nxs-halign-list li:first-child {
+.nxs-radiobuttons-list li:first-child {
 	-webkit-border-top-left-radius: 4px;
 	-webkit-border-bottom-left-radius: 4px;
 	-moz-border-radius-topleft: 4px;
@@ -1218,7 +1145,7 @@ input.color-picker 									{ width: 70px; }
 	border-bottom-left-radius: 4px;
 }
 
-.nxs-halign-list li:last-child { 
+.nxs-radiobuttons-list li:last-child { 
 	border-right: 0px;
 	-webkit-border-top-right-radius: 4px;
 	-webkit-border-bottom-right-radius: 4px;
@@ -1228,23 +1155,85 @@ input.color-picker 									{ width: 70px; }
 	border-bottom-right-radius: 4px;
 }
 
-.nxs-halign-list li .nxs-halign-icon {
+.nxs-radiobuttons-list li .nxs-radiobuttons-icon {
 	display: block;
 	width: 32px; height: 28px;
-	background-size: auto 50%;
-	background-position: center;
-	background-repeat: no-repeat;
+	font-size: 16px !important;
+	line-height: 27px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.nxs-radiobuttons-container .nxs-radiobuttons-key,
+.nxs-radiobuttons-container .nxs-radiobuttons-value {
+	display: none;
+}
+
+/* ADMIN MENU RADIOBUTTONS NO ICON
+----------------------------------------------------------------------------------------------------*/
+
+.nxs-radiobutton-noicon .nxs-radiobuttons-list li {
+	width: auto;
+	padding: 0px 7px;
 	cursor: pointer;
 }
 
-.nxs-halign-list li:nth-child(1) .nxs-halign-icon { background-image: url(../images/align-left.png);}
-.nxs-halign-list li:nth-child(2) .nxs-halign-icon { background-image: url(../images/align-center.png);}
-.nxs-halign-list li:nth-child(3) .nxs-halign-icon { background-image: url(../images/align-right.png);}
+.nxs-radiobuttons-list li .nxs-radiobuttons-multiplier {
+	font-size: 13px !important;
+	line-height: 30px;
+	cursor: pointer;
+} 
 
-.nxs-halign-container .nxs-halign-key,
-.nxs-halign-container .nxs-halign-value {
-	display: none;
+/* ADMIN MENU RADIOBUTTONS LAYOUT 3x3
+----------------------------------------------------------------------------------------------------*/
+
+.nxs-radiobuttons-layout-3x3 .nxs-radiobuttons-list {
+	width: 83px; height: 83px;
 }
+
+.nxs-radiobuttons-layout-3x3 li {
+	border-bottom: #bbb solid 1px;
+	border-right: #bbb solid 1px;
+	width: 27px;
+	height: 27px;
+}
+
+.nxs-radiobuttons-layout-3x3 li:first-child {
+	-webkit-border-bottom-left-radius: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.nxs-radiobuttons-layout-3x3 li:last-child { 
+	-webkit-border-top-right-radius: 0px;
+	-moz-border-radius-topright: 0px;
+	border-top-right-radius: 0px;
+}
+
+.nxs-radiobuttons-layout-3x3 li:nth-child(3) { 
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-right-radius: 4px;
+}
+
+.nxs-radiobuttons-layout-3x3 li:nth-child(7) { 
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+.nxs-radiobuttons-layout-3x3 li:nth-child(3n) 			{border-right: 0px; }
+.nxs-radiobuttons-layout-3x3 li:nth-child(1n+7) 		{ border-bottom: 0px; }
+.nxs-radiobuttons-layout-3x3 li .nxs-radiobuttons-icon 	{ width: 27px; height: 27px; }
+
+/* ADMIN MENU RADIOBUTTONS IMAGEBACKGROUND POSITION
+----------------------------------------------------------------------------------------------------*/
+
+.nxs-radiobutton-backgroundimage_position li 													{ background: #f6f6f6;}
+.nxs-radiobutton-backgroundimage_position li .nxs-radiobuttons-icon 							{ display: none; opacity: 0.5; }
+.nxs-radiobutton-backgroundimage_position li.radiobuttons-item-active .nxs-radiobuttons-icon 	{ opacity: 1; }
+.nxs-radiobutton-backgroundimage_position li.radiobuttons-item-active .nxs-radiobuttons-icon,
+.nxs-radiobutton-backgroundimage_position li.radiobuttons-item-hover .nxs-radiobuttons-icon 	{ display: block; }
 
 /* ADMIN PLACEHOLDER HOVER STATES
 ----------------------------------------------------------------------------------------------------*/

@@ -95,7 +95,8 @@ function nxs_widgets_image_home_getoptions($args)
 			
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),

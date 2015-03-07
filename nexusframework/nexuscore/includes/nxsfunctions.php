@@ -10414,6 +10414,32 @@ function nxs_style_getstyletypevalues($styletype)
 	return $result;
 }
 
+function nxs_style_getstyletypevaluesandicons($styletype)
+{
+	$options = nxs_getstyletypeoptions();
+	
+	if (!array_key_exists($styletype, $options))
+	{
+		nxs_webmethod_return_nack("unsupported styletype;" . $styletype);
+	}
+	if (!array_key_exists("values", $options[$styletype]))
+	{
+		nxs_webmethod_return_nack("no 'values' property found for styletype;" . $styletype);
+	}
+	if (!array_key_exists("icons", $options[$styletype]))
+	{
+		$result = array(
+			"values" => $options[$styletype]["values"],
+		);
+	} else {
+		$result = array(
+			"values" => $options[$styletype]["values"],
+			"icons" => $options[$styletype]["icons"]
+		);
+	}
+	return $result;
+}
+
 function nxs_style_getsubtype($styletype)
 {
 	$options = nxs_getstyletypeoptions();
@@ -10461,20 +10487,10 @@ function nxs_getdashedtextrepresentation_for_numericvalue($currentvalue)
 	return $key;
 }
 
-function nxs_style_getdropdownitems($styletype)
+function nsx_style_validate_dropdownitems($styletypevalues, $subtype)
 {
 	$result = array();
-	
-	$styletypevalues = nxs_style_getstyletypevalues($styletype);
-	
-	// if not associative, make associative!
-	//if (!nxs_isassociativearray($styletypevalues))
-	//{
-	//	$styletypevalues = nxs_convertindexarraytoassociativearray($styletypevalues);
-	//}
-	
-	$subtype = nxs_style_getsubtype($styletype);
-	
+
 	foreach ($styletypevalues as $currentkey => $currentvalue)
 	{
 		if ($subtype == "multiplier")
@@ -10547,6 +10563,45 @@ function nxs_style_getdropdownitems($styletype)
 		{
 			nxs_webmethod_return_nack("unsupported subtype;" . $subtype);
 		}
+	}
+
+	return $result;
+}
+
+function nxs_style_getdropdownitems($styletype)
+{
+	$result = array();
+	
+	$styletypevalues = nxs_style_getstyletypevalues($styletype);
+	
+	// if not associative, make associative!
+	//if (!nxs_isassociativearray($styletypevalues))
+	//{
+	//	$styletypevalues = nxs_convertindexarraytoassociativearray($styletypevalues);
+	//}
+	
+	$subtype = nxs_style_getsubtype($styletype);
+
+	$result = nsx_style_validate_dropdownitems($styletypevalues, $subtype);
+	
+	return $result;
+}
+
+function nxs_style_getradiobuttonsitems($styletype)
+{
+	$result = array();
+	
+	$styletypevalues = nxs_style_getstyletypevaluesandicons($styletype);
+	
+	$subtype = nxs_style_getsubtype($styletype);
+	
+	$values = nsx_style_validate_dropdownitems($styletypevalues["values"], $subtype);
+	
+	if ($styletypevalues["icons"]) {
+		$icons = $styletypevalues["icons"];
+		$result = array_merge_recursive($values, $icons);
+	} else {
+		$result = $values;
 	}
 	
 	return $result;

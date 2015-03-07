@@ -51,7 +51,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"id" 				=> "title",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
@@ -70,7 +70,8 @@ function nxs_widgets_text_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
@@ -131,7 +132,8 @@ function nxs_widgets_text_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "text_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Text alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
@@ -238,7 +240,8 @@ function nxs_widgets_text_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "button_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
 				"unistylablefield"	=> true,
 			),

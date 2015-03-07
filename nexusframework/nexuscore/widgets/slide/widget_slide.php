@@ -129,7 +129,8 @@ function nxs_widgets_slide_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "button_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
 				"unistylablefield"	=> true,
 			),

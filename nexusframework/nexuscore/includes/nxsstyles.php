@@ -75,19 +75,23 @@ function nxs_getstyletypeoptions() {
 		),
 		"image_halignment" => array (
 			"subtype" 			=> "textlookup",
-			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td"))
+			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td")),
+			"icons" 			=> array("left"=>nxs_l18n__("leftalign", "nxs_td"), "right"=>nxs_l18n__("rightalign", "nxs_td"))
 		),
 		"button_halignment" => array (
 			"subtype" 			=> "textlookup",
-			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td"))
+			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td")),
+			"icons" 			=> array("left"=>nxs_l18n__("leftalign", "nxs_td"), "center"=>nxs_l18n__("centeralign", "nxs_td"), "right"=>nxs_l18n__("rightalign", "nxs_td"))
 		),
 		"title_halignment" => array (
 			"subtype" 			=> "textlookup",
-			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td"))
+			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td")),
+			"icons" 			=> array("left"=>nxs_l18n__("leftalign", "nxs_td"), "center"=>nxs_l18n__("centeralign", "nxs_td"), "right"=>nxs_l18n__("rightalign", "nxs_td"))
 		),
 		"text_halignment" => array (
 			"subtype" 			=> "textlookup",
-			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td"))
+			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td")),
+			"icons" 			=> array("left"=>nxs_l18n__("leftalign", "nxs_td"), "center"=>nxs_l18n__("centeralign", "nxs_td"), "right"=>nxs_l18n__("rightalign", "nxs_td"))
 		),
 		"delaypopup_seconds" => array (
 			"subtype" 			=> "textlookup",
@@ -120,7 +124,8 @@ function nxs_getstyletypeoptions() {
 		),
 		"halign" => array (
 			"subtype" 			=> "textlookup",
-			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td"))
+			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td")),
+			"icons" 			=> array("left"=>nxs_l18n__("leftalign", "nxs_td"), "center"=>nxs_l18n__("centeralign", "nxs_td"), "right"=>nxs_l18n__("rightalign", "nxs_td"))
 		),
 		"orientation" => array (
 			"subtype" 			=> "textlookup",
@@ -167,6 +172,33 @@ function nxs_getstyletypeoptions() {
 					"cover"		=>nxs_l18n__("cover", "nxs_td"), 
 					"contain"	=>nxs_l18n__("contain", "nxs_td"), 
 				)
+		),
+		"backgroundimage_position" =>  array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array 
+			(
+				"left top"			=> nxs_l18n__("left top", "nxs_td"),
+				"center top"		=> nxs_l18n__("center top", "nxs_td"), 
+				"right top"			=> nxs_l18n__("right top", "nxs_td"), 
+				"left center"		=> nxs_l18n__("left center", "nxs_td"),
+				"center center"		=> nxs_l18n__("center center", "nxs_td"), 
+				"right center"		=> nxs_l18n__("right center", "nxs_td"), 
+				"left bottom"		=> nxs_l18n__("left bottom", "nxs_td"),
+				"center bottom"		=> nxs_l18n__("center bottom", "nxs_td"), 
+				"right bottom"		=> nxs_l18n__("right bottom", "nxs_td"),
+			),
+			"icons"				=> array 
+			(
+				"left top"			=> nxs_l18n__("arrow-down-right", "nxs_td"),
+				"center top"		=> nxs_l18n__("arrow-down", "nxs_td"), 
+				"right top"			=> nxs_l18n__("arrow-down-left", "nxs_td"), 
+				"left center"		=> nxs_l18n__("arrow-right", "nxs_td"),
+				"center center"		=> nxs_l18n__("minus", "nxs_td"), 
+				"right center"		=> nxs_l18n__("arrow-left", "nxs_td"), 
+				"left bottom"		=> nxs_l18n__("arrow-up-right", "nxs_td"),
+				"center bottom"		=> nxs_l18n__("arrow-up", "nxs_td"), 
+				"right bottom"		=> nxs_l18n__("arrow-up-left", "nxs_td"),
+			)
 		),
 		"valid_dates" => array (
 			"subtype" 			=> "textlookup",

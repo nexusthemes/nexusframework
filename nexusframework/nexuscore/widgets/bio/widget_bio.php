@@ -66,7 +66,8 @@ function nxs_widgets_bio_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
@@ -359,14 +360,15 @@ function nxs_widgets_bio_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "text_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Text alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			
 			array( 
-			"id" 					=> "wrapper_image_end",
-			"type" 					=> "wrapperend"
+				"id" 					=> "wrapper_image_end",
+				"type" 					=> "wrapperend"
 			),
 			
 			// MISCELLANEOUS

@@ -210,7 +210,8 @@ function nxs_widgets_csv_home_getoptions()
 			),
 			array(
 				"id" 				=> "button_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),

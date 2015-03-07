@@ -60,7 +60,8 @@ function nxs_widgets_banner_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
@@ -116,8 +117,8 @@ function nxs_widgets_banner_home_getoptions($args)
 
 			array(
 				"id" 				=> "halign",
-				"type" 				=> "select",
-				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Horizontal alignment", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Align the banner items to the left, center or right from the placeholder.", "nxs_td"),
 				"unistylablefield"	=> true

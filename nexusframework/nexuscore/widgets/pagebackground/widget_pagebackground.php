@@ -201,8 +201,9 @@ function nxs_widgets_pagebackground_home_getoptions($args)
 			array
 			(
 				"id" 				=> "image_position",
-				"type" 				=> "backgroundposition",
+				"type" 				=> "radiobuttons",
 				"label" 			=> nxs_l18n__("Image position", "nxs_td"),
+				"subtype"			=> "backgroundimage_position"
 			),
 			array
 			( 

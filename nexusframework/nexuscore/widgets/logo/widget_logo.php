@@ -79,9 +79,9 @@ function nxs_widgets_logo_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "halign",
-				"type" 				=> "select",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Logo alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
 				"tooltip" 			=> nxs_l18n__("Align your logo to the left, center or right from the placeholder.", "nxs_td"),
 				"unistylablefield"	=> true
 			),

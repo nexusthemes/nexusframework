@@ -93,9 +93,9 @@ function nxs_widgets_squeezebox_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "halign",
-				"type" 				=> "select",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Horizontal alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
 				"unistylablefield"	=> true
 			),
 			

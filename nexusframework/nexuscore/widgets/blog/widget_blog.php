@@ -68,7 +68,8 @@ function nxs_widgets_blog_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "title_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
@@ -348,7 +349,8 @@ function nxs_widgets_blog_home_getoptions($args)
 			),	
 			array(
 				"id" 				=> "item_button_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype"  			=> "halign",
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
@@ -679,7 +681,8 @@ function nxs_widgets_blog_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "button_alignment",
-				"type" 				=> "halign",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
 				"unistylablefield"	=> true,
 			),
