@@ -1,5 +1,33 @@
 <?php
 
+function nxs_site_wipepostsinposttype($posttype)
+{
+	if (!is_super_admin())
+	{
+		echo "no super admin rights!";
+		die();
+	}
+	
+	global $wpdb;
+	
+	//$result = nxs_get_postmeta(24);
+	//var_dump($result);
+	//die();
+	
+	// delete metadata
+	$p = $wpdb->prepare(
+	"DELETE FROM " . $wpdb->prefix . "postmeta where post_id in (SELECT p.id FROM " . $wpdb->prefix . "posts p where p.post_type='%s')", $posttype
+	);
+	
+	$r = $wpdb->query($p);
+	//var_dump($r);
+	//die();	
+	
+	// delete posts
+	$p = $wpdb->prepare("DELETE FROM " . $wpdb->prefix . "posts WHERE post_type='%s'", $posttype);
+	$r = $wpdb->query($p);	
+}
+
 function nxs_site_wipe()
 {
 	if (!is_super_admin())
@@ -369,6 +397,7 @@ function nxs_license_addadminpages()
 	add_submenu_page("nxs_backend_overview", 'License', 'License', 'manage_options', 'nxs_admin_license', 'nxs_license_theme_license_page_content', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'Update', 'Update', 'manage_options', 'nxs_admin_update', 'nxs_license_update_page_content', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'Restart', 'Restart', 'manage_options', 'nxs_admin_restart', 'nxs_license_restart_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'ThemeSwitch', 'ThemeSwitch', 'manage_options', 'nxs_admin_themeswitch', 'nxs_license_themeswitch_page_content', '', 81 );
 }
 
 function plugin_admin_init()
@@ -1053,5 +1082,116 @@ function nxs_licensekey_callback()
  	</p>
 
 	<?php
+}
+
+function nxs_license_themeswitch_page_content()
+{
+	$iswiped = false;
+	
+	$nxsaction = $_REQUEST["nxsaction"];
+	if ($nxsaction == "wipesite")
+	{
+		$valid = true;
+		
+		// check nonce
+		if (! isset( $_POST['wipenonce']) || ! wp_verify_nonce( $_POST['wipenonce'], 'nxswipesite'))
+		{
+   		echo "Invalid noncetext<br />";
+			$valid = false;
+   	}
+   	
+   	$confirmtext = $_REQUEST["confirmtext"];
+   	if ($confirmtext != "DELETE")
+   	{
+   		echo "Invalid confirmation text<br />";
+   		$valid = false;
+   	}
+   	
+   	//
+   	
+   	if ($valid)
+   	{
+   		// reset the globalid of the homepage to some other value
+   		if (nxs_hassitemeta())
+   		{
+   			$postid = nxs_gethomepageid();
+   			nxs_reset_globalid($postid);
+   			
+   			$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
+   			$postid = $postids[0];
+   			nxs_reset_globalid($postid);
+   			
+   			global $nxs_gl_cache_sitemeta;
+   			$nxs_gl_cache_sitemeta = null;
+   		}
+			
+			// Remove all headers, subheaders, sidebars, subfooters, footers, menus and page decorators from the system.
+			nxs_site_wipepostsinposttype("nxs_settings");
+			nxs_site_wipepostsinposttype("nxs_header");
+			nxs_site_wipepostsinposttype("nxs_subheader");
+			nxs_site_wipepostsinposttype("nxs_sidebar");
+			nxs_site_wipepostsinposttype("nxs_subfooter");
+			nxs_site_wipepostsinposttype("nxs_footer");
+			nxs_site_wipepostsinposttype("nxs_menu");
+			nxs_site_wipepostsinposttype("nxs_admin");
+			
+			nxs_site_wipepostsinposttype("nxs_systemlog");
+			nxs_site_wipepostsinposttype("nxs_templatepart");
+			nxs_site_wipepostsinposttype("nxs_busrulesset");
+			
+			$url = nxs_geturlcurrentpage();
+			$url = nxs_addqueryparametertourl_v2($url, "nxsaction", "wipesitefinished", true, true);
+			?>
+			<script>
+				window.location = '<?php echo $url; ?>';
+			</script>
+			<?php
+			wp_redirect($url, 301);
+			die();
+		}
+		else
+		{
+			//echo "Invalid request";
+		}
+	}
+	else if ($nxsaction == "wipesitefinished")
+	{
+		$iswiped = true;
+	}
+	
+	if ($iswiped)
+	{
+		?>
+		 <div class="wrap">
+	    <h2>Restart</h2>
+	    <p>
+	    	All theme specific elements were succesfully wiped from your system.
+	    </p>
+	   </div>
+	  <?php
+	}
+	else
+	{
+		?>
+	  <div class="wrap">
+	    <h2>Theme Switch (for system admins only!)</h2>
+	    <p>
+	    	todo
+	    </p>
+	    <p>
+				<b>Be sure to make a backup, and proceed only if you know what you are doing!</b><br />
+				<br />
+				To continue erasing your entire site, enter the text <b>DELETE</b> (capitalized) in the field below and push the button.<br />
+				Clicking the button below will wipe ALL information from your site; all images, all posts, pages, etc.etc. This can NOT be reverted.<br />
+				<form method="POST">
+					<?php wp_nonce_field('nxswipesite','wipenonce'); ?>
+					<input type='hidden' name='nxsaction' value='wipesite' />
+					Confirmation text: <input type='text' name='confirmtext' /><br /><br />
+					<input class='button button-primary' type='submit' value='Wipe all content (irreversable)' />
+				</form>
+			</p>
+		</div>
+		<?php
+	}
 }
 ?>

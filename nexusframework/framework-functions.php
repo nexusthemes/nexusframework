@@ -646,12 +646,34 @@ function nxs_init()
 		  	echo "postid:<br />";
 		  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
 				var_dump($postids);
-				echo "<br /><br />keyvalues:<br />";
+				echo "<br /><br />prettyprint:<br />";
 				$sitemeta = nxs_getsitemeta_internal(false);
+				echo nxs_prettyprint_array($sitemeta);
+				echo "<br /><br />dumped:<br />"; 
 				var_dump($sitemeta);
 				echo "<br /><br />json:<br />"; 
 				$jsonsitemeta = json_encode($sitemeta);
 				echo "$jsonsitemeta<br />";
+		  	die();
+		  }
+		  else if ($_REQUEST["nxs"] == "setactivesitesettings")
+		  {
+		  	$postid = $_REQUEST["postid"];
+		  	if ($postid == "")
+		  	{
+		  		echo "not set";
+		  		die();
+		  	}
+		  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
+		  	echo "old values:";
+		  	var_dump($postids);
+		  	foreach ($postids as $oldpostid)
+		  	{
+		  		// reset the old one
+		  		nxs_reset_globalid($oldpostid);
+		  	}
+		  	nxs_reset_globalidtovalue($postid, "activesitesettings");
+		  	echo "configured";
 		  	die();
 		  }
 		 	else if ($_REQUEST["nxs"] == "locale")
@@ -1703,6 +1725,9 @@ function nxs_create_post_types_and_taxonomies()
   add_action('pre_get_posts', 'nxs_pre_get_posts_categorypageextension');  
   
   $hasadmin = nxs_has_adminpermissions();
+  
+  // posttype: "nxs_header"
+  
   
 	nxs_registernexustype("header", $hasadmin);				// holds content that is positioned at the top of the screen
 	nxs_registernexustype("sidebar", $hasadmin);				// holds content that is positioned at the side of the screen

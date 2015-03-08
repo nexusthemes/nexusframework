@@ -191,7 +191,7 @@
 			$url = nxs_geturl_home();
 			?>
 			<div class='nxs-width100 nxs-align-center'>
-				<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo nxs_l18n__("Continu anyways", "nxs_td"); ?></a>
+				<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo nxs_l18n__("Continue anyway", "nxs_td"); ?></a>
 			</div>			
 		</div>
 		

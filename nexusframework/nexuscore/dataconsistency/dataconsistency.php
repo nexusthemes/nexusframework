@@ -47,6 +47,7 @@ function nxs_ensuredataconsistency_chunked($chunkedsteps)
 	{
 		// initialization
   	?><h2><?php echo nxs_l18n__("Initialization", "nxs_td"); ?></h2><?php
+  	
   	$nextchunkedsteps = array("scope"=>"2");
 	}
 	else if ($scope == "2")
@@ -56,7 +57,7 @@ function nxs_ensuredataconsistency_chunked($chunkedsteps)
 		$nextchunkedsteps = array("scope"=>"3");
 	}
 	else if ($scope == "3")
-	{
+	{		
 		global $wpdb;
 		
 		$q = "
@@ -77,37 +78,72 @@ function nxs_ensuredataconsistency_chunked($chunkedsteps)
 		{
 			// er zijn dubbele globalids gevonden die behoren bij 1 postid; inconsistentie!
 			
+			// retrieve (if it exists) the activesitesettings postid
+			$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
+			$activesitesettingsid = $postids[0];
+			
 			$postid = "";
 	  	foreach ($dbresult as $dbrow)
 	  	{
 	  		$currentpostid = $dbrow["postid"];
 	  		
-	  		if ($currentpostid != $postid)
+	  		if ($currentpostid == $activesitesettingsid)
 	  		{
-	  			// set postid; we will keep this record; this is the meta row with the lowest meta_id; we will
-	  			// assume this is the one we should keep
-	  			$postid = $currentpostid;
-	  			continue;
+	  			$currentglobalid = $dbrow["globalid"];
+	  			if ($currentglobalid == "activesitesettings")
+	  			{
+	  				// keep it!
+	  				echo "keeping $currentglobalid for $currentpostid";
+	  			}
+	  			else
+	  			{
+	  				// delete it!
+	  				$currentmetaid = $dbrow["metaid"];
+	  				
+	  				$q = "
+								delete from $wpdb->postmeta where meta_id = %s
+						";
+						
+						echo "deleting duplicate globalid";
+				
+						$deletedbresult = $wpdb->get_results( $wpdb->prepare($q, $currentmetaid), ARRAY_A );
+						if ($deletedbresult === false)
+						{
+							echo "verwijderen van duplicaat globalid mislukt?<br />";
+						}
+	  			}
 	  		}
 	  		else
 	  		{
-	  			$currentmetaid = $dbrow["metaid"];
-	  			
-	  			// this is the 2nd, 3rd or further record for the same postid,
-	  			// we will remove it (postid's should always max 1 globalid!)
-	  			//echo "about to delete meta entry, with metaid:" . $currentmetaid . "<br />";
-	  			// in theorie zou het kunnen zijn dat er verwijzingen bestaan naar deze globalid; die verwijzing raken we dus kwijt..
-	  			
-	  			$q = "
-							delete from $wpdb->postmeta where meta_id = %s
-					";
-			
-					$deletedbresult = $wpdb->get_results( $wpdb->prepare($q, $currentmetaid), ARRAY_A );
-					if ($deletedbresult === false)
-					{
-						echo "verwijderen van duplicaat globalid mislukt?<br />";
-					}
-	  		}
+		  		if ($currentpostid != $postid)
+		  		{
+		  			// set postid; we will keep this record; this is the meta row with the lowest meta_id; we will
+		  			// assume this is the one we should keep
+		  			$postid = $currentpostid;
+		  			continue;
+		  		}
+		  		else
+		  		{
+		  			$currentglobalid = $dbrow["globalid"];
+		  			$currentmetaid = $dbrow["metaid"];
+		  			
+		  			// this is the 2nd, 3rd or further record for the same postid,
+		  			// we will remove it (postid's should always max 1 globalid!)
+		  			// echo "about to delete meta entry, with metaid:" . $currentmetaid . "<br />";
+		  			// in theorie zou het kunnen zijn dat er verwijzingen bestaan naar deze globalid; die verwijzing raken we dus kwijt..
+		  			
+		  			$q = "
+								delete from $wpdb->postmeta where meta_id = %s
+						";
+				
+						$deletedbresult = $wpdb->get_results( $wpdb->prepare($q, $currentmetaid), ARRAY_A );
+						if ($deletedbresult === false)
+						{
+							echo "verwijderen van duplicaat globalid mislukt?<br />";
+						}
+						
+		  		}
+		  	}
 	  	}
 		}
 		else
@@ -118,11 +154,14 @@ function nxs_ensuredataconsistency_chunked($chunkedsteps)
 			}
 		}
 		$nextchunkedsteps = array("scope"=>"4");
+
 	}
 	else if ($scope == "4")
 	{
 		// step 2 - ensure each globalid is used multiple times
 		?><h2><?php echo nxs_l18n__("Verifying data - phase 2/4", "nxs_td"); ?></h2><?php
+		
+		
 		$nextchunkedsteps = array("scope"=>"5");
 	}
 	else if ($scope == "5")
