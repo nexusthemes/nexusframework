@@ -188,7 +188,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 								{
 									$selected = "";
 								}
-								echo "<option value='$value' $selected	>$posttitle</option>";
+								echo "<option value='$currentpostid' $selected	>$posttitle</option>";
 							}
 						
 							if ($isfound == false)
