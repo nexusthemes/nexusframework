@@ -1732,7 +1732,6 @@ table.ui-datepicker-calendar .ui-datepicker-unselectable {
 }
 
 /* Server gallery popup */
-.nxs-gallerypopup											{  }
 .nxs-gallerypopup #nxsbox_ajaxContent { 
 	position: relative !important; 
 	left: 0px; 
@@ -1740,11 +1739,8 @@ table.ui-datepicker-calendar .ui-datepicker-unselectable {
 }
 .nxs-gallerypopup .nxs-popup-dyncontentcontainer,
 .nxs-gallerypopup .nxs-popup-content-canvas-cropper,
-.nxs-gallerypopup .nxs-popup-content-canvas 				{  }
 .nxs-gallerypopup .nxs-table								{ margin: 0 auto; }
-.nxs-gallerypopup .nxs-table-cell							{  }
 .nxs-gallerypopup img										{ 
-	max-height: 80%; 
 	display: block; 
 	margin: 0 auto; 
 	border: 3px solid white; 
