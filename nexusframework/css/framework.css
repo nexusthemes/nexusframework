@@ -661,6 +661,11 @@ html.nxs-pageslider p#nxs-copyright												{ padding-bottom: 60px; }
 #nxs-container table tr:nth-child(even),
 .nxs-datepicker table tr:nth-child(even) 					{ background: #F6F6F6; } 
 
+/* RECAPTCHA */
+.recaptcha_only_if_privacy {
+	display: none;
+}
+
 /* WIDGETS
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
