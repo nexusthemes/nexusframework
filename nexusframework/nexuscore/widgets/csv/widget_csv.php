@@ -427,7 +427,16 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 	// Default HMTL rendering
 	$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "");
 	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js);
-		
+	
+	if (nxs_has_adminpermissions())
+	{
+		if ($_REQUEST["nxs"] == "nocsv")
+		{
+			$shouldrenderalternative = true;
+			$alternativehint = "temporarily disabled";
+		}
+	}
+	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
