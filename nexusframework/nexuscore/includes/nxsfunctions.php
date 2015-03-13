@@ -2762,17 +2762,34 @@ function nxs_get_text_blocks_on_page($postid)
 
 function nxs_get_text_blocks_on_page_v2($postid, $emptyplaceholder)
 {
+	return nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, "before");
+
+}
+
+function nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, $wpcontentrenderbehaviour)
+{
 	$result = array();
 
-	// the wp content
-	$text = do_shortcode(nxs_getwpcontent_for_postid($postid));
-	$item = nxs_toutf8string(strip_tags($text));
-	if ($item != "")
+	if ($wpcontentrenderbehaviour == "none")
 	{
-		if (!in_array($item, $result))
+		//
+	}
+	else if ($wpcontentrenderbehaviour == "before")
+	{
+		// the wp content
+		$text = do_shortcode(nxs_getwpcontent_for_postid($postid));
+		$item = nxs_toutf8string(strip_tags($text));
+		if ($item != "")
 		{
-			$result[] = $item;
+			if (!in_array($item, $result))
+			{
+				$result[] = $item;
+			}
 		}
+	}
+	else
+	{
+		// unknown
 	}
 	
 	// parse de pagina
@@ -10837,20 +10854,21 @@ function nxs_the_excerpt_rss($content)
 
 function nxs_the_content_feed($content, $feedtype)
 {
-
+	$origcontent = $content;
+	
 	// eerst de output van de nxs structuur,
 	// aangevuld met de $content
 	$nxscontent = "";
 	global $post;
 	$postid = $post->ID;
 	
-	$textblocks = nxs_get_text_blocks_on_page_v2($postid, "...");
+	$textblocks = nxs_get_text_blocks_on_page_v3($postid, "", "none");
 	foreach ($textblocks as $currenttextblock)
 	{
 		$nxscontent .= $currenttextblock;
 	}
 	
-	$content = $nxscontent . $content;
+	$content = $nxscontent . $origcontent;
 
 	// 
 	$content = html_entity_decode($content, ENT_QUOTES, 'UTF-8')  ;
