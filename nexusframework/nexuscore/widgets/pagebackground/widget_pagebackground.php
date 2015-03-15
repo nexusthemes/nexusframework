@@ -165,7 +165,7 @@ function nxs_widgets_pagebackground_home_getoptions($args)
 			
 			array
 			( 
-				"id" 					=> "flatcolor_linkcolorvar",
+				"id" 				=> "flatcolor_linkcolorvar",
 				"type" 				=> "colorvariation",
 				"scope" 			=> "background",
 				"label" 			=> nxs_l18n__("Backgroundcolor", "nxs_td"),
@@ -202,6 +202,8 @@ function nxs_widgets_pagebackground_home_getoptions($args)
 			(
 				"id" 				=> "image_position",
 				"type" 				=> "radiobuttons",
+				"layout" 			=> "3x3",
+				"default" 			=> "left top",
 				"label" 			=> nxs_l18n__("Image position", "nxs_td"),
 				"subtype"			=> "backgroundimage_position"
 			),

@@ -7,10 +7,13 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 	$value = $$id;	// $id is the parametername, $$id is the value of that parameter
 
 	if (!$value){
-		$value = nxs_popup_optiontype_radiobuttons_getdefaultvalue($subtype);
+		$value = $default;
 	}
 
-	$layout = nxs_popup_optiontype_radiobuttons_getlayout($subtype);
+	if ($layout) {
+		$layout = " nxs-radiobuttons-layout-" . $layout . " ";
+	}
+
 	$items = nxs_style_getradiobuttonsitems($subtype);
 
 	$no_icon = "";
@@ -106,30 +109,6 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 	</script>
 
 	<?php
-}
-
-function nxs_popup_optiontype_radiobuttons_getdefaultvalue($subtype)
-{
-	$result = "";
-
-	if ($subtype == "backgroundimage_position")
-	{
-		$result = "left top";
-	}
-
-	return $result;
-}
-
-function nxs_popup_optiontype_radiobuttons_getlayout($subtype)
-{
-	$result = "";
-
-	if ($subtype == "backgroundimage_position")
-	{
-		$result = " nxs-radiobuttons-layout-3x3 ";
-	}
-
-	return $result;
 }
 
 function nxs_popup_optiontype_radiobuttons_renderstorestatecontroldata($optionvalues)
