@@ -292,9 +292,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"leftalign",
 										"centeralign",
 										"rightalign",
-										"aligntop",
-										"aligncenter",
-										"alignbuttom",									
+										"topalign",
+										"middlealign",
+										"bottomalign",									
 										
 									);
 										
