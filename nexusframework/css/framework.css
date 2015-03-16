@@ -2727,9 +2727,9 @@ h3#order_review_heading,
 .nxs-icon-leftalign:before			{ content: "\e426";	}
 .nxs-icon-centeralign:before		{ content: "\e427"; }
 .nxs-icon-rightalign:before			{ content: "\e428";	}
-.nxs-icon-aligntop:before			{ content: "\e429";	}
-.nxs-icon-aligncenter:before		{ content: "\e430";	}
-.nxs-icon-alignbuttom:before		{ content: "\e431";	}
+.nxs-icon-topalign:before			{ content: "\e429";	}
+.nxs-icon-middlealign:before		{ content: "\e430";	}
+.nxs-icon-bottomalign:before		{ content: "\e431";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
