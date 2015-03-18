@@ -646,12 +646,11 @@ function nxs_widgets_pageslider_beforeend_head()
 											}
 											
 											// Legacy option
-											if ($button_text != "") {
+											if ($placeholdermetadata['text'] != "") {
 												if ($destinationurl != "") {
 													$link .= '<div class="nxs-clear nxs-margin-top20"><a class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.' '.$metadata_transition.'" href="'.$destinationurl.'">'.$button_text.'</a></div>';
 												}
 											}
-											
 											
 											$lookup = wp_get_attachment_image_src($imageid, 'full', true);
 											$imageurl = $lookup[0];
@@ -663,12 +662,15 @@ function nxs_widgets_pageslider_beforeend_head()
 												echo ",";
 											}
 											
+											// Optional filler between title and text
+											if ($bodytekst != "") { $filler = '<div class="nxs-margin-bottom20"></div>'; }
+											
 											if ($show_metadata != "")
 											{
 												$kophtml = "";
 												if ($koptekst != "")
 												{
-													$kophtml = "<h2 class='nxs-title $title_fontsize_cssclass $title_fontzen_cssclass $metadata_transition'>" . nxs_render_html_escape_singlequote($koptekst) . "</h2>";
+													$kophtml = "<h2 class='nxs-title $title_fontsize_cssclass $title_fontzen_cssclass $metadata_transition'>" . nxs_render_html_escape_singlequote($koptekst) . "</h2>" . $filler;
 												}
 												$bodyhtml = "<div class='nxs-placeholder $description_fontsize_cssclass $description_fontzen_cssclass'><div class='nxs-default-p nxs-padding-bottom0 $metadata_transition'><p>" . nxs_render_html_escape_singlequote($bodytekst) . "</p></div></div>";
 												
