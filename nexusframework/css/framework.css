@@ -1015,7 +1015,7 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 
 /* SUPERSIZED CAPTIONS */
 .slidecaption-container 									{ border-radius: 5px; line-height: 42px; } 
-#slidecaption h2											{ font-size: 45px; line-height: 1em; margin-bottom: 20px; }
+#slidecaption h2											{ font-size: 45px; line-height: 1em; }
 #slidecaption p 											{ font-size: 18px; line-height: 1.5em; }
 #slidecaption a												{ float: none; display: inline; padding: 5px 10px; }
 #controls-wrapper #slidecaption 							{ display: none; }
