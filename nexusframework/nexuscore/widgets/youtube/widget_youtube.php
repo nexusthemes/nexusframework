@@ -1,22 +1,179 @@
 <?php
 
-function nxs_widgets_youtube_gettitle()
-{
-	return nxs_l18n__("Youtube[nxs:widgettitle]", "nxs_td");
-}
-
-function nxs_widgets_youtube_geticonid()
-{
+function nxs_widgets_youtube_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
 	return "nxs-icon-" . $widget_name;
 }
 
-// rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
-// hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
-// het bewerken van de placeholder kan opstarten
+// Setting the widget title
+function nxs_widgets_youtube_gettitle() {
+	return nxs_l18n__("Youtube[nxs:widgettitle]", "nxs_td");
+}
+
+// Unistyle
+function nxs_widgets_text_getunifiedstylinggroup() {
+	return "youtubewidget";
+}
+
+// Unicontent
+function nxs_widgets_text_getunifiedcontentgroup() {
+	return "youtubewidget";
+}
+
+/* WIDGET STRUCTURE
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------- */
+
+// Define the properties of this widget
+function nxs_widgets_youtube_home_getoptions($args) 
+{
+	// CORE WIDGET OPTIONS
+	
+	$options = array
+	(
+		"sheettitle" 		=> nxs_widgets_youtube_gettitle(),
+		"sheeticonid" 		=> nxs_widgets_youtube_geticonid(),
+		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/youtube-widget/"),
+		"unifiedstyling" 	=> array("group" => nxs_widgets_text_getunifiedstylinggroup(),),
+		"unifiedcontent" 	=> array ("group" => nxs_widgets_text_getunifiedcontentgroup(),),
+		"fields" => array
+		(
+			// TITLE
+			
+			array( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Title", "nxs_td"),
+			),
+			
+			array(
+				"id" 				=> "title",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Title", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			array(
+				"id" 				=> "title_heading",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "title_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),			
+			array(
+				"id" 				=> "title_fontsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),
+
+			// VIDEO
+			array( 
+				"id" 				=> "wrapper_youtube_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("youtube settings", "nxs_td"),
+			),
+
+			array(
+				"id" 				=> "videoid",
+				"type" 				=> "input",
+				"visibility" 		=> "hidden",
+				"label" 			=> nxs_l18n__("Video ID", "nxs_td"),
+				"localizablefield"	=> true
+			),
+		
+			array(
+				"id" 				=> "videoid_visualization",
+				"altid" 			=> "videoid",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_youtube_videoid_popupcontent",
+				"label" 			=> nxs_l18n__("Video URL", "nxs_td"),
+				"localizablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "language",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Transcript language", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("For example: en", "nxs_td"),
+				"localizablefield"	=> true
+			),
+
+			array( 
+				"id" 				=> "autoplay",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Autoplay", "nxs_td"),
+				"localizablefield"	=> true
+			),
+
+			array(
+				"id" 				=> "playstartsecs",
+				"type" 				=> "input",
+				"visibility" 		=> "hidden",
+				"label" 			=> nxs_l18n__("Video ID", "nxs_td"),
+				"localizablefield"	=> true
+			),
+
+			array( 
+				"id" 				=> "playstartsecs_visualization",
+				"altid" 			=> "playstartsecs",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_youtube_playsecs_popupcontent",
+				"label" 			=> nxs_l18n__("Play Start", "nxs_td"),
+				"localizablefield"	=> true
+			),
+
+			array(
+				"id" 				=> "playendsecs",
+				"type" 				=> "input",
+				"visibility" 		=> "hidden",
+				"label" 			=> nxs_l18n__("Video ID", "nxs_td"),
+				"localizablefield"	=> true
+			),
+
+			array( 
+				"id" 				=> "playendsecs_visualization",
+				"altid" 			=> "playendsecs",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_youtube_playsecs_popupcontent",
+				"label" 			=> nxs_l18n__("Play End", "nxs_td"),
+				"localizablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "wrapper_youtube_end",
+				"type" 				=> "wrapperend"
+			),		
+		)
+	);
+	
+	nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
+	
+	return $options;
+}
+
+/* WIDGET HTML
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------- */
+
 function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 {
-	//
+	// Importing variables
 	extract($args);
 	
 	global $nxs_global_row_render_statebag;
@@ -28,13 +185,10 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	$title = $mixedattributes['title'];
-	$autoplay = $mixedattributes['autoplay'];
-	$videourl = $mixedattributes['videourl'];
-	$language = $mixedattributes['language'];
-	$videoid = $mixedattributes['videoid'];
-	$playstartsecs = $mixedattributes['playstartsecs'];
-	$playendsecs = $mixedattributes['playendsecs'];
+	// Localize atts
+	$mixedattributes = nxs_localization_localize($mixedattributes);
+	
+	extract($mixedattributes);
 	
 	global $nxs_doing_seo;
 	global $nxs_seo_output;
@@ -82,7 +236,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	{
 		$renderBeheer = false;
 	}
-	
+
 	if ($rendermode == "default")
 	{
 		if ($renderBeheer)
@@ -110,12 +264,22 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	$hovermenuargs["postid"] = $postid;
 	$hovermenuargs["placeholderid"] = $placeholderid;
 	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+	$hovermenuargs["enable_decoratewidget"] = false;
+	$hovermenuargs["enable_deletewidget"] = true;
+	$hovermenuargs["enable_deleterow"] = false;
 	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
+	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
-	//
-	// render actual control / html
-	//
+	if ($videoid == "")
+	{
+		$shouldrenderalternative = true;
+		$alternativehint = nxs_l18n__("No video set", "nxs_td");
+	}
+	
+	$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "");
+
+	/* OUTPUT
+	---------------------------------------------------------------------------------------------------- */
 	
 	ob_start();
 
@@ -126,17 +290,17 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	{
 		$scheme = "https";
 	}
-	
-	echo '
-	<div '.$class.'>';
 
- 		echo '   
-        <div class="video-container">
-        
-            <iframe class="nxs-youtube-iframe" src="'.$scheme.'://www.youtube.com/embed/'.$videoid.'?wmode=transparent'.$transcriptparameter . $additionalparameters.'" frameborder="0"></iframe>
-        
+	?>
+
+	<div <?php echo $class; ?>>
+		<?php echo $htmltitle; ?>
+        <div class="video-container nxs-margin-top30">
+            <iframe class="nxs-youtube-iframe" src="<?php echo $scheme; ?>://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" frameborder="0"></iframe>
         </div>
-    </div>';
+    </div>
+
+    <?php
 	
 
 	
@@ -153,7 +317,6 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	$html = ob_get_contents();
 	ob_end_clean();
 
-	
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
 
@@ -163,394 +326,160 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	return $result;
 }
 
-//
-// het eerste /hoofd/ scherm dat wordt getoond in de popup als de gebruiker
-// het editen van een placeholder initieert
-//
-function nxs_widgets_youtube_home_rendersheet($args)
+function nxs_youtube_videoid_popupcontent($optionvalues, $args, $runtimeblendeddata) 
 {
-	//
+	extract($optionvalues);
 	extract($args);
-	
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	extract($runtimeblendeddata);
 
-	$title = $temp_array['title'];
-	$videoid = $temp_array['videoid'];
-	$videourl = $temp_array['videourl'];
-	$language = $temp_array['language'];
-	$autoplay = $temp_array['autoplay'];
-	$playstartsecs = $temp_array['playstartsecs'];
-	$playendsecs = $temp_array['playendsecs'];
-	
-	// clientpopupsessiondata bevat key values van de client side, deze overschrijven reeds bestaande variabelen
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
-
-	$result = array();
-	$result["result"] = "OK";
+	$value = $$altid;	// $id is the parametername, $$id is the value of that parameter
 
 	ob_start();
-
 	?>
-    <div class="nxs-admin-wrap">
-      <div class="block">
+	<input type='text' class='videourl-<?php echo $id; ?> nxs-float-left' placeholder='<?php nxs_l18n_e("For example http://www.youtube.com/watch?feature=player_embedded&v=Gvvw4lXcCXE[nxs:placeholder]", "nxs_td"); ?>' oninput='nxs_js_updatevideoid_<?php echo $id; ?>();' value='http://www.youtube.com/watch?v=<?php echo $value; ?>' />
+	<div class="nxs-clear">&nbsp;</div>
+	<a href='#' onclick="nxs_js_setvideotosample_<?php echo $id; ?>(); return false;" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Sample[nxs:ddl]", "nxs_td"); ?></a>
+	<a href='http://www.youtube.com' target="_blank" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Open youtube[nxs:button]", "nxs_td"); ?></a>
+	
+	<script type='text/javascript'>
+		nxs_js_requirescript('parseuri_js', 'js', '<?php echo nxs_getframeworkurl() . '/nexuscore/widgets/youtube/js/parseuri.js'; ?>', false);
 
-       	<?php nxs_render_popup_header(nxs_l18n__("Youtube[nxs:widgettitle]", "nxs_td")); ?>
-    	          
-				<div class="nxs-popup-content-canvas-cropper">
-					<div class="nxs-popup-content-canvas">
-		
-		        <div class="content2">
-		            <div class="box">
-		                <div class="box-title">
-		                  <h4><?php nxs_l18n_e("Youtube url", "nxs_td"); ?></h4>
-		                 </div>
-		                <div class="box-content">
-		                	<input type='text' id='videourl' name='videourl' class='nxs-float-left' placeholder='<?php nxs_l18n_e("For example http://www.youtube.com/watch?feature=player_embedded&v=Gvvw4lXcCXE[nxs:placeholder]", "nxs_td"); ?>' value='<?php echo $videourl; ?>' />
-		                	<div class="nxs-clear">&nbsp;</div>
-		                	<a href='#' onclick="jQuery('#videourl').val('<?php nxs_l18n_e("http://www.youtube.com/watch?feature=player_embedded&amp;v=B6cg4ZoUwVU[nxs:sample,url]", "nxs_td"); ?>'); nxs_js_popup_sessiondata_make_dirty(); return false;" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Sample[nxs:ddl]", "nxs_td"); ?></a>
-		                	<a href='http://www.youtube.com' target="_blank" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Open youtube[nxs:button]", "nxs_td"); ?></a>
-		                </div>
-		            </div>
-		            <div class="nxs-clear"></div>
-		        </div> <!--END content-->
-		        
-		        <!-- hu -->
-		        <div class="content2">
-		            <div class="box">
-		                <div class="box-title">
-		                  <h4><?php nxs_l18n_e("Transcript language[nxs:heading]", "nxs_td"); ?></h4>
-		                 </div>
-		                <div class="box-content">
-		                	<input type='text' id='language' name='language' class='nxs-float-left' placeholder='<?php nxs_l18n_e("For example nl[nxs:placeholder]", "nxs_td"); ?>' value='<?php echo $language; ?>' />
-		                	<div class="nxs-clear">&nbsp;</div>
-		                </div>
-		            </div>
-		            <div class="nxs-clear"></div>
-		        </div> <!--END content-->
-
-						<?php
-						if ($autoplay != '')
-						{
-							$autoplayattribute = ' checked="checked" ';
-						}
-						else
-						{
-							$autoplayattribute = '';
-						}
-						
-						?>
-		        
-		        <!-- auto play -->
-		        <div class="content2">
-		            <div class="box">
-		                <div class="box-title">
-		                  <h4><?php nxs_l18n_e("Autoplay", "nxs_td"); ?></h4>
-		                 </div>
-		                <div class="box-content">
-		                	<input type='checkbox' id='autoplay' name='autoplay' class='nxs-float-left' <?php echo $autoplayattribute; ?> />
-		                </div>
-		            </div>
-		            <div class="nxs-clear"></div>
-		        </div> <!--END content-->
-		        
-		        <!-- play start -->
-		        <div class="content2">
-	            <div class="box">
-	                <div class="box-title">
-	                  <h4><?php nxs_l18n_e("Start", "nxs_td"); ?></h4>
-	                 </div>
-	                <div class="box-content">
-	                	<input type='hidden' id='playstartsecs' name='playstartsecs' class='nxs-float-left' value='<?php echo $playstartsecs; ?>' />
-										<?php
-										if ($playstartsecs != "")
-										{
-											$playstart_partmin = floor($playstartsecs / 60);
-											$playstart_partsec = $playstartsecs - ($playstart_partmin * 60);
-											if (strlen($playstart_partsec) == 1)
-											{
-												$playstart_partsec = "0" . $playstart_partsec;
-											}
-										}
-										else
-										{
-											$playstart_partmin = "";
-										}
-										?>
-	                	<input type='text' id='playstart_partmin' name='playstart_partmin' class='nxs-float-left nxs-playstartfield' value='<?php echo $playstart_partmin; ?>' oninput='nxs_js_updateplaystart();' style='width: 40px;' />	                	
-	                	<span class='nxs-float-left' ><?php nxs_l18n_e("m", "nxs_td"); ?></span>
-	                	<input type='text' id='playstart_partsec' name='playstart_partsec' class='nxs-float-left nxs-playstartfield' value='<?php echo $playstart_partsec; ?>' oninput='nxs_js_updateplaystart();' style='width: 40px;' maxlength=2 size=2 />
-	                	<a href="#" onclick="jQuery('.nxs-playstartfield').val(''); nxs_js_updateplaystart(); return false;" class="nxsbutton1 nxs-float-left"><?php nxs_l18n_e("Clear", "nxs_td"); ?></a>
-	                	<script type='text/javascript'>
-	                		function nxs_js_updateplaystart()
-	                		{
-	                			var minutes = jQuery('#playstart_partmin').val();
-	                			if (minutes == '') 
-	                			{
-	                				minutes = "0";
-	                			}
-	                			nxs_js_log(minutes);
-	                			var seconds = jQuery('#playstart_partsec').val();
-	                			if (seconds == '') 
-	                			{
-	                				seconds = "0";
-	                			}
-	                			var shouldclear = false;
-	                			nxs_js_log(seconds);
-	                			try
-	                			{
-		                			if (minutes != '0' || seconds != '0')
-		                			{
-		                				var totalsecs = parseInt(minutes) * 60 + parseInt(seconds);
-		                				if (nxs_js_isint(totalsecs))
-		                				{
-			                				jQuery('#playstartsecs').val(totalsecs);
-			                			}
-			                			else
-		                				{
-		                					nxs_js_log("a");
-		                					shouldclear = true;
-		                				}
-		                			}
-		                			else
-	                				{
-	                					nxs_js_log("b");
-	                					shouldclear = true;
-	                				}
-	                			} 
-	                			catch(err)
-	                			{
-	                				
-                					shouldclear = true;
-	                				nxs_js_log(err);
-	                			}
-	                			
-	                			if (shouldclear)
-	                			{
-	                				jQuery('#playstartsecs').val("");
-	                				jQuery('#playstart_partmin').val("");
-													jQuery('#playstart_partsec').val("");
-	                			}
-	                			
-	                			//
-	                			nxs_js_popup_sessiondata_make_dirty();
-	                		}
-	                	</script>
-	                </div>
-	            </div>
-	            <div class="nxs-clear"></div>
-		        </div> <!--END content-->
-		        
-		        <!-- play end -->
-		        <div class="content2">
-	            <div class="box">
-                <div class="box-title">
-                  <h4><?php nxs_l18n_e("End", "nxs_td"); ?></h4>
-                 </div>
-                <div class="box-content">
-                	<input type='hidden' id='playendsecs' name='playendsecs' class='nxs-float-left' value='<?php echo $playendsecs; ?>' />
-									<?php
-									if ($playendsecs != "")
-									{
-										$playend_partmin = floor($playendsecs / 60);
-										$playend_partsec = $playendsecs - ($playend_partmin * 60);
-										if (strlen($playend_partsec) == 1)
-										{
-											$playend_partsec = "0" . $playend_partsec;
-										}
-									}
-									else
-									{
-										$playend_partmin = "";
-									}
-									?>
-                	<input type='text' id='playend_partmin' name='playend_partmin' class='nxs-float-left nxs-playendfield' value='<?php echo $playend_partmin; ?>' oninput='nxs_js_updateplayend();' style='width: 40px;' />	                	
-                	<span class='nxs-float-left' ><?php nxs_l18n_e("m", "nxs_td"); ?></span>
-                	<input type='text' id='playend_partsec' name='playend_partsec' class='nxs-float-left nxs-playendfield' value='<?php echo $playend_partsec; ?>' oninput='nxs_js_updateplayend();' style='width: 40px;' maxlength=2 size=2 />
-                	<a href="#" onclick="jQuery('.nxs-playendfield').val(''); nxs_js_updateplayend(); return false;" class="nxsbutton1 nxs-float-left"><?php nxs_l18n_e("Clear", "nxs_td"); ?></a>
-                	<script type='text/javascript'>
-                		function nxs_js_updateplayend()
-                		{
-                			var minutes = jQuery('#playend_partmin').val();
-                			if (minutes == '') 
-                			{
-                				minutes = "0";
-                			}
-                			nxs_js_log(minutes);
-                			var seconds = jQuery('#playend_partsec').val();
-                			if (seconds == '') 
-                			{
-                				seconds = "0";
-                			}
-                			var shouldclear = false;
-                			nxs_js_log(seconds);
-                			try
-                			{
-	                			if (minutes != '0' || seconds != '0')
-	                			{
-	                				var totalsecs = parseInt(minutes) * 60 + parseInt(seconds);
-	                				if (nxs_js_isint(totalsecs))
-	                				{
-		                				jQuery('#playendsecs').val(totalsecs);
-		                			}
-		                			else
-	                				{
-	                					nxs_js_log("a");
-	                					shouldclear = true;
-	                				}
-	                			}
-	                			else
-                				{
-                					nxs_js_log("b");
-                					shouldclear = true;
-                				}
-                			} 
-                			catch(err)
-                			{
-                				
-              					shouldclear = true;
-                				nxs_js_log(err);
-                			}
-                			
-                			if (shouldclear)
-                			{
-                				jQuery('#playendsecs').val("");
-                				jQuery('#playend_partmin').val("");
-												jQuery('#playend_partsec').val("");
-                			}
-                			
-                			//
-                			nxs_js_popup_sessiondata_make_dirty();
-                		}
-                	</script>
-                </div>
-	            </div>
-	            <div class="nxs-clear"></div>
-		        </div> <!--END content-->
-		        
-		        
-	       	</div>
-        </div>        
-        
-        <div class="content2">
-          <div class="box">
-            <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Save[nxs:button]", "nxs_td"); ?></a>
-            <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:button]", "nxs_td"); ?></a>
-            <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:button]", "nxs_td"); ?></a>
-           </div>
-          <div class="nxs-clear margin"></div>
-        </div> <!--END content-->
-        
-      </div> <!--END block-->
-    </div>
-
-    <script type='text/javascript'>
-		
-		function nxs_js_savegenericpopup()
+		function nxs_js_setvideotosample_<?php echo $id; ?>()
 		{
-			nxs_js_requirescript('parseuri_js', 'js', '<?php echo nxs_getframeworkurl() . '/nexuscore/widgets/youtube/js/parseuri.js'; ?>', nxs_js_savegenericpopup_step2);
+			jQuery('.videourl-<?php echo $id; ?>').val('<?php nxs_l18n_e("http://www.youtube.com/watch?v=B6cg4ZoUwVU", "nxs_td"); ?>');
+
+			nxs_js_updatevideoid_<?php echo $id; ?>()
 		}
 
-		function nxs_js_savegenericpopup_step2()
-		{		
+		function nxs_js_updatevideoid_<?php echo $id; ?>()
+		{
+
 			var video = "";
 			
 			try
 			{ 
-				var videourl = jQuery('#videourl').val();
+				var videourl = jQuery('.videourl-<?php echo $id; ?>').val();
+				nxs_js_log(videourl);
 				var urlitems = parseUri(videourl);
+				nxs_js_log(urlitems);
 				video = urlitems.queryKey.v;
+
+				nxs_js_log(video);
+
+				jQuery('#<?php echo $altid; ?>').val(video);
 			}
 			catch (err)
 			{
 				//
 			}
 			
-			if (video == "" || video == null)
-			{
-				nxs_js_alert("<?php nxs_l18n_e("Video not found; please enter the complete url of the Youtube video[nxs:growl]", "nxs_td"); ?>");
-				jQuery('#videourl').focus();
-				return;
-			}
-			
-			var autoplayvalue;
-			if (jQuery('#autoplay').is(":checked"))
-			{
-				autoplayvalue = 'checked';
-			}
-			else
-			{
-				autoplayvalue = '';
-			}
-			
-			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
-			(
-				{
-					type: 'POST',
-					data: 
-					{
-						"action": "nxs_ajax_webmethods",
-						"webmethod": "updateplaceholderdata",
-						"placeholderid": "<?php echo $placeholderid;?>",
-						"postid": "<?php echo $postid;?>",
-						"placeholdertemplate": "youtube",
-						"autoplay": autoplayvalue,
-						"title": jQuery('#title').val(),
-						"videoid": video,
-						"videourl": jQuery('#videourl').val(),
-						"language": jQuery('#language').val(),
-						"playstartsecs": jQuery('#playstartsecs').val(),
-						"playendsecs": jQuery('#playendsecs').val()
-					},
-					dataType: 'JSON',
-					url: ajaxurl, 
-					success: function(response) 
-					{
-						nxs_js_log(response);
-						if (response.result == "OK")
-						{
-							// update UI, the 'current' id will be overriden because null is specified as third parameter
-							nxs_js_rerender_row_for_placeholder("<?php echo $postid;?>", "<?php echo $placeholderid;?>");
-														
-							// close the pop up
-							nxs_js_closepopup_unconditionally();
-						}
-						else
-						{
-							nxs_js_popup_notifyservererror();
-							nxs_js_log(response);
-						}
-					},
-					error: function(response)
-					{
-						nxs_js_popup_notifyservererror();
-						nxs_js_log(response);
-					}										
-				}
-			);
+			nxs_js_popup_sessiondata_make_dirty();
 		}
-		
-		function nxs_js_execute_after_popup_shows()
-		{
-			jQuery('#title').focus();
-		}
-
-		
 	</script>
 
-<?php
-	
-	$html = ob_get_contents();
-	ob_end_clean();
+	<?php
 
-	$result["html"] = $html;
-	
-	return $result;   
+	$result = ob_get_contents();
+	ob_end_clean();
+	return $result;
+}
+
+function nxs_youtube_playsecs_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	extract($optionvalues);
+	extract($args);
+	extract($runtimeblendeddata);
+
+	$value = $$altid;	// $id is the parametername, $$id is the value of that parameter
+	$playsecs = $value;
+
+	ob_start();
+	?>
+
+	<?php
+		if ($playsecs != "")
+		{
+			$play_partmin = floor($playsecs / 60);
+			$play_partsec = $playsecs - ($play_partmin * 60);
+			if (strlen($play_partsec) == 1)
+			{
+				$play_partsec = "0" . $play_partsec;
+			}
+		}
+		else
+		{
+			$play_partmin = "";
+		}
+	?>
+	<input type='text' id='play_partmin_<?php echo $id; ?>' name='play_partmin' class='nxs-float-left nxs-playfield_<?php echo $id; ?> nxs-playfield' value='<?php echo $play_partmin; ?>' oninput='nxs_js_updateplay_<?php echo $id; ?>();' style='width: 40px;' />	                	
+	<span class='nxs-float-left' > <?php nxs_l18n_e("m", "nxs_td"); ?> </span>
+	<input type='text' id='play_partsec_<?php echo $id; ?>' name='play_partsec' class='nxs-float-left nxs-playfield_<?php echo $id; ?> nxs-playfield' value='<?php echo $play_partsec; ?>' oninput='nxs_js_updateplay_<?php echo $id; ?>();' style='width: 40px;' maxlength=2 size=2 />
+	<a href="#" onclick="jQuery('.nxs-playfield_<?php echo $id; ?>').val(''); nxs_js_updateplay_<?php echo $id; ?>(); return false;" class="nxsbutton1 nxs-float-left"><?php nxs_l18n_e("Clear", "nxs_td"); ?></a>
+	<script type='text/javascript'>
+		function nxs_js_updateplay_<?php echo $id; ?>()
+		{
+			var minutes = jQuery('#play_partmin_<?php echo $id; ?>').val();
+			if (minutes == '') 
+			{
+				minutes = "0";
+			}
+			nxs_js_log(minutes);
+			var seconds = jQuery('#play_partsec_<?php echo $id; ?>').val();
+			if (seconds == '') 
+			{
+				seconds = "0";
+			}
+			var shouldclear = false;
+			nxs_js_log(seconds);
+			try
+			{
+    			if (minutes != '0' || seconds != '0')
+    			{
+    				var totalsecs = parseInt(minutes) * 60 + parseInt(seconds);
+    				if (nxs_js_isint(totalsecs))
+    				{
+    					jQuery('#<?php echo $altid; ?>').val(totalsecs);
+        			}
+        			else
+    				{
+    					nxs_js_log("a");
+    					shouldclear = true;
+    				}
+    			}
+    			else
+				{
+					nxs_js_log("b");
+					shouldclear = true;
+				}
+			}<?php echo $htmltitle; ?>
+			catch(err)
+			{
+				shouldclear = true;
+				nxs_js_log(err);
+			}
+			
+			if (shouldclear)
+			{
+				jQuery('#<?php echo $altid; ?>').val("");
+				jQuery('#play_partmin_<?php echo $id; ?>').val("");
+				jQuery('#play_partsec_<?php echo $id; ?>').val("");
+			}
+			
+			nxs_js_popup_sessiondata_make_dirty();
+		}
+	</script>
+
+	<?php
+
+	$result = ob_get_contents();
+	ob_end_clean();
+	return $result;
 }
 
 function nxs_widgets_youtube_initplaceholderdata($args)
 {
+	extract($args);
+	
 	$args["title"] = nxs_l18n__("title[sample]", "nxs_td");
 	$args["videoid"] = nxs_l18n__("videoid[youtube,sample,B6cg4ZoUwVU]", "nxs_td");
 	$args["videourl"] = nxs_l18n__("videourl[youtube,sample,http://www.youtube.com/watch?v=B6cg4ZoUwVU]", "nxs_td");

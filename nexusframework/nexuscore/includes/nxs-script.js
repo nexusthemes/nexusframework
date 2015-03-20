@@ -620,6 +620,11 @@ function nxs_js_lazyexecute(scripturl, prependframeworkurl, functiontoinvoke)
 // ensure the specified css or js script is injected
 function nxs_js_requirescript(scriptid, scripttype, scripturl, scriptcallbackafterload)
 {
+	if (scriptcallbackafterload == false)
+	{
+		// do nothing
+	}
+
 	if (scriptcallbackafterload == null)
 	{
 		nxs_js_alert("warning; loading scriptid; " + scriptid + "; no scriptcallbackafterload set?");
@@ -669,8 +674,11 @@ function nxs_js_requirescript(scriptid, scripttype, scripturl, scriptcallbackaft
 			nxs_js_lazyloadingscripts[scriptid] = false;
 			if (scriptcallbackafterload != null)
 			{
-				// nxs_js_log('executing... non-ie (fresh)');
-				scriptcallbackafterload();
+				if (scriptcallbackafterload != false)
+				{
+					// nxs_js_log('executing... non-ie (fresh)');
+					scriptcallbackafterload();
+				}
 			}
 			else
 			{
@@ -689,7 +697,10 @@ function nxs_js_requirescript(scriptid, scripttype, scripturl, scriptcallbackaft
 				nxs_js_lazyloadingscripts[scriptid] = false;
 				if (scriptcallbackafterload != null)
 				{
-					scriptcallbackafterload();
+					if (scriptcallbackafterload != false)
+					{
+						scriptcallbackafterload();
+					}
 				}
 			}	
 		}

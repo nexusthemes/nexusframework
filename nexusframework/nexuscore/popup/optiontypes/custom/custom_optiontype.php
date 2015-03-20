@@ -12,58 +12,44 @@ function nxs_popup_optiontype_custom_renderhtmlinpopup($optionvalues, $args, $ru
 		$value = "";
 	}
 	
-	echo '
-	<div class="" style="
-	padding: 10px;
-	background-color: #whiteSmoke;
-	background-image: 		  linear-gradient(top,#F9F9F9,whiteSmoke);
-	background-image: 	   -o-linear-gradient(top,#F9F9F9,whiteSmoke);
-	background-image: 	  -ms-linear-gradient(top,#F9F9F9,whiteSmoke);
-	background-image:    -moz-linear-gradient(top,#F9F9F9,whiteSmoke);
-	background-image: -webkit-linear-gradient(top,#F9F9F9,whiteSmoke);
-	background-image: -webkit-gradient(linear,left top,left bottom,from(#F9F9F9),to(whiteSmoke));
-	
-	">
+	?>
+	<div class="content2" style="">
 	    <div class="box">
 	        <div class="box-title">
-						<h4>'. $label .'</h4>
-	';
-							if ($tooltip != "") 
-							{
-								echo '<span class="info">?
-									<div class="info-description">' . $tooltip .'</div>
-								</span>';
-							}
-						?>
-					</div>
-          <div class="" style="width: 70%; float: right;">
+				<h4><?php echo $label; ?></h4>
+				<?php if ($tooltip != ""){ ?>
+					<span class="info">?
+						<div class="info-description"><?php echo $tooltip; ?></div>
+					</span>;
+				<?php } ?>
+			</div>
+          	<div class="box-content">
           	<?php
-          	echo $custom;
-          	// if handler is set, delegate rendering to handler
-          	if (isset($customcontenthandler))
-          	{
-          		$functionnametoinvoke = $customcontenthandler;
-							if (function_exists($functionnametoinvoke))
-							{
-								$p = array();
-								$p["optionvalues"] = $optionvalues;
-								$p["args"] = $args;
-								$p["runtimeblendeddata"] = $runtimeblendeddata;
-								$result = call_user_func_array($functionnametoinvoke, $p);
-								echo $result;
-							}
-							else
-							{
-								echo "function not found; " . $customcontenthandler;
-							}
-          	}
-          	echo '
-          </div>
+	          	echo $custom;
+	          	// if handler is set, delegate rendering to handler
+	          	if (isset($customcontenthandler))
+	          	{
+	          		$functionnametoinvoke = $customcontenthandler;
+					if (function_exists($functionnametoinvoke))
+					{
+						$p = array();
+						$p["optionvalues"] = $optionvalues;
+						$p["args"] = $args;
+						$p["runtimeblendeddata"] = $runtimeblendeddata;
+						$result = call_user_func_array($functionnametoinvoke, $p);
+						echo $result;
+					}
+					else
+					{
+						echo "function not found; " . $customcontenthandler;
+					}
+	          	}
+	        ?>
+          	</div>
         </div>
         <div class="nxs-clear"></div>
-      </div>
-  ';
-	//
+    </div>
+<?php
 }
 
 function nxs_popup_optiontype_custom_renderstorestatecontroldata($optionvalues)
