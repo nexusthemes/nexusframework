@@ -1,5 +1,49 @@
 <?php
 
+
+function nxs_getfixedfiletouse($filelocation)
+{
+	// 2015 03 19;
+	// on some servers, the extracting of the theme.zip
+	// results in a corrupted resource.xml file (which itself is zipped).
+	// in those cases, the system should not import the corrupted zipped resource.xml
+	// file, but the original resource.xml.u.xml file instead
+	// 
+	// unfortunately the invocation to 
+	
+	$result = $filelocation . ".u.xml";
+	/*
+	if ( extension_loaded( 'simplexml' ) ) 
+	{
+		$parser = new WXR_Parser_SimpleXML;
+		$result = $parser->parse( $file );
+
+		/*
+		// If SimpleXML succeeds or this is an invalid WXR file then return the results
+		if (!( ! is_wp_error( $result ) || 'SimpleXML_parse_error' != $result->get_error_code() ))
+		{
+			$result .= ".u.xml";
+		}
+	} 
+	else
+	if ( extension_loaded( 'xml' ) ) 
+	{
+		$parser = new WXR_Parser_XML;
+		$result = $parser->parse( $file );
+
+		// If XMLParser succeeds or this is an invalid WXR file then return the results
+		if (!( ! is_wp_error( $result ) || 'XML_parse_error' != $result->get_error_code() ))
+		{
+			$result .= ".u.xml";
+		}
+	}
+	
+	nxs_webmethod_return_nack("nxs_getfixedfiletouse;" . $result);
+	*/
+	
+	return $result;
+}
+	
 /*
 the basis of this importer is the 0.6 wordpress importer,
 taken from the wordpress.org site (see http://wordpress.org/extend/plugins/wordpress-importer/)
@@ -81,7 +125,7 @@ class NXS_importer extends WP_Importer {
 	{
 		$this->fetch_attachments = true; // always true ( ! empty( $_POST['fetch_attachments'] ) && $this->allow_fetch_attachments() );
 		$filelocation = TEMPLATEPATH . "/" . "resources" . "/" . "resource.xml";
-		//$file = get_attached_file( $this->id );
+		$filelocation = nxs_getfixedfiletouse($filelocation);
 		set_time_limit(0);
 		$this->import($filelocation);
 	}

@@ -1,4 +1,9 @@
 <?php 
+function nxs_die()
+{
+	error_log("nxs die");
+	die();
+}
 
 if (defined('NXS_FRAMEWORKLOADED'))
 {
