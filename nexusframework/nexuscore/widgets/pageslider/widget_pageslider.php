@@ -645,12 +645,12 @@ function nxs_widgets_pageslider_beforeend_head()
 												}
 											}
 											
-											// Legacy option
+											/* Legacy option
 											if ($placeholdermetadata['text'] != "") {
 												if ($destinationurl != "") {
 													$link .= '<div class="nxs-clear nxs-margin-top20"><a class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.' '.$metadata_transition.'" href="'.$destinationurl.'">'.$button_text.'</a></div>';
 												}
-											}
+											}*/
 											
 											$lookup = wp_get_attachment_image_src($imageid, 'full', true);
 											$imageurl = $lookup[0];
