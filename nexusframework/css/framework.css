@@ -977,6 +977,7 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 .nxs-list ul li span 										{ padding: 8px; font-style:normal; font-family: Arial; font-size:13px; border-left: 1px solid #DDDDDD; display: block; line-height: 26px; }
 .nxs-list ol li span em,
 .nxs-list ul li span em										{ display: block; line-height: 26px; font-weight: bold; }
+.nxs-definitionlist li p:not(:first-child) { margin-top: 30px; }
 
 /* CATEGORIES 
 ---------------------------------------------------------------------------------------------------- */
