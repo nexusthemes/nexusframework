@@ -825,8 +825,9 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 			$info .
 		'</div>' .
 		$content_filler .
-		$htmltext;
-	
+		'<div class="nxs-text">' .
+			$htmltext .
+		'</div>';
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
