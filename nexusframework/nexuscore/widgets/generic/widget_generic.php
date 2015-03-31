@@ -210,9 +210,9 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 			),
 			array(
 				"id" 				=> "ph_valign",
-				"type" 				=> "select",
+				"type" 				=> "radiobuttons",
+				"subtype"			=> "valign",
 				"label" 			=> nxs_l18n__("Vertical alignment", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("valign"),
 				"unistylablefield"	=> true
 			),
 			

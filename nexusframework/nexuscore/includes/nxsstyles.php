@@ -133,7 +133,8 @@ function nxs_getstyletypeoptions() {
 		),
 		"valign" => array (
 			"subtype" 			=> "textlookup",
-			"values" 			=> array(""=>nxs_l18n__("top", "nxs_td"),"nxs-valign-middle"=>nxs_l18n__("center", "nxs_td"),"nxs-valign-bottom"=>nxs_l18n__("bottom", "nxs_td"))
+			"values" 			=> array("nxs-valign-top"=>nxs_l18n__("top", "nxs_td"),"nxs-valign-middle"=>nxs_l18n__("center", "nxs_td"),"nxs-valign-bottom"=>nxs_l18n__("bottom", "nxs_td")),
+			"icons" 			=> array("nxs-valign-top"=>nxs_l18n__("topalign", "nxs_td"), "nxs-valign-middle"=>nxs_l18n__("middlealign", "nxs_td"), "nxs-valign-bottom"=>nxs_l18n__("bottomalign", "nxs_td"))
 		),
 		"image_size" => array (
 			"subtype" 			=> "encodedmultiplier",
