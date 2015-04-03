@@ -35,8 +35,8 @@ function nxs_widgets_youtube_home_getoptions($args)
 		"sheettitle" 		=> nxs_widgets_youtube_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_youtube_geticonid(),
 		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/youtube-widget/"),
-		"unifiedstyling" 	=> array("group" => nxs_widgets_text_getunifiedstylinggroup(),),
-		"unifiedcontent" 	=> array ("group" => nxs_widgets_text_getunifiedcontentgroup(),),
+		"unifiedstyling" 	=> array("group" => nxs_widgets_youtube_getunifiedstylinggroup(),),
+		"unifiedcontent" 	=> array("group" => nxs_widgets_youtube_getunifiedcontentgroup(),),
 		"fields" => array
 		(
 			// TITLE
