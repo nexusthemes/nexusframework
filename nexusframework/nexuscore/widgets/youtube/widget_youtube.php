@@ -11,12 +11,12 @@ function nxs_widgets_youtube_gettitle() {
 }
 
 // Unistyle
-function nxs_widgets_text_getunifiedstylinggroup() {
+function nxs_widgets_youtube_getunifiedstylinggroup() {
 	return "youtubewidget";
 }
 
 // Unicontent
-function nxs_widgets_text_getunifiedcontentgroup() {
+function nxs_widgets_youtube_getunifiedcontentgroup() {
 	return "youtubewidget";
 }
 
