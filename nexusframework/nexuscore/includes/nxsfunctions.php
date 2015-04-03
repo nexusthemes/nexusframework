@@ -8848,8 +8848,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	
 	// Actual rendering of HTML elements
 	?>	
-	<!-- HTML
----------------------------------------------------------------------------------------------------->
+	<!-- HTML -->
 	<div class="nxs-admin-wrap">
     <div class="block">
       <?php nxs_render_popup_header_v2($sheettitle, $sheeticonid, $sheethelp); ?>
@@ -8891,56 +8890,52 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	          	{
 	          		// assumed visible
 	          	}
-						}
+			}
           	
           	if ($shouldshowfield === true)          	
           	{
-				    	// delegate behaviour to the specific option (pluggable)
-							$type = $optionvalues["type"];
-				    	nxs_requirepopup_optiontype($type);
-				    	
-				    	$functionnametoinvoke = "nxs_popup_optiontype_" . $type . "_renderhtmlinpopup";
-							if (function_exists($functionnametoinvoke))
-							{
-								call_user_func($functionnametoinvoke, $optionvalues, $args, $runtimewidgetmetadata);
-							}
-							else
-							{
-								nxs_webmethod_return_nack("missing function name $functionnametoinvoke");
-							}
-						}
-						else
-						{
-							//
-						}
-  				}
-  				?>
-					<div class="content2 nxs-popup-heading">          
-	          <div class="box">
-	            <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'>Save</a>
-	            <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'>OK</a>
-	            <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'>Cancel</a>
-	          </div> <!-- END box -->
-	          <div class="nxs-clear margin"></div>
-	      	</div> <!-- END content2 -->
+		    	// delegate behaviour to the specific option (pluggable)
+				$type = $optionvalues["type"];
+		    	nxs_requirepopup_optiontype($type);
+		    	
+		    	$functionnametoinvoke = "nxs_popup_optiontype_" . $type . "_renderhtmlinpopup";
+				if (function_exists($functionnametoinvoke))
+				{
+					call_user_func($functionnametoinvoke, $optionvalues, $args, $runtimewidgetmetadata);
+				}
+				else
+				{
+					nxs_webmethod_return_nack("missing function name $functionnametoinvoke");
+				}
+			}
+			else
+			{
+				//
+			}
+  		  }
+  		  ?>
 	      	<?php if ($footerfiller) { ?>
 	      	<div class="nxs-canvas-footerfiller content2 nxs-popup-heading">
-	      		<div class="box">
-	      			&nbsp;
-	      		</div> <!-- END box -->
-	      		<div class="nxs-clear margin"></div>
-	      	</div>
-	      	<?php } ?>
-	  		</div> <!-- nxs-popup-content-canvas -->
-			</div> <!-- END nxs-popup-content-canvas-cropper -->
-        
+	      	  <div class="box">
+	      		&nbsp;
+	      	  </div> <!-- END box -->
+	      	<div class="nxs-clear margin"></div>
+	      </div>
+	      <?php } ?>
+	  	</div> <!-- nxs-popup-content-canvas -->
+	  </div> <!-- END nxs-popup-content-canvas-cropper -->
+	  <div class="content2">          
+        <div class="box">
+      	  <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'>Save</a>
+          <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'>OK</a>
+          <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'>Cancel</a>
+      	</div> <!-- END box -->
+      <div class="nxs-clear margin"></div>
+  	</div> <!-- END content2 -->
   	</div> <!-- END block -->
 	</div> <!-- END nxs-admin-wrap -->
 	
-	<!-- UPDATING POPUP SESSION DATA
-	----------------------------------------------------------------------------------------------------
-	----------------------------------------------------------------------------------------------------
-	---------------------------------------------------------------------------------------------------->
+	<!-- UPDATING POPUP SESSION DATA -->
 	<script type='text/javascript'>
     // generic implementation, same for all contextprocessors
     function nxs_js_setpopupdatefromcontrols() 
