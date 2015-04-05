@@ -12,44 +12,62 @@ function nxs_popup_optiontype_custom_renderhtmlinpopup($optionvalues, $args, $ru
 		$value = "";
 	}
 	
+	if (!$layouttype )
+	{
 	?>
-	<div class="content2" style="">
-	    <div class="box">
-	        <div class="box-title">
-				<h4><?php echo $label; ?></h4>
-				<?php if ($tooltip != ""){ ?>
-					<span class="info">?
-						<div class="info-description"><?php echo $tooltip; ?></div>
-					</span>;
-				<?php } ?>
-			</div>
-          	<div class="box-content">
-          	<?php
-	          	echo $custom;
-	          	// if handler is set, delegate rendering to handler
-	          	if (isset($customcontenthandler))
-	          	{
-	          		$functionnametoinvoke = $customcontenthandler;
-					if (function_exists($functionnametoinvoke))
-					{
-						$p = array();
-						$p["optionvalues"] = $optionvalues;
-						$p["args"] = $args;
-						$p["runtimeblendeddata"] = $runtimeblendeddata;
-						$result = call_user_func_array($functionnametoinvoke, $p);
-						echo $result;
-					}
-					else
-					{
-						echo "function not found; " . $customcontenthandler;
-					}
-	          	}
-	        ?>
-          	</div>
-        </div>
-        <div class="nxs-clear"></div>
-    </div>
-<?php
+		<div class="content2" style="">
+		    <div class="box">
+		        <div class="box-title">
+					<h4><?php echo $label; ?></h4>
+					<?php if ($tooltip != ""){ ?>
+						<span class="info">?
+							<div class="info-description"><?php echo $tooltip; ?></div>
+						</span>;
+					<?php } ?>
+				</div>
+	          	<div class="box-content">
+	          	<?php
+		          	nxs_popup_optiontype_custom_runfunctionifitexists($optionvalues, $args, $runtimeblendeddata);
+		        ?>
+	          	</div>
+	        </div>
+	        <div class="nxs-clear"></div>
+	    </div>
+	<?php
+	}
+
+	else if ($layouttype == "custom") {
+		nxs_popup_optiontype_custom_runfunctionifitexists($optionvalues, $args, $runtimeblendeddata);
+	}
+
+	else {
+		echo "Unkown layout type";
+	}
+}
+
+function nxs_popup_optiontype_custom_runfunctionifitexists($optionvalues, $args, $runtimeblendeddata)
+{
+	extract($optionvalues);
+
+	echo $custom;
+  	// if handler is set, delegate rendering to handler
+  	if (isset($customcontenthandler))
+  	{
+  		$functionnametoinvoke = $customcontenthandler;
+		if (function_exists($functionnametoinvoke))
+		{
+			$p = array();
+			$p["optionvalues"] = $optionvalues;
+			$p["args"] = $args;
+			$p["runtimeblendeddata"] = $runtimeblendeddata;
+			$result = call_user_func_array($functionnametoinvoke, $p);
+			echo $result;
+		}
+		else
+		{
+			echo "function not found; " . $customcontenthandler;
+		}
+  	}
 }
 
 function nxs_popup_optiontype_custom_renderstorestatecontroldata($optionvalues)

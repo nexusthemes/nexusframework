@@ -713,15 +713,12 @@ function nxs_js_requirescript(scriptid, scripttype, scripturl, scriptcallbackaft
 	else
 	{
 		// nxs_js_log('skipping (either already queued or already loaded)');
-		if (scriptcallbackafterload === false)
+		if (scriptcallbackafterload != null)
 		{
-			// do nothing
-		}
-
-		else (scriptcallbackafterload != null)
-		{
-			// nxs_js_log('executing... (already)');
-			scriptcallbackafterload();
+			if (scriptcallbackafterload != false)
+			{
+				scriptcallbackafterload();
+			}
 		}
 	}
 }
