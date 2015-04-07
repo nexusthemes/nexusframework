@@ -69,33 +69,33 @@ function nxs_widgets_pagebackground_beforeend_head()
 		$imageurl = $imagemetadata[0];
 		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 		$backgroundimagehtml .= '
-		jQuery("html").css("background-image", "url(' . $imageurl . ')");
+		jQuery("body").css("background-image", "url(' . $imageurl . ')");
 		';
 		
 		// background size
 		if ($image_isfixed != "")
 		{
 			$backgroundimagehtml .= '
-			jQuery("html").css("background-attachment", "fixed");
+			jQuery("body").css("background-attachment", "fixed");
 			';
 		}
 		
 		if ($image_size == "cover")
 		{
 			$backgroundimagehtml .= '
-			jQuery("html").css("-webkit-background-size", "cover");
-			jQuery("html").css("-moz-background-size", "cover");
-			jQuery("html").css("-o-background-size", "cover");
-			jQuery("html").css("background-size", "cover");
+			jQuery("body").css("-webkit-background-size", "cover");
+			jQuery("body").css("-moz-background-size", "cover");
+			jQuery("body").css("-o-background-size", "cover");
+			jQuery("body").css("background-size", "cover");
 			';
 		}
 		else if ($image_size == "contain")
 		{
 			$backgroundimagehtml .= '
-			jQuery("html").css("-webkit-background-size", "contain");
-			jQuery("html").css("-moz-background-size", "contain");
-			jQuery("html").css("-o-background-size", "contain");
-			jQuery("html").css("background-size", "contain");
+			jQuery("body").css("-webkit-background-size", "contain");
+			jQuery("body").css("-moz-background-size", "contain");
+			jQuery("body").css("-o-background-size", "contain");
+			jQuery("body").css("background-size", "contain");
 			';
 		}
 		
@@ -107,7 +107,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 		if ($image_repeat == "repeatxy") { $repeatattribute = "repeat"; }
 		
 		$backgroundimagehtml .= '
-			jQuery("html").css("background-repeat", "' . $repeatattribute . '");
+			jQuery("body").css("background-repeat", "' . $repeatattribute . '");
 			';
 
 		// background position
@@ -116,13 +116,18 @@ function nxs_widgets_pagebackground_beforeend_head()
 		}
 
 		$backgroundimagehtml .= '
-			jQuery("html").css("background-position", "' . $image_position . '");
+			jQuery("body").css("background-position", "' . $image_position . '");
 			';
+		/*
+		$backgroundimagehtml .= '
+			jQuery("body").css("background-color", "#000");
+			';
+		*/
 	}
 	?>
 	<script type='text/javascript'>
 
-		jQuery(window).ready
+		jQuery(window).load
 		(
 			function()
 			{
@@ -131,8 +136,6 @@ function nxs_widgets_pagebackground_beforeend_head()
 				echo $backgroundcolorhtml;
 				echo $backgroundimagehtml;
 				?>
-
-				console.log("POSITION: <?php echo $image_position ?>");
 			}
 		);
 	</script>

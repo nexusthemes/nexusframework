@@ -8800,11 +8800,20 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	if (isset($unicontent) && $unicontent != "") 
 	{
 		// apply the universal content (from persisted datasource, or sessiondata)
-		$group = $options["unifiedcontent"]["group"]; // todo: get group from options
-		// blend unicontent properties
-		$unicontentdata = nxs_unicontent_getunicontentproperties($group, $unicontent);
-		// NOTE; the unicontentdata _CAN_ be overridden by the user,
-		// since the unicontentdata is blended with clientpopupsessiondata and shortscopedata
+		$group = $options["unifiedcontent"]["group"];
+		if ($group == "")
+		{
+			//echo "aaaaaaaaa";
+			//var_dump($options);
+			//nxs_webmethod_return_nack("empty2;debug[" . $group . "]");
+		}
+		else
+		{
+			// blend unicontent properties
+			$unicontentdata = nxs_unicontent_getunicontentproperties($group, $unicontent);
+			// NOTE; the unicontentdata _CAN_ be overridden by the user,
+			// since the unicontentdata is blended with clientpopupsessiondata and shortscopedata
+		}
 	}
 	
 	$clientpopupsessiondata = $args["clientpopupsessiondata"];
