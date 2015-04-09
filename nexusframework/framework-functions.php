@@ -840,7 +840,17 @@ function nxs_init()
 				
 				echo nxs_prettyprint_array($activated_plugins);
 				die();
-  		}		
+  		}
+  		else if ($_REQUEST["nxs"] == "urlcurrentpage")
+  		{
+  			echo nxs_geturlcurrentpage();
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "server")
+  		{
+  			var_dump($_SERVER);
+  			die();
+  		}	
 		}
 	}
 	

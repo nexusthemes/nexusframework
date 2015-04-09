@@ -28,13 +28,22 @@
 					}
 					else
 					{
-						if (file_exists( $path . 'wp-load.php') )
+						if (file_exists( $path . 'wp-load.php'))
 						{
 							define( 'WP_LOAD_PATH', $path);
 						}
 						else
 						{
-							exit("Could not find wp-load.php ($classic_root) ($path), see nxs-ajax.php");
+							$possible = dirname(WP_CONTENT_DIR) . '/' ;
+							if (file_exists( $possible . 'wp-load.php') )
+							{
+								define( 'WP_LOAD_PATH', $possible);
+							}
+							else
+							{
+								// WP_CONTENT_DIR
+								exit("Could not find wp-load.php ($classic_root) ($path), see nxs-ajax.php");
+							}
 						}
 					}
 				}

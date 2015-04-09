@@ -6332,7 +6332,7 @@ function nxs_geturlcurrentpage()
   $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
   $protocol = nxs_strleft(strtolower($_SERVER["SERVER_PROTOCOL"]), "/").$s;
   $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
-  return $protocol."://".$_SERVER['SERVER_NAME'].$port.$serverrequri;   
+  return $protocol."://".$_SERVER['HTTP_HOST'].$port.$serverrequri;   
 }
 
 function nxs_updateseooption($postid, $key, $val)
