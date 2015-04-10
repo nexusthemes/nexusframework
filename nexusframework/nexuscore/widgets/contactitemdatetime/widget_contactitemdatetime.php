@@ -115,7 +115,7 @@ function nxs_widgets_contactitemdatetime_renderincontactbox($args)
 		$timemmvalue = $splittedvalue[2];
 	}
 	
-	$dateformat = nxs_date_getdatepickerformat();
+	$dateformat = nxs_date_getdatepickerformatclientside();
 	
 	//
 	// render actual control / html

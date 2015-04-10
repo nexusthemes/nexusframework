@@ -89,7 +89,7 @@ function nxs_widgets_contactitemdate_renderincontactbox($args)
 	// render actual control / html
 	//
 	
-	$dateformat = nxs_date_getdatepickerformat();
+	$dateformat = nxs_date_getdatepickerformatclientside();
 	
 	ob_start();
 

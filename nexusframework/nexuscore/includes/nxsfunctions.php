@@ -1322,21 +1322,23 @@ function nxs_stringcontains($haystack, $needle)
  * @param string $dateFormat a date format 
  * @return string 
  */ 
-function nxs_date_getdatepickerformat() 
+function nxs_date_getdatepickerformatclientside() 
 { 
 	$result = get_option("date_format");
 	
-  $chars = array( 
+  	$chars = array( 
       // Day
       'd' => 'dd', 'j' => 'd', 'l' => 'DD', 'D' => 'D',
       // Month 
       'm' => 'mm', 'n' => 'm', 'F' => 'MM', 'M' => 'M', 
       // Year 
       'Y' => 'yy', 'y' => 'y', 
-  ); 
+      // Suffix
+      'S' => '',
+  	); 
 
-  $result = strtr((string)$result, $chars); 
-  return $result;
+  	$result = strtr((string)$result, $chars); 
+  	return $result;
 } 
 
 function nxs_insertarrayindex($array, $new_element, $index) 
