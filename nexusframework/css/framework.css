@@ -971,12 +971,18 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 /* DEFINITION LISTS 
 ---------------------------------------------------------------------------------------------------- */
 .nxs-list ul 												{ list-style: square; }
-.nxs-list ol,
-.nxs-list ul 												{ list-style-position: outside !important; padding: 0 0 20px 35px !important; font-style: italic; font-family: Georgia, Times, serif; font-size: 24px; }
-.nxs-list ol li span,
-.nxs-list ul li span 										{ padding: 8px; font-style:normal; font-family: Arial; font-size:13px; border-left: 1px solid #DDDDDD; display: block; line-height: 26px; }
-.nxs-list ol li span em,
-.nxs-list ul li span em										{ display: block; line-height: 26px; font-weight: bold; }
+.nxs-list > ol,
+.nxs-list > ul 												{ list-style-position: outside !important; padding: 0 0 20px 35px !important; font-style: italic; font-family: Georgia, Times, serif; font-size: 24px; }
+.nxs-list > ol > li > span,
+.nxs-list > ul > li > span 									{ padding: 8px; font-style:normal; font-family: Arial; font-size:13px; border-left: 1px solid #DDDDDD; display: block; line-height: 26px; }
+.nxs-list > ol > li > span > em,
+.nxs-list > ul > li > span > em								{ display: block; line-height: 26px; font-weight: bold; }
+.nxs-list > ul > li > span ul,
+.nxs-list > ul > li > span ol,
+.nxs-list > ol > li > span ul,
+.nxs-list > ol > li > span ol								{ margin: 0 0 0 18px !important; }
+.nxs-list > ul > li > span li, 
+.nxs-list > ol > li > span li 								{ padding: 0 0 0 0 !important; }
 .nxs-definitionlist li p:not(:first-child) { margin-top: 30px; }
 
 /* CATEGORIES 
