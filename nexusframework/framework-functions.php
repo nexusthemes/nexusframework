@@ -1882,7 +1882,10 @@ function nxs_after_switch_theme()
 	// toggle option
 	update_option('nxs_do_postthemeactivation', 'true');
 	nxs_setuprolesandcapabilities();
-	header("Location: " . admin_url() . "admin.php?page=nxs_backend_overview");
+	
+	do_action("nxs_theme_switchedmanually");
+	
+	header("Location: " . admin_url() . "admin.php?page=nxs_backend_overview&nxstrigger=afterswitchtheme");
 	die(); 
 }
 

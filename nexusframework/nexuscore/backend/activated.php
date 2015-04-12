@@ -23,7 +23,7 @@
 	if ($nxs_do_postthemeactivation != "true")
 	{
 		// user pressed back button
-		$url = get_admin_url('admin.php') . '?page=nxs_backend_overview';
+		$url = get_admin_url('admin.php') . '?page=nxs_backend_overview&nxstrigger=backbutton';
 		wp_redirect($url, 301);
 		die();
 	}
@@ -169,23 +169,34 @@
 		</div>
         
     <div class='nxs-clear nxs-padding-top20'></div>
-        
-		<div id='finishedwrap' style='display:none;'>
-			<?php
-			if ($licensekey == "") {
-				$url = admin_url('admin.php?page=nxs_admin_license');
-				$button_text = nxs_l18n__("Enable automatic updates", "nxs_td");
+    
+    <div id='finishedwrap' style='display:none;'>
+    	<?php 
+    	if (!has_action("nxs_activation_finishedwrap"))
+    	{
+    		$licensekey = esc_attr(get_option('nxs_licensekey'));
+				if ($licensekey == "") {
+					$url = admin_url('admin.php?page=nxs_admin_license');
+					$button_text = nxs_l18n__("Enable automatic updates", "nxs_td");
+				}
+				else 
+				{
+					$url = nxs_geturl_home();
+					$button_text = nxs_l18n__("View Home", "nxs_td");
+				}
+				?>
+				<div class='nxs-width100 nxs-align-center'>
+					<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo $button_text; ?></a>
+				</div>
+				<?php
 			}
-			else {
-				$url = nxs_geturl_home();
-				$button_text = nxs_l18n__("View Home", "nxs_td");
+			else
+			{
+				do_action("nxs_activation_finishedwrap");
 			}
 			?>
-			<div class='nxs-width100 nxs-align-center'>
-				<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo $button_text; ?></a>
-			</div>			
 		</div>
-		
+	
 		<div id='errorwrap' style='display:none;'>
 			<?php
 			$url = nxs_geturl_home();

@@ -16,6 +16,11 @@ function nxs_webmethod_updatewpoption()
 	
 	update_option($key, $value);
 	
+	if ($key == "nxs_do_postthemeactivation")
+	{
+		do_action("nxs_activation_contentloaded");
+	}
+	
 	$responseargs = array();	
 	nxs_webmethod_return_ok($responseargs);
 }

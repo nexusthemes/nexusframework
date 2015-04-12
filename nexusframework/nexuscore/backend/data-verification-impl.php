@@ -403,7 +403,7 @@ function nxs_data_verification()
       
 	<div id='finishedwrap' style='display:none;'>
 		<?php
-		$url = admin_url('admin.php?page=nxs_backend_overview');
+		$url = admin_url('admin.php?page=nxs_backend_overview&trigger=finished');
 		?>
 		<div class='nxs-width100 nxs-align-center'>
 			<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo nxs_l18n__("Finish", "nxs_td"); ?></a>

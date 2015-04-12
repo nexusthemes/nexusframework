@@ -588,6 +588,8 @@ function nxs_license_restart_page_content()
 			
 			nxs_site_wipe();
 			
+			do_action("nxs_wiped_manual");
+			
 			$url = nxs_geturlcurrentpage();
 			$url = nxs_addqueryparametertourl_v2($url, "nxsaction", "wipesitefinished", true, true);
 			?>
