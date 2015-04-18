@@ -201,6 +201,33 @@ function nxs_getstyletypeoptions() {
 				"right bottom"		=> nxs_l18n__("arrow-up-left", "nxs_td"),
 			)
 		),
+		"docking_position" =>  array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array 
+			(
+				"left top"			=> nxs_l18n__("left top", "nxs_td"),
+				"center top"		=> nxs_l18n__("center top", "nxs_td"), 
+				"right top"			=> nxs_l18n__("right top", "nxs_td"), 
+				"left center"		=> nxs_l18n__("left center", "nxs_td"),
+				"center center"		=> nxs_l18n__("center center", "nxs_td"), 
+				"right center"		=> nxs_l18n__("right center", "nxs_td"), 
+				"left bottom"		=> nxs_l18n__("left bottom", "nxs_td"),
+				"center bottom"		=> nxs_l18n__("center bottom", "nxs_td"), 
+				"right bottom"		=> nxs_l18n__("right bottom", "nxs_td"),
+			),
+			"icons"				=> array 
+			(
+				"left top"			=> nxs_l18n__("stop2", "nxs_td"),
+				"center top"		=> nxs_l18n__("stop2", "nxs_td"), 
+				"right top"			=> nxs_l18n__("stop2", "nxs_td"), 
+				"left center"		=> nxs_l18n__("minus", "nxs_td"),
+				"center center"		=> nxs_l18n__("minus", "nxs_td"),
+				"right center"		=> nxs_l18n__("minus", "nxs_td"), 
+				"left bottom"		=> nxs_l18n__("stop2", "nxs_td"),
+				"center bottom"		=> nxs_l18n__("stop2", "nxs_td"), 
+				"right bottom"		=> nxs_l18n__("stop2", "nxs_td"),
+			)
+		),
 		"valid_dates" => array (
 			"subtype" 			=> "textlookup",
 			"values" 			=> array
@@ -230,7 +257,15 @@ function nxs_getstyletypeoptions() {
 		"maxheight" => array (
 			"subtype" 			=> "multiplier",
 			"values" 			=> array("",  0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 3.0),
-		)
+		),
+		"distance" => array (
+			"subtype" 			=> "multiplier",
+			"values" 			=> array("", 0, 0.1, 0.2, 0.3, 0.5, 0.7, 1, 1.5),
+		),
+		"offset" => array (
+			"subtype" 			=> "multiplier",
+			"values" 			=> array("", 40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480),
+		),
 	);
 	return $options;
 }

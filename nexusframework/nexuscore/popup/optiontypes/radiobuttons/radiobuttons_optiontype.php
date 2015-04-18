@@ -35,8 +35,10 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 				<div id='nxs-<?php echo $subtype; ?>-<?php echo $id; ?>' class="nxs-radiobuttons-container <?php echo $classes; ?>">
 					<ul class="nxs-radiobuttons nxs-radiobuttons-list nxs-float-left">
 						<?php
+							$i = 0;
 							foreach ($items as $currentkey => $currentvalue) 
       						{
+      							$i++;
       							$selected = "";
 
       							if ($no_icon == "") {
@@ -46,7 +48,7 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 
 					      		if ($currentkey == $value) 
 					      		{
-					      			$selected = 'radiobuttons-item-active';
+					      			$selected = 'radiobuttons-item-active ';
 					      			$radiobuttons_text = $currentvalue;
 					      		}
 
@@ -54,8 +56,17 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 					      		{
 					      			$currentvalue = "default";
 					      		}
+
+					      		$disable_class = '';
+					      		if ($disable)
+					      		{
+					      			if (in_array ($i, $disable))
+					      			{
+					      				$disable_class = 'radiobuttons-item-disabled ';
+					      			}
+					      		}
 					      		?>
-					          	<li class="<?php echo $selected; ?> radiobuttons-item">
+					          	<li class="<?php echo $disable_class . $selected; ?>radiobuttons-item">
 					          		<?php if (!$no_icon) { ?>
 					          			<span class="nxs-radiobuttons-icon nxs-icon-<?php echo $currenticon; ?> nxs-icon"></span>
 					          		<?php } else { ?>
@@ -87,23 +98,25 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 			);
 
 			$("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").click(function(){
-				// select the index of the clicked item
-				var selectedPosition = $(this).index();
+				// ignore click if the item is disabled
+				if (!$(this).hasClass('radiobuttons-item-disabled')){
+					// select the index of the clicked item
+					var selectedPosition = $(this).index();
 
-				// set clicked item on active
-				$("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").removeClass('radiobuttons-item-active');
-				$(this).addClass('radiobuttons-item-active');
+					// set clicked item on active
+					$("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").removeClass('radiobuttons-item-active');
+					$(this).addClass('radiobuttons-item-active');
 
-				// get the key and value of the item
-				var key = $(this).find('.nxs-radiobuttons-key').text();
-				var value = $(this).find('.nxs-radiobuttons-value').text();
+					// get the key and value of the item
+					var key = $(this).find('.nxs-radiobuttons-key').text();
+					var value = $(this).find('.nxs-radiobuttons-value').text();
 
-				// change the input and paragraph
-				$('#<?php echo $id; ?>').val(key);
-				$('#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> .nxs-radiobuttons-text').html(value);
+					// change the input and paragraph
+					$('#<?php echo $id; ?>').val(key);
+					$('#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> .nxs-radiobuttons-text').html(value);
 
-				nxs_js_popup_sessiondata_make_dirty();
-				
+					nxs_js_popup_sessiondata_make_dirty();
+				}
 			});
 		});
 	</script>

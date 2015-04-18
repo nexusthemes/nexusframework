@@ -9824,6 +9824,18 @@ function nxs_getdarkercsscolorvariation($cssname)
 	return $result;
 }
 
+function nxs_getslidetotopdistance($value)
+{
+	return 10 + nxs_getpixelsfrommultiplier($value);
+}
+
+function nxs_getpixelsfrommultiplier($value, $factor = 30)
+{
+	$value = str_replace("-",".", $value);
+	$value = floatval($value);
+	return $value * $factor;
+}
+
 function nxs_getimagecssalignmentclass($value)
 {
 	if ($value == "l" || $value == "left")

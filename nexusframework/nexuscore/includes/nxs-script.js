@@ -7182,6 +7182,12 @@ function nxs_js_get_frameworkcsstemplate(csslookup)
 	u = u + nxs_js_get_themecsstemplate_part1_colorzen(".nxs-colorzen .nxs-colorzen .nxs-colorzen ", "", "nxs-colorzen-", csslookup, "");
 	u = u + nxs_js_get_themecsstemplate_part1_colorzen(".nxs-colorzen .nxs-colorzen .nxs-colorzen .nxs-colorzen ", "", "nxs-colorzen-", csslookup, "");
 	
+
+	// SLIDETOTOP COLORZEN ==============================
+
+
+	u = u + nxs_js_get_themecsstemplate_part1_colorzen(".nxs-slidetotop:hover ", "", "nxs-colorzen-hover-", csslookup, "");
+	
 	//
 	// 
 	//

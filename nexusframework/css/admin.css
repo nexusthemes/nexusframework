@@ -1136,6 +1136,14 @@ input.color-picker 									{ width: 70px; }
 	box-shadow: 0 1px 0 #d6d6d6 inset;
 }
 
+.nxs-radiobuttons-list li.radiobuttons-item-disabled,
+.nxs-radiobuttons-list li.radiobuttons-item-disabled.radiobuttons-item-hover {
+	background-color: #e9e9e9;
+	box-shadow: none !important;
+	background-image: none !important;
+	
+}
+
 .nxs-radiobuttons-list li:first-child {
 	-webkit-border-top-left-radius: 4px;
 	-webkit-border-bottom-left-radius: 4px;
@@ -1162,6 +1170,11 @@ input.color-picker 									{ width: 70px; }
 	line-height: 27px;
 	cursor: pointer;
 	text-align: center;
+}
+
+.nxs-radiobuttons-list li.radiobuttons-item-disabled .nxs-radiobuttons-icon {
+	opacity: 0.2;
+	cursor: default !important;
 }
 
 .nxs-radiobuttons-container .nxs-radiobuttons-key,
@@ -1234,6 +1247,17 @@ input.color-picker 									{ width: 70px; }
 .nxs-radiobutton-backgroundimage_position li.radiobuttons-item-active .nxs-radiobuttons-icon 	{ opacity: 1; }
 .nxs-radiobutton-backgroundimage_position li.radiobuttons-item-active .nxs-radiobuttons-icon,
 .nxs-radiobutton-backgroundimage_position li.radiobuttons-item-hover .nxs-radiobuttons-icon 	{ display: block; }
+
+/* ADMIN MENU RADIOBUTTONS IMAGEBACKGROUND POSITION
+----------------------------------------------------------------------------------------------------*/
+
+.nxs-radiobutton-docking_position li 													{ background: #f6f6f6;}
+.nxs-radiobutton-docking_position li .nxs-radiobuttons-icon 							{ display: none; opacity: 0.5; }
+.nxs-radiobutton-docking_position li.radiobuttons-item-active .nxs-radiobuttons-icon 	{ opacity: 1; }
+.nxs-radiobutton-docking_position li.radiobuttons-item-active .nxs-radiobuttons-icon,
+.nxs-radiobutton-docking_position li.radiobuttons-item-hover .nxs-radiobuttons-icon 	{ display: block; }
+.nxs-radiobutton-docking_position li.radiobuttons-item-disabled span 					{ opacity: 0 !important; }
+
 
 /* ADMIN PLACEHOLDER HOVER STATES
 ----------------------------------------------------------------------------------------------------*/
