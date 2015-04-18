@@ -331,14 +331,34 @@ function nxs_widgets_pageslidetotop_render_webpart_render_htmlvisualization($arg
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	?>
-
-		<p>blablablabla</p>
-
-
-
-
-	<?php	
+	if ($shouldrenderalternative) 
+	{
+		if ($alternativehint == "")
+		{
+			$alternativehint = nxs_l18n__("Missing input", "nxs_td");
+		}
+		nxs_renderplaceholderwarning($alternativehint); 
+	} 
+	else 
+	{
+		/* ADMIN OUTPUT
+		---------------------------------------------------------------------------------------------------- */
+		
+		echo '
+		<div class="nxs-dragrow-handler nxs-padding-menu-item">
+		<div class="content2">
+		 <div class="box">
+		        <div class="box-title">
+		   <h4>Slide to top</h4>
+		  </div>
+		  <div class="box-content"></div>
+		 </div>
+		 <div class="nxs-clear"></div>
+		</div>
+		</div>';
+		
+		/* ------------------------------------------------------------------------------------------------- */
+	}
 	
 	/* ------------------------------------------------------------------------------------------------- */
 	 
