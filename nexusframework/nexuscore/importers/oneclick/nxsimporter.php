@@ -126,6 +126,11 @@ class NXS_importer extends WP_Importer {
 		$this->fetch_attachments = true; // always true ( ! empty( $_POST['fetch_attachments'] ) && $this->allow_fetch_attachments() );
 		$filelocation = TEMPLATEPATH . "/" . "resources" . "/" . "resource.xml";
 		$filelocation = nxs_getfixedfiletouse($filelocation);
+		if (!file_exists($filelocation))
+		{
+			// fallback
+			$filelocation = TEMPLATEPATH . "/" . "resources" . "/" . "resource.xml";
+		}
 		set_time_limit(0);
 		$this->import($filelocation);
 	}
