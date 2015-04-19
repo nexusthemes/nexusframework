@@ -295,8 +295,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"topalign",
 										"middlealign",
 										"bottomalign",
-										"lightbulb",									
-										
+										"lightbulb",
+										"shovel",									
+										"fence",
+										"carpet",
 									);
 										
 									foreach($icontypes as $currenticontype)
