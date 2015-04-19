@@ -480,40 +480,55 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 			}
 
 			// Article link
-			if ($destination_articleid != "") {
+			if ($destination_articleid != "") 
+			{
 				$destination_url = nxs_geturl_for_postid($destination_articleid);
 			}
 
 			if ($skipitem === false) {
-				if ($shouldrenderalternative) {
+				if ($shouldrenderalternative) 
+				{
 					if ($alternativehint == "") {
 						$alternativehint = nxs_l18n__("Missing input", "nxs_td");
 					}
 					nxs_renderplaceholderwarning($alternativehint); 
-				} else {
+				} 
+				else 
+				{
 					echo '<div class="nxs-evententry nxs-applylinkvarcolor">';
-						
-						// Date
-						if ($destination_url != "") 
-						{ 
-							if ($destination_articleid != "")
-							{
-								// internal link
-								echo '<a href="' . $destination_url . '">'; 
-							}
-							else
-							{
-								// external link
-								echo '<a href="' . $destination_url . '" target="_blank">'; 
-							}
+					$haslink = false;
+					if ($destination_url != "" || $destination_articleid != "")
+					{
+						$haslink = true;
+					}
+					// Date
+					if ($haslink) 
+					{ 
+						if ($destination_articleid != "")
+						{
+							// internal link
+							echo '<a href="' . $destination_url . '">'; 
 						}
-						echo '
+						else
+						{
+							// external link
+							echo '<a href="' . $destination_url . '" target="_blank">'; 
+						}
+					}
+					
+					echo '
 						<div class="nxs-date nxs-date-size-'.$date_size.'">
 							<h4 class="icon nxs-border-width-1-0 month ' . $month_color_cssclass . '">' . $month . '</h4>
 							<h4 class="icon nxs-border-width-1-0 day ' . $day_color_cssclass . '">' . $day . '</h4>	
 						</div>';
-						if ($destination_url != "") { echo '</a>'; }
+						
+					if ($haslink) 
+					{ 
+						echo '</a>'; 
+					}
 					
+					if ($haslink) 
+					{	
 						// Title
 						if ($destination_articleid != "")
 						{
@@ -525,21 +540,29 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 							// external link
 							echo '<a href="' . $destination_url . '" target="_blank">'; 
 						}
-						echo '<' . $eventitem_heading . ' class="nxs-title title">' . $title . '</a></' . $eventitem_heading . '>';
-						if ($destination_url != "") { echo '</a>'; }
+					}
+					
+					echo '<' . $eventitem_heading . ' class="nxs-title title">' . $title . '</' . $eventitem_heading . '>';
 						
-						// Subtitle
-						echo'<div class="subtitle nxs-default-p nxs-padding-bottom0">' . $subtitle . '</div>';
+					if ($haslink) 
+					{ 
+						echo '</a>'; 
+					}
 						
-						if ($item_button != "") 
-						{ 
-							echo '<div class="nxs-clear padding"></div>';	
-							echo $item_button; 
-						}
-						echo '<div class="nxs-clear"></div>
-							</div>';
+					// Subtitle
+					echo'<div class="subtitle nxs-default-p nxs-padding-bottom0">' . $subtitle . '</div>';
+					
+					if ($item_button != "") 
+					{ 
+						echo '<div class="nxs-clear padding"></div>';	
+						echo $item_button; 
+					}
+					echo '<div class="nxs-clear"></div>';
+					echo '</div>';
 			  }
-			} else {
+			} 
+			else 
+			{
 				// item is skipped; ignore
 			}
 		}
