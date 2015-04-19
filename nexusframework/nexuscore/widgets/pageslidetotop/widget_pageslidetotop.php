@@ -1,7 +1,7 @@
 <?php
 
 function nxs_widgets_pageslidetotop_geticonid() {
-	return "nxs-icon-arrow-up";
+	return "nxs-icon-arrow-up-light";
 }
 
 function nxs_widgets_pageslidetotop_gettitle() {
@@ -19,15 +19,15 @@ function nxs_widgets_pageslidetotop_registerhooksforpagewidget($args)
 	$nxs_pageslidetotop_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
 	
 	$enabled = true;
-	$pagevideo_metadata = nxs_getwidgetmetadata($nxs_pageslidetotop_pagedecoratorid, $nxs_pageslidetotop_pagedecoratorwidgetplaceholderid);
-	$condition_enable = $pagevideo_metadata["condition_enable"];
-	if ($condition_enable == "desktoponly")
-	{
-		if (!nxs_isdesktop())
-		{
-			$enabled = false;
-		}
-	}
+	// $pagevideo_metadata = nxs_getwidgetmetadata($nxs_pageslidetotop_pagedecoratorid, $nxs_pageslidetotop_pagedecoratorwidgetplaceholderid);
+	// $condition_enable = $pagevideo_metadata["condition_enable"];
+	// if ($condition_enable == "desktoponly")
+	// {
+	// 	if (!nxs_isdesktop())
+	// 	{
+	// 		$enabled = false;
+	// 	}
+	// }
 	
 	if ($enabled)
 	{
@@ -116,13 +116,13 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 	}
 
 	$concatenatedcssclasses_container 	= nxs_concatenateargswithspaces('nxs-slidetotop', $linkcolorvar_cssclass, $docking_position_cssclass);
-	$concatenatedcssclasses_anker 		= nxs_concatenateargswithspaces($background_color_cssclass, $background_color_hover_cssclass);
+	$concatenatedcssclasses_anchor 		= nxs_concatenateargswithspaces($background_color_cssclass, $background_color_hover_cssclass);
 	
 	?>
 
 	<div id='nxs-slidetotop' class="<?php echo $concatenatedcssclasses_container; ?>" style="<?php echo $distance_style; ?>">
 		<div class="nxs-applylinkvarcolor">
-			<a href="#" class='<?php echo $concatenatedcssclasses_anker; ?>'>
+			<a href="#" class='<?php echo $concatenatedcssclasses_anchor; ?>'>
 				<?php echo $icon; ?>
 			</a>
 		</div>
@@ -157,14 +157,12 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 		<?php
 			if ($docking_position_explode[0] == "center") {
 		?>
-			$(document).ready(function(){
-				setTimeout(function() {
-					var slidetotopWidth = Math.round($('#nxs-slidetotop').width());
-					var slidetotopMargin = slidetotopWidth / 2;
-						slidetotopMargin = Math.round(slidetotopMargin - (slidetotopMargin * 2));
+			$(document).load(function(){
+				var slidetotopWidth = Math.round($('#nxs-slidetotop').width());
+				var slidetotopMargin = slidetotopWidth / 2;
+					slidetotopMargin = Math.round(slidetotopMargin - (slidetotopMargin * 2));
 
-					$('#nxs-slidetotop').css('marginLeft', slidetotopMargin);
-				}, 10);
+				$('#nxs-slidetotop').css('marginLeft', slidetotopMargin);
 			})
 
 		<?php
@@ -256,7 +254,8 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("distance"),
 			),
 
-			array(
+			array
+			(
 				"id" 				=> "offset",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Top offset till visible", "nxs_td"),
@@ -379,8 +378,8 @@ function nxs_widgets_pageslidetotop_initplaceholderdata($args)
 	extract($args);
 
 	$args['icon'] = "nxs-icon-arrow-up-light";
+	$args['icon_scale'] = "1-0";
 	$args['docking_position'] = "right bottom";
-	$args['distance'] = "0";
 		
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
