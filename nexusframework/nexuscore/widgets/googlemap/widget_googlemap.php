@@ -168,19 +168,19 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 
 	$mixedattributes = array_merge($temp_array, $args);
 
-	$bla = nxs_localization_localize($mixedattributes);
+	$mixedattributes = nxs_localization_localize($mixedattributes);
 
 	if ($lat == "")
 	{
-		$lat = "52.0";
+		$lat = "40.8";
 	}
 	if ($lng == "")
 	{
-		$lng = "5.12";
+		$lng = "-74";
 	}
 	if ($zoom == "")
 	{
-		$zoom = "9";
+		$zoom = "14";
 	}
 	if ($maptypeid == "")
 	{
@@ -502,8 +502,12 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 function nxs_widgets_googlemap_initplaceholderdata($args)
 {
 	extract($args);
-	
-	$args["videoid"] = nxs_l18n__("videoid[googlemap,sample,14692378]", "nxs_td");
+
+	$args['minheight'] = "200-0";
+	$args['maptypeid'] = "ROADMAP";
+	$args['zoom'] = "14";
+	$args['lat'] = "40.8";
+	$args['lng'] = "-74";
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
