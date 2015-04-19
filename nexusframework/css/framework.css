@@ -2765,6 +2765,9 @@ h3#order_review_heading,
 .nxs-icon-middlealign:before		{ content: "\e430";	}
 .nxs-icon-bottomalign:before		{ content: "\e431";	}
 .nxs-icon-lightbulb:before			{ content: "\e432";	}
+.nxs-icon-shovel:before				{ content: "\e433";	}
+.nxs-icon-fence:before				{ content: "\e434";	}
+.nxs-icon-carpet:before				{ content: "\e435";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
