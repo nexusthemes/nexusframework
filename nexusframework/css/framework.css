@@ -2344,7 +2344,10 @@ h3#order_review_heading,
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.nxs-widgettype-menucontainer [class*="nxs-icon-"] {
+.nxs-widgettype-menucontainer .ABC [class*="nxs-icon-"],
+.nxs-widgettype-menuitemcustom .ABC [class*="nxs-icon-"],
+.nxs-widgettype-menuitemarticle .ABC [class*="nxs-icon-"],
+.nxs-widgettype-menuitemcategory .ABC [class*="nxs-icon-"] {
     margin-right: 5px;
 }
 
