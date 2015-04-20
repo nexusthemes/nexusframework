@@ -2348,7 +2348,8 @@ h3#order_review_heading,
 .nxs-widgettype-menuitemcustom .ABC [class*="nxs-icon-"],
 .nxs-widgettype-menuitemarticle .ABC [class*="nxs-icon-"],
 .nxs-widgettype-menuitemcategory .ABC [class*="nxs-icon-"] {
-    margin-right: 5px;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
 }
 
 /* ICON FONT 2.0
