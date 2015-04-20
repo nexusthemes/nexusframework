@@ -29,7 +29,27 @@ function nxs_widgets_menuitemarticle_home_getoptions($args)
 		"footerfiller" => true,
 		"fields" => array
 		(
-			// TITLE
+			// ICON
+            
+            array( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"initial_toggle_state" => "closed",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+			),
+            
+            array(
+				"id" 				=> "icon",
+				"type" 				=> "icon",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+				"unicontentablefield" => false,
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend",
+			),
+
+            // TITLE
 			
 			array( 
 				"id" 				=> "wrapper_title_begin",
@@ -48,8 +68,8 @@ function nxs_widgets_menuitemarticle_home_getoptions($args)
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend",
 			),
-			
-			//
+            
+            //
 			
 			array( 
 				"id" 				=> "wrapper_link_begin",
@@ -116,6 +136,11 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	$title = $mixedattributes['title'];
+	
+    $icon = $mixedattributes['icon'];
+	$icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+    
 	$destination_articleid = $mixedattributes['destination_articleid'];
 	$depthindex = $mixedattributes['depthindex'];	// sibling or child
 
@@ -175,6 +200,8 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
   	$positionerclass = "nxs-margin-left120";
   }
   
+  if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+    
   ?>
 	<div class="nxs-padding-menu-item nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder" id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
 		<div class="nxs-drag-helper" style='display: none;'>
@@ -182,7 +209,7 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 			</div>
 		</div>
 		<div class="content2 border <?php echo $positionerclass;?>">
-	    <div class="box-content nxs-float-left"><p><?php echo $title; ?></p></div>
+	    <div class="box-content nxs-float-left"><p><?php echo $icon; ?><?php echo $title; ?></p></div>
 	    <div class="nxs-clear"></div>
 	  </div> <!--END content-->
 	</div>

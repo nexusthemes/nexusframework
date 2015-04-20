@@ -30,6 +30,11 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
 	$mixedattributes = array_merge($temp_array, $args);
 	
 	$title = $mixedattributes['title'];
+    
+    $icon = $mixedattributes['icon'];
+	$icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+    
 	$destination_url = $mixedattributes['destination_url'];
 	$depthindex = $mixedattributes['depthindex'];	// sibling or child
 
@@ -116,10 +121,12 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
   	$positionerclass = "nxs-margin-left120";
   }
   
+  if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+  
   ?>
 	<div class="nxs-padding-menu-item">
 		<div class="content2 border <?php echo $positionerclass;?>">
-	    <div class="box-content nxs-float-left"><p><?php echo $title; ?></p></div>
+	    <div class="box-content nxs-float-left"><p><?php echo $icon; ?><?php echo $title; ?></p></div>
 	    <div class="nxs-clear"></div>
 	  </div> <!--END content-->
 	</div>
@@ -147,6 +154,26 @@ function nxs_widgets_menuitemcustom_home_getoptions($args)
 		"sheeticonid" => nxs_widgets_menuitemcustom_geticonid(),
 		"fields" => array
 		(
+			// ICON
+            
+            array( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"initial_toggle_state" => "closed",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+			),
+            
+            array(
+				"id" 				=> "icon",
+				"type" 				=> "icon",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+				"unicontentablefield" => false,
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend",
+			),
+			
 			// TITLE
 			
 			array( 

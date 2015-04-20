@@ -2344,6 +2344,10 @@ h3#order_review_heading,
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.nxs-widgettype-menucontainer [class*="nxs-icon-"] {
+    margin-right: 5px;
+}
+
 /* ICON FONT 2.0
 ---------------------------------------------------------------------------------------------------- */
 

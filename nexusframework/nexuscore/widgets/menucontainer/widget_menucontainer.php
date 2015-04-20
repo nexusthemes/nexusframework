@@ -518,6 +518,11 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					if ($placeholdertype == "menuitemarticle") 
 					{
 						$title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+                        
+						$icon = $placeholdermetadata["icon"]; 
+						$icon_scale = "0-5"; 
+                        $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+                        
 						$destination_articleid = $placeholdermetadata["destination_articleid"];
 						
 						// derive 'current' classes
@@ -556,6 +561,9 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 							$anchorclass .= " nxs-menuitemnolink";
 						}
 						
+                        
+                        if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+                        
 						$anchorclass = "class='{$anchorclass}'";
 
 						// 
@@ -564,7 +572,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 						
 						$cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height" . $parent_height . "' >";
 						$cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
-						$cache = $cache . "<div itemprop='name'>$title</div>";
+						$cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
 						$cache = $cache . "</a>";
 		
 						$elementcountforcurrentdepth = 0;
@@ -581,6 +589,11 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					else if ($placeholdertype == "menuitemcategory") 
 					{
 						$title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+                        
+						$icon = $placeholdermetadata["icon"]; 
+						$icon_scale = "0-5"; 
+                        $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+                        
 						$destination_category = $placeholdermetadata["destination_category"];
 						// for example [92]
 						// remove brackets
@@ -622,12 +635,14 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 							$anchorclass .= " nxs-menuitemnolink";
 						}
 						
+                        if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+                        
 						$anchorclass = "class='{$anchorclass}'";
 						
 										  
 						$cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height" . $parent_height . "' >";
 						$cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
-						$cache = $cache . "<div itemprop='name'>$title</div>";
+						$cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
 						$cache = $cache . "</a>";
 		
 						$elementcountforcurrentdepth = 0;
@@ -643,6 +658,11 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					} else if ($placeholdertype == "menuitemcustom") {
 						
 						$title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+                        
+						$icon = $placeholdermetadata["icon"]; 
+						$icon_scale = "0-5"; 
+                        $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+                        
 						$url = $placeholdermetadata["destination_url"];
 						
 						if ($url == "") {
@@ -671,11 +691,13 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 							$destination_relationatt = "rel='follow'";
 						}
 						
+                        if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+                        
 						$anchorclass = "class='{$cssclasssubitem}'";
 						
 						$cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height" . $parent_height . " " . $font_variant . "' style='" . $font_variant . "'>";
 						$cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " " . $destination_relationatt . " " . $anchorclass . ">";
-						$cache = $cache . "<div itemprop='name'>$title</div>";
+						$cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
 						$cache = $cache . "</a>";
 					
 					/* UNKNOWN MENU ITEM
@@ -775,6 +797,11 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                             
                             $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
                             $title = nxs_menu_enrichtitle($title, $currentdepth);
+                              
+                              
+                            $icon = $placeholdermetadata["icon"]; 
+                            $icon_scale = "0-5"; 
+                            $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
                             
                             $destination_articleid = $placeholdermetadata["destination_articleid"];
                             
@@ -791,13 +818,15 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                                 $anchorclass .= " {$cssclassminiitemlink}";
                             }
                             
+                            if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+                              
                             $anchorclass = "class='{$anchorclass} {$outer_color_cssclass}'";
                             
                             $url = nxs_geturl_for_postid($destination_articleid);
                 
                             $cache = $cache . "<li class='menu-item menu-item-post menu-depth-" . $currentdepth . " {$class}'>";
                             $cache = $cache . "<a itemprop='url'  href='" . $url . "' {$anchorclass}>";
-                            $cache = $cache . "<div itemprop='name'>$title</div>";
+                            $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
                             $cache = $cache . "</a>";
                             $cache = $cache . "</li>";	// deze is het niet
 
@@ -811,6 +840,11 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                             
                             $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
                             $title = nxs_menu_enrichtitle($title, $currentdepth);
+                                                        
+                                                        
+                            $icon = $placeholdermetadata["icon"]; 
+                            $icon_scale = "0-5"; 
+                            $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
                             
                             $destination_category = $placeholdermetadata["destination_category"];
                             
@@ -831,7 +865,9 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                               // inactief subitem
                               $anchorclass .= " {$cssclassminiitemlink}";
                             }
-                            
+                                                        
+                            if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+                        
                             $anchorclass = "class='{$anchorclass} {$outer_color_cssclass}'";
                             
                  				    // Get the URL of this category
@@ -840,7 +876,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                 
                             $cache = $cache . "<li class='menu-item menu-item-post menu-depth-" . $currentdepth . " {$class}'>";
                             $cache = $cache . "<a itemprop='url' href='" . $url . "' {$anchorclass}>";
-                            $cache = $cache . "<div itemprop='name'>$title</div>";
+                            $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
                             $cache = $cache . "</a>";
                             $cache = $cache . "</li>";
 
@@ -851,12 +887,18 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 													{
                               $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
                               $title = nxs_menu_enrichtitle($title, $currentdepth);
+                                                        
+                              $icon = $placeholdermetadata["icon"]; 
+                              $icon_scale = "0-5"; 
+                              $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
                               
                               $url = $placeholdermetadata["destination_url"];
                   
+                              if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+                        
                               $cache = $cache . "<li class='menu-item menu-item-custom menu-depth-" . $currentdepth . "'>";
                               $cache = $cache . "<a itemprop='url' href='{$url}' class='{$outer_color_cssclass}'>";
-                              $cache = $cache . "<div itemprop='name'>$title</div>";
+                              $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
 															$cache = $cache . "</a>";
                               $cache = $cache . "</li>";
                           
