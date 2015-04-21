@@ -17,8 +17,7 @@ dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b,
 table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, 
 ruby, section, summary, time, mark, audio, video, textarea { border-color: white; }
 
-/* vertical alignment */
-html, 
+/* vertical alignment */ 
 body														{ height: 100%; }
 #nxs-container {
 	/* the "overflow: auto; property is necessary to prevent parent div's to move when a margin is set on the child div */
