@@ -209,7 +209,7 @@ if (!nxs_showphpwarnings())
 {
 	error_reporting(E_ERROR | E_PARSE);	
 	nxs_saveobclean();
-}
+}	
 
 function nxs_getcharset()
 {
