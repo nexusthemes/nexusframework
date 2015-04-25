@@ -175,6 +175,19 @@ function nxs_isdebug()
 	return $result;
 }
 
+// somehow pages archive pages result in a 404 (is_archive == false),
+// to fix this we use the following code,
+// kudos to http://ilikekillnerds.com/2012/11/fixing-wordpress-404-custom-post-type-archive-pagination-issues-with-posts-per-page/
+function custom_posts_per_page( $query ) 
+{
+  if ( $query->is_archive() ) 
+  {
+  	$ppp = get_option('posts_per_page');
+    set_query_var('posts_per_page', $ppp);
+  }
+}
+add_action( 'pre_get_posts', 'custom_posts_per_page' );
+
 // 2013 08 03; fixing unwanted WP3.6 notice errors
 // third party plugins and other php code (like sunrise.php) can
 // cause warnings that mess up the output of the webmethod
