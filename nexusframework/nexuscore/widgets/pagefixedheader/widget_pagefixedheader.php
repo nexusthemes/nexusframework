@@ -233,7 +233,8 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 			(
 				"id" 				=> "display",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("display", "nxs_td"),
+				"label" 			=> nxs_l18n__("Display", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Display inline will be ignored if a top scroll till visible is given.", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fixedheader_display")
 			),
 
@@ -241,7 +242,8 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 			(
 				"id" 				=> "offset",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Top offset till visible", "nxs_td"),
+				"label" 			=> nxs_l18n__("Top scroll till visible", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Display inline will be ignored if a top scroll till visible is given.", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("offset")
 			),
 
