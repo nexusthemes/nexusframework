@@ -31,7 +31,7 @@ function nxs_sm_processstate_dataverification($result)
 add_action('admin_menu', 'nxs_data_verification_addadminpages', 11);
 
 function nxs_data_verification_addadminpages() {
-	add_submenu_page("nxs_backend_overview", 'Data Verification', 'Data Verification', 'manage_options', 'nxs_data_verification_page_content', 'nxs_data_verification_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'Data Verification', 'Data Verification', 'switch_themes', 'nxs_data_verification_page_content', 'nxs_data_verification_page_content', '', 81 );
 }
 
 add_filter("nxs_sm_processstate_dataverification", "nxs_sm_processstate_dataverification");
