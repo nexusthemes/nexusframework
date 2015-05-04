@@ -394,12 +394,19 @@ if (is_admin)
 	<?php 
 }
 
-if (nxs_has_adminpermissions())
+if (!has_action("nxs_clientsidesupport"))
 {
-	// only logged in users can ask questions
-	?>
-	<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/support-deferred.js.php?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
-	<?php
+	if (nxs_has_adminpermissions())
+	{
+		// only logged in users can ask questions
+		?>
+		<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/support-deferred.js.php?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
+		<?php
+	}
+}
+else
+{
+	do_action("nxs_clientsidesupport");
 }
 ?>
 <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(); ?>"></script>

@@ -2172,3 +2172,5 @@ function nxs_init_handledebug()
 		}
 	}
 }
+
+do_action('nxs_framework_loaded');
