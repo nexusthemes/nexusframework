@@ -712,11 +712,11 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		if ($twitter != "") 	{ $twitter = 		'<li><a target="_blank" href="' . $twitter . '">	<span class="nxs-icon-twitter-2"></span></a></li>'; }
 		if ($facebook != "") 	{ $facebook = 		'<li><a target="_blank" href="' . $facebook . '">	<span class="nxs-icon-facebook"></span></a></li>'; }
 		if ($linkedin != "") 	{ $linkedin = 		'<li><a target="_blank" href="' . $linkedin . '">	<span class="nxs-icon-linkedin"></span></a></li>'; }
-		if ($googleplus != "") 	{ $googleplus = 	'<li><a target="_blank" href="' . $googleplus . '">	<span class="nxs-icon-google-plus"></span></a></li>'; }
+		if ($google != "") 	{ $google = 	'<li><a target="_blank" href="' . $google . '">	<span class="nxs-icon-google-plus"></span></a></li>'; }
 		if ($youtube != "") 	{ $youtube = 		'<li><a target="_blank" href="' . $youtube . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
 		if ($skypechat != "") 	{ $skypechat = 		'<li><a href="skype:' . $skypechat . '?chat">		<span class="nxs-icon-skype"></span></a></li>'; }
 		if ($emailaddress != "") 	{ $emailaddress = 		'<li><a target="_blank" href="mailto:' . $emailaddress . '">		<span class="nxs-icon-contact"></span></a></li>'; }
-		
+            
 		if 		($halign == 'left') 	{ $alignment = ''; } 
 		else if ($halign == 'center') 	{ $alignment = 'nxs-center'; } 
 		else if ($halign == 'right') 	{ $alignment = 'nxs-float-right'; }
@@ -728,7 +728,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 					. $twitter
 					. $facebook
 					. $linkedin
-					. $googleplus
+					. $google
 					. $youtube
 					. $skypechat
 					. $emailaddress
