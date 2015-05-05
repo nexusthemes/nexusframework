@@ -239,7 +239,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "htmlcustom");
 		$result[] = array("widgetid" => "squeezebox");
 		$result[] = array("widgetid" => "googlebusinessphoto");		
-		$result[] = array("widgetid" => "rssfeed");
+		$result[] = array("widgetid" => "rssfeed");	
+		$result[] = array("widgetid" => "breadcrumb");
 		
 		
 		
@@ -524,6 +525,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("fblikebox");
 	nxs_ext_lazyload_widget("googledoc");
 	nxs_ext_lazyload_widget("rssfeed");
+	nxs_ext_lazyload_widget("breadcrumb");
 	nxs_ext_lazyload_widget("template2");
 	nxs_ext_lazyload_widget("image");
 	nxs_ext_lazyload_widget("search");

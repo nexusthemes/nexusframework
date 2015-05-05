@@ -4093,10 +4093,10 @@ function nxs_getfilteredcategories(&$categorieshaystack, $filters)
 			// no more filters to check
 		}
     
-    if ($shouldremoveitem)
-    {
-    	unset($categorieshaystack[$elementKey]);
-    }
+        if ($shouldremoveitem)
+        {
+            unset($categorieshaystack[$elementKey]);
+        }
 	}
 	
 	// restructure array

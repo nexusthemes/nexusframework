@@ -1991,6 +1991,24 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 ---------------------------------------------------------------------------------------------------- */
 .nxs-flickr iframe											{ width: 100% !important; }
 
+/* BREADCRUMB
+------------------------------------------------------------------------------------------ */
+
+.nxs-default-breadcrumb div {
+    display: inline;
+}
+.nxs-default-breadcrumb div:nth-of-type(1) {
+    margin-right: 8px;
+}
+.nxs-default-breadcrumb div [class*="nxs-icon-"] {
+    vertical-align: middle;
+    font-size: 8px;
+}
+.nxs-default-breadcrumb div .nxs-icon-home {
+    margin-bottom: 4px;
+    font-size: 18px;
+}
+
 /* CAROUSEL
 ---------------------------------------------------------------------------------------------------- */
 .nxs-carousel .logo-wrapper									{ width: 100%; height: 100%; overflow: hidden; z-index: 15; pointer-events: none; }
