@@ -106,12 +106,13 @@ function nxs_widgets_archive_home_getoptions($args)
 				("0"=>"0","1"=>"1","2"=>"2","3"=>"3","4"=>"4","5"=>"5","6"=>"6","7"=>"7","8"=>"8","9"=>"9","10"=>"10","11"=>"11","12"=>"12","13"=>"13","14"=>"14","15"=>"15","16"=>"16","17"=>"17","18"=>"18","19"=>"19","20"=>"20")
 			),
 			*/
+			/*
 			array(
 				"id" 				=> "items_filter_maxcount",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Number of posts", "nxs_td"),
 				"dropdown" 			=> array("1"=>"1","2"=>"2","3"=>"3","4"=>"4","5"=>"5","6"=>"6","7"=>"7","8"=>"8","9"=>"9","10"=>"10","20"=>"20","30"=>"30","40"=>"40","50"=>"50","100"=>"100")
-			),			
+			),
 			array(
 				"id" 				=> "items_order",
 				"type" 				=> "select",
@@ -125,6 +126,7 @@ function nxs_widgets_archive_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+			*/
 			array(
 				"id" 				=> "item_text_truncatelength",
 				"type" 				=> "select",
@@ -432,61 +434,6 @@ function nxs_widgets_archive_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
-			// LAZYLOADING
-			
-			array( 
-				"id" 					=> "wrapper_items_begin",
-				"type" 					=> "wrapperbegin",
-				"label" 				=> nxs_l18n__("Lazyloading", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
-				"unistylablefield"	=> true
-			),
-			array( 
-				"id" 				=> "paginglazyload_enable",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Enable lazy load pagination", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array( 			
-				"id" 				=> "paginglazyload_button_text",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array(
-				"id" 				=> "paginglazyload_button_scale",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Button scale", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("button_scale"),
-				"unistylablefield"	=> true
-			),
-			array( 
-				"id" 				=> "paginglazyload_button_color",
-				"type" 				=> "colorzen",
-				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
-				"sampletext"		=> nxs_l18n__("Sample<br />text", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array(
-				"id" 				=> "paginglazyload_button_icon_right",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					""				=> nxs_l18n__("none", "nxs_td"),
-					"nxs-icon-text"	=> nxs_l18n__("article", "nxs_td"),
-					"nxs-icon-arrow-right-2"	=> nxs_l18n__("arrow right 2", "nxs_td"),
-					"nxs-icon-arrow-down-2"	=> nxs_l18n__("arrow down 2", "nxs_td")
-				),
-				"unistylablefield"	=> true
-			),
-			array( 
-				"id" 				=> "wrapper_items_end",
-				"type" 				=> "wrapperend",
-				"unistylablefield"	=> true
-			),
-			
-			
 			// MISCELLANEOUS
 			
 			array( 
@@ -597,12 +544,6 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
-	if ($pagingpagination_enable != "" && $paginglazyload_enable != "")
-	{
-		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Ambiguous pagination (only one pagination can be used at a time)", "nxs_td");
-	}
-	
 	if ($pagingpagination_queryparameter == "p" || $pagingpagination_queryparameter == "page" || $pagingpagination_queryparameter == "post")
 	{
 		$pagingpagination_queryparameter = "pagenr";
@@ -665,32 +606,9 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 			else if 	($item_button_alignment == "right") { $item_button_alignment = 'nxs-align-right'; }
 
 
-		/* LAZY LOAD BUTTON
-		---------------------------------------------------------------------------------------------------- */
-			
-		// Icon
-		$paginglazyload_button_icon_right = nxs_getcssclassesforlookup('', $paginglazyload_button_icon_right);
-		if ($paginglazyload_button_icon_right != "") {
-			$paginglazyload_button_icon_right_html = '<span class="' . $paginglazyload_button_icon_right . '"></span>';
-		} else {
-			$paginglazyload_button_icon_right_html = "";
-		}
-		
-		// Scale
-		$paginglazyload_button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $paginglazyload_button_scale);
-		
-		// Color
-		$paginglazyload_button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $paginglazyload_button_color);
-		
-		
 		/* ---- */
 		
 		$paging_page = "";
-		if ($paginglazyload_enable != "") {
-			if (isset($_REQUEST["paging_page"])) {
-				$paging_page = $_REQUEST["paging_page"];
-			}
-		}
 		
 		if ($paging_page == "") {
 			$paging_page_class = "0";
@@ -705,9 +623,8 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 				$queryparameter = "paging_page_" . $postid . "_" . $placeholderid;
 			}
 			
-			if (isset($_REQUEST[$queryparameter])) {
-				$paging_page = $_REQUEST[$queryparameter];
-			}
+			global $wp_query;
+			$paging_page = $wp_query->query_vars["paged"];
 		}
 		
 		if ($items_filter_skipcount != "" || $paging_page != "") {
@@ -761,7 +678,6 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 			// unknown
 		}
 		
-		
 		// Skip number of posts
 		$publishedargs["offset"] = $offset;	// start bij de eerste
 		
@@ -804,7 +720,7 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 		}
 		else
 		{
-			query_posts($nxsqueryvars);
+			//query_posts($nxsqueryvars);
 			global $wp_query;
 			$pages = $wp_query->get_posts();
 		}
@@ -847,16 +763,17 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 			}
 			else
 			{
-				// paginate "regular" archive request
-				$publishedargs["numberposts"] = -1;	// allemaal!
-				$allposts = get_posts($publishedargs);
+				
 			}			
 			
-			$totalrows = count($allposts);
+			
 			$itemsperpage = intval($items_filter_maxcount);
-			$totalpages = (int) ceil($totalrows / $itemsperpage);
-						
+			
+			global $wp_query;
+			$totalpages = $wp_query->max_num_pages;
+			
 			$currenturl = nxs_geturlcurrentpage();
+			
 			$queryparameter = $pagingpagination_queryparameter;
 			
 			if ($queryparameter == "") {
@@ -881,25 +798,32 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 			
 			$urllastpage = nxs_addqueryparametertourl($currenturl, $queryparameter, $totalpages - 1);
 			
+			//	echo "$paging_page / $totalpages ";
 			
 			ob_start();
 			
-			if (false) { // $totalpages > 1) { 
+			if ($totalpages > 1) 
+			{ 
 				echo'
 				<div class="nxs-pagination nxs-pagination-' . $queryparameter . '">';
 				
 					// First and previous button
 					if ($paging_page > 0) { 
+					
+						$urlpreviouspage = previous_posts(false);
+
+						// <!-- <a class="current nxs-button ' . $pagination_button_scale_cssclass . ' ' . $pagination_button_color_cssclass . '" href="' . $urlfirstpage . '"><span class="nxs-icon-arrow-left-double"></a> -->
+						
 						echo'
 						<div class="nxs-float-left nxs-width30">
-							<a class="current nxs-button ' . $pagination_button_scale_cssclass . ' ' . $pagination_button_color_cssclass . '" href="' . $urlfirstpage . '"><span class="nxs-icon-arrow-left-double"></a>
-							<a class="current nxs-button ' . $pagination_button_scale_cssclass . ' ' . $pagination_button_color_cssclass . '" href="' . $urlpreviouspage . '"><span class="nxs-icon-arrow-left-2"></span></a>
+							<a class="current nxs-button ' . $pagination_button_scale_cssclass . ' ' . $pagination_button_color_cssclass . '" href="' . $urlpreviouspage . '"><span class="nxs-icon-arrow-left-light"></span></a>
 						</div>';
 					} else {
 						echo'
 						<div class="nxs-float-left nxs-width30" style="height: 1px;"></div>';
 					}
 					
+					/*
 					// Current page info
 					echo '
 					<p class="nxs-default-p nxs-padding-bottom0 nxs-float-left nxs-width40 nxs-align-center">
@@ -908,13 +832,18 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 							echo '
 						</span>
 					</p>';
+					*/
 					
 					// Last and next button
-					if (($paging_page +1) < $totalpages) { 
+					if (($paging_page +1) < $totalpages) 
+					{
+						$urlnextpage = next_posts($totalpages - 1, false); 
+
+						//<!-- <a class="current nxs-button ' . $pagination_button_scale_cssclass . ' ' . $pagination_button_color_cssclass . '" href="' . $urllastpage . '"><span class="nxs-icon-arrow-right-light"></a> -->
+
 						echo '
 						<div class="nxs-float-right">
-							<a class="current nxs-button ' . $pagination_button_scale_cssclass . ' ' . $pagination_button_color_cssclass . '" href="' . $urlnextpage . '"><span class="nxs-icon-arrow-right-2"></span></a>
-							<a class="current nxs-button ' . $pagination_button_scale_cssclass . ' ' . $pagination_button_color_cssclass . '" href="' . $urllastpage . '"><span class="nxs-icon-arrow-right-double"></a>
+							<a class="current nxs-button ' . $pagination_button_scale_cssclass . ' ' . $pagination_button_color_cssclass . '" href="' . $urlnextpage . '"><span class="nxs-icon-arrow-right-light"></span></a>
 						</div>';
 					} 
 				echo '
@@ -950,7 +879,6 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 				</script>
 				
 				<?php 
-				
 			}
 			
 			$paginghtml = ob_get_contents();
@@ -1295,12 +1223,6 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 				}
 			} else {
 				nxs_renderplaceholderwarning(nxs_l18n__("Unsupported items_layout; ", "nxs_td") . $items_layout);
-			}
-			
-		
-			// lazy loading 
-			if ($paginglazyload_enable != "") {
-				echo '<a class="nxs-button load-more ' . $paginglazyload_button_scale_cssclass . ' ' . $paginglazyload_button_color_cssclass . '" href="#" onclick="nxs_js_lazyloadmorearchives(this); return false;">' . $paginglazyload_button_text . $paginglazyload_button_icon_right_html . '</a>';
 			}
 			
 			// Pagination

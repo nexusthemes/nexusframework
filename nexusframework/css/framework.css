@@ -566,6 +566,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-float-right 											{ float: right; }
 .nxs-float-left												{ float: left; }
 .nxs-center													{ display: table; margin: 0 auto; }
+.nxs-block													{ display: block; }
 
 /* ABSOLUTE */
 .nxs-top													{ top: 0px; }
@@ -1311,24 +1312,6 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 }
 .nxs-logo span.title 										{ font-size: 30px; line-height: 1.5em; display: block; }
 .nxs-logo span.subtitle 									{ font-size: 20px; line-height: 1.2em; display: block; }
-
-/* BREADCRUMB
------------------------------------------------------------------------------------------- */
-
-.nxs-default-breadcrumb div {
-    display: inline;
-}
-.nxs-default-breadcrumb div:nth-of-type(1) {
-    margin-right: 8px;
-}
-.nxs-default-breadcrumb div [class*="nxs-icon-"] {
-    vertical-align: middle;
-    font-size: 8px;
-}
-.nxs-default-breadcrumb div .nxs-icon-home {
-    margin-bottom: 4px;
-    font-size: 18px;
-}
 
 /* BIO 
 ------------------------------------------------------------------------------------------ */
@@ -2095,6 +2078,12 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .nxs-sidebar-container .nxs-banner .image-wrapper:nth-child(2n),
 .nxs-main .nxs-banner .image-wrapper:last-child		{ border-right: 0; }
 
+/* ACCORDION
+---------------------------------------------------------------------------------------------------- */
+
+
+
+
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
 
@@ -2832,12 +2821,3 @@ h3#order_review_heading,
 .nxs-icon-capricorn:before 			{ content: "\2651"; }
 .nxs-icon-aquarius:before 			{ content: "\2652"; }
 .nxs-icon-pisces:before 			{ content: "\2653"; }
-
-
-
-
-
-
-
-
-

@@ -240,7 +240,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "squeezebox");
 		$result[] = array("widgetid" => "googlebusinessphoto");		
 		$result[] = array("widgetid" => "rssfeed");
-		$result[] = array("widgetid" => "breadcrumb");
 		
 		
 		
@@ -385,8 +384,12 @@ function nxs_getwidgets_functions_AF($result, $args)
 	if ($pagetemplate == "pagedecorator") {
 		$result[] = array("widgetid" => "pageslider");
 		$result[] = array("widgetid" => "pagebackground");
-		$result[] = array("widgetid" => "pageslidetotop");
 		$result[] = array("widgetid" => "pagepopup");
+		$result[] = array("widgetid" => "pageslidetotop");
+		if ( $enableconceptualwidgets )
+		{
+			$result[] = array("widgetid" => "pagefixedheader");
+		}
 		//$result[] = array("widgetid" => "pagevideo");
 		//$result[] = array("widgetid" => "pagegap");
 	}
@@ -521,7 +524,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("fblikebox");
 	nxs_ext_lazyload_widget("googledoc");
 	nxs_ext_lazyload_widget("rssfeed");
-	nxs_ext_lazyload_widget("breadcrumb");
 	nxs_ext_lazyload_widget("template2");
 	nxs_ext_lazyload_widget("image");
 	nxs_ext_lazyload_widget("search");
@@ -552,8 +554,13 @@ function nxs_lazyload_widgets()
 	// PAGEDECORATORS
 	nxs_ext_lazyload_widget("pageslider");
 	nxs_ext_lazyload_widget("pagebackground");
-	nxs_ext_lazyload_widget("pageslidetotop");
 	nxs_ext_lazyload_widget("pagepopup");
+	nxs_ext_lazyload_widget("pageslidetotop");
+
+	if ($enableconceptualwidgets)
+	{
+		nxs_ext_lazyload_widget("pagefixedheader");
+	}
 	//nxs_ext_lazyload_widget("pagevideo");
 	//nxs_ext_lazyload_widget("pagegap");
 	
