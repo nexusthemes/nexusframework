@@ -4060,7 +4060,7 @@ function nxs_getfilteredposts(&$postshaystack, $filters)
 	$postshaystack = array_values($postshaystack);
 }
 
-function nxs_getfilteredcategories(&$categorieshaystack, $filters)
+function nxs_getfilteredcategories($categorieshaystack, $filters)
 {
 	//echo "filtering.";
 	if (count($filters) == 0)
@@ -4070,13 +4070,13 @@ function nxs_getfilteredcategories(&$categorieshaystack, $filters)
 		// no filters means we are done :)
 		return;
 	}
-		
+    
 	foreach($categorieshaystack as $elementKey => $element) 
 	{
 		$shouldremoveitem = false;
 		
-		if (!$shouldremoveitem && array_key_exists("uncategorized", $filters))
-		{			
+		if ($shouldremoveitem == false && array_key_exists("uncategorized", $filters))
+		{		
 			// 
 			if ($element->name == 'Uncategorized')			
 			{
@@ -4093,14 +4093,16 @@ function nxs_getfilteredcategories(&$categorieshaystack, $filters)
 			// no more filters to check
 		}
     
-    if ($shouldremoveitem)
-    {
-    	unset($categorieshaystack[$elementKey]);
-    }
+        if ($shouldremoveitem == true)
+        {
+            unset($categorieshaystack[$elementKey]);
+        }
 	}
 	
 	// restructure array
 	$categorieshaystack = array_values($categorieshaystack);
+    
+    return $categorieshaystack;
 }
 
 function nxs_after_postcontents_updated($postid)

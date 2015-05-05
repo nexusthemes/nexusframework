@@ -3,6 +3,7 @@ function nxs_webmethod_wipeplaceholder()
 {	
 	extract($_REQUEST);
 
+    
 	if ($postid == "")
 	{
 		nxs_webmethod_return_nack("postid not specified /nxs_webmethod_swapplaceholders()/");

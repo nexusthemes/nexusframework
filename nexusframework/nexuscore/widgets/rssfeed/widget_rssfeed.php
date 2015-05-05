@@ -36,7 +36,7 @@ function nxs_widgets_rssfeed_echooutput($rss, $args = array())
 	}
 
 	if ( is_wp_error($rss) ) {
-		if ( is_admin() || current_user_can('switch_themes') )
+		if ( is_admin() || current_user_can('manage_options') )
 			echo '<p>' . sprintf( __('<strong>RSS Error</strong>: %s'), $rss->get_error_message() ) . '</p>';
 		return;
 	}

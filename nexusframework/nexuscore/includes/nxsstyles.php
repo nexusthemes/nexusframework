@@ -266,23 +266,6 @@ function nxs_getstyletypeoptions() {
 			"subtype" 			=> "multiplier",
 			"values" 			=> array("", 40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480),
 		),
-		"fixedheader_display" => array (
-			"subtype" 			=> "textlookup",
-			"values" 			=> array
-				(
-					""				=>nxs_l18n__("default", "nxs_td"),
-					"inline"		=>nxs_l18n__("inline", "nxs_td"), 
-					"float"			=>nxs_l18n__("float", "nxs_td"), 
-				)
-		),
-		"shadow" => array (
-			"subtype" 			=> "textlookup",
-			"values" 			=> array
-				(
-					""				=>nxs_l18n__("default", "nxs_td"),
-					"none"			=>nxs_l18n__("none", "nxs_td"), 
-				)
-		),
 	);
 	return $options;
 }

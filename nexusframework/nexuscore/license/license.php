@@ -394,10 +394,10 @@ function nxs_license_actualtriggerupdate()
 add_action('admin_menu', 'nxs_license_addadminpages', 11);
 function nxs_license_addadminpages()
 {
-	add_submenu_page("nxs_backend_overview", 'License', 'License', 'switch_themes', 'nxs_admin_license', 'nxs_license_theme_license_page_content', '', 81 );
-	add_submenu_page("nxs_backend_overview", 'Update', 'Update', 'switch_themes', 'nxs_admin_update', 'nxs_license_update_page_content', '', 81 );
-	add_submenu_page("nxs_backend_overview", 'Restart', 'Restart', 'switch_themes', 'nxs_admin_restart', 'nxs_license_restart_page_content', '', 81 );
-	add_submenu_page("nxs_backend_overview", 'ThemeSwitch', 'ThemeSwitch', 'switch_themes', 'nxs_admin_themeswitch', 'nxs_license_themeswitch_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'License', 'License', 'manage_options', 'nxs_admin_license', 'nxs_license_theme_license_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'Update', 'Update', 'manage_options', 'nxs_admin_update', 'nxs_license_update_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'Restart', 'Restart', 'manage_options', 'nxs_admin_restart', 'nxs_license_restart_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'ThemeSwitch', 'ThemeSwitch', 'manage_options', 'nxs_admin_themeswitch', 'nxs_license_themeswitch_page_content', '', 81 );
 }
 
 function plugin_admin_init()

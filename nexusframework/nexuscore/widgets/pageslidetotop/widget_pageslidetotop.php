@@ -258,7 +258,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 			(
 				"id" 				=> "offset",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Top scroll till visible", "nxs_td"),
+				"label" 			=> nxs_l18n__("Top offset till visible", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("offset")
 			),
 

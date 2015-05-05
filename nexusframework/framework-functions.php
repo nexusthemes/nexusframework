@@ -175,19 +175,6 @@ function nxs_isdebug()
 	return $result;
 }
 
-// somehow pages archive pages result in a 404 (is_archive == false),
-// to fix this we use the following code,
-// kudos to http://ilikekillnerds.com/2012/11/fixing-wordpress-404-custom-post-type-archive-pagination-issues-with-posts-per-page/
-function custom_posts_per_page( $query ) 
-{
-  if ( $query->is_archive() ) 
-  {
-  	$ppp = get_option('posts_per_page');
-    set_query_var('posts_per_page', $ppp);
-  }
-}
-add_action( 'pre_get_posts', 'custom_posts_per_page' );
-
 // 2013 08 03; fixing unwanted WP3.6 notice errors
 // third party plugins and other php code (like sunrise.php) can
 // cause warnings that mess up the output of the webmethod
@@ -222,7 +209,7 @@ if (!nxs_showphpwarnings())
 {
 	error_reporting(E_ERROR | E_PARSE);	
 	nxs_saveobclean();
-}	
+}
 
 function nxs_getcharset()
 {
@@ -1833,8 +1820,8 @@ add_action('init', 'nxs_init_themeboot');
 add_action("admin_menu", "nxs_admin_menu");  
 function nxs_admin_menu() 
 {
-	add_menu_page('Nexus Theme', 'Nexus Theme', 'switch_themes', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
-	add_submenu_page("nxs_backend_overview", 'Overview', 'Overview', 'switch_themes', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
+	add_menu_page('Nexus Theme', 'Nexus Theme', 'manage_options', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
+	add_submenu_page("nxs_backend_overview", 'Overview', 'Overview', 'manage_options', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
 }  
 
 function nxs_lazyactivate_backend_overview() 

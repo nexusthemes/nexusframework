@@ -847,17 +847,6 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                             $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
                             
                             $destination_category = $placeholdermetadata["destination_category"];
-                            // for example [92]
-														// remove brackets
-														$destination_category = str_replace("[", "", $destination_category);
-														$destination_category = str_replace("]", "", $destination_category);
-														
-														// derive 'current' classes
-														global $nxs_global_current_containerpostid_being_rendered;
-														global $nxs_global_current_postid_being_rendered;
-										
-														$anchorclass = "";
-														$class = "";
                             
                             if (is_category($destination_category)) 
                             {
@@ -882,7 +871,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                             $anchorclass = "class='{$anchorclass} {$outer_color_cssclass}'";
                             
                  				    // Get the URL of this category
-    												$url = get_category_link($destination_category);
+														$category_id = get_cat_ID($destination_category);
+								    				$url = get_category_link( $category_id );
                 
                             $cache = $cache . "<li class='menu-item menu-item-post menu-depth-" . $currentdepth . " {$class}'>";
                             $cache = $cache . "<a itemprop='url' href='" . $url . "' {$anchorclass}>";
@@ -892,7 +882,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
                             $elementcountfordepth[$currentdepth] = $elementcountfordepth[$currentdepth] + 1; 
                           
-													}
+													} 
 													else if ($placeholdertype == "menuitemcustom") 
 													{
                               $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";

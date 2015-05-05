@@ -447,9 +447,8 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	$bgcolor_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $bgcolor);
 	
 	// Min height
-	// height 1px > http://stackoverflow.com/questions/7790222/css-display-table-min-height-not-working
 	if ($min_height != "") { 
-		$min_height = "min-height: " . $min_height . "; height: 1px;"; 
+		$min_height = "min-height: " . $min_height . ";"; 
 		$table = 'nxs-table';
 		$table_cell = 'nxs-table-cell';
 	} else {

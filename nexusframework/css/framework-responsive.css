@@ -647,11 +647,11 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 ------------------------------------------------------------------------------------------ */
 
 /* RESPONSIVE DISPLAY */
-@media only screen and ( max-width: 1439px ) { .callout1440 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; } .callout1440 .image-background { min-height: 0px !important; }}
-@media only screen and ( max-width: 1199px ) { .callout1200 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; } .callout1200 .image-background { min-height: 0px !important; }}
-@media only screen and ( max-width: 959px )  { .callout960 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; } .callout960 .image-background { min-height: 0px !important; }}
-@media only screen and ( max-width: 719px )  { .callout720 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; } .callout720 .image-background { min-height: 0px !important; }}
-@media only screen and ( max-width: 479px )	 { .callout480 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; } .callout480 .image-background { min-height: 0px !important; }}
+@media only screen and ( max-width: 1439px ) { .callout1440 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; float: left; } .callout1440 .image-background { min-height: 0px !important; }}
+@media only screen and ( max-width: 1199px ) { .callout1200 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; float: left; } .callout1200 .image-background { min-height: 0px !important; }}
+@media only screen and ( max-width: 959px )  { .callout960 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; float: left; } .callout960 .image-background { min-height: 0px !important; }}
+@media only screen and ( max-width: 719px )  { .callout720 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; float: left; } .callout720 .image-background { min-height: 0px !important; }}
+@media only screen and ( max-width: 479px )	 { .callout480 .text-wrapper { margin: 0px !important; padding: 30px !important; width: auto !important; border-radius: 0px; float: left; } .callout480 .image-background { min-height: 0px !important; }}
 
 /* DEFAULT FONT SIZING */
 @media only screen and ( max-width: 719px ) {
