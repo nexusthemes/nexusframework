@@ -361,10 +361,6 @@ function nxs_pagetemplate_handlecontent()
 																		<div>
 																			<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
 																				<?php
-																				//if (have_posts()) { echo "yes we have posts!"; } else { echo "no we dont have posts"; }
-																				?>
-																				<br />
-																				<?php
 																				echo $wpmaintcontenthtml;
 																				?>
 																			</div>
