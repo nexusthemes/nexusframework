@@ -1030,6 +1030,8 @@ function nxs_render_postfooterlink()
 		// default
 		$footerhtmltemplate = "{{{themelink}}} | {{{authenticatelink}}}";	
 	}
+	$footerhtmltemplate = apply_filters('nxs_footerhtmltemplate', $footerhtmltemplate);
+	
 	
 	$lookup = array
 	(
@@ -1644,6 +1646,7 @@ function nxs_render_postfooterlink()
   <p id="nxs-copyright" class="nxs-clear padding nxs-applylinkvarcolor">
 	  <?php
 		$themelink = "<a target='_blank' href='" . $themeurl . "' title='" . $themetitle . "'>" . $themetitle . "</a>";
+		
 		//echo $themelink;
 		
 		if (is_user_logged_in())
