@@ -346,7 +346,7 @@ function nxs_widgets_breadcrumb_render_webpart_render_htmlvisualization($args)
                         
                     } else if($item_type == "text") {
                         if($item_icon){
-                            echo $homepageIcon;
+                            echo "<span class='".$item_icon." nxs-icon-scale-0-5'></span>";
                         } else {
                             echo $item['naam'];
                         }
