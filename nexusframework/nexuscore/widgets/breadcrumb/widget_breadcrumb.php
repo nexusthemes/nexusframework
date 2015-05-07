@@ -214,10 +214,8 @@ function nxs_widgets_breadcrumb_render_webpart_render_htmlvisualization($args)
         $categoriesfilters = array();
 		$categoriesfilters["uncategorized"] = "skip"; // Skip uncategorized breadcrumbs;
 		$categories = get_the_category($postid);
-        
-		$categories_current_post = nxs_getfilteredcategories($categories, $categoriesfilters); // all categories of current page without the uncategorized ones.
-        $countCategoriesOfCurrentPage = count($categories_current_post);
-        
+		nxs_getfilteredcategories($categories, $categoriesfilters); // all categories of current page without the uncategorized ones.
+        $countCategoriesOfCurrentPage = count($categories);
         
         // set variable for id of parent of current page (true if exists, false if doesn't exists)
         $currentPageHasParent = ($post_parent_id != false);
@@ -268,7 +266,8 @@ function nxs_widgets_breadcrumb_render_webpart_render_htmlvisualization($args)
             
         } else if($currentPageHasCategories) {
             
-            $category_of_current_page = $categories_current_post[0]; // get array keys and values for first degree category
+            $category_of_current_page = $categories[0]; // get array keys and values for first degree category
+            
             $category_id = $category_of_current_page->term_id; // get id of first degree category
             
             $currentPage_id = $nxs_global_current_containerpostid_being_rendered; // get id of current page viewing
