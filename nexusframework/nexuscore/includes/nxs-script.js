@@ -2692,9 +2692,23 @@ function nxs_js_redirect_top(url)
 		{
 			var postid = nxs_js_findclosestpostid_for_dom(domelement);
 			var rowindex = nxs_js_getrowindex(domelement);
-			// double check
-			var answer = confirm(nxs_js_gettrans('Are you sure you want to delete this row?'));
-			if (answer)
+			var closestrow = jQuery(domelement).closest('.nxs-row'); // find the row that is going to be deleted 
+			var num_of_menus_in_row = jQuery(closestrow).find('.nxs-menu').length; // find if there is a menu in the specific row that is going to be deleted
+			var firstconfirm = confirm(nxs_js_gettrans('Are you sure you want to delete this row?'));
+				
+			if(num_of_menus_in_row > 0){ // if there are menus in the row, give a confirm-dialog
+				var secondconfirm = confirm(nxs_js_gettrans('There is a menu in this row, are you really sure you want to delete this row?'));
+			}
+			
+			var shoulddotheactualdelete = false; // no deleting yet
+			
+			if(firstconfirm && (num_of_menus_in_row == 0)){ // first confirm is given and there are no menus in row
+					shoulddotheactualdelete = true; // row can be deleted
+			} else if((firstconfirm && (num_of_menus_in_row > 0)) && secondconfirm){ // first confirm is given but there are menus in the row, so the second confirm is given
+					shoulddotheactualdelete = true; // row can be deleted
+			}
+	
+			if (shoulddotheactualdelete)
 			{
 				var waitgrowltokenx = nxs_js_alert_wait_start(nxs_js_gettrans('Removing row'));
 				
@@ -2790,6 +2804,8 @@ function nxs_js_redirect_top(url)
 				// nop
 			}
 		}
+		
+		
 		
 		function nxs_js_menuitem_remove(postid, element)
 		{
