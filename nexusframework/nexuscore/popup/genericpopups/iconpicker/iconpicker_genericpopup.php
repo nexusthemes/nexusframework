@@ -602,7 +602,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"mite",
 										"silverfish",
 										"caterpillar",
-										"beetle"  
+										"beetle",
+										"bone",  
 									);
 										
 									foreach($icontypes as $currenticontype)
