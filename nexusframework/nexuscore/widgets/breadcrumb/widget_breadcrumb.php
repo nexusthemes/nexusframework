@@ -325,7 +325,7 @@ function nxs_widgets_breadcrumb_render_webpart_render_htmlvisualization($args)
         }
         
         echo "
-        <div class='nxs-default-breadcrumb nxs-align-".$alignment." nxs-applylinkvarcolor'>
+        <div class='nxs-breadcrumb nxs-default-p nxs-align-".$alignment." nxs-applylinkvarcolor'>
             <div>
                 <b>".$prefix."</b> 
             </div>

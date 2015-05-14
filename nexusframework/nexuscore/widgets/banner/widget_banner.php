@@ -223,8 +223,11 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 	}
 	else
 	{
+        
 		$slideindex = 0;
 		foreach ($structure as $pagerow) {
+            $url = "";
+            $target = "";
 			$content = $pagerow["content"];
 			$currentplaceholderid = nxs_parsepagerow($content);
 			$placeholdermetadata = nxs_getwidgetmetadata($items_genericlistid, $currentplaceholderid);
@@ -237,6 +240,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 			} 
 			else if ($placeholdertype == "banneritem") 
 			{
+                    
 				$image_imageid = $placeholdermetadata['image_imageid'];
 				$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
 				
@@ -255,11 +259,13 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				$destination_url = $placeholdermetadata['destination_url'];
 				$destination_target = $placeholdermetadata['destination_target'];
 				
+                
 				// Url
 				if ($destination_articleid != "") { 
 					$url = nxs_geturl_for_postid($destination_articleid);
 					$target = 'target="_self"'; 
 				} 
+                
 				
 				if ($destination_url != "") {
 					$url = $destination_url;
@@ -286,6 +292,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				// ignore
 			}
 		}
+        
 	}
 
 	/* HALIGN

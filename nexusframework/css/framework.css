@@ -1994,17 +1994,15 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 /* BREADCRUMB
 ------------------------------------------------------------------------------------------ */
 
-.nxs-default-breadcrumb div {
+.nxs-breadcrumb div {
     display: inline;
 }
-.nxs-default-breadcrumb div:nth-of-type(1) {
-    margin-right: 8px;
-}
-.nxs-default-breadcrumb div [class*="nxs-icon-"] {
+.nxs-breadcrumb div [class*="nxs-icon-"] {
     vertical-align: middle;
     font-size: 8px;
+    margin: 0px 5px 0px 5px;
 }
-.nxs-default-breadcrumb div .nxs-icon-home {
+.nxs-breadcrumb div .nxs-icon-home {
     margin-bottom: 4px;
     font-size: 18px;
 }

@@ -183,6 +183,32 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Text fontzen", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+            array(
+				"id" 				=> "button_scale",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_scale"),
+				"unistylablefield"	=> true,
+			),
+			array( 
+				"id" 				=> "button_color",
+				"type" 				=> "colorzen", // "select",
+				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "button_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "button_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
+				"unistylablefield"	=> true,
+			),
 			array( 
 				"id" 				=> "bgcolor",
 				"type" 				=> "colorzen",
@@ -524,8 +550,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 
 				$slide_button = "";
 				if($destinationurl != "" && $placeholdermetadata['button_text'] != "") {
-					$slide_button = nxs_gethtmlforbutton($placeholdermetadata['button_text'], $placeholdermetadata['button_scale'], $placeholdermetadata['button_color'], $placeholdermetadata['destination_articleid'], $placeholdermetadata['destination_url'], $placeholdermetadata['destination_target'], $placeholdermetadata['button_alignment'], $placeholdermetadata['destination_js'], $placeholdermetadata['button_heightiq'], $placeholdermetadata['button_fontzen']);
-					
+					$slide_button = nxs_gethtmlforbutton($placeholdermetadata['button_text'], $button_scale, $button_color, $placeholdermetadata['destination_articleid'], $placeholdermetadata['destination_url'], $placeholdermetadata['destination_target'], $button_alignment, $placeholdermetadata['destination_js'], $placeholdermetadata['button_heightiq'], $button_fontzen);
 				}
 				
 				$slidesdataset[] = array
