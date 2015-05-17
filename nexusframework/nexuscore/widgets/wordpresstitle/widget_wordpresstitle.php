@@ -244,14 +244,10 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		
 	// Date
 	if ($showdate != "") {
-		$currentdate = $currentpost->post_date;
-		
-		
-		
-		$dayhtml = 		'<span class="nxs-day">' 	. mysql2date('j', $currentdate) . '</span>';
-		$monthhtml = 	'<span class="nxs-month">' 	. nxs_getlocalizedmonth(mysql2date('m', $currentdate)) . '</span>';
-		$yearhtml = 	'<span class="nxs-year">' 	. mysql2date('Y', $currentdate) . '</span>';
-		$datehtml = $dayhtml . " " . $monthhtml . " " . $yearhtml;
+
+        $get_wordpress_date_format = get_option('date_format');  
+        $datehtml = the_date($get_wordpress_date_format, '', '', false);
+        
 	}
 	
 	// Categories
@@ -365,7 +361,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
-
+    
 	if ($shouldrenderalternative) {
 		if ($alternativehint == "") {
 			$alternativehint = nxs_l18n__("Missing input", "nxs_td");

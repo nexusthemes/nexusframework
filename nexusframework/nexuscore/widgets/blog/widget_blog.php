@@ -1359,15 +1359,13 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 						if ($item_showdate != "" && ($metadata_layout == "" || $metadata_layout == "default")) {
 							$currentpostdate = $currentpost->post_date;
 							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpostdate));
-							$datum = '
-								<span class="nxs-day">' 	. mysql2date('j', $currentpostdate) . '</span>
-								<span class="nxs-month">' 	. $monthhtml . '</span>
-								<span class="nxs-year">' 	. mysql2date('Y', $currentpostdate) . '</span>';
+                            $get_wordpress_date_format = get_option('date_format');  
+							$date_of_current_post = get_the_date( $get_wordpress_date_format, $currentpostid );
 						
 						} else if ($item_showdate != "" && $metadata_layout == "date-highlight") {
 							$currentpostdate = $currentpost->post_date;
 							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpostdate));
-							$datum = '
+							$date_of_current_post = '
 							<div class="nxs-date">
 								<h4 class="month nxs-border-width-1-0 ' . $month_color_cssclass . '">' 	. $monthhtml . '</h4>
 								<h4 class="day nxs-border-width-1-0 ' . $day_color_cssclass . '">' 	. mysql2date('j', $currentpostdate) . '</h4>	
@@ -1580,8 +1578,8 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 								
 									// Meta data
 									echo '<div class="nxs-blog-meta">';
-										echo $datum;
-										if ( $datum != "" && $categorien != "" || $datum != "" && $auteur != "" ) { echo '<span class="nxs-separator first"> | </span>'; }
+										echo $date_of_current_post;
+										if ( $date_of_current_post != "" && $categorien != "" || $date_of_current_post != "" && $auteur != "" ) { echo '<span class="nxs-separator first"> | </span>'; }
 										echo $categorien;
 										if ( $categorien != "" && $auteur != ""	) { echo '<span class="nxs-separator"> | </span>'; }
 										echo $auteur;
