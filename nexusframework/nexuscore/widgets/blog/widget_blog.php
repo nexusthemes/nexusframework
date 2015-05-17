@@ -1357,8 +1357,6 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 						
 						// Date
 						if ($item_showdate != "" && ($metadata_layout == "" || $metadata_layout == "default")) {
-							$currentpostdate = $currentpost->post_date;
-							$monthhtml = nxs_getlocalizedmonth(mysql2date('m', $currentpostdate));
                             $get_wordpress_date_format = get_option('date_format');  
 							$date_of_current_post = get_the_date( $get_wordpress_date_format, $currentpostid );
 						
