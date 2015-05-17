@@ -243,18 +243,22 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
-			
-			array( 
-				"id" 				=> "image_vpos",
+            
+			array
+			(
+				"id" 				=> "image_position",
+				"type" 				=> "radiobuttons",
+				"layout" 			=> "3x3",
+				"label" 			=> nxs_l18n__("Image position", "nxs_td"),
+				"subtype"			=> "backgroundimage_position",
+				"unistylablefield"	=> true
+			),
+			array
+			(
+				"id" 				=> "image_size",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Vertical position", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
-					"top"=>nxs_l18n__("Top", "nxs_td"),
-					"center"=>nxs_l18n__("Center", "nxs_td"),
-					"bottom"=>nxs_l18n__("Bottom", "nxs_td"),
-				),
+				"label" 			=> nxs_l18n__("Image size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("backgroundimage_size"),
 				"unistylablefield"	=> true
 			),
 			
@@ -502,23 +506,29 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 
 		$imagewidth 	= $imagemetadata[1] . "px";
-		$imageheight 	= $imagemetadata[2] . "px";	
-		
-		$verticalalignmentattribute = "top";	// defaults to "top"
-		if ($image_vpos == "top")
-		{
-			$verticalalignmentattribute = "top";
-		}
-		else if ($image_vpos == "center")
-		{
-			$verticalalignmentattribute = "center";
-		}
-		else if ($image_vpos == "bottom")
-		{
-			$verticalalignmentattribute = "bottom";
-		}
-		
-		$image_background = 'background: url('.$imageurl.') no-repeat ' . $verticalalignmentattribute . ' center;';
+		$imageheight 	= $imagemetadata[2] . "px";			
+        
+        if(!$image_size){ // for old sites, that did not supported the image alignment at that time
+            $image_size = "cover";
+        }
+        
+        if(!$image_position){ // for old sites, that did not supported the image alignment at that time
+            if($image_vpos == "top"){
+                $image_position = "center top";
+            } elseif($image_vpos == "center"){
+                $image_position = "center center";
+            } elseif($image_vpos == "bottom"){
+                $image_position = "center bottom";
+            } else {
+                $image_position = "center center";
+            }
+        }
+
+        if($image_size == "-"){ // if image size is not set, the image will be 'auto', which is as much as 'cover'
+            $image_size = "auto";
+        }
+        
+        $image_background = 'background: url('.$imageurl.') no-repeat ' . $image_position . '; background-size: '.$image_size.';';
 	}
 	
 	// Text padding and margin
@@ -606,6 +616,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			<span class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '">' . $button_text . '</span>
 		</p>';
 	}
+
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -625,7 +636,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		}
 		
 			echo '
-			<div class="image-background '.$hclass.' '.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
+			<div class="'.$hclass.' '.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
 				<div class="text-wrapper '.$bgcolor_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.' '.$border_radius_cssclass.' '.$float.'" style="'.$callout_text_width.' '.$center.'">';
 					
 					if ($title != "") 		{echo $htmltitle;}
@@ -670,6 +681,8 @@ function nxs_widgets_callout_initplaceholderdata($args)
 {
 	extract($args);
 
+    $args['image_position'] = "left top";
+    $args['image_size'] = "cover";
 	$args['button_color'] = "base2";
 	$args['title_heading'] = "1";
 	$args['subtitle_heading'] = "2";
