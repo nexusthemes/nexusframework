@@ -92,7 +92,7 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 	// Offset
 	$offsetpixels = 0;
 	$visible_class = '';
-	if ( $offset )
+	if ( $offset != '' )
 	{
 		$offsetpixels = substr($offset, 0, -2);
 	} else {
@@ -130,23 +130,6 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 
 	<script type="text/javascript">
 
-		function nxs_js_show_fixedheader() {
-			if ($(window).scrollTop() < <?php echo $offsetpixels; ?>) {
-				$("#nxs-fixed-header:visible").fadeOut(200);
-			}
-			else {
-				$("#nxs-fixed-header:hidden").fadeIn(200);
-			}
-		}
-
-		setTimeout(function() {
-			nxs_js_show_fixedheader();
-		}, 1000);
-	
-		$(window).scroll(function () { 
-			nxs_js_show_fixedheader();
-		});
-
 		<?php
 			if ( $offset == '')
 			{
@@ -169,6 +152,28 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 
 				<?php
 				}
+			}
+
+			// if the offset is not set then their is no need for the nxs_js_show_fixedheader function
+			else {
+			?>
+				function nxs_js_show_fixedheader() {
+					if ($(window).scrollTop() < <?php echo $offsetpixels; ?>) {
+						$("#nxs-fixed-header:visible").fadeOut(200);
+					}
+					else {
+						$("#nxs-fixed-header:hidden").fadeIn(200);
+					}
+				}
+
+				setTimeout(function() {
+					nxs_js_show_fixedheader();
+				}, 1000);
+			
+				$(window).scroll(function () { 
+					nxs_js_show_fixedheader();
+				});
+			<?php
 			}
 		?>
 	</script>
