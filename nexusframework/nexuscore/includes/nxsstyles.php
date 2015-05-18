@@ -169,7 +169,7 @@ function nxs_getstyletypeoptions() {
 			"subtype" 			=> "textlookup",
 			"values" 			=> array
 				(
-					"-"			=>nxs_l18n__("none", "nxs_td"),
+					"-"			=>nxs_l18n__("as-is", "nxs_td"),
 					"cover"		=>nxs_l18n__("cover", "nxs_td"), 
 					"contain"	=>nxs_l18n__("contain", "nxs_td"), 
 				)
