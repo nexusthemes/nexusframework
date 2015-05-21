@@ -299,6 +299,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"shovel",									
 										"fence",
 										"carpet",
+										"radiation",
 									);
 										
 									foreach($icontypes as $currenticontype)
