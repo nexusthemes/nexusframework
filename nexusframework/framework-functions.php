@@ -1706,6 +1706,28 @@ function nxs_clearunwantedscripts()
       wp_enqueue_script('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js', array('jquery'), '1.11.1');
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
+		
+		function nxs_setjquery()
+		{
+			?>
+			<script type="text/javascript">
+				var jqv = jQuery.fn.jquery;
+				if (jqv == "1.11.1")
+				{
+					//alert("goede versie!");
+				}
+				else
+				{
+					//alert("vekeerde versie!");
+				}
+				//var jQnxs = $.noConflict(true);
+				//var $nxs = $.noConflict(true);
+			</script>
+			<?php
+		}		
+		//add_action('wp_head','nxs_setjquery');
+
+
   }
 }
 

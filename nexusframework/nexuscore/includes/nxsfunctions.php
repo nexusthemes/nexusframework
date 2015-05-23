@@ -1303,7 +1303,22 @@ function nxs_stringendswith($haystack, $needle)
 
 function nxs_stringcontains($haystack, $needle)
 {
-	$pos = strpos($haystack,$needle);
+	$ignorecasing = false;
+	$result = nxs_stringcontains_v2($haystack, $needle, $ignorecasing);
+	return $result;
+}
+
+function nxs_stringcontains_v2($haystack, $needle, $ignorecasing)
+{
+	if ($ignorecasing === true)
+	{
+		$pos = stripos($haystack,$needle);
+	}
+	else
+	{
+		$pos = strpos($haystack,$needle);
+	}
+	
 	if($pos === false) 
 	{
 	 // string needle NOT found in haystack
