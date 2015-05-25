@@ -1,4 +1,5 @@
 <?php 
+
 function nxs_die()
 {
 	error_log("nxs die");
@@ -1682,6 +1683,30 @@ function nxs_performdataconsistencycheck()
 	}
 }
 
+function nxs_setjQ_nxs()
+{
+	?>
+	<script type="text/javascript">
+		var jqv = jQuery.fn.jquery;
+		if (jqv == "1.11.1")
+		{
+			//alert("goede versie!");
+		}
+		else
+		{
+			//alert("unexpected version " + jqv);
+		}
+
+		var jQ_nxs = jQuery.noConflict(true);
+		var jQuery = jQ_nxs;
+		var $ = jQ_nxs;
+
+		//
+		//var $nxs = $.noConflict(true);
+	</script>
+	<?php
+}		
+
 function nxs_clearunwantedscripts()
 {
 	// if we are in the frontend ...
@@ -1706,31 +1731,11 @@ function nxs_clearunwantedscripts()
       wp_enqueue_script('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js', array('jquery'), '1.11.1');
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
-		
-		function nxs_setjQ_nxs()
-		{
-			?>
-			<script type="text/javascript">
-				var jqv = jQuery.fn.jquery;
-				if (jqv == "1.11.1")
-				{
-					//alert("goede versie!");
-				}
-				else
-				{
-					alert("unexpected version " + jqv);
-				}
-
-				var jQ_nxs = $.noConflict(true);
-				var jQuery = jQ_nxs;
-				var $ = jQ_nxs;
-
-				//
-				//var $nxs = $.noConflict(true);
-			</script>
-			<?php
-		}		
 		add_action('wp_head','nxs_setjQ_nxs');
+  }
+  else
+  {
+  	add_action('admin_head','nxs_setjQ_nxs');
   }
 }
 
