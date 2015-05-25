@@ -1897,7 +1897,7 @@ function nxs_after_data_import()
 
 function nxs_cap_hasdesigncapabilities()
 {
-	return current_user_can(nxs_cap_getdesigncapability());
+	return current_user_can(nxs_cap_getdesigncapability()) || is_super_admin();
 }
 
 function nxs_setuprolesandcapabilities()
