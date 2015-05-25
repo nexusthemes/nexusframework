@@ -256,7 +256,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Storing widget[nxs:growl]","nxs_td"); ?>");
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',

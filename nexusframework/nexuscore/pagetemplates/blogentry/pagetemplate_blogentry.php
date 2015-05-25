@@ -1283,7 +1283,7 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 		
 		function nxs_js_execute_after_popup_shows()
 		{
-			jQuery('#titel').focus();
+			jQ_nxs('#titel').focus();
 			//
 			
 			<?php 
@@ -1317,7 +1317,7 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 			nxs_js_savepopupdata();			
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1441,7 +1441,7 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 			nxs_js_setpopupdatefromcontrols();
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1485,7 +1485,7 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 		
 		function nxs_js_execute_after_popup_shows()
 		{
-			jQuery('#titel').focus();
+			jQ_nxs('#titel').focus();
 		}
 		
 	</script>
@@ -1608,8 +1608,8 @@ function nxs_pagetemplate_blogentry_dialogappendrow_getsheethtml($args)
 		function select(obj, pagerowtemplate)
 		{
 			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding row[nxs:growl]", "nxs_td"); ?>");
-			var e = jQuery(".nxs-layout-editable.nxs-post-<?php echo $postid;?> .nxs-postrows")[0];
-			var totalrows = jQuery(e).find(".nxs-row").length;
+			var e = jQ_nxs(".nxs-layout-editable.nxs-post-<?php echo $postid;?> .nxs-postrows")[0];
+			var totalrows = jQ_nxs(e).find(".nxs-row").length;
 			var insertafterindex;
 			insertafterindex = totalrows - 1;
 			
@@ -1667,7 +1667,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
         	
         		function setupfiletransfer()
         		{
-        			var filename = jQuery('#file').val().split(/\\|\//).pop();
+        			var filename = jQ_nxs('#file').val().split(/\\|\//).pop();
         			var options = 
               { 
                 data:
@@ -1683,7 +1683,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
                 success: processResponse,
             	};
                 
-        			jQuery('#nxsuploadform').ajaxForm(options);
+        			jQ_nxs('#nxsuploadform').ajaxForm(options);
         		}
         	
             function storefile()
@@ -1700,7 +1700,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
               }
               
               // submit form
-              jQuery("#nxsuploadform").submit(); 
+              jQ_nxs("#nxsuploadform").submit(); 
           	}
             
             function verifyFileSelected()

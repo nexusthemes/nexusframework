@@ -4,13 +4,13 @@ contains functions that are only invoked after the load (this script file is loa
 function nxs_js_lazyloadmoreblogs(domelement)
 {
 	// ensure no other lazy load occurs for this widget
-	if (jQuery(domelement).closest(".nxs-blogentries").hasClass("nxs-lazyloadinprogress"))
+	if (jQ_nxs(domelement).closest(".nxs-blogentries").hasClass("nxs-lazyloadinprogress"))
 	{
 		// ignore
 		nxs_js_log("stop poking me!");
 		return;
 	}
-	jQuery(domelement).closest(".nxs-blogentries").addClass("nxs-lazyloadinprogress");
+	jQ_nxs(domelement).closest(".nxs-blogentries").addClass("nxs-lazyloadinprogress");
 
 	// find widget in dom
 	var placeholderid = nxs_js_findclassidentificationwithprefix_closest(domelement, ".nxs-widget", "nxs-widget-");
@@ -23,7 +23,7 @@ function nxs_js_lazyloadmoreblogs(domelement)
 	
 			
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -46,28 +46,28 @@ function nxs_js_lazyloadmoreblogs(domelement)
 				if (response.result == "OK")
 				{
 					// update page
-					jQuery(domelement).closest(".nxs-blogentries").removeClass("nxs-paging-page-" + most_recent_page);
-					jQuery(domelement).closest(".nxs-blogentries").addClass("nxs-paging-page-" + (most_recent_page + 1));
+					jQ_nxs(domelement).closest(".nxs-blogentries").removeClass("nxs-paging-page-" + most_recent_page);
+					jQ_nxs(domelement).closest(".nxs-blogentries").addClass("nxs-paging-page-" + (most_recent_page + 1));
 					
 				 	var html = response.appendhtmlraw.html;
 				 	
 				 	var widgetid = response.appendhtmlraw.replacedomid;
-				 	var widget = jQuery("#" + widgetid);
-				 	var lastblogentryinwidget = jQuery(widget).find(".nxs-blogentry").last();
+				 	var widget = jQ_nxs("#" + widgetid);
+				 	var lastblogentryinwidget = jQ_nxs(widget).find(".nxs-blogentry").last();
 				 	
-					jQuery("body").append("<div id='lazyloadtemp' style='display: none;'>" + html + "</div>");
+					jQ_nxs("body").append("<div id='lazyloadtemp' style='display: none;'>" + html + "</div>");
 
 					// replicate the ".blog-entry" from the temp place to the widget
-					jQuery("#lazyloadtemp").find(".nxs-blogentry").each
+					jQ_nxs("#lazyloadtemp").find(".nxs-blogentry").each
 					(
 						function(i)
 						{
-							jQuery(this).insertAfter(lastblogentryinwidget);
+							jQ_nxs(this).insertAfter(lastblogentryinwidget);
 						}
 					);
 
 					// cleanup the scaffolding
-					jQuery("#lazyloadtemp").remove();
+					jQ_nxs("#lazyloadtemp").remove();
 					
 					// update the heights
 					nxs_gui_set_runtime_dimensions_enqueuerequest("lazyloadblog");
@@ -77,7 +77,7 @@ function nxs_js_lazyloadmoreblogs(domelement)
 					
 					// ensure that each img that finishes loading after we set the runtime
 					// dimensions will trigger the runtime dimensions to be recalculated...
-					jQuery('img').load
+					jQ_nxs('img').load
 					(
 						function()
 						{
@@ -106,7 +106,7 @@ function nxs_js_lazyloadmoreblogs(domelement)
 				}
 				
 				// release the "lock"
-				jQuery(domelement).closest(".nxs-blogentries").removeClass("nxs-lazyloadinprogress");
+				jQ_nxs(domelement).closest(".nxs-blogentries").removeClass("nxs-lazyloadinprogress");
 			},
 			error: function(xhr, ajaxOptions, thrownError)
 			{
@@ -114,7 +114,7 @@ function nxs_js_lazyloadmoreblogs(domelement)
 				nxs_js_popup_notifyservererror_v2(thrownError);
 
 				// release the "lock"
-				jQuery(domelement).closest(".nxs-blogentries").removeClass("nxs-lazyloadinprogress");		
+				jQ_nxs(domelement).closest(".nxs-blogentries").removeClass("nxs-lazyloadinprogress");		
 			}
 		}
 	);
@@ -122,9 +122,9 @@ function nxs_js_lazyloadmoreblogs(domelement)
 
 function nxs_js_mailchimpsubmit(domelement)
 {
-	var placeholder = jQuery(domelement).closest(".nxs-placeholder");
-	var submitbutton = jQuery(placeholder).find("input[type=submit]");
-	jQuery(submitbutton).click();
+	var placeholder = jQ_nxs(domelement).closest(".nxs-placeholder");
+	var submitbutton = jQ_nxs(placeholder).find("input[type=submit]");
+	jQ_nxs(submitbutton).click();
 }
 
 function nxs_js_validateemail(elementValue)
@@ -139,7 +139,7 @@ function nxs_js_popup_refresh_keep_focus(element)
 {
 	if (element != undefined)
 	{
-		nxs_js_popup_setshortscopedata('elementidlastfocussed', jQuery(element).attr('id')); 
+		nxs_js_popup_setshortscopedata('elementidlastfocussed', jQ_nxs(element).attr('id')); 
 		//nxs_js_log('focus was set on ' + nxs_js_popup_getshortscopedata('elementidlastfocussed'));
 	}
 	else
@@ -199,12 +199,12 @@ function nxs_js_pop_resetdynamiccontentcontainer()
 	initialvalue += "function nxs_js_popup_get_initialbuttonstate() { return 'showokifnotdirty'; }";
 	initialvalue += "function nxs_js_popup_get_minwidth() { return 750; }";
 	initialvalue += "function nxs_js_popup_get_maxwidth() { return 1000; }";
-	initialvalue += "function nxs_js_popup_get_maxheight() { var contentheight = jQuery('.nxs-popup-content-canvas').height(); var maxheight = Math.round(jQuery(window).height() * 0.8); if (maxheight > contentheight) { maxheight = contentheight; } if (maxheight < 400 && jQuery('.nxs-canvas-footerfiller').length > 0) { maxheight = 400; }  ; return maxheight; }";
+	initialvalue += "function nxs_js_popup_get_maxheight() { var contentheight = jQ_nxs('.nxs-popup-content-canvas').height(); var maxheight = Math.round(jQ_nxs(window).height() * 0.8); if (maxheight > contentheight) { maxheight = contentheight; } if (maxheight < 400 && jQ_nxs('.nxs-canvas-footerfiller').length > 0) { maxheight = 400; }  ; return maxheight; }";
 	initialvalue += "function nxs_js_showwarning_when_trying_to_close_dirty_popup() { return true; }";
 	initialvalue += "<" + "/script>";
 	
 	// inject initial value to the container
-	jQuery('.nxs-popup-dyncontentcontainer').html(initialvalue);
+	jQ_nxs('.nxs-popup-dyncontentcontainer').html(initialvalue);
 }
 
 //
@@ -227,7 +227,7 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 	nxs_js_popup_setcurrentsheet(sheet);
 	
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -259,7 +259,7 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						nxs_js_popup_clearshortscopedata();
 						
 						// dim hover menu's die op dit moment zichtbaar zijn
-						jQuery(".nxs-hover-menu").addClass('nxs-suppress');
+						jQ_nxs(".nxs-hover-menu").addClass('nxs-suppress');
 						
 						//
 						nxs_js_pop_resetdynamiccontentcontainer();
@@ -267,27 +267,27 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						// remove any previously defined nxs-active indicators (for text-widgets; if these
 						// are removed, the nxs-active indicator somehow remains (so this basically is
 						// a workaround).
-						jQuery("#nxsbox_window.nxs-active").removeClass("nxs-active");
-												
-						jQuery('.nxs-popup-dyncontentcontainer').html(response.html);
+						jQ_nxs("#nxsbox_window.nxs-active").removeClass("nxs-active");
+						
+						jQ_nxs('.nxs-popup-dyncontentcontainer').html(response.html);
 													
 						// width=1, see #1283672893762
 						nxsbox_show(response.title, "#nxsbox_inline?height=1&width=1&inlineId=nxs_ajax_nxsbox&modal=true", "");
-						jQuery("#nxsbox_overlay").show();
-						jQuery("#nxsbox_window").show();
+						jQ_nxs("#nxsbox_overlay").show();
+						jQ_nxs("#nxsbox_window").show();
 						
 						//
 						// enable dragging of the window
 						//
-						jQuery("#nxsbox_window").draggable
+						jQ_nxs("#nxsbox_window").draggable
 						(
 							{
 								handle: ".nxs-admin-header",
 								start: function() 
 								{
-									if (!jQuery(".nxs-popup-dyncontentcontainer").hasClass('nxs-wasdragged'))
+									if (!jQ_nxs(".nxs-popup-dyncontentcontainer").hasClass('nxs-wasdragged'))
 									{
-										jQuery(".nxs-popup-dyncontentcontainer").addClass('nxs-wasdragged');
+										jQ_nxs(".nxs-popup-dyncontentcontainer").addClass('nxs-wasdragged');
 									}
 								}
 							}
@@ -310,16 +310,16 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						if (initialbuttonstate == 'showokifnotdirty')
 						{
 							// show ok, hide cancel, hide save
-							if (jQuery('#nxs_popup_genericokbutton').length > 0)
+							if (jQ_nxs('#nxs_popup_genericokbutton').length > 0)
 							{
-								jQuery('#nxs_popup_genericokbutton').show();										
-								if (jQuery('#nxs_popup_genericcancelbutton').length > 0)
+								jQ_nxs('#nxs_popup_genericokbutton').show();										
+								if (jQ_nxs('#nxs_popup_genericcancelbutton').length > 0)
 								{
-									jQuery('#nxs_popup_genericcancelbutton').hide();
+									jQ_nxs('#nxs_popup_genericcancelbutton').hide();
 								}
-								if (jQuery('#nxs_popup_genericsavebutton').length > 0)
+								if (jQ_nxs('#nxs_popup_genericsavebutton').length > 0)
 								{
-									jQuery('#nxs_popup_genericsavebutton').hide();
+									jQ_nxs('#nxs_popup_genericsavebutton').hide();
 								}
 							}
 							else
@@ -330,16 +330,16 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						else if (initialbuttonstate == 'showcancel')
 						{
 							// show cancel, hide ok, hide save
-							if (jQuery('#nxs_popup_genericcancelbutton').length > 0)
+							if (jQ_nxs('#nxs_popup_genericcancelbutton').length > 0)
 							{
-								jQuery('#nxs_popup_genericcancelbutton').show();										
-								if (jQuery('#nxs_popup_genericokbutton').length > 0)
+								jQ_nxs('#nxs_popup_genericcancelbutton').show();										
+								if (jQ_nxs('#nxs_popup_genericokbutton').length > 0)
 								{
-									jQuery('#nxs_popup_genericokbutton').hide();
+									jQ_nxs('#nxs_popup_genericokbutton').hide();
 								}
-								if (jQuery('#nxs_popup_genericsavebutton').length > 0)
+								if (jQ_nxs('#nxs_popup_genericsavebutton').length > 0)
 								{
-									jQuery('#nxs_popup_genericsavebutton').hide();
+									jQ_nxs('#nxs_popup_genericsavebutton').hide();
 								}
 							}
 							else
@@ -368,8 +368,8 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						// close de popup als er 'naast' de pop up wordt geklikt (we undo-en de modal eigenschap)
 						// dit is een workaround/fix; de modal van de nxsbox zorgt er voor dat de MCE editor
 						// niet goed her-initiatiseert
-						jQuery("#nxsbox_overlay").unbind("click.popupzekerweten");
-						jQuery("#nxsbox_overlay").bind("click.popupzekerweten", function(e) 
+						jQ_nxs("#nxsbox_overlay").unbind("click.popupzekerweten");
+						jQ_nxs("#nxsbox_overlay").bind("click.popupzekerweten", function(e) 
 						{
 							nxs_js_log('345897');
 							// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
@@ -378,8 +378,8 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
             	nxs_js_closepopup_unconditionally_if_not_dirty();
 						});
 
-						jQuery(document).unbind("keyup.popupcloser");
-						jQuery(document).bind("keyup.popupcloser", 
+						jQ_nxs(document).unbind("keyup.popupcloser");
+						jQ_nxs(document).bind("keyup.popupcloser", 
 							function(e)
 							{ 
 								if (e.keyCode == 27 && nxs_js_popupshows == true)	// handled
@@ -390,7 +390,7 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 									nxs_js_closepopup_unconditionally_if_not_dirty();
 									
 									// set focus to the body
-									jQuery("body").focus();
+									jQ_nxs("body").focus();
 																		
 									// absorb the event
 									return false;
@@ -398,8 +398,8 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 							}
 						);
 						
-						jQuery("#nxsbox_window").unbind("click.stoppropagation");
-						jQuery("#nxsbox_window").bind("click.stoppropagation", function(e) 
+						jQ_nxs("#nxsbox_window").unbind("click.stoppropagation");
+						jQ_nxs("#nxsbox_window").bind("click.stoppropagation", function(e) 
 						{
 							// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
 							// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
@@ -416,26 +416,26 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 						nxs_js_log("broadcasting afterpopupshows");
 						
 						// broadcast clientside trigger for dom elements to be notified when the popup shows
-						jQuery(window).trigger('nxs_jstrigger_afterpopupshows');
+						jQ_nxs(window).trigger('nxs_jstrigger_afterpopupshows');
 
 						nxs_js_log("unbinding broadcast receivers");
 						
 						// remove all listeners
-						jQuery(window).unbind("nxs_jstrigger_afterpopupshows");
+						jQ_nxs(window).unbind("nxs_jstrigger_afterpopupshows");
 						
 						// reset last focus to specified element (if available)
 						if (elementidlastfocussed != null)
 						{
 							//nxs_js_log('resetting focus ... ');
-							if (jQuery('#' + elementidlastfocussed).length > 0)
+							if (jQ_nxs('#' + elementidlastfocussed).length > 0)
 							{
-								jQuery('#' + elementidlastfocussed).focus();
+								jQ_nxs('#' + elementidlastfocussed).focus();
 							}
 						}
 						
 						// reset de hoogte op het moment dat er plaatjes in de popup zitten die 
 						// nog niet beschikbaar/ingeladen zijn
-						jQuery('.nxs-popup-dyncontentcontainer img').load
+						jQ_nxs('.nxs-popup-dyncontentcontainer img').load
 						(
 							function()
 							{
@@ -575,27 +575,27 @@ function nxs_js_popup_setsessioncontext(key, val)
 // a generic implementation that handles when the popup becomes 'dirty' for the first time
 function nxs_js_popup_handle_becomes_dirty_first_time()
 {
-	if (jQuery('#nxs_popup_genericsavebutton').length > 0)
+	if (jQ_nxs('#nxs_popup_genericsavebutton').length > 0)
 	{
-		jQuery('#nxs_popup_genericsavebutton').show();
+		jQ_nxs('#nxs_popup_genericsavebutton').show();
 	}
 	else
 	{
 		nxs_js_log("info: no generic popup save button found");
 	}
 	
-	if (jQuery('#nxs_popup_genericcancelbutton').length > 0)
+	if (jQ_nxs('#nxs_popup_genericcancelbutton').length > 0)
 	{
-		jQuery('#nxs_popup_genericcancelbutton').show();
+		jQ_nxs('#nxs_popup_genericcancelbutton').show();
 	}
 	else
 	{
 		// nxs_js_log("no generic popup cancel button found?");
 	}
 	
-	if (jQuery('#nxs_popup_genericokbutton').length > 0)
+	if (jQ_nxs('#nxs_popup_genericokbutton').length > 0)
 	{
-		jQuery('#nxs_popup_genericokbutton').hide();
+		jQ_nxs('#nxs_popup_genericokbutton').hide();
 	}
 	else
 	{
@@ -628,16 +628,16 @@ function nxs_js_popup_getshortscopedata(key)
 function nxs_js_popup_processautodirtyhandling()
 {
 	// also handle pasting values
-	jQuery(".nxs-popup-dyncontentcontainer input").unbind("input propertychange.makedirty");
-	jQuery(".nxs-popup-dyncontentcontainer input").bind("input propertychange.makedirty", function(e) 
+	jQ_nxs(".nxs-popup-dyncontentcontainer input").unbind("input propertychange.makedirty");
+	jQ_nxs(".nxs-popup-dyncontentcontainer input").bind("input propertychange.makedirty", function(e) 
 	{
 		nxs_js_popup_sessiondata_make_dirty();
 	});
 
 	//nxs_js_log('nxs_js_popup_processautodirtyhandling');
 	
-	jQuery(".nxs-popup-dyncontentcontainer input").unbind("keyup.makedirty");
-	jQuery(".nxs-popup-dyncontentcontainer input").bind("keyup.makedirty", function(e) 
+	jQ_nxs(".nxs-popup-dyncontentcontainer input").unbind("keyup.makedirty");
+	jQ_nxs(".nxs-popup-dyncontentcontainer input").bind("keyup.makedirty", function(e) 
 	{
 		if (nxs_js_doeskeycodemakedirty(e))
 		{
@@ -645,20 +645,20 @@ function nxs_js_popup_processautodirtyhandling()
   	}
 	});
 	
-	jQuery(".nxs-popup-dyncontentcontainer input").unbind("change.makedirty");
-	jQuery(".nxs-popup-dyncontentcontainer input").bind("change.makedirty", function(e) 
+	jQ_nxs(".nxs-popup-dyncontentcontainer input").unbind("change.makedirty");
+	jQ_nxs(".nxs-popup-dyncontentcontainer input").bind("change.makedirty", function(e) 
 	{
 		nxs_js_popup_sessiondata_make_dirty();
 	});
 	
-	jQuery(".nxs-popup-dyncontentcontainer select").unbind("change.makedirty");
-	jQuery(".nxs-popup-dyncontentcontainer select").bind("change.makedirty", function(e) 
+	jQ_nxs(".nxs-popup-dyncontentcontainer select").unbind("change.makedirty");
+	jQ_nxs(".nxs-popup-dyncontentcontainer select").bind("change.makedirty", function(e) 
 	{
 		nxs_js_popup_sessiondata_make_dirty();
 	});
 	
-	jQuery(".nxs-popup-dyncontentcontainer textarea").unbind("keyup.makedirty");
-	jQuery(".nxs-popup-dyncontentcontainer textarea").bind("keyup.makedirty", function(e) 
+	jQ_nxs(".nxs-popup-dyncontentcontainer textarea").unbind("keyup.makedirty");
+	jQ_nxs(".nxs-popup-dyncontentcontainer textarea").bind("keyup.makedirty", function(e) 
 	{
 		if (nxs_js_doeskeycodemakedirty(e))
 		{
@@ -702,18 +702,18 @@ function nxs_js_popup_registerautosubmitwhenuserpressesenter()
 {
 	//nxs_js_log('executing nxs_js_popup_registerautosubmitwhenuserpressesenter');
 	
-	jQuery("#nxsbox_window .nxs-admin-wrap .nxs_defaultenter").unbind("keyup.defaultenter");
-	jQuery("#nxsbox_window .nxs-admin-wrap .nxs_defaultenter").bind("keyup.defaultenter", function(e)
+	jQ_nxs("#nxsbox_window .nxs-admin-wrap .nxs_defaultenter").unbind("keyup.defaultenter");
+	jQ_nxs("#nxsbox_window .nxs-admin-wrap .nxs_defaultenter").bind("keyup.defaultenter", function(e)
 	{
 		if (e.keyCode == 13)
 		{
-			if (jQuery("#nxs_popup_genericsavebutton").length > 0)
+			if (jQ_nxs("#nxs_popup_genericsavebutton").length > 0)
 			{
-				if (jQuery("#nxs_popup_genericsavebutton").is(':visible'))
+				if (jQ_nxs("#nxs_popup_genericsavebutton").is(':visible'))
 				{
 					//nxs_js_log('default enter clicked');
 					e.stopPropagation();
-					jQuery("#nxs_popup_genericsavebutton").click();
+					jQ_nxs("#nxs_popup_genericsavebutton").click();
 				}
 				else
 				{
@@ -741,7 +741,7 @@ function nxs_js_popup_notifynotok(message, idofelementofocus)
 	
 	if (idofelementofocus != null)
 	{
-		jQuery('#' + idofelementofocus).focus();
+		jQ_nxs('#' + idofelementofocus).focus();
 	}
 }
 
@@ -784,7 +784,7 @@ function nxs_js_popup_negativebounce(message)
 		//alert(message); // optionally use this line if you want a 'true' popup that stalls all threads
 		nxs_js_alert(message);
 	}
-	jQuery('#nxsbox_window').effect("shake", { times:3, distance: 10 }, 50);
+	jQ_nxs('#nxsbox_window').effect("shake", { times:3, distance: 10 }, 50);
 }
 
 
@@ -931,7 +931,7 @@ function nxs_js_closepopup_unconditionally()
 
 function nxs_js_hidepopupoverlay()
 {
-	jQuery("#nxsbox_overlay").hide();
+	jQ_nxs("#nxsbox_overlay").hide();
 }
 
 function nxs_js_broadcastpopupcloses()
@@ -944,7 +944,7 @@ function nxs_js_broadcastpopupcloses()
 	
 	// broadcast clientside trigger for dom elements to be notified when the popup shows
 	nxs_js_log("broadcasting trigger: nxs_jstrigger_beforepopupcloses");
-	jQuery(window).trigger('nxs_jstrigger_beforepopupcloses');
+	jQ_nxs(window).trigger('nxs_jstrigger_beforepopupcloses');
 }
 
 function nxs_js_teardownpopupdom()
@@ -952,23 +952,23 @@ function nxs_js_teardownpopupdom()
 	nxs_js_log("broadcast b");
 	nxs_js_broadcastpopupcloses();
 
-	jQuery("#nxsbox_window").removeClass("nxs-active");
-	jQuery("#nxsbox_window").removeClass("nxs-wasdragged");
+	jQ_nxs("#nxsbox_window").removeClass("nxs-active");
+	jQ_nxs("#nxsbox_window").removeClass("nxs-wasdragged");
 	
 	// its important to actually hide the nxsboxes,
 	// otherwise the GUI event like hover will be intercepted
-	jQuery("#nxsbox_window").hide();
+	jQ_nxs("#nxsbox_window").hide();
 	
-	//nxs_js_log('found:' + jQuery("#nxsbox_window.nxsboxwindow").length);
-	jQuery("#nxsbox_window.nxsboxwindow").each(function(i)
+	//nxs_js_log('found:' + jQ_nxs("#nxsbox_window.nxsboxwindow").length);
+	jQ_nxs("#nxsbox_window.nxsboxwindow").each(function(i)
 	{
 		//nxs_js_log('removing useless nxsbox');
-		jQuery(this).remove();
+		jQ_nxs(this).remove();
 	});
 	
 	nxs_js_popupshows = false;
 
-	jQuery("body").append("<div id='nxsbox_window' class='nxsboxwindow' style='display:none;'></div>");
+	jQ_nxs("body").append("<div id='nxsbox_window' class='nxsboxwindow' style='display:none;'></div>");
 	
 	//
 }

@@ -119,13 +119,13 @@ function nxs_popup_genericpopup_postseditor_getpopup($args)
 		
 		function handlenewpost()
 		{			
-			var name = jQuery('#newpostname').val();
+			var name = jQ_nxs('#newpostname').val();
 			
 			name = jQuery.trim(name);
 			if (name == '')
 			{
 				nxs_js_alert('<?php nxs_l18n_e("Post name is required[nxs:growl]", "nxs_td"); ?>');
-				jQuery('#newpostname').focus();
+				jQ_nxs('#newpostname').focus();
 			}
 			else
 			{

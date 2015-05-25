@@ -19,7 +19,7 @@ function nxs_popup_optiontype_select_renderhtmlinpopup($optionvalues, $args, $ru
   <div class="content2">
     <?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
   	<div class="box-content">
-      <select id='<?php echo $id; ?>' class="chosen-select" onchange="nxs_js_popup_setsessiondata('<?php echo $id; ?>', jQuery(this).val()); <?php echo $popuprefreshonchangeaction; ?> ">
+      <select id='<?php echo $id; ?>' class="chosen-select" onchange="nxs_js_popup_setsessiondata('<?php echo $id; ?>', jQ_nxs(this).val()); <?php echo $popuprefreshonchangeaction; ?> ">
       	<?php 
     		// dropdown is specified as keys and values
     		$isfound = false;

@@ -123,13 +123,13 @@ function nxs_popup_genericpopup_categorieseditor_getpopup($args)
 		
 		function handlenewcategory()
 		{			
-			var name = jQuery('#newcategoryname').val();
+			var name = jQ_nxs('#newcategoryname').val();
 			
 			name = jQuery.trim(name);
 			if (name == '')
 			{
 				nxs_js_alert('<?php nxs_l18n_e("Category name is required[nxs:growl]", "nxs_td"); ?>');
-				jQuery('#newcategoryname').focus();
+				jQ_nxs('#newcategoryname').focus();
 			}
 			else
 			{

@@ -178,7 +178,7 @@ function nxs_widgets_wordpresssidebar_home_rendersheet($args)
 		function nxs_js_savegenericpopup()
 		{
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',

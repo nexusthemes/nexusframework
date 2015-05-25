@@ -3,12 +3,12 @@
 function nxs_js_identify_rows_as_recursivelistitems()
 {
 	// OK
-	jQuery(".nxs-layout-editable").each
+	jQ_nxs(".nxs-layout-editable").each
 	(
 		function(pcindex, pagecontainer)
 		{
 			// add dummy rows as dropping points
-			var allrows = jQuery(pagecontainer).find(".nxs-row");
+			var allrows = jQ_nxs(pagecontainer).find(".nxs-row");
 			
 			// setup initial values
 			var rowid = 1;
@@ -16,9 +16,9 @@ function nxs_js_identify_rows_as_recursivelistitems()
 			(
 				function(index, rowelement)
 				{
-					jQuery(rowelement).data('rowid', rowid);
-					jQuery(rowelement).data('listitemid', '');
-					jQuery(rowelement).data('recursionrequired', '');
+					jQ_nxs(rowelement).data('rowid', rowid);
+					jQ_nxs(rowelement).data('listitemid', '');
+					jQ_nxs(rowelement).data('recursionrequired', '');
 					rowid++;
 				}
 			);
@@ -36,36 +36,36 @@ function nxs_js_identify_rows_as_recursivelistitems()
 
 function nxs_js_gui_add_virtual_droppable_pagerows_for_list()
 {
-	if (jQuery("body").hasClass("nxs-drop-tag"))
+	if (jQ_nxs("body").hasClass("nxs-drop-tag"))
 	{
 		nxs_js_log("dont do it again!");
 		return;
 	}
-	jQuery("body").addClass("nxs-drop-tag");
+	jQ_nxs("body").addClass("nxs-drop-tag");
 
 	nxs_js_identify_rows_as_recursivelistitems();
 	
-	var element = jQuery('#nxs-drag-container-helper').data('sourcedragelement');
-	var sourcerow = jQuery(element).closest('.nxs-row');
+	var element = jQ_nxs('#nxs-drag-container-helper').data('sourcedragelement');
+	var sourcerow = jQ_nxs(element).closest('.nxs-row');
 	
-	var listitemidofsourcerow = jQuery(sourcerow).data('listitemid');
+	var listitemidofsourcerow = jQ_nxs(sourcerow).data('listitemid');
 	//nxs_js_log("bronregel:" + listitemidofsourcerow);
 	
 	// als we hier komen zijn alle menu item ids gezet...
 	// OK
-	jQuery(".nxs-layout-editable").each
+	jQ_nxs(".nxs-layout-editable").each
 	(
 		function(pcindex, pagecontainer)
 		{
 			var rowcounter = 0;
-			var allrows = jQuery(pagecontainer).find(".nxs-row");
+			var allrows = jQ_nxs(pagecontainer).find(".nxs-row");
 			allrows.each
 			(
 				function(index, rowelement)
 				{
 					rowcounter++;
 					
-					var listitemid = jQuery(rowelement).data('listitemid');
+					var listitemid = jQ_nxs(rowelement).data('listitemid');
 					//nxs_js_log('listitemid :' + listitemid);
 					
 					if (listitemid == listitemidofsourcerow)
@@ -95,38 +95,38 @@ function nxs_js_gui_add_virtual_droppable_pagerows_for_list()
 						var childdepth = depth + 1;
 						
 						
-						var pagerowselement = jQuery(pagecontainer).find(".nxs-postrows")[0];
+						var pagerowselement = jQ_nxs(pagecontainer).find(".nxs-postrows")[0];
 						
 						var line = "<div class='nxs-padding-menu-item'><div class='content2 nxs-border-dash nxs-drop-area nxs-margin-left" + (depth - 1) * 30 + " nxs-show-no-hover-with-drag nxs-show-hover-with-drag'><div class='nxs-clear'>&nbsp;</div></div></div>";
-						var current_element_accepting_drop = jQuery(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
-						jQuery(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
-						jQuery(current_element_accepting_drop).data('destinationdragmeta', index + "_" + depth);
-						jQuery(rowelement).append(current_element_accepting_drop);
+						var current_element_accepting_drop = jQ_nxs(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
+						jQ_nxs(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
+						jQ_nxs(current_element_accepting_drop).data('destinationdragmeta', index + "_" + depth);
+						jQ_nxs(rowelement).append(current_element_accepting_drop);
 						
 						var line = "<div class='nxs-padding-menu-item'><div class='content2 nxs-border-dash nxs-drop-area nxs-margin-left" + (childdepth - 1) * 30 + " nxs-show-no-hover-with-drag nxs-show-hover-with-drag'><div class='nxs-clear'>&nbsp;</div></div></div>";
-						var current_element_accepting_drop = jQuery(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
-						jQuery(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
-						jQuery(current_element_accepting_drop).data('destinationdragmeta', index + "_" + childdepth);
-						jQuery(rowelement).append(current_element_accepting_drop);
+						var current_element_accepting_drop = jQ_nxs(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
+						jQ_nxs(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
+						jQ_nxs(current_element_accepting_drop).data('destinationdragmeta', index + "_" + childdepth);
+						jQ_nxs(rowelement).append(current_element_accepting_drop);
 						
 						// promote to parent
 						if (depth > 1)
 						{
 							var line = "<div class='nxs-padding-menu-item'><div class='content2 nxs-border-dash nxs-drop-area nxs-margin-left" + (parentdepth - 1) * 30 + " nxs-show-no-hover-with-drag nxs-show-hover-with-drag'><div class='nxs-clear'>&nbsp;</div></div></div>";
-							var current_element_accepting_drop = jQuery(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
-							jQuery(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
-							jQuery(current_element_accepting_drop).data('destinationdragmeta', index + "_" + parentdepth);
-							jQuery(rowelement).append(current_element_accepting_drop);
+							var current_element_accepting_drop = jQ_nxs(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
+							jQ_nxs(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
+							jQ_nxs(current_element_accepting_drop).data('destinationdragmeta', index + "_" + parentdepth);
+							jQ_nxs(rowelement).append(current_element_accepting_drop);
 						}
 						
 						// promote to superparent
 						if (depth > 2)
 						{
 							var line = "<div class='nxs-padding-menu-item'><div class='content2 nxs-border-dash nxs-drop-area nxs-margin-left" + (superparentdepth - 1) * 30 + " nxs-show-no-hover-with-drag nxs-show-hover-with-drag'><div class='nxs-clear'>&nbsp;</div></div></div>";
-							var current_element_accepting_drop = jQuery(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
-							jQuery(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
-							jQuery(current_element_accepting_drop).data('destinationdragmeta', index + "_" + superparentdepth);
-							jQuery(rowelement).append(current_element_accepting_drop);
+							var current_element_accepting_drop = jQ_nxs(nxs_js_gui_getnewtempdroppablerow2(pagerowselement, line));
+							jQ_nxs(current_element_accepting_drop).data('destinationdragtype', 'menuitem');
+							jQ_nxs(current_element_accepting_drop).data('destinationdragmeta', index + "_" + superparentdepth);
+							jQ_nxs(rowelement).append(current_element_accepting_drop);
 						}
 					}
 				}
@@ -141,9 +141,9 @@ function nxs_js_set_listitemid_recursive(allrows, sofar, currentdepth)
 	(
 		function(index, rowelement)
 		{
-			var recursionrequired = jQuery(rowelement).data('recursionrequired');
-			var currentlistitemid = jQuery(rowelement).data('listitemid');
-			var currentrowid = jQuery(rowelement).data('rowid');
+			var recursionrequired = jQ_nxs(rowelement).data('recursionrequired');
+			var currentlistitemid = jQ_nxs(rowelement).data('listitemid');
+			var currentrowid = jQ_nxs(rowelement).data('rowid');
 			var currentChildDepthIndex = nxs_js_getmenuitemdepth_in_dom(rowelement);
 			
 			//nxs_js_log("processing row: " + currentrowid);
@@ -151,7 +151,7 @@ function nxs_js_set_listitemid_recursive(allrows, sofar, currentdepth)
 			if (currentdepth > currentChildDepthIndex)
 			{
 				// next element please (continue loop)
-				// jQuery(rowelement).data('recursionrequired', 'false');
+				// jQ_nxs(rowelement).data('recursionrequired', 'false');
 				//nxs_js_log("ignoring row: " + currentrowid);
 				return true;
 			}
@@ -176,15 +176,15 @@ function nxs_js_set_listitemid_recursive(allrows, sofar, currentdepth)
 						
 						var sofarforthisrow = currentlistitemid + "." + nxs_js_menuid_siblingcounters[currentlistitemid];
 						
-						jQuery(rowelement).data('listitemid', sofarforthisrow);
-						jQuery(rowelement).data('recursionrequired', 'false');
+						jQ_nxs(rowelement).data('listitemid', sofarforthisrow);
+						jQ_nxs(rowelement).data('recursionrequired', 'false');
 						
 						var underscored = sofarforthisrow.split(".").join("-");
 						//nxs_js_log("has become;");
 						//nxs_js_log(underscored);
-						jQuery(rowelement).addClass('nxs-listitemid-x' + underscored);
+						jQ_nxs(rowelement).addClass('nxs-listitemid-x' + underscored);
 						
-						//nxs_js_log("setting (final) listitemid for row " + currentrowid + " to " + jQuery(rowelement).data('listitemid'));
+						//nxs_js_log("setting (final) listitemid for row " + currentrowid + " to " + jQ_nxs(rowelement).data('listitemid'));
 					}
 					else if (currentChildDepthIndex > currentdepth)
 					{
@@ -196,10 +196,10 @@ function nxs_js_set_listitemid_recursive(allrows, sofar, currentdepth)
 						}
 						
 						var sofarforthisrow = currentlistitemid + "." + nxs_js_menuid_siblingcounters[currentlistitemid];
-						jQuery(rowelement).data('listitemid', sofarforthisrow);
-						jQuery(rowelement).data('recursionrequired', sofarforthisrow);
+						jQ_nxs(rowelement).data('listitemid', sofarforthisrow);
+						jQ_nxs(rowelement).data('recursionrequired', sofarforthisrow);
 						
-						//nxs_js_log("setting (non-final) listitemid for row " + currentrowid + " to " + jQuery(rowelement).data('listitemid'));
+						//nxs_js_log("setting (non-final) listitemid for row " + currentrowid + " to " + jQ_nxs(rowelement).data('listitemid'));
 						
 						// recurse!
 						nxs_js_menuid_preventendlessloop--;
@@ -232,30 +232,30 @@ function nxs_js_gui_make_existing_placeholders_droppable_regular()
 	// restrain the droppable placeholders to the nxs-post-XYZ of the 
 	// source, if present 
 
-	var sourcedragelement = jQuery('#nxs-drag-container-helper').data('sourcedragelement');	
+	var sourcedragelement = jQ_nxs('#nxs-drag-container-helper').data('sourcedragelement');	
 	var closestpostid = nxs_js_findclosestpostid_for_dom(sourcedragelement);
 	var containers_in_scope;
 	if (closestpostid != null)
 	{
 		// if you only want to allow drag and drop in the 
 		// closest container, use the following commented line
-		// containers_in_scope = jQuery(".nxs-layout-editable.nxs-post-" + closestpostid);
+		// containers_in_scope = jQ_nxs(".nxs-layout-editable.nxs-post-" + closestpostid);
 		// to enable drag and drop between containers, use the following:
-		containers_in_scope = jQuery(".nxs-layout-editable");
+		containers_in_scope = jQ_nxs(".nxs-layout-editable");
 	}
 	else
 	{
 		// this means we drag a rowtemplate from flyout;
 		// allow all editable containers as drop
-		containers_in_scope = jQuery(".nxs-layout-editable");
+		containers_in_scope = jQ_nxs(".nxs-layout-editable");
 	}
 
-	jQuery(containers_in_scope).each
+	jQ_nxs(containers_in_scope).each
 	(
 		function(pcindex, pagecontainer)
 		{
 			// virtually upgrade placeholder containers as dropping points
-			jQuery(pagecontainer).find(".nxs-placeholder").each
+			jQ_nxs(pagecontainer).find(".nxs-placeholder").each
 			(
 				function(index, current_element_accepting_drop)
 				{
@@ -271,10 +271,10 @@ function nxs_js_gui_make_existing_placeholders_droppable_regular()
 						// speciaal uitzonderingsgeval; indien de huidige placeholder zelf nu wordt gedragged
 						// dan moeten we deze natuurlijk niet zelf droppable maken
 						//
-						var dragtype = jQuery('#nxs-drag-container-helper').data('sourcedragtype');
+						var dragtype = jQ_nxs('#nxs-drag-container-helper').data('sourcedragtype');
 						if (dragtype == 'placeholderswap')
 						{
-							var sourcedragmeta = jQuery('#nxs-drag-container-helper').data('sourcedragmeta');
+							var sourcedragmeta = jQ_nxs('#nxs-drag-container-helper').data('sourcedragmeta');
 							var sourceplaceholderid = sourcedragmeta;
 							if (sourceplaceholderid == doelplaceholderid)
 							{
@@ -285,15 +285,15 @@ function nxs_js_gui_make_existing_placeholders_droppable_regular()
 						//
 						// process normally
 						//
-						var original = jQuery(current_element_accepting_drop).html();
-						jQuery(current_element_accepting_drop).data('nxs-revert-content', original);		// required for reverting back
+						var original = jQ_nxs(current_element_accepting_drop).html();
+						jQ_nxs(current_element_accepting_drop).data('nxs-revert-content', original);		// required for reverting back
 						
-						var width = jQuery(current_element_accepting_drop).width();
-						var height = jQuery(current_element_accepting_drop).height();
+						var width = jQ_nxs(current_element_accepting_drop).width();
+						var height = jQ_nxs(current_element_accepting_drop).height();
 
-						jQuery(current_element_accepting_drop).data('destinationdragtype', 'existingplaceholder');
-						jQuery(current_element_accepting_drop).data('destinationdragmeta', doelplaceholderid);
-						jQuery(current_element_accepting_drop).addClass("nxs-accept-drop");
+						jQ_nxs(current_element_accepting_drop).data('destinationdragtype', 'existingplaceholder');
+						jQ_nxs(current_element_accepting_drop).data('destinationdragmeta', doelplaceholderid);
+						jQ_nxs(current_element_accepting_drop).addClass("nxs-accept-drop");
 						
 						// nxs-revert-after-dragdrop");
 						
@@ -306,14 +306,14 @@ function nxs_js_gui_make_existing_placeholders_droppable_regular()
 						var virtuallayer2 = "<div class='nxs-show-no-hover-with-drag' style='width:" + width + "px; height:" + height + "px; position: absolute;'></div>";
 						var virtuallayer3 = "<div class='nxs-show-hover-with-drag' style='width:" + width + "px; height:" + height + "px; position: absolute;'>&nbsp;</div>";
 
-						jQuery(current_element_accepting_drop).find(".nxs-drop-cursor").html(virtuallayer3);
+						jQ_nxs(current_element_accepting_drop).find(".nxs-drop-cursor").html(virtuallayer3);
 
 						var inlinelayer = "<div style='width:" + width + "px; height:" + height + "px; display: block; overflow: hidden;'>&nbsp;</div>";
 						
 						//var combined = virtuallayer1 + virtuallayer2 + virtuallayer3 + inlinelayer;
 						// override old html with upgraded variant that allows dropping
 						
-						//jQuery(current_element_accepting_drop).html(combined);
+						//jQ_nxs(current_element_accepting_drop).html(combined);
 					} 
 					catch(err)
 					{
@@ -331,7 +331,7 @@ function nxs_js_gui_add_drop_scaffolding()
 	//
 	// add and upgrade gui elements
 	//
-	var sourcedragtype = jQuery('#nxs-drag-container-helper').data('sourcedragtype');
+	var sourcedragtype = jQ_nxs('#nxs-drag-container-helper').data('sourcedragtype');
 	//nxs_js_log("sourcedragtype:" + sourcedragtype);
 	
 	if (sourcedragtype == 'placeholderswap')
@@ -341,63 +341,63 @@ function nxs_js_gui_add_drop_scaffolding()
 		// moeten er geen nieuwe regels worden toegevoegd
 		//
 		
-		var pagecontainer = jQuery(".nxs-layout-editable");		
+		var pagecontainer = jQ_nxs(".nxs-layout-editable");		
 		
 		if (pagecontainer.length == 1)
 		{
-			if (jQuery(pagecontainer).hasClass("nxs-menu-container"))
+			if (jQ_nxs(pagecontainer).hasClass("nxs-menu-container"))
 			{
 				nxs_js_gui_add_virtual_droppable_pagerows_for_list();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-list-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-list-container"))
 			{
 				nxs_js_gui_add_virtual_droppable_pagerows_for_list();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-slideset-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-slideset-container"))
 			{
 				// regular!
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-genericlist-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-genericlist-container"))
 			{
 				// regular!
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-sidebar-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-sidebar-container"))
 			{
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-pagelet-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-pagelet-container"))
 			{
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-subheader-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-subheader-container"))
 			{
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-subfooter-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-subfooter-container"))
 			{
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-header-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-header-container"))
 			{
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-footer-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-footer-container"))
 			{
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-article-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-article-container"))
 			{
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-busrulesset-container"))
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-busrulesset-container"))
 			{
 				nxs_js_gui_make_existing_placeholders_droppable_regular();
 			}
 			else
 			{
-			  var otherclass = jQuery(pagecontainer).attr("class");
+			  var otherclass = jQ_nxs(pagecontainer).attr("class");
 				nxs_js_log('someothercondition?;' + otherclass);
 			}
 		}
@@ -427,10 +427,10 @@ function nxs_js_gui_setup_drop_listeners()
 	//
 
 	// first unregister any scripts
-	jQuery(".nxs-accept-drop .ui-droppable").droppable("destroy");
+	jQ_nxs(".nxs-accept-drop .ui-droppable").droppable("destroy");
 	
 	// register new drops
-	jQuery(".nxs-accept-drop").droppable
+	jQ_nxs(".nxs-accept-drop").droppable
 	(
 		{
 			activeClass: "ui-state-active",
@@ -450,7 +450,7 @@ function nxs_js_gui_setup_drop_listeners()
     },
 			drop: function( event, ui ) 
 			{
-				var sourcedragelement = jQuery('#nxs-drag-container-helper').data('sourcedragelement');
+				var sourcedragelement = jQ_nxs('#nxs-drag-container-helper').data('sourcedragelement');
 				var sourcepostid = nxs_js_findclosestpostid_for_dom(sourcedragelement);
 				var destinationpostid = nxs_js_findclosestpostid_for_dom(this);
 				var containerpostid = nxs_js_getcontainerpostid();
@@ -463,10 +463,10 @@ function nxs_js_gui_setup_drop_listeners()
 				nxs_js_log("containerpostid:" + containerpostid);
 				*/
 				
-				var sourcedragtype = jQuery('#nxs-drag-container-helper').data('sourcedragtype');
-				var sourcedragmeta = jQuery('#nxs-drag-container-helper').data('sourcedragmeta');
-				var destinationdragtype = jQuery(this).data("destinationdragtype");
-				var destinationdragmeta = jQuery(this).data('destinationdragmeta');
+				var sourcedragtype = jQ_nxs('#nxs-drag-container-helper').data('sourcedragtype');
+				var sourcedragmeta = jQ_nxs('#nxs-drag-container-helper').data('sourcedragmeta');
+				var destinationdragtype = jQ_nxs(this).data("destinationdragtype");
+				var destinationdragmeta = jQ_nxs(this).data('destinationdragmeta');
 				
 				if (sourcedragtype == 'placeholderswap')
 				{
@@ -507,7 +507,7 @@ function nxs_js_gui_setup_drop_listeners()
 						
 						var insertafterrowindex = destinationdragmeta;
 						var pagerowtemplate = sourcedragmeta;
-						var destinationpagerows = jQuery(this).closest(".nxs-postrows")[0];
+						var destinationpagerows = jQ_nxs(this).closest(".nxs-postrows")[0];
 						var placeholdertemplate = ""; // not applicable
 						nxs_js_addnewrowwithtemplate(destinationpostid, insertafterrowindex, pagerowtemplate, placeholdertemplate, destinationpagerows, 
 						function()
@@ -539,7 +539,7 @@ function nxs_js_addnewrowwithtemplate(postid, insertafterrowindex, pagerowtempla
 {
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -572,12 +572,12 @@ function nxs_js_addnewrowwithtemplate(postid, insertafterrowindex, pagerowtempla
 							if (insertafterrowindex == -1)
 							{
 								// html toevoegen
-								var newhtmlelement = jQuery(html);
-								jQuery(newhtmlelement).hide();
-								jQuery(element).prepend(newhtmlelement);
+								var newhtmlelement = jQ_nxs(html);
+								jQ_nxs(newhtmlelement).hide();
+								jQ_nxs(element).prepend(newhtmlelement);
 								
-								var therow = jQuery(element).find(".nxs-row")[0];
-								jQuery(therow).slideDown(300, function()
+								var therow = jQ_nxs(element).find(".nxs-row")[0];
+								jQ_nxs(therow).slideDown(300, function()
 								{
 									// de hoogte is aangepast, pas ook de sidebar hoogte aan (indien nodig)
 									nxs_js_reenable_all_window_events();
@@ -586,16 +586,16 @@ function nxs_js_addnewrowwithtemplate(postid, insertafterrowindex, pagerowtempla
 							else
 							{
 								// insert at certain index
-								var pagecontainer = jQuery(element);
+								var pagecontainer = jQ_nxs(element);
 								var siblingElement = pagecontainer.children()[insertafterrowindex];
 								
 								// html toevoegen
-								var newhtmlelement = jQuery(html);
-								jQuery(newhtmlelement).hide();
-								jQuery(siblingElement).after(newhtmlelement);
+								var newhtmlelement = jQ_nxs(html);
+								jQ_nxs(newhtmlelement).hide();
+								jQ_nxs(siblingElement).after(newhtmlelement);
 								
-								var therow = jQuery(element).find(".nxs-row")[insertafterrowindex+1];
-								jQuery(therow).slideDown(300, function()
+								var therow = jQ_nxs(element).find(".nxs-row")[insertafterrowindex+1];
+								jQ_nxs(therow).slideDown(300, function()
 								{
 									// de hoogte is aangepast, pas ook de sidebar hoogte aan (indien nodig)
 									nxs_js_reenable_all_window_events();
@@ -641,7 +641,7 @@ function nxs_js_addnewrow(postid, insertafterrowindex, element, invokewhenavaila
 {
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -660,7 +660,7 @@ function nxs_js_addnewrow(postid, insertafterrowindex, element, invokewhenavaila
 				nxs_js_log(response);
 				if (response.result == "OK")
 				{
-					var containerElement = jQuery(".nxs-layout-editable.nxs-post-" + postid)[0];
+					var containerElement = jQ_nxs(".nxs-layout-editable.nxs-post-" + postid)[0];
 					nxs_js_refreshallpagerows(postid, containerElement, invokewhenavailable);
 				}
 				else
@@ -683,7 +683,7 @@ function nxs_js_addnewrow(postid, insertafterrowindex, element, invokewhenavaila
 function nxs_js_initplaceholderwithplaceholdertemplate(postid, placeholderid, placeholdertemplate)
 {
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -709,14 +709,14 @@ function nxs_js_initplaceholderwithplaceholdertemplate(postid, placeholderid, pl
 					// update the DOM
 					var rowindex = response.rowindex;
 					var rowhtml = response.rowhtml;
-					var pagecontainer = jQuery(".nxs-layout-editable.nxs-post-" + postid)[0];
-					var pagerowscontainer = jQuery(pagecontainer).find(".nxs-postrows")[0];
-					var element = jQuery(pagerowscontainer).children()[rowindex];
-					jQuery(element).replaceWith(rowhtml);
+					var pagecontainer = jQ_nxs(".nxs-layout-editable.nxs-post-" + postid)[0];
+					var pagerowscontainer = jQ_nxs(pagecontainer).find(".nxs-postrows")[0];
+					var element = jQ_nxs(pagerowscontainer).children()[rowindex];
+					jQ_nxs(element).replaceWith(rowhtml);
 					
 					// update the GUI step 1
 					// invoke execute_after_clientrefresh_XYZ for each widget in the affected first row, if present
-					var container = jQuery(pagerowscontainer).children()[rowindex];
+					var container = jQ_nxs(pagerowscontainer).children()[rowindex];
 					nxs_js_notify_widgets_after_ajaxrefresh(container);
 					// update the GUI step 2
 					nxs_js_reenable_all_window_events();
@@ -743,7 +743,7 @@ function nxs_js_updatemenuitemlocation(postid, placeholderid, insertafterrowinde
 {					
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -764,8 +764,8 @@ function nxs_js_updatemenuitemlocation(postid, placeholderid, insertafterrowinde
 				nxs_js_log(response);
 				if (response.result == "OK")
 				{
-					var containerElement = jQuery(".nxs-layout-editable.nxs-post-" + postid)[0];
-					jQuery(containerElement).html(response.html);
+					var containerElement = jQ_nxs(".nxs-layout-editable.nxs-post-" + postid)[0];
+					jQ_nxs(containerElement).html(response.html);
 					// reenable all events
 					nxs_js_reenable_all_window_events();
 					nxs_js_alert(nxs_js_gettrans('Refreshed'));
@@ -796,7 +796,7 @@ function nxs_js_swapplaceholders(sourcecontainerpostid, sourcepostid, sourceplac
 				
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			async: true,
@@ -828,15 +828,15 @@ function nxs_js_swapplaceholders(sourcecontainerpostid, sourcepostid, sourceplac
 					var destinationrowindex = response.destinationrowindex;
 					var destinationrowhtml = response.destinationrowhtml;
 					
-					var sourcepagecontainer = jQuery(".nxs-layout-editable.nxs-post-" + sourcepostid)[0];
-					var sourcepagerowscontainer = jQuery(sourcepagecontainer).find(".nxs-postrows")[0];
-					var sourcecontainer = jQuery(sourcepagerowscontainer).children()[sourcerowindex];
+					var sourcepagecontainer = jQ_nxs(".nxs-layout-editable.nxs-post-" + sourcepostid)[0];
+					var sourcepagerowscontainer = jQ_nxs(sourcepagecontainer).find(".nxs-postrows")[0];
+					var sourcecontainer = jQ_nxs(sourcepagerowscontainer).children()[sourcerowindex];
 
 					// rerender first row
-					var sourceElement = jQuery(sourcepagerowscontainer).children()[sourcerowindex];
+					var sourceElement = jQ_nxs(sourcepagerowscontainer).children()[sourcerowindex];
 					// before updating the dom, we first wipe any functions for notification ajax used by the "old" widgets
 					nxs_js_clear_ajaxrefresh_notifications(sourceElement);
-					jQuery(sourceElement).replaceWith(sourcerowhtml);
+					jQ_nxs(sourceElement).replaceWith(sourcerowhtml);
 					
 					// invoke execute_after_clientrefresh_XYZ for each widget in the affected first row, if present
 					nxs_js_notify_widgets_after_ajaxrefresh(sourcecontainer);
@@ -846,16 +846,16 @@ function nxs_js_swapplaceholders(sourcecontainerpostid, sourcepostid, sourceplac
 					var isswapwithinthesamerow = (sourcepostid == destinationpostid && sourcerowindex == destinationrowindex);
 					if (!isswapwithinthesamerow)
 					{
-						var destinationpagecontainer = jQuery(".nxs-layout-editable.nxs-post-" + destinationpostid)[0];
-						var destinationpagerowscontainer = jQuery(destinationpagecontainer).find(".nxs-postrows")[0];
-						var destinationcontainer = jQuery(destinationpagerowscontainer).children()[destinationrowindex];
+						var destinationpagecontainer = jQ_nxs(".nxs-layout-editable.nxs-post-" + destinationpostid)[0];
+						var destinationpagerowscontainer = jQ_nxs(destinationpagecontainer).find(".nxs-postrows")[0];
+						var destinationcontainer = jQ_nxs(destinationpagerowscontainer).children()[destinationrowindex];
 
 						// rerender destination row
-						var destinationElement = jQuery(destinationpagerowscontainer).children()[destinationrowindex];
+						var destinationElement = jQ_nxs(destinationpagerowscontainer).children()[destinationrowindex];
 						// before updating the dom, we first wipe any functions for notification ajax used by the "old" widgets
 						nxs_js_clear_ajaxrefresh_notifications(destinationElement);
 						
-						jQuery(destinationElement).replaceWith(destinationrowhtml);
+						jQ_nxs(destinationElement).replaceWith(destinationrowhtml);
 						
 						// invoke execute_after_clientrefresh_XYZ for each widget in the affected first row, if present
 						nxs_js_notify_widgets_after_ajaxrefresh(destinationcontainer);
@@ -906,7 +906,7 @@ function nxs_js_addnewarticle_v2(titel, slug, pagetype, pagesubtype)
 {
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -952,7 +952,7 @@ function nxs_js_addnewarticlewithpostwizard(titel, slug, pagetype, postwizard, i
 {
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -994,7 +994,7 @@ function nxs_js_addnewarticlewithpostwizardwithargs(titel, slug, pagetype, posts
 {
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -1040,7 +1040,7 @@ function nxs_js_addcategory(name, invokewhenavailable)
 {					
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -1080,7 +1080,7 @@ function nxs_js_removecategory(catid, invokewhenavailable)
 {					
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -1164,10 +1164,10 @@ function nxs_js_gui_setup_drag_listeners()
 	//nxs_js_log("nxs_js_gui_setup_drag_listeners()");
 	
 	// remove draggable features registered before
-	jQuery(".nxs-draggable.ui-draggable").draggable("destroy");
+	jQ_nxs(".nxs-draggable.ui-draggable").draggable("destroy");
 	
 	// enable dragging of draggable items (placeholders, placeholderrows)
-	jQuery(".nxs-draggable").draggable
+	jQ_nxs(".nxs-draggable").draggable
 	(
 		{ 
 			helper: function(event) 
@@ -1182,7 +1182,7 @@ function nxs_js_gui_setup_drag_listeners()
 				nxs_js_log("drag start!");
 				// 
 				var scrollrevertid = nxs_js_ui_pushscrollrevert();
-				jQuery("html").addClass("nxs-dragging");
+				jQ_nxs("html").addClass("nxs-dragging");
 				nxs_js_nxsisdragging = true;
 			
 				// ui: The jQuery object representing the helper that's being dragged.
@@ -1193,28 +1193,28 @@ function nxs_js_gui_setup_drag_listeners()
 				// this represens the DOM element that triggers the drag
 				var closestpostid = nxs_js_findclosestpostid_for_dom(this);	// could be null if dragging flyout menu ...
 				
-				var helper = jQuery(this).find(".nxs-drag-helper")[0];
+				var helper = jQ_nxs(this).find(".nxs-drag-helper")[0];
 				if (helper != null)
 				{
 					// set content of the helper
-					var helperHtml = jQuery(helper).html();
-					jQuery('#nxs-drag-container-helper').html(helperHtml);
+					var helperHtml = jQ_nxs(helper).html();
+					jQ_nxs('#nxs-drag-container-helper').html(helperHtml);
 					//nxs_js_log("helper:" + helperHtml);
 					//
 					// reposition the helper such that the location of the mouse cursor is in its center
 					//
 					
-					var helperWidth = jQuery('#nxs-drag-container-helper').width();
+					var helperWidth = jQ_nxs('#nxs-drag-container-helper').width();
 					var deltaWidth = (helperWidth / 2);
-					//jQuery(this).data('draggable').offset.click.left += deltaWidth;
+					//jQ_nxs(this).data('draggable').offset.click.left += deltaWidth;
 
-					var helperHeight = jQuery('#nxs-drag-container-helper').height();
+					var helperHeight = jQ_nxs('#nxs-drag-container-helper').height();
 					var deltaHeight = (helperHeight / 2);
-					//jQuery(this).data('draggable').offset.click.top += deltaHeight;
+					//jQ_nxs(this).data('draggable').offset.click.top += deltaHeight;
 				}
 				else
 				{
-					jQuery('#nxs-drag-container-helper').html("helper not found");
+					jQ_nxs('#nxs-drag-container-helper').html("helper not found");
 				}
 				
 				// find placeholder element up the DOM
@@ -1224,14 +1224,14 @@ function nxs_js_gui_setup_drag_listeners()
 				var sourcedragtype = "";
 				var sourcedragmeta = "";
 				
-				if (jQuery(this).hasClass("nxs-toolbox-item") && jQuery(this).hasClass("nxs-dragtype-pagerowtemplate"))
+				if (jQ_nxs(this).hasClass("nxs-toolbox-item") && jQ_nxs(this).hasClass("nxs-dragtype-pagerowtemplate"))
 				{
 					// het is een toolbox item en representeert een pagerow
 					// sourcedragmeta => pagerowtemplate
 					sourcedragtype = "toolboxpagerowtemplate";
 					sourcedragmeta = this.id.split("_")[2];
 				}
-				else if (jQuery(this).hasClass("nxs-existing-pageitem") && jQuery(this).hasClass("nxs-dragtype-placeholder"))
+				else if (jQ_nxs(this).hasClass("nxs-existing-pageitem") && jQ_nxs(this).hasClass("nxs-dragtype-placeholder"))
 				{
 					sourcedragtype = "placeholderswap";
 					sourcedragmeta = this.id.split("_")[1];
@@ -1241,9 +1241,9 @@ function nxs_js_gui_setup_drag_listeners()
 					alert("unknown source for drag");
 				}
 				
-				jQuery('#nxs-drag-container-helper').data('sourcedragtype', sourcedragtype);
-				jQuery('#nxs-drag-container-helper').data('sourcedragmeta', sourcedragmeta);
-				jQuery('#nxs-drag-container-helper').data('sourcedragelement', this);
+				jQ_nxs('#nxs-drag-container-helper').data('sourcedragtype', sourcedragtype);
+				jQ_nxs('#nxs-drag-container-helper').data('sourcedragmeta', sourcedragmeta);
+				jQ_nxs('#nxs-drag-container-helper').data('sourcedragelement', this);
 				
 
 				// hier
@@ -1253,23 +1253,23 @@ function nxs_js_gui_setup_drag_listeners()
 				nxs_js_ui_popscrollrevert(scrollrevertid);
 				//nxs_js_log("drag finishes	!");
 				
-				if (jQuery("body").hasClass("single-nxs_menu"))
+				if (jQ_nxs("body").hasClass("single-nxs_menu"))
 				{
 					// het is een menu; in dat geval, zetten we de betrokken menu items
 					// even op 50% zodat duidelijk is welke items betrokken zijn
-					var therow = jQuery(".nxs-widget-" + sourcedragmeta).closest(".nxs-row");
+					var therow = jQ_nxs(".nxs-widget-" + sourcedragmeta).closest(".nxs-row");
 					var classidentifier = nxs_js_findclassidentificationwithprefix(therow, 'nxs-listitemid-x');
 					
 					var selector = "div[class*='nxs-listitemid-x" + classidentifier + "']";
-					jQuery(selector).addClass("nxs-item-being-dragged");
+					jQ_nxs(selector).addClass("nxs-item-being-dragged");
 				}
   },
 			revert: function(socketObj) 
 			{
 				nxs_js_nxsisdragging = false;
-				jQuery("html").removeClass("nxs-dragging");
-				jQuery("body").removeClass("nxs-drop-tag");
-				jQuery(".nxs-item-being-dragged").removeClass("nxs-item-being-dragged");
+				jQ_nxs("html").removeClass("nxs-dragging");
+				jQ_nxs("body").removeClass("nxs-drop-tag");
+				jQ_nxs(".nxs-item-being-dragged").removeClass("nxs-item-being-dragged");
 				
 				nxs_js_reenable_all_window_events();
 				
@@ -1283,8 +1283,8 @@ function nxs_js_gui_setup_drag_listeners()
 			      // Drop was rejected; don't revert with an animation
 			    	//nxs_js_log('drop was rejected');
 			        	
-								var sourcedragtype = jQuery('#nxs-drag-container-helper').data('sourcedragtype');
-								var sourcedragmeta = jQuery('#nxs-drag-container-helper').data('sourcedragmeta');
+								var sourcedragtype = jQ_nxs('#nxs-drag-container-helper').data('sourcedragtype');
+								var sourcedragmeta = jQ_nxs('#nxs-drag-container-helper').data('sourcedragmeta');
 
 								if (sourcedragtype == 'placeholderswap')
 								{
@@ -1319,7 +1319,7 @@ function nxs_js_gui_setup_drag_listeners()
 			{
 				nxs_js_log("drag stop!");
 				nxs_js_nxsisdragging = false;
-				jQuery("html").removeClass("nxs-dragging");
+				jQ_nxs("html").removeClass("nxs-dragging");
 				//nxs_js_log("removed nxs-dragging from html");
 			
 				//nxs_js_log("stop starts!");
@@ -1337,11 +1337,11 @@ function nxs_js_gui_setup_drag_listeners()
 				nxs_js_log("event drag");
 				// Triggered while the mouse is moved during the dragging.
 			
-				jQuery(".nxs-layout-editable").each
+				jQ_nxs(".nxs-layout-editable").each
 				(
 					function(pcindex, pagecontainer)
 					{
-						if (jQuery(pagecontainer).hasClass("nxs-menu-container") || jQuery(pagecontainer).hasClass("nxs-list-container"))
+						if (jQ_nxs(pagecontainer).hasClass("nxs-menu-container") || jQ_nxs(pagecontainer).hasClass("nxs-list-container"))
 						{
 							// dit moet alleen als er sprake is van een menu / lijst
 							
@@ -1350,33 +1350,33 @@ function nxs_js_gui_setup_drag_listeners()
 							//
 							// step 1; hide all dropping zones, but show the ones currently showing
 							//
-							jQuery(pagecontainer).find(".nxs-remove-after-dragdrop").each
+							jQ_nxs(pagecontainer).find(".nxs-remove-after-dragdrop").each
 							(							
 								function(index, element)
 								{
-									if (!jQuery(element).hasClass("nxs-showinitially"))
+									if (!jQ_nxs(element).hasClass("nxs-showinitially"))
 									{
 										// clean up
-										jQuery(element).hide();
+										jQ_nxs(element).hide();
 									}
 								}
 							);
-							//jQuery(".showing").show();
+							//jQ_nxs(".showing").show();
 
 							//
 							// step 2; calculate nearest nxs-row that has scaffolding row
 							//
 							var nearest = 99999;
 							var nearestrow = null;
-							jQuery(pagecontainer).find(".nxs-row").each
+							jQ_nxs(pagecontainer).find(".nxs-row").each
 							(
 								function(index, element)
 								{
-									if (jQuery(element).find(".nxs-remove-after-dragdrop").length > 0)
+									if (jQ_nxs(element).find(".nxs-remove-after-dragdrop").length > 0)
 									{
 										// clean up
-										var topposition = jQuery(element).offset().top + jQuery(element).height();
-										var helperposition = Math.floor(jQuery('#nxs-drag-container-helper').offset().top - 25);
+										var topposition = jQ_nxs(element).offset().top + jQ_nxs(element).height();
+										var helperposition = Math.floor(jQ_nxs('#nxs-drag-container-helper').offset().top - 25);
 										
 										var deltaposition = topposition - helperposition;
 										if (deltaposition > 0 && deltaposition < nearest)
@@ -1390,13 +1390,13 @@ function nxs_js_gui_setup_drag_listeners()
 							);
 							
 							// step 3; remove any previously showing classes
-							jQuery(pagecontainer).find(".showing").removeClass("showing");
+							jQ_nxs(pagecontainer).find(".showing").removeClass("showing");
 							
 							//
 							// step 4; show each scaffolding item within the closest row
 							//
-							var scaffolds = jQuery(nearestrow).find(".nxs-remove-after-dragdrop");
-							var aantal = jQuery(scaffolds).length;
+							var scaffolds = jQ_nxs(nearestrow).find(".nxs-remove-after-dragdrop");
+							var aantal = jQ_nxs(scaffolds).length;
 							if (aantal == 0)
 							{
 								// nxs_js_log('Expected to show at least one scaffolding row...');
@@ -1404,15 +1404,15 @@ function nxs_js_gui_setup_drag_listeners()
 							else if (aantal == 1)
 							{
 								// if there's one scaffold, always show that one!
-								jQuery(scaffolds).show();
-							 	jQuery(scaffolds).addClass("showing");
+								jQ_nxs(scaffolds).show();
+							 	jQ_nxs(scaffolds).addClass("showing");
 							}
 							else if (aantal >= 2)
 							{
-								//jQuery(scaffolds).show();
+								//jQ_nxs(scaffolds).show();
 								
-								var helperpositionleft = jQuery('#nxs-drag-container-helper').offset().left;
-								var rowpositionleft = jQuery(nearestrow).offset().left;
+								var helperpositionleft = jQ_nxs('#nxs-drag-container-helper').offset().left;
+								var rowpositionleft = jQ_nxs(nearestrow).offset().left;
 								var showwhich = 0;
 								var deltaleft = helperpositionleft - rowpositionleft;
 								//nxs_js_log("deltaleft:" + deltaleft + ";aantal:" + aantal);
@@ -1459,29 +1459,29 @@ function nxs_js_gui_setup_drag_listeners()
 								//nxs_js_log('deltaleft:' + deltaleft);							
 								// based upon the mouse x we decide whether the show the left, or the right one
 								
-								jQuery(jQuery(scaffolds)[showwhich]).show();
-								jQuery(jQuery(scaffolds)[showwhich]).addClass("showing");
+								jQ_nxs(jQ_nxs(scaffolds)[showwhich]).show();
+								jQ_nxs(jQ_nxs(scaffolds)[showwhich]).addClass("showing");
 								
-								var itembeingdragged = jQuery(".nxs-item-being-dragged");
-								var text = jQuery(itembeingdragged).text();
+								var itembeingdragged = jQ_nxs(".nxs-item-being-dragged");
+								var text = jQ_nxs(itembeingdragged).text();
 								
-								var marker = jQuery(jQuery(scaffolds)[showwhich]).find(".nxs-drop-area");
+								var marker = jQ_nxs(jQ_nxs(scaffolds)[showwhich]).find(".nxs-drop-area");
 								
-								jQuery(marker).each
+								jQ_nxs(marker).each
 								(
 									function() 
 									{
-										if (!jQuery(this).hasClass("nxs-done"))
+										if (!jQ_nxs(this).hasClass("nxs-done"))
 										{
-											jQuery(this).addClass("nxs-done")
+											jQ_nxs(this).addClass("nxs-done")
 
 											nxs_js_log("adding triggers");
 											
-											jQuery(marker).css("background-color", "white");
-											jQuery(marker).css("outline-width", "thick");
-											jQuery(marker).css("outline-style", "dashed");
-											jQuery(marker).css("outline-color", "black");
-											var h = jQuery(marker).html("<p style='align: center;'>" + text + "(Drop here)</p>");
+											jQ_nxs(marker).css("background-color", "white");
+											jQ_nxs(marker).css("outline-width", "thick");
+											jQ_nxs(marker).css("outline-style", "dashed");
+											jQ_nxs(marker).css("outline-color", "black");
+											var h = jQ_nxs(marker).html("<p style='align: center;'>" + text + "(Drop here)</p>");
 										}
 									}
 								);
@@ -1499,39 +1499,39 @@ function nxs_js_gui_setup_drag_listeners()
 	
 	// by default, the row drag will not be able to scroll,
 	// since the nxs-container has overflow: auto
-	// jQuery(".nxs-dragrow-handler").each
+	// jQ_nxs(".nxs-dragrow-handler").each
 	// (
 	// 	function() 
 	// 	{
 	// 		// remove any previous mousedown handlers for rowdragfix
-	// 		jQuery(this).unbind("mousedown.rowdragfix");
-	// 	    jQuery(this).bind
+	// 		jQ_nxs(this).unbind("mousedown.rowdragfix");
+	// 	    jQ_nxs(this).bind
 	// 	    (
 	// 	    	"mousedown.rowdragfix", 
 	// 	    	function() 
 	// 	    	{
-	// 	    		jQuery("html").addClass("nxs-dragging");
+	// 	    		jQ_nxs("html").addClass("nxs-dragging");
 	// 	    	}
 	// 	    );
 	// 	}
 	// );
 	
 	// enable dragging of rows
-	jQuery(".nxs-postrows").sortable
+	jQ_nxs(".nxs-postrows").sortable
 	(
 		{
 			over: function( event, ui ) 
 			{ 
 				//nxs_js_log("over!"); 
-				var x = jQuery(".nxs-row.ui-sortable-placeholder");
-				if (jQuery(x).data("enriched") != "yes")
+				var x = jQ_nxs(".nxs-row.ui-sortable-placeholder");
+				if (jQ_nxs(x).data("enriched") != "yes")
 				{
 					// TODO: next lines should be moved to CSS file
-					jQuery(".nxs-row").css("opacity", 0.5);
-					jQuery(".nxs-row.ui-sortable-helper").css("opacity", 1.0);
-					jQuery(".nxs-row.ui-sortable-placeholder").css("opacity", 1.0);
+					jQ_nxs(".nxs-row").css("opacity", 0.5);
+					jQ_nxs(".nxs-row.ui-sortable-helper").css("opacity", 1.0);
+					jQ_nxs(".nxs-row.ui-sortable-placeholder").css("opacity", 1.0);
 
-					var h = jQuery(x).height();
+					var h = jQ_nxs(x).height();
 					var dashthick = 4;
 					if (h - dashthick - dashthick < 0)
 					{
@@ -1547,10 +1547,10 @@ function nxs_js_gui_setup_drag_listeners()
 					html = '<ul class="nxs-placeholder-list">' + html + '</ul>';
 					html = '<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1" style="border-color: black; border-width: ' + dashthick + 'px; border-style: dashed; background-color: white;height:' + heightwithoutborders + 'px">' + html + '</div>';
 					
-					jQuery(x).html(html);
-					jQuery(x).css("visibility", "visible"); // .css("background-color", "red");
+					jQ_nxs(x).html(html);
+					jQ_nxs(x).css("visibility", "visible"); // .css("background-color", "red");
 					//nxs_js_log(x);
-					jQuery(x).data("enriched", "yes");
+					jQ_nxs(x).data("enriched", "yes");
 				}
 			},
 			handle: ".nxs-dragrow-handler",
@@ -1560,22 +1560,22 @@ function nxs_js_gui_setup_drag_listeners()
 	   		start: function(event, ui) 
 			{
 				nxs_js_nxsisdragging = true;
-				jQuery(ui.item).data("sourcepostid", nxs_js_findclosestpostid_for_dom(ui.item));
-				jQuery(ui.item).data("sourcerowindex", ui.item.index());
+				jQ_nxs(ui.item).data("sourcepostid", nxs_js_findclosestpostid_for_dom(ui.item));
+				jQ_nxs(ui.item).data("sourcerowindex", ui.item.index());
 				
 			},
 			stop: function(event, ui) 
 			{
 				nxs_js_nxsisdragging = false;
-				jQuery("html").removeClass("nxs-dragging");
+				jQ_nxs("html").removeClass("nxs-dragging");
 				// TODO: next line should be moved to CSS file
-				jQuery(".nxs-row").css("opacity", 1.0);
+				jQ_nxs(".nxs-row").css("opacity", 1.0);
 			},
 	    	update: function(event, ui) 
 			{						
 				var sourcerow = ui.item;
-				var sourcepostid = jQuery(sourcerow).data("sourcepostid");
-				var sourcerowindex = jQuery(sourcerow).data("sourcerowindex");
+				var sourcepostid = jQ_nxs(sourcerow).data("sourcepostid");
+				var sourcerowindex = jQ_nxs(sourcerow).data("sourcerowindex");
 				var destinationpostid = nxs_js_findclosestpostid_for_dom(ui.item);
 				var destinationrowindex = ui.item.index();
 				var containerpostid = nxs_js_getcontainerpostid();						
@@ -1610,62 +1610,62 @@ function nxs_js_gui_setup_drag_listeners()
 function nxs_js_gui_cleanup_drag_scaffolding()
 {
 	// revert things requiring reverting...
-	jQuery(".nxs-revert-after-dragdrop").each
+	jQ_nxs(".nxs-revert-after-dragdrop").each
 	(
 		function(index, element)
 		{
 			// clean up
-			jQuery(element).removeClass("nxs-revert-after-dragdrop");
-			jQuery(element).data('nxs-revert-content', '');
+			jQ_nxs(element).removeClass("nxs-revert-after-dragdrop");
+			jQ_nxs(element).data('nxs-revert-content', '');
 		}
 	);
 	
 	// destroy droppable bits
-	jQuery(".nxs-accept-drop .ui-droppable").droppable("destroy");
+	jQ_nxs(".nxs-accept-drop .ui-droppable").droppable("destroy");
 	
 	// remove temporary things (used for rows)
-	jQuery(".nxs-remove-after-dragdrop").remove();
+	jQ_nxs(".nxs-remove-after-dragdrop").remove();
 	
 	// remove rows accepting drops (used for rows)
-	jQuery(".nxs-accept-drop").removeClass("nxs-accept-drop");
+	jQ_nxs(".nxs-accept-drop").removeClass("nxs-accept-drop");
 	
 	nxs_js_reenable_all_window_events();
 }
 
 function nxs_js_gui_add_virtual_droppable_pagerows()
 {
-	var scrollstatebefore = { 'scrolltop' : jQuery(window).scrollTop(), 'docheight' : jQuery('html').height() };
+	var scrollstatebefore = { 'scrolltop' : jQ_nxs(window).scrollTop(), 'docheight' : jQ_nxs('html').height() };
 
 	// OK
-	jQuery(".nxs-layout-editable").each
+	jQ_nxs(".nxs-layout-editable").each
 	(
 		function(pcindex, pagecontainer)
 		{
 			// filter out 
-			if (jQuery(pagecontainer).hasClass("nxs-wpcontent-container")) 
+			if (jQ_nxs(pagecontainer).hasClass("nxs-wpcontent-container")) 
 			{
 				// continu the foreach jquery loop (not break it; continu!)
 				return true;
 			}
 		
 			var text;
-			if (jQuery(pagecontainer).hasClass("nxs-subheader-container")) 
+			if (jQ_nxs(pagecontainer).hasClass("nxs-subheader-container")) 
 			{ 
 				text = 'Drop here (subheader)'; 
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-subfooter-container")) 
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-subfooter-container")) 
 			{ 
 				text = 'Drop here (subfooter)'; 
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-sidebar-container")) 
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-sidebar-container")) 
 			{ 
 				text = 'Drop here (sidebar)'; 
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-header-container")) 
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-header-container")) 
 			{ 
 				text = 'Drop here (header)'; 
 			}
-			else if (jQuery(pagecontainer).hasClass("nxs-footer-container")) 
+			else if (jQ_nxs(pagecontainer).hasClass("nxs-footer-container")) 
 			{ 
 				text = 'Drop here (footer)'; 
 			}
@@ -1677,15 +1677,15 @@ function nxs_js_gui_add_virtual_droppable_pagerows()
 			var localizedtext = nxs_js_gettrans(text);
 		
 			// add dummy rows as dropping points
-			var allrows = jQuery(pagecontainer).find(".nxs-row");
+			var allrows = jQ_nxs(pagecontainer).find(".nxs-row");
 			if (allrows.length == 0)
 			{			
-				var pagerowselement = jQuery(pagecontainer).find(".nxs-postrows")[0];
+				var pagerowselement = jQ_nxs(pagecontainer).find(".nxs-postrows")[0];
 				
-				var newDomElement = jQuery(nxs_js_gui_getnewtempdroppablerow(pagerowselement, localizedtext));
+				var newDomElement = jQ_nxs(nxs_js_gui_getnewtempdroppablerow(pagerowselement, localizedtext));
 				newDomElement.data('destinationdragtype', 'nieuweregel');
 				newDomElement.data('destinationdragmeta', -1);
-				jQuery(pagerowselement).append(newDomElement);
+				jQ_nxs(pagerowselement).append(newDomElement);
 			}
 			else
 			{
@@ -1698,20 +1698,20 @@ function nxs_js_gui_add_virtual_droppable_pagerows()
 							// bij de eerste regel is er iets speciaals aan de hand: 
 							// ipv dat we telkens ACHTER de regel een row toevoegen,
 							// voegen we hierbij tevens een row toe aan de VOORKANT.
-							var newDomElement = jQuery(nxs_js_gui_getnewtempdroppablerow(rowelement, localizedtext));
+							var newDomElement = jQ_nxs(nxs_js_gui_getnewtempdroppablerow(rowelement, localizedtext));
 							newDomElement.data('destinationdragtype', 'nieuweregel');
 							newDomElement.data('destinationdragmeta', -1);
-							jQuery(rowelement).before(newDomElement);
+							jQ_nxs(rowelement).before(newDomElement);
 						}
 						
 						if (true)
 						{
 							// we voegen achter iedere rij een tijdelijke placeholder 
 							// row toe
-							var newDomElement = jQuery(nxs_js_gui_getnewtempdroppablerow(rowelement, localizedtext));
+							var newDomElement = jQ_nxs(nxs_js_gui_getnewtempdroppablerow(rowelement, localizedtext));
 							newDomElement.data('destinationdragtype', 'nieuweregel');
 							newDomElement.data('destinationdragmeta', index);
-							jQuery(rowelement).after(newDomElement);
+							jQ_nxs(rowelement).after(newDomElement);
 						}
 					}
 				);
@@ -1720,35 +1720,35 @@ function nxs_js_gui_add_virtual_droppable_pagerows()
 	);
 	
 	// step 2; make rows 0 height
-	jQuery(".nxs-remove-after-dragdrop").css('height', '0px');
-	jQuery(".nxs-remove-after-dragdrop").css('overflow', 'hidden');
+	jQ_nxs(".nxs-remove-after-dragdrop").css('height', '0px');
+	jQ_nxs(".nxs-remove-after-dragdrop").css('overflow', 'hidden');
 	
 	// step 3; determine which elements are visible, and which ones are not
-	jQuery(".nxs-remove-after-dragdrop").each
+	jQ_nxs(".nxs-remove-after-dragdrop").each
 	(
 		function(indexer, e)
 		{
 			if (nxs_js_iselementabovepieceofviewport(e,4))	// 1/4
 			{
-				jQuery(e).addClass("nxs-aboveviewport");
+				jQ_nxs(e).addClass("nxs-aboveviewport");
 			}
 			else
 			{
-				jQuery(e).addClass("nxs-inorbelowviewport");
+				jQ_nxs(e).addClass("nxs-inorbelowviewport");
 			}
 		}
 	);
 	
 	// step 4; make rows visible that were visible above viewport
-	jQuery(".nxs-aboveviewport").css('height', 'inherit');
-	jQuery(".nxs-aboveviewport").css('overflow', 'inherit');
+	jQ_nxs(".nxs-aboveviewport").css('height', 'inherit');
+	jQ_nxs(".nxs-aboveviewport").css('overflow', 'inherit');
 	
 	setTimeout
 	(
 		function(scrollstatebefore)
 		{
 			// step 5; if we reach this point, the height will have increased
-			var scrollstateafter = { 'scrolltop' : jQuery(window).scrollTop(), 'docheight' : jQuery('html').height() };
+			var scrollstateafter = { 'scrolltop' : jQ_nxs(window).scrollTop(), 'docheight' : jQ_nxs('html').height() };
 			//nxs_js_log("scrollstateafter.docheight:");
 			//nxs_js_log(scrollstateafter.docheight);
 
@@ -1761,11 +1761,11 @@ function nxs_js_gui_add_virtual_droppable_pagerows()
 			var scrollposto = scrollstateafter.scrolltop + scrollposdelta;
 			//nxs_js_log("scrollposto:");
 			//nxs_js_log(scrollposto);
-			jQuery(window).scrollTop(scrollposto);
+			jQ_nxs(window).scrollTop(scrollposto);
 
 			// step 8; make rows visible that were visible in the viewport or below the viewport
-			jQuery(".nxs-inorbelowviewport").css('height', 'inherit');
-			jQuery(".nxs-inorbelowviewport").css('overflow', 'inherit');
+			jQ_nxs(".nxs-inorbelowviewport").css('height', 'inherit');
+			jQ_nxs(".nxs-inorbelowviewport").css('overflow', 'inherit');
 		}, 
 		1,	// 1 msec delay to update the gui thread... :/
 		scrollstatebefore
@@ -1786,8 +1786,8 @@ function nxs_js_sm_handleunexpectederrorwhileactivating(response)
 {
 	nxs_js_alert_sticky("Bad news; an error occured while activating the theme. Please first check our <a target='_blank' href='http://nexusthemes.com/support/how-to-install-a-wordpress-theme/'>installation guide</a>. The good news is that we can try to help you out, if you <a target='_blank' href='http://www.nexusthemes.com'>contact us</a>.");
 
-	jQuery("#waitwrap").hide();
-	jQuery("#errorwrap").show();
+	jQ_nxs("#waitwrap").hide();
+	jQ_nxs("#errorwrap").show();
 	
 	if (response != null)
 	{
@@ -1818,15 +1818,15 @@ function nxs_js_sm_handleunexpectederrorwhileactivating(response)
 function nxs_js_extendlog(log, shouldscroll)
 {
 	// empty
-	jQuery("#nxsprocessingspacer").html("");
+	jQ_nxs("#nxsprocessingspacer").html("");
 	
-	jQuery('#nxsprocessingindicator').append(log);
+	jQ_nxs('#nxsprocessingindicator').append(log);
 	if (shouldscroll)
 	{
 		nxs_js_logscrolldown();
 	}
 	
-	jQuery('img').load
+	jQ_nxs('img').load
 	(
 		function()
 		{
@@ -1841,9 +1841,9 @@ function nxs_js_extendlog(log, shouldscroll)
 function nxs_js_logscrolldown()
 {
 	//nxs_js_log('scrolling down');
-	var height = jQuery('#nxsprocessingwrapper')[0].scrollHeight;
-	jQuery('#nxsprocessingwrapper').stop();
-  jQuery('#nxsprocessingwrapper').animate({scrollTop: height}, 1000);
+	var height = jQ_nxs('#nxsprocessingwrapper')[0].scrollHeight;
+	jQ_nxs('#nxsprocessingwrapper').stop();
+  jQ_nxs('#nxsprocessingwrapper').animate({scrollTop: height}, 1000);
 }
 		
 function nxs_js_sm_processsmstate()
@@ -1860,7 +1860,7 @@ function nxs_js_sm_processsmstate()
 		if (!nxs_sm_isfinished)
 		{
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1916,11 +1916,11 @@ function nxs_js_sm_processsmstate()
 		{
 			// no more!
 			clearInterval(nxs_sm_timerid);
-			jQuery('#nxsprocessingspacer').hide();
-			jQuery('#nxsprocessingspacer2').hide();
-			jQuery('#nxsspinner').hide();			
-			jQuery("#waitwrap").hide();
-			jQuery("#finishedwrap").show();
+			jQ_nxs('#nxsprocessingspacer').hide();
+			jQ_nxs('#nxsprocessingspacer2').hide();
+			jQ_nxs('#nxsspinner').hide();			
+			jQ_nxs("#waitwrap").hide();
+			jQ_nxs("#finishedwrap").show();
 		}
 	}
 	else

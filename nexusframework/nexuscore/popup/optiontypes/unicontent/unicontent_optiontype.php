@@ -101,7 +101,7 @@ function nxs_popup_optiontype_unicontent_renderhtmlinpopup($optionvalues, $args,
 
 	            		var sel = '#<?php echo $id; ?>_sel';
 	            		//nxs_js_alert(sel);
-	            		var text = jQuery(sel).val();
+	            		var text = jQ_nxs(sel).val();
 	            		// store selected unicontent in mem
 	            		nxs_js_popup_setsessiondata("<?php echo $id; ?>", text);
 	            		
@@ -148,7 +148,7 @@ function nxs_popup_optiontype_unicontent_renderhtmlinpopup($optionvalues, $args,
 	      <script type="text/javascript">
 	      	function nxs_js_clearunicontent()
 	      	{
-	      		jQuery("#' . $id . '").val("");
+	      		jQ_nxs("#' . $id . '").val("");
 	      		nxs_js_popup_sessiondata_make_dirty();
 	      		nxs_js_setpopupdatefromcontrols(); 
 	      		nxs_js_popup_refresh_v2(true);

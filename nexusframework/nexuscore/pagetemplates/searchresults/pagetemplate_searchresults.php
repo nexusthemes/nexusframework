@@ -248,7 +248,7 @@ function nxs_pagetemplate_searchresults_home_getsheethtml($args)
 			nxs_js_savepopupdata();			
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -368,7 +368,7 @@ function nxs_pagetemplate_searchresults_edittitle_getsheethtml($args)
 			nxs_js_setpopupdatefromcontrols();
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -591,7 +591,7 @@ function nxs_pagetemplate_searchresults_headerhome_getsheethtml($args)
 		function nxs_js_savegenericpopup_core(invokewhenavailable)
 		{
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -801,7 +801,7 @@ function nxs_pagetemplate_searchresults_sidebarhome_getsheethtml($args)
 		{
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1014,7 +1014,7 @@ function nxs_pagetemplate_searchresults_footerhome_getsheethtml($args)
 		{
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',

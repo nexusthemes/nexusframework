@@ -247,7 +247,7 @@
 			if (nxs_js_doesuserimpactstyle())
 			{
 				// IE fix; in IE the first css element is ignored...
-				return ".nxsiefixignored {} " + jQuery('#vg_manualcss').val();
+				return ".nxsiefixignored {} " + jQ_nxs('#vg_manualcss').val();
 			}
 			else
 			{
@@ -491,7 +491,7 @@ if (count($fontsbeingused) > 0)
 	
 	// reshake when the window is loaded; custom css tab and color pickers could apply
 	// the colorshake is not executed second time, if the user was not logged on
-	jQuery(window).load
+	jQ_nxs(window).load
 	(
 		function()
 		{

@@ -357,7 +357,7 @@
 					//nxs_js_log('more steps, there we go');
 					
 					var ajaxurl = nxs_js_get_adminurladminajax();
-					jQuery.ajax
+					jQ_nxs.ajax
 					(
 						{
 							type: 'POST',
@@ -492,7 +492,7 @@
 					nxs_js_log(currentstep);
 					
 					var ajaxurl = nxs_js_get_adminurladminajax();
-					jQuery.ajax
+					jQ_nxs.ajax
 					(
 						{
 							type: 'POST',
@@ -556,7 +556,7 @@
 					busy = false;
 					
 					var ajaxurl = nxs_js_get_adminurladminajax();
-					jQuery.ajax
+					jQ_nxs.ajax
 					(
 						{
 							type: 'POST',

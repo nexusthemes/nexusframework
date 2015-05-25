@@ -67,11 +67,11 @@
 
 		function nieuwmenuitem(element)
 		{
-			var e = jQuery(".nxs-layout-editable .nxs-postrows")[0];
+			var e = jQ_nxs(".nxs-layout-editable .nxs-postrows")[0];
 			
 			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding item[nxs:newrow,button]", "nxs_td"); ?>");
 			
-			var totalrows = jQuery(document).find(".nxs-row").length;
+			var totalrows = jQ_nxs(document).find(".nxs-row").length;
 			nxs_js_log("totalrows:" + totalrows);
 			
 			var insertafterindex;

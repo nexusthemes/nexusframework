@@ -388,7 +388,7 @@ function nxs_post_edittitle_rendersheet($args)
 			nxs_js_setpopupdatefromcontrols();
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',

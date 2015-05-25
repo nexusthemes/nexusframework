@@ -152,7 +152,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 								<script type='text/javascript'>
 	        				function nxs_js_overrideexistingunistyle()
 	        				{
-	        					var stylename = jQuery('#overrideexistingunistyle').val();
+	        					var stylename = jQ_nxs('#overrideexistingunistyle').val();
 										if (stylename == '')
 										{
 											nxs_js_popup_notifynotok('<?php nxs_l18n_e("Please select a name"); ?>', 'newunistylename');
@@ -184,7 +184,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 								<script type='text/javascript'>
 	        				function nxs_js_storenewunistyle()
 	        				{
-	        					var stylename = jQuery('#newunistylename').val();
+	        					var stylename = jQ_nxs('#newunistylename').val();
 										if (stylename == '')
 										{
 											nxs_js_popup_notifynotok('<?php nxs_l18n_e("Please enter a name"); ?>', 'newunistylename');

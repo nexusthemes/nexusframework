@@ -80,17 +80,17 @@ function nxs_popup_optiontype_categories_renderhtmlinpopup($optionvalues, $args,
 	<script type='text/javascript'>
 		
 		<?php if ($maxselectable == "1") { ?>
-			jQuery(".selectable_category").on
+			jQ_nxs(".selectable_category").on
 			(
 				{
 					click: function(e) 
 					{
-						if (jQuery(this).prop("checked"))
+						if (jQ_nxs(this).prop("checked"))
 						{
 							// turn off all checkboxes
-							jQuery("#<?php echo $id; ?> input").prop("checked", false); 
+							jQ_nxs("#<?php echo $id; ?> input").prop("checked", false); 
 							// turn on the current one
-							jQuery(this).prop("checked", true);
+							jQ_nxs(this).prop("checked", true);
         			// nxs_js_log(e);
         		}
     			}

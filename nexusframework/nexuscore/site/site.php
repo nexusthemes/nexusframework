@@ -181,7 +181,7 @@ function nxs_site_loginhome_rendersheet($args)
 			}
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1127,7 +1127,7 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 			valuestobeupdated["nxs_user_email"] = jQuery('#nxs_user_email').val();
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1510,7 +1510,7 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
 			valuestobeupdated["faviconid"] = nxs_js_popup_getsessiondata("imageid");
 
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -3784,7 +3784,7 @@ function nxs_site_clipboardcopyselector_customhtml()
 			
 			// invoke ajax call
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -3860,7 +3860,7 @@ function nxs_site_clipboardpasteselector_customhtml()
     		{
     			// invoke ajax call
 					var ajaxurl = nxs_js_get_adminurladminajax();
-					jQuery.ajax
+					jQ_nxs.ajax
 					(
 						{
 							type: 'POST',

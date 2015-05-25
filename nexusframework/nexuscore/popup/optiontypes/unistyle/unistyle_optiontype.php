@@ -80,7 +80,7 @@ function nxs_popup_optiontype_unistyle_renderhtmlinpopup($optionvalues, $args, $
 
 				            		var sel = '#<?php echo $id; ?>_sel';
 				            		//nxs_js_alert(sel);
-				            		var text = jQuery(sel).val();
+				            		var text = jQ_nxs(sel).val();
 				            		// store selected unistyle in mem
 				            		nxs_js_popup_setsessiondata("<?php echo $id; ?>", text);
 				            		

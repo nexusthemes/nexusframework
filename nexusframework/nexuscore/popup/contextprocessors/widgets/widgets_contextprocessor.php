@@ -220,7 +220,7 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
 				// behaviour else:
 			
 				// mark row of this widget as dirty
-				jQuery(".nxs-post-<?php echo $postid;?> .nxs-widget-<?php echo $placeholderid;?>").closest(".nxs-row-container").addClass("nxs-dirty");
+				jQ_nxs(".nxs-post-<?php echo $postid;?> .nxs-widget-<?php echo $placeholderid;?>").closest(".nxs-row-container").addClass("nxs-dirty");
 				
 	      <?php
 	      // if this widget has a unistyle, or unicontent, it means potential other
@@ -229,9 +229,9 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
 	      {
 	      	?>
 	      	// mark all rows of all widgets of same type with same unistyle as dirty
-	      	jQuery(".<?php echo $widgettype_cssclass;?>.<?php echo $unistyle_cssclass;?> .nxs-widget").closest(".nxs-row-container").addClass("nxs-dirty");
+	      	jQ_nxs(".<?php echo $widgettype_cssclass;?>.<?php echo $unistyle_cssclass;?> .nxs-widget").closest(".nxs-row-container").addClass("nxs-dirty");
 	      	// mark all rows of all widgets of same type with same unicontent as dirty
-	      	jQuery(".<?php echo $widgettype_cssclass;?>.<?php echo $unicontent_cssclass;?> .nxs-widget").closest(".nxs-row-container").addClass("nxs-dirty");
+	      	jQ_nxs(".<?php echo $widgettype_cssclass;?>.<?php echo $unicontent_cssclass;?> .nxs-widget").closest(".nxs-row-container").addClass("nxs-dirty");
 	      	<?php
 	      }
 	      ?>
@@ -252,7 +252,7 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
     nxs_js_setpopupdatefromcontrols();
     
     var ajaxurl = '<?php echo admin_url( 'admin-ajax.php'); ?>';
-    jQuery.ajax 
+    jQ_nxs.ajax 
     (
       {
         type: 'POST',

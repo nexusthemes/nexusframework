@@ -216,7 +216,7 @@ tinymce.PluginManager.add
 		
 		
 		//trigger
-		jQuery(window).bind('nxs_tinymce_setup', nxs_js_handleinittriggers);
+		jQ_nxs(window).bind('nxs_tinymce_setup', nxs_js_handleinittriggers);
 		
 		editor.addButton
 		(

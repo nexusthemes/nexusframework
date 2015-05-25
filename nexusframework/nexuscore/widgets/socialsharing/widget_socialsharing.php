@@ -370,7 +370,7 @@ function nxs_widgets_socialsharing_home_rendersheet($args)
 			nxs_js_log(nxs_js_popup_getsessiondata('items'));
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',

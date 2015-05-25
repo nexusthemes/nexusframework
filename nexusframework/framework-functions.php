@@ -1000,10 +1000,10 @@ function nxs_backend_meta_box()
 		
 		function nxs_js_movetotop()
 		{
-			jQuery('#nexus_meta').insertBefore('#normal-sortables');
+			jQ_nxs('#nexus_meta').insertBefore('#normal-sortables');
 		}
 		
-		jQuery(document).ready(function() 
+		jQ_nxs(document).ready(function() 
 		{
 			// move Nexus content editing item up the DOM
 			
@@ -1707,7 +1707,7 @@ function nxs_clearunwantedscripts()
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
 		
-		function nxs_setjquery()
+		function nxs_setjQ_nxs()
 		{
 			?>
 			<script type="text/javascript">
@@ -1718,16 +1718,19 @@ function nxs_clearunwantedscripts()
 				}
 				else
 				{
-					//alert("vekeerde versie!");
+					alert("unexpected version " + jqv);
 				}
-				//var jQnxs = $.noConflict(true);
+
+				var jQ_nxs = $.noConflict(true);
+				var jQuery = jQ_nxs;
+				var $ = jQ_nxs;
+
+				//
 				//var $nxs = $.noConflict(true);
 			</script>
 			<?php
 		}		
-		//add_action('wp_head','nxs_setjquery');
-
-
+		add_action('wp_head','nxs_setjQ_nxs');
   }
 }
 

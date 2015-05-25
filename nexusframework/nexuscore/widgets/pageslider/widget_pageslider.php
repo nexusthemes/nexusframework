@@ -555,7 +555,7 @@ function nxs_widgets_pageslider_beforeend_head()
 						if(shouldrenderslider)
 						{
 										
-							jQuery(function($){
+							jQ_nxs(function($){
 							
 							$.supersized({
 							

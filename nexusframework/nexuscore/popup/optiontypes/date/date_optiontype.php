@@ -44,7 +44,7 @@ function nxs_popup_optiontype_date_renderhtmlinpopup($optionvalues, $args, $runt
       </div>
       <script type="text/javascript">
       	nxs_js_log("initializing datepicker");
-      	jQuery("#' . $id . '").datepicker({ dateFormat: "' . $dateformat . '", 
+      	jQ_nxs("#' . $id . '").datepicker({ dateFormat: "' . $dateformat . '", 
       	beforeShow: function(input, inst) 
 				{
       		setTimeout(nxs_js_beautifyalldatepickers, 1);
@@ -59,8 +59,8 @@ function nxs_popup_optiontype_date_renderhtmlinpopup($optionvalues, $args, $runt
       	
       	function nxs_js_beautifyalldatepickers()
       	{
-	        jQuery(".ui-datepicker-prev").addClass("nxsbutton1");
-      		jQuery(".ui-datepicker-next").addClass("nxsbutton1");
+	        jQ_nxs(".ui-datepicker-prev").addClass("nxsbutton1");
+      		jQ_nxs(".ui-datepicker-next").addClass("nxsbutton1");
       	}
       </script>
       ';

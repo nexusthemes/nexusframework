@@ -98,7 +98,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 			
 			// first check (server side) whether the popup should show
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
