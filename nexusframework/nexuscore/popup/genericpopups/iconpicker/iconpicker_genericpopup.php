@@ -300,6 +300,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"fence",
 										"carpet",
 										"radiation",
+										"container",
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -648,6 +649,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"rocket2",
 										"towtruck",
 										"cartruck",
+										"boat",
 										
 										/* Crappicons */
 										"landrover",
