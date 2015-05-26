@@ -498,8 +498,9 @@ function nxs_wp_footer_debug()
 }
 
 add_action('init', 'nxs_init');
+add_action('admin_init', 'nxs_init');
 function nxs_init() 
-{	
+{
 	if (nxs_has_adminpermissions())
   {
   	if (isset($_REQUEST["nxs"]))
@@ -677,22 +678,48 @@ function nxs_init()
 		  }
 		  else if ($_REQUEST["nxs"] == "setactivesitesettings")
 		  {
-		  	$postid = $_REQUEST["postid"];
-		  	if ($postid == "")
+		  	//var_dump($_POST);
+		  	$sitesettingsjson = $_POST["sitesettingsjson"];
+				$sitesettingsjson = stripslashes($sitesettingsjson);
+		  	
+		  	if ($sitesettingsjson == "")
 		  	{
-		  		echo "not set";
+		  		?>
+		  		<form method="POST">
+		  			<input type="text" name="sitesettingsjson" value="yourjson here" />
+		  			<input type="submit" value="Set site settings" />
+		  		</form>
+		  		<?php
+		  	}
+		  	else
+		  	{
+			  	$newsettings = json_decode($sitesettingsjson, true);
+			  	if (count($newsettings) == 0)
+			  	{
+			  		echo "no, or invalid json found, breaking..<br />";
+			  		echo "found:" . $sitesettingsjson . "<br />";
+			  		var_dump($newsettings);
+			  		die();
+			  	}
+
+		  		echo "about to override site settings...";
+		  		
+			  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
+			  	$cnt = count($postids);
+			  	if ($cnt == 0 || $cnt > 1)
+			  	{
+			  		nxs_webmethod_return_nack("error; found $cnt postids for activesitesettings ?");
+			  	}
+			  	$postid = $postids[0];
+			  	
+			  	echo "active site settings is using postid: $postid <br />";
+			  	
+			  	$metadatakey = 'nxs_core';
+			  	$updateresult = update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($newsettings));
+			  	
+		  		echo "done :)";
 		  		die();
 		  	}
-		  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
-		  	echo "old values:";
-		  	var_dump($postids);
-		  	foreach ($postids as $oldpostid)
-		  	{
-		  		// reset the old one
-		  		nxs_reset_globalid($oldpostid);
-		  	}
-		  	nxs_reset_globalidtovalue($postid, "activesitesettings");
-		  	echo "configured";
 		  	die();
 		  }
 		 	else if ($_REQUEST["nxs"] == "locale")
