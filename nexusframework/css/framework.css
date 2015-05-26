@@ -2814,6 +2814,8 @@ h3#order_review_heading,
 .nxs-icon-carpet:before				{ content: "\e435";	}
 .nxs-icon-bone:before				{ content: "\e436";	}
 .nxs-icon-radiation:before			{ content: "\e437";	}
+.nxs-icon-boat:before				{ content: "\e438";	}
+.nxs-icon-container:before			{ content: "\e439";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
