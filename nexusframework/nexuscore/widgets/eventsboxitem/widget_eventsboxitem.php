@@ -59,8 +59,7 @@ function nxs_widgets_eventsboxitem_render_webpart_render_htmlvisualization($args
 	} else if ($rendermode == "anonymous") {
 		$shouldrenderhover = false;
 	} else {
-		echo "unsupported rendermode;" . $rendermode;
-		die();
+		nxs_webmethod_return_nack("unsupported rendermode;" . $rendermode);
 	}
 
 	global $nxs_global_placeholder_render_statebag;

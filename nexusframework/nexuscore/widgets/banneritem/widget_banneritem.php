@@ -164,8 +164,7 @@ function nxs_widgets_banneritem_render_webpart_render_htmlvisualization($args)
 	}
 	else
 	{
-		echo "unsupported rendermode;" . $rendermode;
-		die();
+		nxs_webmethod_return_nack("unsupported rendermode;" . $rendermode);
 	}
 
 	global $nxs_global_placeholder_render_statebag;

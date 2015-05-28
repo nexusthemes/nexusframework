@@ -702,7 +702,7 @@ function nxs_widgets_googlebusinessphoto_initplaceholderdata($args)
 	else
 	{
 		var_dump($response);
-		die();
+		nxs_webmethod_return_nack("unsupported result");
 	}
 			
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);

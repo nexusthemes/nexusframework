@@ -705,7 +705,6 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					
 					} else  {			
 						echo "unexpected placeholdertype;" . $placeholdertype;
-						//die();
 					}
 					
 					// update previous depth to current depth
@@ -914,7 +913,6 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                           
 													} else {			
                               echo "unexpected placeholdertype;" . $placeholdertype;
-                              //die();
                           }
                             
                           // update previous depth to current depth
@@ -1014,8 +1012,7 @@ function nxs_page_render_popup_getrenderedmenuitems($postid)
 		}
 		else
 		{			
-			echo "unexpected placeholdertype;" . $placeholdertype;
-			die();
+			nxs_webmethod_return_nack("unexpected placeholdertype;" . $placeholdertype);
 		}
 	}
 	if ($cache == "")
@@ -1048,7 +1045,7 @@ function nxs_widgets_menucontainer_initplaceholderdata($args)
 	else
 	{
 		var_dump($response);
-		die();
+		nxs_webmethod_return_nack("unexpected response");
 	}
 
 	$args['orientation'] = "horizontal";

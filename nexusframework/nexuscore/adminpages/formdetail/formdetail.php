@@ -15,8 +15,7 @@
 	{
 		if (!isset($_GET['nxs_nonce']) || !wp_verify_nonce($_GET['nxs_nonce'], 'deleteform')) 
 		{
-			echo "sorry";
-			die();
+			nxs_webmethod_return_nack("not allowed");
 		}
 		
 		// file_put_contents($storageabspath, ""); // empty existing CSV
@@ -25,8 +24,7 @@
 			$r = unlink($storageabspath);
 			if (!$r)
 			{
-				echo "failed. no write access?";
-				die();
+				nxs_webmethod_return_nack("failed. no write access?");
 			}
 		}
 		else

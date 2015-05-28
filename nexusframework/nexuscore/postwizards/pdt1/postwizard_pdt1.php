@@ -264,9 +264,6 @@ function nxs_postwizard_pdt1_setuppost($args)
 	$args["pagetemplate"] = "webpage";
 	nxs_updatepagetemplate($args);
 
-	echo "komt ie hier?";
-	die();
-
 	// convert to page
 	nxs_converttopage($postid);
 

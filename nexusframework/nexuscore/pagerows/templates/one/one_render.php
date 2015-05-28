@@ -101,8 +101,7 @@ function nxs_pagerowtemplate_render_one($args)
 			}
 			else if ($onderdrukcontent == '_new')
 			{
-				echo "no longer supported";
-				die();
+    		nxs_webmethod_return_nack("no longer supported");
 			}
 			else if ($onderdrukcontent == '')
 			{

@@ -114,8 +114,7 @@ function nxs_webmethod_addnewrowwithtemplate()
 			$template = nxs_getplaceholdertemplate($postid, $placeholderid);
 			if ($template == "")
 			{
-				echo "template nog steeds niet gevuld ?!";
-				die();
+				nxs_webmethod_return_nack("template not set");
 			}
 		}
 		else

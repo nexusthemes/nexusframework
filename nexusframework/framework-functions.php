@@ -2066,7 +2066,6 @@ function nxs_template_getheader($name)
 		{
 			// echo "template included :)";
 		}
-		//die();
 	}
 }
 
@@ -2089,7 +2088,6 @@ function nxs_template_getfooter($name)
 		{
 			// echo "template included :)";
 		}
-		//die();
 	}
 }
 
@@ -2110,87 +2108,6 @@ function nxs_init_handledebug()
 			{
 				$scope = $_REQUEST["scope"];
 			}
-			nxs_localization_distributetolang($destinationlang, $scope);
-		}
-	}
-	
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "thumbs")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			$destinationlang = "nl";
-			if (!isset($_REQUEST["scope"]))
-			{
-				$scope = "*";
-			}
-			else
-			{
-				$scope = $_REQUEST["scope"];
-			}
-			nxs_localization_distributetolang_stage2($destinationlang, $scope);
-		}
-	}
-	
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "list")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			echo "blogs:";
-			global $wpdb;
-			$blogs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM wp_blogs ORDER BY blog_id" ) );
-			var_dump($blogs);
-			die();
-		}
-	}
-
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "cleanimg")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			nxs_cleanimg();
-			echo "<br />";
-			echo "back :)";
-			die();
-		}
-	}
-	
-	
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "listposttypes")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			global $wpdb;
-			
-			// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
-			// as these can use the pagetemplate concept too. This saves development
-			// time for plugins, and increases consistency of data for end-users
-			$q = "
-						select ID postid
-						from $wpdb->posts
-					";
-			$origpostids = $wpdb->get_results($q, ARRAY_A);
-			$distinct = array();
-			// filter out posts that are of specific post-types
-			foreach ($origpostids as $i => $origrow)
-			{
-				$origpostid = $origrow["postid"];
-				$posttype = get_post_type($origpostid);
-				if (!in_array($posttype, $distinct))
-				{
-					$distinct[] = $posttype;
-					echo "$posttype; <br />";
-					if ($posttype == "shop_order")
-					{
-						$pm = get_post_meta($origpostid);
-						var_dump($pm);
-					}
-				}
-
-			}
-			
-			echo "<br />";
-			echo "back :)";
-			die();
 		}
 	}
 	

@@ -309,7 +309,7 @@ function nxs_widgets_definitionlistbox_initplaceholderdata($args)
 	else
 	{
 		var_dump($response);
-		die();
+		nxs_webmethod_return_nack("unexpected result");
 	}
 	
 	global $current_user;

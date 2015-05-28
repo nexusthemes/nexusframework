@@ -38,8 +38,7 @@ function nxs_post_home_rendersheet($args)
 	
 	if ($postid== "")
 	{
-		echo "postid is niet geset? (gpm)";
-		die();
+		nxs_webmethod_return_nack("postid is niet geset? (gpm)");
 	}
 	
 	$pagemeta = nxs_get_postmeta($postid);

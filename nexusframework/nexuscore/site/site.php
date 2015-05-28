@@ -1861,66 +1861,6 @@ function nxs_site_mediamanagerupload_rendersheet($args)
 function nxs_site_help_rendersheet($args)
 {
 	nxs_site_render_popup_supportoptions($args);
-	/*
-	//
-	extract($args);
-	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
-	
-	if ($helpid == "")
-	{
-		// zet de helpid via nxs_js_popup_setsessiondata("helpid", "xyz");
-		echo "helpid is niet gevuld?!";
-		die();
-	}
-		
-	$result = array();
-	
-	$helpdata = nxs_gettransientnexusservervalue("help", $subkey=$helpid);
-		
-	ob_start();
-
-	?>
-	
-	<div class="nxs-admin-wrap">
-		<div class="block">	
-      
-     	<?php nxs_render_popup_header(nxs_l18n__("Help[nxs:popup]", "nxs_td")); ?>
-
-			<div class="nxs-popup-content-canvas-cropper">
-				<div class="nxs-popup-content-canvas">
-      
-					<?php echo $helpdata["html"]; ?>
-				
-				</div>
-			</div>
-      
-      <div class="content2">
-          <div class="box">
-            <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savepopupdata(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>
-         	</div>
-          <div class="nxs-clear">
-          </div>
-      </div> <!--END content-->
-		</div>
-	</div>
-	
-	<script type='text/javascript'>
-		function nxs_js_savepopupdata()
-		{
-			nxs_js_closepopup_unconditionally();
-		}
-	</script>
-	<?php
-	
-	$html = ob_get_contents();
-	ob_end_clean();
-
-	
-	$result["html"] = $html;
-	nxs_webmethod_return_ok($result);
-	*/
 }
 
 function nxs_site_newposthome_rendersheet($args)

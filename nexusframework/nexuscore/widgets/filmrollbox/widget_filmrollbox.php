@@ -584,7 +584,7 @@ function nxs_widgets_filmrollbox_initplaceholderdata($args)
 	else
 	{
 		var_dump($response);
-		die();
+		nxs_webmethod_return_nack("unsupported result");
 	}
 	
 	// current values as defined by unistyle prefail over the above "default" props

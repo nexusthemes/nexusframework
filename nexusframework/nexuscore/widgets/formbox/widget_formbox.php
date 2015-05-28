@@ -718,7 +718,7 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	else
 	{
 		var_dump($response);
-		die();
+		nxs_webmethod_return_nack("unsupported result");
 	}
 	
 	global $current_user;

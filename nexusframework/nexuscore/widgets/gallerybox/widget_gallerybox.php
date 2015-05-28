@@ -355,7 +355,7 @@ function nxs_widgets_gallerybox_initplaceholderdata($args)
 	else
 	{
 		var_dump($response);
-		die();
+		nxs_webmethod_return_nack("unsupported result");
 	}
 	
 	$args["image_border_width"] = "1-0";

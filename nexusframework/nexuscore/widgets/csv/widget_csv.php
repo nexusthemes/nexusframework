@@ -557,9 +557,6 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 				$html .= "</tr>";
 			}
 			
-			//var_dump($html);
-			//die();
-			
 			$html .= "</tbody>";
 	    $html .= "</table>";
 	    

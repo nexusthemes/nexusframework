@@ -5,14 +5,7 @@ function nxs_webmethod_importcontent()
 	
 	if ($_FILES["file"]["error"] > 0)
 	{
-	  echo "Error: " . $_FILES["file"]["error"] . "<br />";
-	  die();
-	}
-	
-	if ($_FILES["file"]["size"] > 3000000)
-	{
-		echo "Het bestand dat Je hebt aangeleverd is te groot; je kan maximaal een bestand van 3.000.000 bytes aanleveren.";
-		die();
+		nxs_webmethod_return_nack("Error: " . $_FILES["file"]["error"] . "<br />");
 	}
 	
 	$uploadeddata = file_get_contents($_FILES["file"]["tmp_name"]);
@@ -181,8 +174,6 @@ function nxs_webmethod_importcontent()
 		$output["message"] = $message;
 		
 		nxs_webmethod_return_ok($output);
-	
-		die();
 	}
 	else
 	{
