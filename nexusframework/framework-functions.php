@@ -322,17 +322,23 @@ function custom_posts_per_page( $query )
 }
 add_action( 'pre_get_posts', 'custom_posts_per_page' );
 
+// hide php warning outputs on the screen
+$shouldlimiterrorreporting = true;
 if (nxs_isdebug())
 {
-}
-else
-{
-	if (!nxs_showphpwarnings())
+	if ($_REQUEST["nxs"] == "nobuffer")
 	{
-		error_reporting(E_ERROR | E_PARSE);	
-		nxs_saveobclean();
+		$shouldlimiterrorreporting = false;
 	}
 }
+
+if ($shouldlimiterrorreporting)
+{
+	error_reporting(E_ERROR | E_PARSE);
+}
+
+// always
+nxs_saveobclean();
 
 function nxs_getcharset()
 {
