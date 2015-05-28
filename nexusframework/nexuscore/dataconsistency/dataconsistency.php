@@ -36,10 +36,7 @@ function nxs_ensuredataconsistency_chunked($chunkedsteps)
 		$scope = $chunkedsteps["scope"];
 	}
 	
-	//var_dump($_REQUEST);
-	//die();
-
-	ob_start();
+	nxs_ob_start();
 
 	// handle scopes
 	
@@ -386,8 +383,8 @@ function nxs_ensuredataconsistency_chunked($chunkedsteps)
 		$nextchunkedsteps = "finished";
 	}
 
-	$log = ob_get_contents();
-	ob_end_clean();
+	$log = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// import phase; the global cache should be wiped when we reach this point,
 	// as the sitemeta might have been update	(for example the unistyle settings)

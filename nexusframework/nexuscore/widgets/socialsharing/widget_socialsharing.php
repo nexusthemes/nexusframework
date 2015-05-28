@@ -99,7 +99,7 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-sharing";
 	
@@ -215,8 +215,8 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 		//echo "pagerowtemplate:" . $nxs_global_row_render_statebag["pagerowtemplate"];
 	}
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	
@@ -290,7 +290,7 @@ function nxs_widgets_socialsharing_home_rendersheet($args)
 	$result = array();
 	$result["result"] = "OK";
 
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -422,8 +422,8 @@ function nxs_widgets_socialsharing_home_rendersheet($args)
 
 <?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	

@@ -494,7 +494,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	}
 
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	
 	// Setting the widget name variable to the folder name
 	$widget_name = basename(dirname(__FILE__));
@@ -887,8 +887,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	/* ------------------------------------------------------------------------------------------------- */
 	 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page

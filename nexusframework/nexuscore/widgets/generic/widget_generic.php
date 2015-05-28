@@ -411,7 +411,7 @@ function nxs_widgets_generic_unistyle_getoptions($args)
 
 function nxs_widgets_generic_metaview($optionvalues, $args, $runtimeblendeddata) 
 {
-	ob_start();
+	nxs_ob_start();
 	
 	extract($optionvalues);
 	
@@ -469,8 +469,8 @@ function nxs_widgets_generic_metaview($optionvalues, $args, $runtimeblendeddata)
 	-->
 	<?php
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 

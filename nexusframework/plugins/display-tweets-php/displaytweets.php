@@ -363,9 +363,9 @@ class DisplayTweets {
     public function do_shortcode( $atts ) {
 
         /** Return the tweets to be printed by the shortcode */
-        ob_start();
+        nxs_ob_start();
         $this->show();
-        return ob_get_clean();
+        return nxs_ob_get_clean();
 
     }
 

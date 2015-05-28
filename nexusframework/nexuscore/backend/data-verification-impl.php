@@ -24,8 +24,6 @@ function nxs_sm_processstate_dataverification_impl($currentstate)
 	$result["log"] = "<!--task: {$task}, step: {$stepintask}-->";
 
 
-	//ob_start();
-
 	// handle steps
 	
 	if ($task == 1)

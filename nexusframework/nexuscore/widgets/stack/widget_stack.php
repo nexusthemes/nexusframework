@@ -101,7 +101,7 @@ function nxs_widgets_stack_render_webpart_render_htmlvisualization($args)
 	// render hover menu
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	<ul class='stack-items'>
@@ -173,8 +173,8 @@ function nxs_widgets_stack_render_webpart_render_htmlvisualization($args)
 	</ul>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// overrule generic widget hover menu, as set by inner-widgets :)
 	$hovermenuargs = array();

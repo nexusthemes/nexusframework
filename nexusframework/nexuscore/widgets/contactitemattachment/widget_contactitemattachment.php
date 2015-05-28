@@ -87,7 +87,7 @@ function nxs_widgets_contactitemattachment_renderincontactbox($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -95,8 +95,8 @@ function nxs_widgets_contactitemattachment_renderincontactbox($args)
   <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" />
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
@@ -146,7 +146,7 @@ function nxs_widgets_contactitemattachment_render_webpart_render_htmlvisualizati
 	/* ADMIN EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-contactitemattachment-item";
 	
@@ -167,8 +167,8 @@ function nxs_widgets_contactitemattachment_render_webpart_render_htmlvisualizati
 	/* ------------------------------------------------------------------------------------------------- */
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	

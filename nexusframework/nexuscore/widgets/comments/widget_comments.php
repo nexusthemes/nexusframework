@@ -381,14 +381,14 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	nxs_widgets_comments_render_webpart_render_htmlvisualization_native();
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	if ($html == "")
 	{
-		ob_start();
+		nxs_ob_start();
 		
 		/* EXPRESSIONS
 		---------------------------------------------------------------------------------------------------- */
@@ -700,8 +700,8 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 		<?php		
 		/* ------------------------------------------------------------------------------------------------- */
 		
-		$html = ob_get_contents();
-		ob_end_clean();
+		$html = nxs_ob_get_contents();
+		nxs_ob_end_clean();
 	}
 	else
 	{

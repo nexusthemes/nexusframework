@@ -32,7 +32,7 @@ function nxs_widgets_definitionlistitemtext_renderindefinitionlistbox($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	if ($container_metadata_items_title_fontzen != "")
 	{
@@ -53,8 +53,8 @@ function nxs_widgets_definitionlistitemtext_renderindefinitionlistbox($args)
 		<div<?php echo $description_fontzen_cssclass; ?>><?php echo $metadata_text; ?></div>
 	</span>
 	<?php
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
@@ -99,7 +99,7 @@ function nxs_widgets_definitionlistitemtext_render_webpart_render_htmlvisualizat
 	/* ADMIN EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-definitionlistitemtext-item";
 	
@@ -120,8 +120,8 @@ function nxs_widgets_definitionlistitemtext_render_webpart_render_htmlvisualizat
 	/* ------------------------------------------------------------------------------------------------- */
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	

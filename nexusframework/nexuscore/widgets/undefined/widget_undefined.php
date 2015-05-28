@@ -39,7 +39,7 @@ function nxs_widgets_undefined_render_webpart_render_htmlvisualization($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-undefined";
 
@@ -73,8 +73,8 @@ function nxs_widgets_undefined_render_webpart_render_htmlvisualization($args)
 	
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
@@ -117,7 +117,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	ob_start();
+	nxs_ob_start();
 	
 	//
 	$pagedata = get_page($postid);
@@ -323,8 +323,8 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	

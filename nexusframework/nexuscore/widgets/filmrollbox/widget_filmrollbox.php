@@ -208,7 +208,7 @@ function nxs_widgets_filmrollbox_render_webpart_render_htmlvisualization($args)
 	/* HOVER MENU HTML
 	---------------------------------------------------------------------------------------------------- */
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	<ul>
@@ -260,7 +260,7 @@ function nxs_widgets_filmrollbox_render_webpart_render_htmlvisualization($args)
 		<?php 
 		if (nxs_shoulddebugmeta())
 		{
-			ob_start();
+			nxs_ob_start();
 			?>
 			<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_edit_widget_v2(this, 'debug'); return false; return false;">
        	<li title='<?php nxs_l18n_e("Debug[tooltip]", "nxs_td"); ?>'>
@@ -268,8 +268,8 @@ function nxs_widgets_filmrollbox_render_webpart_render_htmlvisualization($args)
        	</li>
     	</a>
     	<?php
-    	$debughtml = ob_get_contents();
-			ob_end_clean();
+    	$debughtml = nxs_ob_get_contents();
+			nxs_ob_end_clean();
 		}
 		else
 		{
@@ -280,8 +280,8 @@ function nxs_widgets_filmrollbox_render_webpart_render_htmlvisualization($args)
 	</ul>
 	<?php 
 	
-	$menu = ob_get_contents();
-	ob_end_clean();
+	$menu = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["menutopright"] = $menu;
@@ -367,7 +367,7 @@ function nxs_widgets_filmrollbox_render_webpart_render_htmlvisualization($args)
 		$nxs_global_row_render_statebag["upgradetowidescreen"] = "yes";	
 	}
 	
-	ob_start();
+	nxs_ob_start();
 	
 	// Default name class
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-slider ";
@@ -534,8 +534,8 @@ function nxs_widgets_filmrollbox_render_webpart_render_htmlvisualization($args)
 		nxs_renderplaceholderwarning(nxs_l18n__("Slider can only be used in a row with a single cell[nxs:warning]", "nxs_td"));
 	}
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-'.$placeholderid;

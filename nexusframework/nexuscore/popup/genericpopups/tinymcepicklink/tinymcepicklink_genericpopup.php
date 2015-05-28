@@ -115,7 +115,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 
   	$isfound = false;
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
   <div class="nxs-admin-wrap">
@@ -417,8 +417,8 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	

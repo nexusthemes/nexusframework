@@ -117,7 +117,7 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 	$metadata_isrequired = "true";
 	?>
 	
@@ -155,8 +155,8 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
   
 	// var_dump($args);
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	
@@ -207,7 +207,7 @@ function nxs_widgets_formitemcaptcha_render_webpart_render_htmlvisualization($ar
 	/* ADMIN EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-formitemcaptcha-item";
 	
@@ -230,8 +230,8 @@ function nxs_widgets_formitemcaptcha_render_webpart_render_htmlvisualization($ar
 	/* ------------------------------------------------------------------------------------------------- */
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	
@@ -242,7 +242,7 @@ function nxs_widgets_formitemcaptcha_render_webpart_render_htmlvisualization($ar
 
 function nxs_widgets_formitemcaptcha_help($optionvalues, $args, $runtimeblendeddata) 
 {
-	ob_start();
+	nxs_ob_start();
 	
 	//$headingid = "heading";
 	
@@ -256,8 +256,8 @@ function nxs_widgets_formitemcaptcha_help($optionvalues, $args, $runtimeblendedd
 	</div>
   <div class="nxs-clear"></div>
   <?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 

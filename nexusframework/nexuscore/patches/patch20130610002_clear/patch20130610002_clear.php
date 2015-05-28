@@ -11,7 +11,7 @@ function nxs_apply_patch20130610002_clear()
 		die();
 	}
 	
-	ob_start();
+	nxs_ob_start();
 	
 	global $wpdb;
 
@@ -46,8 +46,8 @@ function nxs_apply_patch20130610002_clear()
 	
   echo "<br /><br />";
   
-  $output = ob_get_contents();
-	ob_end_clean();
+  $output = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	echo "output:" . $output;
 	

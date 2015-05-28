@@ -13,12 +13,12 @@ function nxs_commentsprovider_disqus_geticonid()
 function nxs_commentsprovider_disqus_getflyoutmenuhtml()
 {
 		// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	?>
 		<!-- disqus has no menu item -->
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -164,13 +164,13 @@ function nxs_commentsprovider_disqus_getpostcommentcounthtml($args)
 	$url = nxs_geturl_for_postid($postid);
 
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	?>
 	<span class="nxs-icon-comments-2"></span>
 	<a href="<?php echo $url; ?>#disqus_thread" class="nxs-comments-count" data-disqus-identifier="<?php echo $postid; ?>"></a>
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	return $result;	
 }

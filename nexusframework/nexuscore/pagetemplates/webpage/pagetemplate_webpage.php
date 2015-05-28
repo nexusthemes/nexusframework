@@ -78,7 +78,7 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 		$datepublished = get_the_date('d-m-Y', $postid);
 	}
 		
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -488,8 +488,8 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -509,7 +509,7 @@ function nxs_pagetemplate_webpage_edittitle_getsheethtml($args)
 		
 	$result = array();
 		
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -611,8 +611,8 @@ function nxs_pagetemplate_webpage_edittitle_getsheethtml($args)
 		
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -668,7 +668,7 @@ function nxs_pagetemplate_webpage_headerhome_getsheethtml($args)
   
   nxs_getfilteredposts($showpages, $filters);  	
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -822,8 +822,8 @@ function nxs_pagetemplate_webpage_headerhome_getsheethtml($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -892,7 +892,7 @@ function nxs_pagetemplate_webpage_pagedecoratorhome_getsheethtml($args)
   nxs_getfilteredposts($showpages, $filters);  	
   */
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -1046,8 +1046,8 @@ function nxs_pagetemplate_webpage_pagedecoratorhome_getsheethtml($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1098,7 +1098,7 @@ function nxs_pagetemplate_webpage_sidebarhome_getsheethtml($args)
   $showpages = get_posts($publishedargs);
   // apply runtime filters (outside SQL)
  
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -1257,8 +1257,8 @@ function nxs_pagetemplate_webpage_sidebarhome_getsheethtml($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1314,7 +1314,7 @@ function nxs_pagetemplate_webpage_footerhome_getsheethtml($args)
   
   nxs_getfilteredposts($showpages, $filters);  	
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -1470,8 +1470,8 @@ function nxs_pagetemplate_webpage_footerhome_getsheethtml($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1488,7 +1488,7 @@ function nxs_pagetemplate_webpage_dialogappendrow_getsheethtml($args)
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
 	
-	ob_start();
+	nxs_ob_start();
 
 	$pagedata = get_page($postid);
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
@@ -1607,8 +1607,8 @@ function nxs_pagetemplate_webpage_dialogappendrow_getsheethtml($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1627,7 +1627,7 @@ function nxs_pagetemplate_webpage_appendstruct_getsheethtml($args)
 	
 	$fileuploadurl = admin_url( 'admin-ajax.php');
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -1728,8 +1728,8 @@ function nxs_pagetemplate_webpage_appendstruct_getsheethtml($args)
     
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1749,7 +1749,7 @@ function nxs_pagetemplate_webpage_exportstruct_getsheethtml($args)
 	
 	$filedownloadurl = admin_url('admin-ajax.php?action=nxs_ajax_webmethods&webmethod=exportcontent&export=poststructureandwidgets&postid=' . $postid);
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -1779,8 +1779,8 @@ function nxs_pagetemplate_webpage_exportstruct_getsheethtml($args)
     
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);

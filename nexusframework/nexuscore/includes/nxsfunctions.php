@@ -556,13 +556,13 @@ function nxs_setupcache()
 		}
 		else
 		{
-			ob_start("nxs_storecacheoutput");
+			nxs_ob_start("nxs_storecacheoutput");
 		}
 	}
 	else
 	{
 		// proceed as usual... don't cache anything
-		ob_start("nxs_ensurenocacheoutput");
+		nxs_ob_start("nxs_ensurenocacheoutput");
 	}
 }
 
@@ -672,10 +672,10 @@ function nxs_getlocalizedmonth($monthleadingzeros)
 
 function nxs_getrowswarning($message)
 {
-	ob_start();
+	nxs_ob_start();
 	nxs_renderrowswarning($message);
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -713,10 +713,10 @@ function nxs_renderrowswarning($message)
 
 function nxs_getplaceholderwarning($message)
 {
-	ob_start();
+	nxs_ob_start();
 	nxs_renderplaceholderwarning($message);
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -1656,9 +1656,9 @@ function nxs_generaterandomstring($length = 10)
 
 function nxs_get_var_dump($variable)
 {
-	ob_start();
+	nxs_ob_start();
 	var_dump($variable);
-	$result = ob_get_clean();
+	$result = nxs_ob_get_clean();
 	return $result;
 }
 
@@ -3888,11 +3888,11 @@ function nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rende
 	$row = $parsedpoststructure[$rowindex];
 	$outercontent = $row["outercontent"];
 
-	ob_start();
+	nxs_ob_start();
 	
 	echo do_shortcode($outercontent);
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 		
 	// revert nxs_global_current_postid_being_rendered to its original value
 	$nxs_global_current_postid_being_rendered = $original_nxs_global_current_postid_being_rendered;
@@ -5931,7 +5931,7 @@ function nxs_outputbuffer_popall()
 	$numlevels = ob_get_level();
 	for ($i = 0; $i < $numlevels; $i++)
 	{
-		$existingoutput[] = ob_get_clean();
+		$existingoutput[] = nxs_ob_get_clean();
 	}
 	
 	return $existingoutput;
@@ -6078,7 +6078,7 @@ function nxs_webmethod_return_ok($args)
 	$numlevels = ob_get_level();
 	for ($i = 0; $i < $numlevels; $i++)
 	{
-		$existingoutput[] = ob_get_clean();
+		$existingoutput[] = nxs_ob_get_clean();
 	}
 	
 	nxs_set_jsonheader();
@@ -8134,7 +8134,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	$result["result"] = "OK";
 	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	
 	// Actual rendering of HTML elements
 	?>	
@@ -8259,8 +8259,8 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	<?php
 	
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page
@@ -8390,7 +8390,7 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
  	$widgeticonid = nxs_getwidgeticonid($placeholdertemplate);
  	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	// --------------------------------------------------------------------------------------------------
 	$islocked = false;
 	
@@ -8552,8 +8552,8 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
   // --------------------------------------------------------------------------------------------------
     
   // Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $menu = ob_get_contents();
-  ob_end_clean();
+  $menu = nxs_ob_get_contents();
+  nxs_ob_end_clean();
   
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page

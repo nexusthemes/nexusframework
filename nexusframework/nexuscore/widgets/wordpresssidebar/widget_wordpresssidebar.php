@@ -42,7 +42,7 @@ function nxs_widgets_wordpresssidebar_render_webpart_render_htmlvisualization($a
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-wordpress-sidebar nxs-applylinkvarcolor";
 	
@@ -56,10 +56,10 @@ function nxs_widgets_wordpresssidebar_render_webpart_render_htmlvisualization($a
 	
 	<div <?php echo $class; ?>>
 		<?php 
-		ob_start();
+		nxs_ob_start();
 		dynamic_sidebar(intval($wpsidebarid));
-		$sidebarcontent = ob_get_contents();
-		ob_end_clean();
+		$sidebarcontent = nxs_ob_get_contents();
+		nxs_ob_end_clean();
 
 		if ($sidebarcontent == "")
 		{
@@ -78,8 +78,8 @@ function nxs_widgets_wordpresssidebar_render_webpart_render_htmlvisualization($a
 	
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
@@ -112,7 +112,7 @@ function nxs_widgets_wordpresssidebar_home_rendersheet($args)
 	$result = array();
 	$result["result"] = "OK";
 
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -230,8 +230,8 @@ function nxs_widgets_wordpresssidebar_home_rendersheet($args)
 
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	

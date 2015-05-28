@@ -269,7 +269,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 	$result = array();
 	$result["result"] = "OK";
 		
-	ob_start();
+	nxs_ob_start();
 
 	/* WIDGET HOVER MENU
 	---------------------------------------------------------------------------------------------------- */
@@ -336,7 +336,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 				<?php 
 				if (nxs_shoulddebugmeta())
 				{
-					ob_start();
+					nxs_ob_start();
 					?>
 					<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_edit_widget_v2(this, 'debug'); return false; return false;">
 	         	<li title='<?php nxs_l18n_e("Debug[tooltip]", "nxs_td"); ?>'>
@@ -344,8 +344,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 	         	</li>
 	      	</a>
 	      	<?php
-	      	$debughtml = ob_get_contents();
-					ob_end_clean();
+	      	$debughtml = nxs_ob_get_contents();
+					nxs_ob_end_clean();
 				}
 				else
 				{
@@ -359,14 +359,14 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 	
 	<?php 
 	
-	$menu = ob_get_contents();
-	ob_end_clean();
+	$menu = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["menutopright"] = $menu;
 	$nxs_global_placeholder_render_statebag["widgetcropping"] = "no";	// menu container will exist beyond regular widget container
 	
-	ob_start();
+	nxs_ob_start();
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
@@ -940,9 +940,9 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
   
 
 	
-	$html = ob_get_contents();
+	$html = nxs_ob_get_contents();
 	
-	ob_end_clean();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;

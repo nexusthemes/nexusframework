@@ -1,17 +1,150 @@
 <?php 
 
-function nxs_die()
-{
-	error_log("nxs die");
-	die();
-}
-
 if (defined('NXS_FRAMEWORKLOADED'))
 {
 	echo "NXS_FRAMEWORKLOADED was already loaded?!";
 	die();
 }
 define('NXS_FRAMEWORKLOADED', true);
+
+function nxs_die()
+{
+	error_log("nxs die");
+	die();
+}
+
+function nxs_ob_start($output_callback)
+{
+	$shouldbufferoutput = true;
+	
+	if ($_REQUEST["nxs"] == "nobuffer")
+	{
+		if (nxs_has_adminpermissions())
+		{
+			$shouldbufferoutput = false;
+		}
+	}
+	
+	if ($shouldbufferoutput)
+	{
+		$result = ob_start($output_callback);
+	}
+	else
+	{
+		$result = "overruled (no output buffering)";
+	}
+	
+	return $result;
+}
+
+
+function nxs_ob_get_contents()
+{
+	$shouldbufferoutput = true;
+	
+	if ($_REQUEST["nxs"] == "nobuffer")
+	{
+		//$bt = debug_backtrace();
+		//print_r($bt);
+		//echo "that it :)";
+		//die();
+		
+		if (nxs_has_adminpermissions())
+		{
+			$shouldbufferoutput = false;
+		}
+	}
+	
+	if ($shouldbufferoutput)
+	{
+		$result = ob_get_contents();
+	}
+	else
+	{
+		$result = "overruled (no output buffering)";
+	}
+	
+	return $result;
+}
+
+function nxs_ob_end_clean()
+{
+	$shouldbufferoutput = true;
+	
+	if ($_REQUEST["nxs"] == "nobuffer")
+	{
+		if (nxs_has_adminpermissions())
+		{
+			$shouldbufferoutput = false;
+		}
+	}
+	
+	if ($shouldbufferoutput)
+	{
+		$result = ob_end_clean();
+	}
+	else
+	{
+		$result = "overruled (no output buffering)";
+	}
+	
+	return $result;
+}
+
+function nxs_ob_get_clean()
+{
+	$shouldbufferoutput = true;
+	
+	if ($_REQUEST["nxs"] == "nobuffer")
+	{
+		if (nxs_has_adminpermissions())
+		{
+			$shouldbufferoutput = false;
+		}
+	}
+	
+	if ($shouldbufferoutput)
+	{
+		$result = ob_get_clean();
+	}
+	else
+	{
+		$result = "overruled (no output buffering)";
+	}
+	
+	return $result;
+}
+
+// 2013 08 03; fixing unwanted WP3.6 notice errors
+// third party plugins and other php code (like sunrise.php) can
+// cause warnings that mess up the output of the webmethod
+// for example when activating the theme
+// to solve this, at this stage we clean the output buffer
+// 2014 12 07; in some cases the ob_clean() invoked here
+// can cause weird bogus output (diamonds with question marks),
+// as-if the encoding is messed up (dproost)
+// to avoid this from happening we don't do a ob_clean when
+// there's nothing to clean up in the first place
+function nxs_saveobclean()
+{
+	if(ob_get_level() > 0)
+	{
+		$current = ob_get_contents();
+		if ($current != "")
+		{
+	  	ob_clean();
+		}
+		else
+		{
+			// leave as-is
+		}
+	}
+	else
+	{
+		// ignore
+	}
+}
+
 
 if (!defined('NXS_FRAMEWORKNAME'))
 {
@@ -189,41 +322,17 @@ function custom_posts_per_page( $query )
 }
 add_action( 'pre_get_posts', 'custom_posts_per_page' );
 
-// 2013 08 03; fixing unwanted WP3.6 notice errors
-// third party plugins and other php code (like sunrise.php) can
-// cause warnings that mess up the output of the webmethod
-// for example when activating the theme
-// to solve this, at this stage we clean the output buffer
-// 2014 12 07; in some cases the ob_clean() invoked here
-// can cause weird bogus output (diamonds with question marks),
-// as-if the encoding is messed up (dproost)
-// to avoid this from happening we don't do a ob_clean when
-// there's nothing to clean up in the first place
-function nxs_saveobclean()
+if (nxs_isdebug())
 {
-	if(ob_get_level() > 0)
-	{		
-		$current = ob_get_contents();
-		if ($current != "")
-		{
-	  	ob_clean();
-		}
-		else
-		{
-			// leave as-is
-		}
-	}
-	else
+}
+else
+{
+	if (!nxs_showphpwarnings())
 	{
-		// ignore
+		error_reporting(E_ERROR | E_PARSE);	
+		nxs_saveobclean();
 	}
 }
-
-if (!nxs_showphpwarnings())
-{
-	error_reporting(E_ERROR | E_PARSE);	
-	nxs_saveobclean();
-}	
 
 function nxs_getcharset()
 {

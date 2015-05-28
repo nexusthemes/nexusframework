@@ -28,7 +28,7 @@ function nxs_widgets_googlebusphotoitem_gettitle()
 
 function nxs_widgets_googlebusphotoitem_panoviewer($optionvalues, $args, $runtimeblendeddata) 
 {
-	ob_start();
+	nxs_ob_start();
 	
 	$headingid = "heading";
 	$pitchid = "pitch";
@@ -193,8 +193,8 @@ function nxs_widgets_googlebusphotoitem_panoviewer($optionvalues, $args, $runtim
 		);			
 	</script>
   <?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -377,7 +377,7 @@ function nxs_widgets_googlebusphotoitem_render_webpart_render_htmlvisualization(
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
 		
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	
 	global $nxs_global_placeholder_render_statebag;
 	if ($shouldrenderalternative == true) {
@@ -419,8 +419,8 @@ function nxs_widgets_googlebusphotoitem_render_webpart_render_htmlvisualization(
 	/* ------------------------------------------------------------------------------------------------- */
 	 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page

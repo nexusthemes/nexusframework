@@ -6,7 +6,7 @@ function nxs_pagerowtemplate_render_121414_toolbox($args)
 {
 	extract($args);
 	
-	ob_start();
+	nxs_ob_start();
 	?>
   
   <p class="nxs-one-half">&frac12;</p>
@@ -23,8 +23,8 @@ function nxs_pagerowtemplate_render_121414_toolbox($args)
 	</div>
 	
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	echo $result;
 }
@@ -33,7 +33,7 @@ function nxs_pagerowtemplate_render_121414($args)
 {
 	extract($args);
 	
-	ob_start();
+	nxs_ob_start();
 
 	if ($onderdrukcontent == '')
 	{
@@ -149,8 +149,8 @@ function nxs_pagerowtemplate_render_121414($args)
 		</li>
 	<?php
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	if ($output == "return")
 	{

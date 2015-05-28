@@ -36,7 +36,7 @@ function nxs_site_wipe()
 		die();
 	}
 	
-	//ob_start();
+	//nxs_ob_start();
 	
 	global $wpdb;
 

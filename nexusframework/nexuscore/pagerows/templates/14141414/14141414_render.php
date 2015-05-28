@@ -28,7 +28,7 @@ function nxs_pagerowtemplate_render_14141414($args)
 {
 	extract($args);
 	
-	ob_start();
+	nxs_ob_start();
 
 	if ($onderdrukcontent == '')
 	{
@@ -153,8 +153,8 @@ function nxs_pagerowtemplate_render_14141414($args)
 		</li>
 	<?php
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	if ($output == "return")
 	{

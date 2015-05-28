@@ -58,7 +58,7 @@ function nxs_gallerybox_detail_rendersheet($args)
 
 	$result = array();
 	
-	ob_start();
+	nxs_ob_start();
 	
 	// dit rendert de popup van een individuele gallery slide (detail)
 	
@@ -172,8 +172,8 @@ function nxs_gallerybox_detail_rendersheet($args)
 	</script>	
 	
 	<?php
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
 }

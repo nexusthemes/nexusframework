@@ -104,7 +104,7 @@ function nxs_site_loginhome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -239,8 +239,8 @@ function nxs_site_loginhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -260,7 +260,7 @@ function nxs_site_nieuwfooterhome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -322,8 +322,8 @@ function nxs_site_nieuwfooterhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -343,7 +343,7 @@ function nxs_site_nieuwheaderhome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -403,8 +403,8 @@ function nxs_site_nieuwheaderhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -424,7 +424,7 @@ function nxs_site_nieuwsubheaderhome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -485,8 +485,8 @@ function nxs_site_nieuwsubheaderhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -506,7 +506,7 @@ function nxs_site_nieuwsubfooterhome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -567,8 +567,8 @@ function nxs_site_nieuwsubfooterhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -588,7 +588,7 @@ function nxs_site_newcontentparthome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -649,8 +649,8 @@ function nxs_site_newcontentparthome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -669,7 +669,7 @@ function nxs_site_newpagedecoratorhome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -730,8 +730,8 @@ function nxs_site_newpagedecoratorhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -751,7 +751,7 @@ function nxs_site_nieuwsidebarhome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -811,8 +811,8 @@ function nxs_site_nieuwsidebarhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -832,7 +832,7 @@ function nxs_site_nieuwmenuhome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -893,8 +893,8 @@ function nxs_site_nieuwmenuhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -914,7 +914,7 @@ function nxs_site_nieuwlisthome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -975,8 +975,8 @@ function nxs_site_nieuwlisthome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -996,7 +996,7 @@ function nxs_site_nieuwslidesethome_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -1056,8 +1056,8 @@ function nxs_site_nieuwslidesethome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1079,7 +1079,7 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 		
 	$result = array();
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -1170,8 +1170,8 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1231,7 +1231,7 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
 		$medialist_pagenr = 1;
 	}
 
-	ob_start();
+	nxs_ob_start();
 	?>
 
   <div class="nxs-admin-wrap">
@@ -1556,8 +1556,8 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
   
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1575,7 +1575,7 @@ function nxs_site_logouthome_rendersheet($args)
 		
 	$result = array();
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -1620,8 +1620,8 @@ function nxs_site_logouthome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1657,7 +1657,7 @@ function nxs_site_mediamanagerupload_rendersheet($args)
 		$medialist_pagenr = 1;
 	}
 	
-	ob_start();
+	nxs_ob_start();
 	?>
 
   <div class="nxs-admin-wrap">
@@ -1851,8 +1851,8 @@ function nxs_site_mediamanagerupload_rendersheet($args)
   
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1880,7 +1880,7 @@ function nxs_site_newposthome_rendersheet($args)
   $pwargs["invoker"] = "newinteractive";
   $postwizards = nxs_getpostwizards($pwargs);
 	
-	ob_start();
+	nxs_ob_start();
 	?>
 	
 	<div class="nxs-admin-wrap">
@@ -1984,8 +1984,8 @@ function nxs_site_newposthome_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -2005,7 +2005,7 @@ function nxs_site_exportsite_rendersheet($args)
 	
 	$filedownloadurl = admin_url('admin-ajax.php?action=nxs_ajax_webmethods&webmethod=exportcontent&export=siteallpoststructuresandwidgets');
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -2035,8 +2035,8 @@ function nxs_site_exportsite_rendersheet($args)
     
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -2125,7 +2125,7 @@ function nxs_site_dashboardhome_rendersheet($args)
 	$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 	?>
 	
 	<div class="nxs-admin-wrap">
@@ -2423,8 +2423,8 @@ function nxs_site_dashboardhome_rendersheet($args)
 	</script>	
 	
 	<?php
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
 }
@@ -2444,7 +2444,7 @@ function nxs_site_supportoptions_rendersheet($args)
 	//$meta = nxs_getsitemeta();
 	//$someproperty = $meta["someproperty"];
 	
-	ob_start();
+	nxs_ob_start();
 	?>
 	
 	<div class="nxs-admin-wrap">
@@ -2572,8 +2572,8 @@ function nxs_site_supportoptions_rendersheet($args)
 	</script>	
 	
 	<?php
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
 }
@@ -2651,7 +2651,7 @@ function nxs_site_webfontshome_getoptions($args)
 
 function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $args, $runtimeblendeddata) 
 {
-	ob_start();
+	nxs_ob_start();
 	if ($runtimeblendeddata["cacheaction"] == "clear")
 	{
 		$path = nxs_cache_getcachefolder();
@@ -2670,8 +2670,8 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 		}
 	</script>
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -2946,7 +2946,7 @@ function nxs_site_accessrestrictionhome_getoptions($args)
 /* LOOKUP TABLE MANAGEMENT
 ---------------------------------------------------------------------------------------------------- */
 function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $runtimeblendeddata) {
-	ob_start();
+	nxs_ob_start();
 	
 	$clientshortscopedata = $args["clientshortscopedata"];
 	if (isset($clientshortscopedata)) {
@@ -3129,8 +3129,8 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
 		nxs_l18n_e("No lookup items found", "nxs_td");
 	}
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -3165,7 +3165,7 @@ function nxs_site_lookuptablemanagementhome_getoptions($args)
 ---------------------------------------------------------------------------------------------------- */
 	
 function nxs_site_unistylemanagementhome_customhtml($optionvalues, $args, $runtimeblendeddata) {
-	ob_start();
+	nxs_ob_start();
 	
 	$clientshortscopedata = $args["clientshortscopedata"];
 	if (isset($clientshortscopedata)) {
@@ -3309,8 +3309,8 @@ function nxs_site_unistylemanagementhome_customhtml($optionvalues, $args, $runti
 		nxs_l18n_e("No unistyles found", "nxs_td");
 	}
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -3338,7 +3338,7 @@ function nxs_site_unistylemanagementhome_getoptions($args)
 ---------------------------------------------------------------------------------------------------- */
 
 function nxs_site_unicontentmanagementhome_customhtml($optionvalues, $args, $runtimeblendeddata) {
-	ob_start();
+	nxs_ob_start();
 	
 	$clientshortscopedata = $args["clientshortscopedata"];
 	if (isset($clientshortscopedata)) {
@@ -3482,8 +3482,8 @@ function nxs_site_unicontentmanagementhome_customhtml($optionvalues, $args, $run
 		nxs_l18n_e("No unicontents found", "nxs_td");
 	}
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -3903,7 +3903,7 @@ function nxs_site_managecolorization_getoptions($args)
 ---------------------------------------------------------------------------------------------------- */
 function nxs_site_managecolorization_customhtml($optionvalues, $args, $runtimeblendeddata) 
 {
-	ob_start();
+	nxs_ob_start();
 	
 	$clientshortscopedata = $args["clientshortscopedata"];
 	if (isset($clientshortscopedata))
@@ -4037,8 +4037,8 @@ function nxs_site_managecolorization_customhtml($optionvalues, $args, $runtimebl
 	</script>
 	<?php
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 

@@ -20,7 +20,7 @@ function nxs_popup_genericpopup_postseditor_getpopup($args)
 	$postargs['hide_empty'] = 0;
 	$posts = get_posts($postargs);
 		
-	ob_start();
+	nxs_ob_start();
 	
 	?>
 	
@@ -163,8 +163,8 @@ function nxs_popup_genericpopup_postseditor_getpopup($args)
 	<?php
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $html = ob_get_contents();
-  ob_end_clean();
+  $html = nxs_ob_get_contents();
+  nxs_ob_end_clean();
     
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page

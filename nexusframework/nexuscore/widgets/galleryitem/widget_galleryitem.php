@@ -54,7 +54,7 @@ function nxs_widgets_galleryitem_render_webpart_render_htmlvisualization($args) 
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-galleryitemr-item";
 	
@@ -79,8 +79,8 @@ function nxs_widgets_galleryitem_render_webpart_render_htmlvisualization($args) 
 	
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	

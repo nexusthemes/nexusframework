@@ -91,7 +91,7 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	$colorzencssclass = "";
 	if ($form_metadata["items_colorzen"] != "")
@@ -119,8 +119,8 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 	
 	// var_dump($args);
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	
@@ -171,7 +171,7 @@ function nxs_widgets_contactitemtext_render_webpart_render_htmlvisualization($ar
 	/* ADMIN EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-contactitemtext-item";
 	
@@ -192,8 +192,8 @@ function nxs_widgets_contactitemtext_render_webpart_render_htmlvisualization($ar
 	/* ------------------------------------------------------------------------------------------------- */
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	

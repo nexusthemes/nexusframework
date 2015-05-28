@@ -275,7 +275,7 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 
 	// HOVER MENU HTML
 
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	<ul>
@@ -326,7 +326,7 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 		<?php 
 		if (nxs_shoulddebugmeta())
 		{
-			ob_start();
+			nxs_ob_start();
 			?>
 			<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_edit_widget_v2(this, 'debug'); return false; return false;">
        	<li title='<?php nxs_l18n_e("Debug[tooltip]", "nxs_td"); ?>'>
@@ -334,8 +334,8 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
        	</li>
     	</a>
     	<?php
-    	$debughtml = ob_get_contents();
-			ob_end_clean();
+    	$debughtml = nxs_ob_get_contents();
+			nxs_ob_end_clean();
 		}
 		else
 		{
@@ -346,8 +346,8 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 	</ul>
 	<?php 
 	
-	$menu = ob_get_contents();
-	ob_end_clean();
+	$menu = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["menutopright"] = $menu;
@@ -410,7 +410,7 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 	
-	ob_start();
+	nxs_ob_start();
 	
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-events ";
 	
@@ -571,8 +571,8 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 	if ($button_text != "") {echo '<div class="nxs-clear padding"></div>';}
 	echo $button;
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;

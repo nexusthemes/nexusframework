@@ -74,7 +74,7 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 								{
 									if (hint.type == "youtube") {
 										
-										<?php ob_start(); ?>
+										<?php nxs_ob_start(); ?>
 																						
 										<li>
 											<!-- Title -->
@@ -95,11 +95,11 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 										
 										<?php
 													
-										$result = ob_get_contents();
+										$result = nxs_ob_get_contents();
 										
 										$result = preg_replace( "/\r|\n/", " ", $result );
 										
-										ob_end_clean();
+										nxs_ob_end_clean();
 										
 										?> 
 										var html = '<?php echo $result; ?>';
@@ -113,7 +113,7 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 										
 									} else if (hint.type == 'text') {
 										
-										<?php ob_start(); ?>
+										<?php nxs_ob_start(); ?>
 																				
 										<li>
 											
@@ -130,11 +130,11 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 										
 										<?php
 													
-										$result = ob_get_contents();
+										$result = nxs_ob_get_contents();
 										
 										$result = preg_replace( "/\r|\n/", " ", $result );
 										
-										ob_end_clean();
+										nxs_ob_end_clean();
 										
 										?> 
 										var html = '<?php echo $result; ?>';
@@ -182,7 +182,7 @@ function nxs_js_supportstartchatstage2()
 	
 	<?php 
 	
-	ob_start();
+	nxs_ob_start();
 	
 	?>
 	
@@ -224,11 +224,11 @@ function nxs_js_supportstartchatstage2()
 
 	<?php
 				
-	$result = ob_get_contents();
+	$result = nxs_ob_get_contents();
 	
 	$result = preg_replace( "/\r|\n/", " ", $result );
 	
-	ob_end_clean();
+	nxs_ob_end_clean();
 	
 	?> 
 	
@@ -319,7 +319,7 @@ function nxs_js_supportshowchatstage1()
 	// empty the wrap
 	jQ_nxs("#nxs_frameworkchat_wrap").empty();
 	
-	<?php ob_start(); ?>
+	<?php nxs_ob_start(); ?>
 	
 	<div id="nxs_chat_innerwrap" class="nxs-admin-wrap">
 		
@@ -350,11 +350,11 @@ function nxs_js_supportshowchatstage1()
 	
 	<?php
 				
-	$result = ob_get_contents();
+	$result = nxs_ob_get_contents();
 	
 	$result = preg_replace( "/\r|\n/", " ", $result );
 	
-	ob_end_clean();
+	nxs_ob_end_clean();
 	
 	?> 
 	
@@ -366,7 +366,7 @@ function nxs_js_supporthidechat()
 	// empty the wrap
 	jQ_nxs("#nxs_frameworkchat_wrap").empty();
 	
-	<?php ob_start(); ?>
+	<?php nxs_ob_start(); ?>
 	
 	<div id="nxs_chat_showchatwrap" class="nxs-admin-wrap">
 		<a href="#" onclick="nxs_js_supportchatshow(); return false;"><span class="nxs-icon-question" /></a>
@@ -374,11 +374,11 @@ function nxs_js_supporthidechat()
 	
 	<?php
 				
-	$result = ob_get_contents();
+	$result = nxs_ob_get_contents();
 	
 	$result = preg_replace( "/\r|\n/", " ", $result );
 	
-	ob_end_clean();
+	nxs_ob_end_clean();
 	
 	?> 
 	
