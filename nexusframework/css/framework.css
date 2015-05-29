@@ -2816,6 +2816,10 @@ h3#order_review_heading,
 .nxs-icon-radiation:before			{ content: "\e437";	}
 .nxs-icon-boat:before				{ content: "\e438";	}
 .nxs-icon-container:before			{ content: "\e439";	}
+.nxs-icon-wreck:before				{ content: "\e440";	}
+.nxs-icon-divemask:before			{ content: "\e441";	}
+.nxs-icon-waves:before				{ content: "\e442";	}
+.nxs-icon-oxygen:before				{ content: "\e443";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
