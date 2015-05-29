@@ -301,6 +301,10 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"carpet",
 										"radiation",
 										"container",
+										"wreck",
+										"divemask",
+										"waves",
+										"oxygen",
 									);
 										
 									foreach($icontypes as $currenticontype)
