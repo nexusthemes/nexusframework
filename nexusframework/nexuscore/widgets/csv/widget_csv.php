@@ -106,6 +106,13 @@ function nxs_widgets_csv_home_getoptions()
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),	
+			array(
+				"id" 				=> "title_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
 			array( 
 				"id" 				=> "top_info_color",
 				"type" 				=> "colorzen",
@@ -398,6 +405,9 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 	// Title fontsize
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
 	
+	// Title alignment
+	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
+
 	// Top info padding and color
 	$top_info_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $top_info_color);
 	$top_info_padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $top_info_padding);
@@ -422,10 +432,12 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 		$headingelement = "h1";
 	}
 	
-	if ($title != "") { $title = '<' . $headingelement . ' class="nxs-title ' . $title_fontsize_cssclass . '">' . $title . '</' . $headingelement . '>'; }
+	if ($title != "") { $title = '<'.$headingelement.' class="nxs-title '.$title_fontsize_cssclass.' '.$title_alignment_cssclass.'">' . $title . '</' . $headingelement . '>'; }
 	
+    if ($title_alignment == "center") { $top_info_title_alignment = "margin: 0 auto;"; } else
+	if ($title_alignment == "right")  { $top_info_title_alignment = "margin-left: auto;"; } 
+    
 	// Default HMTL rendering
-	$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "");
 	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js);
 	
 	if (nxs_has_adminpermissions())
@@ -456,8 +468,10 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 		---------------------------------------------------------------------------------------------------- */
 		
 		if ($title != "") { 
-			echo '<div class="top-wrapper nxs-border-width-1-0 ' . $top_info_color_cssclass . ' ' . $top_info_padding_cssclass . '">
-				<div class="nxs-table">';
+            
+			echo '
+			<div class="top-wrapper nxs-border-width-1-0 ' . $top_info_color_cssclass . ' ' . $top_info_padding_cssclass . '">
+				<div class="nxs-table" style="'.$top_info_title_alignment.'">';
 				
 					// Icon
 					echo $icon;
