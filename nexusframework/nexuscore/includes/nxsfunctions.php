@@ -5931,7 +5931,7 @@ function nxs_outputbuffer_popall()
 	$numlevels = ob_get_level();
 	for ($i = 0; $i < $numlevels; $i++)
 	{
-		$existingoutput[] = nxs_ob_get_clean();
+		$existingoutput[] = ob_get_clean();
 	}
 	
 	return $existingoutput;

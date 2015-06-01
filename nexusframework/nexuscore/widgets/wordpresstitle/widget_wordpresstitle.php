@@ -213,6 +213,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	{
 		$currentpost = get_post($nxs_global_current_containerpostid_being_rendered);
 		$title = $currentpost->post_title;
+		$currentpostdate = $currentpost->post_date;
 	}
 	
 	$hovermenuargs = array();
@@ -241,13 +242,13 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	// Title
 	$microdata = apply_filters("nxs_wptitle_microdata");
 	$htmltitle = nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "", $microdata);
-		
-	// Date
-	if ($showdate != "") {
 
-        $get_wordpress_date_format = get_option('date_format');  
-        $datehtml = the_date($get_wordpress_date_format, '', '', false);
-        
+	// Date
+	if ($showdate != "") 
+	{
+		$get_wordpress_date_format = get_option('date_format');
+		$formatteddate = mysql2date($get_wordpress_date_format, $currentpostdate);
+    $datehtml = $formatteddate;
 	}
 	
 	// Categories
@@ -371,12 +372,18 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		
 		// Title
 		echo $htmltitle;
-		
+				
 		// Meta data
-		if ( $datehtml != "" || $categorieshtml || $author != "" ) {
+		
+		if ( $datehtml != "" || $categorieshtml || $author != "" ) 
+		{
 			echo '<div class="nxs-blog-meta nxs-applylinkvarcolor">'; 
-				echo $datehtml;
-				if ( $datehtml != "" && $categorieshtml != "" || $datehtml != "" && $author != "" ) { echo '<span class="nxs-seperator"> | </span>'; }
+				
+				if ( $datehtml != "" && $categorieshtml != "" || $datehtml != "" && $author != "" ) 
+				{ 
+					echo $datehtml;
+					echo '<span class="nxs-seperator"> | </span>'; 
+				}
 				echo $categorieshtml;
 				if ( $categorieshtml != "" && $author != ""	) { echo '<span class="nxs-seperator"> | </span>'; }
 				echo $author;
