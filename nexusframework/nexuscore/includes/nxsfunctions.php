@@ -1497,7 +1497,7 @@ function nxs_getwidgets_v2($widgetargs, $filterobsoletewidgets)
 		{
 			$distinct[] = $widgetid;
 			$title = nxs_getplaceholdertitle($widgetid);
-			$result[$index] = array();
+			$result[$index] = $widgetdata;	// clone all meta from the original function
 			$result[$index]["widgetid"] = $widgetid;
 			$result[$index]["title"] = $title;
 			$index++;
@@ -7324,7 +7324,6 @@ function nxs_unistyle_deleteunistyle($group, $name)
 {
 	if (!isset($group) || $group == "") { nxs_webmethod_return_nack("group is not set"); }
 	if (!isset($name) || $name == "" || $name == "@@@nxsempty@@@") { nxs_webmethod_return_nack("name is not set"); }
-	if (!nxs_unistyle_exists($group, $name)) { nxs_webmethod_return_nack("name unistyle ({$name}) not found in group ({$group})"); }
 	
 	global $wpdb;
 	// rename the unistyle of all widgets on all posts having a nxs structure
@@ -7370,7 +7369,6 @@ function nxs_unistyle_wipeunistyle_internal($group, $name)
 {
 	if (!isset($group) || $group == "") { nxs_webmethod_return_nack("group is not set"); }
 	if (!isset($name) || $name == "" || $name == "@@@nxsempty@@@") { nxs_webmethod_return_nack("name is not set"); }
-	if (!nxs_unistyle_exists($group, $name)) { nxs_webmethod_return_nack("unistyle not found"); }
 	
 	$metakey = "unistyle_" . $group . "_" . $name;	
 
