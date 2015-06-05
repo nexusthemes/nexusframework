@@ -7385,7 +7385,7 @@ function nxs_js_get_frameworkcsstemplate(csslookup)
           {
           	factor: 12,
             csstemplate: '\
-            	.nxs-button-scale-$nxs_identification; \
+            	.nxs-button.nxs-button-scale-$nxs_identification; \
             	{ \
             		font-size: $nxs_formularesult;px; \
             	}',

@@ -189,64 +189,64 @@ function nxs_getwidgets_functions_AF($result, $args)
 		
 
 		// Default
-		$result[] = array("widgetid" => "text");
-		$result[] = array("widgetid" => "image");
-		$result[] = array("widgetid" => "blog");
+		$result[] = array("widgetid" => "text", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "image", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "blog", "tags" => array("nexus"));
 		
 		// Video
-		$result[] = array("widgetid" => "youtube");
-		$result[] = array("widgetid" => "vimeo");		
+		$result[] = array("widgetid" => "youtube", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "vimeo", "tags" => array("nexus"));		
 		
 		// Social
-		$result[] = array("widgetid" => "fblikebox");
-		$result[] = array("widgetid" => "social");
-		$result[] = array("widgetid" => "socialsharing");
-		$result[] = array("widgetid" => "twittertweets");
+		$result[] = array("widgetid" => "fblikebox", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "social", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "socialsharing", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "twittertweets", "tags" => array("nexus"));
 		
 		// Google
-		$result[] = array("widgetid" => "googledoc");
-		$result[] = array("widgetid" => "googlemap");
+		$result[] = array("widgetid" => "googledoc", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "googlemap", "tags" => array("nexus"));
 		
 		// Forms
-		$result[] = array("widgetid" => "contactbox");
-		$result[] = array("widgetid" => "formbox");
+		$result[] = array("widgetid" => "contactbox", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "formbox", "tags" => array("nexus"));
 		
 		// Testimonials
-		$result[] = array("widgetid" => "bio");
-		$result[] = array("widgetid" => "quote");
+		$result[] = array("widgetid" => "bio", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "quote", "tags" => array("nexus"));
 		
 		// Reference
-		$result[] = array("widgetid" => "signpost");
-		$result[] = array("widgetid" => "tumbler");
-		$result[] = array("widgetid" => "radial");
-		$result[] = array("widgetid" => "target");
+		$result[] = array("widgetid" => "signpost", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "tumbler", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "radial", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "target", "tags" => array("nexus"));
 		
 		// Miscellaneous
-		$result[] = array("widgetid" => "menucontainer");
-		$result[] = array("widgetid" => "logo");
-		$result[] = array("widgetid" => "callout");
-		$result[] = array("widgetid" => "csv");
-		$result[] = array("widgetid" => "search");
-		$result[] = array("widgetid" => "eventsbox");
-		$result[] = array("widgetid" => "carousel");
-		$result[] = array("widgetid" => "banner");
-		$result[] = array("widgetid" => "flickr");
+		$result[] = array("widgetid" => "menucontainer", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "logo", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "callout", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "csv", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "search", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "eventsbox", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "carousel", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "banner", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "flickr", "tags" => array("nexus"));
 		
 		// Never
-		$result[] = array("widgetid" => "wordpresssidebar");
-		$result[] = array("widgetid" => "categories");
-		$result[] = array("widgetid" => "archive");
-		$result[] = array("widgetid" => "htmlcustom");
-		$result[] = array("widgetid" => "squeezebox");
-		$result[] = array("widgetid" => "googlebusinessphoto");		
-		$result[] = array("widgetid" => "rssfeed");	
-		$result[] = array("widgetid" => "breadcrumb");
+		$result[] = array("widgetid" => "wordpresssidebar", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "categories", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "archive", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "htmlcustom", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "squeezebox", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "googlebusinessphoto", "tags" => array("nexus"));		
+		$result[] = array("widgetid" => "rssfeed", "tags" => array("nexus"));	
+		$result[] = array("widgetid" => "breadcrumb", "tags" => array("nexus"));
 		
 		
 		
 		if ($enableconceptualwidgets)
 		{
-			$result[] = array("widgetid" => "wpmenu");
+			$result[] = array("widgetid" => "wpmenu", "tags" => array("nexus"));
 		}
 		
 		// $result[] = array("widgetid" => "fbcomments");
@@ -268,14 +268,14 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$nxsposttype == "pagelet"
 	)	
 	{		
-		$result[] = array("widgetid" => "gallerybox");
-		$result[] = array("widgetid" => "definitionlistbox");
-		$result[] = array("widgetid" => "sliderbox");
+		$result[] = array("widgetid" => "gallerybox", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "definitionlistbox", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "sliderbox", "tags" => array("nexus"));
 		
 		
 		if ($enableconceptualwidgets)
 		{
-			$result[] = array("widgetid" => "filmrollbox");
+			$result[] = array("widgetid" => "filmrollbox", "tags" => array("nexus"));
 		}
 	} 
 	
@@ -283,9 +283,9 @@ function nxs_getwidgets_functions_AF($result, $args)
 	---------------------------------------------------------------------------------------------------- */
 	if ($nxsposttype == "menu")
 	{
-		$result[] = array("widgetid" => "menuitemarticle");
-		$result[] = array("widgetid" => "menuitemcustom");
-		$result[] = array("widgetid" => "menuitemcategory");
+		$result[] = array("widgetid" => "menuitemarticle", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "menuitemcustom", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "menuitemcategory", "tags" => array("nexus"));
 	}
 	
 	/* GENERIC LISTS POSTTYPE
@@ -383,13 +383,13 @@ function nxs_getwidgets_functions_AF($result, $args)
 	
 	// PAGEDECORATOR
 	if ($pagetemplate == "pagedecorator") {
-		$result[] = array("widgetid" => "pageslider");
-		$result[] = array("widgetid" => "pagebackground");
-		$result[] = array("widgetid" => "pagepopup");
-		$result[] = array("widgetid" => "pageslidetotop");
+		$result[] = array("widgetid" => "pageslider", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "pagebackground", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "pagepopup", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "pageslidetotop", "tags" => array("nexus"));
 		if ( $enableconceptualwidgets )
 		{
-			$result[] = array("widgetid" => "pagefixedheader");
+			$result[] = array("widgetid" => "pagefixedheader", "tags" => array("nexus"));
 		}
 		//$result[] = array("widgetid" => "pagevideo");
 		//$result[] = array("widgetid" => "pagegap");

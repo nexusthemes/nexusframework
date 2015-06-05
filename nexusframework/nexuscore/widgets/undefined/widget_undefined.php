@@ -134,7 +134,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	$phtargs["pagetemplate"] = $pagetemplate;
 	$widgets = nxs_getwidgets_v2($phtargs, true);
 	
-	$distincttags = array("none");
+	$distincttags = array("all");
 	
 	// find distinct tags (where applicable)
 	foreach ($widgets as $currentwidget)
@@ -276,7 +276,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
     			jQuery(element).addClass("active");
     			
     			var thefilter = "." + filter;
-    			if (filter == "none")
+    			if (filter == "all")
     			{
     				thefilter = "*";
     			}
@@ -294,8 +294,8 @@ function nxs_widgets_undefined_home_rendersheet($args)
 					// 
     		}
 
-				//nxs_js_undefinedupdatefilter(null, "none");
-				jQuery(".isotope-filter-none").addClass("active");
+				//nxs_js_undefinedupdatefilter(null, "all");
+				jQuery(".isotope-filter-all").addClass("active");
     	</script>
     </div>
   </div>
