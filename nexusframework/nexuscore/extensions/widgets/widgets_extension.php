@@ -192,6 +192,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "text", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "image", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "blog", "tags" => array("nexus"));
+        $result[] = array("widgetid" => "pagination", "tags" => array("nexus"));
 		
 		// Video
 		$result[] = array("widgetid" => "youtube", "tags" => array("nexus"));
@@ -540,7 +541,8 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("eventsbox");
 	nxs_ext_lazyload_widget("eventsboxitem");
 	nxs_ext_lazyload_widget("csv");
-	
+    nxs_ext_lazyload_widget("pagination");
+
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("wpmenu");
