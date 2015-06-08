@@ -115,13 +115,14 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 		$offsetpixels = substr($offset, 0, -2);
 	}
 
-	$concatenatedcssclasses_container 	= nxs_concatenateargswithspaces('nxs-slidetotop', 'nxs-applyhovercolors', $linkcolorvar_cssclass, $docking_position_cssclass);
-	$concatenatedcssclasses_anchor 		= nxs_concatenateargswithspaces($background_color_cssclass, $background_color_hover_cssclass);
+	$concatenatedcssclasses_slidetotop 	= nxs_concatenateargswithspaces('nxs-slidetotop', 'nxs-applyhovercolors', $linkcolorvar_cssclass, $docking_position_cssclass);
+	$concatenatedcssclasses_anchor_con 	= nxs_concatenateargswithspaces('anchor_container', 'nxs-applylinkvarcolor', $background_color_cssclass);
+	$concatenatedcssclasses_anchor 		= nxs_concatenateargswithspaces($background_color_hover_cssclass);
 	
 	?>
 
-	<div id='nxs-slidetotop' class="<?php echo $concatenatedcssclasses_container; ?>" style="<?php echo $distance_style; ?>">
-		<div class="nxs-applylinkvarcolor">
+	<div id='nxs-slidetotop' class="<?php echo $concatenatedcssclasses_slidetotop; ?>" style="<?php echo $distance_style; ?>">
+		<div class="<?php echo $concatenatedcssclasses_anchor_con; ?>">
 			<a href="#" class='<?php echo $concatenatedcssclasses_anchor; ?>'>
 				<?php echo $icon; ?>
 			</a>

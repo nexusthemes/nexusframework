@@ -1972,7 +1972,9 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 	-webkit-transform: 	scale(1.1); 
 }
 
-.nxs-slidetotop a 											{ display: block; border-radius: 50%; border-width: 1px; outline: none; }
+.nxs-slidetotop .anchor_container 							{ border-radius: 50%; }
+
+.nxs-slidetotop a 											{ display: block; border-radius: 50%; outline: none; }
 .nxs-slidetotop span 										{ margin: 0.2em; text-shadow: none !important; }
 .nxs-slidetotop-position-center-top 						{ left: 50%; }
 .nxs-slidetotop-position-center-bottom 						{ left: 50% }
