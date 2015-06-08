@@ -148,10 +148,10 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 	</div>
 
 	<script type="text/javascript">
-		var inpagemenu = $('#nxs-inpagemenu'),
-			inpagemenuContainer = $('#nxs-inpagemenu .nxs-inpagemenu-itemcontainer'),
-			screenHeight = $(window).height(),
-			scrollTop = $(window).scrollTop(),
+		var inpagemenu = jQ_nxs('#nxs-inpagemenu'),
+			inpagemenuContainer = jQ_nxs('#nxs-inpagemenu .nxs-inpagemenu-itemcontainer'),
+			screenHeight = jQ_nxs(window).height(),
+			scrollTop = jQ_nxs(window).scrollTop(),
 			sectionStart = new Array(),
 			sectionsLength,
 			sections,
@@ -160,9 +160,9 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			scrollTop,
 			currentActive = 0;
 
-		jQuery(document).ready(function(){
+		jQ_nxs(document).ready(function(){
 			// remove and create inpagemenu when sections are changed/removed/added
-			jQuery(document).bind('nxs_dom_changed', function() {
+			jQ_nxs(document).bind('nxs_dom_changed', function() {
 				nxs_js_init_inpagemenu();
 			});
 
@@ -173,27 +173,27 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 		});
 
 		function nxs_js_init_inpagemenu() {
-			sections = $('.nxs-section').get();
+			sections = jQ_nxs('.nxs-section').get();
 			sectionsLength = sections.length;
 
 			// order sections on section position
 			var tempSections = [], bla;
 			for (var i = 0; i < sectionsLength; i++) {
-				bla = $(sections[i]).offset();
+				bla = jQ_nxs(sections[i]).offset();
 				console.log('offset: ', bla);
 				bla = Math.round(bla.top);
-				tempSections[bla] = $(sections[i]);
+				tempSections[bla] = jQ_nxs(sections[i]);
 			}
 
 			var tempSections = tempSections.filter(function(){return true;});
 			for (var i = 0; i < sectionsLength; i++) {
-				sections[i] = $(tempSections[i]).get(0);
+				sections[i] = jQ_nxs(tempSections[i]).get(0);
 			}
 
 			// remove all events if they were set earlier and empty the inpagemenu
-			jQuery(document).off("nxs_event_windowscrolling.inpagemenu");
-			$(inpagemenuContainer).find('.link').off("click.inpagemenu");
-			$(inpagemenuContainer).html("");
+			jQ_nxs(document).off("nxs_event_windowscrolling.inpagemenu");
+			jQ_nxs(inpagemenuContainer).find('.link').off("click.inpagemenu");
+			jQ_nxs(inpagemenuContainer).html("");
 
 			var elem = '';
 			var prevnext = false;
@@ -215,12 +215,12 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			// create all the list items for each section point
 			var title, displayTitle, hash;
 			for (var i = 0; i < sectionsLength; i++) {
-				title = $(sections[i]).find('.nxs-section-title').html();
+				title = jQ_nxs(sections[i]).find('.nxs-section-title').html();
 				hash = sections[i].id;			
 				elem+= '<li class="item nxs-applyhovercolors <?php echo $items_color_cssclass; ?>">';
 				elem+= '<a href="#' + hash + '" class="link <?php echo $concatenatedcssclasses_a; ?>" style="<?php echo $items_scale_style; ?>">'
 				<?php if ( $itemstyling == 'blocksicons') { ?>
-					var icon = $(sections[i]).find('.nxs-section-icon span').attr('class');
+					var icon = jQ_nxs(sections[i]).find('.nxs-section-icon span').attr('class');
 					elem+= '<span class="' + icon + '"></span>';
 				<?php } ?>
 				elem+= '</a>';
@@ -248,31 +248,31 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 
 			nxs_js_inpagemenu_setsectionstartpoint();
 
-			$(inpagemenuContainer).append(elem);
+			jQ_nxs(inpagemenuContainer).append(elem);
 
 			// verticle align center the inpagemenu if doking position verticle align is set centered
 			<?php if ($docking_position_explode[1] == "center") { ?>
-				var inpagemenuHeight = $(inpagemenu).height();
+				var inpagemenuHeight = jQ_nxs(inpagemenu).height();
 				var inpagemenuMargin = 0 - ( inpagemenuHeight / 2 );
-				$(inpagemenu).css({
+				jQ_nxs(inpagemenu).css({
 					'marginTop': inpagemenuMargin + 'px'
 				});
 			<?php } ?>
 
 			// make the .link class (inpagemenu items and tooltip) clickable
 			var li, sectionOffset, sectionTop, scrollSpeed, tagName;
-			$(inpagemenuContainer).find('.link').on("click.inpagemenu", function() {
-				li = $(this).closest('li.item');
-				tagName = $(this).prop("tagName");
+			jQ_nxs(inpagemenuContainer).find('.link').on("click.inpagemenu", function() {
+				li = jQ_nxs(this).closest('li.item');
+				tagName = jQ_nxs(this).prop("tagName");
 
 				// get the url hash of the inpagemenu item
 				if (tagName == 'SPAN') {
-					url = $(li).find('a').attr('href');
+					url = jQ_nxs(li).find('a').attr('href');
 				} else {
-					url = $(this).attr('href');
+					url = jQ_nxs(this).attr('href');
 				}
 
-				index = $(li).index();
+				index = jQ_nxs(li).index();
 				index = (prevnext) ? index - 1 : index;
 				<?php if ( $itemstyling == 'circlesline') { ?>
 					index = (prevnext) ? index - 1 : index;
@@ -285,8 +285,8 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			});
 
 			<?php if ($showprevnext) { ?>
-				$(inpagemenuContainer).find('.next, .prev').on("click.inpagemenu", function() {
-					var action = ($(this).hasClass('next'))? 'next': 'prev';
+				jQ_nxs(inpagemenuContainer).find('.next, .prev').on("click.inpagemenu", function() {
+					var action = (jQ_nxs(this).hasClass('next'))? 'next': 'prev';
 					var animate = true;
 					if (currentActive == 0) {
 						if (action == 'prev') {
@@ -300,16 +300,16 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 					
 					if (animate) {
 						console.log(currentActive);
-						var activeItem = $('#nxs-inpagemenu li.item').get(currentActive);
-						if ($(this).hasClass('next')) {
-							var newItem = $('#nxs-inpagemenu li.item').get(currentActive + 1);
+						var activeItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive);
+						if (jQ_nxs(this).hasClass('next')) {
+							var newItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive + 1);
 						} else {
-							var newItem = $('#nxs-inpagemenu li.item').get(currentActive - 1);
+							var newItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive - 1);
 						}
 
-						index = $(newItem).index();
+						index = jQ_nxs(newItem).index();
 						index-= 1;
-						url = $(newItem).find('a').attr('href');
+						url = jQ_nxs(newItem).find('a').attr('href');
 
 						<?php if ( $itemstyling == 'circlesline') { ?>
 							index+= 1;
@@ -328,12 +328,12 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 				});
 			<?php } ?>
 
-			jQuery(document).bind('nxs_event_resizeend', function() {
+			jQ_nxs(document).bind('nxs_event_resizeend', function() {
 				nxs_js_inpagemenu_setsectionstartpoint();
 			});
 
-			jQuery(document).bind('nxs_event_windowscrolling.inpagemenu', function() {
-				scrollTop = $(window).scrollTop();
+			jQ_nxs(document).bind('nxs_event_windowscrolling.inpagemenu', function() {
+				scrollTop = jQ_nxs(window).scrollTop();
 				nxs_js_inpagemenu_setactiveitem();
 			});
 
@@ -341,10 +341,10 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 		}
 
 		function nxs_js_inpagemenu_animatetosection() {
-			sectionOffset = $(sections[index]).offset();
+			sectionOffset = jQ_nxs(sections[index]).offset();
 			sectionTop = sectionOffset.top - 40;
 			scrollSpeed = nxs_js_inpagemenu_getscrollspeed(sectionTop);
-			$('html, body').stop().animate({
+			jQ_nxs('html, body').stop().animate({
 				scrollTop: sectionTop
 			}, scrollSpeed, function(){
 				// set the url hash after the animation
@@ -353,11 +353,11 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 		}
 
 		function nxs_js_inpagemenu_setsectionstartpoint() {
-			screenHeight = $(window).height();
+			screenHeight = jQ_nxs(window).height();
 			sectionStart = [];
 			s = 0;
 			for (var i = 0; i < sectionsLength; i++) {
-				sectionStart[i] = Math.round($(sections[i]).offset().top - screenHeight / 2 );
+				sectionStart[i] = Math.round(jQ_nxs(sections[i]).offset().top - screenHeight / 2 );
 				if (sectionStart[i] < 0) {
 					sectionStart[i] = s;
 					s++;
@@ -380,27 +380,27 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			}
 
 			if (currentActive >= 0) {
-				activeItem = $('#nxs-inpagemenu li.item').get(currentActive);
-				if ( !$(activeItem).hasClass('active-item')) {
-					$('#nxs-inpagemenu li.active-item').removeClass('active-item nxs-applyactivecolors');
-					$(activeItem).addClass('active-item nxs-applyactivecolors');
+				activeItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive);
+				if ( !jQ_nxs(activeItem).hasClass('active-item')) {
+					jQ_nxs('#nxs-inpagemenu li.active-item').removeClass('active-item nxs-applyactivecolors');
+					jQ_nxs(activeItem).addClass('active-item nxs-applyactivecolors');
 				}
 			}
 
 			if (currentActive == 0) {
-				$('.prev').addClass('disabled');
+				jQ_nxs('.prev').addClass('disabled');
 			} else if (currentActive == sectionsLength - 1) {
-				$('.next').addClass('disabled');
+				jQ_nxs('.next').addClass('disabled');
 			} else {
-				if ( $('.prev, .next').hasClass('disabled')) {
-					$('.prev, .next').removeClass('disabled');
+				if ( jQ_nxs('.prev, .next').hasClass('disabled')) {
+					jQ_nxs('.prev, .next').removeClass('disabled');
 				}
 			}
 		}
 
 		var scrollTop, dif, speed;
 		function nxs_js_inpagemenu_getscrollspeed(sectionTop) {
-			scrollTop = $(window).scrollTop();
+			scrollTop = jQ_nxs(window).scrollTop();
 
 			dif = Math.abs(scrollTop - sectionTop);
 			speed = 300 + Math.round(dif / 5);

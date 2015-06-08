@@ -132,23 +132,23 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 	<script type="text/javascript">
 
 		function nxs_js_show_slidetotop() {
-			if ($(window).scrollTop() < <?php echo $offsetpixels; ?>) {
-				$("#nxs-slidetotop:visible").fadeOut(200);
+			if (jQ_nxs(window).scrollTop() < <?php echo $offsetpixels; ?>) {
+				jQ_nxs("#nxs-slidetotop:visible").fadeOut(200);
 			}
 			else {
-				$("#nxs-slidetotop:hidden").fadeIn(200);
+				jQ_nxs("#nxs-slidetotop:hidden").fadeIn(200);
 			}
 		}
 
 		function nxs_js_center_slidetotop() {
-			var slidetotopWidth = Math.round($('#nxs-slidetotop').width());
+			var slidetotopWidth = Math.round(jQ_nxs('#nxs-slidetotop').width());
 			var slidetotopMargin = slidetotopWidth / 2;
 				slidetotopMargin = Math.round(slidetotopMargin - (slidetotopMargin * 2));
 
-			$('#nxs-slidetotop').css('marginLeft', slidetotopMargin);
+			jQ_nxs('#nxs-slidetotop').css('marginLeft', slidetotopMargin);
 		}
 	
-		$(window).scroll(function () { 
+		jQ_nxs(window).scroll(function () { 
 			nxs_js_show_slidetotop();
 		});
 
@@ -165,8 +165,8 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 			?>
 		}, 200);
 		
-		$('#nxs-slidetotop a').click(function(){
-			$('html, body').stop().animate({
+		jQ_nxs('#nxs-slidetotop a').click(function(){
+			jQ_nxs('html, body').stop().animate({
 				scrollTop: 0
 			}, 400);
 			return false;
