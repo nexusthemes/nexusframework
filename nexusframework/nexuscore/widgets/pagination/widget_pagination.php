@@ -43,6 +43,15 @@ function nxs_widgets_pagination_render_webpart_render_htmlvisualization($args)
 
     $shouldrenderalternative = false;
 
+    /**
+     * Display a paginated navigation to next/previous set of posts,
+     * when applicable.
+     *
+     * @since 4.1.0
+     *
+     * @param array $args Optional. See {@see get_the_posts_pagination()} for available arguments.
+     *                    Default empty array.
+     */
     the_posts_pagination( array(
         'prev_text'          => __( 'Previous page', 'nxs_td' ),
         'next_text'          => __( 'Next page', 'nxs_td' ),
