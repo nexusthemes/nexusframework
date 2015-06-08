@@ -147,22 +147,18 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 
 			jQ_nxs('#nxs-slidetotop').css('marginLeft', slidetotopMargin);
 		}
-	
-		jQ_nxs(window).scroll(function () { 
-			nxs_js_show_slidetotop();
-		});
 
+		<?php if ($offsetpixels) { ?>
+			jQ_nxs(document).bind('nxs_event_windowscrolling.slidetotop', function() {
+				nxs_js_show_slidetotop();
+			});
+		<?php } ?>
+	
 		setTimeout(function() {
 			nxs_js_show_slidetotop();
-			<?php
-				if ($docking_position_explode[0] == "center") {
-			?>
-			
-			nxs_js_center_slidetotop();
-
-			<?php
-				}
-			?>
+			<?php if ($docking_position_explode[0] == "center") { ?>
+				nxs_js_center_slidetotop();
+			<?php } ?>
 		}, 200);
 		
 		jQ_nxs('#nxs-slidetotop a').click(function(){

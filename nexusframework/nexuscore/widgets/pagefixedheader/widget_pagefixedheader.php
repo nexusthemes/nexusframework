@@ -170,9 +170,11 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 					nxs_js_show_fixedheader();
 				}, 1000);
 			
-				$(window).scroll(function () { 
-					nxs_js_show_fixedheader();
-				});
+				<?php if ($offsetpixels) { ?>
+					jQ_nxs(document).bind('nxs_event_windowscrolling.fixedheader', function() {
+						nxs_js_show_fixedheader();
+					});
+				<?php } ?>
 			<?php
 			}
 		?>
