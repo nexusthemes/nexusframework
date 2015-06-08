@@ -217,6 +217,13 @@ function nxs_js_setupwindowscrolllistener()
 	);
 }
 
+function nxs_js_getscrollspeed(location) {
+	var scrollTop = jQ_nxs(window).scrollTop();
+	var dif = Math.abs(scrollTop - location);
+	var speed = 300 + Math.round(dif / 5);
+	return speed;
+}
+
 // FX --- BEGIN
 
 function nxs_js_getwindowheight() 

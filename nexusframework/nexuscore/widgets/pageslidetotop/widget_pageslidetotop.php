@@ -168,7 +168,7 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 		jQ_nxs('#nxs-slidetotop a').click(function(){
 			jQ_nxs('html, body').stop().animate({
 				scrollTop: 0
-			}, 400);
+			}, nxs_js_getscrollspeed(0));
 			return false;
 		});
 

@@ -343,7 +343,7 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 		function nxs_js_inpagemenu_animatetosection() {
 			sectionOffset = jQ_nxs(sections[index]).offset();
 			sectionTop = sectionOffset.top - 40;
-			scrollSpeed = nxs_js_inpagemenu_getscrollspeed(sectionTop);
+			scrollSpeed = nxs_js_getscrollspeed(sectionTop);
 			jQ_nxs('html, body').stop().animate({
 				scrollTop: sectionTop
 			}, scrollSpeed, function(){
@@ -396,15 +396,6 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 					jQ_nxs('.prev, .next').removeClass('disabled');
 				}
 			}
-		}
-
-		var scrollTop, dif, speed;
-		function nxs_js_inpagemenu_getscrollspeed(sectionTop) {
-			scrollTop = jQ_nxs(window).scrollTop();
-
-			dif = Math.abs(scrollTop - sectionTop);
-			speed = 300 + Math.round(dif / 5);
-			return speed;
 		}
 
 	</script>
