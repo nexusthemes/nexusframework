@@ -69,7 +69,7 @@ function nxs_pagetemplate_searchresults_home_getsheethtml($args)
   $categoriesfilters["uncategorized"] = "skip";
   nxs_getfilteredcategories($categories, $categoriesfilters);	
 		
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -248,7 +248,7 @@ function nxs_pagetemplate_searchresults_home_getsheethtml($args)
 			nxs_js_savepopupdata();			
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -296,8 +296,8 @@ function nxs_pagetemplate_searchresults_home_getsheethtml($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -317,7 +317,7 @@ function nxs_pagetemplate_searchresults_edittitle_getsheethtml($args)
 		
 	$result = array();
 		
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -368,7 +368,7 @@ function nxs_pagetemplate_searchresults_edittitle_getsheethtml($args)
 			nxs_js_setpopupdatefromcontrols();
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -419,8 +419,8 @@ function nxs_pagetemplate_searchresults_edittitle_getsheethtml($args)
 		
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -476,7 +476,7 @@ function nxs_pagetemplate_searchresults_headerhome_getsheethtml($args)
   
   nxs_getfilteredposts($showpages, $filters);
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -591,7 +591,7 @@ function nxs_pagetemplate_searchresults_headerhome_getsheethtml($args)
 		function nxs_js_savegenericpopup_core(invokewhenavailable)
 		{
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -630,8 +630,8 @@ function nxs_pagetemplate_searchresults_headerhome_getsheethtml($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -681,7 +681,7 @@ function nxs_pagetemplate_searchresults_sidebarhome_getsheethtml($args)
   $showpages = get_posts($publishedargs);
   // apply runtime filters (outside SQL)
  
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -801,7 +801,7 @@ function nxs_pagetemplate_searchresults_sidebarhome_getsheethtml($args)
 		{
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -840,8 +840,8 @@ function nxs_pagetemplate_searchresults_sidebarhome_getsheethtml($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -897,7 +897,7 @@ function nxs_pagetemplate_searchresults_footerhome_getsheethtml($args)
   
   nxs_getfilteredposts($showpages, $filters);  	
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -1014,7 +1014,7 @@ function nxs_pagetemplate_searchresults_footerhome_getsheethtml($args)
 		{
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1053,8 +1053,8 @@ function nxs_pagetemplate_searchresults_footerhome_getsheethtml($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1071,7 +1071,7 @@ function nxs_pagetemplate_searchresults_dialogappendrow_getsheethtml($args)
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
 	
-	ob_start();
+	nxs_ob_start();
 
 	$pagedata = get_page($postid);
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
@@ -1190,8 +1190,8 @@ function nxs_pagetemplate_searchresults_dialogappendrow_getsheethtml($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1210,7 +1210,7 @@ function nxs_pagetemplate_searchresults_appendstruct_getsheethtml($args)
 	
 	$fileuploadurl = admin_url( 'admin-ajax.php');
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -1311,8 +1311,8 @@ function nxs_pagetemplate_searchresults_appendstruct_getsheethtml($args)
     
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1332,7 +1332,7 @@ function nxs_pagetemplate_searchresults_exportstruct_getsheethtml($args)
 	
 	$filedownloadurl = admin_url('admin-ajax.php?action=nxs_ajax_webmethods&webmethod=exportcontent&export=poststructureandwidgets&postid=' . $postid);
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -1362,8 +1362,8 @@ function nxs_pagetemplate_searchresults_exportstruct_getsheethtml($args)
     
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);

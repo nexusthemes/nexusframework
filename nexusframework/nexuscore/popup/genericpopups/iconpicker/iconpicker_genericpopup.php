@@ -10,7 +10,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	ob_start();
+	nxs_ob_start();
 	
 	$padding = "";
 	
@@ -300,6 +300,11 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"fence",
 										"carpet",
 										"radiation",
+										"container",
+										"wreck",
+										"divemask",
+										"waves",
+										"oxygen",
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -648,6 +653,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"rocket2",
 										"towtruck",
 										"cartruck",
+										"boat",
 										
 										/* Crappicons */
 										"landrover",
@@ -749,8 +755,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 	<?php
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $html = ob_get_contents();
-  ob_end_clean();
+  $html = nxs_ob_get_contents();
+  nxs_ob_end_clean();
     
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page

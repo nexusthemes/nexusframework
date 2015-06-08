@@ -38,8 +38,7 @@ function nxs_post_home_rendersheet($args)
 	
 	if ($postid== "")
 	{
-		echo "postid is niet geset? (gpm)";
-		die();
+		nxs_webmethod_return_nack("postid is niet geset? (gpm)");
 	}
 	
 	$pagemeta = nxs_get_postmeta($postid);
@@ -58,7 +57,7 @@ function nxs_post_home_rendersheet($args)
 	
 	$result = array();
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -174,8 +173,8 @@ function nxs_post_home_rendersheet($args)
 	</script>
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -192,7 +191,7 @@ function nxs_post_dialogappendrow_rendersheet($args)
 	if (isset($clientpopupsessiondata)) { extract($clientpopupsessiondata); }
 	if (isset($clientshortscopedata)) { extract($clientshortscopedata); }
 	
-	ob_start();
+	nxs_ob_start();
 
 	$pagedata = get_page($postid);
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
@@ -317,8 +316,8 @@ function nxs_post_dialogappendrow_rendersheet($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -337,7 +336,7 @@ function nxs_post_edittitle_rendersheet($args)
 		
 	$result = array();
 		
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -388,7 +387,7 @@ function nxs_post_edittitle_rendersheet($args)
 			nxs_js_setpopupdatefromcontrols();
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -438,8 +437,8 @@ function nxs_post_edittitle_rendersheet($args)
 		
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -495,7 +494,7 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
 	
-	ob_start();
+	nxs_ob_start();
 
 	$pagedata = get_page($postid);
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
@@ -655,8 +654,8 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -672,7 +671,7 @@ function nxs_post_dialogappendbusrulessetitem_rendersheet($args)
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
 	
-	ob_start();
+	nxs_ob_start();
 
 	$pagedata = get_page($postid);
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
@@ -818,8 +817,8 @@ function nxs_post_dialogappendbusrulessetitem_rendersheet($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -836,7 +835,7 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
 	
-	ob_start();
+	nxs_ob_start();
 
 	$pagedata = get_page($postid);
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
@@ -981,8 +980,8 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1012,7 +1011,7 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 		nxs_webmethod_return_nack("Unsupported nxssubposttype;" . $nxssubposttype);
 	}
 	
-	ob_start();
+	nxs_ob_start();
 	?>
 	<div class="nxs-admin-wrap">
 		<div class="block">
@@ -1273,8 +1272,8 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);

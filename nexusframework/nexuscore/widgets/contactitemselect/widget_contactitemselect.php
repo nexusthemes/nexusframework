@@ -88,7 +88,7 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -138,8 +138,8 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 	
 	// var_dump($args);
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	
@@ -190,7 +190,7 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 	/* ADMIN EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-contactitemselect-item";
 	
@@ -211,8 +211,8 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 	/* ------------------------------------------------------------------------------------------------- */
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	

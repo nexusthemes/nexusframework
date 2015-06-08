@@ -33,8 +33,8 @@ function nxs_apply_patch20130602001()
   
 	echo "patch finished";
   
-  $output = ob_get_contents();
-	ob_end_clean();
+  $output = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	echo "output:" . $output;
 	

@@ -8,13 +8,6 @@ function nxs_webmethod_addnewarticle()
 	//
 	$args = $_REQUEST;
 	
-	/*
-	// tijdelijk ..
-	echo "[testing123]";
-	var_dump($args);
-	die();
-	*/
-	
 	foreach ($args as $k => $v) 
 	{
 		if ($k != "args")

@@ -14,7 +14,7 @@
 				nxs_js_alert("<?php nxs_l18n_e("First select an action to perform[nxs:button]", "nxs_td"); ?>");
 				return;
 			}
-			var checkedRijen = jQuery('.multiselector.page:checked');
+			var checkedRijen = jQ_nxs('.multiselector.page:checked');
 			var count = checkedRijen.length;
 			if (count == 0)
 			{
@@ -25,7 +25,7 @@
 				if (actionValue == 'trash')
 				{
 					// geen expliciete bevestiging aangezien het item nog gestored kan worden.
-					jQuery(checkedRijen).each(function(i)
+					jQ_nxs(checkedRijen).each(function(i)
 					{
 						var postid = this.id.split("_")[1];
 						nxs_js_trash_article(postid);
@@ -35,7 +35,7 @@
 				}
 				else if (actionValue == 'restore')
 				{
-					jQuery(checkedRijen).each(function(i)
+					jQ_nxs(checkedRijen).each(function(i)
 					{
 						var postid = this.id.split("_")[1];
 						nxs_js_restore_article(postid);
@@ -48,7 +48,7 @@
 					var answer = confirm("<?php nxs_l18n_e("Are you sure you want to delete all selected items?[nxs:confirm]", "nxs_td"); ?>");
 					if (answer)
 					{
-						jQuery(checkedRijen).each(function(i)
+						jQ_nxs(checkedRijen).each(function(i)
 						{
 							var postid = this.id.split("_")[1];
 							nxs_js_delete_article(postid);
@@ -189,8 +189,8 @@
             <h2><span class="nxs-icon-article-overview"></span><?php nxs_l18n_e("Template parts", "nxs_td"); ?></h2>
             <div class="nxs-clear padding"></div>
             <ul class="nxs-float-left meta">
-                <li><a href="#" onclick="jQuery('#post_status').val('publish'); jQuery('#theform').submit(); return false;"><span><?php nxs_l18n_e("Published[nxs:adminpage,linkbutton]", "nxs_td"); ?>&nbsp;(<?php echo $publishedpagescount; ?>)</span></a>|</li> 
-                <li><a href="#" onclick="jQuery('#post_status').val('trash'); jQuery('#theform').submit(); return false;"><span><?php nxs_l18n_e("Recycled[nxs:adminpage,linkbutton]", "nxs_td"); ?>&nbsp;(<?php echo $trashedpagescount; ?>)</span></a></li>           	
+                <li><a href="#" onclick="jQ_nxs('#post_status').val('publish'); jQ_nxs('#theform').submit(); return false;"><span><?php nxs_l18n_e("Published[nxs:adminpage,linkbutton]", "nxs_td"); ?>&nbsp;(<?php echo $publishedpagescount; ?>)</span></a>|</li> 
+                <li><a href="#" onclick="jQ_nxs('#post_status').val('trash'); jQ_nxs('#theform').submit(); return false;"><span><?php nxs_l18n_e("Recycled[nxs:adminpage,linkbutton]", "nxs_td"); ?>&nbsp;(<?php echo $trashedpagescount; ?>)</span></a></li>           	
             </ul>
             <div class="nxs-clear padding"></div>
             
@@ -205,7 +205,7 @@
 			    			<option value="content" <?php if ($filter_types == "content") { echo 'selected="selected"'; } ?>><?php nxs_l18n_e("Contents only", "nxs_td"); ?></option>
 						 	</select>
 						</div>
-						<a href='#' class="nxs-float-left nxsbutton1" onclick="jQuery('#filter_types').val(jQuery('#filter_types_picker').val()); jQuery('#theform').submit(); return false;">Go</a>
+						<a href='#' class="nxs-float-left nxsbutton1" onclick="jQ_nxs('#filter_types').val(jQ_nxs('#filter_types_picker').val()); jQ_nxs('#theform').submit(); return false;">Go</a>
 						
             <ul class="nxs-float-left meta">
                 <li>
@@ -221,7 +221,7 @@
                             <option value="none"><?php nxs_l18n_e("None[nxs:adminpage,ddl]", "nxs_td"); ?></option>
                             <?php } ?>
                     	</select>
-                      <a class="nxsbutton1" href="#" onclick="var selectedValue = jQuery('#multiaction option:selected').val(); handleMultiAction(selectedValue); return false;"><?php nxs_l18n_e("Apply[nxs:adminpage,button]", "nxs_td"); ?></a>
+                      <a class="nxsbutton1" href="#" onclick="var selectedValue = jQ_nxs('#multiaction option:selected').val(); handleMultiAction(selectedValue); return false;"><?php nxs_l18n_e("Apply[nxs:adminpage,button]", "nxs_td"); ?></a>
                     </div>
                 </li>
                 </ul>
@@ -237,7 +237,7 @@
 					    			<option value="newcontentparthome"><?php nxs_l18n_e("Content", "nxs_td"); ?></option>
 								 	</select>
 								</div>
-								<a href='#' class="nxs-float-left nxsbutton1" onclick="nxs_js_createnewtype(jQuery('#create_types_picker').val()); return false;"><?php nxs_l18n_e("Create", "nxs_td"); ?></a>
+								<a href='#' class="nxs-float-left nxsbutton1" onclick="nxs_js_createnewtype(jQ_nxs('#create_types_picker').val()); return false;"><?php nxs_l18n_e("Create", "nxs_td"); ?></a>
 								<script type='text/javascript'>
 									function nxs_js_createnewtype(typetocreate)
 									{
@@ -264,19 +264,19 @@
                 
                 <span class="">
                     <?php if ($pagingcurrentpage > 1) { ?>
-                <a class="current" href="#" onclick="jQuery('#pagingcurrentpage').val('1'); jQuery('#theform').submit(); return false;">&lt;&lt;</a>
+                <a class="current" href="#" onclick="jQ_nxs('#pagingcurrentpage').val('1'); jQ_nxs('#theform').submit(); return false;">&lt;&lt;</a>
                 <?php } ?>
                 <?php if ($pagingcurrentpage > 1) { ?>
-                <a class="current" href="#" onclick="jQuery('#pagingcurrentpage').val('<?php echo $pagingcurrentpage - 1; ?>'); jQuery('#theform').submit(); return false;">&lt;</a>
+                <a class="current" href="#" onclick="jQ_nxs('#pagingcurrentpage').val('<?php echo $pagingcurrentpage - 1; ?>'); jQ_nxs('#theform').submit(); return false;">&lt;</a>
                 <?php } ?>
                 <span class="">
-                        <input type="text" name="manualpagingnr" id="manualpagingnr" value="<?php echo $pagingcurrentpage; ?>" size="2" onkeydown="if (event.keyCode == 13) { jQuery('#pagingcurrentpage').val(jQuery('#manualpagingnr').text()); jQuery('#theform').submit(); }" class="small2"> van <?php echo $pagingtotalpages;?>
+                        <input type="text" name="manualpagingnr" id="manualpagingnr" value="<?php echo $pagingcurrentpage; ?>" size="2" onkeydown="if (event.keyCode == 13) { jQ_nxs('#pagingcurrentpage').val(jQ_nxs('#manualpagingnr').text()); jQ_nxs('#theform').submit(); }" class="small2"> van <?php echo $pagingtotalpages;?>
                     </span>
                     <?php if ($pagingcurrentpage < $pagingtotalpages) { ?>
-                <a class="current" href="#" onclick="jQuery('#pagingcurrentpage').val('<?php echo $pagingcurrentpage + 1; ?>'); jQuery('#theform').submit(); return false;">&gt;</a>
+                <a class="current" href="#" onclick="jQ_nxs('#pagingcurrentpage').val('<?php echo $pagingcurrentpage + 1; ?>'); jQ_nxs('#theform').submit(); return false;">&gt;</a>
                 <?php } ?>
                     <?php if ($pagingcurrentpage < $pagingtotalpages) { ?>
-                    <a class="current" href="#" onclick="jQuery('#pagingcurrentpage').val('<?php echo $pagingtotalpages;?>'); jQuery('#theform').submit(); return false;">&gt;&gt;</a>
+                    <a class="current" href="#" onclick="jQ_nxs('#pagingcurrentpage').val('<?php echo $pagingtotalpages;?>'); jQ_nxs('#theform').submit(); return false;">&gt;&gt;</a>
                   <?php } ?>
                 </span>
                 
@@ -293,17 +293,17 @@
                 <thead>
                 <tr>
                   <th scope="col" class="check">
-                      <input type="checkbox" onchange="jQuery('input[type=\'checkbox\']').prop('checked', this.checked);">
+                      <input type="checkbox" onchange="jQ_nxs('input[type=\'checkbox\']').prop('checked', this.checked);">
                   </th>
                   <th scope="col" class="nxs-title">
                       <span><?php nxs_l18n_e("Title[nxs:adminpage,columnhead]", "nxs_td"); ?></span>&nbsp;
                       <!--
-                      <a href="#" onclick="jQuery('#order_by').val('title'); jQuery('#order').val('ASC'); jQuery('#theform').submit(); return false;">
+                      <a href="#" onclick="jQ_nxs('#order_by').val('title'); jQ_nxs('#order').val('ASC'); jQ_nxs('#theform').submit(); return false;">
                       <span>&darr;</span>
                       <span class="sorting-indicator"></span>
                       </a>
                       &nbsp;
-                      <a href="#" onclick="jQuery('#order_by').val('title'); jQuery('#order').val('DESC'); jQuery('#theform').submit(); return false;">
+                      <a href="#" onclick="jQ_nxs('#order_by').val('title'); jQ_nxs('#order').val('DESC'); jQ_nxs('#theform').submit(); return false;">
                       <span>&uarr;</span>
                       <span class="sorting-indicator"></span>
                       </a>
@@ -318,12 +318,12 @@
                   <th scope="col">
                       <span><?php nxs_l18n_e("Date[nxs:adminpage,columnhead]", "nxs_td"); ?></span>
                       <!--
-                      <a href="#" onclick="jQuery('#order_by').val('post_date'); jQuery('#order').val('DESC'); jQuery('#theform').submit(); return false;">
+                      <a href="#" onclick="jQ_nxs('#order_by').val('post_date'); jQ_nxs('#order').val('DESC'); jQ_nxs('#theform').submit(); return false;">
                       <span>&darr;</span>
                       <span class="sorting-indicator"></span>
                       </a>
                       &nbsp;
-                      <a href="#" onclick="jQuery('#order_by').val('post_date'); jQuery('#order').val('ASC'); jQuery('#theform').submit(); return false;">
+                      <a href="#" onclick="jQ_nxs('#order_by').val('post_date'); jQ_nxs('#order').val('ASC'); jQ_nxs('#theform').submit(); return false;">
                       <span>&uarr;</span>
                       <span class="sorting-indicator"></span>
                       </a>
@@ -334,17 +334,17 @@
                 <tfoot>
                 <tr>
                   <th scope="col" class="check">
-                      <input type="checkbox" onchange="jQuery('input[type=\'checkbox\']').prop('checked', this.checked);">
+                      <input type="checkbox" onchange="jQ_nxs('input[type=\'checkbox\']').prop('checked', this.checked);">
                   </th>
                   <th scope="col" class="nxs-title">
                       <span><?php nxs_l18n_e("Title[nxs:adminpage,columnhead]", "nxs_td"); ?></span>&nbsp;
                       <!--
-                      <a href="#" onclick="jQuery('#order_by').val('title'); jQuery('#order').val('ASC'); jQuery('#theform').submit(); return false;">
+                      <a href="#" onclick="jQ_nxs('#order_by').val('title'); jQ_nxs('#order').val('ASC'); jQ_nxs('#theform').submit(); return false;">
                       <span>&darr;</span>
                       <span class="sorting-indicator"></span>
                       </a>
                       &nbsp;
-                      <a href="#" onclick="jQuery('#order_by').val('title'); jQuery('#order').val('DESC'); jQuery('#theform').submit(); return false;">
+                      <a href="#" onclick="jQ_nxs('#order_by').val('title'); jQ_nxs('#order').val('DESC'); jQ_nxs('#theform').submit(); return false;">
                       <span>&uarr;</span>
                       <span class="sorting-indicator"></span>
                       </a>
@@ -359,12 +359,12 @@
                   <th scope="col">
                       <span><?php nxs_l18n_e("Date[nxs:adminpage,columnhead]", "nxs_td"); ?></span>
                       <!--
-                      <a href="#" onclick="jQuery('#order_by').val('post_date'); jQuery('#order').val('DESC'); jQuery('#theform').submit(); return false;">
+                      <a href="#" onclick="jQ_nxs('#order_by').val('post_date'); jQ_nxs('#order').val('DESC'); jQ_nxs('#theform').submit(); return false;">
                       <span>&darr;</span>
                       <span class="sorting-indicator"></span>
                       </a>
                       &nbsp;
-                      <a href="#" onclick="jQuery('#order_by').val('post_date'); jQuery('#order').val('ASC'); jQuery('#theform').submit(); return false;">
+                      <a href="#" onclick="jQ_nxs('#order_by').val('post_date'); jQ_nxs('#order').val('ASC'); jQ_nxs('#theform').submit(); return false;">
                       <span>&uarr;</span>
                       <span class="sorting-indicator"></span>
                       </a>

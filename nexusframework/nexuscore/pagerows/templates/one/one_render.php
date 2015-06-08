@@ -6,7 +6,7 @@ function nxs_pagerowtemplate_render_one_toolbox($args)
 {
 	extract($args);
 	
-	ob_start();
+	nxs_ob_start();
 	?>
   
 	<p class="nxs-one-whole">1</p>
@@ -19,8 +19,8 @@ function nxs_pagerowtemplate_render_one_toolbox($args)
 	</div>
 
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	echo $result;
 }
@@ -29,7 +29,7 @@ function nxs_pagerowtemplate_render_one($args)
 {
 	extract($args);
 	
-	ob_start();
+	nxs_ob_start();
 
 	if ($onderdrukcontent == '')
 	{
@@ -101,8 +101,7 @@ function nxs_pagerowtemplate_render_one($args)
 			}
 			else if ($onderdrukcontent == '_new')
 			{
-				echo "no longer supported";
-				die();
+    		nxs_webmethod_return_nack("no longer supported");
 			}
 			else if ($onderdrukcontent == '')
 			{
@@ -133,8 +132,8 @@ function nxs_pagerowtemplate_render_one($args)
 		</li>
 	<?php
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	if ($output == "return")
 	{

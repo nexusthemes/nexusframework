@@ -193,7 +193,7 @@ function nxs_widgets_categories_render_webpart_render_htmlvisualization($args)
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-categories ";
 	
@@ -257,8 +257,8 @@ function nxs_widgets_categories_render_webpart_render_htmlvisualization($args)
 
 	/* ------------------------------------------------------------------------------------------------- */	
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;

@@ -24,7 +24,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 	$result = array();
 	$result["result"] = "OK";
 
-	ob_start();
+	nxs_ob_start();
 
 	//
 	// event handling
@@ -152,7 +152,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 								<script type='text/javascript'>
 	        				function nxs_js_overrideexistingunistyle()
 	        				{
-	        					var stylename = jQuery('#overrideexistingunistyle').val();
+	        					var stylename = jQ_nxs('#overrideexistingunistyle').val();
 										if (stylename == '')
 										{
 											nxs_js_popup_notifynotok('<?php nxs_l18n_e("Please select a name"); ?>', 'newunistylename');
@@ -184,7 +184,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 								<script type='text/javascript'>
 	        				function nxs_js_storenewunistyle()
 	        				{
-	        					var stylename = jQuery('#newunistylename').val();
+	        					var stylename = jQ_nxs('#newunistylename').val();
 										if (stylename == '')
 										{
 											nxs_js_popup_notifynotok('<?php nxs_l18n_e("Please enter a name"); ?>', 'newunistylename');
@@ -222,8 +222,8 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 	}
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $html = ob_get_contents();
-  ob_end_clean();
+  $html = nxs_ob_get_contents();
+  nxs_ob_end_clean();
     
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page

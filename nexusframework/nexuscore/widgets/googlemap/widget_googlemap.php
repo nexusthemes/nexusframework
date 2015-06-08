@@ -212,7 +212,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	ob_start();
+	nxs_ob_start();
 	?>
 		<div id="map_canvas_<?php echo $placeholderid;?>" class="nxs-runtime-autocellsize nxs-minheight <?php echo $minheight_cssclass; ?>"></div>
 
@@ -294,8 +294,8 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
@@ -315,7 +315,7 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	$lat = $$altid["lat"];
 	$lng = $$altid["lng"];
 
-	ob_start();
+	nxs_ob_start();
 	?>
 
 	<div class="content2">
@@ -494,8 +494,8 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 
 	<?php
 
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 

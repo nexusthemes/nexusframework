@@ -105,7 +105,7 @@ function nxs_widgets_formbox_getpath($metadata)
 
 function nxs_widgets_formbox_submittedforms($optionvalues, $args, $runtimeblendeddata) 
 {
-	ob_start();
+	nxs_ob_start();
 	
 	extract($optionvalues);
 
@@ -131,8 +131,8 @@ function nxs_widgets_formbox_submittedforms($optionvalues, $args, $runtimeblende
     </div>		
     <div class="nxs-clear"></div>
   	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -402,7 +402,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	
 	// Setting the widget name variable to the folder name
 	$widget_name = basename(dirname(__FILE__));
@@ -680,8 +680,8 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	/* ------------------------------------------------------------------------------------------------- */
 	 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page
@@ -718,7 +718,7 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	else
 	{
 		var_dump($response);
-		die();
+		nxs_webmethod_return_nack("unsupported result");
 	}
 	
 	global $current_user;

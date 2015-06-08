@@ -41,14 +41,14 @@
 			$(vars.tray_button).toggle(function(){
 				$(vars.thumb_tray).stop().animate({bottom : 0, avoidTransforms : true}, 300 );
 				$(".pagesliderthumbtrayshowhide.nxs-toggle").removeClass("nxs-icon-arrow-up").addClass("nxs-icon-arrow-down");
-				nxs_js_log("111111");
+				//nxs_js_log("111111");
 				//if ($(vars.tray_arrow).attr('src')) $(vars.tray_arrow).attr("src", vars.image_path + "button-tray-down.png");
 				return false;
 			}, function() {
 				$(vars.thumb_tray).stop().animate({bottom : -$(vars.thumb_tray).height(), avoidTransforms : true}, 300 );
 				$(".pagesliderthumbtrayshowhide.nxs-toggle").removeClass("nxs-icon-arrow-down").addClass("nxs-icon-arrow-up");
-				nxs_js_log("111111");
-				nxs_js_log("22222");
+				//nxs_js_log("111111");
+				//nxs_js_log("22222");
 				//if ($(vars.tray_arrow).attr('src')) $(vars.tray_arrow).attr("src", vars.image_path + "button-tray-up.png");
 				return false;
 			});

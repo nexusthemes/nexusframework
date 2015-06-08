@@ -772,7 +772,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	
 	if ($shouldrenderalternative) 
 	{
@@ -1086,7 +1086,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 			$urllastpage = nxs_addqueryparametertourl($currenturl, $queryparameter, $totalpages - 1);
 			
 			
-			ob_start();
+			nxs_ob_start();
 			
 			if ($totalpages > 1) { 
 				echo'
@@ -1157,8 +1157,8 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 				
 			}
 			
-			$paginghtml = ob_get_contents();
-			ob_end_clean();
+			$paginghtml = nxs_ob_get_contents();
+			nxs_ob_end_clean();
 		}
 		
 		/* BUTTON
@@ -1657,8 +1657,8 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 	/* ------------------------------------------------------------------------------------------------- */
 	 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page

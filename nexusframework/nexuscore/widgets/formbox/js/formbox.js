@@ -75,7 +75,7 @@ function nxs_js_formbox_send(postid, placeholderid)
 	
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',

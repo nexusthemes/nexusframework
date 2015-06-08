@@ -281,7 +281,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-youtube";
 	
@@ -314,8 +314,8 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		//echo "pagerowtemplate:" . $nxs_global_row_render_statebag["pagerowtemplate"];
 	}
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
@@ -334,7 +334,7 @@ function nxs_youtube_videoid_popupcontent($optionvalues, $args, $runtimeblendedd
 
 	$value = $$altid;	// $id is the parametername, $$id is the value of that parameter
 
-	ob_start();
+	nxs_ob_start();
 	?>
 	<input type='text' class='videourl-<?php echo $id; ?> nxs-float-left' placeholder='<?php nxs_l18n_e("For example http://www.youtube.com/watch?feature=player_embedded&v=Gvvw4lXcCXE[nxs:placeholder]", "nxs_td"); ?>' oninput='nxs_js_updatevideoid_<?php echo $id; ?>();' value='http://www.youtube.com/watch?v=<?php echo $value; ?>' />
 	<div class="nxs-clear">&nbsp;</div>
@@ -379,8 +379,8 @@ function nxs_youtube_videoid_popupcontent($optionvalues, $args, $runtimeblendedd
 
 	<?php
 
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -393,7 +393,7 @@ function nxs_youtube_playsecs_popupcontent($optionvalues, $args, $runtimeblended
 	$value = $$altid;	// $id is the parametername, $$id is the value of that parameter
 	$playsecs = $value;
 
-	ob_start();
+	nxs_ob_start();
 	?>
 
 	<?php
@@ -471,8 +471,8 @@ function nxs_youtube_playsecs_popupcontent($optionvalues, $args, $runtimeblended
 
 	<?php
 
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 

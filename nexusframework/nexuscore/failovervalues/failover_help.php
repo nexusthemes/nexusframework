@@ -5,7 +5,7 @@
 		
 		$expirationtimeinseconds = 60;
 		
-		ob_start();
+		nxs_ob_start();
 		?>
 		<div class='content2'>
 			<div class='box'>
@@ -23,8 +23,8 @@
 
 		<?php
 
-		$html = ob_get_contents();
-		ob_end_clean();
+		$html = nxs_ob_get_contents();
+		nxs_ob_end_clean();
 
 		$result["html"] = $html;
 		$result["transientduration"] = $expirationtimeinseconds;

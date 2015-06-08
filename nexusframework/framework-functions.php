@@ -1,9 +1,4 @@
 <?php 
-function nxs_die()
-{
-	error_log("nxs die");
-	die();
-}
 
 if (defined('NXS_FRAMEWORKLOADED'))
 {
@@ -11,6 +6,145 @@ if (defined('NXS_FRAMEWORKLOADED'))
 	die();
 }
 define('NXS_FRAMEWORKLOADED', true);
+
+function nxs_die()
+{
+	error_log("nxs die");
+	die();
+}
+
+function nxs_ob_start($output_callback)
+{
+	$shouldbufferoutput = true;
+	
+	if ($_REQUEST["nxs"] == "nobuffer")
+	{
+		if (nxs_has_adminpermissions())
+		{
+			$shouldbufferoutput = false;
+		}
+	}
+	
+	if ($shouldbufferoutput)
+	{
+		$result = ob_start($output_callback);
+	}
+	else
+	{
+		$result = "overruled (no output buffering)";
+	}
+	
+	return $result;
+}
+
+
+function nxs_ob_get_contents()
+{
+	$shouldbufferoutput = true;
+	
+	if ($_REQUEST["nxs"] == "nobuffer")
+	{
+		//$bt = debug_backtrace();
+		//print_r($bt);
+		//echo "that it :)";
+		//die();
+		
+		if (nxs_has_adminpermissions())
+		{
+			$shouldbufferoutput = false;
+		}
+	}
+	
+	if ($shouldbufferoutput)
+	{
+		$result = ob_get_contents();
+	}
+	else
+	{
+		$result = "overruled (no output buffering)";
+	}
+	
+	return $result;
+}
+
+function nxs_ob_end_clean()
+{
+	$shouldbufferoutput = true;
+	
+	if ($_REQUEST["nxs"] == "nobuffer")
+	{
+		if (nxs_has_adminpermissions())
+		{
+			$shouldbufferoutput = false;
+		}
+	}
+	
+	if ($shouldbufferoutput)
+	{
+		$result = ob_end_clean();
+	}
+	else
+	{
+		$result = "overruled (no output buffering)";
+	}
+	
+	return $result;
+}
+
+function nxs_ob_get_clean()
+{
+	$shouldbufferoutput = true;
+	
+	if ($_REQUEST["nxs"] == "nobuffer")
+	{
+		if (nxs_has_adminpermissions())
+		{
+			$shouldbufferoutput = false;
+		}
+	}
+	
+	if ($shouldbufferoutput)
+	{
+		$result = ob_get_clean();
+	}
+	else
+	{
+		$result = "overruled (no output buffering)";
+	}
+	
+	return $result;
+}
+
+// 2013 08 03; fixing unwanted WP3.6 notice errors
+// third party plugins and other php code (like sunrise.php) can
+// cause warnings that mess up the output of the webmethod
+// for example when activating the theme
+// to solve this, at this stage we clean the output buffer
+// 2014 12 07; in some cases the ob_clean() invoked here
+// can cause weird bogus output (diamonds with question marks),
+// as-if the encoding is messed up (dproost)
+// to avoid this from happening we don't do a ob_clean when
+// there's nothing to clean up in the first place
+function nxs_saveobclean()
+{
+	if(ob_get_level() > 0)
+	{
+		$current = ob_get_contents();
+		if ($current != "")
+		{
+	  	ob_clean();
+		}
+		else
+		{
+			// leave as-is
+		}
+	}
+	else
+	{
+		// ignore
+	}
+}
+
 
 if (!defined('NXS_FRAMEWORKNAME'))
 {
@@ -188,41 +322,23 @@ function custom_posts_per_page( $query )
 }
 add_action( 'pre_get_posts', 'custom_posts_per_page' );
 
-// 2013 08 03; fixing unwanted WP3.6 notice errors
-// third party plugins and other php code (like sunrise.php) can
-// cause warnings that mess up the output of the webmethod
-// for example when activating the theme
-// to solve this, at this stage we clean the output buffer
-// 2014 12 07; in some cases the ob_clean() invoked here
-// can cause weird bogus output (diamonds with question marks),
-// as-if the encoding is messed up (dproost)
-// to avoid this from happening we don't do a ob_clean when
-// there's nothing to clean up in the first place
-function nxs_saveobclean()
+// hide php warning outputs on the screen
+$shouldlimiterrorreporting = true;
+if (nxs_isdebug())
 {
-	if(ob_get_level() > 0)
-	{		
-		$current = ob_get_contents();
-		if ($current != "")
-		{
-	  	ob_clean();
-		}
-		else
-		{
-			// leave as-is
-		}
-	}
-	else
+	if ($_REQUEST["nxs"] == "nobuffer")
 	{
-		// ignore
+		$shouldlimiterrorreporting = false;
 	}
 }
 
-if (!nxs_showphpwarnings())
+if ($shouldlimiterrorreporting)
 {
-	error_reporting(E_ERROR | E_PARSE);	
-	nxs_saveobclean();
-}	
+	error_reporting(E_ERROR | E_PARSE);
+}
+
+// always
+nxs_saveobclean();
 
 function nxs_getcharset()
 {
@@ -497,8 +613,9 @@ function nxs_wp_footer_debug()
 }
 
 add_action('init', 'nxs_init');
+add_action('admin_init', 'nxs_init');
 function nxs_init() 
-{	
+{
 	if (nxs_has_adminpermissions())
   {
   	if (isset($_REQUEST["nxs"]))
@@ -676,22 +793,48 @@ function nxs_init()
 		  }
 		  else if ($_REQUEST["nxs"] == "setactivesitesettings")
 		  {
-		  	$postid = $_REQUEST["postid"];
-		  	if ($postid == "")
+		  	//var_dump($_POST);
+		  	$sitesettingsjson = $_POST["sitesettingsjson"];
+				$sitesettingsjson = stripslashes($sitesettingsjson);
+		  	
+		  	if ($sitesettingsjson == "")
 		  	{
-		  		echo "not set";
+		  		?>
+		  		<form method="POST">
+		  			<input type="text" name="sitesettingsjson" value="yourjson here" />
+		  			<input type="submit" value="Set site settings" />
+		  		</form>
+		  		<?php
+		  	}
+		  	else
+		  	{
+			  	$newsettings = json_decode($sitesettingsjson, true);
+			  	if (count($newsettings) == 0)
+			  	{
+			  		echo "no, or invalid json found, breaking..<br />";
+			  		echo "found:" . $sitesettingsjson . "<br />";
+			  		var_dump($newsettings);
+			  		die();
+			  	}
+
+		  		echo "about to override site settings...";
+		  		
+			  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
+			  	$cnt = count($postids);
+			  	if ($cnt == 0 || $cnt > 1)
+			  	{
+			  		nxs_webmethod_return_nack("error; found $cnt postids for activesitesettings ?");
+			  	}
+			  	$postid = $postids[0];
+			  	
+			  	echo "active site settings is using postid: $postid <br />";
+			  	
+			  	$metadatakey = 'nxs_core';
+			  	$updateresult = update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($newsettings));
+			  	
+		  		echo "done :)";
 		  		die();
 		  	}
-		  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
-		  	echo "old values:";
-		  	var_dump($postids);
-		  	foreach ($postids as $oldpostid)
-		  	{
-		  		// reset the old one
-		  		nxs_reset_globalid($oldpostid);
-		  	}
-		  	nxs_reset_globalidtovalue($postid, "activesitesettings");
-		  	echo "configured";
 		  	die();
 		  }
 		 	else if ($_REQUEST["nxs"] == "locale")
@@ -1000,10 +1143,10 @@ function nxs_backend_meta_box()
 		
 		function nxs_js_movetotop()
 		{
-			jQuery('#nexus_meta').insertBefore('#normal-sortables');
+			jQ_nxs('#nexus_meta').insertBefore('#normal-sortables');
 		}
 		
-		jQuery(document).ready(function() 
+		jQ_nxs(document).ready(function() 
 		{
 			// move Nexus content editing item up the DOM
 			
@@ -1682,6 +1825,30 @@ function nxs_performdataconsistencycheck()
 	}
 }
 
+function nxs_setjQ_nxs()
+{
+	?>
+	<script type="text/javascript">
+		var jqv = jQuery.fn.jquery;
+		if (jqv == "1.11.1")
+		{
+			//alert("goede versie!");
+		}
+		else
+		{
+			//alert("unexpected version " + jqv);
+		}
+
+		var jQ_nxs = jQuery.noConflict(true);
+		var jQuery = jQ_nxs;
+		var $ = jQ_nxs;
+
+		//
+		//var $nxs = $.noConflict(true);
+	</script>
+	<?php
+}		
+
 function nxs_clearunwantedscripts()
 {
 	// if we are in the frontend ...
@@ -1706,28 +1873,11 @@ function nxs_clearunwantedscripts()
       wp_enqueue_script('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js', array('jquery'), '1.11.1');
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
-		
-		function nxs_setjquery()
-		{
-			?>
-			<script type="text/javascript">
-				var jqv = jQuery.fn.jquery;
-				if (jqv == "1.11.1")
-				{
-					//alert("goede versie!");
-				}
-				else
-				{
-					//alert("vekeerde versie!");
-				}
-				//var jQnxs = $.noConflict(true);
-				//var $nxs = $.noConflict(true);
-			</script>
-			<?php
-		}		
-		//add_action('wp_head','nxs_setjquery');
-
-
+		add_action('wp_head','nxs_setjQ_nxs');
+  }
+  else
+  {
+  	add_action('admin_head','nxs_setjQ_nxs');
   }
 }
 
@@ -1894,7 +2044,7 @@ function nxs_after_data_import()
 
 function nxs_cap_hasdesigncapabilities()
 {
-	return current_user_can(nxs_cap_getdesigncapability());
+	return current_user_can(nxs_cap_getdesigncapability()) || is_super_admin();
 }
 
 function nxs_setuprolesandcapabilities()
@@ -2031,7 +2181,6 @@ function nxs_template_getheader($name)
 		{
 			// echo "template included :)";
 		}
-		//die();
 	}
 }
 
@@ -2054,7 +2203,6 @@ function nxs_template_getfooter($name)
 		{
 			// echo "template included :)";
 		}
-		//die();
 	}
 }
 
@@ -2075,87 +2223,6 @@ function nxs_init_handledebug()
 			{
 				$scope = $_REQUEST["scope"];
 			}
-			nxs_localization_distributetolang($destinationlang, $scope);
-		}
-	}
-	
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "thumbs")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			$destinationlang = "nl";
-			if (!isset($_REQUEST["scope"]))
-			{
-				$scope = "*";
-			}
-			else
-			{
-				$scope = $_REQUEST["scope"];
-			}
-			nxs_localization_distributetolang_stage2($destinationlang, $scope);
-		}
-	}
-	
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "list")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			echo "blogs:";
-			global $wpdb;
-			$blogs = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM wp_blogs ORDER BY blog_id" ) );
-			var_dump($blogs);
-			die();
-		}
-	}
-
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "cleanimg")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			nxs_cleanimg();
-			echo "<br />";
-			echo "back :)";
-			die();
-		}
-	}
-	
-	
-	if (isset($_REQUEST["nxslocalizetest"]) && $_REQUEST["nxslocalizetest"] == "listposttypes")
-	{
-		if (nxs_has_adminpermissions())
-		{
-			global $wpdb;
-			
-			// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
-			// as these can use the pagetemplate concept too. This saves development
-			// time for plugins, and increases consistency of data for end-users
-			$q = "
-						select ID postid
-						from $wpdb->posts
-					";
-			$origpostids = $wpdb->get_results($q, ARRAY_A);
-			$distinct = array();
-			// filter out posts that are of specific post-types
-			foreach ($origpostids as $i => $origrow)
-			{
-				$origpostid = $origrow["postid"];
-				$posttype = get_post_type($origpostid);
-				if (!in_array($posttype, $distinct))
-				{
-					$distinct[] = $posttype;
-					echo "$posttype; <br />";
-					if ($posttype == "shop_order")
-					{
-						$pm = get_post_meta($origpostid);
-						var_dump($pm);
-					}
-				}
-
-			}
-			
-			echo "<br />";
-			echo "back :)";
-			die();
 		}
 	}
 	

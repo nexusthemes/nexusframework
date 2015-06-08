@@ -24,7 +24,7 @@ function nxs_popup_genericpopup_categorieseditor_getpopup($args)
   $categoriesfilters["uncategorized"] = "skip";
   nxs_getfilteredcategories($categories, $categoriesfilters);	
 	
-	ob_start();
+	nxs_ob_start();
 	
 	?>
 	
@@ -123,13 +123,13 @@ function nxs_popup_genericpopup_categorieseditor_getpopup($args)
 		
 		function handlenewcategory()
 		{			
-			var name = jQuery('#newcategoryname').val();
+			var name = jQ_nxs('#newcategoryname').val();
 			
 			name = jQuery.trim(name);
 			if (name == '')
 			{
 				nxs_js_alert('<?php nxs_l18n_e("Category name is required[nxs:growl]", "nxs_td"); ?>');
-				jQuery('#newcategoryname').focus();
+				jQ_nxs('#newcategoryname').focus();
 			}
 			else
 			{
@@ -167,8 +167,8 @@ function nxs_popup_genericpopup_categorieseditor_getpopup($args)
 	<?php
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $html = ob_get_contents();
-  ob_end_clean();
+  $html = nxs_ob_get_contents();
+  nxs_ob_end_clean();
     
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page

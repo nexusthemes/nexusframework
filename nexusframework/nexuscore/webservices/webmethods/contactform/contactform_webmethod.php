@@ -77,8 +77,7 @@ function nxs_webmethod_contactform()
  	}
  	else
  	{
- 		echo "intern email adres niet gezet";
- 		die();
+		nxs_webmethod_return_nack("intern email adres niet gezet");
  	}
  	
  	//

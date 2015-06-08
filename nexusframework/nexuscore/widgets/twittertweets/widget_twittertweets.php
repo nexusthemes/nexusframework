@@ -17,7 +17,7 @@ function nxs_widgets_twittertweets_getunifiedstylinggroup() {
 
 function nxs_widgets_twittertweets_connection($optionvalues, $args, $runtimeblendeddata) 
 {
-	ob_start();
+	nxs_ob_start();
 	
 	//$headingid = "heading";
 	
@@ -52,8 +52,8 @@ function nxs_widgets_twittertweets_connection($optionvalues, $args, $runtimeblen
 	</div>
   <div class="nxs-clear"></div>
   <?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -335,7 +335,7 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 	}
 	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-tweets ";
 	
@@ -509,8 +509,8 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 	/* ------------------------------------------------------------------------------------------------- */
 	
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page

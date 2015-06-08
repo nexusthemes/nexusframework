@@ -14,7 +14,7 @@ function nxs_commentsprovider_wordpressnative_geticonid()
 function nxs_commentsprovider_wordpressnative_getflyoutmenuhtml()
 {
 		// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	?>
 			<li class="nxs-hidewheneditorinactive">
 				<a href="<?php echo home_url('/'); ?>?nxs_admin=admin&backendpagetype=comments" title="<?php nxs_l18n_e("Comments[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
@@ -22,8 +22,8 @@ function nxs_commentsprovider_wordpressnative_getflyoutmenuhtml()
 				</a>
 			</li>
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -38,14 +38,14 @@ function nxs_commentsprovider_wordpressnative_getpostcommentcounthtml($args)
 	$count = get_comments_number($postid);
 
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	?>
 	<span class="nxs-icon-comments-2">
 		<span class="nxs-comments-count"><?php echo $count; ?></span>
     </span>
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	return $result;	
 }

@@ -52,7 +52,7 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 	
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-custom-html nxs-applylinkvarcolor";
 	
@@ -95,8 +95,8 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 	
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;

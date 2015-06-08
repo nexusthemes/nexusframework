@@ -556,23 +556,23 @@
 		        	<script type='text/javascript'>
 		        		function nxs_js_adjustangledelta(delta)
 		        		{
-		        			var angle = jQuery('#dyncolangle').val();
+		        			var angle = jQ_nxs('#dyncolangle').val();
 									angle = parseInt(angle);
 		        			angle = angle + delta;
-		        			jQuery('#dyncolangle').val(angle); 
+		        			jQ_nxs('#dyncolangle').val(angle); 
 		        			// update
 		        			nxs_js_updatecolorwizard();
 		        		}
 		        		
 		        		function nxs_js_showseoupdatebutton()
 		        		{
-		        			jQuery('#nxs-seofield-updatebutton').show();
+		        			jQ_nxs('#nxs-seofield-updatebutton').show();
 		        		}
 		        	</script>
 		          <div class="content nxs-padding10">
 		
 								<div class="block">            	
-		            	<div class="nxs-admin-header" onclick="jQuery('#nxssnipprev').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight()"><h3><?php nxs_l18n_e("Snippet preview[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
+		            	<div class="nxs-admin-header" onclick="jQ_nxs('#nxssnipprev').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight()"><h3><?php nxs_l18n_e("Snippet preview[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
 		            	<div id='nxssnipprev' class="content2">
 		                <div class="box">
 		                	<div id='nxs-seo-snippetwrapper'></div>
@@ -583,7 +583,7 @@
 		          	
 								<div id='nxs-seofields' style='display: none;'>
 			            <div class="block">
-			              <div class="nxs-admin-header" onclick="jQuery('#nxsseoinput').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight()"><h3><?php nxs_l18n_e("Input[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
+			              <div class="nxs-admin-header" onclick="jQ_nxs('#nxsseoinput').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight()"><h3><?php nxs_l18n_e("Input[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
 			              <div id="nxsseoinput">
 				            	<div class="content2">
 				                <div class="box">
@@ -628,7 +628,7 @@
 			
 									      
 									<div class="block">            	
-			            	<div class="nxs-admin-header" onclick="jQuery('#nxsseoanalysisoutput').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight();"><h3><?php nxs_l18n_e("Search engine analysis[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
+			            	<div class="nxs-admin-header" onclick="jQ_nxs('#nxsseoanalysisoutput').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight();"><h3><?php nxs_l18n_e("Search engine analysis[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
 			            	<div id="nxsseoanalysisoutput" class="content2">
 			                <div class="box">
 			                	<div id='nxs-seo-output'></div>
@@ -1047,7 +1047,7 @@
 		
 		function nxs_js_getlimitedangle(min, max)
 		{
-			var angle = jQuery('#dyncolangle').val();
+			var angle = jQ_nxs('#dyncolangle').val();
 			angle = parseInt(angle);
 			if (angle < min)
 			{
@@ -1057,14 +1057,14 @@
 			{
 				angle = max;
 			}
-			jQuery('#dyncolangle').val(angle);
+			jQ_nxs('#dyncolangle').val(angle);
 			
 			return angle;
 		}
 		
 		function nxs_js_updatecolorwizard()
 		{
-			var dom = jQuery('#colorderiver');
+			var dom = jQ_nxs('#colorderiver');
 	
 			nxs_js_log('at your colorservice');
 			
@@ -1072,51 +1072,51 @@
 			jQuery("#wizarddyncolorcontainer .color-picker").miniColors("destroy");
 			
 			// remove dom
-			jQuery('#wizarddyncolorcontainer').empty();	// clean up old stuff
+			jQ_nxs('#wizarddyncolorcontainer').empty();	// clean up old stuff
 	
-			var hex = jQuery("#vg_color_main1_m").val();
+			var hex = jQ_nxs("#vg_color_main1_m").val();
 			var rgb = nxs_js_hextorgb(hex);
 			var hsl = nxs_js_rgbtohsl(rgb);
 			
 			// derive
-			var selectedtype = jQuery(dom).val();
+			var selectedtype = jQ_nxs(dom).val();
 			var dyncolors = [];
 			if (selectedtype == 'mono')
 			{
-				jQuery('#anglecontroller').hide();
+				jQ_nxs('#anglecontroller').hide();
 				dyncolors = nxs_js_getmonohsl(hsl);
 			}
 			else if (selectedtype == 'complementary')
 			{
-				jQuery('#anglecontroller').hide();
+				jQ_nxs('#anglecontroller').hide();
 				dyncolors = nxs_js_getcomplementaryhsl(hsl);
 			}
 			else if (selectedtype == 'splitcomplementary')		
 			{
-				jQuery('#anglecontroller').hide();
+				jQ_nxs('#anglecontroller').hide();
 				dyncolors = nxs_js_getsplitcomplementaryhsl(hsl);  			
 			}
 			else if (selectedtype == 'splittriad')		
 			{
-				jQuery('#anglecontroller').show();
+				jQ_nxs('#anglecontroller').show();
 				var angle = nxs_js_getlimitedangle(0,90);
 				dyncolors = nxs_js_gettriadbyanglehsl(hsl, angle);
 			}
 			else if (selectedtype == 'analogic')
 			{
-				jQuery('#anglecontroller').show();
+				jQ_nxs('#anglecontroller').show();
 				var angle = nxs_js_getlimitedangle(0,90);
 				dyncolors = nxs_js_getanalogicbyanglehsl(hsl, angle);		
 			}
 			else if (selectedtype == 'accentedanalogic')
 			{
-				jQuery('#anglecontroller').show();
+				jQ_nxs('#anglecontroller').show();
 				var angle = nxs_js_getlimitedangle(0,90);
 				dyncolors = nxs_js_getaccentedanalogicbyanglehsl(hsl, angle);		
 			}
 			else if (selectedtype == 'tetrad')
 			{
-				jQuery('#anglecontroller').show();
+				jQ_nxs('#anglecontroller').show();
 				var angle = nxs_js_getlimitedangle(0,90);
 				dyncolors = nxs_js_gettetradbyanglehsl(hsl, angle);		
 			}
@@ -1129,7 +1129,7 @@
 		    var currenthex = nxs_js_rgbtohex(currentrgb);
 		    // inject new colorpicker
 				var domtoappend = "<div class='content2'><div class='box'><div class='box-title2'><p>todo</p></div><div class='box-content2'><input type='text' class='color-picker' size='6' value='" + currenthex + "' /></div><div class='nxs-clear'></div></div></div> <!--END content-->";
-				jQuery("#wizarddyncolorcontainer").append(domtoappend);
+				jQ_nxs("#wizarddyncolorcontainer").append(domtoappend);
 		  }
 		  
 		  // activate colorpickers
@@ -1144,11 +1144,11 @@
 			
 		}
 		
-		jQuery(document).ready(
+		jQ_nxs(document).ready(
 			function() 
 			{
 				var nxs_tabs_initialized = false;
-				jQuery(".tabs").tabs
+				jQ_nxs(".tabs").tabs
 				(
 					{
 						event: "click",
@@ -1159,8 +1159,8 @@
 	            {
 		            var newIndex = ui.index;
 		            //nxs_js_log(ui.panel);
-		            //var tabscontainer = jQuery(ui).closest(".tabs");
-		            var tabsid = jQuery(ui.panel).closest(".tabs").attr("id");
+		            //var tabscontainer = jQ_nxs(ui).closest(".tabs");
+		            var tabsid = jQ_nxs(ui.panel).closest(".tabs").attr("id");
 		            nxs_js_setcookie('nxs_cookie_acttab_' + tabsid, newIndex);
 		          }
 		        }
@@ -1186,7 +1186,7 @@
 		    oldindex = parseInt(oldindex);
 				
 				// klap menu open/dicht als er op het icoon wordt gedrukt
-				jQuery(".nxs-menu-toggler").click
+				jQ_nxs(".nxs-menu-toggler").click
 				(
 					function() 
 					{
@@ -1195,7 +1195,7 @@
 				);
 				
 				// enable/disable de editor als er op het icoon wordt gedrukt
-				jQuery(".nxs-editor-toggler").click
+				jQ_nxs(".nxs-editor-toggler").click
 				(
 					function() 
 					{ 
@@ -1204,7 +1204,7 @@
 					}
 				);
 				
-				jQuery(".tabs").on('tabsactivate', function(event, ui)
+				jQ_nxs(".tabs").on('tabsactivate', function(event, ui)
 				{
 					nxs_js_log("tabsactivate!");
 					var index = ui.newTab.index();
@@ -1219,71 +1219,71 @@
 				});
 
 				//				
-				jQuery("#nxs-admin-tabs" ).tabs( "option", "active", oldindex);
+				jQ_nxs("#nxs-admin-tabs" ).tabs( "option", "active", oldindex);
 
 	
 				// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
 				// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
-				jQuery("#nxs-menu-wrap").bind("click.stoppropagation", function(e) 
+				jQ_nxs("#nxs-menu-wrap").bind("click.stoppropagation", function(e) 
 				{
 					e.stopPropagation();
 				});			
-				jQuery("#nxs-menu-wrap").bind("dblclick.stoppropagation", function(e) 
+				jQ_nxs("#nxs-menu-wrap").bind("dblclick.stoppropagation", function(e) 
 				{
 					e.stopPropagation();
 				});
-				jQuery("#nxs-content").bind("dblclick.stoppropagation", function(e) 
+				jQ_nxs("#nxs-content").bind("dblclick.stoppropagation", function(e) 
 				{
 					e.stopPropagation();
 				});
-				jQuery("#nxs-header").bind("dblclick.stoppropagation", function(e) 
+				jQ_nxs("#nxs-header").bind("dblclick.stoppropagation", function(e) 
 				{
 					e.stopPropagation();
 				});
 				
 				nxs_init_vormgeving();
 				
-				jQuery(".nxs-menu-toggler").toggleClass("close");
+				jQ_nxs(".nxs-menu-toggler").toggleClass("close");
 				
 				// bij het hoveren boven het menu item nxs-editor-toggler lichten we alle cursors op
-				jQuery(".nxs-editor-toggler").bind("mouseover.glowcursors", function(e)
+				jQ_nxs(".nxs-editor-toggler").bind("mouseover.glowcursors", function(e)
 				{
 					// ensure tags are not showing 2x's; remove first!
-					jQuery(".scaffolding-editor-toggler").each
+					jQ_nxs(".scaffolding-editor-toggler").each
 					(
 						function(i)
 						{
-							jQuery(this).remove();
+							jQ_nxs(this).remove();
 						}
 					);
 					
 					// add tags
-					jQuery(".nxs-elements-container").each
+					jQ_nxs(".nxs-elements-container").each
 					(
 						function(i)
 						{
 							var msg;
-							if (jQuery(this).hasClass("nxs-header-container"))
+							if (jQ_nxs(this).hasClass("nxs-header-container"))
 							{
 								msg = "Header content area";
 							}
-							else if (jQuery(this).hasClass("nxs-subheader-container"))
+							else if (jQ_nxs(this).hasClass("nxs-subheader-container"))
 							{
 								msg = "Subheader content area";
 							}
-							else if (jQuery(this).hasClass("nxs-sidebar-container"))
+							else if (jQ_nxs(this).hasClass("nxs-sidebar-container"))
 							{
 								msg = "Sidebar content area";
 							}
-							else if (jQuery(this).hasClass("nxs-subfooter-container"))
+							else if (jQ_nxs(this).hasClass("nxs-subfooter-container"))
 							{
 								msg = "Subfooter content area";
 							}
-							else if (jQuery(this).hasClass("nxs-footer-container"))
+							else if (jQ_nxs(this).hasClass("nxs-footer-container"))
 							{
 								msg = "Footer content area";
 							}
-							else if (jQuery(this).hasClass("nxs-article-container"))
+							else if (jQ_nxs(this).hasClass("nxs-article-container"))
 							{
 								msg = "Main content area";
 							}
@@ -1291,34 +1291,34 @@
 							{
 								msg = "Container content area";
 							}
-							jQuery(this).find(".nxs-placeholder > .nxs-cell-cursor").each
+							jQ_nxs(this).find(".nxs-placeholder > .nxs-cell-cursor").each
 							(
 								function(j)
 								{
-									jQuery(this).append("<span class='scaffolding-editor-toggler' style='background-color: black; color: white; padding: 2px;'>" + msg + "</span>");
+									jQ_nxs(this).append("<span class='scaffolding-editor-toggler' style='background-color: black; color: white; padding: 2px;'>" + msg + "</span>");
 								}
 							);
 						}
 					);
 										
 					// nxs_js_log('mouse over detected');
-					jQuery(".nxs-cursor").addClass("nxs-hovering");
-					jQuery(".nxs-cursor").addClass("nxs-overrule-suppress");
+					jQ_nxs(".nxs-cursor").addClass("nxs-hovering");
+					jQ_nxs(".nxs-cursor").addClass("nxs-overrule-suppress");
 				}
 				);
-				jQuery(".nxs-editor-toggler").bind("mouseleave.dimcursors", function(e)
+				jQ_nxs(".nxs-editor-toggler").bind("mouseleave.dimcursors", function(e)
 				{
-					jQuery(".scaffolding-editor-toggler").each
+					jQ_nxs(".scaffolding-editor-toggler").each
 					(
 						function(i)
 						{
-							jQuery(this).remove();
+							jQ_nxs(this).remove();
 						}
 					);
 					
 					// nxs_js_log('mouse leave detected');
-					jQuery(".nxs-cursor").removeClass("nxs-hovering");
-					jQuery(".nxs-cursor").removeClass("nxs-overrule-suppress");
+					jQ_nxs(".nxs-cursor").removeClass("nxs-hovering");
+					jQ_nxs(".nxs-cursor").removeClass("nxs-overrule-suppress");
 				}
 				);
 			}
@@ -1326,7 +1326,7 @@
 		
 		function nxs_js_menu_updateoverridenmanualcss()
 		{
-			jQuery('#nxs_menu_savemanualcssbutton').show();				
+			jQ_nxs('#nxs_menu_savemanualcssbutton').show();				
 			// recalculate height of menu
 			nxs_js_refreshtopmenufillerheight();
 			
@@ -1351,8 +1351,8 @@
 					letterCase: 'uppercase',
 					change: function(hex, rgb) 
 					{
-						var kleuridentificatie = jQuery(this).attr("id");
-						jQuery(this).data("kleur", hex);
+						var kleuridentificatie = jQ_nxs(this).attr("id");
+						jQ_nxs(this).data("kleur", hex);
 	
 						nxs_js_processcolorupdate(hex, rgb, kleuridentificatie);
 						
@@ -1365,17 +1365,17 @@
 	    //
 	    // reposition the minicolors after user clicks on a color picker
 	    //
-	    jQuery(".miniColors-trigger").bind
+	    jQ_nxs(".miniColors-trigger").bind
 	    (
 		    "click", function(e)
 		    {
-		    	var x = jQuery(this).position().left + 30;
-		    	var y = jQuery(this).position().top - jQuery(this).scrollTop() + 45;
+		    	var x = jQ_nxs(this).position().left + 30;
+		    	var y = jQ_nxs(this).position().top - jQ_nxs(this).scrollTop() + 45;
 		    	
-		    	jQuery(".color-picker").each(function(i)
+		    	jQ_nxs(".color-picker").each(function(i)
 		    	{
-		    		jQuery(this).css("left", "" + x + "px");
-		    		jQuery(this).css("top", "" + y + "px");
+		    		jQ_nxs(this).css("left", "" + x + "px");
+		    		jQ_nxs(this).css("top", "" + y + "px");
 		    	});
 		    }
 	    );
@@ -1415,7 +1415,7 @@
 						nxs_js_menu_handlecolorthemechanged();
 						
 						// update GUI
-						jQuery('.nxs_menu_savekleurenbutton').show();
+						jQ_nxs('.nxs_menu_savekleurenbutton').show();
 						// recalculate height of menu
 						nxs_js_refreshtopmenufillerheight();
 					}
@@ -1490,7 +1490,7 @@
 				{
 					$identification = $currentcolortype . $currentsubtype;
 					?>
-					valuestobeupdated["vg_color_<?php echo $identification;?>_m"] = jQuery("#vg_color_<?php echo $identification;?>_m").val();
+					valuestobeupdated["vg_color_<?php echo $identification;?>_m"] = jQ_nxs("#vg_color_<?php echo $identification;?>_m").val();
 					<?php
 				}
 			}
@@ -1500,7 +1500,7 @@
 			//nxs_js_log(valuestobeupdated);
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1518,7 +1518,7 @@
 						nxs_js_log(response);
 						if (response.result == "OK")
 						{
-							jQuery('.nxs_menu_savekleurenbutton').fadeOut('slow', function() { nxs_js_refreshtopmenufillerheight(); } );
+							jQ_nxs('.nxs_menu_savekleurenbutton').fadeOut('slow', function() { nxs_js_refreshtopmenufillerheight(); } );
 							
 							nxs_js_alert("<?php nxs_l18n_e("Colors saved[nxs:growl]","nxs_td"); ?>");
 						}
@@ -1560,15 +1560,15 @@
 		{
 			// (sync modifications here; *236i84325) (nxsfunctions.php)
 			
-			jQuery('#dynamicCssVormgevingLettertypen').html('');
+			jQ_nxs('#dynamicCssVormgevingLettertypen').html('');
 			// append
 			var u;
 			// old style :)
 			u = "";
-			u = u + "body { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_1").val()) + "; }";
-			u = u + ".nxs-title, .nxs-logo { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_2").val()) + "; }";	
+			u = u + "body { font-family: " + nxs_js_font_getcleanfontfam(jQ_nxs("#vg_fontfam_1").val()) + "; }";
+			u = u + ".nxs-title, .nxs-logo { font-family: " + nxs_js_font_getcleanfontfam(jQ_nxs("#vg_fontfam_2").val()) + "; }";	
 			// old style++
-			u = u + ".entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_2").val()) + "; }";	
+			u = u + ".entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 { font-family: " + nxs_js_font_getcleanfontfam(jQ_nxs("#vg_fontfam_2").val()) + "; }";	
 			
 			// new style :)
 			<?php
@@ -1576,7 +1576,7 @@
 			foreach ($fontidentifiers as $currentfontidentifier)
 			{
 				?>
-				u = u + ".nxs-fontzen-<?php echo $currentfontidentifier; ?> { font-family: " + nxs_js_font_getcleanfontfam(jQuery("#vg_fontfam_<?php echo $currentfontidentifier; ?>").val()) + "; }";	
+				u = u + ".nxs-fontzen-<?php echo $currentfontidentifier; ?> { font-family: " + nxs_js_font_getcleanfontfam(jQ_nxs("#vg_fontfam_<?php echo $currentfontidentifier; ?>").val()) + "; }";	
 				<?php
 			}
 			?>
@@ -1584,14 +1584,14 @@
 			// great, thanks to MS we need a lame IE patch, see http://stackoverflow.com/questions/9050441/how-do-i-inject-styles-into-ie8
 			if(jQuery.browser.msie)
 		  {
-		    jQuery('#dynamicCssVormgevingLettertypen').prop('styleSheet').cssText=u;
+		    jQ_nxs('#dynamicCssVormgevingLettertypen').prop('styleSheet').cssText=u;
 		  }
 			else
 			{
-				jQuery('#dynamicCssVormgevingLettertypen').append(u);
+				jQ_nxs('#dynamicCssVormgevingLettertypen').append(u);
 			}
 					
-			jQuery('#nxs_menu_savelettertypenbutton').show();
+			jQ_nxs('#nxs_menu_savelettertypenbutton').show();
 			// recalculate height of menu
 			nxs_js_refreshtopmenufillerheight();
 		}
@@ -1604,13 +1604,13 @@
 			foreach ($fontidentifiers as $currentfontidentifier)
 			{
 				?>
-				valuestobeupdated["vg_fontfam_<?php echo $currentfontidentifier; ?>"] = jQuery("#vg_fontfam_<?php echo $currentfontidentifier; ?>").val();
+				valuestobeupdated["vg_fontfam_<?php echo $currentfontidentifier; ?>"] = jQ_nxs("#vg_fontfam_<?php echo $currentfontidentifier; ?>").val();
 				<?php
 			}
 			?>
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1628,7 +1628,7 @@
 						nxs_js_log(response);
 						if (response.result == "OK")
 						{
-							jQuery('#nxs_menu_savelettertypenbutton').fadeOut('slow', function() { nxs_js_refreshtopmenufillerheight(); } );
+							jQ_nxs('#nxs_menu_savelettertypenbutton').fadeOut('slow', function() { nxs_js_refreshtopmenufillerheight(); } );
 							
 							nxs_js_alert("<?php nxs_l18n_e("Fonts saved[nxs:growl]","nxs_td"); ?>");
 						}
@@ -1653,7 +1653,7 @@
 		
 		function nxs_menu_updateinjecthead()
 		{
-			jQuery('#nxs_menu_saveinjectheadbutton').show();				
+			jQ_nxs('#nxs_menu_saveinjectheadbutton').show();				
 			// recalculate height of menu
 			nxs_js_refreshtopmenufillerheight();
 		}
@@ -1661,7 +1661,7 @@
 		function nxs_menu_savemanualcss()
 		{
 			var valuestobeupdated = {};
-			valuestobeupdated["vg_manualcss"] = jQuery("#vg_manualcss").val();
+			valuestobeupdated["vg_manualcss"] = jQ_nxs("#vg_manualcss").val();
 			
 			
 			var wrong = nxs_js_getescapeddictionary(valuestobeupdated);
@@ -1671,7 +1671,7 @@
 			nxs_js_log(wrong);
 	
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1689,7 +1689,7 @@
 						nxs_js_log(response);
 						if (response.result == "OK")
 						{
-							jQuery('#nxs_menu_savemanualcssbutton').fadeOut('slow', function() { nxs_js_refreshtopmenufillerheight(); } );
+							jQ_nxs('#nxs_menu_savemanualcssbutton').fadeOut('slow', function() { nxs_js_refreshtopmenufillerheight(); } );
 							
 							nxs_js_alert("<?php nxs_l18n_e("CSS saved[nxs:growl]","nxs_td"); ?>");
 						}
@@ -1711,10 +1711,10 @@
 		function nxs_menu_saveinjecthead()
 		{
 			var valuestobeupdated = {};
-			valuestobeupdated["vg_injecthead"] = jQuery("#vg_injecthead").val();
+			valuestobeupdated["vg_injecthead"] = jQ_nxs("#vg_injecthead").val();
 	
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1732,7 +1732,7 @@
 						nxs_js_log(response);
 						if (response.result == "OK")
 						{
-							jQuery('#nxs_menu_saveinjectheadbutton').fadeOut('slow', function() { nxs_js_refreshtopmenufillerheight(); } );
+							jQ_nxs('#nxs_menu_saveinjectheadbutton').fadeOut('slow', function() { nxs_js_refreshtopmenufillerheight(); } );
 							
 							nxs_js_alert("<?php nxs_l18n_e("Head saved, please refresh the screen[nxs:growl]","nxs_td"); ?>");
 						}

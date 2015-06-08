@@ -164,8 +164,7 @@ function nxs_widgets_banneritem_render_webpart_render_htmlvisualization($args)
 	}
 	else
 	{
-		echo "unsupported rendermode;" . $rendermode;
-		die();
+		nxs_webmethod_return_nack("unsupported rendermode;" . $rendermode);
 	}
 
 	global $nxs_global_placeholder_render_statebag;
@@ -181,7 +180,7 @@ function nxs_widgets_banneritem_render_webpart_render_htmlvisualization($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-banneritemr-item";
 	
@@ -210,8 +209,8 @@ function nxs_widgets_banneritem_render_webpart_render_htmlvisualization($args)
 	
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	

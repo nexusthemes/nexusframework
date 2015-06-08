@@ -76,7 +76,7 @@ function nxs_widgets_busrulearchive_render_webpart_render_htmlvisualization($arg
 
 	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	
 	global $nxs_global_placeholder_render_statebag;
 	if ($shouldrenderalternative == true) {
@@ -116,8 +116,8 @@ function nxs_widgets_busrulearchive_render_webpart_render_htmlvisualization($arg
 	/* ------------------------------------------------------------------------------------------------- */
 	 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page

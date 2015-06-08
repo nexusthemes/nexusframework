@@ -39,7 +39,7 @@ function nxs_widgets_undefined_render_webpart_render_htmlvisualization($args)
 	// render actual control / html
 	//
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-undefined";
 
@@ -73,8 +73,8 @@ function nxs_widgets_undefined_render_webpart_render_htmlvisualization($args)
 	
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
@@ -117,7 +117,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	ob_start();
+	nxs_ob_start();
 	
 	//
 	$pagedata = get_page($postid);
@@ -134,10 +134,21 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	$phtargs["pagetemplate"] = $pagetemplate;
 	$widgets = nxs_getwidgets_v2($phtargs, true);
 	
-	// filter out obsolete widgets
+	$distincttags = array("all");
 	
+	// find distinct tags (where applicable)
+	foreach ($widgets as $currentwidget)
+	{
+		$tags = $currentwidget["tags"];	// array
+		foreach ($tags as $currenttag)
+		{
+			if (!in_array($currenttag, $distincttags))
+			{
+				$distincttags[] = $currenttag;
+			}
+		}
+	}
 	?>
-	
 	<div class="nxs-admin-wrap">
 		<div class="block">	
 
@@ -145,15 +156,32 @@ function nxs_widgets_undefined_home_rendersheet($args)
 
 			<div class="nxs-popup-content-canvas-cropper" style="width: 900px;"> <!-- explicit max width -->
 				<div class="nxs-popup-content-canvas">
-		
+					<style>
+						.isotope-filter { background-color: #900; padding: 2px; border-radius: 5px; margin-bottom: 10px; color: white !important; box-shadow: none !important; }
+						.isotope-filter.active { background-color: #F00; }
+						.nxsfiltercontainer { margin-bottom: 20px;}
+					</style>
 		      <div class="content2">
+		      	<div class="nxsfiltercontainer">
+		      		Filters: 
+		      		<?php
+		      		foreach ($distincttags as $currenttag)
+		      		{
+		      			?>
+			      		<a class="isotope-filter isotope-filter-<?php echo $currenttag; ?>" href="#" onclick="nxs_js_undefinedupdatefilter(this, '<?php echo $currenttag; ?>'); return false;"><?php echo $currenttag; ?></a>
+			      		<?php
+		      		}
+		      		?>
+		      	</div>
 		        <div class="box nxs-linkcolorvar-base2-m">
-		          <ul class="placeholder3 nxs-applylinkvarcolor">
+		          <ul class="placeholder3 nxs-applylinkvarcolor isotope-grid">
 								<?php
 									// for each placeholder -->
 									foreach ($widgets as $currentwidget)
 									{
 										$title = $currentwidget["title"];
+										$tags = $currentwidget["tags"];	// array
+										
 										$abbreviatedtitle = $title;
 										
 										$breakuplength = 12;
@@ -175,8 +203,15 @@ function nxs_widgets_undefined_home_rendersheet($args)
 										
 										$widgetid = $currentwidget["widgetid"];
 										$iconid = nxs_getwidgeticonid($widgetid);
+										
+										$elementclass = "";
+										foreach ($tags as $currenttag)
+										{
+											$elementclass .= $currenttag . " ";
+										}
+										
 										?>
-										<a href="#" onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;">
+										<a class="isotope-item <?php echo $elementclass; ?>" href="#" onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;">
 											<li>
 												<?php
 												if (isset($iconid) && $iconid != "")
@@ -223,7 +258,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 		      
 		    </div>
 		  </div>
-      
+		  
       <div class="content2">
          <div class="box">
             <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Save[nxs:button]", "nxs_td"); ?></a>
@@ -232,7 +267,36 @@ function nxs_widgets_undefined_home_rendersheet($args)
          </div>
          <div class="nxs-clear"></div>
       </div> <!--END content-->
-    	
+
+		  <script src='<?php echo nxs_getframeworkurl(); ?>/js/isotope/isotope.pkgd.min.js'></script>
+    	<script>
+    		function nxs_js_undefinedupdatefilter(element, filter)
+    		{
+    			jQuery(".isotope-filter").removeClass("active");
+    			jQuery(element).addClass("active");
+    			
+    			var thefilter = "." + filter;
+    			if (filter == "all")
+    			{
+    				thefilter = "*";
+    			}
+    			
+  				$('.isotope-grid').isotope
+  				(
+  					{
+						  // options
+						  itemSelector: '.isotope-item',
+						  //layoutMode: 'fitRows',
+						  filter: thefilter
+						}
+					);
+					
+					// 
+    		}
+
+				//nxs_js_undefinedupdatefilter(null, "all");
+				jQuery(".isotope-filter-all").addClass("active");
+    	</script>
     </div>
   </div>
 	
@@ -256,7 +320,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Storing widget[nxs:growl]","nxs_td"); ?>");
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -323,8 +387,8 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	

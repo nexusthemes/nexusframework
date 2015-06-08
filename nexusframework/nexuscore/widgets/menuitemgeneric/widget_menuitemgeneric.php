@@ -32,7 +32,7 @@ function nxs_menuitemgeneric_switchtype($optionvalues, $args, $runtimeblendeddat
     	// wijzig type van deze placeholder naar 'x'
 			// refresh de popup
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',

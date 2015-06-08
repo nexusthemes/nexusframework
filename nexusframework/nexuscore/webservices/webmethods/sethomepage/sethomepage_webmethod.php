@@ -5,8 +5,7 @@ function nxs_webmethod_sethomepage()
  	
  	if ($postid == "")
  	{
- 		echo "postid empty? (shp)";
- 		die();
+		nxs_webmethod_return_nack("postid empty? (shp)");
  	}
  	
  	nxs_sethomepage($postid);

@@ -156,15 +156,15 @@ function nxs_widgets_wordpresstitle_home_getoptions($args)
 
 function nxs_widgets_wordpresstitle_popupoptioncontent($optionvalues, $args, $runtimeblendeddata) 
 {
-	ob_start();
+	nxs_ob_start();
 	$containerpostid = $args["clientpopupsessioncontext"]["containerpostid"];
 	$title = nxs_gettitle_for_postid($containerpostid);
 	?>
 	<a href="#" class='nxsbutton1 nxs-float-right' onclick="nxs_js_popup_pagetemplate_neweditsession('home'); return false;"><?php nxs_l18n_e('Edit', 'nxs_td'); ?></a>
 	<p><?php echo $title;?></p>
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -213,6 +213,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	{
 		$currentpost = get_post($nxs_global_current_containerpostid_being_rendered);
 		$title = $currentpost->post_title;
+		$currentpostdate = $currentpost->post_date;
 	}
 	
 	$hovermenuargs = array();
@@ -225,7 +226,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-wordpress-title";
 	
-	ob_start();
+	nxs_ob_start();
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
@@ -241,13 +242,13 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	// Title
 	$microdata = apply_filters("nxs_wptitle_microdata");
 	$htmltitle = nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "", $microdata);
-		
-	// Date
-	if ($showdate != "") {
 
-        $get_wordpress_date_format = get_option('date_format');  
-        $datehtml = the_date($get_wordpress_date_format, '', '', false);
-        
+	// Date
+	if ($showdate != "") 
+	{
+		$get_wordpress_date_format = get_option('date_format');
+		$formatteddate = mysql2date($get_wordpress_date_format, $currentpostdate);
+    $datehtml = $formatteddate;
 	}
 	
 	// Categories
@@ -371,12 +372,18 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		
 		// Title
 		echo $htmltitle;
-		
+				
 		// Meta data
-		if ( $datehtml != "" || $categorieshtml || $author != "" ) {
+		
+		if ( $datehtml != "" || $categorieshtml || $author != "" ) 
+		{
 			echo '<div class="nxs-blog-meta nxs-applylinkvarcolor">'; 
-				echo $datehtml;
-				if ( $datehtml != "" && $categorieshtml != "" || $datehtml != "" && $author != "" ) { echo '<span class="nxs-seperator"> | </span>'; }
+				
+				if ( $datehtml != "" && $categorieshtml != "" || $datehtml != "" && $author != "" ) 
+				{ 
+					echo $datehtml;
+					echo '<span class="nxs-seperator"> | </span>'; 
+				}
 				echo $categorieshtml;
 				if ( $categorieshtml != "" && $author != ""	) { echo '<span class="nxs-seperator"> | </span>'; }
 				echo $author;
@@ -398,8 +405,8 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	/* ------------------------------------------------------------------------------------------------- */
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page

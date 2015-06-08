@@ -6,7 +6,7 @@ function nxs_pagerowtemplate_render_twothirdonethird_toolbox($args)
 {
 	extract($args);
 	
-	ob_start();
+	nxs_ob_start();
 	?>
   
 	<p class="nxs-two-third">&#8532;</p>
@@ -21,8 +21,8 @@ function nxs_pagerowtemplate_render_twothirdonethird_toolbox($args)
 	</div>
 	
 	<?php
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	echo $result;
 }
@@ -31,7 +31,7 @@ function nxs_pagerowtemplate_render_twothirdonethird($args)
 {
 	extract($args);
 	
-	ob_start();
+	nxs_ob_start();
 
 	if ($onderdrukcontent == '')
 	{
@@ -139,8 +139,8 @@ function nxs_pagerowtemplate_render_twothirdonethird($args)
 		</li>
 	<?php
 	
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	if ($output == "return")
 	{

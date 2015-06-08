@@ -2,10 +2,10 @@
 error_reporting(E_ERROR | E_PARSE);
 ?>function nxs_js_supporthandlequestion()
 {
-	var q = jQuery("#nxs_chat_q").val();
+	var q = jQ_nxs("#nxs_chat_q").val();
 	
 	// clear result box
-	jQuery("#nxs_chat_hints").empty();
+	jQ_nxs("#nxs_chat_hints").empty();
 
 	// invoke local webmethod			
 	nxs_js_chat_supportinvokeasyncwebmethod(q);
@@ -14,14 +14,14 @@ error_reporting(E_ERROR | E_PARSE);
 function nxs_js_supporthandlequestion_direct(q)
 {
 	nxs_js_supportstartchatstage2();
-	jQuery("#nxs_chat_q").val(q);
+	jQ_nxs("#nxs_chat_q").val(q);
 	nxs_js_chat_supportinvokeasyncwebmethod(q);
 }
 		
 function nxs_js_chat_supportinvokeasyncwebmethod(q)
 {
 	var ajaxurl = nxs_js_get_adminurladminajax();
-	jQuery.ajax
+	jQ_nxs.ajax
 	(
 		{
 			type: 'POST',
@@ -54,7 +54,7 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 						nxs_js_log("directlaunch");
 					}
 					
-					jQuery(".nxs-hints").addClass("nxs-display-none");
+					jQ_nxs(".nxs-hints").addClass("nxs-display-none");
 					
 					if (response.hints)
 					{
@@ -63,10 +63,10 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 						
 						if (response.hints.length > 0)
 						{
-							jQuery(".nxs-hints").removeClass("nxs-display-none");
+							jQ_nxs(".nxs-hints").removeClass("nxs-display-none");
 							
 							// populate the suggestions
-							jQuery("#nxs_chat_hints").empty();
+							jQ_nxs("#nxs_chat_hints").empty();
 							jQuery.each
 							(
 								response.hints, 
@@ -74,7 +74,7 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 								{
 									if (hint.type == "youtube") {
 										
-										<?php ob_start(); ?>
+										<?php nxs_ob_start(); ?>
 																						
 										<li>
 											<!-- Title -->
@@ -95,11 +95,11 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 										
 										<?php
 													
-										$result = ob_get_contents();
+										$result = nxs_ob_get_contents();
 										
 										$result = preg_replace( "/\r|\n/", " ", $result );
 										
-										ob_end_clean();
+										nxs_ob_end_clean();
 										
 										?> 
 										var html = '<?php echo $result; ?>';
@@ -109,11 +109,11 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 										html = nxs_js_replaceall('{hint.youtubeid}', hint.youtubeid, html);
 										html = nxs_js_replaceall('{hint.meta}', hint.meta, html);
 										
-										jQuery("#nxs_chat_hints").append(html);
+										jQ_nxs("#nxs_chat_hints").append(html);
 										
 									} else if (hint.type == 'text') {
 										
-										<?php ob_start(); ?>
+										<?php nxs_ob_start(); ?>
 																				
 										<li>
 											
@@ -130,11 +130,11 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 										
 										<?php
 													
-										$result = ob_get_contents();
+										$result = nxs_ob_get_contents();
 										
 										$result = preg_replace( "/\r|\n/", " ", $result );
 										
-										ob_end_clean();
+										nxs_ob_end_clean();
 										
 										?> 
 										var html = '<?php echo $result; ?>';
@@ -142,7 +142,7 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 										html = nxs_js_replaceall('{hint.title}', hint.title, html);
 										html = nxs_js_replaceall('{hint.meta}', hint.meta, html);
 										
-										jQuery("#nxs_chat_hints").append(html);
+										jQ_nxs("#nxs_chat_hints").append(html);
 										
 										
 									}
@@ -151,15 +151,15 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 										var uberdiv = "Unsupported hint type;" + hint.type;
 										nxs_js_log(uberdiv);
 										//htmltoadd = "<li>" + uberdiv + "</li>";
-										//jQuery("#nxs_chat_hints").append(htmltoadd);
+										//jQ_nxs("#nxs_chat_hints").append(htmltoadd);
 									}
 								}
 							);
 						}
 					}
 					
-					jQuery("#nxs_chat_q").select();
-					//jQuery("#nxs_chat_q").focus();
+					jQ_nxs("#nxs_chat_q").select();
+					//jQ_nxs("#nxs_chat_q").focus();
 				}
 				else
 				{
@@ -178,11 +178,11 @@ function nxs_js_chat_supportinvokeasyncwebmethod(q)
 function nxs_js_supportstartchatstage2()
 {
 	// get rid of existing content
-	jQuery("#nxs_frameworkchat_wrap").empty();
+	jQ_nxs("#nxs_frameworkchat_wrap").empty();
 	
 	<?php 
 	
-	ob_start();
+	nxs_ob_start();
 	
 	?>
 	
@@ -224,20 +224,20 @@ function nxs_js_supportstartchatstage2()
 
 	<?php
 				
-	$result = ob_get_contents();
+	$result = nxs_ob_get_contents();
 	
 	$result = preg_replace( "/\r|\n/", " ", $result );
 	
-	ob_end_clean();
+	nxs_ob_end_clean();
 	
 	?> 
 	
-	jQuery("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
+	jQ_nxs("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
 			
 	// set focus
-	jQuery("#nxs_chat_q").focus();
+	jQ_nxs("#nxs_chat_q").focus();
 	
-	jQuery("#nxs_chat_q").keypress
+	jQ_nxs("#nxs_chat_q").keypress
 	(
 		function(e) 
 		{
@@ -245,8 +245,8 @@ function nxs_js_supportstartchatstage2()
       {
       	nxs_js_log("chat q received enter");
       	
-        jQuery(this).blur();
-        jQuery('#nxs_chat_submit').focus().click();
+        jQ_nxs(this).blur();
+        jQ_nxs('#nxs_chat_submit').focus().click();
         return false;
       }
   	}
@@ -268,7 +268,7 @@ function nxs_js_supportchatshow()
 		
 var nxs_supportchatprequestionloaded = false;
 
-jQuery(window).load
+jQ_nxs(window).load
 (
 	function()
 	{
@@ -293,7 +293,7 @@ jQuery(window).load
 				nxs_supportchatprequestionloaded = true;
 				
 				// wrap 
-				jQuery("body").append("<div id='nxs_frameworkchat_wrap' class='display720 nxs-hidewheneditorinactive' style='display: none;'></div>");
+				jQ_nxs("body").append("<div id='nxs_frameworkchat_wrap' class='display720 nxs-hidewheneditorinactive' style='display: none;'></div>");
 				
 				nxs_js_process_updated_editor_state_internal(false);
 
@@ -317,9 +317,9 @@ jQuery(window).load
 function nxs_js_supportshowchatstage1()
 {
 	// empty the wrap
-	jQuery("#nxs_frameworkchat_wrap").empty();
+	jQ_nxs("#nxs_frameworkchat_wrap").empty();
 	
-	<?php ob_start(); ?>
+	<?php nxs_ob_start(); ?>
 	
 	<div id="nxs_chat_innerwrap" class="nxs-admin-wrap">
 		
@@ -350,23 +350,23 @@ function nxs_js_supportshowchatstage1()
 	
 	<?php
 				
-	$result = ob_get_contents();
+	$result = nxs_ob_get_contents();
 	
 	$result = preg_replace( "/\r|\n/", " ", $result );
 	
-	ob_end_clean();
+	nxs_ob_end_clean();
 	
 	?> 
 	
-	jQuery("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
+	jQ_nxs("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
 }
 
 function nxs_js_supporthidechat()
 {
 	// empty the wrap
-	jQuery("#nxs_frameworkchat_wrap").empty();
+	jQ_nxs("#nxs_frameworkchat_wrap").empty();
 	
-	<?php ob_start(); ?>
+	<?php nxs_ob_start(); ?>
 	
 	<div id="nxs_chat_showchatwrap" class="nxs-admin-wrap">
 		<a href="#" onclick="nxs_js_supportchatshow(); return false;"><span class="nxs-icon-question" /></a>
@@ -374,14 +374,14 @@ function nxs_js_supporthidechat()
 	
 	<?php
 				
-	$result = ob_get_contents();
+	$result = nxs_ob_get_contents();
 	
 	$result = preg_replace( "/\r|\n/", " ", $result );
 	
-	ob_end_clean();
+	nxs_ob_end_clean();
 	
 	?> 
 	
-	jQuery("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
+	jQ_nxs("#nxs_frameworkchat_wrap").append('<?php echo $result; ?>');
 }
 

@@ -304,12 +304,12 @@ function nxs_pagetemplate_handlecontent()
 
 							rewind_posts();
 
-							ob_start();
+							nxs_ob_start();
 							// delegate to the original template handler
-							//ob_start();
+							//nxs_ob_start();
 							include($nxs_gl_templates_wp);
-							$wpmaintcontenthtml = ob_get_contents();
-							ob_end_clean();
+							$wpmaintcontenthtml = nxs_ob_get_contents();
+							nxs_ob_end_clean();
 						
 							// TODO: determine here whether we need to output this yes or no,
 							// depending on the configuration of backend content, and whether or not
@@ -449,10 +449,10 @@ function nxs_pagetemplate_handlecontent_fraction($scope)
 	// in a global variable such that the handlecontent is not invoked 2x...
 	
 	// renders a fraction of the regular handlecontent content
-	ob_start();
+	nxs_ob_start();
 	$content = nxs_pagetemplate_handlecontent();
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	if ($scope == "top")
 	{
@@ -1009,7 +1009,7 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 
   nxs_getfilteredcategories($categories, $categoriesfilters);	
 		
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -1283,7 +1283,7 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 		
 		function nxs_js_execute_after_popup_shows()
 		{
-			jQuery('#titel').focus();
+			jQ_nxs('#titel').focus();
 			//
 			
 			<?php 
@@ -1317,7 +1317,7 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 			nxs_js_savepopupdata();			
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1369,8 +1369,8 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1390,7 +1390,7 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 		
 	$result = array();
 		
-	ob_start();
+	nxs_ob_start();
 
 	?>
 	
@@ -1441,7 +1441,7 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 			nxs_js_setpopupdatefromcontrols();
 			
 			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQuery.ajax
+			jQ_nxs.ajax
 			(
 				{
 					type: 'POST',
@@ -1485,15 +1485,15 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 		
 		function nxs_js_execute_after_popup_shows()
 		{
-			jQuery('#titel').focus();
+			jQ_nxs('#titel').focus();
 		}
 		
 	</script>
 		
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;
@@ -1510,7 +1510,7 @@ function nxs_pagetemplate_blogentry_dialogappendrow_getsheethtml($args)
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
 	
-	ob_start();
+	nxs_ob_start();
 
 	$pagedata = get_page($postid);
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
@@ -1608,8 +1608,8 @@ function nxs_pagetemplate_blogentry_dialogappendrow_getsheethtml($args)
 		function select(obj, pagerowtemplate)
 		{
 			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding row[nxs:growl]", "nxs_td"); ?>");
-			var e = jQuery(".nxs-layout-editable.nxs-post-<?php echo $postid;?> .nxs-postrows")[0];
-			var totalrows = jQuery(e).find(".nxs-row").length;
+			var e = jQ_nxs(".nxs-layout-editable.nxs-post-<?php echo $postid;?> .nxs-postrows")[0];
+			var totalrows = jQ_nxs(e).find(".nxs-row").length;
 			var insertafterindex;
 			insertafterindex = totalrows - 1;
 			
@@ -1629,8 +1629,8 @@ function nxs_pagetemplate_blogentry_dialogappendrow_getsheethtml($args)
 	
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1649,7 +1649,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
 	
 	$fileuploadurl = admin_url( 'admin-ajax.php');
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -1667,7 +1667,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
         	
         		function setupfiletransfer()
         		{
-        			var filename = jQuery('#file').val().split(/\\|\//).pop();
+        			var filename = jQ_nxs('#file').val().split(/\\|\//).pop();
         			var options = 
               { 
                 data:
@@ -1683,7 +1683,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
                 success: processResponse,
             	};
                 
-        			jQuery('#nxsuploadform').ajaxForm(options);
+        			jQ_nxs('#nxsuploadform').ajaxForm(options);
         		}
         	
             function storefile()
@@ -1700,7 +1700,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
               }
               
               // submit form
-              jQuery("#nxsuploadform").submit(); 
+              jQ_nxs("#nxsuploadform").submit(); 
           	}
             
             function verifyFileSelected()
@@ -1750,8 +1750,8 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
     
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);
@@ -1771,7 +1771,7 @@ function nxs_pagetemplate_blogentry_exportstruct_getsheethtml($args)
 	
 	$filedownloadurl = admin_url('admin-ajax.php?action=nxs_ajax_webmethods&webmethod=exportcontent&export=poststructureandwidgets&postid=' . $postid);
 	
-	ob_start();
+	nxs_ob_start();
 
 	?>
 
@@ -1801,8 +1801,8 @@ function nxs_pagetemplate_blogentry_exportstruct_getsheethtml($args)
     
 	<?php
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	$result["html"] = $html;
 	nxs_webmethod_return_ok($result);

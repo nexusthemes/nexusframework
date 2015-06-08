@@ -11,7 +11,7 @@ function nxs_webmethod_installoneclickcontent()
 		$currentstep = 1;
 	}
 
-	ob_start();
+	nxs_ob_start();
 
 	if ($currentstep == 1) 
 	{
@@ -35,10 +35,10 @@ function nxs_webmethod_installoneclickcontent()
 		$importer = new NXS_importer();
 	
 		// inner stacked ob_start		
-		ob_start();
+		nxs_ob_start();
 		$importer->dispatch();
-		$importoutput = ob_get_contents();
-		ob_end_clean();
+		$importoutput = nxs_ob_get_contents();
+		nxs_ob_end_clean();
 		
  		echo "<span title='More information in the HTML DOM'>[...]</span>";
 		
@@ -57,8 +57,8 @@ function nxs_webmethod_installoneclickcontent()
 		echo "<h2>" . nxs_l18n__("Finished importing", "nxs_td") . "</h2>";
 	}
 	
-	$log = ob_get_contents();
-	ob_end_clean();
+	$log = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	//	
 	$currentstep = $currentstep + 1;

@@ -159,7 +159,7 @@ function nxs_popup_contextprocessor_post_render_nxs_js_savegenericpopup($args)
     nxs_js_setpopupdatefromcontrols();
     
     var ajaxurl = '<?php echo admin_url( 'admin-ajax.php'); ?>';
-    jQuery.ajax 
+    jQ_nxs.ajax 
     (
       {
         type: 'POST',

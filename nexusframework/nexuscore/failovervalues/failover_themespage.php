@@ -7,7 +7,7 @@
 		
 		$siteurl = nxs_geturl_home();
 		
-		ob_start();
+		nxs_ob_start();
 		?>
 		<div class='update-nag'>
 			<h1><?php nxs_l18n_e("Congratulations[nxs:failover]", "nxs_td"); ?></h1>
@@ -19,8 +19,8 @@
 		</div>
 		<?php
 
-		$html = ob_get_contents();
-		ob_end_clean();
+		$html = nxs_ob_get_contents();
+		nxs_ob_end_clean();
 
 		$result["html"] = $html;
 		$result["transientduration"] = $expirationtimeinseconds;
@@ -48,7 +48,7 @@
 		//
 		// support
 		//
-		ob_start();
+		nxs_ob_start();
 		?>
 		<p>
 			<ul>
@@ -72,13 +72,13 @@
 		<?php
 		$result["support_htmlid"] = "support";
 		$result["support_title"] = nxs_l18n__("Support", "nxs_td");
-		$result["support_html"] = ob_get_contents();
-		ob_end_clean();
+		$result["support_html"] = nxs_ob_get_contents();
+		nxs_ob_end_clean();
 		
 		//
 		// logo
 		//
-		ob_start();
+		nxs_ob_start();
 		?>
 		<a target='_blank' href='http://nexusthemes.com'>
 			<img style='width: 200px;' src='<?php echo nxs_getframeworkurl() . '/images/logo.png'; ?>' />
@@ -86,8 +86,8 @@
 		<?php
 		$result["logo_htmlid"] = "logo";
 		$result["logo_title"] = "&nbsp;";
-		$result["logo_html"] = ob_get_contents();
-		ob_end_clean();
+		$result["logo_html"] = nxs_ob_get_contents();
+		nxs_ob_end_clean();
 		
 		$result["transientduration"] = $expirationtimeinseconds;
 		

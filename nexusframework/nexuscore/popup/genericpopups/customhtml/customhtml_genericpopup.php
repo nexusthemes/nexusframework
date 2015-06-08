@@ -17,7 +17,7 @@ function nxs_popup_genericpopup_customhtml_getpopup_basic($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	ob_start();
+	nxs_ob_start();
 	
 	$padding = "";
 	
@@ -60,8 +60,8 @@ function nxs_popup_genericpopup_customhtml_getpopup_basic($args)
 	<?php
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $html = ob_get_contents();
-  ob_end_clean();
+  $html = nxs_ob_get_contents();
+  nxs_ob_end_clean();
     
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page
@@ -86,7 +86,7 @@ function nxs_popup_genericpopup_customhtml_getpopup_completecustom($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	ob_start();
+	nxs_ob_start();
 	
 	$padding = "";
 	
@@ -111,8 +111,8 @@ function nxs_popup_genericpopup_customhtml_getpopup_completecustom($args)
 	<?php
 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $html = ob_get_contents();
-  ob_end_clean();
+  $html = nxs_ob_get_contents();
+  nxs_ob_end_clean();
     
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page

@@ -25,8 +25,7 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 
 	if ($nxs_global_current_nxsposttype_being_rendered == null)
 	{
-		echo "nxs_global_current_nxsposttype_being_rendered is NIET gezet";
-		die();
+		nxs_webmethod_return_nack("nxs_global_current_nxsposttype_being_rendered is NIET gezet");
 	}
 
 	if ($nxs_global_current_postid_being_rendered == null) { nxs_webmethod_return_nack("nxs_global_current_postid_being_rendered not set");}
@@ -94,14 +93,7 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	else
 	{
 		echo "Unsupported pagerowtemplate; " . $pagerowtemplate;
-		//var_dump($rowattributes);
-		
-		//nxs_webmethod_return_nack("malformed row");
-		//die();
-		
-		// 
 		$pagerowtemplate = "one";
-		//die();
 	}
 	
 	if (isset($grs_upgradetoexceptionalresponsiverow) && $grs_upgradetoexceptionalresponsiverow == "true")
@@ -250,8 +242,7 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	}
 	else
 	{
-		echo "nxs_global_current_render_mode (nog?) niet ondersteund:" . $nxs_global_current_render_mode;
-		die();
+		nxs_webmethod_return_nack("nxs_global_current_render_mode (nog?) niet ondersteund: {$nxs_global_current_render_mode}");
 	}
 	
 	$output .= "<ul class='nxs-placeholder-list'>";
@@ -289,8 +280,7 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	global $nxs_global_row_render_statebag;
 	if ($nxs_global_row_render_statebag == null)
 	{
-		echo "expected nxs_global_row_render_statebag to be set, but it isn't?";
-		die();
+		nxs_webmethod_return_nack("expected nxs_global_row_render_statebag to be set, but it isn't?");
 	}
 	$nxs_global_row_render_statebag["width"] = $atts["width"];
 	
@@ -373,7 +363,7 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 
 				if (nxs_shoulddebugmeta())
 				{
-					ob_start();
+					nxs_ob_start();
 					?>
 					<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_edit_widget_v2(this, 'debug'); return false; return false;">
 	         	<li title='<?php nxs_l18n_e("Debug[tooltip]", "nxs_td"); ?>'>
@@ -381,8 +371,8 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	         	</li>
 	      	</a>
 	      	<?php
-	      	$debughtml = ob_get_contents();
-					ob_end_clean();
+	      	$debughtml = nxs_ob_get_contents();
+					nxs_ob_end_clean();
 				}
 				else
 				{
@@ -615,25 +605,21 @@ function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='')
 	
 	if ($nxs_global_current_postid_being_rendered == null || $nxs_global_current_render_mode == null)
 	{
-		echo "nxs_global_current_postid_being_rendered ($nxs_global_current_postid_being_rendered) en/of nxs_global_current_render_mode ($nxs_global_current_render_mode) is NIET gezet (B)";
-		die();
+		nxs_webmethod_return_nack("nxs_global_current_postid_being_rendered ($nxs_global_current_postid_being_rendered) en/of nxs_global_current_render_mode ($nxs_global_current_render_mode) is NIET gezet (B)");
 	}
 	
 	if ($nxs_global_current_postmeta_being_rendered === null)
 	{
 		echo "nxs_global_current_postmeta_being_rendered is NIET gezet b";
-		//die();
 	}
 	
 	if ($nxs_global_current_rowindex_being_rendered == null)
 	{
-		echo "nxs_global_current_rowindex_being_rendered is niet gezet (2)";
-		die();
+		nxs_webmethod_return_nack("nxs_global_current_rowindex_being_rendered is niet gezet (2)");
 	}
 	if ($nxs_global_row_render_statebag == null)
 	{
-		echo "expected nxs_global_row_render_statebag to be set, but it isn't?";
-		die();
+		nxs_webmethod_return_nack("expected nxs_global_row_render_statebag to be set, but it isn't?");
 	}
 	
 	//
@@ -737,8 +723,7 @@ function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='')
 	}
 	else
 	{
-		echo "nxs_global_current_render_mode (nog?) niet ondersteund:" . $nxs_global_current_render_mode;
-		die();
+		nxs_webmethod_return_nack("nxs_global_current_render_mode (nog?) niet ondersteund:" . $nxs_global_current_render_mode);
 	}
 	
 	return $result;	

@@ -106,7 +106,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 		$medialist_pagenr = 1;
 	}
 	
-	ob_start();
+	nxs_ob_start();
 	
 	?>
 	
@@ -135,7 +135,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 								<a class='nxsbutton1' href='#' onclick='nxs_js_popup_mediapicker_updatefilter(); return false;'>Filter</a>
 							</div>	
 							<script type='text/javascript'>
-								jQuery("#mediapicker_filter_title").keyup
+								jQ_nxs("#mediapicker_filter_title").keyup
 								(
 									function (e) 
 									{
@@ -158,7 +158,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 							function setupfiletransfer() 
 							{
 								//alert("setting up...");
-								var filename = jQuery('#file').val().split(/\\|\//).pop();
+								var filename = jQ_nxs('#file').val().split(/\\|\//).pop();
 								var options = {
 									data: { action: "nxs_ajax_webmethods", webmethod: "savefileupload", uploadtitel: filename },
 									dataType: 'json',
@@ -169,7 +169,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 										nxs_js_popup_notifyservererror_v2(response);
 									}
 								};
-								jQuery('#nxsuploadform').ajaxForm(options);
+								jQ_nxs('#nxsuploadform').ajaxForm(options);
 							}
 							
 							function storefile() {
@@ -179,7 +179,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 									return;
 								}
 								// submit form
-								jQuery("#nxsuploadform").submit(); 
+								jQ_nxs("#nxsuploadform").submit(); 
 							}
 							
 							function verifyFileSelected() {
@@ -228,10 +228,10 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 								return 40;
 							}
 							
-							jQuery("#pagechanger").unbind("keyup.defaultenter");
-							jQuery("#pagechanger").bind("keyup.defaultenter", function(e) {
+							jQ_nxs("#pagechanger").unbind("keyup.defaultenter");
+							jQ_nxs("#pagechanger").bind("keyup.defaultenter", function(e) {
 								if (e.keyCode == 13) {
-									var nieuwepagenr = parseInt(jQuery("#pagechanger").val());
+									var nieuwepagenr = parseInt(jQ_nxs("#pagechanger").val());
 									if (isNaN(nieuwepagenr)) {
 										//ignore
 									} else {
@@ -436,7 +436,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 	
 		function nxs_js_popup_mediapicker_updatefilter()
 		{
-			var value = jQuery('#mediapicker_filter_title').val();
+			var value = jQ_nxs('#mediapicker_filter_title').val();
 			nxs_js_popup_setsessioncontext('mediapicker_filter_title', value);
 			nxs_js_popup_refresh_v2(true);
 		}
@@ -473,8 +473,8 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 	<?php
 		
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $html = ob_get_contents();
-  ob_end_clean();
+  $html = nxs_ob_get_contents();
+  nxs_ob_end_clean();
     
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page

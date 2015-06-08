@@ -4,8 +4,7 @@ function nxs_applypatch($patchname, $args)
 	// check privileges
 	if (!nxs_has_adminpermissions())
 	{
-		echo "whoops, no permission :)";
-		die();
+ 		nxs_webmethod_return_nack("whoops, no permission :)");
 	}
 	
 	// delegate work
@@ -24,15 +23,12 @@ function nxs_applypatch($patchname, $args)
 		}
 		else
 		{
-			echo "function not found;" . $functionnametoinvoke;
-			echo "<br />";
-			die();
+	 		nxs_webmethod_return_nack("function not found; {$functionnametoinvoke}");
 		}
 	}
 	else
 	{
-		echo "file not found;" . $filetobeincluded;
-		die();
+ 		nxs_webmethod_return_nack("file not found; {$filetobeincluded}");
 	}
 }
 ?>

@@ -6,9 +6,9 @@ function nxs_webmethod_updatemenuitemlocation()
 	$result = array();
 	
 	// temp debugging
-	//ob_start();
+	//nxs_ob_start();
 	//var_dump($_REQUEST);
-	//$result["vars"] = ob_get_clean();
+	//$result["vars"] = nxs_ob_get_clean();
 	//
 	
 	if ($postid == "")

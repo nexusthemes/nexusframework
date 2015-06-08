@@ -64,8 +64,7 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
 	}
 	else
 	{
-		echo "unsupported rendermode;" . $rendermode;
-		die();
+		nxs_webmethod_return_nack("unsupported rendermode;" . $rendermode);
 	}
 
 	//
@@ -91,7 +90,7 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
 	//
 		
 	
-	ob_start();
+	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-menu-item " . "nxs-listitem-depth-" . $depthindex;
 	
@@ -133,8 +132,8 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
 	
 	<?php 
 	
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 
 	
 	$result["html"] = $html;	

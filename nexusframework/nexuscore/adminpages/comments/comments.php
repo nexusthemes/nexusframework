@@ -14,7 +14,7 @@
 				nxs_js_alert('<?php nxs_l18n_e("Please select an action first[nxs:column,heading]", "nxs_td");?>');
 				return;
 			}
-			var checkedRijen = jQuery('.multiselector.page:checked');
+			var checkedRijen = jQ_nxs('.multiselector.page:checked');
 			var count = checkedRijen.length;
 			if (count == 0)
 			{
@@ -25,7 +25,7 @@
 				if (actionValue == 'delete')
 				{
 					// geen expliciete bevestiging aangezien het item nog gestored kan worden.
-					jQuery(checkedRijen).each(function(i)
+					jQ_nxs(checkedRijen).each(function(i)
 					{
 						var postid = this.id.split("_")[1];
 						var commentid = this.id.split("_")[2];
@@ -36,7 +36,7 @@
 				}
 				else if (actionValue == 'restore')
 				{
-					jQuery(checkedRijen).each(function(i)
+					jQ_nxs(checkedRijen).each(function(i)
 					{
 							var postid = this.id.split("_")[1];
 							var commentid = this.id.split("_")[2];
@@ -137,8 +137,8 @@
             <h2><span class="nxs-icon-comments"></span><?php nxs_l18n_e("Blog comments[nxs:heading]", "nxs_td"); ?></h2>
             <div class="nxs-clear padding"></div>
             <ul class="nxs-float-left meta">
-                <li><a href="#" onclick="jQuery('#post_status').val('any'); jQuery('#theform').submit(); return false;"><span><?php nxs_l18n_e("All[nxs:linkbutton]", "nxs_td"); ?>&nbsp;(<?php echo $allpagescount; ?>)</span></a>|</li> 
-                <li><a href="#" onclick="jQuery('#post_status').val('hold'); jQuery('#theform').submit(); return false;"><span><?php nxs_l18n_e("Awaiting moderation[nxs:linkbutton]", "nxs_td"); ?>&nbsp;(<?php echo $holdpagescount; ?>)</span></a></li> 
+                <li><a href="#" onclick="jQ_nxs('#post_status').val('any'); jQ_nxs('#theform').submit(); return false;"><span><?php nxs_l18n_e("All[nxs:linkbutton]", "nxs_td"); ?>&nbsp;(<?php echo $allpagescount; ?>)</span></a>|</li> 
+                <li><a href="#" onclick="jQ_nxs('#post_status').val('hold'); jQ_nxs('#theform').submit(); return false;"><span><?php nxs_l18n_e("Awaiting moderation[nxs:linkbutton]", "nxs_td"); ?>&nbsp;(<?php echo $holdpagescount; ?>)</span></a></li> 
             </ul>
             <div class="nxs-clear padding"></div>
             <ul class="nxs-float-left meta">
@@ -153,7 +153,7 @@
                             <option value="delete"><?php nxs_l18n_e("Remove permanently[nxs:ddl]", "nxs_td"); ?></option>
                             <?php } ?>
                     	</select>
-                        <a class="nxsbutton1" href="#" onclick="var selectedValue = jQuery('#multiaction option:selected').val(); handleMultiAction(selectedValue); return false;"><?php nxs_l18n_e("Apply[nxs:button]", "nxs_td"); ?></a>
+                        <a class="nxsbutton1" href="#" onclick="var selectedValue = jQ_nxs('#multiaction option:selected').val(); handleMultiAction(selectedValue); return false;"><?php nxs_l18n_e("Apply[nxs:button]", "nxs_td"); ?></a>
                     </div>
                 </li>
                 </ul>
@@ -170,19 +170,19 @@
                 
                 <span class="">
                     <?php if ($pagingcurrentpage > 1) { ?>
-                <a class="current" href="#" onclick="jQuery('#pagingcurrentpage').val('1'); jQuery('#theform').submit(); return false;">&lt;&lt;</a>
+                <a class="current" href="#" onclick="jQ_nxs('#pagingcurrentpage').val('1'); jQ_nxs('#theform').submit(); return false;">&lt;&lt;</a>
                 <?php } ?>
                 <?php if ($pagingcurrentpage > 1) { ?>
-                <a class="current" href="#" onclick="jQuery('#pagingcurrentpage').val('<?php echo $pagingcurrentpage - 1; ?>'); jQuery('#theform').submit(); return false;">&lt;</a>
+                <a class="current" href="#" onclick="jQ_nxs('#pagingcurrentpage').val('<?php echo $pagingcurrentpage - 1; ?>'); jQ_nxs('#theform').submit(); return false;">&lt;</a>
                 <?php } ?>
                 <span class="">
-                        <input type="text" name="manualpagingnr" id="manualpagingnr" value="<?php echo $pagingcurrentpage; ?>" size="2" onkeydown="if (event.keyCode == 13) { jQuery('#pagingcurrentpage').val(jQuery('#manualpagingnr').text()); jQuery('#theform').submit(); }" class="small2"> van <?php echo $pagingtotalpages;?>
+                        <input type="text" name="manualpagingnr" id="manualpagingnr" value="<?php echo $pagingcurrentpage; ?>" size="2" onkeydown="if (event.keyCode == 13) { jQ_nxs('#pagingcurrentpage').val(jQ_nxs('#manualpagingnr').text()); jQ_nxs('#theform').submit(); }" class="small2"> van <?php echo $pagingtotalpages;?>
                     </span>
                     <?php if ($pagingcurrentpage < $pagingtotalpages) { ?>
-                <a class="current" href="#" onclick="jQuery('#pagingcurrentpage').val('<?php echo $pagingcurrentpage + 1; ?>'); jQuery('#theform').submit(); return false;">&gt;</a>
+                <a class="current" href="#" onclick="jQ_nxs('#pagingcurrentpage').val('<?php echo $pagingcurrentpage + 1; ?>'); jQ_nxs('#theform').submit(); return false;">&gt;</a>
                 <?php } ?>
                     <?php if ($pagingcurrentpage < $pagingtotalpages) { ?>
-                    <a class="current" href="#" onclick="jQuery('#pagingcurrentpage').val('<?php echo $pagingtotalpages;?>'); jQuery('#theform').submit(); return false;">&gt;&gt;</a>
+                    <a class="current" href="#" onclick="jQ_nxs('#pagingcurrentpage').val('<?php echo $pagingtotalpages;?>'); jQ_nxs('#theform').submit(); return false;">&gt;&gt;</a>
                   <?php } ?>
                 </span>
                 
@@ -199,7 +199,7 @@
                 <thead>
                 <tr>
                     <th scope="col" class="check">
-                        <input type="checkbox" onchange="jQuery('input[type=\'checkbox\']').prop('checked', this.checked);">
+                        <input type="checkbox" onchange="jQ_nxs('input[type=\'checkbox\']').prop('checked', this.checked);">
                     </th>
                     <th scope="col">
                         <span><?php nxs_l18n_e("Comment[nxs:column,heading]", "nxs_td"); ?></span>&nbsp;
@@ -218,7 +218,7 @@
                 <tfoot>
                 <tr>
                     <th scope="col" class="check">
-                        <input type="checkbox" onchange="jQuery('input[type=\'checkbox\']').prop('checked', this.checked);">
+                        <input type="checkbox" onchange="jQ_nxs('input[type=\'checkbox\']').prop('checked', this.checked);">
                     </th>
                     <th scope="col">
                         <span><?php nxs_l18n_e("Comment[nxs:column,heading]", "nxs_td"); ?></span>&nbsp;

@@ -160,7 +160,7 @@ function nxs_popup_contextprocessor_pagerow_render_nxs_js_savegenericpopup($args
 			function(response)
 			{
 				// mark 'this' row (container) as dirty
-				jQuery("#nxs-pagerow-<?php echo $pagerowid;?> .nxs-row-container").addClass("nxs-dirty");
+				jQ_nxs("#nxs-pagerow-<?php echo $pagerowid;?> .nxs-row-container").addClass("nxs-dirty");
 				
 	      <?php
 	      // if this widget has a unistyle it means potential other rows of the screen need to be refreshed too
@@ -171,7 +171,7 @@ function nxs_popup_contextprocessor_pagerow_render_nxs_js_savegenericpopup($args
 	      	nxs_js_log("komt ie:");
 	      	nxs_js_log(selector);
 	      	// mark all rows with same unistyle as dirty
-	      	jQuery(selector).addClass("nxs-dirty");
+	      	jQ_nxs(selector).addClass("nxs-dirty");
 	      	<?php
 	      }
 	      else
@@ -198,7 +198,7 @@ function nxs_popup_contextprocessor_pagerow_render_nxs_js_savegenericpopup($args
     nxs_js_setpopupdatefromcontrols();
     
     var ajaxurl = '<?php echo admin_url( 'admin-ajax.php'); ?>';
-    jQuery.ajax 
+    jQ_nxs.ajax 
     (
       {
         type: 'POST',

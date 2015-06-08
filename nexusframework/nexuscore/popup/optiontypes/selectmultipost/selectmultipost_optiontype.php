@@ -102,7 +102,7 @@ function nxs_popup_optiontype_selectmultipost_renderhtmlinpopup($optionvalues, $
 	<script type='text/javascript'>
 		function nxs_js_preview(element)
 		{
-			var postid = jQuery(element).closest(".box-content").find("select option:selected").val();
+			var postid = jQ_nxs(element).closest(".box-content").find("select option:selected").val();
 			if (postid == '')
 			{
 				nxs_js_alert(nxs_js_gettrans('Please select a value for'));

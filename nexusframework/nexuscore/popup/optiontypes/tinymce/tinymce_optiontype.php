@@ -41,7 +41,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 		      <textarea style='display: block;' id="<?php echo $internaltextareaid; ?>" nxs-option-id="<?php echo $id;?>" name="<?php echo $internaltextareaid; ?>" cols="50" rows="15" ><?php echo htmlspecialchars($value); ?></textarea>
 		      
 					<script type="text/javascript">
-						jQuery(window).bind 
+						jQ_nxs(window).bind 
 						(
 							"nxs_jstrigger_afterpopupshows", 
 							function(e) 
@@ -55,7 +55,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							}
 						);
 						
-						jQuery(window).bind 
+						jQ_nxs(window).bind 
 						(
 							"nxs_jstrigger_beforepopupcloses", 
 							function(e) 
@@ -65,7 +65,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 								tinymce.remove();
 								
 								// remove textarea from dom
-								jQuery(".nxsbox_window textarea").remove();
+								jQ_nxs(".nxsbox_window textarea").remove();
 								
 								//kljsdf();
 							}
@@ -115,7 +115,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 						{
 							nxs_js_log("setting focus...");
 							// sets the actual focus to the body
-							jQuery('#nxs_i_textarea_text_UNIQUE_ifr').contents().find('body').focus();
+							jQ_nxs('#nxs_i_textarea_text_UNIQUE_ifr').contents().find('body').focus();
 						}
 						
 						function nxs_tinymce_claimfocus()
@@ -205,7 +205,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							);
 								
 							var ed = tinyMCE.activeEditor;
-							jQuery(window).trigger('nxs_tinymce_setup', ed);
+							jQ_nxs(window).trigger('nxs_tinymce_setup', ed);
 						}
 					</script>
 				</div>

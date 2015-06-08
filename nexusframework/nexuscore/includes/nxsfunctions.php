@@ -506,8 +506,6 @@ function nxs_setupcache()
 		$nxs_shouldusecache_stage2 = false;
 		
 		$file = nxs_cache_getcachedfilename();
-		//var_dump($file);
-		//die();
 		if (file_exists($file))
 		{
 			$cachetime = filectime($file);
@@ -558,13 +556,13 @@ function nxs_setupcache()
 		}
 		else
 		{
-			ob_start("nxs_storecacheoutput");
+			nxs_ob_start("nxs_storecacheoutput");
 		}
 	}
 	else
 	{
 		// proceed as usual... don't cache anything
-		ob_start("nxs_ensurenocacheoutput");
+		nxs_ob_start("nxs_ensurenocacheoutput");
 	}
 }
 
@@ -674,10 +672,10 @@ function nxs_getlocalizedmonth($monthleadingzeros)
 
 function nxs_getrowswarning($message)
 {
-	ob_start();
+	nxs_ob_start();
 	nxs_renderrowswarning($message);
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -715,10 +713,10 @@ function nxs_renderrowswarning($message)
 
 function nxs_getplaceholderwarning($message)
 {
-	ob_start();
+	nxs_ob_start();
 	nxs_renderplaceholderwarning($message);
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	return $result;
 }
 
@@ -1499,7 +1497,7 @@ function nxs_getwidgets_v2($widgetargs, $filterobsoletewidgets)
 		{
 			$distinct[] = $widgetid;
 			$title = nxs_getplaceholdertitle($widgetid);
-			$result[$index] = array();
+			$result[$index] = $widgetdata;	// clone all meta from the original function
 			$result[$index]["widgetid"] = $widgetid;
 			$result[$index]["title"] = $title;
 			$index++;
@@ -1658,9 +1656,9 @@ function nxs_generaterandomstring($length = 10)
 
 function nxs_get_var_dump($variable)
 {
-	ob_start();
+	nxs_ob_start();
 	var_dump($variable);
-	$result = ob_get_clean();
+	$result = nxs_ob_get_clean();
 	return $result;
 }
 
@@ -3168,8 +3166,6 @@ function nxs_getsitemeta_internal($nackwhenerror)
 					nxs_webmethod_return_nack("tried to retrieve site settings, while no active site settings were found (webmethod)");
 				}
 				
-				//nxs_dumpstacktrace();
-				//die();
 				nxs_saveobclean();
  				
 				if (is_user_logged_in())
@@ -3892,11 +3888,11 @@ function nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rende
 	$row = $parsedpoststructure[$rowindex];
 	$outercontent = $row["outercontent"];
 
-	ob_start();
+	nxs_ob_start();
 	
 	echo do_shortcode($outercontent);
-	$result = ob_get_contents();
-	ob_end_clean();
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 		
 	// revert nxs_global_current_postid_being_rendered to its original value
 	$nxs_global_current_postid_being_rendered = $original_nxs_global_current_postid_being_rendered;
@@ -6082,21 +6078,10 @@ function nxs_webmethod_return_ok($args)
 	$numlevels = ob_get_level();
 	for ($i = 0; $i < $numlevels; $i++)
 	{
-		$existingoutput[] = ob_get_clean();
+		$existingoutput[] = nxs_ob_get_clean();
 	}
 	
 	nxs_set_jsonheader();
-	
-	/*
-	if (nxs_isdebug())
-	{
-		//var_dump($args);
-		$x = $_SERVER['SERVER_PROTOCOL'];
-		echo "QQ8 $webmethod $x";
-		die();
-	}
-	*/
-	
 	http_response_code(200);
 
 	//header($_SERVER['SERVER_PROTOCOL'] . " 200 OK");
@@ -6959,731 +6944,10 @@ function nxs_get_post_meta_all($post_id)
 
 function nxs_resetthumbnaildimensions()
 {
-	
-	
 	// set dimensions thumbnails
 	update_option('thumbnail_size_w', 82);
 	update_option('thumbnail_size_h', 82);
 	update_option('thumbnail_crop', 1);			// cropping
-}
-
-function nxs_localization_distributetolang($destinationlang, $scope)
-{
-	return nxs_localization_distributetolang_recursive($destinationlang, $scope, false);
-}
-
-function nxs_localization_distributetolang_recursive($destinationlang, $scope, $shouldrecurse)
-{
-	if (!nxs_has_adminpermissions())
-	{
-		nxs_webmethod_return_nack("error; no access");
-	}	
-
-	if ($scope == "")
-	{
-		nxs_webmethod_return_nack("error; scope not set, use * or specify a postid");
-	}
-	
-	if (!nxs_localization_isactivated())
-	{
-		nxs_webmethod_return_nack("error; localization feature is turned off");
-	}
-	
-	$localizedsitetype = nxs_localization_getlocalizedsitetype();
-	if ($localizedsitetype !== "master")
-	{
-		nxs_webmethod_return_nack("error; only masters are allowed to distribute content");
-	}
-	$foreignlanguages = nxs_localization_getsupportedforeignlanguages();
-	if (!in_array($destinationlang, $foreignlanguages))
-	{
-		nxs_webmethod_return_nack("error; destination lang ($destinationlang) is not available");
-	}
-	$destinationblogid = nxs_localization_getblogidforlanguage($destinationlang);
-	if ($destinationblogid == "")
-	{
-		nxs_webmethod_return_nack("error; no blog found for destinationlang $destinationlang");
-	}
-	
-	global $blog_id;
-	$sourceblogid = $blog_id;
-	
-	if ($destinationblogid == $blog_id)
-	{
-		nxs_webmethod_return_nack("error; cannot replicate to one-self");
-	}
-	
-	// Load API
-	require_once ABSPATH . 'wp-admin/includes/taxonomy.php';
-	require_once ABSPATH . 'wp-admin/includes/import.php';
-	require_once ABSPATH . 'wp-admin/includes/post.php';
-	require_once ABSPATH . 'wp-admin/includes/image.php';
-	require_once(NXS_FRAMEWORKPATH . '/nexuscore/dataconsistency/dataconsistency.php');
-
-	// SYNC thumbnail size
-	if (true)
-	{
-		switch_to_blog($destinationblogid);
-		nxs_resetthumbnaildimensions();
-		restore_current_blog();
-	}
-
-	// SYNC POSTS AND POST META
-	
-	// make a list of all posts
-	global $wpdb;
-
-	if ($scope == "*")
-	{
-		// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
-		// as these can use the pagetemplate concept too. This saves development
-		// time for plugins, and increases consistency of data for end-users
-		$q = "
-					select ID postid
-					from $wpdb->posts
-				";
-		$origpostids = $wpdb->get_results($q, ARRAY_A);
-		
-		echo "before:" . count($origpostids);
-		
-		// filter out posts that are in "blog" category
-		foreach ($origpostids as $i => $origrow)
-		{
-			$origpostid = $origrow["postid"];
-			if (in_category(array("blog", "interview", "changelog"), $origpostid))
-			{
-				echo "skipping post in blog category";
-				unset($origpostids[$i]);
-			}
-		}
-		
-		// filter out posts that are of specific post-types
-		foreach ($origpostids as $i => $origrow)
-		{
-			$origpostid = $origrow["postid"];
-			$posttype = get_post_type($origpostid);
-			
-			if ($posttype == "shop_order")
-			{
-				echo "skipping woocommerce order in blog category";
-				unset($origpostids[$i]);
-			}
-		}
-		
-		echo "after:" . count($origpostids);
-	}
-	else
-	{
-		$q = "
-			select ID postid
-			from $wpdb->posts
-			where ID = " . $scope . "
-		";
-		$origpostids = $wpdb->get_results($q, ARRAY_A);
-	}
-	
-	if (count($origpostids) > 1)
-	{
-		//echo "on hold";
-		//die();
-	}
-	
-	// --------------------------------
-	
-	$localpostidstoglobalids = array();
-	$globalidstoremotepostids = array();
-	$localpostidstoremotepostids = array();
-	
-	// make a list of all posts with globalids	
-	
-	// LOOP 1; posts
-	foreach ($origpostids as $origrow)
-	{		
-		$origpostid = $origrow["postid"];
-
-		if (wp_is_post_revision($origpostid))
-		{
-			echo "[ignoring revision]<br />";
-		}
-		else
-		{
-			//echo "origpostid:" . $origpostid;
-				
-			$origglobalid = nxs_get_globalid($origpostid, true);	// this ensures the globalid will exist
-			if ($origglobalid == "NXS-NULL")
-			{
-				echo $origpostid;
-				echo "alsjemenou";
-				die();
-			}
-			
-			$localpostidstoglobalids[$origpostid] = $origglobalid;
-			
-			$origpostdata = get_post($origpostid);
-			
-			switch_to_blog($destinationblogid);
-	
-			//var_dump($postdata);
-			$destinationpostids = nxs_get_postidsaccordingtoglobalid($origglobalid);
-			
-			if (count($destinationpostids) == 0)
-			{				
-				// there's no globalid with this value,
-				// we need to create the post on the destination site,
-				// and hook the appropriate globalid to it
-				
-				// step 1; create a new post (clone basic fields)
-				$destinationpostdata = $origpostdata;
-				$destinationpostdata->ID = null;	// has to be blank
-				
-				echo "globalid $origglobalid not yet found on destination server for $origpostid<br />";
-				var_dump($destinationpostdata);
-				
-				$destinationpostid = wp_insert_post($destinationpostdata, true);
-								
-				if (is_wp_error($destinationpostid))
-				{
-					// failed to create post?
-					var_dump($destinationpostid);
-					nxs_webmethod_return_nack("failed to insert post");
-				}
-				
-				echo "created destination postid: {$destinationpostid} for postid: {$origpostid} with globalid: {$origglobalid}.";
-	
-				// step 2; set the globalid
-				nxs_reset_globalidtovalue($destinationpostid, $origglobalid);
-				
-				// verification step; 
-				$destinationpostids = nxs_get_postidsaccordingtoglobalid($origglobalid);
-				if (count($destinationpostids) == 1 && $destinationpostids[0] == $destinationpostid)
-				{
-					echo "OK";
-				}
-				else
-				{
-					nxs_saveobclean();
-					var_dump($origpostid);
-					var_dump($origpostdata);
-					var_dump($origglobalid);
-					var_dump($destinationpostids);
-					var_dump($destinationpostids[0]);
-					var_dump($destinationpostid);
-					
-					die();
-					nxs_webmethod_return_nack("failed to sync; verification shows its not ok");	
-				}
-			}
-			else if (count($destinationpostids) == 1)
-			{
-				$destinationpostid = $destinationpostids[0];
-				echo "destination post already exists:" . $destinationpostid . "<br />";
-			}
-			else
-			{
-				echo "whoops";
-				nxs_webmethod_return_nack("failed to sync; multiple postids");
-			}
-
-			// update the cache
-			$globalidstoremotepostids[$origglobalid] = $destinationpostid;
-			$localpostidstoremotepostids[$origpostid] = $destinationpostid;
-		}
-		
-		restore_current_blog();
-	}
-	
-	
-	// LOOP 2: RELEVANT POSTMETA
-	// some items (like Yoast SEO) is NOT synced, since the Yoast optimalization is to be optimized for the specific 
-	// localization, also the global ids are NOT synced	
-	foreach ($origpostids as $origrow)
-	{
-		$origpostid = $origrow["postid"];
-		//echo "postid:" . $origpostid;
-		
-		if (wp_is_post_revision($origpostid))
-		{
-			echo "[ignoring revision]";
-		}
-		else
-		{
-			$origglobalid = $localpostidstoglobalids[$origpostid];
-			$origpostdata = get_post($origpostid); 
-			$origpost_meta_all = nxs_get_post_meta_all($origpostid);
-	
-			//echo "switching to " . $destinationblogid;
-			switch_to_blog($destinationblogid);
-			
-			$destinationpostids = nxs_get_postidsaccordingtoglobalid($origglobalid);
-			if (count($destinationpostids) != 1)
-			{
-				//nxs_saveobclean();
-				
-				//var_dump($origpostid);
-				var_dump($origglobalid);
-				//var_dump($destinationpostids);
-				
-				echo "whoops; 0 or multiple postids?";
-				die();
-				nxs_webmethod_return_nack("failed to sync; error");
-			}
-			$destinationpostid = $destinationpostids[0];
-			
-			foreach ($origpost_meta_all as $meta_key => $meta_value)
-			{
-				$shouldsync = true;
-				
-				if ($meta_key == "nxs_globalid")
-				{
-					// do NOT sync the global identifiers; it was already synced in the previous step
-					$shouldsync = false;
-				}
-				if ($meta_key == "_thumbnail_id")
-				{
-					// do NOT sync the _wp_attachment_metadata if its already there;
-					$currentmeta = get_post_meta($destinationpostid, $meta_key);
-					if (isset($currentmeta))
-					{
-						$shouldsync = false;
-					}
-				}
-				if ($meta_key == "_wp_attachment_metadata")
-				{
-					// do NOT sync the _wp_attachment_metadata if its already there;
-					$currentmeta = get_post_meta($destinationpostid, $meta_key);
-					if (isset($currentmeta))
-					{
-						$shouldsync = false;
-					}
-				}
-				if (nxs_stringcontains($meta_key, "yoast"))
-				{
-					// do NOT sync the yoast meta data;
-					$shouldsync = false;
-				}
-				if ($shouldsync === true)
-				{					
-					update_post_meta($destinationpostid, $meta_key, nxs_get_backslashescaped($meta_value));
-					
-					if ($scope == $origpostid)
-					{
-						/*
-						echo "[doing:" . $meta_key . "]";
-						echo "<br /><br />old:<br />";
-						$old_post_meta = get_post_meta($destinationpostid, $meta_key);
-						var_dump($old_post_meta[0]);
-						echo "<br />";
-					
-						echo "<br /><br />new:<br />";
-						var_dump($meta_value);
-						echo "<br />";
-
-						echo "storing meta data: $meta_key<br />";
-						*/
-					}
-				}
-				else
-				{
-					//echo "[skipping:" . $meta_key . "]";
-				}
-			}
-			
-			restore_current_blog();
-		}
-	}
-	
-	// LOOP 3; +featured images
-	foreach ($origpostids as $origrow)
-	{
-		$origpostid = $origrow["postid"];
-		echo "postid:" . $origpostid;
-				
-		if (wp_is_post_revision($origpostid))
-		{
-			//echo "[ignoring revision]";
-		}
-		else
-		{
-			$origglobalid = $localpostidstoglobalids[$origpostid];
-			$origpostthumbid = get_post_thumbnail_id($origpostid);
-			
-			if ($origpostthumbid === "")
-			{
-				//echo "NO FEATURED IMAGE FOUND FOR $origpostid;";
-				// empty; there is no featured image
-
-				//echo "switching to " . $destinationblogid;
-				switch_to_blog($destinationblogid);
-				
-				$destinationpostids = nxs_get_postidsaccordingtoglobalid($origglobalid);
-				if (count($destinationpostids) != 1)
-				{
-					nxs_webmethod_return_nack("failed to sync; error");
-				}
-				$destinationpostid = $destinationpostids[0];
-
-				set_post_thumbnail($destinationpostid, 0);
-				
-				restore_current_blog();
-			}
-			else
-			{	
-				if (!isset($localpostidstoglobalids[$origpostthumbid]))
-				{
-					$localpostidstoglobalids[$origpostthumbid] = nxs_get_globalid($origpostthumbid, true);	// this ensures the globalid will exist
-				}
-				$origthumbnailglobalid = $localpostidstoglobalids[$origpostthumbid];
-				
-				//echo "switching to " . $destinationblogid;
-				switch_to_blog($destinationblogid);
-				
-				$destinationpostids = nxs_get_postidsaccordingtoglobalid($origglobalid);
-				if (count($destinationpostids) != 1)
-				{
-					nxs_webmethod_return_nack("failed to sync; error 0 or multiple ones");
-				}
-				$destinationpostid = $destinationpostids[0];
-				if (!has_post_thumbnail($destinationpostid))
-				{
-					// only override when the thumb is not yet set (otherwise we will assume the slave version is leading)
-					$destinationpostthumbid = get_post_thumbnail_id($destinationpostid);
-				
-					$destinationthumbnailids = nxs_get_postidsaccordingtoglobalid($origthumbnailglobalid);
-					if (count($destinationthumbnailids) != 1)
-					{
-						nxs_webmethod_return_nack("failed to sync; error");
-					}
-					$destinationthumbnailid = $destinationthumbnailids[0];
-					
-					//echo "DID FIND A FEATURED IMAGE FOUND FOR origpostid:$origpostid globalid: $origthumbnailglobalid, destin thumbpostid: $destinationthumbnailid";
-					
-					set_post_thumbnail($destinationpostid, $destinationthumbnailid);
-				}
-				else
-				{
-					//
-					echo "thumbnail already set on slave, ignoring";
-				}
-	
-				restore_current_blog();
-			}
-		}
-	}
-	
-	// LOOP 4; categories
-	// TODO: syncing of categories currently only supports 1 level
-	foreach ($origpostids as $origrow)
-	{
-		$origpostid = $origrow["postid"];
-		//echo "postid:" . $origpostid;
-				
-		if (wp_is_post_revision($origpostid))
-		{
-			//echo "[ignoring revision]";
-		}
-		else
-		{
-			$origglobalid = $localpostidstoglobalids[$origpostid];
-
-			$origpostcategoryids = wp_get_post_categories($origpostid);
-			$origpostcategories = array();
-			foreach ($origpostcategoryids as $currentpostcategoryid)
-			{
-				$origpostcategories[] = get_category($currentpostcategoryid);
-			}
-			
-			//echo "switching to " . $destinationblogid;
-			switch_to_blog($destinationblogid);
-						
-			$destinationpostids = nxs_get_postidsaccordingtoglobalid($origglobalid);
-			if (count($destinationpostids) == 0)
-			{
-				nxs_webmethod_return_nack("failed to sync; error");
-			}
-			else if (count($destinationpostids) > 1)
-			{
-				nxs_webmethod_return_nack("failed to sync; error multiple");
-			}
-			$destinationpostid = $destinationpostids[0];
-			
-			$destinationcategories = array();
-			// step a; create non-existing categories
-			foreach ($origpostcategories as $currentorigpostcategory)
-			{
-				$destinationcategory = get_category_by_slug($currentorigpostcategory->slug);
-				if ($destinationcategory === false)
-				{
-					// doesn't yet exist; create!
-					$cat = array
-					(
-					  'cat_ID' => 0,	// will be created
-					  'cat_name' => $currentorigpostcategory->name,
-					  'category_description' => $currentorigpostcategory->description,
-					  'category_nicename' => $currentorigpostcategory->slug,
-					  'category_parent' => 0,	// for the time being only 1 level is supported
-					  'taxonomy' => 'category' 
-					);
-					
-					wp_insert_category($cat);	
-					$destinationcategory = get_category_by_slug($currentorigpostcategory->slug);
-				}
-				// if we read this point $destinationcategory should be correctly filled
-				$destinationcategories[] = $destinationcategory->term_id;
-			}
-			wp_set_post_categories($destinationpostid, $destinationcategories);
-						
-			restore_current_blog();
-		}
-	}
-	
-	// LOOP 5; images
-	foreach ($origpostids as $origrow)
-	{
-		$origpostid = $origrow["postid"];
-		
-		$image = get_post($origpostid);
-		if ('attachment' == $image->post_type)
-		{
-			$sourceattachedfile = get_attached_file($origpostid);	// will look like for example /opt/bitnami/apps/wordpress/htdocs/wp-content/blogs.dir/87/files/2013/08/banner11.jpg
-			echo "<br />imageid: $origpostid; sourceattachedfile location:$sourceattachedfile<br />";
-			$destinationattachedfile = nxs_stringreplacefirst($sourceattachedfile, "/{$sourceblogid}/", "/{$destinationblogid}/");
-			
-			$processfile = true;
-			if (file_exists($destinationattachedfile))
-			{
-				// $processfile = false;
-			}
-					
-			if ($processfile)
-			{
-				$dir = dirname($destinationattachedfile);
-				if (is_dir($dir))
-				{
-					echo "dir $dir already exists<br />";
-				}
-				else
-				{
-					echo "creating dir $dir<br />";
-					$createresult = mkdir($dir, 0777, true);
-					if ($createresult === false)
-					{
-						echo "failed!";
-						die();
-					}
-				}
-				
-				echo "copying file " . $sourceattachedfile . " to " . $destinationattachedfile . "<br />";
-				copy($sourceattachedfile, $destinationattachedfile);
-				/*
-		 		if ($image && 'image/' == substr( $image->post_mime_type, 0, 6 ) )
-		 		{
-					switch_to_blog($destinationblogid);
-					
-					$destinationpostid = $globalidstoremotepostids[$origglobalid];					
-					
-					// remove meta data, such that it will be regenerated
-					delete_post_meta($destinationpostid, "_wp_attachment_metadata");
-			
-					// update the meta data
-					$id = $destinationpostid;
-					$image = get_post( $id );
-					$fullsizepath = get_attached_file( $image->ID );
-					$metadata = wp_generate_attachment_metadata( $image->ID, $fullsizepath );
-					wp_update_attachment_metadata( $image->ID, $metadata );
-
-					
-					// thats all :)
-	
-					restore_current_blog();
-				}
-				*/
-			}
-			else
-			{
-				// ignore; already there
-				echo "skipping syncing file master to slave";
-			}
-		}
-	}
-	
-	// TODO: LOOP 6; taxonomies
-	// ---------
-	
-	// SYNCING RELATED ITEMS (IMGS) WHEN SYNCING A SPECIFIC POST
-	
-	if ($scope != "*" && $shouldrecurse === true)
-	{
-		// sync related posts too
-		$imagesinpost = nxs_get_images_in_post($scope);
-		foreach ($imagesinpost as $currentimage)
-		{
-			if ($currentimage != 0)
-			{
-				// NO recursion this time!
-				nxs_localization_distributetolang_recursive($destinationlang, $currentimage, false);
-			}
-		}
-	}
-	
-	
-	
-	// RETOUCHING GLOBALIDS OF METADATA IF SYNCING A SPECIFIC POST (SANITIZING)
-	if ($scope != "*" && $shouldrecurse === true)
-	{
-		$remotepostid = $localpostidstoremotepostids[$scope];
-		if (isset($remotepostid))
-		{
-			switch_to_blog($destinationblogid);
-			
-			nxs_dataconsistency_sanitize_postwidgetmetadata($remotepostid);
-			nxs_dataconsistency_sanitize_postmetadata($remotepostid);
-			nxs_after_postcontents_updated($remotepostid);
-			
-			restore_current_blog();
-		}
-		else
-		{
-			echo "mislukt...";
-			die();
-		}
-	}
-}
-
-function nxs_localization_distributetolang_stage2($destinationlang, $scope)
-{
-	if (!nxs_has_adminpermissions())
-	{
-		nxs_webmethod_return_nack("error; no access");
-	}	
-	
-	if ($scope == "")
-	{
-		nxs_webmethod_return_nack("error; scope not set, use * or specify a postid");
-	}
-	
-	if (!nxs_localization_isactivated())
-	{
-		nxs_webmethod_return_nack("error; localization feature is turned off");
-	}
-	
-	$localizedsitetype = nxs_localization_getlocalizedsitetype();
-	if ($localizedsitetype !== "master")
-	{
-		nxs_webmethod_return_nack("error; only masters are allowed to distribute content");
-	}
-	$foreignlanguages = nxs_localization_getsupportedforeignlanguages();
-	if (!in_array($destinationlang, $foreignlanguages))
-	{
-		nxs_webmethod_return_nack("error; destination lang ($destinationlang) is not available");
-	}
-	$destinationblogid = nxs_localization_getblogidforlanguage($destinationlang);
-	if ($destinationblogid == "")
-	{
-		nxs_webmethod_return_nack("error; no blog found for destinationlang $destinationlang");
-	}
-	
-	global $blog_id;
-	$sourceblogid = $blog_id;
-	
-	if ($destinationblogid == $blog_id)
-	{
-		nxs_webmethod_return_nack("error; cannot replicate to one-self");
-	}
-	
-	// Load API
-	require_once ABSPATH . 'wp-admin/includes/taxonomy.php';
-	require_once ABSPATH . 'wp-admin/includes/import.php';
-	require_once ABSPATH . 'wp-admin/includes/post.php';
-	require_once ABSPATH . 'wp-admin/includes/image.php';
-
-	// SYNC POSTS AND POST META
-	
-	// make a list of all posts
-	global $wpdb;
-
-	if ($scope == "*")
-	{
-		// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
-		// as these can use the pagetemplate concept too. This saves development
-		// time for plugins, and increases consistency of data for end-users
-		$q = "
-					select ID postid
-					from $wpdb->posts
-				";
-	}
-	else
-	{
-				$q = "
-					select ID postid
-					from $wpdb->posts
-					where ID = " . $scope . "
-				";
-	}
-		
-	$origpostids = $wpdb->get_results($q, ARRAY_A);
-	
-	// LOOP; thumbnails
-	foreach ($origpostids as $origrow)
-	{
-		$origpostid = $origrow["postid"];
-		
-		$image = get_post($origpostid);
-		if ('attachment' == $image->post_type)
-		{
-			$sourceattachedfile = get_attached_file($origpostid);	// will look like for example /opt/bitnami/apps/wordpress/htdocs/wp-content/blogs.dir/87/files/2013/08/banner11.jpg
-			echo "<br />imageid: $origpostid; sourceattachedfile location:$sourceattachedfile<br />";
-			$destinationattachedfile = nxs_stringreplacefirst($sourceattachedfile, "/{$sourceblogid}/", "/{$destinationblogid}/");
-			
-			$processfile = true;
-			if (file_exists($destinationattachedfile))
-			{
-				// $processfile = false;
-			}
-					
-			if ($processfile)
-			{
-		 		if ($image && 'image/' == substr( $image->post_mime_type, 0, 6 ) )
-		 		{
-		 			$origglobalid = nxs_get_globalid($origpostid, false);	// this ensures the globalid will exist					
-		 			
-					switch_to_blog($destinationblogid);
-					$destinationpostids = nxs_get_postidsaccordingtoglobalid($origglobalid);
-					$destinationpostid = $destinationpostids[0];
-					
-					// remove meta data, such that it will be regenerated
-					delete_post_meta($destinationpostid, "_wp_attachment_metadata");
-			
-					// update the meta data
-					$id = $destinationpostid;
-					$image = get_post( $id );
-					$fullsizepath = get_attached_file( $image->ID );
-					$metadata = wp_generate_attachment_metadata( $image->ID, $fullsizepath );
-					$r = wp_update_attachment_metadata( $image->ID, $metadata );
-					echo $image->ID;
-					echo "<br />";
-					var_dump($metadata);
-					echo "<br />";
-					var_dump($r);
-					echo "<br />";
-
-					
-					// thats all :)
-	
-					restore_current_blog();
-				}
-			}
-			else
-			{
-				// ignore; already there
-				echo "skipping slave - thumbing";
-			}
-		}
-	}
-	
-	
-	
-	echo "thats all folks";
-	die();
 }
 
 // cleans up images not found
@@ -8060,7 +7324,6 @@ function nxs_unistyle_deleteunistyle($group, $name)
 {
 	if (!isset($group) || $group == "") { nxs_webmethod_return_nack("group is not set"); }
 	if (!isset($name) || $name == "" || $name == "@@@nxsempty@@@") { nxs_webmethod_return_nack("name is not set"); }
-	if (!nxs_unistyle_exists($group, $name)) { nxs_webmethod_return_nack("name unistyle ({$name}) not found in group ({$group})"); }
 	
 	global $wpdb;
 	// rename the unistyle of all widgets on all posts having a nxs structure
@@ -8106,7 +7369,6 @@ function nxs_unistyle_wipeunistyle_internal($group, $name)
 {
 	if (!isset($group) || $group == "") { nxs_webmethod_return_nack("group is not set"); }
 	if (!isset($name) || $name == "" || $name == "@@@nxsempty@@@") { nxs_webmethod_return_nack("name is not set"); }
-	if (!nxs_unistyle_exists($group, $name)) { nxs_webmethod_return_nack("unistyle not found"); }
 	
 	$metakey = "unistyle_" . $group . "_" . $name;	
 
@@ -8870,7 +8132,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	$result["result"] = "OK";
 	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	
 	// Actual rendering of HTML elements
 	?>	
@@ -8995,8 +8257,8 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	<?php
 	
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
-	$html = ob_get_contents();
-	ob_end_clean();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
 	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page
@@ -9126,7 +8388,7 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
  	$widgeticonid = nxs_getwidgeticonid($placeholdertemplate);
  	
 	// Turn on output buffering
-	ob_start();
+	nxs_ob_start();
 	// --------------------------------------------------------------------------------------------------
 	$islocked = false;
 	
@@ -9288,8 +8550,8 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
   // --------------------------------------------------------------------------------------------------
     
   // Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $menu = ob_get_contents();
-  ob_end_clean();
+  $menu = nxs_ob_get_contents();
+  nxs_ob_end_clean();
   
   // Setting the contents of the variable to the appropriate array position
   // The framework uses this array with its accompanying values to render the page
@@ -9358,59 +8620,6 @@ function nxs_genericpopup_getoptions($args)
 	else
 	{
 		nxs_webmethod_return_nack("missing function name $functionnametoinvoke");
-	}
-	
-	//
-	// for each "localizable" field, duplicate the property
-	//
-	$foundatleastonelocalizeditem = false;
-	$localizablefieldids = nxs_localization_getlocalizablefieldids($result);
-	foreach ($localizablefieldids as $currentlocalizablefieldid)
-	{
-		// clone the field info
-		$fields = $result["fields"];
-		$index = 0;
-		// Popup specific variables
-	  foreach ($fields as $key => $propertiesofcurrentoption) 
-	  {
-	    $id = $propertiesofcurrentoption["id"];
-	    if ($id == $currentlocalizablefieldid)
-	    {
-	    	// replicate these properties for each foreign language supported
-	    	// note, the "native" language is already covered by the "id" itself,
-	    	// so there's no need to replicate that one too
-	    	$foreignlanguages = nxs_localization_getsupportedforeignlanguages();
-	    	foreach ($foreignlanguages as $currentforeignlanguage)
-	    	{
-			    // clone propertiesofcurrentoption
-			    $clonedpropertiesofcurrentoption = nxs_array_copy($propertiesofcurrentoption);
-			    // update the {id} to {id}_hl_{language}
-			    $clonedpropertiesofcurrentoption["id"] = $clonedpropertiesofcurrentoption["id"] . "_hl_" . $currentforeignlanguage;
-			    $clonedpropertiesofcurrentoption["label"] = $clonedpropertiesofcurrentoption["label"] . " (" . $currentforeignlanguage . ")";
-			    // insert the whole "shabang" into the result array
-			    array_splice($result["fields"], $index + 1, 0, array($clonedpropertiesofcurrentoption)); // splice in at position 3
-			    
-			    //nxs_array_insert($result["fields"], $clonedpropertiesofcurrentoption, $index);
-			    $foundatleastonelocalizeditem = true;
-			    $index++;
-		    }
-		    
-		    // exit loop
-		    break;
-			}
-			else
-			{
-				// skip, item is not specified
-			}
-			$index++;
-		}
-	}
-	
-	if ($foundatleastonelocalizeditem === true)
-	{
-		//echo "found localizable item, result:";
-		//var_dump($result);
-		//die();
 	}
 	
 	return $result;
@@ -11341,10 +10550,10 @@ function nxs_recursive_copyfolders_v2($source, $dest, $skipitemscontaininglowerc
 
 	    	if ($r === false)
 	    	{
-	    		echo "error ; copying of $sourcepath failed";
 	    		$errors= error_get_last();
 	    		var_dump($errors);
-	    		die();
+	    		
+	    		nxs_webmethod_return_nack("error ; copying of $sourcepath failed");
 	    	}
 
 	    }
@@ -11457,17 +10666,5 @@ if ( ! function_exists( 'wp_slash' ) ) {
 		return $value;
 	}
 }
-
-/*
-// debug
-if ($_REQUEST["unistyleblogtest"] == "true")
-{
-	$group = "blogwidget";
-	$name = "main";
-	$p = nxs_unistyle_getunistyleproperties($group, $name);
-	var_dump($p);
-	die();	
-}
-*/
 
 ?>
