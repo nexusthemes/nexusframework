@@ -220,9 +220,9 @@ function nxs_getstyletypeoptions() {
 				"left top"			=> nxs_l18n__("stop2", "nxs_td"),
 				"center top"		=> nxs_l18n__("stop2", "nxs_td"), 
 				"right top"			=> nxs_l18n__("stop2", "nxs_td"), 
-				"left center"		=> nxs_l18n__("minus", "nxs_td"),
-				"center center"		=> nxs_l18n__("minus", "nxs_td"),
-				"right center"		=> nxs_l18n__("minus", "nxs_td"), 
+				"left center"		=> nxs_l18n__("stop2", "nxs_td"),
+				"center center"		=> nxs_l18n__("stop2", "nxs_td"),
+				"right center"		=> nxs_l18n__("stop2", "nxs_td"), 
 				"left bottom"		=> nxs_l18n__("stop2", "nxs_td"),
 				"center bottom"		=> nxs_l18n__("stop2", "nxs_td"), 
 				"right bottom"		=> nxs_l18n__("stop2", "nxs_td"),
@@ -236,6 +236,52 @@ function nxs_getstyletypeoptions() {
 					"pastonly"			=>nxs_l18n__("past only", "nxs_td"), 
 					"todayandfuture"	=>nxs_l18n__("today and the future", "nxs_td"), 
 					"tomorrowandfuture"	=>nxs_l18n__("tomorrow and the future", "nxs_td"), 
+				)
+		),
+		"fixedheader_display" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					""				=>nxs_l18n__("default", "nxs_td"),
+					"inline"		=>nxs_l18n__("inline", "nxs_td"), 
+					"float"			=>nxs_l18n__("float", "nxs_td"), 
+				)
+		),
+		"shadow" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					""				=>nxs_l18n__("default", "nxs_td"),
+					"none"			=>nxs_l18n__("none", "nxs_td"), 
+				)
+		),
+		"inpagemenu_style" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					"blocks"			=>nxs_l18n__("blocks", "nxs_td"),
+					"blocksicons"			=>nxs_l18n__("blocks with icons", "nxs_td"),
+					"circles"			=>nxs_l18n__("circles", "nxs_td"),
+					"circlesline"		=>nxs_l18n__("circles with line", "nxs_td"),
+				)
+		),
+		"inpagemenu_items" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					"sections"			=>nxs_l18n__("all sections", "nxs_td"),
+					"prevnext"			=>nxs_l18n__("previous and next", "nxs_td"),
+					"prevactivenext"	=>nxs_l18n__("previous, active section and next", "nxs_td"),
+					"prevallnext"		=>nxs_l18n__("previous, all sections and next", "nxs_td"),
+				)
+		),
+		"inpagemenu_showtitle" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					"onchange"			=>nxs_l18n__("Show title as tooltip on change", "nxs_td"),
+					"onhover"			=>nxs_l18n__("Show title as tooltip on hover", "nxs_td"),
+					"always"			=>nxs_l18n__("Always show title", "nxs_td"),
 				)
 		),
 		"margin" => array (
@@ -266,22 +312,9 @@ function nxs_getstyletypeoptions() {
 			"subtype" 			=> "multiplier",
 			"values" 			=> array("", 40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480),
 		),
-		"fixedheader_display" => array (
-			"subtype" 			=> "textlookup",
-			"values" 			=> array
-				(
-					""				=>nxs_l18n__("default", "nxs_td"),
-					"inline"		=>nxs_l18n__("inline", "nxs_td"), 
-					"float"			=>nxs_l18n__("float", "nxs_td"), 
-				)
-		),
-		"shadow" => array (
-			"subtype" 			=> "textlookup",
-			"values" 			=> array
-				(
-					""				=>nxs_l18n__("default", "nxs_td"),
-					"none"			=>nxs_l18n__("none", "nxs_td"), 
-				)
+		"items_scale" => array (
+			"subtype" 			=> "multiplier",
+			"values" 			=> array(0.8, 1, 1.2, 1.4, 1.5, 1.6, 1.8, 2.0),
 		),
 	);
 	return $options;

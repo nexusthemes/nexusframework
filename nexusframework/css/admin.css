@@ -1369,6 +1369,28 @@ input.color-picker 									{ width: 70px; }
 .nxs-suppress 												{ display: none; }
 .nxs-overrule-suppress										{ display: block; }
 
+/* ANCHOR POINT
+------------------------------------------------------------------------------------------ */
+
+div.nxs-section h5 									{ padding: 12px 0px; }
+div.nxs-section h5 span.icon 						{ padding-left: 10px; }
+div.nxs-section h5 span.nxs-section-title 			{ padding-right: 10px; }
+div.nxs-section-container 							{ text-align: center; }
+div.nxs-section .nxs-section-icon 					{ display: none; }
+
+div.nxs-section h5 div.serperator-before,
+div.nxs-section h5 div.serperator-after {
+	position: relative;
+	display: inline-block;
+	top: 3px;
+	width: 33%;
+	height: 15px;
+	background: url(../images/anchor-seperator.png) repeat-x;
+}
+
+div.nxs-section h5 div.serperator-before 			{ background-position: center left; }
+div.nxs-section h5 div.serperator-after 			{ background-position: center right; }
+
 /* ADMIN GROWL
 ------------------------------------------------------------------------------------------ */
 div.jGrowl											{ padding: 10px; z-index: 1020; color: #464646; text-shadow: white 0 1px 0; font-size: 15px; } 

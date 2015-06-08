@@ -199,16 +199,20 @@ function nxs_js_setupwindowscrolllistener()
 	(
 		function() 		
 		{
-			if(this.scrollTO) clearTimeout(this.scrollTO);
-		  this.scrollTO = setTimeout
-		  (
-		  	function() 
-		  	{
-		  		jQuery(this).trigger('nxs_event_windowscrolled');
-		  	}
-		  	, 
-		  	100
-		  );
+			if (this.scrollTO) clearTimeout(this.scrollTO);
+		  	this.scrollTO = setTimeout
+		  	(
+		  		function() 
+		  		{
+		  			jQuery(this).trigger('nxs_event_windowscrolled');
+		  		}
+		  		, 
+		  		100
+		  	);
+
+		  	nxs_js_invokethrottled("scrolling", 100, function(){
+		  		jQuery(document).trigger('nxs_event_windowscrolling');
+		  	});
 		}
 	);
 }
@@ -475,26 +479,8 @@ function nxs_js_hook_windowsscrolled_event()
 			
 			if(windowscrolltop + windowheight + treshhold >= documentheight) 
 			{
-		   	jQuery(this).trigger('nxs_event_windowscrolledbottom');
+		   		jQuery(this).trigger('nxs_event_windowscrolledbottom');
 			}
-		}
-	);
-}
-
-function nxs_js_hook_windowsresizeend_event()
-{
-	// nxs_js_log('hooked to nxs_event_resizeend');
-	
-	jQuery(document).bind
-	(
-		'nxs_event_resizeend', 
-		function() 
-		{
-			// nxs_js_log('receiving nxs_event_resizeend event');
-			
-			nxs_js_tagviewports();
-	    nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-windowresized');
-			nxs_js_reset_popup_dimensions();
 		}
 	);
 }
@@ -511,7 +497,7 @@ function nxs_js_hook_windowsresizeend_event()
 			// nxs_js_log('receiving nxs_event_resizeend event');
 			
 			nxs_js_tagviewports();
-	    nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-windowresized');
+	    	nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-windowresized');
 			nxs_js_reset_popup_dimensions();	    
 		}
 	);
@@ -1967,6 +1953,8 @@ function nxs_js_redirect_top(url)
 				var updateElement = jQuery(pagerowscontainer).children()[rowindex];
 				nxs_js_notify_widgets_after_ajaxrefresh(updateElement);
 				
+				jQuery(document).trigger('nxs_dom_changed');
+				
 				nxs_js_reenable_all_window_events();
 			});
 			//nxs_js_log("done:" + rowindex);
@@ -2619,6 +2607,7 @@ function nxs_js_redirect_top(url)
 				nxs_js_reenable_all_window_events();
 				
 				invokewhenavailable();
+				jQuery(document).trigger('nxs_dom_changed');
 			});
 		}
 		
@@ -2769,6 +2758,7 @@ function nxs_js_redirect_top(url)
 									{
 										var waitgrowltokend = nxs_js_alert_wait_start(nxs_js_gettrans('Refreshing page'));
 										var row = jQuery(domelement).closest('.nxs-row');
+										jQuery(document).trigger('nxs_dom_changed');
 										jQuery(row).slideUp('slow', 
 										function()
 										{
@@ -3187,7 +3177,7 @@ function nxs_js_redirect_top(url)
 			
 			// allow widgets and/or plugins to extend the functionality of this function (act / bind to the hook / event)
   			jQuery(window).trigger('nxs_recalculateruntimedimensions_afterclear');
-
+  			
 			// reset heights of placeholder elements
 			jQuery(".nxs-dyn-height").css('height', 'auto').removeClass("nxs-dyn-height");
 
@@ -3402,7 +3392,8 @@ function nxs_js_redirect_top(url)
 			//nxs_js_log('broadcasting event nxs_recalculateruntimedimensions');
 			
 			// allow widgets and/or plugins to extend the functionality of this function (act / bind to the hook / event)
-  		jQuery(window).trigger('nxs_recalculateruntimedimensions');
+  			jQuery(window).trigger('nxs_recalculateruntimedimensions');
+  			jQuery(document).trigger('nxs_dom_changed');
   		
 			nxs_js_ui_popscrollrevert(scrollrevertid);
 		}
@@ -7202,8 +7193,9 @@ function nxs_js_get_frameworkcsstemplate(csslookup)
 	// SLIDETOTOP COLORZEN ==============================
 
 
-	u = u + nxs_js_get_themecsstemplate_part1_colorzen(".nxs-slidetotop:hover ", "", "nxs-colorzen-hover-", csslookup, "");
-	
+	u = u + nxs_js_get_themecsstemplate_part1_colorzen(".nxs-applyhovercolors:hover ", "", "nxs-colorzen-hover-", csslookup, "");
+	u = u + nxs_js_get_themecsstemplate_part1_colorzen(".nxs-applyactivecolors ", "", "nxs-colorzen-active-", csslookup, "");
+
 	//
 	// 
 	//

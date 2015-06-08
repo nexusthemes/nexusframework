@@ -115,7 +115,7 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 		$offsetpixels = substr($offset, 0, -2);
 	}
 
-	$concatenatedcssclasses_container 	= nxs_concatenateargswithspaces('nxs-slidetotop', $linkcolorvar_cssclass, $docking_position_cssclass);
+	$concatenatedcssclasses_container 	= nxs_concatenateargswithspaces('nxs-slidetotop', 'nxs-applyhovercolors', $linkcolorvar_cssclass, $docking_position_cssclass);
 	$concatenatedcssclasses_anchor 		= nxs_concatenateargswithspaces($background_color_cssclass, $background_color_hover_cssclass);
 	
 	?>
@@ -130,7 +130,7 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 
 	<script type="text/javascript">
 
-		function nxs_show_slidetotop() {
+		function nxs_js_show_slidetotop() {
 			if ($(window).scrollTop() < <?php echo $offsetpixels; ?>) {
 				$("#nxs-slidetotop:visible").fadeOut(200);
 			}
@@ -138,14 +138,31 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 				$("#nxs-slidetotop:hidden").fadeIn(200);
 			}
 		}
+
+		function nxs_js_center_slidetotop() {
+			var slidetotopWidth = Math.round($('#nxs-slidetotop').width());
+			var slidetotopMargin = slidetotopWidth / 2;
+				slidetotopMargin = Math.round(slidetotopMargin - (slidetotopMargin * 2));
+
+			$('#nxs-slidetotop').css('marginLeft', slidetotopMargin);
+		}
 	
 		$(window).scroll(function () { 
-			nxs_show_slidetotop();
+			nxs_js_show_slidetotop();
 		});
 
 		setTimeout(function() {
-			nxs_show_slidetotop();
-		}, 1000);
+			nxs_js_show_slidetotop();
+			<?php
+				if ($docking_position_explode[0] == "center") {
+			?>
+			
+			nxs_js_center_slidetotop();
+
+			<?php
+				}
+			?>
+		}, 200);
 		
 		$('#nxs-slidetotop a').click(function(){
 			$('html, body').stop().animate({
@@ -153,21 +170,6 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 			}, 400);
 			return false;
 		});
-
-		<?php
-			if ($docking_position_explode[0] == "center") {
-		?>
-			$(document).load(function(){
-				var slidetotopWidth = Math.round($('#nxs-slidetotop').width());
-				var slidetotopMargin = slidetotopWidth / 2;
-					slidetotopMargin = Math.round(slidetotopMargin - (slidetotopMargin * 2));
-
-				$('#nxs-slidetotop').css('marginLeft', slidetotopMargin);
-			})
-
-		<?php
-			}
-		?>
 
 	</script>
 	

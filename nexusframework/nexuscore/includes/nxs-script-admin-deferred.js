@@ -1602,6 +1602,8 @@ function nxs_js_gui_setup_drag_listeners()
 					}
 				};
 				nxs_js_invokewebmethod(options, null, null, null);
+
+				jQuery(document).trigger('nxs_dom_changed');
 			},
 		}
 	);

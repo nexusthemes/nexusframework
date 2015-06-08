@@ -226,6 +226,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "logo");
 		$result[] = array("widgetid" => "callout");
 		$result[] = array("widgetid" => "csv");
+		$result[] = array("widgetid" => "section");
 		$result[] = array("widgetid" => "search");
 		$result[] = array("widgetid" => "eventsbox");
 		$result[] = array("widgetid" => "carousel");
@@ -390,6 +391,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		if ( $enableconceptualwidgets )
 		{
 			$result[] = array("widgetid" => "pagefixedheader");
+			$result[] = array("widgetid" => "pageinpagemenu");
 		}
 		//$result[] = array("widgetid" => "pagevideo");
 		//$result[] = array("widgetid" => "pagegap");
@@ -540,6 +542,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("eventsbox");
 	nxs_ext_lazyload_widget("eventsboxitem");
 	nxs_ext_lazyload_widget("csv");
+	nxs_ext_lazyload_widget("section");
 	
 	if ($enableconceptualwidgets)
 	{
@@ -562,6 +565,7 @@ function nxs_lazyload_widgets()
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("pagefixedheader");
+		nxs_ext_lazyload_widget("pageinpagemenu");
 	}
 	//nxs_ext_lazyload_widget("pagevideo");
 	//nxs_ext_lazyload_widget("pagegap");
