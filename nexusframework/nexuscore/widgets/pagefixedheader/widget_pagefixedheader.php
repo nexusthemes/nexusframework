@@ -104,13 +104,11 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 	
 	if (isset($header_postid) && $header_postid != 0)
 	{
-		$cssclass = "nxs-elements-container nxs-post-" . $header_postid;
-
-		//var_dump($cssclass);
+		$cssclass = nxs_getcssclassesforrowcontainer($header_postid);
 		?>
 
 		<div id="nxs-fixed-header" class="nxs-fixed-header nxs-sitewide-element <?php echo $concatenatedcssclasses_container; ?>">
-			<div id="nxs-fixed-header-container" class="nxs-sitewide-container nxs-fixed-header-container nxs-elements-container nxs-post-<?php echo $existingheaderid . " " . $cssclass; ?>">
+			<div id="nxs-fixed-header-container" class="nxs-sitewide-container nxs-fixed-header-container <?php echo $cssclass; ?>">
 				<?php 
 					if ($header_postid != "")
 					{	
