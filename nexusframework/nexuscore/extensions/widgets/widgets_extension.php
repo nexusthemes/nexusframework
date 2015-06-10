@@ -541,13 +541,8 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("eventsbox");
 	nxs_ext_lazyload_widget("eventsboxitem");
 	nxs_ext_lazyload_widget("csv");
-<<<<<<< HEAD
 	nxs_ext_lazyload_widget("section");
-	
-=======
     nxs_ext_lazyload_widget("pagination");
-
->>>>>>> origin/master
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("wpmenu");
