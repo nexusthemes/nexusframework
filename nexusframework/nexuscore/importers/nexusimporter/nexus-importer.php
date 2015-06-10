@@ -554,8 +554,15 @@ class Nexus_Import extends WP_Importer {
 			$post_type_object = get_post_type_object( $post['post_type'] );
 
 			$post_exists = post_exists( $post['post_title'], '', $post['post_date'] );
+			if ($post['post_title'] == "" && $post['post_type'] == "attachment")
+			{
+				// fix: for most galleries the gallery items have empty post_titles and identical post_dates
+				// resulting in broken gallery items, to prevent this from happening we explicitly mark 
+				// those as not existing such that they will be imported
+				$post_exists = false;
+			}
 			if ( $post_exists && get_post_type( $post_exists ) == $post['post_type'] ) {
-				printf( __('%s &#8220;%s&#8221; already exists.', 'nexus-importer'), $post_type_object->labels->singular_name, esc_html($post['post_title']) );
+				printf( __('%s &#8220;%s&#8221; already exists (a).', 'nexus-importer'), $post_type_object->labels->singular_name, esc_html($post['post_title']) );
 				echo '<br />';
 				$comment_post_ID = $post_id = $post_exists;
 			} else {

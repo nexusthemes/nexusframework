@@ -243,11 +243,10 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "rssfeed", "tags" => array("nexus"));	
 		$result[] = array("widgetid" => "breadcrumb", "tags" => array("nexus"));
 		
-		
-		
 		if ($enableconceptualwidgets)
 		{
 			$result[] = array("widgetid" => "wpmenu", "tags" => array("nexus"));
+      $result[] = array("widgetid" => "pagination", "tags" => array("nexus"));
 		}
 		
 		// $result[] = array("widgetid" => "fbcomments");
@@ -296,41 +295,41 @@ function nxs_getwidgets_functions_AF($result, $args)
 		
 		// GALLERY
 		if ($nxssubposttype == "gallery") {	
-			$result[] = array("widgetid" => "galleryitem");
+			$result[] = array("widgetid" => "galleryitem", "tags" => array("nexus"));
 		}
 		
 		// SLIDER
 		if ($nxssubposttype == "sliderbox") 
 		{
-			$result[] = array("widgetid" => "slide");
-			$result[] = array("widgetid" => "slidesincat");
+			$result[] = array("widgetid" => "slide", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "slidesincat", "tags" => array("nexus"));
 		}
 		
 		if ($enableconceptualwidgets)
 		{
 			// FILMROLL
 			if ($nxssubposttype == "filmrollbox") {
-				$result[] = array("widgetid" => "slide");
+				$result[] = array("widgetid" => "slide", "tags" => array("nexus"));
 			}
 		}
 		
 		// SUPERSIZED SLIDER
 		if ($nxssubposttype == "pageslider") {
-			$result[] = array("widgetid" => "slide");		
+			$result[] = array("widgetid" => "slide", "tags" => array("nexus"));		
 		}
 		
 		// GOOGLE BUSINESS PHOTOS
 		if ($nxssubposttype == "googlebusphotoslides"){
-			$result[] = array("widgetid" => "googlebusphotoitem");
+			$result[] = array("widgetid" => "googlebusphotoitem", "tags" => array("nexus"));
 		}
 		
 		// CONTACT FORM
 		if ($nxssubposttype == "contact"){
-			$result[] = array("widgetid" => "contactitemtext");
-			$result[] = array("widgetid" => "contactitemdate");
-			$result[] = array("widgetid" => "contactitemdatetime");
-			$result[] = array("widgetid" => "contactitemselect");
-			$result[] = array("widgetid" => "contactitemsecret");
+			$result[] = array("widgetid" => "contactitemtext", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			// $result[] = array("widgetid" => "contactitemhidden");
 			// $result[] = array("widgetid" => "contactitemattachment");
 		}
@@ -338,14 +337,14 @@ function nxs_getwidgets_functions_AF($result, $args)
 		// FORM
 		if ($nxssubposttype == "form") 
 		{
-			$result[] = array("widgetid" => "contactitemtext");
-			$result[] = array("widgetid" => "contactitemdate");
-			$result[] = array("widgetid" => "contactitemselect");
-			$result[] = array("widgetid" => "contactitemdatetime");
-			$result[] = array("widgetid" => "contactitemsecret");
-			$result[] = array("widgetid" => "formitemcaptcha");
-			$result[] = array("widgetid" => "formitemcheckbox");
-			$result[] = array("widgetid" => "contactitemreplyto");
+			$result[] = array("widgetid" => "contactitemtext", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "formitemcaptcha", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "formitemcheckbox", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemreplyto", "tags" => array("nexus"));
 			
 			// $result[] = array("widgetid" => "contactitemhidden");
 			// $result[] = array("widgetid" => "contactitemattachment");
@@ -353,24 +352,24 @@ function nxs_getwidgets_functions_AF($result, $args)
 		
 		// DEFINITION LIST
 		if ($nxssubposttype == "definitionlist") {
-			$result[] = array("widgetid" => "definitionlistitemtext");
+			$result[] = array("widgetid" => "definitionlistitemtext", "tags" => array("nexus"));
 		}
 		
 		// ---
 		// Carousel
 		if ($nxssubposttype == "carousel") {
-			$result[] = array("widgetid" => "carouselitem");
+			$result[] = array("widgetid" => "carouselitem", "tags" => array("nexus"));
 		} 
 		
 		// Banner
 		if ($nxssubposttype == "banner") {
-			$result[] = array("widgetid" => "banneritem");
+			$result[] = array("widgetid" => "banneritem", "tags" => array("nexus"));
 		}
 	}	
 	
 	if ($nxsposttype == "post") 
 	{
-		$result[] = array("widgetid" => "wordpresstitle");
+		$result[] = array("widgetid" => "wordpresstitle", "tags" => array("nexus"));
 	}
 
 	
@@ -542,8 +541,13 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("eventsbox");
 	nxs_ext_lazyload_widget("eventsboxitem");
 	nxs_ext_lazyload_widget("csv");
+<<<<<<< HEAD
 	nxs_ext_lazyload_widget("section");
 	
+=======
+    nxs_ext_lazyload_widget("pagination");
+
+>>>>>>> origin/master
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("wpmenu");

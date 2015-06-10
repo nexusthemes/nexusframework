@@ -791,6 +791,13 @@ function nxs_init()
 				echo "$jsonsitemeta<br />";
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "setactivesitesettingspostid")
+		  {
+		  	$postid = $_REQUEST["postid"];
+		  	nxs_reset_globalidtovalue($postid, "activesitesettings");
+		  	echo "done";
+		  	die();
+		  }
 		  else if ($_REQUEST["nxs"] == "setactivesitesettings")
 		  {
 		  	//var_dump($_POST);
@@ -823,7 +830,39 @@ function nxs_init()
 			  	$cnt = count($postids);
 			  	if ($cnt == 0 || $cnt > 1)
 			  	{
-			  		nxs_webmethod_return_nack("error; found $cnt postids for activesitesettings ?");
+			  		if ($_REQUEST["fix"] == "true")
+			  		{
+			  			// create CPT record
+						  $my_post = array
+						  (
+								'post_title' => "site settings f",
+								'post_name' => "site settings f",	// url
+								'post_content' => '',
+								'post_status' => "publish",
+								'post_author' => wp_get_current_user()->ID,
+								'post_excerpt' => '',
+								'post_type' => "settings",
+							);
+							$postid = wp_insert_post($my_post, $wp_error);
+							var_dump($postid);
+							
+							if ($postid != 0)
+							{
+								// 
+								nxs_reset_globalidtovalue($postid, "activesitesettings");
+								echo "resetted globalid of postid";
+								die();
+							}
+							else
+							{
+								echo "nope";
+								die();
+							}
+			  		}
+			  		else
+			  		{
+			  			nxs_webmethod_return_nack("error; found $cnt postids for activesitesettings ?");
+			  		}
 			  	}
 			  	$postid = $postids[0];
 			  	
