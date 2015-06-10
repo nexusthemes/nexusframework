@@ -2035,7 +2035,7 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 #nxs-inpagemenu.nxs-inpagemenu-blocksicons li 				{ border-bottom-width: 1px; }
 #nxs-inpagemenu.nxs-inpagemenu-blocksicons li a 			{ padding: 4px; text-align: center; }
 #nxs-inpagemenu.nxs-inpagemenu-blocksicons li span.icon 	{ margin-top: 15%; text-shadow: none !important; }
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li span.link 	{ border-radius: 3px; }
+#nxs-inpagemenu.nxs-inpagemenu-blocksicons li span.link 	{ border-radius: 3px; text-shadow: none !important; }
 
 #nxs-inpagemenu.nxs-inpagemenu-blocksicons li:first-child,
 #nxs-inpagemenu.nxs-inpagemenu-blocksicons li:first-child a {
