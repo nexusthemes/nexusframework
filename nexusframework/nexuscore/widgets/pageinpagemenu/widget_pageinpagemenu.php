@@ -177,12 +177,11 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			sectionsLength = sections.length;
 
 			// order sections on section position
-			var tempSections = [], bla;
+			var tempSections = [], tempTop;
 			for (var i = 0; i < sectionsLength; i++) {
-				bla = jQ_nxs(sections[i]).offset();
-				console.log('offset: ', bla);
-				bla = Math.round(bla.top);
-				tempSections[bla] = jQ_nxs(sections[i]);
+				tempTop = jQ_nxs(sections[i]).offset();
+				tempTop = Math.round(tempTop.top);
+				tempSections[tempTop] = jQ_nxs(sections[i]);
 			}
 
 			var tempSections = tempSections.filter(function(){return true;});
@@ -299,7 +298,6 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 					}
 					
 					if (animate) {
-						console.log(currentActive);
 						var activeItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive);
 						if (jQ_nxs(this).hasClass('next')) {
 							var newItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive + 1);
@@ -316,8 +314,6 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 							index = index / 2;
 							index-= 1;
 						<?php } ?>
-
-						console.log(index);
 
 						// animate the page to the right section
 						nxs_js_inpagemenu_animatetosection();
