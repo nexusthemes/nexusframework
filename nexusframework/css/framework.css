@@ -2248,6 +2248,39 @@ h3#order_review_heading,
 }
 
 
+.onsale {
+	text-transform: uppercase;
+	display: inline-block;
+	font-size: 15px;
+}
+.images .thumbnails img {
+	height: auto;
+}
+
+/* Rating */
+.woocommerce-product-rating {float: right;}
+.woocommerce-product-rating .star-rating { 
+	position: relative; 
+	width: 5em;
+	font-size: 15px;
+}
+.woocommerce-product-rating .star-rating span:first-child {
+  position: absolute;
+  height: 1em;
+}
+
+.woocommerce-product-rating .star-rating span:first-child:before {
+  content: "\e137\e137\e137\e137\e137";
+  position: absolute;
+}
+.woocommerce-product-rating .star-rating span:second-child,
+.woocommerce-product-rating .star-rating span:third-child { display: none; }
+.woocommerce-product-rating .star-rating strong { padding: 200px; }
+.woocommerce-product-rating .nxs-icon-star { font-size: 15px; }
+
+.woocommerce-review-link { position: absolute; left: 0px; font-size: 15px; }
+
+
 /* DEFAULT NT BUTTONS
 ---------------------------------------------------------------------------------------------------- */
 .button-container {
