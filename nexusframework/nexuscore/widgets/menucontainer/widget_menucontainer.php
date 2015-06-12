@@ -656,52 +656,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					---------------------------------------------------------------------------------------------------- */
 					
 					}
-                    else if ($placeholdertype == "menuitemcustom") {
-
-                        $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
-
-                        $icon = $placeholdermetadata["icon"];
-                        $icon_scale = "0-5";
-                        $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
-
-                        $url = $placeholdermetadata["destination_url"];
-
-                        if ($url == "") {
-                            $anchorclass .= " nxs-menuitemnolink";
-                        }
-
-                        $destination_target = $placeholdermetadata["destination_target"];
-                        if ($destination_target == '_blank') {
-                            $targetatt = "target='_blank'";
-                        } else if ($destination_target == '_self') {
-                            $targetatt = "target='_self'";
-                        } else {
-                            // assumed external reference; blank
-                            $targetatt = "target='_blank'";
-                        }
-
-                        $destination_relation = $placeholdermetadata["destination_relation"];
-                        if ($destination_relation == '' || $destination_relation == '') {
-                            $destination_relationatt = "rel='nofollow'";
-                        } else if ($destination_relation == 'follow') {
-                            $destination_relationatt = "rel='follow'";
-                        }
-
-                        if ($icon != "") {
-                            $icon = '<span class="' . $icon . ' ' . $icon_scale_cssclass . '"></span> ';
-                        }
-
-                        $anchorclass = "class='{$cssclasssubitem}'";
-
-                        $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height" . $parent_height . " " . $font_variant . "' style='" . $font_variant . "'>";
-                        $cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " " . $destination_relationatt . " " . $anchorclass . ">";
-                        $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
-                        $cache = $cache . "</a>";
-
-                        /* UNKNOWN MENU ITEM
-                        ---------------------------------------------------------------------------------------------------- */
-
-                    } else  {
+                    else  {
 
                         $requirewidgetresult = nxs_requirewidget($placeholdertype);
                         $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_render_in_container";
