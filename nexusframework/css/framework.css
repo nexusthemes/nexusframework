@@ -2196,89 +2196,37 @@ h3#order_review_heading,
 .woocommerce ul.woocommerce-error							{ margin-bottom: 10px; }
 .woocommerce .payment_box									{ margin-top: 5px; }
 
-.woocommerce ul 												{ list-style: none; }
-.woocommerce input[type=radio]
-{
-	-webkit-appearance: radio !important; 
-	width: inherit !important; 
-	box-shadow: none; 
-}
-.woocommerce input[type=checkbox]
-{
-	-webkit-appearance: checkbox !important; 
-	width: inherit !important; 
-	box-shadow: none !important;
-	float: left !important;
-	margin: 3px !important; 
-}
-.woocommerce input[type=submit]
-{
-	height: inherit !important;
-	line-height: 1 !important;
-	clear: both !important;
-	display: block !important;
-}
-.woocommerce .chosen-container a span
-{
-	color: black !important;
-}
-
-.woocommerce .single_add_to_cart_button
-{
-	display: block;
-	clear: both;
-}
+.woocommerce ul 											{ list-style: none; }
+.woocommerce input[type=radio]								{ -webkit-appearance: radio !important; width: inherit !important; box-shadow: none; }
+.woocommerce input[type=checkbox]							{ -webkit-appearance: checkbox !important; width: inherit !important; box-shadow: none !important; float: left !important; 	margin: 3px !important; }
+.woocommerce input[type=submit]								{ height: inherit !important; line-height: 1 !important; clear: both !important; display: block !important; }
+.woocommerce .chosen-container a span						{ color: black !important; }
 .woocommerce .quantity .minus,
-.woocommerce .quantity .plus
-{
-	float: left;
-	width: 10px;
-	text-indent: 0px;
-}
-.woocommerce .quantity .qty
-{
-	float: left;
-	width: 60px;
-}
+.woocommerce .quantity .plus								{ float: left; width: 10px;	text-indent: 0px; }
+.woocommerce .quantity .qty									{ float: left; width: 60px; }
+.woocommerce table tr td									{ display:table-cell; vertical-align:middle }
 
-.woocommerce table tr td
-{
-	display:table-cell;
-	vertical-align:middle
-}
+/* WOOCOMMERCE PRODUCT DETAIL 
+---------------------------------------------------------------------------------------------------- */
+/* Sale */
+.onsale 													{ text-transform: uppercase; display: inline-block;	font-size: 15px; }
 
+/* SUMMARY */
+.summary													{ font-size: 15px; }
 
-.onsale {
-	text-transform: uppercase;
-	display: inline-block;
-	font-size: 15px;
-}
-.images .thumbnails img {
-	height: auto;
-}
+/* Images */
+.images .thumbnails img 									{ height: auto; }
 
 /* Rating */
-.woocommerce-product-rating {float: right;}
-.woocommerce-product-rating .star-rating { 
-	position: relative; 
-	width: 5em;
-	font-size: 15px;
-}
-.woocommerce-product-rating .star-rating span:first-child {
-  position: absolute;
-  height: 1em;
-}
-
-.woocommerce-product-rating .star-rating span:first-child:before {
-  content: "\e137\e137\e137\e137\e137";
-  position: absolute;
-}
+.woocommerce-product-rating 								{ float: right; }
+.woocommerce-product-rating .star-rating 					{ position: relative; width: 5em; }
+.woocommerce-product-rating .star-rating span:first-child 	{ position: absolute; height: 1em; }
+.woocommerce-product-rating .star-rating span:first-child:before { content: "\e137\e137\e137\e137\e137"; position: absolute; }
 .woocommerce-product-rating .star-rating span:second-child,
-.woocommerce-product-rating .star-rating span:third-child { display: none; }
-.woocommerce-product-rating .star-rating strong { padding: 200px; }
-.woocommerce-product-rating .nxs-icon-star { font-size: 15px; }
-
-.woocommerce-review-link { position: absolute; left: 0px; font-size: 15px; }
+.woocommerce-product-rating .star-rating span:third-child 	{ display: none; }
+.woocommerce-product-rating .star-rating strong 			{ padding: 100px; }
+.woocommerce-product-rating .nxs-icon-star 					{  }
+.woocommerce-review-link 									{ position: absolute; left: 0px; }
 
 
 /* DEFAULT NT BUTTONS
@@ -2928,9 +2876,6 @@ h3#order_review_heading,
 .nxs-icon-divemask:before			{ content: "\e441";	}
 .nxs-icon-waves:before				{ content: "\e442";	}
 .nxs-icon-oxygen:before				{ content: "\e443";	}
-.nxs-icon-popup:before				{ content: "\e444";	}
-.nxs-icon-inpagemenu:before			{ content: "\e445";	}
-.nxs-icon-section:before			{ content: "\e446";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
