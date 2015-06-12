@@ -225,6 +225,72 @@ function nxs_widgets_menuitemcategory_render_webpart_render_htmlvisualization($a
 	return $result;
 }
 
+function nxs_widgets_menuitemcategory_render_in_container($args){
+
+    $placeholdermetadata = $args["placeholdermetadata"];
+
+    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+
+    $icon = $placeholdermetadata["icon"];
+    $icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+
+    $font_variant = $placeholdermetadata["font_variant"];
+
+    $destination_category = $placeholdermetadata["destination_category"];
+    // for example [92]
+    // remove brackets
+    $destination_category = str_replace("[", "", $destination_category);
+    $destination_category = str_replace("]", "", $destination_category);
+
+    // derive 'current' classes
+    global $nxs_global_current_containerpostid_being_rendered;
+    global $nxs_global_current_postid_being_rendered;
+
+    $anchorclass = "";
+    $class = "";
+
+    if (is_category($destination_category)) {
+        $isactiveitem = true;
+    } else {
+        $isactiveitem = false;
+    }
+
+    if ($isactiveitem)
+    {
+        $class .= "{$cssclassactiveitem} nxs-active";
+        $anchorclass .= " {$cssclassactiveitemlink}";
+    } else {
+        $class .= "{$cssclassactiveitem} nxs-inactive";
+        if ($issubitem == true) {
+            // inactive subitem
+            $anchorclass .= " {$cssclasssubitemlink}";
+        } else {
+            // inactief hoofditem
+            $anchorclass .= " {$cssclassitemlink}";
+        }
+    }
+
+    // Get the URL of this category
+    $url = get_category_link($destination_category);
+
+    if ($url == "") {
+        $anchorclass .= " nxs-menuitemnolink";
+    }
+
+    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+
+    $anchorclass = "class='{$anchorclass}'";
+
+
+    $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height08'>";
+    $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
+    $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
+    $cache = $cache . "</a>";
+
+    return $cache;
+}
+
 //
 // wordt aangeroepen bij het opslaan van data van deze placeholder
 //
