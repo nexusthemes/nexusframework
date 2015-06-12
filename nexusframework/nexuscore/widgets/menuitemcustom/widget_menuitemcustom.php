@@ -2,19 +2,31 @@
 
 nxs_requirewidget("menuitemgeneric");
 
+/**
+ * Widget icon in menu selection
+ * @return string
+ */
 function nxs_widgets_menuitemcustom_geticonid()
 {
 	return "nxs-icon-earth";
 }
 
+/**
+ * Widget title in widget setup screen
+ * @return string|void
+ */
 function nxs_widgets_menuitemcustom_gettitle()
 {
 	return nxs_l18n__("Custom menu item[nxs:widgettitle]", "nxs_td");
 }
 
-// rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
-// hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
-// het bewerken van de placeholder kan opstarten
+/**
+ * rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
+ * hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
+ * het bewerken van de placeholder kan opstarten
+ * @param $args
+ * @return array
+ */
 function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($args)
 {
 	//
@@ -196,8 +208,12 @@ function nxs_widgets_menuitemcustom_render_in_container($args){
     return $cache;
 }
 
-// Define the properties of this widget
-function nxs_widgets_menuitemcustom_home_getoptions($args) 
+/**
+ * Define the properties of this widget
+ * @param $args
+ * @return array
+ */
+function nxs_widgets_menuitemcustom_home_getoptions($args)
 {
 	// CORE WIDGET OPTIONS
 	
@@ -321,9 +337,11 @@ function nxs_widgets_menuitemcustom_home_getoptions($args)
 	return $options;
 }
 
-//
-// wordt aangeroepen bij het opslaan van data van deze placeholder
-//
+/**
+ * Default data - wordt aangeroepen bij het opslaan van data van deze placeholder
+ * @param $args
+ * @return array
+ */
 function nxs_widgets_menuitemcustom_initplaceholderdata($args)
 {
 	extract($args);
@@ -342,5 +360,3 @@ function nxs_widgets_menuitemcustom_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>
