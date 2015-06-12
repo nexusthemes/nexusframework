@@ -225,6 +225,74 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 	return $result;
 }
 
+function nxs_widgets_menuitemarticle_render_in_container($args){
+
+    $placeholdermetadata = $args["placeholdermetadata"];
+
+    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+
+    $icon = $placeholdermetadata["icon"];
+    $icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+
+    $font_variant = $placeholdermetadata["font_variant"];
+
+    $destination_articleid = $placeholdermetadata["destination_articleid"];
+
+    // derive 'current' classes
+    global $nxs_global_current_containerpostid_being_rendered;
+    global $nxs_global_current_postid_being_rendered;
+
+    $anchorclass = "";
+    $class = "";
+
+    if (is_archive()) {
+        // the archive pages (for example list of category posts) we 'mimic' the
+        // system, there the postid is set to the postid of the homepage. In that
+        // case we don't want to mark the menu item of the home to be active
+        $isactiveitem = false;
+    } else {
+        $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
+    }
+
+    if ($isactiveitem)
+    {
+        $class .= "{$cssclassactiveitem} nxs-active";
+        $anchorclass .= " {$cssclassactiveitemlink}";
+    } else {
+        $class .= "{$cssclassactiveitem} nxs-inactive";
+        if ($issubitem == true) {
+            // inactive subitem
+            $anchorclass .= " {$cssclasssubitemlink}";
+        } else {
+            // inactief hoofditem
+            $anchorclass .= " {$cssclassitemlink}";
+        }
+    }
+
+    $url = nxs_geturl_for_postid($destination_articleid);
+    if ($url == "") {
+        $anchorclass .= " nxs-menuitemnolink";
+    }
+
+
+    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+
+    $anchorclass = "class='{$anchorclass}'";
+
+    //
+    // http://stackoverflow.com/questions/2851663/how-do-i-simulate-a-hover-with-a-touch-in-touch-enabled-browsers
+    // http://stackoverflow.com/questions/7018919/how-to-bind-touchstart-and-click-events-but-not-respond-to-both
+
+    $cache = "";
+    $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height08' >";
+    $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
+    $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
+    $cache = $cache . "</a>";
+
+    return $cache;
+}
+
 //
 // wordt aangeroepen bij het opslaan van data van deze placeholder
 //

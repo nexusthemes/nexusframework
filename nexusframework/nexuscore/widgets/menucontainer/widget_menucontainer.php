@@ -511,11 +511,35 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					} else {
 						$cache = $cache . "<!-- warning, incorrect depth delta ?! -->";
 					}
+
+                    $requirewidgetresult = nxs_requirewidget($placeholdertype);
+                    $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_render_in_container";
+
+                    if (!function_exists($functionnametoinvoke)) {
+                        nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
+                    }
+
+                    $subargs = array("placeholdermetadata" => $placeholdermetadata);
+
+                    $subresult = call_user_func($functionnametoinvoke, $subargs);
+
+                    $cache .= $subresult;
+
+                    $elementcountforcurrentdepth = 0;
+                    if (isset($elementcountfordepth[$currentdepth])) {
+                        $elementcountforcurrentdepth = $elementcountfordepth[$currentdepth];
+                    }
+
+                    $elementcountfordepth[$currentdepth] = $elementcountforcurrentdepth + 1;
+
+                    //function nxs_widgets_woomenuitem_render_in_container();
+
+                    //echo "unexpected placeholdertype;" . $placeholdertype;
 					
 					/* ARTICLE REFERENCE
 					---------------------------------------------------------------------------------------------------- */
 					
-					if ($placeholdertype == "menuitemarticle") 
+					/*if ($placeholdertype == "xmenuitemarticle")
 					{
 						$title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
                         
@@ -582,8 +606,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 						
 						$elementcountfordepth[$currentdepth] = $elementcountforcurrentdepth + 1; 
 					
-					/* EXTERNAL REFERENCE
-					---------------------------------------------------------------------------------------------------- */
+					 EXTERNAL REFERENCE
+					----------------------------------------------------------------------------------------------------
 					
 					} 
                     else  {
@@ -605,11 +629,11 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
                         //echo "unexpected placeholdertype;" . $placeholdertype;
 					}
-					
+					*/
 					// update previous depth to current depth
 					$previousdepth = $currentdepth;
 				}
-				
+
 				// als we hier komen, kan het zijn dat de currentdepth > 1 is
 				// in dat geval moeten we ul tags sluiten
 				while ($currentdepth > 0) {
