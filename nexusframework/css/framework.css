@@ -2928,6 +2928,9 @@ h3#order_review_heading,
 .nxs-icon-divemask:before			{ content: "\e441";	}
 .nxs-icon-waves:before				{ content: "\e442";	}
 .nxs-icon-oxygen:before				{ content: "\e443";	}
+.nxs-icon-popup:before				{ content: "\e444";	}
+.nxs-icon-inpagemenu:before			{ content: "\e445";	}
+.nxs-icon-section:before			{ content: "\e446";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
