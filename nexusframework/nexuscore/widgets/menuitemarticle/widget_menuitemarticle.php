@@ -2,23 +2,32 @@
 
 nxs_requirewidget("menuitemgeneric");
 
+/**
+ * Widget icon in menu selection
+ * @return string
+ */
 function nxs_widgets_menuitemarticle_geticonid()
 {
 	return "nxs-icon-text";
 }
 
+/**
+ * Widget title in widget setup screen
+ * @return string|void
+ */
 function nxs_widgets_menuitemarticle_gettitle()
 {
 	return nxs_l18n__("Article reference (menu item)[nxs:widgettitle]", "nxs_td");
 }
 
-/* WIDGET STRUCTURE
-----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------- */
+/*** WIDGET STRUCTURE ***/
 
-// Define the properties of this widget
-function nxs_widgets_menuitemarticle_home_getoptions($args) 
+/**
+ * Define the properties of this widget
+ * @param $args
+ * @return array
+ */
+function nxs_widgets_menuitemarticle_home_getoptions($args)
 {
 	// CORE WIDGET OPTIONS
 	
@@ -112,11 +121,13 @@ function nxs_widgets_menuitemarticle_home_getoptions($args)
 	return $options;
 }
 
-//
-
-// rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
-// hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
-// het bewerken van de placeholder kan opstarten
+/**
+ * rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
+ * hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
+ * het bewerken van de placeholder kan opstarten
+ * @param $args
+ * @return array
+ */
 function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($args)
 {
 	
@@ -225,6 +236,11 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 	return $result;
 }
 
+/**
+ * Rendering function front-end
+ * @param $args
+ * @return string
+ */
 function nxs_widgets_menuitemarticle_render_in_container($args){
 
     $placeholdermetadata = $args["placeholdermetadata"];
@@ -293,9 +309,11 @@ function nxs_widgets_menuitemarticle_render_in_container($args){
     return $cache;
 }
 
-//
-// wordt aangeroepen bij het opslaan van data van deze placeholder
-//
+/**
+ * Default data - wordt aangeroepen bij het opslaan van data van deze placeholder
+ * @param $args
+ * @return array
+ */
 function nxs_widgets_menuitemarticle_initplaceholderdata($args)
 {
 	extract($args);
