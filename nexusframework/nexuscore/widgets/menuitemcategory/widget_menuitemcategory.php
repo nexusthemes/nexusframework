@@ -297,7 +297,7 @@ function nxs_widgets_menuitemcategory_render_in_container($args){
 
     $anchorclass = "class='{$anchorclass}'";
 
-
+    $cache = "";
     $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height08'>";
     $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
