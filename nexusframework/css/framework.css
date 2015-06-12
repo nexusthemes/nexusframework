@@ -163,7 +163,9 @@ a .nxs-title,
 a.nxs-button:hover,
 a:hover .nxs-title,
 .nxs-blog a:hover,
-.nxs-default-p a:hover										{ opacity: 0.8; }
+.nxs-default-p a:hover,
+button:hover,
+input[type=submit]:hover										{ opacity: 0.8; }
 
 /* DEFAULT FORM STYLING */
 .nxs-form input[type=submit] {text-indent: 0px; box-shadow: none; height: auto; font-size: auto; }
@@ -477,6 +479,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-margin-right10											{ margin-right: 10px; }
 .nxs-margin-right15											{ margin-right: 15px; }
 /* left */
+.nxs-margin-left0											{ margin-left: 0px; }
 .nxs-margin-left5											{ margin-left: 5px; }
 .nxs-margin-left10											{ margin-left: 10px; }
 .nxs-margin-left15											{ margin-left: 15px; }
@@ -569,6 +572,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-float-left												{ float: left; }
 .nxs-center													{ display: table; margin: 0 auto; }
 .nxs-block													{ display: block; }
+.nxs-inline-block											{ display: inline-block; }
 
 /* ABSOLUTE */
 .nxs-top													{ top: 0px; }
@@ -2211,23 +2215,37 @@ h3#order_review_heading,
 /* Sale */
 .onsale 													{ text-transform: uppercase; display: inline-block;	font-size: 15px; }
 
-/* SUMMARY */
-.summary													{ font-size: 15px; }
+/* General */
+.summary,
+.panel														{ font-size: 15px; }
+button:hover,
+input.submit:hover											{ cursor: pointer; }
 
 /* Images */
 .images .thumbnails img 									{ height: auto; }
 
 /* Rating */
 .woocommerce-product-rating 								{ float: right; }
-.woocommerce-product-rating .star-rating 					{ position: relative; width: 5em; }
-.woocommerce-product-rating .star-rating span:first-child 	{ position: absolute; height: 1em; }
-.woocommerce-product-rating .star-rating span:first-child:before { content: "\e137\e137\e137\e137\e137"; position: absolute; }
-.woocommerce-product-rating .star-rating span:second-child,
-.woocommerce-product-rating .star-rating span:third-child 	{ display: none; }
-.woocommerce-product-rating .star-rating strong 			{ padding: 100px; }
-.woocommerce-product-rating .nxs-icon-star 					{  }
+.star-rating 												{ position: relative; width: 5em; }
+.star-rating span:first-child 								{ position: absolute; height: 1em; }
+.star-rating span:first-child:before 						{ content: "\e137\e137\e137\e137\e137"; position: absolute; }
+.star-rating span:second-child,
+.star-rating span:third-child 								{ display: none; }
+.star-rating strong 										{ padding: 100px; }
 .woocommerce-review-link 									{ position: absolute; left: 0px; }
 
+/* Tabs */
+.woocommerce-tabs .tabs span.nxs-icon-arrow-right-light		{ display: none; }
+.woocommerce-tabs .tabs .active span 						{ display: inline-block; position: absolute; top: 0; right: 0; }
+.woocommerce-tabs .panel ol									{ list-style: none; }
+.woocommerce-tabs .panel .comment img						{ width: 40px; height: 40px; }
+.woocommerce-tabs .panel #reviews p.stars					{ padding-bottom: 0px; }
+					
+.stars a span.nxs-icon-star2								{ display: none; }
+.stars a:hover span.nxs-icon-star							{ display: none; }
+.stars a:hover span.nxs-icon-star2							{ display: inline-block; }
+.stars a.active span.nxs-icon-star							{ display: none; }
+.stars a.active span.nxs-icon-star2							{ display: inline-block; }
 
 /* DEFAULT NT BUTTONS
 ---------------------------------------------------------------------------------------------------- */
