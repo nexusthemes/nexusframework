@@ -511,206 +511,31 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 					} else {
 						$cache = $cache . "<!-- warning, incorrect depth delta ?! -->";
 					}
-					
-					/* ARTICLE REFERENCE
-					---------------------------------------------------------------------------------------------------- */
-					
-					if ($placeholdertype == "menuitemarticle") 
-					{
-						$title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
-                        
-						$icon = $placeholdermetadata["icon"]; 
-						$icon_scale = "0-5"; 
-                        $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
-                        
-						$destination_articleid = $placeholdermetadata["destination_articleid"];
-						
-						// derive 'current' classes
-						global $nxs_global_current_containerpostid_being_rendered;
-						global $nxs_global_current_postid_being_rendered;
-		
-						$anchorclass = "";
-						$class = "";
-						
-						if (is_archive()) {
-							// the archive pages (for example list of category posts) we 'mimic' the
-							// system, there the postid is set to the postid of the homepage. In that
-							// case we don't want to mark the menu item of the home to be active
-							$isactiveitem = false;
-						} else {
-							$isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
-						}
-						
-						if ($isactiveitem) 
-						{
-							$class .= "{$cssclassactiveitem} nxs-active";
-							$anchorclass .= " {$cssclassactiveitemlink}";
-						} else {
-							$class .= "{$cssclassactiveitem} nxs-inactive";
-							if ($issubitem == true) {
-								// inactive subitem
-								$anchorclass .= " {$cssclasssubitemlink}";
-							} else {
-								// inactief hoofditem
-								$anchorclass .= " {$cssclassitemlink}";
-							}
-						}
-						
-						$url = nxs_geturl_for_postid($destination_articleid);
-						if ($url == "") {
-							$anchorclass .= " nxs-menuitemnolink";
-						}
-						
-                        
-                        if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
-                        
-						$anchorclass = "class='{$anchorclass}'";
 
-						// 
-						// http://stackoverflow.com/questions/2851663/how-do-i-simulate-a-hover-with-a-touch-in-touch-enabled-browsers
-						// http://stackoverflow.com/questions/7018919/how-to-bind-touchstart-and-click-events-but-not-respond-to-both
-						
-						$cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height" . $parent_height . "' >";
-						$cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
-						$cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
-						$cache = $cache . "</a>";
-		
-						$elementcountforcurrentdepth = 0;
-						if (isset($elementcountfordepth[$currentdepth])) {
-							$elementcountforcurrentdepth = $elementcountfordepth[$currentdepth];
-						}
-						
-						$elementcountfordepth[$currentdepth] = $elementcountforcurrentdepth + 1; 
-					
-					/* EXTERNAL REFERENCE
-					---------------------------------------------------------------------------------------------------- */
-					
-					} 
-					else if ($placeholdertype == "menuitemcategory") 
-					{
-						$title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
-                        
-						$icon = $placeholdermetadata["icon"]; 
-						$icon_scale = "0-5"; 
-                        $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
-                        
-						$destination_category = $placeholdermetadata["destination_category"];
-						// for example [92]
-						// remove brackets
-						$destination_category = str_replace("[", "", $destination_category);
-						$destination_category = str_replace("]", "", $destination_category);
-						
-						// derive 'current' classes
-						global $nxs_global_current_containerpostid_being_rendered;
-						global $nxs_global_current_postid_being_rendered;
-		
-						$anchorclass = "";
-						$class = "";
-						
-						if (is_category($destination_category)) {
-							$isactiveitem = true;
-						} else {
-							$isactiveitem = false;
-						}
-						
-						if ($isactiveitem) 
-						{
-							$class .= "{$cssclassactiveitem} nxs-active";
-							$anchorclass .= " {$cssclassactiveitemlink}";
-						} else {
-							$class .= "{$cssclassactiveitem} nxs-inactive";
-							if ($issubitem == true) {
-								// inactive subitem
-								$anchorclass .= " {$cssclasssubitemlink}";
-							} else {
-								// inactief hoofditem
-								$anchorclass .= " {$cssclassitemlink}";
-							}
-						}
-						
-				    // Get the URL of this category
-    				$url = get_category_link($destination_category);
-						
-						if ($url == "") {
-							$anchorclass .= " nxs-menuitemnolink";
-						}
-						
-                        if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
-                        
-						$anchorclass = "class='{$anchorclass}'";
-						
-										  
-						$cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height" . $parent_height . "' >";
-						$cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
-						$cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
-						$cache = $cache . "</a>";
-		
-						$elementcountforcurrentdepth = 0;
-						if (isset($elementcountfordepth[$currentdepth])) {
-							$elementcountforcurrentdepth = $elementcountfordepth[$currentdepth];
-						}
-						
-						$elementcountfordepth[$currentdepth] = $elementcountforcurrentdepth + 1; 
-					
-					/* EXTERNAL REFERENCE
-					---------------------------------------------------------------------------------------------------- */
-					
-					} else if ($placeholdertype == "menuitemcustom") {
-						
-						$title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
-                        
-						$icon = $placeholdermetadata["icon"]; 
-						$icon_scale = "0-5"; 
-                        $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
-                        
-						$url = $placeholdermetadata["destination_url"];
-						
-						if ($url == "") {
-							$anchorclass .= " nxs-menuitemnolink";
-						}
-						
-						$destination_target = $placeholdermetadata["destination_target"];
-						if ($destination_target=='_blank') 
-						{
-							$targetatt = "target='_blank'";
-						} 
-						else if ($destination_target=='_self') 
-						{
-							$targetatt = "target='_self'";
-						}
-						else 
-						{
-							// assumed external reference; blank
-							$targetatt = "target='_blank'";
-						}
-						
-						$destination_relation = $placeholdermetadata["destination_relation"];
-						if ($destination_relation=='' || $destination_relation=='') {
-							$destination_relationatt = "rel='nofollow'";
-						} else if ($destination_relation=='follow') {
-							$destination_relationatt = "rel='follow'";
-						}
-						
-                        if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
-                        
-						$anchorclass = "class='{$cssclasssubitem}'";
-						
-						$cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height" . $parent_height . " " . $font_variant . "' style='" . $font_variant . "'>";
-						$cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " " . $destination_relationatt . " " . $anchorclass . ">";
-						$cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
-						$cache = $cache . "</a>";
-					
-					/* UNKNOWN MENU ITEM
-					---------------------------------------------------------------------------------------------------- */
-					
-					} else  {			
-						echo "unexpected placeholdertype;" . $placeholdertype;
-					}
-					
+                    $requirewidgetresult = nxs_requirewidget($placeholdertype);
+                    $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_render_in_container";
+
+                    if (!function_exists($functionnametoinvoke)) {
+                        nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
+                    }
+
+                    $subargs = array("placeholdermetadata" => $placeholdermetadata);
+
+                    $subresult = call_user_func($functionnametoinvoke, $subargs);
+
+                    $cache .= $subresult;
+
+                    $elementcountforcurrentdepth = 0;
+                    if (isset($elementcountfordepth[$currentdepth])) {
+                        $elementcountforcurrentdepth = $elementcountfordepth[$currentdepth];
+                    }
+
+                    $elementcountfordepth[$currentdepth] = $elementcountforcurrentdepth + 1;
+
 					// update previous depth to current depth
 					$previousdepth = $currentdepth;
 				}
-				
+
 				// als we hier komen, kan het zijn dat de currentdepth > 1 is
 				// in dat geval moeten we ul tags sluiten
 				while ($currentdepth > 0) {
@@ -1002,6 +827,14 @@ function nxs_page_render_popup_getrenderedmenuitems($postid)
 			
 			$cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
 		}
+        else if ($placeholdertype == "woomenuitem")
+        {
+            //
+            $title = $placeholdermetadata["title"];
+            $depthindex = $placeholdermetadata["depthindex"];
+
+            $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
+        }
 		else if ($placeholdertype == "undefined")
 		{
 			// undefined items are ignored

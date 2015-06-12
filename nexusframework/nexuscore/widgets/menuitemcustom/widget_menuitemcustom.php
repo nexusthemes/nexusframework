@@ -2,19 +2,31 @@
 
 nxs_requirewidget("menuitemgeneric");
 
+/**
+ * Widget icon in menu selection
+ * @return string
+ */
 function nxs_widgets_menuitemcustom_geticonid()
 {
 	return "nxs-icon-earth";
 }
 
+/**
+ * Widget title in widget setup screen
+ * @return string|void
+ */
 function nxs_widgets_menuitemcustom_gettitle()
 {
 	return nxs_l18n__("Custom menu item[nxs:widgettitle]", "nxs_td");
 }
 
-// rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
-// hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
-// het bewerken van de placeholder kan opstarten
+/**
+ * rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
+ * hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
+ * het bewerken van de placeholder kan opstarten
+ * @param $args
+ * @return array
+ */
 function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($args)
 {
 	//
@@ -142,8 +154,67 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
 	return $result;
 }
 
-// Define the properties of this widget
-function nxs_widgets_menuitemcustom_home_getoptions($args) 
+/**
+ * Rendering function front-end
+ * @param $args
+ * @return string
+ */
+function nxs_widgets_menuitemcustom_render_in_container($args){
+
+    $placeholdermetadata = $args["placeholdermetadata"];
+
+    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+
+    $icon = $placeholdermetadata["icon"];
+    $icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+
+    $url = $placeholdermetadata["destination_url"];
+    //$parent_height = $placeholdermetadata["parent_height"];
+    $font_variant = $placeholdermetadata["font_variant"];
+
+    if ($url == "") {
+        $anchorclass .= " nxs-menuitemnolink";
+    }
+
+    $destination_target = $placeholdermetadata["destination_target"];
+    if ($destination_target == '_blank') {
+        $targetatt = "target='_blank'";
+    } else if ($destination_target == '_self') {
+        $targetatt = "target='_self'";
+    } else {
+        // assumed external reference; blank
+        $targetatt = "target='_blank'";
+    }
+
+    $destination_relation = $placeholdermetadata["destination_relation"];
+    if ($destination_relation == '' || $destination_relation == '') {
+        $destination_relationatt = "rel='nofollow'";
+    } else if ($destination_relation == 'follow') {
+        $destination_relationatt = "rel='follow'";
+    }
+
+    if ($icon != "") {
+        $icon = '<span class="' . $icon . ' ' . $icon_scale_cssclass . '"></span> ';
+    }
+
+    $anchorclass = "class='{$cssclasssubitem}'";
+
+    $cache = "";
+    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height08" . $font_variant . "' style='" . $font_variant . "'>";
+    $cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " " . $destination_relationatt . " " . $anchorclass . ">";
+    $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
+    $cache = $cache . "</a>";
+
+    return $cache;
+}
+
+/**
+ * Define the properties of this widget
+ * @param $args
+ * @return array
+ */
+function nxs_widgets_menuitemcustom_home_getoptions($args)
 {
 	// CORE WIDGET OPTIONS
 	
@@ -267,9 +338,11 @@ function nxs_widgets_menuitemcustom_home_getoptions($args)
 	return $options;
 }
 
-//
-// wordt aangeroepen bij het opslaan van data van deze placeholder
-//
+/**
+ * Default data - wordt aangeroepen bij het opslaan van data van deze placeholder
+ * @param $args
+ * @return array
+ */
 function nxs_widgets_menuitemcustom_initplaceholderdata($args)
 {
 	extract($args);
@@ -288,5 +361,3 @@ function nxs_widgets_menuitemcustom_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

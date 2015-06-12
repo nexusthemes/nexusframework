@@ -2,25 +2,33 @@
 
 nxs_requirewidget("menuitemgeneric");
 
+/**
+ * Widget icon in menu selection
+ * @return string
+ */
 function nxs_widgets_menuitemcategory_geticonid()
 {
 	return "nxs-icon-categories";
 }
 
+/**
+ * Widget title in widget setup screen
+ * @return string|void
+ */
 function nxs_widgets_menuitemcategory_gettitle()
 {
 	return nxs_l18n__("Category reference (menu item)[nxs:widgettitle]", "nxs_td");
 }
 
-//
 
-/* WIDGET STRUCTURE
-----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------- */
+/*** WIDGET STRUCTURE ***/
 
-// Define the properties of this widget
-function nxs_widgets_menuitemcategory_home_getoptions($args) 
+/**
+ * Define the properties of this widget
+ * @param $args
+ * @return array
+ */
+function nxs_widgets_menuitemcategory_home_getoptions($args)
 {
 	// CORE WIDGET OPTIONS
 	
@@ -115,11 +123,13 @@ function nxs_widgets_menuitemcategory_home_getoptions($args)
 	return $options;
 }
 
-//
-
-// rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
-// hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
-// het bewerken van de placeholder kan opstarten
+/**
+ * rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
+ * hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
+ * het bewerken van de placeholder kan opstarten
+ * @param $args
+ * @return array
+ */
 function nxs_widgets_menuitemcategory_render_webpart_render_htmlvisualization($args)
 {
 	
@@ -225,9 +235,82 @@ function nxs_widgets_menuitemcategory_render_webpart_render_htmlvisualization($a
 	return $result;
 }
 
-//
-// wordt aangeroepen bij het opslaan van data van deze placeholder
-//
+/**
+ * Rendering function front-end
+ * @param $args
+ * @return string
+ */
+function nxs_widgets_menuitemcategory_render_in_container($args){
+
+    $placeholdermetadata = $args["placeholdermetadata"];
+
+    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+
+    $icon = $placeholdermetadata["icon"];
+    $icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+
+    $font_variant = $placeholdermetadata["font_variant"];
+
+    $destination_category = $placeholdermetadata["destination_category"];
+    // for example [92]
+    // remove brackets
+    $destination_category = str_replace("[", "", $destination_category);
+    $destination_category = str_replace("]", "", $destination_category);
+
+    // derive 'current' classes
+    global $nxs_global_current_containerpostid_being_rendered;
+    global $nxs_global_current_postid_being_rendered;
+
+    $anchorclass = "";
+    $class = "";
+
+    if (is_category($destination_category)) {
+        $isactiveitem = true;
+    } else {
+        $isactiveitem = false;
+    }
+
+    if ($isactiveitem)
+    {
+        $class .= "{$cssclassactiveitem} nxs-active";
+        $anchorclass .= " {$cssclassactiveitemlink}";
+    } else {
+        $class .= "{$cssclassactiveitem} nxs-inactive";
+        if ($issubitem == true) {
+            // inactive subitem
+            $anchorclass .= " {$cssclasssubitemlink}";
+        } else {
+            // inactief hoofditem
+            $anchorclass .= " {$cssclassitemlink}";
+        }
+    }
+
+    // Get the URL of this category
+    $url = get_category_link($destination_category);
+
+    if ($url == "") {
+        $anchorclass .= " nxs-menuitemnolink";
+    }
+
+    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+
+    $anchorclass = "class='{$anchorclass}'";
+
+    $cache = "";
+    $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height08'>";
+    $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
+    $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
+    $cache = $cache . "</a>";
+
+    return $cache;
+}
+
+/**
+ * Default data - wordt aangeroepen bij het opslaan van data van deze placeholder
+ * @param $args
+ * @return array
+ */
 function nxs_widgets_menuitemcategory_initplaceholderdata($args)
 {
 	extract($args);
@@ -243,5 +326,3 @@ function nxs_widgets_menuitemcategory_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>
