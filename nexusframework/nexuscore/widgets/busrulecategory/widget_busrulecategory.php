@@ -136,6 +136,12 @@ function nxs_widgets_busrulecategory_render_webpart_render_htmlvisualization($ar
 			$output = wp_list_categories("hide_empty=0&include=$commaseperated&style=none&echo=0");
 			//$output = str_replace("<br />", " ", $output);
 			$output = str_replace("<a ", "<a target='_blank' ", $output);
+			
+			$count = substr_count($output, "<a");
+			if ($count == 0)
+			{
+				$output = "<span style='background-color: red; color: white;'>Error; no categories selected</span>";
+			}
 		}
 		
 		$filteritemshtml = $output;

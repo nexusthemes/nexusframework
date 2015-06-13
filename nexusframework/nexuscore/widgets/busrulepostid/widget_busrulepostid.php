@@ -129,11 +129,17 @@ function nxs_widgets_busrulepostid_render_webpart_render_htmlvisualization($args
 	} 
 	else 
 	{
-		$title = nxs_gettitle_for_postid($filter_postid);
-		$url = get_permalink($filter_postid);
-		
-		$output = "<a href='{$url}' target='_blank'>{$title} (ID:{$filter_postid})</a>";
-		
+		if (!nxs_postexistsbyid($filter_postid))
+		{
+			$output = "<span style='background-color: red; color: white;'>Error; post not found</span>";
+		}
+		else
+		{
+			$title = nxs_gettitle_for_postid($filter_postid);
+			$url = get_permalink($filter_postid);
+			
+			$output = "<a href='{$url}' target='_blank'>{$title} (ID:{$filter_postid})</a>";
+		}
 		$filteritemshtml = $output;
 		nxs_widgets_busrule_pagetemplate_renderrow(nxs_widgets_busrulepostid_geticonid(), $filteritemshtml, $mixedattributes);
 	} 
