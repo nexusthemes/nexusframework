@@ -202,7 +202,7 @@ function nxs_widgets_menuitemcustom_render_in_container($args){
     $anchorclass = "class='{$cssclasssubitem}'";
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height08" . $font_variant . "' style='" . $font_variant . " height".$parent_height."' >";
+    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height{$parent_height} " . $font_variant . "' style='" . $font_variant . "' >";
     $cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " " . $destination_relationatt . " " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";
