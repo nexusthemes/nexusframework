@@ -535,6 +535,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("Ambiguous: not clear which image to use (you picked an image, and entered the image url at the same time). Please only use one at a time.", "nxs_td");
 	}
 	
+	if ($callout_text == "test") { $callout_text = ""; }
+	
 	if (
 		($image_imageid == "" && $callout_text != "") ||
 		($image_size != nxs_isimageautofit($image_size) && $callout_text != "")
