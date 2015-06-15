@@ -170,8 +170,9 @@ function nxs_widgets_menuitemcustom_render_in_container($args){
     $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
 
     $url = $placeholdermetadata["destination_url"];
-    //$parent_height = $placeholdermetadata["parent_height"];
+    
     $font_variant = $placeholdermetadata["font_variant"];
+    $parent_height = $placeholdermetadata["parent_height"];
 
     if ($url == "") {
         $anchorclass .= " nxs-menuitemnolink";
@@ -201,7 +202,7 @@ function nxs_widgets_menuitemcustom_render_in_container($args){
     $anchorclass = "class='{$cssclasssubitem}'";
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height08" . $font_variant . "' style='" . $font_variant . "'>";
+    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height08" . $font_variant . "' style='" . $font_variant . " height".$parent_height."' >";
     $cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " " . $destination_relationatt . " " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";

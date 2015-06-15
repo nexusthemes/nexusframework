@@ -519,11 +519,14 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                         nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
                     }
 
+                    $placeholdermetadata["parent_height"] = $parent_height;
+
                     $subargs = array("placeholdermetadata" => $placeholdermetadata);
 
                     $subresult = call_user_func($functionnametoinvoke, $subargs);
 
                     $cache .= $subresult;
+
 
                     $elementcountforcurrentdepth = 0;
                     if (isset($elementcountfordepth[$currentdepth])) {
