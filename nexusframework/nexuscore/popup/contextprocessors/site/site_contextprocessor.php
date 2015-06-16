@@ -13,6 +13,11 @@ function nxs_popup_contextprocessor_site_getcustompopuphtml($args)
 	$filetobeincluded = NXS_FRAMEWORKPATH . "/nexuscore/site/site.php";
 	require_once($filetobeincluded);
 	
+	// allow extensions from plugins etc.
+	$action = "nxs_ext_require_sheet";
+	do_action($action, "site", $sheet);
+	
+	// invoke
 	$functionnametoinvoke = 'nxs_site_' . $sheet . '_rendersheet';
 	if (function_exists($functionnametoinvoke))
 	{
@@ -48,6 +53,11 @@ function nxs_popup_contextprocessor_site_supportsoptions($args)
 	$filetobeincluded = NXS_FRAMEWORKPATH . "/nexuscore/site/site.php";
 	require_once($filetobeincluded);
 	
+	// allow extensions from plugins etc.
+	$action = "nxs_ext_require_sheet";
+	do_action($action, "site", $sheet);
+	
+	//
 	$functionnametoinvoke = 'nxs_site_' . $sheet . '_getoptions';
 	if (function_exists($functionnametoinvoke))
 	{
