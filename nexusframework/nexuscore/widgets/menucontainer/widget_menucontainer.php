@@ -519,6 +519,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                         nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
                     }
 
+                    $placeholdermetadata["font_variant"] =  $font_variant;
                     $placeholdermetadata["parent_height"] = $parent_height;
 
                     $subargs = array("placeholdermetadata" => $placeholdermetadata);
