@@ -6,8 +6,7 @@ nxs_requirewidget("menuitemgeneric");
  * Widget icon in menu selection
  * @return string
  */
-function nxs_widgets_menuitemarticle_geticonid()
-{
+function nxs_widgets_menuitemarticle_geticonid() {
 	return "nxs-icon-text";
 }
 
@@ -15,8 +14,7 @@ function nxs_widgets_menuitemarticle_geticonid()
  * Widget title in widget setup screen
  * @return string|void
  */
-function nxs_widgets_menuitemarticle_gettitle()
-{
+function nxs_widgets_menuitemarticle_gettitle() {
 	return nxs_l18n__("Article reference (menu item)[nxs:widgettitle]", "nxs_td");
 }
 
@@ -27,26 +25,22 @@ function nxs_widgets_menuitemarticle_gettitle()
  * @param $args
  * @return array
  */
-function nxs_widgets_menuitemarticle_home_getoptions($args)
-{
+function nxs_widgets_menuitemarticle_home_getoptions($args) {
 	// CORE WIDGET OPTIONS
 	
-	$options = array
-	(
+	$options = array(
 		"sheettitle" => nxs_widgets_menuitemarticle_gettitle(),
 		"sheeticonid" => nxs_widgets_menuitemarticle_geticonid(),
 		"footerfiller" => true,
-		"fields" => array
-		(
+		"fields" => array(
+
 			// ICON
-            
-            array( 
+            array(
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"initial_toggle_state" => "closed",
 				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
 			),
-            
             array(
 				"id" 				=> "icon",
 				"type" 				=> "icon",
@@ -59,8 +53,7 @@ function nxs_widgets_menuitemarticle_home_getoptions($args)
 			),
 
             // TITLE
-			
-			array( 
+			array(
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
@@ -78,9 +71,7 @@ function nxs_widgets_menuitemarticle_home_getoptions($args)
 				"type" 				=> "wrapperend",
 			),
             
-            //
-			
-			array( 
+            array(
 				"id" 				=> "wrapper_link_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Link", "nxs_td"),
@@ -122,17 +113,18 @@ function nxs_widgets_menuitemarticle_home_getoptions($args)
 }
 
 /**
- * rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
+ * Rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
  * hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
  * het bewerken van de placeholder kan opstarten
  * @param $args
  * @return array
  */
-function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($args)
-{
+function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($args) {
+
 	extract($args);
 	
 	global $nxs_global_row_render_statebag;
+    global $nxs_global_placeholder_render_statebag;
 	
 	$result = array();
 	$result["result"] = "OK";
@@ -153,14 +145,8 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 	$destination_articleid = $mixedattributes['destination_articleid'];
 	$depthindex = $mixedattributes['depthindex'];	// sibling or child
 
-	//
-	//
-	//
-	
 	$paddingleft = 30 * ($depthindex - 1);
-	
-	global $nxs_global_placeholder_render_statebag;
-	
+
 	$hovermenuargs = array();
 	$hovermenuargs["postid"] = $postid;
 	$hovermenuargs["placeholderid"] = $placeholderid;
@@ -175,43 +161,34 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 	$hovermenuargs["metadata"] = $mixedattributes;	
 	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
-	//
 	// render actual control / html
-	//
 	
 	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-menu-item " . "nxs-listitem-depth-" . $depthindex;
-	
-  if ($depthindex == 1)
-  {
-  	$positionerclass = "";
-  } 
-  else if ($depthindex == 2)
-  {
-  	$positionerclass = "nxs-margin-left30";
-  }
-  else if ($depthindex == 3)
-  {
-  	$positionerclass = "nxs-margin-left60";
-  }
-  else if ($depthindex == 4)
-  {
-  	$positionerclass = "nxs-margin-left90";
-  }
-  else if ($depthindex == 5)
-  {
-  	$positionerclass = "nxs-margin-left120";
-  }
-  else
-  {
-  	echo "max depth = 4";
-  	$positionerclass = "nxs-margin-left120";
-  }
-  
-  if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
-    
-  ?>
+
+    if ($depthindex == 1) {
+        $positionerclass = "";
+    }
+    else if ($depthindex == 2) {
+        $positionerclass = "nxs-margin-left30";
+    }
+    else if ($depthindex == 3) {
+        $positionerclass = "nxs-margin-left60";
+    }
+    else if ($depthindex == 4) {
+        $positionerclass = "nxs-margin-left90";
+    }
+    else if ($depthindex == 5) {
+        $positionerclass = "nxs-margin-left120";
+    }
+    else {
+        echo "max depth = 4";
+        $positionerclass = "nxs-margin-left120";
+    }
+
+    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';} ?>
+
 	<div class="nxs-padding-menu-item nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder" id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
 		<div class="nxs-drag-helper" style='display: none;'>
 			<div class='placeholder'>
@@ -231,7 +208,7 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
 
-	return $result;
+    return $result;
 }
 
 /**
@@ -241,7 +218,22 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
  */
 function nxs_widgets_menuitemarticle_render_in_container($args){
 
+    // derive 'current' classes
+    global $nxs_global_current_containerpostid_being_rendered;
+    global $nxs_global_current_postid_being_rendered;
+
     $placeholdermetadata = $args["placeholdermetadata"];
+
+    $currentdepth = $placeholdermetadata["depthindex"];
+
+    if ($currentdepth == 0 || $currentdepth == "") {
+        $currentdepth = 1;
+    }
+
+    $issubitem = false;
+    if ($currentdepth > 1) {
+        $issubitem = true;
+    }
 
     $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
 
@@ -254,10 +246,6 @@ function nxs_widgets_menuitemarticle_render_in_container($args){
 
     $destination_articleid = $placeholdermetadata["destination_articleid"];
 
-    // derive 'current' classes
-    global $nxs_global_current_containerpostid_being_rendered;
-    global $nxs_global_current_postid_being_rendered;
-
     $anchorclass = "";
     $class = "";
 
@@ -266,7 +254,8 @@ function nxs_widgets_menuitemarticle_render_in_container($args){
         // system, there the postid is set to the postid of the homepage. In that
         // case we don't want to mark the menu item of the home to be active
         $isactiveitem = false;
-    } else {
+    }
+    else {
         $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
     }
 
@@ -274,12 +263,15 @@ function nxs_widgets_menuitemarticle_render_in_container($args){
     {
         $class .= "{$cssclassactiveitem} nxs-active";
         $anchorclass .= " {$cssclassactiveitemlink}";
-    } else {
+    }
+    else {
         $class .= "{$cssclassactiveitem} nxs-inactive";
+
         if ($issubitem == true) {
             // inactive subitem
             $anchorclass .= " {$cssclasssubitemlink}";
-        } else {
+        }
+        else {
             // inactief hoofditem
             $anchorclass .= " {$cssclassitemlink}";
         }
@@ -290,12 +282,10 @@ function nxs_widgets_menuitemarticle_render_in_container($args){
         $anchorclass .= " nxs-menuitemnolink";
     }
 
-
     if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
 
     $anchorclass = "class='{$anchorclass}'";
 
-    //
     // http://stackoverflow.com/questions/2851663/how-do-i-simulate-a-hover-with-a-touch-in-touch-enabled-browsers
     // http://stackoverflow.com/questions/7018919/how-to-bind-touchstart-and-click-events-but-not-respond-to-both
 
@@ -312,7 +302,7 @@ function nxs_widgets_menuitemarticle_render_in_container($args){
  * @param $args
  * @return string
  */
-function nxs_widgets_menuitemarticle_mobile_render($args){
+function nxs_widgets_menuitemarticle_mobile_render($args) {
 
     global $nxs_global_current_containerpostid_being_rendered;
     global $nxs_global_current_postid_being_rendered;
@@ -338,11 +328,9 @@ function nxs_widgets_menuitemarticle_mobile_render($args){
 
     $destination_articleid = $placeholdermetadata["destination_articleid"];
 
-
     $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
 
-    if ($isactiveitem)
-    {
+    if ($isactiveitem) {
         $class .= "nxs-active ";
         $itemcolor = " {$cssclassactiveitemlink}";
     }
@@ -373,9 +361,9 @@ function nxs_widgets_menuitemarticle_mobile_render($args){
  * @param $args
  * @return array
  */
-function nxs_widgets_menuitemarticle_initplaceholderdata($args)
-{
-	extract($args);
+function nxs_widgets_menuitemarticle_initplaceholderdata($args) {
+
+    extract($args);
 
 	$args["title"] = "Item";
 	$args["depthindex"] = 1;
@@ -389,5 +377,3 @@ function nxs_widgets_menuitemarticle_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>
