@@ -723,24 +723,23 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 													}
 													else if ($placeholdertype == "menuitemcustom") 
 													{
-                              $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
-                              $title = nxs_menu_enrichtitle($title, $currentdepth);
-                                                        
-                              $icon = $placeholdermetadata["icon"]; 
-                              $icon_scale = "0-5"; 
-                              $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
-                              
-                              $url = $placeholdermetadata["destination_url"];
-                  
-                              if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
-                        
-                              $cache = $cache . "<li class='menu-item menu-item-custom menu-depth-" . $currentdepth . "'>";
-                              $cache = $cache . "<a itemprop='url' href='{$url}' class='{$outer_color_cssclass}'>";
-                              $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
-															$cache = $cache . "</a>";
-                              $cache = $cache . "</li>";
-                          
-													} else {			
+                                                        $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_mobile_render";
+
+                                                        if (!function_exists($functionnametoinvoke)) {
+                                                            nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
+                                                        }
+
+                                                        $placeholdermetadata["font_variant"] =  $font_variant;
+                                                        $placeholdermetadata["parent_height"] = $parent_height;
+                                                        $placeholdermetadata["menuitem_color"] = $outer_color_cssclass;
+
+                                                        $mobsubargs = array("placeholdermetadata" => $placeholdermetadata);
+
+                                                        $mobsubresult = call_user_func($functionnametoinvoke, $mobsubargs);
+
+                                                        $cache .= $mobsubresult;
+
+                                                    } else {
                               echo "unexpected placeholdertype;" . $placeholdertype;
                           }
                             

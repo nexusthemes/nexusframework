@@ -21,7 +21,7 @@ function nxs_widgets_menuitemcustom_gettitle()
 }
 
 /**
- * rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
+ * Rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
  * hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
  * het bewerken van de placeholder kan opstarten
  * @param $args
@@ -206,6 +206,39 @@ function nxs_widgets_menuitemcustom_render_in_container($args){
     $cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " " . $destination_relationatt . " " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";
+
+    return $cache;
+}
+
+/**
+ * Mobile rendering function front-end
+ * @param $args
+ * @return string $cache
+ */
+function nxs_widgets_menuitemcustom_mobile_render($args){
+
+    $placeholdermetadata = $args["placeholdermetadata"];
+
+    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+    $title = nxs_menu_enrichtitle($title, $currentdepth);
+
+    $icon = $placeholdermetadata["icon"];
+    $icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+
+    $url = $placeholdermetadata["destination_url"];
+
+    $mobcssclass = $placeholdermetadata["menuitem_color"];
+    $mob_outcssclass = $mobcssclass;
+    $outer_color_cssclass = nxs_getcssclassesforlookup("nxs-color-zen", $mob_outcssclass);
+
+    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+
+    $cache = $cache . "<li class='menu-item menu-item-custom menu-depth-" . $currentdepth . "'>";
+    $cache = $cache . "<a itemprop='url' href='{$url}' class='{$outer_color_cssclass}'>";
+    $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
+    $cache = $cache . "</a>";
+    $cache = $cache . "</li>";
 
     return $cache;
 }
