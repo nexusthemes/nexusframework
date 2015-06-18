@@ -661,7 +661,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                             $elementcountfordepth[$currentdepth] = $elementcountfordepth[$currentdepth] + 1; 
                           
 													}
-													else if ($placeholdertype == "menuitemcategory") 
+													else if ($placeholdertype == "xmenuitemcategory")
                           {
                             $class = "";
                             $anchorclass = "";
@@ -721,7 +721,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                             $elementcountfordepth[$currentdepth] = $elementcountfordepth[$currentdepth] + 1; 
                           
 													}
-													else if ($placeholdertype == "menuitemcustom") 
+													else
 													{
                                                         $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_mobile_render";
 
@@ -732,6 +732,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                                                         $placeholdermetadata["font_variant"] =  $font_variant;
                                                         $placeholdermetadata["parent_height"] = $parent_height;
                                                         $placeholdermetadata["menuitem_color"] = $outer_color_cssclass;
+                                                        $placeholdermetadata["menuitem_active_color"] = $menuitem_active_color_cssclass;
 
                                                         $mobsubargs = array("placeholdermetadata" => $placeholdermetadata);
 
@@ -739,9 +740,10 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
                                                         $cache .= $mobsubresult;
 
-                                                    } else {
+                                                    }
+                                                    /*else {
                               echo "unexpected placeholdertype;" . $placeholdertype;
-                          }
+                          }*/
                             
                           // update previous depth to current depth
                           $previousdepth = $currentdepth;

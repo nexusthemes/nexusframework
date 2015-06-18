@@ -234,6 +234,7 @@ function nxs_widgets_menuitemcustom_mobile_render($args){
 
     if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
 
+    $cache = "";
     $cache = $cache . "<li class='menu-item menu-item-custom menu-depth-" . $currentdepth . "'>";
     $cache = $cache . "<a itemprop='url' href='{$url}' class='{$outer_color_cssclass}'>";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";

@@ -124,7 +124,7 @@ function nxs_widgets_menuitemcategory_home_getoptions($args)
 }
 
 /**
- * rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
+ * Rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
  * hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
  * het bewerken van de placeholder kan opstarten
  * @param $args
@@ -303,6 +303,82 @@ function nxs_widgets_menuitemcategory_render_in_container($args){
     $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";
+
+    return $cache;
+}
+
+/**
+ * Mobile rendering function front-end
+ * @param $args
+ * @return string $cache
+ */
+function nxs_widgets_menuitemcategory_mobile_render($args) {
+
+    $placeholdermetadata = $args["placeholdermetadata"];
+
+    $class = "";
+    $anchorclass = "";
+
+    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+    $title = nxs_menu_enrichtitle($title, $currentdepth);
+
+
+    $icon = $placeholdermetadata["icon"];
+    $icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+
+    $mobcssclass = $placeholdermetadata["menuitem_color"];
+    $mob_outcssclass = $mobcssclass;
+    $outer_color_cssclass = nxs_getcssclassesforlookup("nxs-color-zen", $mob_outcssclass);
+
+    $mobcssclass_active = $placeholdermetadata["menuitem_active_color"];
+    $mob_activecssclass = $mobcssclass_active;
+    $cssclassactiveitemlink = nxs_getcssclassesforlookup("nxs-color-zen", $mob_activecssclass);
+
+    $destination_category = $placeholdermetadata["destination_category"];
+    // for example [92]
+    // remove brackets
+    $destination_category = str_replace("[", "", $destination_category);
+    $destination_category = str_replace("]", "", $destination_category);
+
+    // derive 'current' classes
+    global $nxs_global_current_containerpostid_being_rendered;
+    global $nxs_global_current_postid_being_rendered;
+
+    //$anchorclass = "";
+    $class = "";
+
+    if (is_category($destination_category))
+    {
+        $isactiveitem = true;
+    } else {
+        $isactiveitem = false;
+    }
+
+    if ($isactiveitem)
+    {
+        $class .= "{$cssclassactiveitem} nxs-active ";
+        $itemcolor = " {$cssclassactiveitemlink}";
+    }
+    else
+    {
+        // inactief subitem
+        $itemcolor = " {$outer_color_cssclass}";
+    }
+
+    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+
+    $anchorclass = "class='{$itemcolor}'";
+
+    // Get the URL of this category
+    $url = get_category_link($destination_category);
+
+    $cache = "";
+    $cache = $cache . "<li class='menu-item menu-item-post menu-depth-" . $currentdepth . " {$class}'>";
+    $cache = $cache . "<a itemprop='url' href='" . $url . "' {$anchorclass}>";
+    $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
+    $cache = $cache . "</a>";
+    $cache = $cache . "</li>";
 
     return $cache;
 }
