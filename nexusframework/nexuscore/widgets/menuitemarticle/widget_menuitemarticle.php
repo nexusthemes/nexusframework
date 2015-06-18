@@ -241,6 +241,12 @@ function nxs_widgets_menuitemarticle_desktop_render($args){
     $icon_scale = "0-5";
     $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
 
+    $desk_cssclass = $placeholdermetadata["menuitem_color"];
+    $desk_cssclass_inactiveitemlink = $desk_cssclass;
+
+    $desk_cssclass_active = $placeholdermetadata["menuitem_active_color"];
+    $desk_cssclass_activeitemlink = $desk_cssclass_active;
+
     $font_variant = $placeholdermetadata["font_variant"];
     $parent_height = $placeholdermetadata["parent_height"];
 
@@ -248,12 +254,6 @@ function nxs_widgets_menuitemarticle_desktop_render($args){
 
     $anchorclass = "";
     $class = "";
-
-    $desk_cssclass = $placeholdermetadata["menuitem_color"];
-    $desk_cssclass_inactiveitemlink = $desk_cssclass;
-
-    $desk_cssclass_active = $placeholdermetadata["menuitem_active_color"];
-    $desk_cssclass_activeitemlink = $desk_cssclass_active;
 
     $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
 
