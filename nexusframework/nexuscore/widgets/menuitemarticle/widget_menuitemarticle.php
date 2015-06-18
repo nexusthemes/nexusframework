@@ -212,11 +212,11 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 }
 
 /**
- * Rendering function front-end
+ * Desktop rendering function front-end
  * @param $args
  * @return string
  */
-function nxs_widgets_menuitemarticle_render_in_container($args){
+function nxs_widgets_menuitemarticle_desktop_render($args){
 
     // derive 'current' classes
     global $nxs_global_current_containerpostid_being_rendered;
@@ -321,24 +321,24 @@ function nxs_widgets_menuitemarticle_mobile_render($args) {
     $icon_scale = "0-5";
     $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
 
-    $mobcssclass = $placeholdermetadata["menuitem_color"];
-    $outer_color_cssclass = $mobcssclass;
+    $mob_cssclass = $placeholdermetadata["menuitem_color"];
+    $mob_cssclass_inactiveitemlink = $mob_cssclass;
 
-    $mobcssclass_active = $placeholdermetadata["menuitem_active_color"];
-    $cssclassactiveitemlink = $mobcssclass_active;
+    $mob_cssclass_active = $placeholdermetadata["menuitem_active_color"];
+    $mob_cssclass_activeitemlink = $mob_cssclass_active;
 
     $destination_articleid = $placeholdermetadata["destination_articleid"];
 
     $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
 
     if ($isactiveitem) {
-        $class .= "nxs-active ";
-        $itemcolor = " {$cssclassactiveitemlink}";
+        $class .= "{$mob_cssclass_activeitemlink} nxs-active ";
+        $itemcolor = " {$mob_cssclass_activeitemlink}";
     }
     else
     {
         // inactief subitem
-        $itemcolor = " {$outer_color_cssclass}";
+        $itemcolor = " {$mob_cssclass_inactiveitemlink}";
     }
 
     if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}

@@ -491,7 +491,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
             }
 
             nxs_requirewidget($placeholdertype);
-            $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_render_in_container";
+            $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_desktop_render";
 
             if (!function_exists($functionnametoinvoke)) {
                 nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
