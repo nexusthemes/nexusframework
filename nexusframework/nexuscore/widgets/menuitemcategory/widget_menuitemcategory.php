@@ -180,28 +180,28 @@ function nxs_widgets_menuitemcategory_render_webpart_render_htmlvisualization($a
     else {
         echo "max depth = 4";
         $positionerclass = "nxs-margin-left120";
-  }
+    }
     
-  if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> '; } ?>
-	<div class="nxs-padding-menu-item nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder" id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
-		<div class="nxs-drag-helper" style='display: none;'>
-			<div class='placeholder'>
-			</div>
-		</div>
-		<div class="content2 border <?php echo $positionerclass;?>">
-	    <div class="box-content nxs-float-left"><p><?php echo "{$icon}{$title}"; ?></p></div>
-	    <div class="nxs-clear"></div>
-	  </div> <!--END content-->
-	</div>
-	
-	<?php
-	$html = nxs_ob_get_contents();
-	nxs_ob_end_clean();
+    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> '; } ?>
+    <div class="nxs-padding-menu-item nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder" id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
+        <div class="nxs-drag-helper" style='display: none;'>
+            <div class='placeholder'>
+            </div>
+        </div>
+        <div class="content2 border <?php echo $positionerclass;?>">
+        <div class="box-content nxs-float-left"><p><?php echo "{$icon}{$title}"; ?></p></div>
+        <div class="nxs-clear"></div>
+      </div> <!--END content-->
+    </div>
 
-	$result["html"] = $html;	
-	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
+    <?php
+    $html = nxs_ob_get_contents();
+    nxs_ob_end_clean();
 
-	return $result;
+    $result["html"] = $html;
+    $result["replacedomid"] = 'nxs-widget-' . $placeholderid;
+
+    return $result;
 }
 
 /**
@@ -304,6 +304,8 @@ function nxs_widgets_menuitemcategory_mobile_render($args) {
 
     $class = "";
 
+    $currentdepth = $placeholdermetadata["depthindex"];
+
     $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
     $title = nxs_menu_enrichtitle($title, $currentdepth);
 
@@ -365,9 +367,9 @@ function nxs_widgets_menuitemcategory_mobile_render($args) {
  * @param $args
  * @return array
  */
-function nxs_widgets_menuitemcategory_initplaceholderdata($args)
-{
-	extract($args);
+function nxs_widgets_menuitemcategory_initplaceholderdata($args) {
+
+    extract($args);
 
 	$args["title"] = "Item";
 	$args["depthindex"] = 1;
