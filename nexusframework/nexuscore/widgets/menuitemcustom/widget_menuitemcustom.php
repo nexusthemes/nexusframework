@@ -159,7 +159,7 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
  * @param $args
  * @return string
  */
-function nxs_widgets_menuitemcustom_render_in_container($args){
+function nxs_widgets_menuitemcustom_desktop_render($args){
 
     $placeholdermetadata = $args["placeholdermetadata"];
 
