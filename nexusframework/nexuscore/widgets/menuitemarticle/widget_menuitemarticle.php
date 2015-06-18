@@ -130,8 +130,6 @@ function nxs_widgets_menuitemarticle_home_getoptions($args)
  */
 function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($args)
 {
-	
-	//
 	extract($args);
 	
 	global $nxs_global_row_render_statebag;
@@ -306,6 +304,66 @@ function nxs_widgets_menuitemarticle_render_in_container($args){
     $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";
+
+    return $cache;
+}
+
+/**
+ * @param $args
+ * @return string
+ */
+function nxs_widgets_menuitemarticle_mobile_render($args){
+
+    global $nxs_global_current_containerpostid_being_rendered;
+    global $nxs_global_current_postid_being_rendered;
+
+    $placeholdermetadata = $args["placeholdermetadata"];
+
+    $class = "";
+
+    $currentdepth = $placeholdermetadata["depthindex"];
+
+    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+    $title = nxs_menu_enrichtitle($title, $currentdepth);
+
+    $icon = $placeholdermetadata["icon"];
+    $icon_scale = "0-5";
+    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+
+    $mobcssclass = $placeholdermetadata["menuitem_color"];
+    $outer_color_cssclass = $mobcssclass;
+
+    $mobcssclass_active = $placeholdermetadata["menuitem_active_color"];
+    $cssclassactiveitemlink = $mobcssclass_active;
+
+    $destination_articleid = $placeholdermetadata["destination_articleid"];
+
+
+    $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
+
+    if ($isactiveitem)
+    {
+        $class .= "nxs-active ";
+        $itemcolor = " {$cssclassactiveitemlink}";
+    }
+    else
+    {
+        // inactief subitem
+        $itemcolor = " {$outer_color_cssclass}";
+    }
+
+    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
+
+    $anchorclass = "class='{$itemcolor}'";
+
+    $url = nxs_geturl_for_postid($destination_articleid);
+
+    $cache = "";
+    $cache = $cache . "<li class='menu-item menu-item-post menu-depth-" . $currentdepth . " {$class}'>";
+    $cache = $cache . "<a itemprop='url'  href='" . $url . "' {$anchorclass}>";
+    $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
+    $cache = $cache . "</a>";
+    $cache = $cache . "</li>";	// deze is het niet
 
     return $cache;
 }

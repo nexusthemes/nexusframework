@@ -618,7 +618,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                               $issubitem = true;
                           }
                           
-                          if ($placeholdertype == "menuitemarticle") 
+                          /*if ($placeholdertype == "menuitemarticle")
                           {
                             $class = "";
                             $anchorclass = "";
@@ -722,7 +722,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                           
 													}
 													else
-													{
+													{*/
                                                         $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_mobile_render";
 
                                                         if (!function_exists($functionnametoinvoke)) {
@@ -740,7 +740,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
                                                         $cache .= $mobsubresult;
 
-                                                    }
+                                                    //}
                                                     /*else {
                               echo "unexpected placeholdertype;" . $placeholdertype;
                           }*/
