@@ -497,6 +497,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                 nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
             }
 
+            $placeholdermetadata["menuitem_color"] = $menuitem_color_cssclass;
+            $placeholdermetadata["menuitem_active_color"] = $menuitem_active_color_cssclass;
             $placeholdermetadata["font_variant"] =  $font_variant;
             $placeholdermetadata["parent_height"] = $parent_height;
 

@@ -249,31 +249,32 @@ function nxs_widgets_menuitemarticle_render_in_container($args){
     $anchorclass = "";
     $class = "";
 
+    $desk_cssclass = $placeholdermetadata["menuitem_color"];
+    $desk_cssclass_inactiveitemlink = $desk_cssclass;
+
+    $desk_cssclass_active = $placeholdermetadata["menuitem_active_color"];
+    $desk_cssclass_activeitemlink = $desk_cssclass_active;
+
+    $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
+
     if (is_archive()) {
-        // the archive pages (for example list of category posts) we 'mimic' the
-        // system, there the postid is set to the postid of the homepage. In that
-        // case we don't want to mark the menu item of the home to be active
         $isactiveitem = false;
     }
-    else {
-        $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
-    }
 
-    if ($isactiveitem)
-    {
-        $class .= "{$cssclassactiveitem} nxs-active";
-        $anchorclass .= " {$cssclassactiveitemlink}";
+    if ($isactiveitem) {
+        $class .= "{$desk_cssclass_activeitemlink} nxs-active";
+        $anchorclass .= " {$desk_cssclass_activeitemlink}";
     }
     else {
-        $class .= "{$cssclassactiveitem} nxs-inactive";
+        $class .= "{$desk_cssclass_inactiveitemlink} nxs-inactive";
 
         if ($issubitem == true) {
             // inactive subitem
-            $anchorclass .= " {$cssclasssubitemlink}";
+            $anchorclass .= "{$desk_cssclass_inactiveitemlink}";
         }
         else {
             // inactief hoofditem
-            $anchorclass .= " {$cssclassitemlink}";
+            $anchorclass .= " {$desk_cssclass_inactiveitemlink}";
         }
     }
 
