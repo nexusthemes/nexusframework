@@ -34,14 +34,6 @@ a {
 	color: inherit; 
 }
 
-blockquote {
-	display: inline-block;
-	padding: 8px 15px;
-	border-left: 10px rgba(0,0,0,0.1) solid;
-	margin-bottom: 20px;
-	background-color: rgba(0,0,0,0.05);
-}
-
 
 /* FALLBACK MODERNIZR TOGGLE
 ---------------------------------------------------------------------------------------------------- */
@@ -177,7 +169,7 @@ input[type=submit]:hover										{ opacity: 0.8; }
 
 /* DEFAULT FORM STYLING */
 .nxs-form input[type=submit] {text-indent: 0px; box-shadow: none; height: auto; font-size: auto; }
-.nxs-form input[type=email],.nxs-form input[type=text],.nxs-form input[type=checkbox] { width: 100%; }
+.nxs-form input[type=text],.nxs-form input[type=checkbox] { width: 100%; }
 .nxs-form label,
 .nxs-form input,
 .nxs-form textarea											{ line-height: 1.625em; font-size: 15px; }
@@ -528,9 +520,11 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-padding-bottom50										{ padding-bottom: 50px; }
 /* right */
 .nxs-padding-right100										{ padding-right: 100px; }
+.nxs-padding-right60										{ padding-right: 60px; }
 .nxs-padding10												{ padding: 10px; }
 /* left */
 .nxs-padding-left10											{ padding-left: 10px !important; }
+.nxs-padding-left30											{ padding-left: 30px; }
 
 /* MIN HEIGHT */
 .nxs-min-height100											{ min-height: 100px }
@@ -2197,10 +2191,6 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .woocommerce p.form-row input 								{ width: 80%; float: right; line-height: 30px; box-shadow: 0px 0px 0px 1px gray inset; -webkit-appearance: none; text-indent: 10px; }
 
 .woocommerce ul.woocommerce-error li						{ color: red; line-height: 30px; }
-.woocommerce table td,
-.woocommerce table th,
-.woocommerce table td span,
-.woocommerce table th span									{ font-size: 15px; }
 .woocommerce ul.payment_methods,
 .woocommerce .cart_totals h2,
 .woocommerce .checkout h3,
@@ -2249,7 +2239,8 @@ input.submit:hover											{ cursor: pointer; }
 .woocommerce-tabs .tabs span.nxs-icon-arrow-right-light		{ display: none; }
 .woocommerce-tabs .tabs .active span 						{ display: inline-block; position: absolute; top: 0; right: 0; }
 .woocommerce-tabs .panel ol									{ list-style: none; }
-.woocommerce-tabs .panel .comment .nxs-image				{ width: 40px !important; height: 40px !important; position: absolute; right: 0px; }
+.nxs-woominicart .nxs-image,
+.woocommerce-tabs .panel .comment .nxs-image				{ width: 40px !important; height: 40px !important; position: absolute; right: 0px; top: 0px; }
 .woocommerce-tabs .panel #reviews p.stars					{ padding-bottom: 0px; }
 					
 .stars a span.nxs-icon-star2								{ display: none; }
@@ -2261,6 +2252,11 @@ input.submit:hover											{ cursor: pointer; }
 /* Related products */
 .upsells .nxs-text.nxs-default-p,
 .related .nxs-text.nxs-default-p							{ padding-bottom: 10px; }
+
+/* WOOCOMMERCE CART PAGE 
+---------------------------------------------------------------------------------------------------- */
+.nxs-woocartpage .shop_table .nxs-image							{ min-width: 40px; }
+
 
 /* DEFAULT NT BUTTONS
 ---------------------------------------------------------------------------------------------------- */
