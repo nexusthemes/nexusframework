@@ -58,8 +58,7 @@ function nxs_widgets_menuitemarticle_home_getoptions($args) {
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 			),
-			array
-			(
+			array(
 				"id" 				=> "title",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
@@ -251,6 +250,7 @@ function nxs_widgets_menuitemarticle_desktop_render($args) {
     $parent_height = $placeholdermetadata["parent_height"];
 
     $destination_articleid = $placeholdermetadata["destination_articleid"];
+    $url = nxs_geturl_for_postid($destination_articleid);
 
     $anchorclass = "";
     $class = "";
@@ -278,7 +278,6 @@ function nxs_widgets_menuitemarticle_desktop_render($args) {
         }
     }
 
-    $url = nxs_geturl_for_postid($destination_articleid);
     if ($url == "") {
         $anchorclass .= " nxs-menuitemnolink";
     }
