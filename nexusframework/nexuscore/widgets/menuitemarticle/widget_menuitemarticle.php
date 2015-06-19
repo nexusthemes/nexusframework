@@ -216,7 +216,7 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
  * @param $args
  * @return string
  */
-function nxs_widgets_menuitemarticle_desktop_render($args){
+function nxs_widgets_menuitemarticle_desktop_render($args) {
 
     // derive 'current' classes
     global $nxs_global_current_containerpostid_being_rendered;
