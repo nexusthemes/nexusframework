@@ -20,7 +20,17 @@ function nxs_webmethod_removerow()
 	$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
 
 	$poststructure = nxs_parsepoststructure($postid);
-	
+
+    if (isset($widgetid)) {
+
+        $test = str_replace('nxs-widget-', 'nxs_ph_' , $widgetid);
+
+        //substr_replace($widget, "bob")
+        //add_post_meta(15, "test", $test );
+        delete_post_meta($postid, $test);
+    }
+
+
 	unset($poststructure[$rowid]);
 	$poststructure = array_values($poststructure);
 	nxs_storebinarypoststructure($postid, $poststructure);
@@ -37,4 +47,3 @@ function nxs_webmethod_removerow()
 	//
 	nxs_webmethod_return_ok($result);
 }
-?>
