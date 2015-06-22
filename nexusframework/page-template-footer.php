@@ -37,6 +37,8 @@
 	{
 		$widescreenclass = "";
 	}
+
+	$cssclass = nxs_getcssclassesforrowcontainer($postid);
 	?>
 
 	<div id="nxs-container">
@@ -44,7 +46,7 @@
 	    <div class="DISABLED_block">
 	      <div class="nxs-clear"></div>						
 	      <div id="nxs-footer" class="nxs-containshovermenu1 nxs-sitewide-element <?php echo $widescreenclass; ?>">
-					<div id='nxs-footer-container'  class="nxs-sitewide-container nxs-footer-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-containshovermenu1 nxs-post-<?php echo $postid;?>">
+					<div id='nxs-footer-container' class="nxs-sitewide-container nxs-footer-container nxs-containshovermenu1 <?php echo $cssclass; ?>">
 						<?php 
 		          // render the actual page contents (page rows)
 		          echo nxs_getrenderedhtml($postid, "default");

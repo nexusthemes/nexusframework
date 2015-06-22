@@ -37,13 +37,15 @@
 	{
 		$widescreenclass = "";
 	}
+
+	$cssclass = nxs_getcssclassesforrowcontainer($postid);
 	?>
 	<div id="nxs-container">
 		<div>
 	    <div class="DISABLED_block">
 	      <div class="nxs-clear"></div>						
 	      <div id="nxs-header" class="nxs-containshovermenu1 nxs-sitewide-element nxs-background-secundary-d <?php echo $widescreenclass; ?>">
-					<div id='nxs-header-container' class="nxs-sitewide-container nxs-header-container nxs-elements-container nxs-layout-editable nxs-widgets-editable nxs-containshovermenu1 nxs-post-<?php echo $postid;?>">
+					<div id='nxs-header-container' class="nxs-sitewide-container nxs-header-container nxs-containshovermenu1 <?php echo $cssclass; ?>">
 						
 						<div class="nxs-header-topfiller"></div>
 						
