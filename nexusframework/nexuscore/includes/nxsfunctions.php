@@ -10260,6 +10260,7 @@ function nxs_busrules_getgenericoptions()
 				"id"								=> "wpcontenthandler",
 				"type" 			=> "select",
 				"label" 		=> nxs_l18n__("WP Content", "nxs_td"),
+				"defaultblankvalue" => "@leaveasis",
 				"dropdown" 		=> array
 				(
 					"@leaveasis" =>nxs_l18n__("Leave as is", "nxs_td"),
