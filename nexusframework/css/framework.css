@@ -2185,10 +2185,12 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
 
-.woocommerce p.form-row  									{ clear: both; font-size: 15px; }
+.woocommerce form p  										{ clear: both; font-size: 15px; margin-bottom: 10px; }
+.woocommerce p.form-row										{ margin-bottom: 0px; }
 .woocommerce p.form-row label 								{ width: 20%; display: block; float: left; line-height: 30px; }
 .woocommerce p.form-row select								{ margin-bottom: 20px; }
 .woocommerce p.form-row input 								{ width: 80%; float: right; line-height: 30px; box-shadow: 0px 0px 0px 1px gray inset; -webkit-appearance: none; text-indent: 10px; }
+.woocommerce form input[type=submit]						{ width: auto; text-indent: 0px; }
 
 .woocommerce ul.woocommerce-error li						{ color: red; line-height: 30px; }
 .woocommerce ul.payment_methods,
@@ -2196,10 +2198,11 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .woocommerce .checkout h3,
 h3#order_review_heading,
 #order_review h3
-.woocommerce ul.woocommerce-error							{ margin-bottom: 10px; }
+
 .woocommerce .payment_box									{ margin-top: 5px; }
 
 .woocommerce ul 											{ list-style: none; }
+.woocommerce ul.woocommerce-error							{ margin-bottom: 10px !important; }
 .woocommerce input[type=radio]								{ -webkit-appearance: radio !important; width: inherit !important; box-shadow: none; }
 .woocommerce input[type=checkbox]							{ -webkit-appearance: checkbox !important; width: inherit !important; box-shadow: none !important; float: left !important; 	margin: 3px !important; }
 .woocommerce input[type=submit]								{ height: inherit !important; line-height: 1 !important; clear: both !important; display: block !important; }
@@ -2212,17 +2215,17 @@ h3#order_review_heading,
 /* WOOCOMMERCE PRODUCT DETAIL 
 ---------------------------------------------------------------------------------------------------- */
 /* Sale */
-.onsale 													{ text-transform: uppercase; display: inline-block;	font-size: 15px; }
+.woocommerce .onsale 										{ text-transform: uppercase; display: inline-block;	font-size: 15px; }
 
 /* General */
-.summary,
-.panel														{ font-size: 15px; }
-button:hover,
-input.submit:hover											{ cursor: pointer; }
+.woocommerce .summary,
+.woocommerce .panel											{ font-size: 15px; }
+.woocommerce .button:hover,
+.woocommerce input.submit:hover								{ cursor: pointer; }
 
-/* Images */
+/* Thumbnails */
 .images .thumbnails img 									{ height: auto; }
-.images .thumbnails .nxs-image								{ margin-right: 5% }
+.images .thumbnails .nxs-image								{ margin-right: 5%; }
 .images .thumbnails a:nth-child(3) .nxs-image				{ margin-right: 0; }
 
 /* Rating */
