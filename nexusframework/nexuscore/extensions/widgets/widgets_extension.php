@@ -390,7 +390,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		if ( $enableconceptualwidgets )
 		{
 			$result[] = array("widgetid" => "pagefixedheader", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "pageinpagemenu", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "pageinpagesectionmenu", "tags" => array("nexus"));
 		}
 		//$result[] = array("widgetid" => "pagevideo");
 		//$result[] = array("widgetid" => "pagegap");
@@ -543,6 +543,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("csv");
 	nxs_ext_lazyload_widget("section");
     nxs_ext_lazyload_widget("pagination");
+    
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("wpmenu");
@@ -560,11 +561,11 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("pagebackground");
 	nxs_ext_lazyload_widget("pagepopup");
 	nxs_ext_lazyload_widget("pageslidetotop");
+	nxs_ext_lazyload_widget("pageinpagesectionmenu");
 
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("pagefixedheader");
-		nxs_ext_lazyload_widget("pageinpagemenu");
 	}
 	//nxs_ext_lazyload_widget("pagevideo");
 	//nxs_ext_lazyload_widget("pagegap");

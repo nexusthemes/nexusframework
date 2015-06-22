@@ -1994,65 +1994,65 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 	display: none;
 }
 
-/* IN-PAGE MENU PAGEDECORATOR
+/* INPAGE SECTION MENU PAGEDECORATOR
 ---------------------------------------------------------------------------------------------------- */
 
-#nxs-inpagemenu 						{ position: fixed; display: block; z-index: 120; }
-#nxs-inpagemenu li 						{ display: block; position: relative; }
-#nxs-inpagemenu li:last-child 			{ margin-bottom: 0px; }
-#nxs-inpagemenu li a 					{ display: block; position: relative; text-decoration: none; outline: none; }
-#nxs-inpagemenu li > span 				{ top: 50%; transform: translateY(-50%); position: absolute; display: none; right: 135%; padding: 7px 10px; line-height: 1em; white-space: nowrap; }
-#nxs-inpagemenu li > span.left 			{ right: auto; left: 135%; }
-#nxs-inpagemenu li a:hover ~ span 		{ display: block; }
+#nxs-inpagesectionmenu 						{ position: fixed; display: block; z-index: 120; }
+#nxs-inpagesectionmenu li 						{ display: block; position: relative; }
+#nxs-inpagesectionmenu li:last-child 			{ margin-bottom: 0px; }
+#nxs-inpagesectionmenu li a 					{ display: block; position: relative; text-decoration: none; outline: none; }
+#nxs-inpagesectionmenu li > span 				{ top: 50%; transform: translateY(-50%); position: absolute; display: none; right: 135%; padding: 7px 10px; line-height: 1em; white-space: nowrap; }
+#nxs-inpagesectionmenu li > span.left 			{ right: auto; left: 135%; }
+#nxs-inpagesectionmenu li a:hover ~ span 		{ display: block; }
 
 /* ITEMS: PREV (ACTIVE) NEXT */
-#nxs-inpagemenu.prevnext li.item,
-#nxs-inpagemenu.prevactivenext li.item 				{ display: none; }
-#nxs-inpagemenu.prevactivenext .item.active-item 	{ display: block; }
-#nxs-inpagemenu li.disabled 						{ opacity: 0.5; cursor: default; pointer-events: none;}
+#nxs-inpagesectionmenu.prevnext li.item,
+#nxs-inpagesectionmenu.prevactivenext li.item 				{ display: none; }
+#nxs-inpagesectionmenu.prevactivenext .item.active-item 	{ display: block; }
+#nxs-inpagesectionmenu li.disabled 						{ opacity: 0.5; cursor: default; pointer-events: none;}
 
-#nxs-inpagemenu li.prevnext 									{ text-align: center; }
-#nxs-inpagemenu li.prevnext .icon 								{ margin-top: 25%; font-size: 80%; text-shadow: none; }
-#nxs-inpagemenu.nxs-inpagemenu-circlesline li.prevnext .icon 	{ margin-top: 15%; }
-#nxs-inpagemenu.prevnext li.line 								{ display: none; }
-#nxs-inpagemenu.nxs-inpagemenu-circlesline.prevnext li:nth-child(2) 			{ display: block; }
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li.prevnext span.icon 	{ margin-top: 25%; }
+#nxs-inpagesectionmenu li.prevnext 									{ text-align: center; }
+#nxs-inpagesectionmenu li.prevnext .icon 								{ margin-top: 25%; font-size: 80%; text-shadow: none; }
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-circlesline li.prevnext .icon 	{ margin-top: 15%; }
+#nxs-inpagesectionmenu.prevnext li.line 								{ display: none; }
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-circlesline.prevnext li:nth-child(2) 			{ display: block; }
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li.prevnext span.icon 	{ margin-top: 25%; }
 
 /* TITLE VISUALISATION: ON CHANGE */
-#nxs-inpagemenu.showtitle-onchange li.active-item span 	{ display: block; }
+#nxs-inpagesectionmenu.showtitle-onchange li.active-item span 	{ display: block; }
 
 /* TITLE VISUALISATION: ALWAYS SHOW */
-#nxs-inpagemenu.showtitle-always li > span 			{ display: block; cursor: pointer; }
+#nxs-inpagesectionmenu.showtitle-always li > span 			{ display: block; cursor: pointer; }
 
 /* ITEM STYLING: CIRCLES */
-.nxs-inpagemenu-circles li 				{ margin-bottom: 10px; border-radius: 50%; }
-.nxs-inpagemenu-circles li a,
-.nxs-inpagemenu-circlesline li a 		{ height: 18px; width: 18px; border-radius: 50%; }
-.nxs-inpagemenu-circles li > span,
-.nxs-inpagemenu-circlesline li > span 	{ border-radius: 5px; }
+.nxs-inpagesectionmenu-circles li 				{ margin-bottom: 10px; border-radius: 50%; }
+.nxs-inpagesectionmenu-circles li a,
+.nxs-inpagesectionmenu-circlesline li a 		{ height: 18px; width: 18px; border-radius: 50%; }
+.nxs-inpagesectionmenu-circles li > span,
+.nxs-inpagesectionmenu-circlesline li > span 	{ border-radius: 5px; }
 
 /* ITEM STYLING: CIRCLES WITH LINE */
-.nxs-inpagemenu-circlesline li.item,
-.nxs-inpagemenu-circlesline li.prevnext 					{ border-radius: 50%; }
-.nxs-inpagemenu-circlesline li.line 						{ height: 12px; width: 4px; left: 50%; margin-left: -2px; }
+.nxs-inpagesectionmenu-circlesline li.item,
+.nxs-inpagesectionmenu-circlesline li.prevnext 					{ border-radius: 50%; }
+.nxs-inpagesectionmenu-circlesline li.line 						{ height: 12px; width: 4px; left: 50%; margin-left: -2px; }
 
 /* ITEM STYLING: BLOCKS */
-.nxs-inpagemenu-blocks li a 								{ height: 20px; width: 20px; margin-bottom: 10px; }
+.nxs-inpagesectionmenu-blocks li a 								{ height: 20px; width: 20px; margin-bottom: 10px; }
 
 /* ITEM STYLING: BLOCKS WITH ICONS */
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li 				{ border-bottom-width: 1px; }
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li a 			{ padding: 4px; text-align: center; }
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li span.icon 	{ margin-top: 15%; text-shadow: none !important; }
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li span.link 	{ border-radius: 3px; text-shadow: none !important; }
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li 				{ border-bottom-width: 1px; }
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li a 			{ padding: 4px; text-align: center; }
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li span.icon 	{ margin-top: 15%; text-shadow: none !important; }
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li span.link 	{ border-radius: 3px; text-shadow: none !important; }
 
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li:first-child,
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li:first-child a {
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li:first-child,
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li:first-child a {
 	-webkit-border-top-right-radius: 3px;
 	-moz-border-radius-topright: 3px;
 	border-top-right-radius: 3px;
 }
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li:last-child,
-#nxs-inpagemenu.nxs-inpagemenu-blocksicons li:last-child a {
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li:last-child,
+#nxs-inpagesectionmenu.nxs-inpagesectionmenu-blocksicons li:last-child a {
 	-webkit-border-bottom-right-radius: 3px;
 	-moz-border-radius-bottomright: 3px;
 	border-bottom-right-radius: 3px;

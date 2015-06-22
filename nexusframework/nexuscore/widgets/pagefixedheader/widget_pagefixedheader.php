@@ -72,17 +72,20 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 
 	$postid = $nxs_global_current_containerpostid_being_rendered;
 
+	// Display type
 	if ( $display == "")
 	{
 		$display = 'float';
 	}
 
+	// Widescreen
 	$widescreenclass = "";
 	if ($widescreen)
 	{
 		$widescreenclass = "nxs-widescreen";
 	}
 
+	// Shadow
 	$shadowclass = "";
 	if ($shadow != "none")
 	{
@@ -99,15 +102,21 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 		$visible_class = 'show';
 	}
 
-	$concatenatedcssclasses_container 	= nxs_concatenateargswithspaces($widescreenclass, $shadowclass, $visible_class);
+	// determine default behaviour
+    if (!isset($responsive_display) || $responsive_display == "") {
+        // backwords compatibility; if the responsive_display is not set,
+        // this should default to display960
+        $responsive_display = "display960";
+    }
 
+	$concatenatedcssclasses_container 	= nxs_concatenateargswithspaces($widescreenclass, $shadowclass, $visible_class);
 	
 	if (isset($header_postid) && $header_postid != 0)
 	{
 		$cssclass = nxs_getcssclassesforrowcontainer($header_postid);
 		?>
 
-		<div id="nxs-fixed-header" class="nxs-fixed-header nxs-sitewide-element <?php echo $concatenatedcssclasses_container; ?>">
+		<div id="nxs-fixed-header" class="<?php echo $responsive_display; ?> nxs-fixed-header nxs-sitewide-element <?php echo $concatenatedcssclasses_container; ?>">
 			<div id="nxs-fixed-header-container" class="nxs-sitewide-container nxs-fixed-header-container <?php echo $cssclass; ?>">
 				<?php 
 					if ($header_postid != "")
@@ -215,7 +224,7 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 				"id"					=> "header_postid",
 				"type" 					=> "selectpost",
 				"post_status"			=> array("publish", "future"),
-				"previewlink_enable"	=> "false",
+				"previewlink_enable"	=> "true",
 				"label" 				=> nxs_l18n__("Fixed header", "nxs_td"),
 				"tooltip" 				=> nxs_l18n__("Select a header to show on the top of your page. The header will stay on top, even when scrolling down.", "nxs_td"),
 				"post_type" 			=> "nxs_header",
@@ -256,6 +265,15 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Display inline will be ignored if a top scroll till visible is given.", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("offset")
 			),
+
+			array(
+                "id" 				=> "responsive_display",
+                "type" 				=> "select",
+                "label" 			=> nxs_l18n__("Responsive display", "nxs_td"),
+                "dropdown" 			=> nxs_style_getdropdownitems("responsive_display"),
+                "tooltip" 			=> nxs_l18n__("This option let's you set the fixed header display at a certain viewport and up", "nxs_td"),
+                "unistylablefield"	=> true
+            ),
 
 			array
 			( 
