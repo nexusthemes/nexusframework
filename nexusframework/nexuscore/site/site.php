@@ -2725,31 +2725,6 @@ function nxs_site_sitestyling_getoptions($args)
 		"sheettitle" => nxs_l18n__("Generic styling", "nxs_td"),
 		"footerfiller" => true,		
 		"fields" => array(
-
-			// WORDPRESS CONTENT
-
-			array( 
-				"id" 			=> "wrapper_begin",
-				"type" 			=> "wrapperbegin",
-				"label" 		=> nxs_l18n__("WordPress Content", "nxs_td"),
-			),
-			
-			array( 
-				"id"			=> "site_wpcontent_show",
-				"type" 			=> "select",
-				"label" 		=> nxs_l18n__("Show", "nxs_td"),
-				"dropdown" 		=> array
-				(
-					"onlywhenset"	=>nxs_l18n__("Show if contains content", "nxs_td"), 
-					"always"		=>nxs_l18n__("Always show", "nxs_td"), 
-					"never"			=>nxs_l18n__("Never show", "nxs_td"), 
-				)
-			),
-			
-			array( 
-				"id" 			=> "wrapper_end",
-				"type" 			=> "wrapperend"
-			),
 			
 			// SITE STYLING
 		

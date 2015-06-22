@@ -757,7 +757,7 @@ function nxs_reinitializetheme()
 
 function nxs_pagetemplates_getsitewideelements()
 {
-	$result = array("header_postid", "footer_postid", "sidebar_postid", "subheader_postid", "subfooter_postid", "pagedecorator_postid", "content_postid");
+	$result = array("header_postid", "footer_postid", "sidebar_postid", "subheader_postid", "subfooter_postid", "pagedecorator_postid", "content_postid", "wpcontenthandler");
 	return $result;
 }
 
@@ -876,6 +876,10 @@ function nxs_getbusinessruleimpact($metadata)
 		{
 			$translatedcurrentsitewideelement = nxs_l18n__("Content", "nxs_td");
 		}
+		else if ($currentsitewideelement == "wpcontenthandler")
+		{
+			$translatedcurrentsitewideelement = nxs_l18n__("WP Content", "nxs_td");
+		}
 		else if ($currentsitewideelement == "pagedecorator_postid")
 		{
 			$translatedcurrentsitewideelement = nxs_l18n__("Pagedecorator", "nxs_td");
@@ -970,8 +974,6 @@ function nxs_gettemplateproperties_internal()
 			$placeholdermetadata = nxs_getwidgetmetadata($postid, $businessruleelementid);
 			$placeholdertype = $placeholdermetadata["type"];					
 			
-			//echo $placeholdertype;
-			
 			if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) 
 			{
 				// empty row / rule, ignore it
@@ -979,8 +981,6 @@ function nxs_gettemplateproperties_internal()
 			else 
 			{
 				// store this item as one of the matching rules
-
-				
 				$busrule_processresult = nxs_busrule_process($placeholdertype, $placeholdermetadata, $statebag);
 				if ($busrule_processresult["result"] == "OK")
 				{
@@ -993,7 +993,6 @@ function nxs_gettemplateproperties_internal()
 					
 					if ($busrule_processresult["ismatch"] == "true")
 					{
-						
 						$lastmatchingrule = $placeholdertype;
 						
 						// the process function is responsible for filling the out property
@@ -10251,12 +10250,24 @@ function nxs_busrules_getgenericoptions()
 				"previewlink_enable"=> "false",
 				"post_type" 				=> "nxs_templatepart",
 				"subposttype"				=> "content",				
-				"label" 						=> nxs_l18n__("Content", "nxs_td"),
+				"label" 						=> nxs_l18n__("Frontend Content", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("Select a content template", "nxs_td"),
 				"emptyitem_enable"	=> false,
 				"beforeitems" 			=> nxs_widgets_busrule_pagetemplates_getbeforeitems(),
 			),
-			
+			array
+			( 
+				"id"								=> "wpcontenthandler",
+				"type" 			=> "select",
+				"label" 		=> nxs_l18n__("WP Content", "nxs_td"),
+				"dropdown" 		=> array
+				(
+					"@leaveasis" =>nxs_l18n__("Leave as is", "nxs_td"),
+					"@template@onlywhenset"	=>nxs_l18n__("Show if contains content", "nxs_td"), 
+					"@template@always"		=>nxs_l18n__("Always show", "nxs_td"), 
+					"@template@never"			=>nxs_l18n__("Never show", "nxs_td"), 
+				)
+			),
 			array( 
 				"id" 				=> "wrapper_template_end",
 				"type" 				=> "wrapperend"

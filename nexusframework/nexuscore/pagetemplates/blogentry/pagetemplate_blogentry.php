@@ -133,6 +133,7 @@ function nxs_pagetemplate_handlecontent()
 		$templateproperties = nxs_gettemplateproperties();
 		if ($templateproperties["result"] == "OK")
 		{
+			$wpcontenthandler = $templateproperties["wpcontenthandler"];
 			$existingsidebarid = $templateproperties["sidebar_postid"];
 			$subheaderid = $templateproperties["subheader_postid"];
 			$contentpostid = $templateproperties["content_postid"];
@@ -140,6 +141,7 @@ function nxs_pagetemplate_handlecontent()
 		}
 		else
 		{
+			$wpcontenthandler = "";
 			$existingsidebarid = 0;
 			$subheaderid = 0;
 			$contentpostid = 0;
@@ -267,16 +269,15 @@ function nxs_pagetemplate_handlecontent()
 					//
 										
 					$sitemeta = nxs_getsitemeta();
-					$site_wpcontent_show = $sitemeta["site_wpcontent_show"];
 					
-					if ($site_wpcontent_show == "")
+					if ($wpcontenthandler == "")
 					{
 						// turn to default
-						$site_wpcontent_show = "onlywhenset";
+						$wpcontenthandler = "@template@onlywhenset";
 					}
 										
 					$shouldrender = true;
-					if ($site_wpcontent_show == "never")
+					if ($wpcontenthandler == "@template@never")
 					{
 						// ignore
 					}
@@ -297,7 +298,7 @@ function nxs_pagetemplate_handlecontent()
 								$shouldrenderoriginaltemplate = false;
 							}
 						}
-						
+												
 						if ($shouldrenderoriginaltemplate)
 						{							
 							echo "<!-- 4 original template; $nxs_gl_templates_wp -->";
@@ -308,14 +309,29 @@ function nxs_pagetemplate_handlecontent()
 							// delegate to the original template handler
 							//nxs_ob_start();
 							include($nxs_gl_templates_wp);
-							$wpmaintcontenthtml = nxs_ob_get_contents();
+							$wpmaincontenthtml = nxs_ob_get_contents();
 							nxs_ob_end_clean();
 						
 							// TODO: determine here whether we need to output this yes or no,
 							// depending on the configuration of backend content, and whether or not
 							// there actually is something relevant to render
-							$wpmaintcontenthtmlsize = strlen($wpmaintcontenthtml);
-							if ($wpmaintcontenthtmlsize > 0)
+							$wpmaincontenthtmlsize = strlen($wpmaincontenthtml);
+							
+							$shouldrenderthis = false;
+							if ($wpcontenthandler == "@template@always")
+							{
+								$shouldrenderthis = true;
+								if ($wpmaincontenthtmlsize == 0)
+								{
+									$wpmaincontenthtml = "&nbsp;";
+								}
+							}
+							if ($wpmaincontenthtmlsize > 0)
+							{
+								$shouldrenderthis = true;
+							}
+						
+							if ($shouldrenderthis == true)
 							{
 								// reguliere post/page
 								?>
@@ -361,7 +377,7 @@ function nxs_pagetemplate_handlecontent()
 																		<div>
 																			<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
 																				<?php
-																				echo $wpmaintcontenthtml;
+																				echo $wpmaincontenthtml;
 																				?>
 																			</div>
 																		</div>
