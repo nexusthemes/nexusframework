@@ -114,8 +114,7 @@ function nxs_pagetemplate_handlecontent()
 				{
 					$subheaderid = $meta["subheader_postid"];
 				}
-	
-				
+					
 				if ($subheaderid != "")
 				{
 					$cssclass = nxs_getcssclassesforrowcontainer($subheaderid);
@@ -148,15 +147,20 @@ function nxs_pagetemplate_handlecontent()
 					if ($templateproperties["result"] == "OK")
 					{
 						$contentpostid = $templateproperties["content_postid"];
+						$wpcontenthandler = $templateproperties["wpcontenthandler"];
 					}
 					else
 					{
 						$contentpostid = 0;
+						$wpcontenthandler = "";
 					}
+					
+					
 				}
 				else
 				{
 					$contentpostid = get_the_ID();
+					$wpcontenthandler = "";
 				}
 				
 				if ($contentpostid != 0)
@@ -188,16 +192,15 @@ function nxs_pagetemplate_handlecontent()
 					//
 					
 					$sitemeta = nxs_getsitemeta();
-					$site_wpcontent_show = $sitemeta["site_wpcontent_show"];
 					
-					if ($site_wpcontent_show == "")
+					if ($wpcontenthandler == "")
 					{
 						// turn to default
-						$site_wpcontent_show = "onlywhenset";
+						$wpcontenthandler = "@template@onlywhenset";
 					}
 					
 					$shouldrender = true;
-					if ($site_wpcontent_show == "never")
+					if ($wpcontenthandler == "@template@never")
 					{
 						$shouldrender = false;
 					}
@@ -210,7 +213,7 @@ function nxs_pagetemplate_handlecontent()
 						$wordpressbackendurl = get_edit_post_link($contentpostid, array());
 						
 						$shouldrender = true;
-						if ($site_wpcontent_show == "onlywhenset" && $wpbackendblogcontent == "")
+						if ($wpcontenthandler == "@template@onlywhenset" && $wpbackendblogcontent == "")
 						{
 							$shouldrender = false;
 						}

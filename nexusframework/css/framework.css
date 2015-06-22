@@ -169,7 +169,7 @@ input[type=submit]:hover										{ opacity: 0.8; }
 
 /* DEFAULT FORM STYLING */
 .nxs-form input[type=submit] {text-indent: 0px; box-shadow: none; height: auto; font-size: auto; }
-.nxs-form input[type=email],.nxs-form input[type=text],.nxs-form input[type=checkbox] { width: 100%; }
+.nxs-form input[type=text],.nxs-form input[type=checkbox] { width: 100%; }
 .nxs-form label,
 .nxs-form input,
 .nxs-form textarea											{ line-height: 1.625em; font-size: 15px; }
@@ -520,9 +520,11 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-padding-bottom50										{ padding-bottom: 50px; }
 /* right */
 .nxs-padding-right100										{ padding-right: 100px; }
+.nxs-padding-right60										{ padding-right: 60px; }
 .nxs-padding10												{ padding: 10px; }
 /* left */
 .nxs-padding-left10											{ padding-left: 10px !important; }
+.nxs-padding-left30											{ padding-left: 30px; }
 
 /* MIN HEIGHT */
 .nxs-min-height100											{ min-height: 100px }
@@ -2183,25 +2185,24 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
 
-.woocommerce p.form-row  									{ clear: both; font-size: 15px; }
+.woocommerce form p  										{ clear: both; font-size: 15px; margin-bottom: 10px; }
+.woocommerce p.form-row										{ margin-bottom: 0px; }
 .woocommerce p.form-row label 								{ width: 20%; display: block; float: left; line-height: 30px; }
 .woocommerce p.form-row select								{ margin-bottom: 20px; }
 .woocommerce p.form-row input 								{ width: 80%; float: right; line-height: 30px; box-shadow: 0px 0px 0px 1px gray inset; -webkit-appearance: none; text-indent: 10px; }
+.woocommerce form input[type=submit]						{ width: auto; text-indent: 0px; }
 
 .woocommerce ul.woocommerce-error li						{ color: red; line-height: 30px; }
-.woocommerce table td,
-.woocommerce table th,
-.woocommerce table td span,
-.woocommerce table th span									{ font-size: 15px; }
 .woocommerce ul.payment_methods,
 .woocommerce .cart_totals h2,
 .woocommerce .checkout h3,
 h3#order_review_heading,
 #order_review h3
-.woocommerce ul.woocommerce-error							{ margin-bottom: 10px; }
+
 .woocommerce .payment_box									{ margin-top: 5px; }
 
 .woocommerce ul 											{ list-style: none; }
+.woocommerce ul.woocommerce-error							{ margin-bottom: 10px !important; }
 .woocommerce input[type=radio]								{ -webkit-appearance: radio !important; width: inherit !important; box-shadow: none; }
 .woocommerce input[type=checkbox]							{ -webkit-appearance: checkbox !important; width: inherit !important; box-shadow: none !important; float: left !important; 	margin: 3px !important; }
 .woocommerce input[type=submit]								{ height: inherit !important; line-height: 1 !important; clear: both !important; display: block !important; }
@@ -2214,17 +2215,17 @@ h3#order_review_heading,
 /* WOOCOMMERCE PRODUCT DETAIL 
 ---------------------------------------------------------------------------------------------------- */
 /* Sale */
-.onsale 													{ text-transform: uppercase; display: inline-block;	font-size: 15px; }
+.woocommerce .onsale 										{ text-transform: uppercase; display: inline-block;	font-size: 15px; }
 
 /* General */
-.summary,
-.panel														{ font-size: 15px; }
-button:hover,
-input.submit:hover											{ cursor: pointer; }
+.woocommerce .summary,
+.woocommerce .panel											{ font-size: 15px; }
+.woocommerce .button:hover,
+.woocommerce input.submit:hover								{ cursor: pointer; }
 
-/* Images */
+/* Thumbnails */
 .images .thumbnails img 									{ height: auto; }
-.images .thumbnails .nxs-image								{ margin-right: 5% }
+.images .thumbnails .nxs-image								{ margin-right: 5%; }
 .images .thumbnails a:nth-child(3) .nxs-image				{ margin-right: 0; }
 
 /* Rating */
@@ -2241,7 +2242,8 @@ input.submit:hover											{ cursor: pointer; }
 .woocommerce-tabs .tabs span.nxs-icon-arrow-right-light		{ display: none; }
 .woocommerce-tabs .tabs .active span 						{ display: inline-block; position: absolute; top: 0; right: 0; }
 .woocommerce-tabs .panel ol									{ list-style: none; }
-.woocommerce-tabs .panel .comment .nxs-image				{ width: 40px !important; height: 40px !important; position: absolute; right: 0px; }
+.nxs-woominicart .nxs-image,
+.woocommerce-tabs .panel .comment .nxs-image				{ width: 40px !important; height: 40px !important; position: absolute; right: 0px; top: 0px; }
 .woocommerce-tabs .panel #reviews p.stars					{ padding-bottom: 0px; }
 					
 .stars a span.nxs-icon-star2								{ display: none; }
@@ -2253,6 +2255,11 @@ input.submit:hover											{ cursor: pointer; }
 /* Related products */
 .upsells .nxs-text.nxs-default-p,
 .related .nxs-text.nxs-default-p							{ padding-bottom: 10px; }
+
+/* WOOCOMMERCE CART PAGE 
+---------------------------------------------------------------------------------------------------- */
+.nxs-woocartpage .shop_table .nxs-image							{ min-width: 40px; }
+
 
 /* DEFAULT NT BUTTONS
 ---------------------------------------------------------------------------------------------------- */

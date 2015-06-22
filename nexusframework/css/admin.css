@@ -241,7 +241,7 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 
 .nxs-admin-wrap .block 								{ border: 1px solid #DFDFDF; margin-bottom: 10px; font-family: sans-serif !important; }
 .nxs-admin-wrap .block2 							{ border: 1px solid #DFDFDF; font-family: sans-serif !important; }
-.nxs-admin-wrap .content							{ background-color: #FCFCFC; font-family: sans-serif !important; }
+.nxs-admin-wrap .content							{ background-color: #fff; font-family: sans-serif !important; }
 .nxs-admin-wrap .content2							{ background-color: #FCFCFC; padding: 10px; font-family: sans-serif !important; }
 
 /* POPUP OPTION TOGGLER */
@@ -710,8 +710,8 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 .nxs-admin-wrap ul.admin li 						{ float: left; margin-left: 8px; }
 
 .nxs-admin-wrap ul.admin li.nxs-sub-menu,
-.nxs-admin-wrap ul.admin li a.site,
 .nxs-admin-wrap .nxs-menu-toggle,
+.nxs-admin-wrap ul.admin li a.site,
 .nxs-admin-wrap a.info {
 	z-index: 10;
 	background-color: #FCFCFC;
@@ -724,6 +724,7 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6);
 	text-align: center
 }
+
 
 .nxs-admin-wrap ul.admin li a span {
 	color: black; 
@@ -850,7 +851,7 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	Position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") 
 */
 .nxs-admin-wrap .ui-tabs 							{ position: relative; zoom: 1; } 
-.nxs-admin-wrap ul.tabs 							{ background: #464646; padding: 22px 15px 0 122px; border-bottom: 1px solid #DFDFDF; }
+.nxs-admin-wrap ul.tabs 							{ background: #464646; padding: 22px 15px 0 122px; }
 .nxs-admin-wrap ul.tabs li {
 	list-style: none; 
 	float: left; 
@@ -861,10 +862,14 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	border: 1px solid #DFDFDF;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
+	border-bottom: none;
 	background: #DFDFDF;
+	outline: none;
 }
-.nxs-admin-wrap ul.tabs li a	 					{ float: left; padding: 4px 14px 6px; text-decoration: none; color: #464646; }
-.nxs-admin-wrap ul.tabs li.ui-tabs-selected 		{ margin-bottom: 0; border-bottom-color: #F9F9F9; }
+.nxs-admin-wrap ul.tabs li a	 					{ float: left; padding: 7px 14px; text-decoration: none; color: #464646; transition: 300ms; }
+.nxs-admin-wrap ul.tabs li.ui-tabs-selected 		{ margin-bottom: 0; }
+
+
 .nxs-admin-wrap ul.tabs li.ui-tabs-selected a, 
 .nxs-admin-wrap ul.tabs li.ui-state-disabled a, 
 .nxs-admin-wrap ul.tabs li.ui-state-processing a 	{ cursor: text; }
@@ -873,8 +878,9 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... 
 */
 .nxs-admin-wrap .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } 
-.nxs-admin-wrap ul.tabs li a:hover 					{ color: #D54E21; }
-.nxs-admin-wrap ul.tabs li.ui-tabs-selected a 		{ background: #FCFCFC; border-bottom: 1px solid #FCFCFC; }
+.nxs-admin-wrap ul.tabs li a:hover, a:focus			{ color: #D54E21; background-color: #fff; outline: none; }
+.nxs-admin-wrap ul.tabs li.ui-state-active a 		{ background-color: #fff; outline: none; }
+.nxs-admin-wrap ul.tabs li.ui-tabs-selected a 		{ background: #FCFCFC;}
 .nxs-admin-wrap .ui-tabs .ui-tabs-panel 			{ display: block; border-width: 0; }
 .nxs-admin-wrap .ui-tabs .ui-tabs-hide 				{ display: none !important; }
 

@@ -67,6 +67,11 @@ function nxs_webmethod_contactform()
 		{
 			$subject .= "(" . $texttop . ")";
 		}
+
+		global $nxs_global_mail_fromname;
+		$nxs_global_mail_fromname = $naam;
+		global $nxs_global_mail_fromemail;
+		$nxs_global_mail_fromemail = $email;
 		
 		$mailresult = wp_mail($internalemail, $subject, $body, $headers);
 		if (!$mailresult)

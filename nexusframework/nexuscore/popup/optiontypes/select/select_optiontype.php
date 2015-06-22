@@ -6,6 +6,14 @@ function nxs_popup_optiontype_select_renderhtmlinpopup($optionvalues, $args, $ru
 	extract($runtimeblendeddata);
 	$value = $$id;	// $id is the parametername, $$id is the value of that parameter
 	
+	if (isset($defaultblankvalue))
+	{
+		if ($value == "")
+		{
+			$value = $defaultblankvalue;
+		}
+	}
+	
 	if (isset($popuprefreshonchange) && $popuprefreshonchange == "true")
 	{
 		$popuprefreshonchangeaction = "nxs_js_setpopupdatefromcontrols();nxs_js_popup_refresh_v2(true);";
