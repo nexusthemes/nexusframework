@@ -4461,6 +4461,8 @@ function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
 	return $result;
 }
 
+//
+
 function nxs_row_getunifiedstylinggroup()
 {
 	return "row";
@@ -4630,6 +4632,15 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 	{
 		// unicontent not applicable
 	}
+}
+
+function nxs_purgeplaceholdermetadata($postid, $placeholderid)
+{	
+	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set (owmd)"); };
+	if ($postid== "") { nxs_webmethod_return_nack("postid not set (owmd)"); };
+
+	$metadatakey = 'nxs_ph_' . $placeholderid;
+	delete_post_meta($postid, $metadatakey);
 }
 
 function nxs_resetplaceholdermetadata($postid, $placeholderid)

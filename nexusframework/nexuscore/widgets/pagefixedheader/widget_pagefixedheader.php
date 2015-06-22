@@ -161,6 +161,11 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 					}
 					else {
 						$("#nxs-fixed-header:hidden").fadeIn(200);
+	
+						// tell the layout engine to post process the layout
+						// after the DOM is updated
+						nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-pagefixedheader-show');
+
 					}
 				}
 
