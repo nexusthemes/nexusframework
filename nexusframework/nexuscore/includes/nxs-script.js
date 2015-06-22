@@ -308,7 +308,8 @@ function nxs_js_disabledocumentscrollwhenhoveringoverelement(e)
 
 function nxs_js_menu_mini_expand(placeholderid) 
 {
-	var expander = jQ_nxs("#nxs-menu-mini-nav-expander-" + placeholderid);
+	var expander = jQ_nxs(".nxs-menu-mini-nav-expander-" + placeholderid);
+	console.log(expander);
 	jQ_nxs(expander).toggleClass("nxs-expand");
 	if (jQ_nxs(expander).hasClass("nxs-expand"))
 	{

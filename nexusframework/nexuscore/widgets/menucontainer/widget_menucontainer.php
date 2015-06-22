@@ -95,15 +95,7 @@ function nxs_widgets_menucontainer_home_getoptions($args) {
                 "id" 				=> "responsive_display",
                 "type" 				=> "select",
                 "label" 			=> nxs_l18n__("Responsive display", "nxs_td"),
-                "dropdown" 			=> array(
-                    "@@@nxsempty@@@" => nxs_l18n__("Default", "nxs_td"),
-                    "display0" => nxs_l18n__("Never", "nxs_td"),
-                    "display480" => nxs_l18n__("480", "nxs_td"),
-                    "display720" => nxs_l18n__("720", "nxs_td"),
-                    "display960" => nxs_l18n__("960", "nxs_td"),
-                    "display1200" => nxs_l18n__("1200", "nxs_td"),
-                    "display1440" => nxs_l18n__("1440", "nxs_td"),
-                ),
+                "dropdown" 			=> nxs_style_getdropdownitems("responsive_display"),
                 "tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
                 "unistylablefield"	=> true
             ),
@@ -541,7 +533,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                     </div>
                 </a>
 
-                <div id='nxs-menu-mini-nav-expander-<?php echo $placeholderid; ?>' style="display: none;">
+                <div class='nxs-menu-mini-nav-expander-<?php echo $placeholderid; ?>' style="display: none;">
 
         <?php
         $concatenated = nxs_concatenateargswithspaces("nxs-applymenucolors", $corecssclass, $menuitem_border_width_cssclass, $menuitem_color_cssclass, $menuitem_active_color_cssclass, $menuitem_hover_color_cssclass);
