@@ -146,6 +146,11 @@ function nxs_webmethod_contactboxsubmit()
 			{
 				$body .= $currentoutputline . " \r\n";
 			}
+
+			global $nxs_global_mail_fromname;
+			$nxs_global_mail_fromname = $sender_name;
+			global $nxs_global_mail_fromemail;
+			$nxs_global_mail_fromemail = $sender_email;
 			
 			$mailresult = wp_mail($internal_email, $subject_email, $body, $headers);
 			if (!$mailresult)

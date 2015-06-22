@@ -198,18 +198,26 @@ function nxs_webmethod_formboxsubmit()
 			// no output writing to file
 		}
 		
-		//
+		$validationerrors = array();
+		
 		if ($internal_email == "info@example.org")
 	 	{
 	 		$responseargs = array();
+
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to the dummy e-mail address info@example.org", "nxs_td");
+		}
+		
+		// allow plugins to also validate the form
+		$validationerrors = apply_filters('nxs_formboxsubmit_verify', $validationerrors, $metadata);
+		if (count($validationerrors) > 0)
+		{
+			$responseargs = array();
  		
-	 		$responseargs["validationerrorhead"] = nxs_l18n__("Cannot submit this form; the recipient is not yet properly configured", "nxs_td");
-	 		$validationerrors = array();
-	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to e-mail address info@example.org", "nxs_td");
+	 		$responseargs["validationerrorhead"] = nxs_l18n__("Form submit failed", "nxs_td");
 		 	$responseargs["validationerrors"] = $validationerrors;
 		 	$responseargs["markclientsideelements"] = $markclientsideelements;
 			nxs_webmethod_return_ok($responseargs);
-	 	}
+		}
 		else if ($internal_email != "" && nxs_isvalidemailaddress($internal_email))
 		{
 			$headers = 'From: ' . $sender_name . ' <' . $sender_email . '>' . "\r\n";
@@ -231,6 +239,11 @@ function nxs_webmethod_formboxsubmit()
 				$body .= $currentoutputline . " \r\n";
 			}
 			
+			global $nxs_global_mail_fromname;
+			$nxs_global_mail_fromname = $sender_name;
+			global $nxs_global_mail_fromemail;
+			$nxs_global_mail_fromemail = $sender_email;
+
 			$mailresult = wp_mail($internal_email, $subject_email, $body, $headers);
 			if (!$mailresult)
 			{

@@ -64,6 +64,12 @@ function nxs_webmethod_squeeze()
 		// send mail!		
 		$headers = "From: " . $mailsendername . " <" . $mailsenderaddress . ">" . "\r\n";
 		$body = "Naam:" . $naam . ", email: " . $email . ", akkoord met voorwaarden:" . $isakkoord;
+		
+		global $nxs_global_mail_fromname;
+		$nxs_global_mail_fromname = $mailsendername;
+		global $nxs_global_mail_fromemail;
+		$nxs_global_mail_fromemail = $mailsenderaddress;
+		
 		$mailresult = wp_mail($internalemail, $texttop, $body, $headers);
 		if (!$mailresult)
 		{

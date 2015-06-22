@@ -5007,6 +5007,11 @@ function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemai
 		//
 	}
 	
+	global $nxs_global_mail_fromname;
+	$nxs_global_mail_fromname = $fromname;
+	global $nxs_global_mail_fromemail;
+	$nxs_global_mail_fromemail = $fromemail;
+	
 	//
 	$headers .= 'Content-Type: text/html;' . "\n\r";
 	$result = wp_mail($toemail, $subject, $body, $headers);
