@@ -306,7 +306,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"waves",
 										"oxygen",
 										"popup",
-										"inpagemenu",
+										"inpagesectionmenu",
 										"section",
 									);
 										

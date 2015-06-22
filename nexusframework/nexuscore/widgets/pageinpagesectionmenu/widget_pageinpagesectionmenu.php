@@ -1,24 +1,24 @@
 <?php
 
-function nxs_widgets_pageinpagemenu_geticonid() {
+function nxs_widgets_pageinpagesectionmenu_geticonid() {
 	return "nxs-icon-link";
 }
 
-function nxs_widgets_pageinpagemenu_gettitle() {
-	return nxs_l18n__("In-page menu", "nxs_td");
+function nxs_widgets_pageinpagesectionmenu_gettitle() {
+	return nxs_l18n__("Inpage section menu", "nxs_td");
 }
 
-function nxs_widgets_pageinpagemenu_registerhooksforpagewidget($args)
+function nxs_widgets_pageinpagesectionmenu_registerhooksforpagewidget($args)
 {	
 	$pagedecoratorid = $args["pagedecoratorid"]; 
 	$pagedecoratorwidgetplaceholderid = $args["pagedecoratorwidgetplaceholderid"];
 	
-	global $nxs_pageinpagemenu_pagedecoratorid;
-	$nxs_pageinpagemenu_pagedecoratorid = $pagedecoratorid;
-	global $nxs_pageinpagemenu_pagedecoratorwidgetplaceholderid;
-	$nxs_pageinpagemenu_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
+	global $nxs_pageinpagesectionmenu_pagedecoratorid;
+	$nxs_pageinpagesectionmenu_pagedecoratorid = $pagedecoratorid;
+	global $nxs_pageinpagesectionmenu_pagedecoratorwidgetplaceholderid;
+	$nxs_pageinpagesectionmenu_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
 	
-	// $pagevideo_metadata = nxs_getwidgetmetadata($nxs_pageinpagemenu_pagedecoratorid, $nxs_pageinpagemenu_pagedecoratorwidgetplaceholderid);
+	// $pagevideo_metadata = nxs_getwidgetmetadata($nxs_pageinpagesectionmenu_pagedecoratorid, $nxs_pageinpagesectionmenu_pagedecoratorwidgetplaceholderid);
 	// $condition_enable = $pagevideo_metadata["condition_enable"];
 	
 	$enabled = true;
@@ -29,12 +29,12 @@ function nxs_widgets_pageinpagemenu_registerhooksforpagewidget($args)
 	
 	if ($enabled)
 	{
-		add_action('nxs_beforeend_head', 'nxs_widgets_pageinpagemenu_beforeend_head');
-		add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pageinpagemenu_betweenheadandcontent');
+		add_action('nxs_beforeend_head', 'nxs_widgets_pageinpagesectionmenu_beforeend_head');
+		add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pageinpagesectionmenu_betweenheadandcontent');
 	}
 }
 
-function nxs_widgets_pageinpagemenu_beforeend_head()
+function nxs_widgets_pageinpagesectionmenu_beforeend_head()
 {
 	// do something useful here if thats needed
 	
@@ -42,22 +42,22 @@ function nxs_widgets_pageinpagemenu_beforeend_head()
 	<?php
 }
 
-function nxs_widgets_pageinpagemenu_betweenheadandcontent()
+function nxs_widgets_pageinpagesectionmenu_betweenheadandcontent()
 {
 	// get meta of the slider itself (such as transition time, etc.)
-	global $nxs_pageinpagemenu_pagedecoratorid;
-	global $nxs_pageinpagemenu_pagedecoratorwidgetplaceholderid;	
-	$pageinpagemenu_metadata = nxs_getwidgetmetadata($nxs_pageinpagemenu_pagedecoratorid, $nxs_pageinpagemenu_pagedecoratorwidgetplaceholderid);
+	global $nxs_pageinpagesectionmenu_pagedecoratorid;
+	global $nxs_pageinpagesectionmenu_pagedecoratorwidgetplaceholderid;	
+	$pageinpagesectionmenu_metadata = nxs_getwidgetmetadata($nxs_pageinpagesectionmenu_pagedecoratorid, $nxs_pageinpagesectionmenu_pagedecoratorwidgetplaceholderid);
 	
 	// Unistyle
-	$unistyle = $pageinpagemenu_metadata["unistyle"];
+	$unistyle = $pageinpagesectionmenu_metadata["unistyle"];
 	if (isset($unistyle) && $unistyle != "") {
 		// blend unistyle properties
-		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_pageinpagemenu_getunifieditemstylinggroup(), $unistyle);
-		$pageinpagemenu_metadata = array_merge($pageinpagemenu_metadata, $unistyleproperties);
+		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_pageinpagesectionmenu_getunifieditemstylinggroup(), $unistyle);
+		$pageinpagesectionmenu_metadata = array_merge($pageinpagesectionmenu_metadata, $unistyleproperties);
 	}
 	
-	extract($pageinpagemenu_metadata);
+	extract($pageinpagesectionmenu_metadata);
 	
 	/* EXPRESSIONS
 	----------------------------------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 	}
 
 	// Item syle
-	$itemstyling_cssclass = 'nxs-inpagemenu-' . $itemstyling;
+	$itemstyling_cssclass = 'nxs-inpagesectionmenu-' . $itemstyling;
 
 	// Item scale
 	$items_scale = nxs_getpixelsfrommultiplier($items_scale, 20);
@@ -117,7 +117,7 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 	// Docking position
 	$docking_position = str_replace(" ","-", $docking_position);
 	$docking_position_explode = explode("-", $docking_position);
-	$docking_position_cssclass = nxs_getcssclassesforlookup("nxs-inpagemenu-position-", $docking_position);
+	$docking_position_cssclass = nxs_getcssclassesforlookup("nxs-inpagesectionmenu-position-", $docking_position);
 
 	// Distance
 	$distance = nxs_getpixelsfrommultiplier($distance);
@@ -134,7 +134,7 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 		$span_cssclass = 'left';
 	}
 
-	$concatenatedcssclasses_inpagemenu 	= nxs_concatenateargswithspaces('nxs-inpagemenu', $docking_position_cssclass, $items, $itemstyling_cssclass, $title_visualisation);
+	$concatenatedcssclasses_inpagesectionmenu 	= nxs_concatenateargswithspaces('nxs-inpagesectionmenu', $docking_position_cssclass, $items, $itemstyling_cssclass, $title_visualisation);
 	$concatenatedcssclasses_span 		= nxs_concatenateargswithspaces($title_visualisation_background_color_cssclass, $span_cssclass);
 	$concatenatedcssclasses_a 			= nxs_concatenateargswithspaces($items_color_hover_cssclass, $items_color_active_cssclass);
 
@@ -142,14 +142,14 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 
 	?>
 	
-	<div id="nxs-inpagemenu" class="<?php echo $concatenatedcssclasses_inpagemenu; ?>" style="<?php echo $concatenatedstyles_container; ?>">
-		<ul class="nxs-inpagemenu-itemcontainer">
+	<div id="nxs-inpagesectionmenu" class="<?php echo $concatenatedcssclasses_inpagesectionmenu; ?>" style="<?php echo $concatenatedstyles_container; ?>">
+		<ul class="nxs-inpagesectionmenu-itemcontainer">
 		</ul>
 	</div>
 
 	<script type="text/javascript">
-		var inpagemenu = jQ_nxs('#nxs-inpagemenu'),
-			inpagemenuContainer = jQ_nxs('#nxs-inpagemenu .nxs-inpagemenu-itemcontainer'),
+		var inpagesectionmenu = jQ_nxs('#nxs-inpagesectionmenu'),
+			inpagesectionmenuContainer = jQ_nxs('#nxs-inpagesectionmenu .nxs-inpagesectionmenu-itemcontainer'),
 			screenHeight = jQ_nxs(window).height(),
 			scrollTop = jQ_nxs(window).scrollTop(),
 			sectionStart = new Array(),
@@ -161,18 +161,18 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			currentActive = 0;
 
 		jQ_nxs(document).ready(function(){
-			// remove and create inpagemenu when sections are changed/removed/added
+			// remove and create inpagesectionmenu when sections are changed/removed/added
 			jQ_nxs(document).bind('nxs_dom_changed', function() {
-				nxs_js_init_inpagemenu();
+				nxs_js_init_inpagesectionmenu();
 			});
 
-			// create inpagemenu after a delay
+			// create inpagesectionmenu after a delay
 			setTimeout(function() {
-				nxs_js_init_inpagemenu();
+				nxs_js_init_inpagesectionmenu();
 			}, 1000);
 		});
 
-		function nxs_js_init_inpagemenu() {
+		function nxs_js_init_inpagesectionmenu() {
 			sections = jQ_nxs('.nxs-section').get();
 			sectionsLength = sections.length;
 
@@ -189,10 +189,10 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 				sections[i] = jQ_nxs(tempSections[i]).get(0);
 			}
 
-			// remove all events if they were set earlier and empty the inpagemenu
-			jQ_nxs(document).off("nxs_event_windowscrolling.inpagemenu");
-			jQ_nxs(inpagemenuContainer).find('.link').off("click.inpagemenu");
-			jQ_nxs(inpagemenuContainer).html("");
+			// remove all events if they were set earlier and empty the inpagesectionmenu
+			jQ_nxs(document).off("nxs_event_windowscrolling.inpagesectionmenu");
+			jQ_nxs(inpagesectionmenuContainer).find('.link').off("click.inpagesectionmenu");
+			jQ_nxs(inpagesectionmenuContainer).html("");
 
 			var elem = '';
 			var prevnext = false;
@@ -245,26 +245,26 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 				elem+= '</li>';
 			<?php } ?>
 
-			nxs_js_inpagemenu_setsectionstartpoint();
+			nxs_js_inpagesectionmenu_setsectionstartpoint();
 
-			jQ_nxs(inpagemenuContainer).append(elem);
+			jQ_nxs(inpagesectionmenuContainer).append(elem);
 
-			// verticle align center the inpagemenu if doking position verticle align is set centered
+			// verticle align center the inpagesectionmenu if doking position verticle align is set centered
 			<?php if ($docking_position_explode[1] == "center") { ?>
-				var inpagemenuHeight = jQ_nxs(inpagemenu).height();
-				var inpagemenuMargin = 0 - ( inpagemenuHeight / 2 );
-				jQ_nxs(inpagemenu).css({
-					'marginTop': inpagemenuMargin + 'px'
+				var inpagesectionmenuHeight = jQ_nxs(inpagesectionmenu).height();
+				var inpagesectionmenuMargin = 0 - ( inpagesectionmenuHeight / 2 );
+				jQ_nxs(inpagesectionmenu).css({
+					'marginTop': inpagesectionmenuMargin + 'px'
 				});
 			<?php } ?>
 
-			// make the .link class (inpagemenu items and tooltip) clickable
+			// make the .link class (inpagesectionmenu items and tooltip) clickable
 			var li, sectionOffset, sectionTop, scrollSpeed, tagName;
-			jQ_nxs(inpagemenuContainer).find('.link').on("click.inpagemenu", function() {
+			jQ_nxs(inpagesectionmenuContainer).find('.link').on("click.inpagesectionmenu", function() {
 				li = jQ_nxs(this).closest('li.item');
 				tagName = jQ_nxs(this).prop("tagName");
 
-				// get the url hash of the inpagemenu item
+				// get the url hash of the inpagesectionmenu item
 				if (tagName == 'SPAN') {
 					url = jQ_nxs(li).find('a').attr('href');
 				} else {
@@ -279,12 +279,12 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 				<?php } ?>
 
 				// animate the page to the right section
-				nxs_js_inpagemenu_animatetosection();
+				nxs_js_inpagesectionmenu_animatetosection();
 				return false;
 			});
 
 			<?php if ($showprevnext) { ?>
-				jQ_nxs(inpagemenuContainer).find('.next, .prev').on("click.inpagemenu", function() {
+				jQ_nxs(inpagesectionmenuContainer).find('.next, .prev').on("click.inpagesectionmenu", function() {
 					var action = (jQ_nxs(this).hasClass('next'))? 'next': 'prev';
 					var animate = true;
 					if (currentActive == 0) {
@@ -298,11 +298,11 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 					}
 					
 					if (animate) {
-						var activeItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive);
+						var activeItem = jQ_nxs('#nxs-inpagesectionmenu li.item').get(currentActive);
 						if (jQ_nxs(this).hasClass('next')) {
-							var newItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive + 1);
+							var newItem = jQ_nxs('#nxs-inpagesectionmenu li.item').get(currentActive + 1);
 						} else {
-							var newItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive - 1);
+							var newItem = jQ_nxs('#nxs-inpagesectionmenu li.item').get(currentActive - 1);
 						}
 
 						index = jQ_nxs(newItem).index();
@@ -316,7 +316,7 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 						<?php } ?>
 
 						// animate the page to the right section
-						nxs_js_inpagemenu_animatetosection();
+						nxs_js_inpagesectionmenu_animatetosection();
 					} else {
 						// do nothing
 					}
@@ -325,18 +325,18 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			<?php } ?>
 
 			jQ_nxs(document).bind('nxs_event_resizeend', function() {
-				nxs_js_inpagemenu_setsectionstartpoint();
+				nxs_js_inpagesectionmenu_setsectionstartpoint();
 			});
 
-			jQ_nxs(document).bind('nxs_event_windowscrolling.inpagemenu', function() {
+			jQ_nxs(document).bind('nxs_event_windowscrolling.inpagesectionmenu', function() {
 				scrollTop = jQ_nxs(window).scrollTop();
-				nxs_js_inpagemenu_setactiveitem();
+				nxs_js_inpagesectionmenu_setactiveitem();
 			});
 
-			nxs_js_inpagemenu_setactiveitem();
+			nxs_js_inpagesectionmenu_setactiveitem();
 		}
 
-		function nxs_js_inpagemenu_animatetosection() {
+		function nxs_js_inpagesectionmenu_animatetosection() {
 			sectionOffset = jQ_nxs(sections[index]).offset();
 			sectionTop = sectionOffset.top - 40;
 			scrollSpeed = nxs_js_getscrollspeed(sectionTop);
@@ -348,7 +348,7 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			});
 		}
 
-		function nxs_js_inpagemenu_setsectionstartpoint() {
+		function nxs_js_inpagesectionmenu_setsectionstartpoint() {
 			screenHeight = jQ_nxs(window).height();
 			sectionStart = [];
 			s = 0;
@@ -361,7 +361,7 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			}
 		}
 
-		function nxs_js_inpagemenu_setactiveitem() {
+		function nxs_js_inpagesectionmenu_setactiveitem() {
 			var activeItem;
 			for (var i = 0; i < sectionStart.length; i++) {
 				if (scrollTop >= sectionStart[i]) {
@@ -376,9 +376,9 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 			}
 
 			if (currentActive >= 0) {
-				activeItem = jQ_nxs('#nxs-inpagemenu li.item').get(currentActive);
+				activeItem = jQ_nxs('#nxs-inpagesectionmenu li.item').get(currentActive);
 				if ( !jQ_nxs(activeItem).hasClass('active-item')) {
-					jQ_nxs('#nxs-inpagemenu li.active-item').removeClass('active-item nxs-applyactivecolors');
+					jQ_nxs('#nxs-inpagesectionmenu li.active-item').removeClass('active-item nxs-applyactivecolors');
 					jQ_nxs(activeItem).addClass('active-item nxs-applyactivecolors');
 				}
 			}
@@ -405,12 +405,12 @@ function nxs_widgets_pageinpagemenu_betweenheadandcontent()
 ---------------------------------------------------------------------------------------------------- */
 
 // Define the properties of this widget
-function nxs_widgets_pageinpagemenu_home_getoptions($args) 
+function nxs_widgets_pageinpagesectionmenu_home_getoptions($args) 
 {
 	$options = array
 	(
-		"sheettitle" => nxs_widgets_pageinpagemenu_gettitle(),
-		"sheeticonid" => nxs_widgets_pageinpagemenu_geticonid(),
+		"sheettitle" => nxs_widgets_pageinpagesectionmenu_gettitle(),
+		"sheeticonid" => nxs_widgets_pageinpagesectionmenu_geticonid(),
 		"footerfiller" => true,
 		"fields" => array
 		(
@@ -460,7 +460,7 @@ function nxs_widgets_pageinpagemenu_home_getoptions($args)
 				"id" 				=> "items",
 				"type" 				=> "select",
 				"label" 			=> "Items",
-				"dropdown" 			=> nxs_style_getdropdownitems("inpagemenu_items"),
+				"dropdown" 			=> nxs_style_getdropdownitems("inpagesectionmenu_items"),
 			),
 
 			array
@@ -468,7 +468,7 @@ function nxs_widgets_pageinpagemenu_home_getoptions($args)
 				"id" 				=> "itemstyling",
 				"type" 				=> "select",
 				"label" 			=> "Items styling",
-				"dropdown" 			=> nxs_style_getdropdownitems("inpagemenu_style"),
+				"dropdown" 			=> nxs_style_getdropdownitems("inpagesectionmenu_style"),
 			),
 
 			array
@@ -518,7 +518,7 @@ function nxs_widgets_pageinpagemenu_home_getoptions($args)
 				"id" 				=> "title_visualisation",
 				"type" 				=> "select",
 				"label" 			=> "Title visualisation",
-				"dropdown" 			=> nxs_style_getdropdownitems("inpagemenu_showtitle"),
+				"dropdown" 			=> nxs_style_getdropdownitems("inpagesectionmenu_showtitle"),
 			),
 
 			array
@@ -545,7 +545,7 @@ function nxs_widgets_pageinpagemenu_home_getoptions($args)
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
 
-function nxs_widgets_pageinpagemenu_render_webpart_render_htmlvisualization($args) 
+function nxs_widgets_pageinpagesectionmenu_render_webpart_render_htmlvisualization($args) 
 {
 	// Importing variables
 	extract($args);
@@ -639,7 +639,7 @@ function nxs_widgets_pageinpagemenu_render_webpart_render_htmlvisualization($arg
 }
 
 
-function nxs_widgets_pageinpagemenu_initplaceholderdata($args)
+function nxs_widgets_pageinpagesectionmenu_initplaceholderdata($args)
 {
 	extract($args);
 

@@ -255,7 +255,20 @@ function nxs_getstyletypeoptions() {
 					"none"			=>nxs_l18n__("none", "nxs_td"), 
 				)
 		),
-		"inpagemenu_style" => array (
+		"responsive_display" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					""				=> nxs_l18n__("Default", "nxs_td"),
+                    "display0"		=> nxs_l18n__("Never", "nxs_td"),
+                    "display480"	=> nxs_l18n__("480", "nxs_td"),
+                    "display720"	=> nxs_l18n__("720", "nxs_td"),
+                    "display960"	=> nxs_l18n__("960", "nxs_td"),
+                    "display1200"	=> nxs_l18n__("1200", "nxs_td"),
+                    "display1440"	=> nxs_l18n__("1440", "nxs_td"),
+				)
+		),
+		"inpagesectionmenu_style" => array (
 			"subtype" 			=> "textlookup",
 			"values" 			=> array
 				(
@@ -265,7 +278,7 @@ function nxs_getstyletypeoptions() {
 					"circlesline"		=>nxs_l18n__("circles with line", "nxs_td"),
 				)
 		),
-		"inpagemenu_items" => array (
+		"inpagesectionmenu_items" => array (
 			"subtype" 			=> "textlookup",
 			"values" 			=> array
 				(
@@ -275,7 +288,7 @@ function nxs_getstyletypeoptions() {
 					"prevallnext"		=>nxs_l18n__("previous, all sections and next", "nxs_td"),
 				)
 		),
-		"inpagemenu_showtitle" => array (
+		"inpagesectionmenu_showtitle" => array (
 			"subtype" 			=> "textlookup",
 			"values" 			=> array
 				(
