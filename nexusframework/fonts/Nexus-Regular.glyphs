@@ -39597,7 +39597,7 @@ nodes = (
 "640 -448 LINE",
 "640 -256 LINE",
 "448 -256 LINE",
-"448.001 -448 LINE"
+"448 -448 LINE"
 );
 },
 {
@@ -39676,7 +39676,7 @@ nodes = (
 closed = 1;
 nodes = (
 "384 1280 LINE",
-"384.001 1088 LINE",
+"384 1088 LINE",
 "704 1088 LINE",
 "704 1280 LINE"
 );
@@ -39736,7 +39736,7 @@ closed = 1;
 nodes = (
 "640 1536 LINE",
 "448 1536 LINE",
-"448.001 1344 LINE",
+"448 1344 LINE",
 "640 1344 LINE"
 );
 },
@@ -39820,11 +39820,130 @@ unicode = E446;
 },
 {
 glyphname = uniE447;
-lastChange = "2015-06-12 07:53:19 +0000";
+lastChange = "2015-06-14 22:03:58 +0000";
 layers = (
 {
 layerId = "C6537DE0-68DF-4C5B-B6D5-25B465FDDD7D";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"1088 -192 LINE",
+"1088 -383.999 LINE",
+"896 -384 LINE",
+"896 -192 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1408 -383.999 LINE",
+"1408 -192 LINE",
+"1216 -192 LINE",
+"1216 -384 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1728 -383.999 LINE",
+"1728 -192 LINE",
+"1536 -192 LINE",
+"1536 -384 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"2048 -383.999 LINE",
+"2048 -192 LINE",
+"1856 -192 LINE",
+"1856 -384 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"2048 -63.999 LINE",
+"2048 128 LINE",
+"1856 128 LINE",
+"1856 -64 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"2048 256 LINE",
+"2048 448 LINE",
+"1856 448 LINE",
+"1856 256 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"2048 576 LINE",
+"2048 768 LINE",
+"1856 768 LINE",
+"1856 576 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"2048 896 LINE",
+"2048 1088 LINE",
+"1856 1088 LINE",
+"1856 896 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1856 1216 LINE",
+"2048 1216 LINE",
+"2048 1408 LINE",
+"1856 1408 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1728 1216 LINE",
+"1728 1408 LINE",
+"1536 1408 LINE",
+"1536 1216 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1408 1216 LINE",
+"1408 1408 LINE",
+"1216 1408 LINE",
+"1216 1216 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1088 1216 LINE",
+"1088 1408 LINE",
+"896 1408 LINE",
+"896 1216 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"768 -384 LINE",
+"768 1408 LINE",
+"0 1408 LINE",
+"0 -384 LINE"
+);
+}
+);
 width = 2048;
 }
 );
@@ -39832,7 +39951,7 @@ unicode = E447;
 },
 {
 glyphname = uniE448;
-lastChange = "2014-09-19 13:45:34 +0000";
+lastChange = "2015-06-25 12:10:13 +0000";
 layers = (
 {
 layerId = "C6537DE0-68DF-4C5B-B6D5-25B465FDDD7D";
@@ -39844,7 +39963,7 @@ unicode = E448;
 },
 {
 glyphname = uniE449;
-lastChange = "2014-09-19 13:45:34 +0000";
+lastChange = "2015-06-25 12:10:09 +0000";
 layers = (
 {
 layerId = "C6537DE0-68DF-4C5B-B6D5-25B465FDDD7D";
