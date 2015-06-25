@@ -307,7 +307,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"oxygen",
 										"popup",
 										"inpagesectionmenu",
-										"section",
+										"sections",
+										"inpage",
 									);
 										
 									foreach($icontypes as $currenticontype)
