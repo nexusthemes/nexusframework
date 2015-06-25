@@ -451,6 +451,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-max-height-80											{ max-height: 80% !important; }
 .nxs-max-height-70											{ max-height: 70% !important; }
 /* margin */
+.nxs-margin5												{ margin: 5px; }
 .nxs-margin10												{ margin: 10px; }
 .nxs-margin20												{ margin: 20px; }
 .nxs-margin30												{ margin: 30px; }
@@ -480,7 +481,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-margin-right10											{ margin-right: 10px; }
 .nxs-margin-right15											{ margin-right: 15px; }
 /* left */
-.nxs-margin-left0											{ margin-left: 0px; }
+.nxs-margin-left0											{ margin-left: 0px !important; }
 .nxs-margin-left5											{ margin-left: 5px; }
 .nxs-margin-left10											{ margin-left: 10px; }
 .nxs-margin-left15											{ margin-left: 15px; }
@@ -599,6 +600,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-table-cell												{ display: table-cell; vertical-align: middle; }
 .nxs-overflow												{ overflow: hidden; }
 .nxs-display-none											{ display: none; }
+.nxs-border-solid											{ border-style: solid; }
 
 /* Used to delineate an undefined. Styling taken over by the unistyle styling
 .nxs-border-dash											{ border: 1px dashed #666666; }*/
@@ -918,7 +920,6 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 
 /* TEXT 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-text .nxs-default-p a									{ font-weight: bold; }
 .nxs-text p:last-child										{ padding-bottom: 0px; }
 .nxs-text .nxs-liftnote p:first-child 						{ font-weight: bold; letter-spacing: 1px; }
 .nxs-text span.nxs-dropcap p:first-child:first-letter 		{ float: left; display: block; margin: 0 7px 0 0; font-weight: normal; text-transform: uppercase; }
@@ -2188,9 +2189,11 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .woocommerce form p  										{ clear: both; font-size: 15px; margin-bottom: 10px; }
 .woocommerce p.form-row										{ margin-bottom: 0px; }
 .woocommerce p.form-row label 								{ width: 20%; display: block; float: left; line-height: 30px; }
-.woocommerce p.form-row select								{ margin-bottom: 20px; }
+.woocommerce p.form-row select								{ margin-bottom: 10px; }
+.nxs-form .select2-choice 									{ font-size: 15px; padding: .4em !important; background-color: #fff !important; box-shadow: 0px 0px 0px 1px gray inset; margin-bottom: 10px; }
 .woocommerce p.form-row input 								{ width: 80%; float: right; line-height: 30px; box-shadow: 0px 0px 0px 1px gray inset; -webkit-appearance: none; text-indent: 10px; }
-.woocommerce form input[type=submit]						{ width: auto; text-indent: 0px; }
+.woocommerce .override p.form-row input 					{ width: 100%; float: none; margin-bottom: 10px; }
+.woocommerce form input[type=submit]						{ width: auto !important; text-indent: 0px; }
 
 .woocommerce ul.woocommerce-error li						{ color: red; line-height: 30px; }
 .woocommerce ul.payment_methods,
@@ -2912,7 +2915,6 @@ h3#order_review_heading,
 .nxs-icon-inpagemenu:before			{ content: "\e445";	}
 .nxs-icon-sections:before			{ content: "\e446";	}
 .nxs-icon-inpage:before				{ content: "\e447";	}
-
 
 /* Crappicons */
 .nxs-icon-cockroach:before 			{ content: "\e900"; }
