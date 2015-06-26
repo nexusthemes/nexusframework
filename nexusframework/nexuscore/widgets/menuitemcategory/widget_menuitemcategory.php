@@ -241,7 +241,14 @@ function nxs_widgets_menuitemcategory_desktop_render($args){
 
     $font_variant = $placeholdermetadata["font_variant"];
     $parent_height = $placeholdermetadata["parent_height"];
+    $submenu_height = $placeholdermetadata["submenu_height"];
 
+    if($issubitem == true){
+        $menuitem_height = $submenu_height;
+    } else {
+        $menuitem_height = $parent_height;
+    }
+    
     $destination_category = $placeholdermetadata["destination_category"];
     // for example [92]
     // remove brackets
@@ -285,7 +292,7 @@ function nxs_widgets_menuitemcategory_desktop_render($args){
     $anchorclass = "class='{$anchorclass}'";
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height".$parent_height."' >";
+    $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height".$menuitem_height."' >";
     $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";

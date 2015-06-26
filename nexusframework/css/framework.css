@@ -600,6 +600,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-relative 												{ position: relative; }
 .nxs-visible												{ visibility: visible; }
 .nxs-small-caps												{ font-variant: small-caps; }
+.nxs-capitalize												{ text-transform: uppercase; }
 .nxs-margin-auto											{ margin: 0 auto; }
 .nxs-margin-auto-right										{ margin: 0 0 0 auto; }
 .nxs-inline													{ display: inline !important; }
@@ -712,7 +713,7 @@ ul.nxs-menu.nxs-float-left li a								{ padding-right: 20px; }
 ul.nxs-menu.nxs-float-right li a							{ margin-left: 20px; }
 ul.nxs-menu.nxs-float-left li a:last-child 					{ margin-right: 0px; }
 
-/* menu item height */
+/* parent menu item height */
 ul.nxs-menu li.height20 a									{ line-height: 100px; }
 ul.nxs-menu li.height15 a									{ line-height: 75px; }
 ul.nxs-menu li.height14 a									{ line-height: 70px; }
@@ -722,6 +723,8 @@ ul.nxs-menu li.height11 a									{ line-height: 55px; }
 ul.nxs-menu li.height10 a									{ line-height: 50px; }
 ul.nxs-menu li.height09 a									{ line-height: 45px; }
 ul.nxs-menu li.height08 a									{ line-height: 40px; }
+
+/* Settings for positioning the submenu below the parent menu items */
 ul.nxs-menu li.height20 ul.nxs-sub-menu						{ top: 100px; }
 ul.nxs-menu li.height15 ul.nxs-sub-menu						{ top: 75px; }
 ul.nxs-menu li.height14 ul.nxs-sub-menu						{ top: 70px; }
@@ -731,6 +734,8 @@ ul.nxs-menu li.height11 ul.nxs-sub-menu						{ top: 55px; }
 ul.nxs-menu li.height10 ul.nxs-sub-menu						{ top: 50px; }
 ul.nxs-menu li.height09 ul.nxs-sub-menu						{ top: 45px; }
 ul.nxs-menu li.height08 ul.nxs-sub-menu						{ top: 40px; }
+
+/* Settings for submenu item heights of the whole li */
 ul.nxs-menu li:hover ul li.height20							{ height: 100px; }
 ul.nxs-menu li:hover ul li.height15							{ height: 75px; }
 ul.nxs-menu li:hover ul li.height14							{ height: 70px; }
@@ -740,6 +745,18 @@ ul.nxs-menu li:hover ul li.height11							{ height: 55px; }
 ul.nxs-menu li:hover ul li.height10							{ height: 50px; }
 ul.nxs-menu li:hover ul li.height09							{ height: 45px; }
 ul.nxs-menu li:hover ul li.height08							{ height: 40px; }
+
+/* Settings for submenu lineheights to make them vertical align in the middle */
+ul.nxs-menu li ul.nxs-sub-menu li.height20 a				{ line-height: 100px; }
+ul.nxs-menu li ul.nxs-sub-menu li.height15 a				{ line-height: 75px; }
+ul.nxs-menu li ul.nxs-sub-menu li.height14 a				{ line-height: 70px; }
+ul.nxs-menu li ul.nxs-sub-menu li.height13 a				{ line-height: 65px; }
+ul.nxs-menu li ul.nxs-sub-menu li.height12 a				{ line-height: 60px; }
+ul.nxs-menu li ul.nxs-sub-menu li.height11 a				{ line-height: 55px; }
+ul.nxs-menu li ul.nxs-sub-menu li.height10 a				{ line-height: 50px; }
+ul.nxs-menu li ul.nxs-sub-menu li.height09 a				{ line-height: 45px; }
+ul.nxs-menu li ul.nxs-sub-menu li.height08 a				{ line-height: 40px; }
+
 
 ul.nxs-menu li ul { 
 	opacity: 0; 
