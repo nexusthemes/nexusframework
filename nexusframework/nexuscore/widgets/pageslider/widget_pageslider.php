@@ -409,30 +409,40 @@ function nxs_widgets_pageslider_initplaceholderdata($args)
 	// assign the newly create list to the list property
 	
 	$subargs = array();
-	$subargs["nxsposttype"] = "genericlist";
-	$subargs["nxssubposttype"] = "pageslider";	// NOTE!
-	$subargs["poststatus"] = "publish";
-	$subargs["titel"] = nxs_l18n__("Slider items[title]", "nxs_td");
-	$subargs["slug"] = nxs_l18n__("Slider items[slug]", "nxs_td");
-	$subargs["postwizard"] = "defaultgenericlist";
+	$subargs["nxsposttype"] 				= "genericlist";
+	$subargs["nxssubposttype"] 				= "pageslider";	// NOTE!
+	$subargs["poststatus"] 					= "publish";
+	$subargs["titel"] 						= nxs_l18n__("Slider items[title]", "nxs_td");
+	$subargs["slug"] 						= nxs_l18n__("Slider items[slug]", "nxs_td");
+	$subargs["postwizard"] 					= "defaultgenericlist";
 	
 	$response = nxs_addnewarticle($subargs);
-	if ($response["result"] == "OK")
-	{
-		$args["items_genericlistid"] = $response["postid"];
+	if ($response["result"] == "OK") {
+		$args["items_genericlistid"] 		= $response["postid"];
 		$args["items_genericlistid_globalid"] = nxs_get_globalid($response["postid"], true);
-	}
-	else
-	{
+	} else {
 		var_dump($response);
 		die();
 	}
 	
-	$args["item_durationvisibility"] = "5000";
-	$args["item_transitionduration"] = "300";
-	$args['ph_margin_bottom'] = "0-0";
-	$args['caption_container_height'] = "500px";
-	$args['show_metadata'] = 'checked';
+	$args["item_durationvisibility"] 		= "4000";
+	$args['caption_container_height'] 		= "400px";
+	$args['hide_for_touchdevices'] 			= 'checked';
+	$args['remove_thumbnail_navigation'] 	= 'checked';
+	$args['show_metadata'] 					= 'checked';
+	$args['caption_width'] 					= '50';
+	$args['title_fontsize'] 				= '4-0';
+	$args['description_fontsize'] 			= '1-8';
+	$args['halign'] 						= 'left';
+	$args['bgcolor'] 						= 'base2-a0-0';
+	$args['fixed_font'] 					= 'checked';
+	$args['responsive_display'] 			= 'pageslider960';
+	$args['button_color'] 					= 'c22';
+	$args['button_scale'] 					= '2-0';
+	
+	
+	$args["item_transitionduration"] 		= "300";
+	$args['ph_margin_bottom'] 				= "0-0";
 
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_pageslider_getunifiedstylinggroup();
@@ -965,7 +975,8 @@ function nxs_widgets_pageslider_betweenheadandcontent()
         
    
 </div>		
-	<?php
+
+<?php
 }
 
 ?>
