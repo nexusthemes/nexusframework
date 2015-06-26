@@ -34,6 +34,13 @@ a {
 	color: inherit; 
 }
 
+blockquote {
+	display: inline-block;
+	padding: 8px 15px;
+	border-left: 10px rgba(0,0,0,0.1) solid;
+	margin-bottom: 20px;
+	background-color: rgba(0,0,0,0.05);
+}
 
 /* FALLBACK MODERNIZR TOGGLE
 ---------------------------------------------------------------------------------------------------- */
