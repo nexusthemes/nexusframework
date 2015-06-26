@@ -329,6 +329,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			// $result[] = array("widgetid" => "contactitemhidden");
 			// $result[] = array("widgetid" => "contactitemattachment");
@@ -340,6 +341,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemtext", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "formitemcaptcha", "tags" => array("nexus"));
@@ -410,6 +412,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			"contactitemdate",
 			"contactitemdatetime",
 			"contactitemselect",
+			"contactitemmultiselect",
 			"contactitemsecret",
 			"contactitemreplyto",
 			"formitemcaptcha",
@@ -510,6 +513,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("contactitemdate");
 	nxs_ext_lazyload_widget("contactitemdatetime");	
 	nxs_ext_lazyload_widget("contactitemselect");
+	nxs_ext_lazyload_widget("contactitemmultiselect");
 	nxs_ext_lazyload_widget("contactitemhidden");
 	nxs_ext_lazyload_widget("contactitemattachment");
 	nxs_ext_lazyload_widget("formitemcaptcha");

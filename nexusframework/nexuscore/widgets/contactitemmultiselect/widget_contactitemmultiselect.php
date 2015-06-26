@@ -1,17 +1,17 @@
 <?php
 
-function nxs_widgets_contactitemselect_geticonid()
+function nxs_widgets_contactitemmultiselect_geticonid()
 {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-arrow-down-light"; // . $widget_name;
+	return "nxs-icon-list"; // . $widget_name;
 }
 
-function nxs_widgets_contactitemselect_gettitle()
+function nxs_widgets_contactitemmultiselect_gettitle()
 {
-	return nxs_l18n__("Dropdown (single select)", "nxs_td");
+	return nxs_l18n__("List (multiple select)", "nxs_td");
 }
 
-function nxs_widgets_contactitemselect_getformitemsubmitresult($args)
+function nxs_widgets_contactitemmultiselect_getformitemsubmitresult($args)
 {
 	// $args consists of "metadata"
 	// combined with $_REQUEST this should feed us with all information
@@ -40,20 +40,37 @@ function nxs_widgets_contactitemselect_getformitemsubmitresult($args)
 	{
 		$key = $prefix . $elementid;
 	}	
-	
-	$value = $_REQUEST[$key];
+    
+    $i = 0;
+    $total_amount_of_options = count($_REQUEST[$key]);
+    foreach($_REQUEST[$key] as $choice){
+        
+        $last_item = false;
+        $last_item = ($i == $total_amount_of_options - 1);
+        
+        // get the chosen items and add them to the $value (which is the value that will be showed in the submitted forms page)
+        if ($last_item == true) {
+            // last item, so no comma will be added at the end
+            $value .= "".$choice."";
+        } else {
+            $value .= "".$choice.", ";
+        }
+        
+        $i++;
+    }
 	
 	if ($isrequired != "")
 	{
-		// it is required field
-		if (trim($value) == '')
+		// if there are no values selected in a required field
+		if ($value == '')
 		{
-			// error
+			// show an error and mark the formitem red
 			$result["validationerrors"][] = sprintf(nxs_l18n__("%s is a required field", "nxs_td"), $formlabel);
 			$result["markclientsideelements"][] = $key;
 		}
 	}
-	
+    
+    
 	$result["output"] = "$formlabel: $value";
 	
 	return $result;
@@ -62,7 +79,7 @@ function nxs_widgets_contactitemselect_getformitemsubmitresult($args)
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
 // hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
 // het bewerken van de placeholder kan opstarten
-function nxs_widgets_contactitemselect_renderincontactbox($args)
+function nxs_widgets_contactitemmultiselect_renderincontactbox($args)
 {
 	extract($args);
 	
@@ -92,8 +109,9 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 
 	?>
 	
-  <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
-	<select id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" value="<?php echo $value;?>">
+  <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label><br />
+
+	<select id="<?php echo $key; ?>" name="<?php echo $key; ?>[]" class="field_name" style="width: 100%;" multiple="multiple">
 		
 		<?php
 		if (is_string($metadata_selectables))
@@ -133,6 +151,22 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 		}
 		?>
 	</select>
+
+    <!----- the javascript below is to prevent that users have to hold down CTRL or CMD key to select multiple items and is coming from: http://stackoverflow.com/questions/12585863/how-can-i-make-an-html-multiple-select-act-like-the-control-button-is-held-down ----->
+    <script type="text/javascript">    
+        $('#<?php echo $key; ?>').each(function(){    
+            var select = $(this), values = {};    
+            $('option',select).each(function(i, option){
+                values[option.value] = option.selected;        
+            }).click(function(event){        
+                values[this.value] = !values[this.value];
+                $('option',select).each(function(i, option){            
+                    option.selected = values[option.value];        
+                });    
+            });
+        });
+    </script>
+
 	<div class="nxs-clear nxs-filler"></div>
 	<?php
 	
@@ -148,7 +182,7 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 	return $result;
 }
 
-function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($args)
+function nxs_widgets_contactitemmultiselect_render_webpart_render_htmlvisualization($args)
 {
 	//
 	extract($args);
@@ -192,7 +226,7 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 	
 	nxs_ob_start();
 
-	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-contactitemselect-item";
+	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-contactitemmultiselect-item";
 	
 	/* ADMIN OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -201,7 +235,7 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 	<div class="nxs-dragrow-handler nxs-padding-menu-item">
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title nxs-width40"><h4><span class="nxs-icon-arrow-down-light" style="font-size: 16px;" /> Dropdown</h4></div>
+	        	<div class="box-title nxs-width40"><h4><span class="nxs-icon-list" style="font-size: 16px;" /> List (multiple)</h4></div>
 				<div class="box-content nxs-width60">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
@@ -222,12 +256,12 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 }
 
 // Define the properties of this widget
-function nxs_widgets_contactitemselect_home_getoptions($args) 
+function nxs_widgets_contactitemmultiselect_home_getoptions($args) 
 {
 	$options = array
 	(
-		"sheettitle" => nxs_widgets_contactitemselect_gettitle(),
-		"sheeticonid" => nxs_widgets_contactitemselect_geticonid(),
+		"sheettitle" => nxs_widgets_contactitemmultiselect_gettitle(),
+		"sheeticonid" => nxs_widgets_contactitemmultiselect_geticonid(),
 	
 		"fields" => array
 		(
@@ -269,7 +303,7 @@ function nxs_widgets_contactitemselect_home_getoptions($args)
 	return $options;
 }
 
-function nxs_widgets_contactitemselect_initplaceholderdata($args)
+function nxs_widgets_contactitemmultiselect_initplaceholderdata($args)
 {
 	extract($args);
 
