@@ -45,7 +45,7 @@ function nxs_widgets_quote_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),		
 				"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
 				"localizablefield"	=> true
-			),		
+			),	
 			array(
 				"id" 				=> "source",
 				"type" 				=> "input",
@@ -183,7 +183,7 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	if ($show_quote_icon != "") { $show_quote_icon = '<span class="nxs-icon-quotes-left"></span>'; }
 	
 	// Text
-	if ($text != "") { $text = $show_quote_icon . '<span class="nxs-default-p quote">' . $text . '</span>';	}
+	if ($text != "") { $text = $show_quote_icon . '<span class="nxs-default-p quote"><span>' . $text . '</span></span>';	}
 	
 	// Quote width
 	if ($quote_width != "")	{
