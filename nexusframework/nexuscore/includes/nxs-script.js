@@ -306,18 +306,34 @@ function nxs_js_disabledocumentscrollwhenhoveringoverelement(e)
 });
 }
 
-function nxs_js_menu_mini_expand(placeholderid) 
+function nxs_js_menu_mini_expand(obj, placeholderid) 
 {
-	var expander = jQ_nxs(".nxs-menu-mini-nav-expander-" + placeholderid);
-	console.log(expander);
+	var expander = jQ_nxs(obj).siblings(".nxs-menu-mini-nav-expander-" + placeholderid);
+
+	// set height on expander if the container is fixed and the menu does not fit in the screen
+	if ($('#nxs-fixed-header').length > 0) {
+		if ($(expander).closest('#nxs-fixed-header').length > 0) {
+			var top = jQ_nxs(obj).offset().top;
+			var bottom = top + jQ_nxs(obj).outerHeight();
+			var scrollTop = jQ_nxs(window).scrollTop();
+			var extendMenuHeight = jQ_nxs(window).height() - bottom + scrollTop;
+		}
+	}
+
 	jQ_nxs(expander).toggleClass("nxs-expand");
 	if (jQ_nxs(expander).hasClass("nxs-expand"))
 	{
 		jQ_nxs(expander).slideDown();
+		if (extendMenuHeight) {
+			jQ_nxs(expander).height(extendMenuHeight);
+		}
 	}
 	else
 	{
 		jQ_nxs(expander).slideUp();
+		if (extendMenuHeight) {
+			jQ_nxs(expander).height('');
+		}
 	}
 }
 
