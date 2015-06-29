@@ -323,14 +323,15 @@ function nxs_js_menu_mini_expand(obj, placeholderid)
 	jQ_nxs(expander).toggleClass("nxs-expand");
 	if (jQ_nxs(expander).hasClass("nxs-expand"))
 	{
-		jQ_nxs(expander).slideDown();
-		if (extendMenuHeight) {
+		var menuHeight = $(expander).find('ul.nxs-menu-minified').height();
+		console.log(menuHeight);
+		console.log(extendMenuHeight);
+		if (menuHeight > extendMenuHeight) {
 			jQ_nxs(expander).height(extendMenuHeight);
 		}
 	}
 	else
 	{
-		jQ_nxs(expander).slideUp();
 		if (extendMenuHeight) {
 			jQ_nxs(expander).height('');
 		}

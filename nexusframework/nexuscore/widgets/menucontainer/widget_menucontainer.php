@@ -560,7 +560,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
         echo '<div class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
 
         $outer_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $menuitem_color); ?>
-                <a href='#' class="nxs_js_menu_mini_expand <?php echo $outer_color_cssclass; ?>">
+                <a href='#' class="nxs_js_menu_mini_expand-<?php echo $placeholderid; ?> <?php echo $outer_color_cssclass; ?>">
                     <div style="text-align: center">
                         <span class="nxs-icon-menucontainer"></span>
                         <span>&nbsp;<?php echo $minified_label; ?></span>
@@ -654,8 +654,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
             </div> <!-- END nxs-menu-mini-nav-expander -->
             <script>
-                jQ_nxs('a.nxs_js_menu_mini_expand').off('click.menu_mini_expand');
-                jQ_nxs('a.nxs_js_menu_mini_expand').on('click.menu_mini_expand', function(){
+                jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
+                jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function(){
                     nxs_js_menu_mini_expand(this, '<?php echo $placeholderid; ?>');
                     nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
                     return false;
