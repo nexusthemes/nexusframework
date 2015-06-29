@@ -878,7 +878,8 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... 
 */
 .nxs-admin-wrap .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } 
-.nxs-admin-wrap ul.tabs li a:hover, a:focus			{ color: #D54E21; background-color: #fff; outline: none; }
+.nxs-admin-wrap ul.tabs li a:hover, 
+.nxs-admin-wrap ul.tabs li a:focus					{ color: #D54E21; background-color: #fff; outline: none; }
 .nxs-admin-wrap ul.tabs li.ui-state-active a 		{ background-color: #fff; outline: none; }
 .nxs-admin-wrap ul.tabs li.ui-tabs-selected a 		{ background: #FCFCFC;}
 .nxs-admin-wrap .ui-tabs .ui-tabs-panel 			{ display: block; border-width: 0; }
