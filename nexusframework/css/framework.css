@@ -34,13 +34,6 @@ a {
 	color: inherit; 
 }
 
-blockquote {
-	display: inline-block;
-	padding: 8px 15px;
-	border-left: 10px rgba(0,0,0,0.1) solid;
-	margin-bottom: 20px;
-	background-color: rgba(0,0,0,0.05);
-}
 
 /* FALLBACK MODERNIZR TOGGLE
 ---------------------------------------------------------------------------------------------------- */
@@ -600,7 +593,6 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-relative 												{ position: relative; }
 .nxs-visible												{ visibility: visible; }
 .nxs-small-caps												{ font-variant: small-caps; }
-.nxs-capitalize												{ text-transform: uppercase; }
 .nxs-margin-auto											{ margin: 0 auto; }
 .nxs-margin-auto-right										{ margin: 0 0 0 auto; }
 .nxs-inline													{ display: inline !important; }
@@ -617,8 +609,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 /* FONT STYLING & MISCELLANEOUS
 ----------------------------------------------------------------------------------------------------*/
 .nxs-slide-description p,
-#nxs-header .nxs-menu.nav a,
-#nxs-fixed-header .nxs-menu.nav a 								{ font-size: 16px; line-height: 2em; }
+#nxs-header .nxs-menu.nav a 								{ font-size: 16px; line-height: 2em; }
 
 /* DEFAULT PARAGRAPHS */
 .nxs-slide-description-content p,
@@ -714,7 +705,7 @@ ul.nxs-menu.nxs-float-left li a								{ padding-right: 20px; }
 ul.nxs-menu.nxs-float-right li a							{ margin-left: 20px; }
 ul.nxs-menu.nxs-float-left li a:last-child 					{ margin-right: 0px; }
 
-/* parent menu item height */
+/* menu item height */
 ul.nxs-menu li.height20 a									{ line-height: 100px; }
 ul.nxs-menu li.height15 a									{ line-height: 75px; }
 ul.nxs-menu li.height14 a									{ line-height: 70px; }
@@ -724,8 +715,6 @@ ul.nxs-menu li.height11 a									{ line-height: 55px; }
 ul.nxs-menu li.height10 a									{ line-height: 50px; }
 ul.nxs-menu li.height09 a									{ line-height: 45px; }
 ul.nxs-menu li.height08 a									{ line-height: 40px; }
-
-/* Settings for positioning the submenu below the parent menu items */
 ul.nxs-menu li.height20 ul.nxs-sub-menu						{ top: 100px; }
 ul.nxs-menu li.height15 ul.nxs-sub-menu						{ top: 75px; }
 ul.nxs-menu li.height14 ul.nxs-sub-menu						{ top: 70px; }
@@ -735,8 +724,6 @@ ul.nxs-menu li.height11 ul.nxs-sub-menu						{ top: 55px; }
 ul.nxs-menu li.height10 ul.nxs-sub-menu						{ top: 50px; }
 ul.nxs-menu li.height09 ul.nxs-sub-menu						{ top: 45px; }
 ul.nxs-menu li.height08 ul.nxs-sub-menu						{ top: 40px; }
-
-/* Settings for submenu item heights of the whole li */
 ul.nxs-menu li:hover ul li.height20							{ height: 100px; }
 ul.nxs-menu li:hover ul li.height15							{ height: 75px; }
 ul.nxs-menu li:hover ul li.height14							{ height: 70px; }
@@ -746,18 +733,6 @@ ul.nxs-menu li:hover ul li.height11							{ height: 55px; }
 ul.nxs-menu li:hover ul li.height10							{ height: 50px; }
 ul.nxs-menu li:hover ul li.height09							{ height: 45px; }
 ul.nxs-menu li:hover ul li.height08							{ height: 40px; }
-
-/* Settings for submenu lineheights to make them vertical align in the middle */
-ul.nxs-menu li ul.nxs-sub-menu li.height20 a				{ line-height: 100px; }
-ul.nxs-menu li ul.nxs-sub-menu li.height15 a				{ line-height: 75px; }
-ul.nxs-menu li ul.nxs-sub-menu li.height14 a				{ line-height: 70px; }
-ul.nxs-menu li ul.nxs-sub-menu li.height13 a				{ line-height: 65px; }
-ul.nxs-menu li ul.nxs-sub-menu li.height12 a				{ line-height: 60px; }
-ul.nxs-menu li ul.nxs-sub-menu li.height11 a				{ line-height: 55px; }
-ul.nxs-menu li ul.nxs-sub-menu li.height10 a				{ line-height: 50px; }
-ul.nxs-menu li ul.nxs-sub-menu li.height09 a				{ line-height: 45px; }
-ul.nxs-menu li ul.nxs-sub-menu li.height08 a				{ line-height: 40px; }
-
 
 ul.nxs-menu li ul { 
 	opacity: 0; 
@@ -828,8 +803,7 @@ ul.item-fontsize08 li a										{ font-size: 12px; }
 div.nxs-menu-minified > a									{ line-height: 53px; font-size: 20px; display: block; }
 div.nxs-menu-minified .nxs-expand							{ display: block !important; }
 div.nxs-menu-minified .nxs-expand ul						{ display: block; }
-div.nxs-menu-minified .nxs-expand ul li						{ display: block; float: none; width: 100%; }
-#nxs-fixed-header div.nxs-menu-minified .nxs-expand 		{ overflow-y: scroll; }
+div.nxs-menu-minified .nxs-expand ul li						{ width: 100%; }
 
 /* Enabling drop down menu's for touch devices */
 ul.nxs-menu li.nxs-touched > ul								{ z-index: 1000; }
@@ -1975,8 +1949,9 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 /* FIXED HEADER PAGE DECORATOR
 ---------------------------------------------------------------------------------------------------- */
 
-#nxs-fixed-header											{ position: fixed; top: 0px; left: 0px; right: 0px; z-index: 119; display: none;}
+#nxs-fixed-header											{ position: fixed; top: 0px; left: 0px; right: 0px; z-index: 120; display: none;}
 #nxs-fixed-header.show										{ display: block; }
+.nxs-viewport-lte-719 #nxs-fixed-header 					{ display: none !important; }
 
 .nxs-fixed-header-shadow {
 	-webkit-box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.5);
@@ -2253,8 +2228,12 @@ h3#order_review_heading,
 
 /* Thumbnails */
 .images .thumbnails img 									{ height: auto; }
-.images .thumbnails .nxs-image								{ margin-right: 5%; }
-.images .thumbnails a:nth-child(3) .nxs-image				{ margin-right: 0; }
+/* default */
+.default .images .thumbnails .nxs-image						{ width: 30%; margin-right: 5%; }
+.default .images .thumbnails a:nth-child(3n+3) .nxs-image	{ margin-right: 0; }
+/* stretched */
+.stretched .images .thumbnails .nxs-image					{ width: 16%; margin-right: 5%; }
+.stretched .images .thumbnails a:nth-child(5n+5) .nxs-image	{ margin-right: 0; }
 
 /* Rating */
 .woocommerce-product-rating 								{ float: right; }
