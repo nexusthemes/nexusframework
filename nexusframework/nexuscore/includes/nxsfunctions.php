@@ -1762,8 +1762,6 @@ function nxs_storemedia($args)
 	}
 	else
 	{
-		//error_log("nxs_storemedia NO FILTER");
-		
 		// if there is no plugin available, use the default implementation
 		$sourcefile = get_template_directory() . "/resources/data/";
 		if (file_exists($sourcefile))
@@ -1775,7 +1773,7 @@ function nxs_storemedia($args)
 			if ($result === false)
 			{
 				// TODO: do not log error; on our prod server this is not very practical
-				error_log("did NOT find a data directory in theme, using fallback implementation; $sourcefile");
+				error_log("storing image from theme failed, using fallback implementation; $sourcefile");
 			 	$result = nxs_storemedia_remotehttpdownload($args);
 			}
 		}
@@ -1804,6 +1802,7 @@ function nxs_storemedia_fromtheme($args)
 		// we splitten eerst de "sales/"
 		$urlpiecesfirst = explode("sales/", $url);
 		$url2 = $urlpiecesfirst[1];
+		$expected = true;
 	}
 	else if (nxs_stringcontains($url, "sites/"))
 	{
@@ -1811,38 +1810,47 @@ function nxs_storemedia_fromtheme($args)
 		// we splitten eerst de "sales/"
 		$urlpiecesfirst = explode("sites/", $url);
 		$url2 = $urlpiecesfirst[1];
+		$expected = true;
 	}
 	else
 	{
-		// ?
+		$expected = false;
+		error_log("nxs_storemedia_fromtheme; unexpected format (it this an external file; $url ?)");
 	}
 	
-	// url2 is bijv.
-	// beautician/2013/10/logo.png	
-	// het begint dus met {themeid}/, echter, 
-	// we weten de themeid hier nog niet, dus de exploden deze opnieuw ...
-	$urlpieces = explode("/", $url2, 2);
-	
-	// $urlpieces[1] is nu dus "2013/10/logo.png"
-		
-	// check if the url has a local variant file
-	// url is for example http://89.18.175.44/plumber/wp-content/uploads/sites/26/2013/09/offer.jpg
-	$sourcefile = get_template_directory() . "/resources/data/" . $urlpieces[1];
-	//echo $sourcefile;
-	if (!file_exists($sourcefile))
+	if ($expected)
 	{
-		error_log("nxs_storemedia_fromtheme; NOT FOUND; $sourcefile");
+		// url2 is bijv.
+		// beautician/2013/10/logo.png	
+		// het begint dus met {themeid}/, echter, 
+		// we weten de themeid hier nog niet, dus de exploden deze opnieuw ...
+		$urlpieces = explode("/", $url2, 2);
+		
+		// $urlpieces[1] is nu dus "2013/10/logo.png"
+			
+		// check if the url has a local variant file
+		// url is for example http://89.18.175.44/plumber/wp-content/uploads/sites/26/2013/09/offer.jpg
+		$sourcefile = get_template_directory() . "/resources/data/" . $urlpieces[1];
+		//echo $sourcefile;
+		if (!file_exists($sourcefile))
+		{
+			error_log("nxs_storemedia_fromtheme; NOT FOUND; $sourcefile");
+			$result = false;
+		}
+		else
+		{
+			//error_log("nxs_storemedia_fromtheme; STORING from $sourcefile to $destinationpath");
+			
+			// don't copy the file, just copy its contents!!
+			// (keeping the other file atts in place)
+			$content = file_get_contents($sourcefile);
+			file_put_contents($destinationpath, $content);
+			$result = true;
+		}
+	}
+	else
+	{		
 		$result = false;
-	}
-	else
-	{
-		//error_log("nxs_storemedia_fromtheme; STORING from $sourcefile to $destinationpath");
-		
-		// don't copy the file, just copy its contents!!
-		// (keeping the other file atts in place)
-		$content = file_get_contents($sourcefile);
-		file_put_contents($destinationpath, $content);
-		$result = true;
 	}
 	
 	return $result;
