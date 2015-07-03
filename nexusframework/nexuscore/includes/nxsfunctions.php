@@ -1759,6 +1759,12 @@ function nxs_storemedia($args)
 	{
 		// allow plugin to retrieve/store the file in a different way
 		$result = apply_filters("nxs_storemedia", true, $args);
+		
+		if ($result === false)
+		{
+			error_log("storing image from filter failed, using fallback implementation; $sourcefile");
+		 	$result = nxs_storemedia_remotehttpdownload($args);
+		}
 	}
 	else
 	{
