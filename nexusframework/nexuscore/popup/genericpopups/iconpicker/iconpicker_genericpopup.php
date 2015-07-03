@@ -309,6 +309,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"inpagemenu",
 										"sections",
 										"inpage",
+										"education",
 									);
 										
 									foreach($icontypes as $currenticontype)
