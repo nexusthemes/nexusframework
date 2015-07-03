@@ -58,6 +58,34 @@ function nxs_widgets_quote_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Source URL", "nxs_td")
 			),
 			array(
+				"id" 				=> "quote_textsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Text textsize", "nxs_td"),
+				"dropdown" 			=> array(
+                    "14"	=>"1.4x",
+                    "12"	=>"1.3x",
+                    "11"	=>"1.1x",
+                    "10"	=>"1x",
+                    "09"	=>"0.9x",
+                    "08"	=>"0.8x",
+                ),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "source_textsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Source textsize", "nxs_td"),
+				"dropdown" 			=> array(
+                    "14"	=>"1.4x",
+                    "12"	=>"1.3x",
+                    "11"	=>"1.1x",
+                    "10"	=>"1x",
+                    "09"	=>"0.9x",
+                    "08"	=>"0.8x",
+                ),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "quote_width",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Quote width", "nxs_td"),
@@ -183,7 +211,9 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	if ($show_quote_icon != "") { $show_quote_icon = '<span class="nxs-icon-quotes-left"></span>'; }
 	
 	// Text
-	if ($text != "") { $text = $show_quote_icon . '<span class="nxs-default-p quote"><span>' . $text . '</span></span>';	}
+	if ($text != "") { 
+		$quote_fontsize = nxs_getcssclassesforlookup("nxs-quote-fontsize", $quote_textsize);
+		$text = $show_quote_icon . '<span class="' . $quote_fontsize . ' quote">' . $text . '</span>';	}
 	
 	// Quote width
 	if ($quote_width != "")	{
@@ -204,16 +234,19 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	
 	// Stars and source
 	if ($source != "" && $destination_url == ""){ 
+
+		$source_textsize = nxs_getcssclassesforlookup("nxs-quote-fontsize", $source_textsize);
+
 		$source = '
 			<p class="nxs-default-p source nxs-padding-bottom0">
 				<strong>'.$stars.'</strong>
-				<strong><span class="source">' . $source . '</span></strong>
+				<strong><span class="source '.$source_textsize.'">' . $source . '</span></strong>
 			</p>'; 
 	} else if ($source != "" && $destination_url != ""){
 		$source = '		
 			<p class="nxs-default-p source nxs-padding-bottom0">
 				<strong>'.$stars.'</strong>
-				<a href="' . $destination_url . '" target="_new"><strong><span class="source">' . $source . '</span></strong></a>
+				<a href="' . $destination_url . '" target="_new"><strong><span class="source '.$source_textsize.'">' . $source . '</span></strong></a>
 			</p>'; 
 }
 	
