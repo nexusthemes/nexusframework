@@ -996,12 +996,11 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 /* QUOTE
 ---------------------------------------------------------------------------------------------------- */
 .nxs-quote .nxs-icon-quotes-left							{ font-size: 80px; top: -20px; left: -10px; position: absolute; opacity: 0.08; }
-.nxs-quote span.quote 										{ font-style: italic; text-align: center; }
+.nxs-quote span.quote 										{ line-height: 1.625em; font-style: italic; text-align: center; }
 .nxs-quote p span.source									{ float: right; }
 .nxs-quote p span.nxs-icon-star,
 .nxs-quote p span.nxs-icon-star2,
 .nxs-quote p span.nxs-icon-star3							{ font-size: 16px; color: #f3671c; }
-
 .nxs-quote .nxs-quote-fontsize14						{ font-size: 24px; }
 .nxs-quote .nxs-quote-fontsize13						{ font-size: 22px; }
 .nxs-quote .nxs-quote-fontsize12						{ font-size: 20px; }
