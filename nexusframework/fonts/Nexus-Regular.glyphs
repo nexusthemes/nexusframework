@@ -1,4 +1,7 @@
 {
+DisplayStrings = (
+/uniE448
+);
 date = "2014-09-12 11:47:48 +0000";
 designer = "Icomoon extended";
 designerURL = www.nexusthemes.com;
@@ -39951,11 +39954,37 @@ unicode = E447;
 },
 {
 glyphname = uniE448;
-lastChange = "2015-06-25 12:10:13 +0000";
+lastChange = "2015-07-03 09:28:22 +0000";
 layers = (
 {
 layerId = "C6537DE0-68DF-4C5B-B6D5-25B465FDDD7D";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"0 832 LINE",
+"1024 320 LINE",
+"1824 719 LINE",
+"1824 0 LINE",
+"1952 0 LINE",
+"1952 783 LINE",
+"2048 831 LINE",
+"1024 1344 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1024 160 LINE",
+"320 512 LINE",
+"320 64 LINE",
+"1024 -320 LINE",
+"1728 64 LINE",
+"1728 512 LINE"
+);
+}
+);
 width = 2048;
 }
 );
