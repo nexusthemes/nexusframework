@@ -1059,6 +1059,10 @@ function nxs_init()
 		{
 			// ok
 		}
+		else if( defined( 'WP_CLI' ) )
+		{
+			// WP-CLI always should have access
+		}
 		else
 		{
 			// verify anonymous access allowed
