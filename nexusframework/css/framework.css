@@ -1036,11 +1036,9 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 
 /* SIDEBAR & WORDPRESS WIDGETS 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-wordpress-sidebar ul 									{ list-style-type: none; }
-.nxs-wordpress-sidebar li ul 								{ font-size: 13px; list-style: square; margin-bottom: 2.2em; margin-left: 16px; }
-.nxs-sidebar-container ul li a 								{ line-height: 0px;  }
-.nxs-wordpress-sidebar ul li a 								{ line-height: 21px;  }
-.nxs-wordpress-sidebar ul li a:hover 						{ text-decoration: underline; }
+.nxs-wordpress-sidebar .widget								{ margin-bottom: 30px; }
+.nxs-wordpress-sidebar ul li								{ margin-top: 10px; line-height: 1.625em; font-size: 15px; }
+.nxs-wordpress-sidebar li ul 								{ list-style: square; margin-left: 16px; }
 
 /* SIDEBAR & WORDPRESS WIDGETS 
 ---------------------------------------------------------------------------------------------------- */
@@ -2213,9 +2211,6 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 /* ACCORDION
 ---------------------------------------------------------------------------------------------------- */
 
-
-
-
 /* WOOCOMMERCE
 ---------------------------------------------------------------------------------------------------- */
 
@@ -2297,8 +2292,14 @@ h3#order_review_heading,
 
 /* WOOCOMMERCE CART PAGE 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-woocartpage .shop_table .nxs-image							{ min-width: 40px; }
+.nxs-woocartpage .shop_table .nxs-image						{ min-width: 40px; }
 
+/* WOOCOMMERCE PRODUCT CATEGORIES 
+---------------------------------------------------------------------------------------------------- */
+li.cat-parent ul.children 									{ visibility: hidden; opacity: 0; transition: opacity 0.5s ease-out; }
+li.cat-parent:hover ul.children 							{ visibility: visible; opacity: 1; }
+li.cat-parent ul.children li 								{ margin: 0px; line-height: 0px; visibility: hidden; transition: line-height 0.5s ease-out; }
+li.cat-parent:hover ul.children li 							{ margin-top: 10px; line-height: 1.625em; visibility: visible; }
 
 /* DEFAULT NT BUTTONS
 ---------------------------------------------------------------------------------------------------- */
