@@ -996,11 +996,12 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 /* QUOTE
 ---------------------------------------------------------------------------------------------------- */
 .nxs-quote .nxs-icon-quotes-left							{ font-size: 80px; top: -20px; left: -10px; position: absolute; opacity: 0.08; }
-.nxs-quote span.quote 										{ line-height: 1.625em; font-style: italic; text-align: center; }
+.nxs-quote span.quote 										{ font-style: italic; text-align: center; }
 .nxs-quote p span.source									{ float: right; }
 .nxs-quote p span.nxs-icon-star,
 .nxs-quote p span.nxs-icon-star2,
 .nxs-quote p span.nxs-icon-star3							{ font-size: 16px; color: #f3671c; }
+
 .nxs-quote .nxs-quote-fontsize14						{ font-size: 24px; }
 .nxs-quote .nxs-quote-fontsize13						{ font-size: 22px; }
 .nxs-quote .nxs-quote-fontsize12						{ font-size: 20px; }
@@ -2188,9 +2189,9 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .nxs-banner .banners-wrapper.banner-center 					{ text-align: center; }
 .nxs-banner .banners-wrapper.banner-right 					{ text-align: right; }
 
-.nxs-banner .image-wrapper 									{ display: inline-block; height: 11.8em; max-width: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; }
+.nxs-banner .image-wrapper 									{ display: inline-block; width: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; }
 .nxs-banner .image-wrapper:last-child						{ border-right: 0; }
-.nxs-banner .image-wrapper .nxs-table						{ height: 11.8em; margin: 0 auto; }
+.nxs-banner .image-wrapper .nxs-table						{ margin: 0 auto; }
 .nxs-banner .image-wrapper img	 							{ display: block; max-height: 100%; width: 100%; }
 
 .nxs-main .nxs-banner .image-wrapper 						{ border-right: 3.6em solid transparent; }
@@ -2260,8 +2261,11 @@ h3#order_review_heading,
 
 /* Thumbnails */
 .images .thumbnails img 									{ height: auto; }
-.images .thumbnails .nxs-image								{ margin-right: 5%; }
-.images .thumbnails a:nth-child(3) .nxs-image				{ margin-right: 0; }
+.default .images .thumbnails .nxs-image						{ width: 30%; margin-right: 5%; }
+.default .images .thumbnails a:nth-child(3n+3) .nxs-image	{ margin-right: 0; }
+.stretched .images .thumbnails .nxs-image					{ width: 16%; margin-right: 5%; }
+.stretched .images .thumbnails a:nth-child(5n+5) .nxs-image	{ margin-right: 0; }
+
 
 /* Rating */
 .woocommerce-product-rating 								{ float: right; }
@@ -2278,7 +2282,7 @@ h3#order_review_heading,
 .woocommerce-tabs .tabs .active span 						{ display: inline-block; position: absolute; top: 0; right: 0; }
 .woocommerce-tabs .panel ol									{ list-style: none; }
 .nxs-woominicart .nxs-image,
-.woocommerce-tabs .panel .comment .nxs-image				{ width: 40px !important; height: 40px !important; position: absolute; right: 0px; top: 0px; }
+.woocommerce-tabs .panel .comment .nxs-image				{ width: 40px !important; position: absolute; right: 0px; top: 0px; }
 .woocommerce-tabs .panel #reviews p.stars					{ padding-bottom: 0px; }
 					
 .stars a span.nxs-icon-star2								{ display: none; }
