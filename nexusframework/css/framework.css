@@ -2442,7 +2442,6 @@ h3#order_review_heading,
 .stretched .images .thumbnails .nxs-image					{ width: 16%; margin-right: 5%; }
 .stretched .images .thumbnails a:nth-child(5n+5) .nxs-image	{ margin-right: 0; }
 
-
 /* Rating */
 .woocommerce-product-rating 								{ float: right; }
 .star-rating 												{ position: relative; width: 5em; }
@@ -2452,6 +2451,10 @@ h3#order_review_heading,
 .star-rating span:third-child 								{ display: none; }
 .star-rating strong 										{ padding: 100px; }
 .woocommerce-review-link 									{ position: absolute; left: 0px; }
+
+/* Variations */
+.single_variation 											{ margin-bottom: 20px; }
+table.shop_attributes .nxs-default-p						{ padding-bottom: 0px; }
 
 /* Tabs */
 .woocommerce-tabs .tabs span.nxs-icon-arrow-right-light		{ display: none; }
@@ -2484,8 +2487,8 @@ h3#order_review_heading,
 .widget_product_categories ul											{ padding-left: 5px; }
 .widget_product_categories li.cat-parent ul.children 					{ visibility: hidden; opacity: 0; transition: opacity 0.5s ease-out; }
 .widget_product_categories li.cat-parent:hover ul.children 				{ visibility: visible; opacity: 1; }
-.widget_product_categories li.cat-parent ul.children li 				{ margin: 0px; line-height: 0px; visibility: hidden; transition: line-height 0.5s ease-out; }
-.widget_product_categories li.cat-parent:hover ul.children li 			{ margin-top: 10px; line-height: 1.625em; visibility: visible; }
+.widget_product_categories li.cat-parent ul.children li 				{ height: 0px; margin: 0px; line-height: 0px; visibility: hidden; transition: all 0.5s ease-out; }
+.widget_product_categories li.cat-parent:hover ul.children li 			{ height: 1.625em; margin-top: 10px; line-height: 1.625em; visibility: visible; }
 
 /* recently viewed / top rated */
 .woocommerce ul.product_list_widget										{ list-style: none; margin-left: 0px; }
@@ -2555,7 +2558,8 @@ span.reviewer 															{ margin-left: 5px; }
 
 /* cart */
 .widget_shopping_cart li												{ padding-left: 25px; margin-bottom: 20px; position: relative; }
-.widget_shopping_cart li a.remove										{ position: absolute; left: 0px; }
+.widget_shopping_cart li.empty											{ padding-left: 0px; }
+.widget_shopping_cart li a.remove										{ position: absolute; left: 0px; font-size: 0px; }
 .widget_shopping_cart li a.remove:before 								{ content: "\e165"; font-family: 'nexus'; font-size: 16px; position: absolute; }
 .widget_shopping_cart li img											{ position: absolute; right: 0px; width: 40px !important; }
 .widget_shopping_cart li span.quantity									{ display: block; }
