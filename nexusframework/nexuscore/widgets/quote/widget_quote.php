@@ -213,7 +213,7 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	// Text
 	if ($text != "") { 
 		$quote_fontsize = nxs_getcssclassesforlookup("nxs-quote-fontsize", $quote_textsize);
-		$text = $show_quote_icon . '<span class="' . $quote_fontsize . ' quote">' . $text . '</span>';	}
+		$text = $show_quote_icon . '<span class="nxs-default-p quote ' . $quote_fontsize . ' ">' . $text . '</span>';	}
 	
 	// Quote width
 	if ($quote_width != "")	{
