@@ -3049,7 +3049,8 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-inpagemenu:before			{ content: "\e445";	}
 .nxs-icon-sections:before			{ content: "\e446";	}
 .nxs-icon-inpage:before				{ content: "\e447";	}
-.nxs-icon-bike:before				{ content: "\e448";	}
+.nxs-icon-education:before			{ content: "\e448";	}
+.nxs-icon-bike:before				{ content: "\e449";	}
 
 
 /* Crappicons */
