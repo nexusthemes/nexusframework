@@ -288,6 +288,7 @@ function nxs_js_disabledocumentscrollwhenhoveringoverelement(e)
         up = delta > 0;
 
     var prevent = function() {
+    	nxs_js_log("no propagation (7)");
         ev.stopPropagation();
         ev.preventDefault();
         ev.returnValue = false;
@@ -1439,43 +1440,62 @@ function nxs_js_redirect_top(url)
 		
 		function nxs_js_handleplaceholderevent(eventname, e, placeholderdom)
 		{
+			if (!nxs_js_nxseditoractive)
+			{
+				nxs_js_log("ignoring event; editor is OFF");
+				return false;
+			}
+			
+			var isButton = e.target.nodeName == "BUTTON";
+			var isInput = e.target.nodeName == "INPUT";
+			var isTextArea = e.target.nodeName == "TEXTAREA";
+			var isInAnchor = e.target.nodeName == "A" || (jQuery(e.target).closest('a').length > 0);
+			var isHandledOutsideFramework = isButton || isTextArea || isInput || isInAnchor;
+			
+			nxs_js_log("isHandledOutsideFramework; " + isHandledOutsideFramework);
+			nxs_js_log("isButton? " + isButton);
+			nxs_js_log("isInput? " + isInput);
+			nxs_js_log("isTextArea? " + isTextArea);
+			nxs_js_log("isInAnchor? " + isInAnchor);
+			
+			if (isHandledOutsideFramework)
+			{
+				// if the event is a click, and the event is caused by an anchor that
+				// has a "regular" href (no onclick), then follow that href, instead
+				return false;
+			}
+			else
+			{
+				nxs_js_log("Event possibly handled by framework");
+				// proceed
+			}
+			
+			nxs_js_log("placeholderdom:");
+			nxs_js_log(placeholderdom);
+			
 			// handle incoming event for the placeholder,
 			// note; its possible (as it appears) the event is triggered by objects 
 			// outside the framework (such as WooCommerce). We therefore first ensure 
 			// we need to act upon this event (and absorb the event), or allow the 
 			// event to propagate further
 			
-			var istriggeredbywidget = jQ_nxs(e.target).hasClass("nxs-widget");
+			var istriggeredbywidget = jQ_nxs(e.target).closest(".nxs-widget").length > 0;
 			var istriggeredbycursor = jQ_nxs(e.target).hasClass("nxs-runtime-autocellsize");
 			var istriggeredbynexusframework = (istriggeredbywidget || istriggeredbycursor);
 			
-			if (nxs_js_nxseditoractive)
+			
+			if (istriggeredbynexusframework)
 			{
-				if (istriggeredbynexusframework)
-				{
-					// no further propagation of the click event...
-					e.stopPropagation();
-					nxs_js_popup_placeholder_handleclick(placeholderdom); 
-				}
-				else if (e.type == "click")
-				{
-					// no further propagation of the click event...
-					e.stopPropagation();
-					nxs_js_log(placeholderdom);
-					nxs_js_popup_placeholder_handleclick(placeholderdom); 
-				}
-				else
-				{
-					// we won't act upon this event as we don't know who are what
-					// triggered it. The event wil be logged to help debug problems,
-					// and it will propagate further to be handled by someone else's code
-					nxs_js_log("Widget detect an event that appears to be triggered outside the nxs framework. It propagates further:");
-					nxs_js_log(e);
-				}
+				nxs_js_log("no propagation (1)");
+				// no further propagation of the click event...
+				e.stopPropagation();
+				nxs_js_popup_placeholder_handleclick(placeholderdom); 
 			}
 			else
 			{
-				//
+				// we won't act upon this event as we don't know who are what
+				// triggered it. The event wil be logged to help debug problems,
+				// and it will propagate further to be handled by someone else's code
 				nxs_js_log("Widget detect an event that appears to be triggered outside the nxs framework. It propagates further:");
 				nxs_js_log(e);
 			}
@@ -1485,13 +1505,6 @@ function nxs_js_redirect_top(url)
 		{
 			if (nxs_js_userhasadminpermissions())
 			{
-				jQ_nxs("a").unbind("click.reregister");
-				jQ_nxs("a").bind("click.reregister", function(e) 
-				{
-					//do something
-					e.stopPropagation();
-				})
-				
 				jQ_nxs("input").unbind("click.reregister");
 				jQ_nxs("input").bind("click.reregister", function(e) 
 				{
@@ -1499,6 +1512,7 @@ function nxs_js_redirect_top(url)
 					{
 						// if the editor is on, we don't want events in input elements
 						// to traverse
+						nxs_js_log("no propagation (4)");
 				  	e.stopPropagation();
 				  }
 				  else
@@ -1508,7 +1522,7 @@ function nxs_js_redirect_top(url)
 				})
 				
 				// allow user to click on any widget within an editable section
-				jQ_nxs(".nxs-widgets-editable .nxs-placeholder").each
+				jQ_nxs(".nxs-widgets-editable .nxs-placeholder-list > .nxs-placeholder").each
 				(
 					function(index, placeholderelement)
 					{
@@ -1519,7 +1533,8 @@ function nxs_js_redirect_top(url)
 							"click.reregister", 
 							function(e)
 							{
-								nxs_js_handleplaceholderevent('click', e, this);
+								var result = nxs_js_handleplaceholderevent('click', e, this);
+								return true;
 							}
 						);
 						
@@ -1536,25 +1551,6 @@ function nxs_js_redirect_top(url)
 					}
 				);
 				
-				jQ_nxs(".nxs-no-click-propagation").unbind("click.reregister");
-				jQ_nxs(".nxs-no-click-propagation").bind
-				(
-					"click.reregister", 
-					function(e) 
-					{
-						if (nxs_js_nxseditoractive)
-						{
-							// if the editor is on, we don't want events in input elements
-							// to traverse
-					  	e.stopPropagation();
-					  }
-					  else
-				  	{
-				  		// if the editor is off we allow these events to be handled
-				  	}
-					}
-				);
-				
 				//
 				// als een gebruiker clickt op het 'verplaats' icoon
 				// bij een placeholder moet het click event worden geabsorbeerd
@@ -1564,6 +1560,7 @@ function nxs_js_redirect_top(url)
 				{
 					// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
 					// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
+					nxs_js_log("no propagation (6)");
 					e.stopPropagation();
 					
 					nxs_js_alert(nxs_js_gettrans('Tip to move widget'));
