@@ -41,7 +41,7 @@
 /* Both the rows and individual placeholders have their fixed border width translated into ems. From 36px to 3.6px */
 .nxs-row1 															{ border-left: 3.6em solid transparent; clear: both; }
 .nxs-placeholder 													{ border-right: 3.6em solid transparent; }
-.nxs-placeholder.nxs-column-lastinrow			{ border-right: 0em solid transparent; }
+.nxs-column-lastinrow												{ border-right: 0em solid transparent; }
 
 .nxs-fullwidth .nxs-row1											{ width: 96em; border-left: 0px; }
 .nxs-fullwidth .nxs-one-whole										{ width: 96em !important; }
