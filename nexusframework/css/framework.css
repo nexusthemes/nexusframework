@@ -2095,7 +2095,7 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 ---------------------------------------------------------------------------------------------------- */
 .fb-like-box, 
 .fb-like-box > span,
-.fb-like-box iframe 										{ width: 100% !important; }
+.fb-like-box iframe											{ width: 100% !important; }
 
 /* GOOGLE DOCS
 ---------------------------------------------------------------------------------------------------- */
@@ -2392,7 +2392,6 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
-
 .woocommerce form p  										{ clear: both; font-size: 15px; margin-bottom: 10px; }
 .woocommerce p.form-row										{ margin-bottom: 0px; }
 .woocommerce p.form-row label 								{ width: 20%; display: block; float: left; line-height: 30px; }
@@ -2400,6 +2399,7 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .nxs-form .select2-choice 									{ font-size: 15px; padding: .4em !important; background-color: #fff !important; box-shadow: 0px 0px 0px 1px gray inset; margin-bottom: 10px; }
 .woocommerce form input[type=search],
 .woocommerce p.form-row input 								{ width: 80%; float: right; line-height: 30px; box-shadow: 0px 0px 0px 1px gray inset; -webkit-appearance: none; text-indent: 10px; }
+.woocommerce p.form-row input[type=submit]					{ box-shadow: none; }
 .woocommerce form input[type=search],
 .woocommerce .override p.form-row input 					{ width: 100%; float: none; margin-bottom: 10px; }
 .woocommerce form input[type=submit]						{ width: auto !important; text-indent: 0px; }
@@ -2426,6 +2426,8 @@ h3#order_review_heading,
 
 /* WOOCOMMERCE PRODUCT DETAIL 
 ---------------------------------------------------------------------------------------------------- */
+.nxs-subplaceholder 										{ position: relative; border-right: 3.6em solid transparent; float: left; margin-bottom: 30px; }
+
 /* Sale */
 .woocommerce .onsale 										{ text-transform: uppercase; display: inline-block;	font-size: 15px; }
 
@@ -2477,6 +2479,10 @@ table.shop_attributes .nxs-default-p						{ padding-bottom: 0px; }
 /* WOOCOMMERCE CART PAGE 
 ---------------------------------------------------------------------------------------------------- */
 .nxs-woocartpage .shop_table .nxs-image						{ min-width: 40px; }
+
+/* WOOCOMMERCE CHECKOUT
+---------------------------------------------------------------------------------------------------- */
+.woocommerce .nxs-default-p span .nxs-default-p				{ padding-bottom: 0px; }
 
 /* WOOCOMMERCE SIDEBAR WIDGETS
 ---------------------------------------------------------------------------------------------------- */
@@ -2566,35 +2572,6 @@ span.reviewer 															{ margin-left: 5px; }
 .widget_shopping_cart p.total											{ margin-bottom: 20px; }
 .widget_shopping_cart p.buttons .wc-forward								{ display: block; margin-top: 10px; padding-left: 25px; position: relative;}
 .widget_shopping_cart p.buttons .wc-forward:before 						{ content: "\e201"; font-family: 'nexus'; font-size: 16px; position: absolute; left: 0px; }
-
-/* Generic WooCommerce Buttons 
-.buttons a {
-	display: inline-block;
-	box-shadow: inset 0 0 0 1px #DFDFDF;
-	font-size: 12px;
-	padding: 6px 10px;
-	margin-right: 20px;
-	border-radius: 3px;
-	background-color: #F1F1F1;
-	background-image: linear-gradient(top,#F9F9F9,#ECECEC);
-	background-image: -o-linear-gradient(top,#F9F9F9,#ECECEC);
-	background-image: -ms-linear-gradient(top,#F9F9F9,#ECECEC);
-	background-image: -moz-linear-gradient(top,#F9F9F9,#ECECEC);
-	background-image: -webkit-linear-gradient(top,#F9F9F9,#ECECEC);
-	background-image: -webkit-gradient(linear,left top,left bottom,from(#F9F9F9),to(#ECECEC));
-}
-.buttons a:hover,
-.buttons a:hover input								{ cursor: pointer; }
-.buttons a:hover span								{ font-size: 48px !important; }
-.buttons a input										{ line-height: 48px; background: none; }
-
-.buttons a.main 										{ background: #72B12F; box-shadow: inset 0 0 0 1px #3e601a; }
-.buttons a.main input,
-.buttons a.main span									{ color: white; text-shadow: 1px 1px 1px #3e601a; }
-.buttons a.main:hover								{ background: white; box-shadow: inset 0 0 0 1px #DFDFDF; }
-.buttons a.main:hover input,
-.buttons a.main:hover span							{ color: #72B12F; text-shadow: none; }
-*/
 
 /* ICON FONTS
 ----------------------------------------------------------------------------------------------------
