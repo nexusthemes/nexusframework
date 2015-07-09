@@ -659,6 +659,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"towtruck",
 										"cartruck",
 										"boat",
+										"bike",
 										
 										/* Crappicons */
 										"landrover",
