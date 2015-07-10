@@ -698,7 +698,7 @@ html.nxs-pageslider p#nxs-copyright												{ padding-bottom: 60px; }
 /* HORIZONTAL NAVIGATION 
 ---------------------------------------------------------------------------------------------------- */
 div.nxs-menu-minified										{ display: none; }
-.right ul.nxs-menu.nxs-menu-minified             			{ float: left; }
+.right ul.nxs-menu.nxs-menu-minified             			{ float: left; width: 100%; }
 
 .nxs-menu .nxs-active > a                           		{ cursor: default; }
 .nxs-menu .nxs-inactive > a                         		{ cursor: pointer; }
@@ -1606,8 +1606,8 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-blog .nxs-image-wrapper.nxs-stretch					{ float: none; margin-bottom: 15px; }
 
 /* minimal icon */
-.nxs-blog .nxs-blog-minimal ul li 							{ line-height: 1.625em; font-size: 15px; margin-top: 10px; }
-.nxs-blog .nxs-blog-minimal ul li span.font-icon			{ font-size: 16px !important; margin-right: 5px; }
+.nxs-blog .nxs-blog-minimal ul li 							{ line-height: 1.625em; font-size: 15px; margin-top: 10px; padding-left: 20px; position: relative; }
+.nxs-blog .nxs-blog-minimal ul li span.font-icon			{ font-size: 16px !important; position: absolute; left: 0px; top: 3px; }
 
 /* minimal image */
 .nxs-blog .minimal-image-entry								{ margin-bottom: 10px; }
