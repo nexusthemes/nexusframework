@@ -2489,6 +2489,9 @@ table.shop_attributes .nxs-default-p						{ padding-bottom: 0px; }
 /* WOOCOMMERCE CHECKOUT
 ---------------------------------------------------------------------------------------------------- */
 .woocommerce .nxs-default-p span .nxs-default-p				{ padding-bottom: 0px; }
+.nxs-woocheckout li.payment_method_paypal img				{ width: 160px; float: right; }
+.nxs-woocheckout li.payment_method_paypal a					{ margin-left: 10px; }
+
 
 /* WOOCOMMERCE SIDEBAR WIDGETS
 ---------------------------------------------------------------------------------------------------- */
