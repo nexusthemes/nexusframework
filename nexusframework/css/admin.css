@@ -307,9 +307,6 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 /* DEFINITION LISTS */
 .nxs-definitionlistitemtext-item h4					{ width: 100%; }
 
-/* DEFAULT POPUP ACTIVE STATE */
-.nxs-admin-wrap .active								{ box-shadow: 0px 0px 0px 3px red; }
-
 /* DEFAULT POPUP COLOR PICKER */
 .nxs-admin-wrap .color-sample						{ margin-right: 10px; padding: 10px; }
 .nxs-admin-wrap .color-sample:hover					{ cursor: pointer; }
