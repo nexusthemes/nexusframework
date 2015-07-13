@@ -41,7 +41,7 @@
 /* Both the rows and individual placeholders have their fixed border width translated into ems. From 36px to 3.6px */
 .nxs-row1 															{ border-left: 3.6em solid transparent; clear: both; }
 .nxs-placeholder 													{ border-right: 3.6em solid transparent; }
-.nxs-placeholder.nxs-column-lastinrow			{ border-right: 0em solid transparent; }
+.nxs-column-lastinrow												{ border-right: 0em solid transparent; }
 
 .nxs-fullwidth .nxs-row1											{ width: 96em; border-left: 0px; }
 .nxs-fullwidth .nxs-one-whole										{ width: 96em !important; }
@@ -353,7 +353,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 #nxs-supersized .caption-aligner .nxs-placeholder.nxs-inline		{ display: table-cell !important; }
 .slidecaption-container												{ margin: 0px !important; } 
 #nxs-supersized.has-height,
-.caption-aligner													{ height: 400px !important; }
+#nxs-supersized.has-height.caption-aligner		{ height: 400px !important; }
 .caption-aligner													{ width: 440px !important; border-radius: 0px; padding: 0px; }
 .fixed #slidecaption .nxs-title										{ font-size: 30px !important; }
 .fixed #slidecaption p												{ font-size: 17px !important; }
@@ -908,4 +908,12 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 @media only screen and ( max-width: 959px )	{
 .woocommerce p.form-row label										{ width: 100%; }
 .woocommerce p.form-row input 										{ width: 100%; float: none; margin-bottom: 10px; }
+}
+@media only screen and ( max-width: 959px )	{
+.woocommerce-tabs .tabs-wrapper										{ padding-bottom: 0px; }
+.woocommerce-tabs .panel-wrapper									{ padding-top: 0px; }
+}
+@media only screen and (max-width: 959px) {
+.nxs-one-third.nxs-placeholder { border-right: none; }
+	
 }

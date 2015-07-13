@@ -8,6 +8,7 @@ function nxs_webmethod_removerow() {
 
 	if ($postid == "") { nxs_webmethod_return_nack("postid not specified /nxs_webmethod_removerow/"); }
 	if ($rowid == "") { nxs_webmethod_return_nack("rowid not specified"); }
+	if ($rowindex == "") { nxs_webmethod_return_nack("rowindex not specified"); }
 
 	$result = array();
 
@@ -18,7 +19,25 @@ function nxs_webmethod_removerow() {
   $nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
 
 	$poststructure = nxs_parsepoststructure($postid);
-	$currentrow = $poststructure[$rowid];
+	$currentrow = $poststructure[$rowindex];
+	
+	$rowidaccordingtoindex = nxs_parserowidfrompagerow($currentrow);
+	if (isset($rowidaccordingtoindex))
+	{
+		if ($rowidaccordingtoindex == $rowid)
+		{
+			// ok
+		}
+		else
+		{
+			nxs_webmethod_return_nack("row not found");
+		}
+	}
+	else
+	{
+		// assumed ok (backwards compatibility)
+	}
+	
 	$content = $currentrow["content"];
 
 	// delete metadata of placeholders in row	
@@ -29,7 +48,7 @@ function nxs_webmethod_removerow() {
   }
 
 	// delete row
-	unset($poststructure[$rowid]);
+	unset($poststructure[$rowindex]);
 	$poststructure = array_values($poststructure);
 	nxs_storebinarypoststructure($postid, $poststructure);
 	

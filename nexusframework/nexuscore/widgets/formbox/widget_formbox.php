@@ -221,7 +221,35 @@ function nxs_widgets_formbox_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
-			),		
+			),	
+			
+			// TEXT
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Text", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			array(
+				"id" 				=> "text",
+				"type" 				=> "tinymce",
+				"label" 			=> nxs_l18n__("Text", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			array(
+				"id" 				=> "text_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Text alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),	
 			
 			// FORM CONFIGURATION
 			
@@ -538,6 +566,23 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	// Filler
 	$htmlfiller = nxs_gethtmlforfiller();
 	
+	/* TEXT
+	---------------------------------------------------------------------------------------------------- */
+	
+	// Text alignment
+	$text_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $text_alignment);
+	
+	// Text height (across paragraphs in the same row)
+	// This function does not fare well with CSS3 transitions targeting "all"
+	if ($text_heightiq != "") {
+		$heightiqprio = "p1";
+		$text_heightiqgroup = "text";
+		$textcssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
+	}
+	
+	// Text	
+	$textoutput = '<div class="nxs-text nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 ' . $text_alignment_cssclass . ' ' . $textcssclasses . '">' . $text . '</div>';
+	
 
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -620,6 +665,18 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		if ($title != "" || $icon != "") { 
 			echo $htmlfiller; 
 		}
+		
+		
+		/* Text and filler
+		----------------------------------------------------------------------------------------------------*/
+		echo $textoutput;
+		
+		if (
+			$text != "" ) { 
+			echo $htmlfiller; 
+		}
+		
+		
 		
 		echo "<div class='nxs-form'>";
 		
