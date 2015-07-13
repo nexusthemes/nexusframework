@@ -469,6 +469,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-margin-top-40											{ margin-top: -40px; }
 .nxs-margin-top-50											{ margin-top: -50px; }
 .nxs-margin-top-0											{ margin-top: 0px !important; }
+.nxs-margin-top3											{ margin-top: 3px; }
 .nxs-margin-top5 											{ margin-top: 5px !important; }
 .nxs-margin													{ margin-top: 10px; }
 .nxs-margin-top20 											{ margin-top: 20px; }
@@ -1036,7 +1037,8 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 
 /* SIDEBAR & WORDPRESS WIDGETS 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-wordpress-sidebar .widget								{ margin-bottom: 30px; }
+.nxs-wordpress-sidebar ul li.widget							{ margin-top: 30px; }
+.nxs-wordpress-sidebar ul li.widget:first-child				{ margin-top: 0px; }
 .nxs-wordpress-sidebar ul li								{ margin-top: 10px; line-height: 1.625em; font-size: 15px; }
 .nxs-wordpress-sidebar li ul 								{ list-style: square; margin-left: 20px; }
 
@@ -2429,7 +2431,7 @@ h3#order_review_heading,
 .nxs-subplaceholder 										{ position: relative; border-right: 3.6em solid transparent; float: left; margin-bottom: 30px; }
 
 /* Sale */
-.woocommerce .onsale 										{ text-transform: uppercase; display: inline-block;	font-size: 15px; }
+.woocommerce .onsale 										{ text-transform: uppercase; font-size: 15px; z-index: 100; }
 
 /* General */
 .woocommerce .summary,
@@ -2475,6 +2477,10 @@ table.shop_attributes .nxs-default-p						{ padding-bottom: 0px; }
 /* Related products */
 .upsells .nxs-text.nxs-default-p,
 .related .nxs-text.nxs-default-p							{ padding-bottom: 10px; }
+
+/* WOOCOMMERCE SHOP PAGE 
+---------------------------------------------------------------------------------------------------- */
+.nxs-wooprodlist mark										{ background-color: transparent; }
 
 /* WOOCOMMERCE CART PAGE 
 ---------------------------------------------------------------------------------------------------- */
