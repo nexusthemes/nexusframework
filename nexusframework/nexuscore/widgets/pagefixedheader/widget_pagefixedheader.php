@@ -8,6 +8,11 @@ function nxs_widgets_pagefixedheader_gettitle() {
 	return nxs_l18n__("Fixed header", "nxs_td");
 }
 
+// Unistyle
+function nxs_widgets_pagefixedheader_getunifiedstylinggroup() {
+	return "pagefixedheaderwidget";
+}
+
 function nxs_widgets_pagefixedheader_registerhooksforpagewidget($args)
 {	
 	$pagedecoratorid = $args["pagedecoratorid"]; 
@@ -198,6 +203,7 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_pagefixedheader_gettitle(),
 		"sheeticonid" => nxs_widgets_pagefixedheader_geticonid(),
+		"unifiedstyling" 	=> array("group" => nxs_widgets_pagefixedheader_getunifiedstylinggroup(),),
 		"footerfiller" => true,
 		"fields" => array
 		(
@@ -221,6 +227,7 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 				"post_type" 			=> "nxs_header",
 				"buttontext" 			=> nxs_l18n__("Style header", "nxs_td"),
 				"emptyitem_enable"		=> false,
+				"unistylablefield"		=> true
 			),
 
 			array
@@ -228,6 +235,7 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 				"id" 				=> "widescreen",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Widescreen", "nxs_td"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -236,7 +244,8 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Shadow", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Adds a shadow at the bottom of the fixed header", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("shadow")
+				"dropdown" 			=> nxs_style_getdropdownitems("shadow"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -245,7 +254,8 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Display", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Display inline will be ignored if a top scroll till visible is given.", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("fixedheader_display")
+				"dropdown" 			=> nxs_style_getdropdownitems("fixedheader_display"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -254,7 +264,8 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Top scroll till visible", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Display inline will be ignored if a top scroll till visible is given.", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("offset")
+				"dropdown" 			=> nxs_style_getdropdownitems("offset"),
+				"unistylablefield"	=> true
 			),
 
 			array(
@@ -273,6 +284,8 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 			),
 		)
 	);
+
+	nxs_extend_widgetoptionfields($options, array("unistyle"));
 	
 	return $options;
 }
@@ -383,6 +396,10 @@ function nxs_widgets_pagefixedheader_initplaceholderdata($args)
 
 	$args['display'] = "";
 	$args['shadow'] = "";
+
+	// current values as defined by unistyle prefail over the above "default" props
+	$unistylegroup = nxs_widgets_pagefixedheader_getunifiedstylinggroup();
+	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 		
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
