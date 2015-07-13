@@ -1817,6 +1817,14 @@ function nxs_js_redirect_top(url)
 			return result;
 		}
 		
+		// returns the identifier of the row
+		function nxs_js_getrowid(element)
+		{
+			var row = jQ_nxs(element).closest('.nxs-row');	// bijv. nxs-pagerow-prid1182682337
+			var result = jQ_nxs(row).attr("id").split("-")[2];
+			return result;
+		}
+		
 		// returns the element of the dom element within the container for the specified postid and rowindex
 		function nxs_js_getrowelement(postid, rowindex)
 		{
@@ -2701,11 +2709,12 @@ function nxs_js_redirect_top(url)
 		// after asking for confirmation. This also updates the dom
 		function nxs_js_row_remove(domelement)
 		{
-            //
+      //
 			var postid = nxs_js_findclosestpostid_for_dom(domelement);
 			var rowindex = nxs_js_getrowindex(domelement);
+			var rowid = nxs_js_getrowid(domelement);
 			var closestrow = jQ_nxs(domelement).closest('.nxs-row'); // find the row that is going to be deleted
-            var widgetid = jQ_nxs(closestrow).find('.nxs-widget').attr('id');
+      var widgetid = jQ_nxs(closestrow).find('.nxs-widget').attr('id');
 			var num_of_menus_in_row = jQ_nxs(closestrow).find('.nxs-menu').length; // find if there is a menu in the specific row that is going to be deleted
 			var firstconfirm = confirm(nxs_js_gettrans('Are you sure you want to delete this row?'));
 				
@@ -2736,8 +2745,9 @@ function nxs_js_redirect_top(url)
 							"action": "nxs_ajax_webmethods",
 							"webmethod": "removerow",
 							"postid": postid,
-							"rowid": rowindex,
-                            "widgetid": widgetid
+							"rowindex": rowindex,
+							"rowid": rowid,
+              "widgetid": widgetid
 						},
 						cache: false,
 						dataType: 'JSON',
@@ -2763,9 +2773,11 @@ function nxs_js_redirect_top(url)
 									});
 								}
 								else
-								{	
+								{
+									nxs_js_log("row deleted succesfully, index: rowindex:" + rowindex);
+									
 									// update GUI
-									if (rowindex == 0)
+									if (false) // rowindex == 0)
 									{
 										var waitgrowltokenc = nxs_js_alert_wait_start(nxs_js_gettrans('Refreshing page'));
 										
@@ -2773,7 +2785,8 @@ function nxs_js_redirect_top(url)
 										// regel daaronder (die nu dus de eerste regel is
 										// geworden) refreshen, voor nu even eenvoudig opgelost
 										// door het hele editable deel te verversen
-										var containerElement = jQ_nxs(".nxs-post-" + postid)[0];		
+										var containerElement = jQ_nxs(".nxs-post-" + postid)[0];
+										
 										nxs_js_refreshallpagerows(postid, containerElement, function()
 										{
 											nxs_js_alert_wait_finish(waitgrowltokenc);
@@ -6116,7 +6129,7 @@ function nxs_js_getcookie(c_name)
 
 function nxs_js_tagcolumns()
 {
-	nxs_js_log("tagging columns...");
+	//nxs_js_log("tagging columns...");
 	jQuery.each
 	(
 		jQ_nxs(".nxs-placeholder-list"), function(index, listelement)
@@ -6129,12 +6142,12 @@ function nxs_js_tagcolumns()
 			if (columnmax == -1)
 			{
 				// if not found
-				nxs_js_log("fallback :)");
+				// nxs_js_log("fallback :)");
 				columnmax = placeholders.length;
 			}
 			else
 			{
-				nxs_js_log("got it :)");
+				// nxs_js_log("got it :)");
 			}
 			
 			jQuery.each
