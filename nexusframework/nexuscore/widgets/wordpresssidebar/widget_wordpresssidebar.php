@@ -1,19 +1,73 @@
 <?php
 
-function nxs_widgets_wordpresssidebar_geticonid()
-{
+function nxs_widgets_wordpresssidebar_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
 	return "nxs-icon-" . $widget_name;
 }
 
-function nxs_widgets_wordpresssidebar_gettitle()
-{
-	return nxs_l18n__("WordPress sidebar", "nxs_td");
+// Setting the widget title
+function nxs_widgets_wordpresssidebar_gettitle() {
+	return nxs_l18n__("WP Backend Content Area", "nxs_td");
 }
 
-// rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
-// hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
-// het bewerken van de placeholder kan opstarten
+// Unistyle
+function nxs_widgets_wordpresssidebar_getunifiedstylinggroup() {
+	return "wpsidebarwidget";
+}
+
+// Unicontent
+function nxs_widgets_wordpresssidebar_getunifiedcontentgroup() {
+	return "wpsidebarwidget";
+}
+
+/* WIDGET STRUCTURE
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------- */
+
+// Define the properties of this widget
+function nxs_widgets_wordpresssidebar_home_getoptions($args) 
+{
+	// CORE WIDGET OPTIONS
+	
+	$options = array
+	(
+		"sheettitle" 		=> nxs_widgets_wordpresssidebar_gettitle(),
+		"sheeticonid" 		=> nxs_widgets_wordpresssidebar_geticonid(),
+		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/wordpresssidebar-widget/"),
+		"unifiedstyling" 	=> array("group" => nxs_widgets_wordpresssidebar_getunifiedstylinggroup(),),
+		"unifiedcontent" 	=> array("group" => nxs_widgets_wordpresssidebar_getunifiedcontentgroup(),),
+		"fields" => array
+		(
+			// TITLE
+			
+			array(
+				"id" 				=> "wpsidebarid",
+				"type" 				=> "input",
+				"visibility" 		=> "hidden",
+				"label" 			=> nxs_l18n__("WP sidebar ID", "nxs_td"),
+			),
+		
+			array(
+				"id" 				=> "wpsidebarid_visualization",
+				"altid" 			=> "wpsidebarid",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_wordpresssidebar_wpsidebarid_popupcontent",
+				"label" 			=> nxs_l18n__("WP backend widget area", "nxs_td"),
+			),	
+		)
+	);
+	
+	nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
+	
+	return $options;
+}
+
+/* WIDGET HTML
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------- */
+
 function nxs_widgets_wordpresssidebar_render_webpart_render_htmlvisualization($args)
 {
 	//
@@ -87,176 +141,51 @@ function nxs_widgets_wordpresssidebar_render_webpart_render_htmlvisualization($a
 	return $result;
 }
 
-function nxs_widgets_wordpresssidebar_home_rendersheet($args)
+function nxs_wordpresssidebar_wpsidebarid_popupcontent($optionvalues, $args, $runtimeblendeddata) 
 {
-	//
+	extract($optionvalues);
 	extract($args);
-	
-	if ($postid == "")
-	{
-		nxs_webmethod_return_nack("postid not set in context (nxs_ptrtph)");
-	}
-	if ($placeholderid == "")
-	{
-		nxs_webmethod_return_nack("placeholderid not set in context (nxs_ptrtph)");
-	}
-	
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
-	
-	$wpsidebarid = $temp_array['wpsidebarid'];
+	extract($runtimeblendeddata);
 
-	// clientpopupsessiondata bevat key values van de client side, deze overschrijven reeds bestaande variabelen
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
-
-	$result = array();
-	$result["result"] = "OK";
+	$value = $$altid;	// $id is the parametername, $$id is the value of that parameter
 
 	nxs_ob_start();
-
 	?>
-	
-    <div class="nxs-admin-wrap">
-      <div class="block">
-      
-       	<?php nxs_render_popup_header(nxs_l18n__("WordPress sidebar[nxs:title]", "nxs_td")); ?>
-
-				<div class="nxs-popup-content-canvas-cropper">
-					<div class="nxs-popup-content-canvas">
-			
-						<div class="content2">
-					    <div class="box">
-					      <div class="box-title">
-					          <h4><?php nxs_l18n_e("Area[nxs:heading]", "nxs_td"); ?></h4>
-					       </div>
-					      <div class="box-content">
-					      	<select id='wpsidebarid' onchange="nxs_js_popup_setsessiondata('wpsidebarid', jQuery(this).val());">
-					      		<option <?php if ($wpsidebarid=='1') echo "selected='selected'"; ?> value='1'>WordPress Backend Widget area 1</option>
-					      		<option <?php if ($wpsidebarid=='2') echo "selected='selected'"; ?> value='2'>WordPress Backend Widget area 2</option>
-					      		<option <?php if ($wpsidebarid=='3') echo "selected='selected'"; ?> value='3'>WordPress Backend Widget area 3</option>
-					      		<option <?php if ($wpsidebarid=='4') echo "selected='selected'"; ?> value='4'>WordPress Backend Widget area 4</option>
-					      		<option <?php if ($wpsidebarid=='5') echo "selected='selected'"; ?> value='5'>WordPress Backend Widget area 5</option>
-					      		<option <?php if ($wpsidebarid=='6') echo "selected='selected'"; ?> value='6'>WordPress Backend Widget area 6</option>
-					      		<option <?php if ($wpsidebarid=='7') echo "selected='selected'"; ?> value='7'>WordPress Backend Widget area 7</option>
-					      		<option <?php if ($wpsidebarid=='8') echo "selected='selected'"; ?> value='8'>WordPress Backend Widget area 8</option>
-					      	</select>
-					      </div>
-					    </div>
-					    <div class="nxs-clear"></div>
-					  </div> <!--END content-->	
-					  
-					  <div class="content2">
-					    <div class="box">
-					      <div class="box-title">
-					          <h4><?php nxs_l18n_e("Styling", "nxs_td"); ?></h4>
-					       </div>
-					      <div class="box-content">
-					      	<a href='#' onclick='nxs_js_popup_navigateto("backgroundstyle"); return false;'>Styling</a>
-					      </div>
-					    </div>
-					    <div class="nxs-clear"></div>
-					  </div> <!--END content-->	
-					  
-		      
-			    </div>
-			  </div>
-		      
-	      <div class="content2">
-          <div class="box">
-            <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Save[nxs:button]", "nxs_td"); ?></a>
-            <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:button]", "nxs_td"); ?></a>
-            <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:button]", "nxs_td"); ?></a>
-	         </div>
-          <div class="nxs-clear margin"></div>
-	      </div> <!--END content-->
-  	
-	    </div>
-	  </div>
-
-  <script type='text/javascript'>
-				
-		function nxs_js_savegenericpopup()
-		{
-			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQ_nxs.ajax
-			(
-				{
-					type: 'POST',
-					data: 
-					{
-						"action": "nxs_ajax_webmethods",
-						"webmethod": "updateplaceholderdata",
-						"placeholderid": "<?php echo $placeholderid;?>",
-						"postid": "<?php echo $postid;?>",
-						"placeholdertemplate": "wordpresssidebar",
-						"wpsidebarid": jQuery('#wpsidebarid').val()
-					},
-					dataType: 'JSON',
-					url: ajaxurl, 
-					success: function(response) 
-					{
-						nxs_js_log(response);
-						if (response.result == "OK")
-						{
-							// update UI, the 'current' id will be overriden because null is specified as third parameter
-							
-							nxs_js_rerender_row_for_placeholder("<?php echo $postid;?>", "<?php echo $placeholderid;?>");
-							
-							// close the pop up
-							nxs_js_closepopup_unconditionally();
-						}
-						else
-						{
-							nxs_js_popup_notifyservererror();
-							nxs_js_log(response);
-						}
-					},
-					error: function(response)
-					{
-						nxs_js_popup_notifyservererror();
-						nxs_js_log(response);
-					}										
-				}
-			);
-		}
-		
-		function nxs_js_execute_after_popup_shows()
-		{
-			
-		}
-		
-	</script>
-  
-
+	<select onchange="jQuery('#<?php echo $altid; ?>').val(jQuery(this).val()); nxs_js_popup_sessiondata_make_dirty();">
+		<option <?php if ($value=='1') echo "selected='selected'"; ?> value='1'>WordPress Backend Widget area 1</option>
+		<option <?php if ($value=='2') echo "selected='selected'"; ?> value='2'>WordPress Backend Widget area 2</option>
+		<option <?php if ($value=='3') echo "selected='selected'"; ?> value='3'>WordPress Backend Widget area 3</option>
+		<option <?php if ($value=='4') echo "selected='selected'"; ?> value='4'>WordPress Backend Widget area 4</option>
+		<option <?php if ($value=='5') echo "selected='selected'"; ?> value='5'>WordPress Backend Widget area 5</option>
+		<option <?php if ($value=='6') echo "selected='selected'"; ?> value='6'>WordPress Backend Widget area 6</option>
+		<option <?php if ($value=='7') echo "selected='selected'"; ?> value='7'>WordPress Backend Widget area 7</option>
+		<option <?php if ($value=='8') echo "selected='selected'"; ?> value='8'>WordPress Backend Widget area 8</option>
+	</select>
 	<?php
-	
-	$html = nxs_ob_get_contents();
+	$result = nxs_ob_get_contents();
 	nxs_ob_end_clean();
-
-	$result["html"] = $html;
-	
 	return $result;
 }
 
-//
-// wordt aangeroepen bij het opslaan van data van deze placeholder
-//
-function nxs_widgets_wordpresssidebar_updateplaceholderdata($args)
+function nxs_widgets_wordpresssidebar_initplaceholderdata($args)
 {
 	extract($args);
-	
-	$temp_array = array();
-	
-	// its required to also set the 'type' (used when dragging an item from the toolbox to existing placeholder)
-	$temp_array['type'] = 'wordpresssidebar';
-	$temp_array['wpsidebarid'] = $wpsidebarid; 	// there's no need of a globalid for this attribute
 
-	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $temp_array);
+	$args['wpsidebarid'] = "1";
+	
+	// current values as defined by unistyle prefail over the above "default" props
+	$unistylegroup = nxs_widgets_wordpresssidebar_getunifiedstylinggroup();
+	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 
+	// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_wordpresssidebar_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
+		
+	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
+	
 	$result = array();
 	$result["result"] = "OK";
 	
 	return $result;
 }
-
 ?>
