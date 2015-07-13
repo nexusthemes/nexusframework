@@ -389,10 +389,12 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "pagebackground", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "pagepopup", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "pageslidetotop", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "pageinpagesectionmenu", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "pagefixedheader", "tags" => array("nexus"));
+
 		if ( $enableconceptualwidgets )
 		{
-			$result[] = array("widgetid" => "pagefixedheader", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "pageinpagesectionmenu", "tags" => array("nexus"));
+			
 		}
 		//$result[] = array("widgetid" => "pagevideo");
 		//$result[] = array("widgetid" => "pagegap");
@@ -566,10 +568,11 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("pagepopup");
 	nxs_ext_lazyload_widget("pageslidetotop");
 	nxs_ext_lazyload_widget("pageinpagesectionmenu");
+	nxs_ext_lazyload_widget("pagefixedheader");
 
 	if ($enableconceptualwidgets)
 	{
-		nxs_ext_lazyload_widget("pagefixedheader");
+		
 	}
 	//nxs_ext_lazyload_widget("pagevideo");
 	//nxs_ext_lazyload_widget("pagegap");
