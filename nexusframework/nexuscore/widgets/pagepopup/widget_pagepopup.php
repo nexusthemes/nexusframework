@@ -1,7 +1,7 @@
 <?php
 
 function nxs_widgets_pagepopup_geticonid() {
-	return "nxs-icon-stack";
+	return "nxs-icon-pagepopup";
 }
 
 function nxs_widgets_pagepopup_gettitle() {

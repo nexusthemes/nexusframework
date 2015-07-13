@@ -1,7 +1,7 @@
 <?php
 
 function nxs_widgets_pagefixedheader_geticonid() {
-	return "nxs-icon-pushpin";
+	return "nxs-icon-fixedheader";
 }
 
 function nxs_widgets_pagefixedheader_gettitle() {
@@ -21,17 +21,8 @@ function nxs_widgets_pagefixedheader_registerhooksforpagewidget($args)
 	// $pagevideo_metadata = nxs_getwidgetmetadata($nxs_pagefixedheader_pagedecoratorid, $nxs_pagefixedheader_pagedecoratorwidgetplaceholderid);
 	// $condition_enable = $pagevideo_metadata["condition_enable"];
 	
-	$enabled = true;
-	if (nxs_ishandheld())
-	{
-		$enabled = false;
-	}
-	
-	if ($enabled)
-	{
-		add_action('nxs_beforeend_head', 'nxs_widgets_pagefixedheader_beforeend_head');
-		add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pagefixedheader_betweenheadandcontent');
-	}
+	add_action('nxs_beforeend_head', 'nxs_widgets_pagefixedheader_beforeend_head');
+	add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pagefixedheader_betweenheadandcontent');
 }
 
 function nxs_widgets_pagefixedheader_beforeend_head()
