@@ -1386,14 +1386,11 @@ div.nxs-section h5 div.serperator-before,
 div.nxs-section h5 div.serperator-after {
 	position: relative;
 	display: inline-block;
-	top: 3px;
+	top: -3px;
 	width: 33%;
 	height: 15px;
-	background: url(../images/anchor-seperator.png) repeat-x;
+	border-bottom: 2px dashed;
 }
-
-div.nxs-section h5 div.serperator-before 			{ background-position: center left; }
-div.nxs-section h5 div.serperator-after 			{ background-position: center right; }
 
 /* ADMIN GROWL
 ------------------------------------------------------------------------------------------ */
