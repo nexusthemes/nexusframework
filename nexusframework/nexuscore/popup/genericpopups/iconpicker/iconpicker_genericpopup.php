@@ -22,9 +22,119 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 			<div class="nxs-popup-content-canvas-cropper">
 				<div class="nxs-popup-content-canvas">
 					
+					<!-- INTERFACE -->					
 					<div class="content2">
 						<div class="box">
-							<div class="box-title"><h4><?php nxs_l18n_e("General", "nxs_td"); ?></h4></div>
+							<div class="box-title"><h4><?php nxs_l18n_e("Interface", "nxs_td"); ?></h4></div>
+							<div class="box-content">
+								<ul>
+									<?php
+									$iconset = "nxs-icon";
+									$icontypes = array
+									(
+										"pagedecorator",
+										"cog",
+										"wand",
+										"wrench",
+										"crop",
+										"scissors",
+										"filer",
+										"image",
+										"sliderbox",
+										"music",
+										"musicnote",
+										"lightbulb",
+										"radio-checked",
+										"radio-unchecked",
+										"clock",
+										"brightness-medium",
+										"brightness-contrast",
+										"star",
+										"star3",
+										"star2",
+										"heart",
+										"socialsharing",
+										"heart-broken",
+										"tree",
+										"cloud",
+										"cloud-download",
+										"cloud-upload",
+										"network",
+										"earth",
+										"link",
+										"flag",
+										"connection",
+										"support",
+										"phone",
+										"address-book",
+										"notebook",
+										"contact",
+										"pushpin",
+										"googlemap",
+										"compass",
+										"map",
+										"alarm",
+										"bell",
+										"stopwatch1",
+										"calendar-2",
+										"calendar",
+										"cabinet",
+										"box-add",
+										"box-remove",
+										"undefined",
+										"upload",
+										"bubble",
+										"comments",
+										"quote",
+										"user",
+										"users",
+										"quotes-left",
+										"csv",
+										"logo",
+										"signpost",
+										"callout",
+										"blog",
+										"trash",
+										"palette",
+										"target",
+										"shield",
+										"lightning",
+										"switch",
+										"plug",
+										"eye",
+										"bars2",
+										"eye-blocked",
+										"contrast",
+										"book",
+										"books",
+										"busy",
+										"categories",
+										"tumbler",
+
+									);
+										
+									foreach($icontypes as $currenticontype)
+									{
+										$identification = $iconset . "-" . $currenticontype;
+										?>
+										<li class='nxs-float-left nxs-icon'>
+											<a href='#' onclick='nxs_js_selecticonitem("<?php echo $identification;?>"); return false;'>
+												<span class="<?php echo $identification; ?>"></span>
+											</a>
+										</li>
+										<?php
+									}
+									?>
+								</ul>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
+					
+					<!-- TEXT & DOCUMENTS -->
+					<div class="content2">
+						<div class="box">
+							<div class="box-title"><h4><?php nxs_l18n_e("Text & documents", "nxs_td"); ?></h4></div>
 							<div class="box-content">
 								<ul>
 									<?php
@@ -36,280 +146,23 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"pencil",
 										"quill",
 										"pen",
-										"blog",
-										"droplet",
-										"pagedecorator",
-										"image",
-										"sliderbox",
-										"gallerybox",
-										"music",
-										"film",
-										"camera-2",
-										"dice",
-										"pacman",
-										"spades",
-										"clubs",
-										"diamonds",
-										"callout",
-										"connection",
-										"book",
-										"books",
+										"folder",
 										"text",
 										"profile",
-										"bug",
-										"stack",
-										"folder",
-										"tag",
-										"tags",
-										"qrcode",
-										"ticket",
-										"cart",
-										"credit",
-										"support",
-										"phone",
-										"address-book",
-										"notebook",
-										"contact",
-										"pushpin",
-										"googlemap",
-										"compass",
-										"map",
-										"history",
-										"alarm",
-										"bell",
-										"stopwatch1",
-										"calendar-2",
-										"calendar",
-										"print",
-										"keyboard",
-										"screen",
-										"laptop",
-										"mobile",
-										"tablet",
-										"tv",
-										"cabinet",
-										"drawer",
-										"drawer2",
-										"box-add",
-										"box-remove",
-										"undefined",
-										"upload",
-										"undo",
-										"redo",
-										"undo2",
-										"redo2",
-										"forward",
-										"reply",
-										"quote",
-										"comments",
-										"user",
-										"users",
-										"quotes-left",
-										"busy",
-										"binoculars",
-										"search",
-										"zoom-out",
-										"zoom-in",
-										"expand",
-										"contract",
-										"expand2",
-										"contract2",
-										"key",
-										"lock2",
-										"lock",
-										"unlocked",
-										"equalizer",
-										"cog",
-										"wand",
-										"aid",
-										"pie",
-										"stats",
-										"bars",
-										"gift",
-										"trophy",
-										"glass",
-										"food",
-										"leaf",
-										"dashboard2",
-										"hammer",
-										"fire",
-										"lab",
-										"magnet",
-										"trash",
-										"briefcase",
-										"road",
-										"accessibility",
-										"target",
-										"shield",
-										"lightning",
-										"switch",
-										"plug",
-										"signup",
-										"list",
-										"list2",
-										"numbered-list",
-										"tree",
-										"cloud",
-										"cloud-download",
-										"cloud-upload",
-										"network",
-										"earth",
-										"link",
-										"flag",
-										"attachment",
-										"eye",
-										"brightness-medium",
-										"brightness-contrast",
-										"star",
-										"star3",
-										"star2",
-										"heart",
-										"socialsharing",
-										"heart-broken",
-										"thumbs-up",
-										"thumbs-up2",
-										"point-up",
-										"point-down",
-										"point-right",
-										"point-left",
-										"disk",
-										"wrench",
-										"shuffle",
-										"radio-checked",
-										"radio-unchecked",
-										"crop",
-										"scissors",
-										"filer",
-										"template",
-										"new-tab",
-										"embed",
-										"file-pdf",
-										"clock",
-										"headphones",
-										"loop",
-										"loop2",
-										"loop3",
-										"bubble",
 										"copy",
 										"copy2",
 										"copy3",
 										"paste",
-										"mobile2",
-										"bars2",
-										"eye-blocked",
-										"contrast",
-										"google-drive",
-										
-										/* Custom */
-										"header",
-										"sidebar",
-										"footer",
-										"subfooter",
-										"subheader",
-										"construction",
-										"dashboard",
+										"file-pdf",
+										"disk",
 										"article-new",
 										"article-overview",
-										"dollar",
-										"euro",
-										"pound",
-										"menucontainer",
-										"carousel",
-										"csv",
-										"htmlcustom",
-										"logo",
-										"signpost",
-										"wordpresstitle",
-										"faucet",
-										"hardhat",
-										"herring",
-										"horseshoe",
-										"matchresults",
-										"mug",
-										"oven",
-										"palette",
-										"paw",
-										"plunger",
-										"safe",
-										"referee",
-										"searchresults",
-										"vacuum-cleaner",
-										"window",
-										"yoga",
-										"zen",
-										"security-camera",
-										"dry-van",
-										"snowflake",
-										"flat-bed",
-										"trolley",
-										"spray-can",
-										"sofa",
-										"sewerage",
-										"toilet",
-										"tooth",
-										"shirt",
-										"commission",
-										"birthdaycake",
-										"blowtorch",
-										"fan",
-										"categories",
-										"tumbler",
-										"remove-sign",
-										"disabled",
 										"file2",
-										"move",
-										"ribbon",
-										"headset",
-										"mobilelove",
-										"hands",
-										"joint",
-										"pelvis",
-										"ear",
-										"spinal",
+										"wordpresstitle",
+										"attachment",
+										"signup",
 										"changecontent",
-										"firework",
-										"buildingblock",
-										"brakes",
-										"tire",
-										"brokenglass",
-										"steeringwheel",
-										"puzzle",
-										"googleanalytic",
-										"ghost",
-										"handshake",
-										"frontenddesign",
-										"ring",
-										"musicnote",
-										"mask",
-										"receptionbell",
-										"it",
-										"footsteps",
-										"golf",
-										"fuel",
-										"jumpstart",
-										"leather",
-										"iron",
-										"leftalign",
-										"centeralign",
-										"rightalign",
-										"topalign",
-										"middlealign",
-										"bottomalign",
-										"lightbulb",
-										"shovel",									
-										"fence",
-										"carpet",
-										"radiation",
-										"container",
-										"wreck",
-										"divemask",
-										"waves",
-										"oxygen",
-										"pagepopup",
-										"inpagemenu",
-										"sections",
-										"inpage",
-										"education",
+
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -329,23 +182,39 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						</div>
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
-                    
-                    <div class="content2">
+						
+					<!-- ORGANIZE -->
+					<div class="content2">
 						<div class="box">
-							<div class="box-title"><h4><?php nxs_l18n_e("Buildings", "nxs_td"); ?></h4></div>
+							<div class="box-title"><h4><?php nxs_l18n_e("Organize", "nxs_td"); ?></h4></div>
 							<div class="box-content">
 								<ul>
 									<?php
 									$iconset = "nxs-icon";
 									$icontypes = array
 									(
-										"home",
-										"hospital",
-										"office", 
-										"apartment",
-										"company",
-										"library", 
-										"warehouse",
+										"equalizer",
+										"list",
+										"list2",
+										"numbered-list",
+										"leftalign",
+										"centeralign",
+										"rightalign",
+										"topalign",
+										"middlealign",
+										"bottomalign",
+										"template",
+										"header",
+										"sidebar",
+										"footer",
+										"subfooter",
+										"subheader",
+										"dashboard",
+										"pagepopup",
+										"inpagemenu",
+										"sections",
+										"inpage",
+										"menucontainer",
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -365,7 +234,98 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						</div>
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
-                    
+
+					<!-- DEVICES -->
+                    <div class="content2">
+						<div class="box">
+							<div class="box-title"><h4><?php nxs_l18n_e("Devices", "nxs_td"); ?></h4></div>
+							<div class="box-content">
+								<ul>
+									<?php
+									$iconset = "nxs-icon";
+									$icontypes = array
+									(
+										"mobilelove",
+										"film",
+										"camera-2",
+										"keyboard",
+										"screen",
+										"laptop",
+										"frontenddesign",
+										"mobile",
+										"tablet",
+										"tv",
+										"print",
+										"headphones",
+										"headset",
+										"mobile2",
+										"security-camera",
+										"gallerybox",
+									);
+										
+									foreach($icontypes as $currenticontype)
+									{
+										$identification = $iconset . "-" . $currenticontype;
+										?>
+										<li class='nxs-float-left nxs-icon'>
+											<a href='#' onclick='nxs_js_selecticonitem("<?php echo $identification;?>"); return false;'>
+												<span class="<?php echo $identification; ?>"></span>
+											</a>
+										</li>
+										<?php
+									}
+									?>
+								</ul>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
+
+
+					<!-- COMMERCE -->
+					<div class="content2">
+						<div class="box">
+							<div class="box-title"><h4><?php nxs_l18n_e("Commerce", "nxs_td"); ?></h4></div>
+							<div class="box-content">
+								<ul>
+									<?php
+									$iconset = "nxs-icon";
+									$icontypes = array
+									(
+										"tag",
+										"tags",
+										"qrcode",
+										"ticket",
+										"cart",
+										"credit",
+										"dollar",
+										"euro",
+										"pound",
+										"pie",
+										"stats",
+										"bars",
+										"googleanalytic",
+									);
+										
+									foreach($icontypes as $currenticontype)
+									{
+										$identification = $iconset . "-" . $currenticontype;
+										?>
+										<li class='nxs-float-left nxs-icon'>
+											<a href='#' onclick='nxs_js_selecticonitem("<?php echo $identification;?>"); return false;'>
+												<span class="<?php echo $identification; ?>"></span>
+											</a>
+										</li>
+										<?php
+									}
+									?>
+								</ul>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
+
+                    <!-- CONTROLS -->
                     <div class="content2">
 						<div class="box">
 							<div class="box-title"><h4><?php nxs_l18n_e("Controls", "nxs_td"); ?></h4></div>
@@ -410,6 +370,15 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"volume-mute2",
 										"volume-decrease",
 										"volume-increase",
+										"search",
+										"searchresults",
+										"zoom-out",
+										"zoom-in",
+										"new-tab",
+										"embed",
+										"htmlcustom",
+										"stack",
+										"remove-sign",
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -429,7 +398,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						</div>
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
-                    
+                                        
+                    <!-- ARROWS -->
                     <div class="content2">
 						<div class="box">
 							<div class="box-title"><h4><?php nxs_l18n_e("Arrows", "nxs_td"); ?></h4></div>
@@ -469,6 +439,22 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"arrow-right-light",
 										"arrow-double-left-light",
 										"arrow-double-right-light",
+										"undo",
+										"redo",
+										"undo2",
+										"redo2",
+										"forward",
+										"reply",
+										"loop",
+										"loop2",
+										"loop3",
+										"history",
+										"expand",
+										"shuffle",
+										"contract",
+										"expand2",
+										"contract2",
+										"move",
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -488,7 +474,132 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						</div>
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
-                    
+					
+					<!-- GENERAL -->
+					<div class="content2">
+						<div class="box">
+							<div class="box-title"><h4><?php nxs_l18n_e("General", "nxs_td"); ?></h4></div>
+							<div class="box-content">
+								<ul>
+									<?php
+									$iconset = "nxs-icon";
+									$icontypes = array
+									(
+										"droplet",
+										"dice",
+										"pacman",
+										"spades",
+										"clubs",
+										"diamonds",
+										"bug",
+										"drawer",
+										"drawer2",
+										"binoculars",
+										"key",
+										"lock2",
+										"lock",
+										"unlocked",
+										"aid",
+										"gift",
+										"trophy",
+										"glass",
+										"food",
+										"leaf",
+										"hammer",
+										"fire",
+										"lab",
+										"magnet",
+										"briefcase",
+										"road",
+										"accessibility",
+										"thumbs-up",
+										"thumbs-up2",
+										"point-up",
+										"point-down",
+										"point-right",
+										"point-left",
+										
+										/* Custom */
+										"construction",
+										"carousel",
+										"faucet",
+										"hardhat",
+										"herring",
+										"horseshoe",
+										"matchresults",
+										"mug",
+										"oven",
+										"plunger",
+										"safe",
+										"referee",
+										"vacuum-cleaner",
+										"window",
+										"yoga",
+										"zen",
+										"snowflake",
+										"trolley",
+										"spray-can",
+										"sofa",
+										"sewerage",
+										"toilet",
+										"tooth",
+										"shirt",
+										"commission",
+										"birthdaycake",
+										"blowtorch",
+										"fan",
+										"disabled",
+										"ribbon",
+										"hands",
+										"joint",
+										"pelvis",
+										"ear",
+										"spinal",
+										"firework",
+										"buildingblock",
+										"puzzle",
+										"ghost",
+										"handshake",
+										"ring",
+										"mask",
+										"receptionbell",
+										"it",
+										"footsteps",
+										"golf",
+										"leather",
+										"iron",
+										"shovel",									
+										"fence",
+										"carpet",
+										"radiation",
+										"container",
+										"wreck",
+										"divemask",
+										"waves",
+										"oxygen",
+										"education",
+									);
+									
+										
+									foreach($icontypes as $currenticontype)
+									{
+										$identification = $iconset . "-" . $currenticontype;
+										?>
+										<li class='nxs-float-left nxs-icon'>
+											<a href='#' onclick='nxs_js_selecticonitem("<?php echo $identification;?>"); return false;'>
+												<span class="<?php echo $identification; ?>"></span>
+											</a>
+										</li>
+										<?php
+									}
+									?>
+								</ul>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
+
+					<!-- SOCIAL -->
                     <div class="content2">
 						<div class="box">
 							<div class="box-title"><h4><?php nxs_l18n_e("Social media", "nxs_td"); ?></h4></div>
@@ -518,6 +629,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"linkedin",
 										"pinterest",
 										"houzz",
+										"google-drive",
 										
 									);
 										
@@ -538,7 +650,106 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						</div>
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
+					
+					<!-- BUILDINGS -->
+					<div class="content2">
+						<div class="box">
+							<div class="box-title"><h4><?php nxs_l18n_e("Buildings", "nxs_td"); ?></h4></div>
+							<div class="box-content">
+								<ul>
+									<?php
+									$iconset = "nxs-icon";
+									$icontypes = array
+									(
+										"home",
+										"hospital",
+										"office", 
+										"apartment",
+										"company",
+										"library", 
+										"warehouse",
+									);
+										
+									foreach($icontypes as $currenticontype)
+									{
+										$identification = $iconset . "-" . $currenticontype;
+										?>
+										<li class='nxs-float-left nxs-icon'>
+											<a href='#' onclick='nxs_js_selecticonitem("<?php echo $identification;?>"); return false;'>
+												<span class="<?php echo $identification; ?>"></span>
+											</a>
+										</li>
+										<?php
+									}
+									?>
+								</ul>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
                     
+                    <!-- VEHICLES -->
+                    <div class="content2">
+						<div class="box">
+							<div class="box-title"><h4><?php nxs_l18n_e("Vehicles", "nxs_td"); ?></h4></div>
+							<div class="box-content">
+								<ul>
+									<?php
+									$iconset = "nxs-icon";
+									$icontypes = array
+									(									
+										"truck",
+										"car",
+										"airplane",
+										"train1",
+										"dry-van",
+										"flat-bed",
+										"truck3",
+										"taxi",
+										"carside",
+										"bus",
+										"rocket",
+										"rocket2",
+										"towtruck",
+										"cartruck",
+										"boat",
+										"bike",
+										"dry-van",
+										"flat-bed",
+										"fuel",
+										"jumpstart",
+										"brakes",
+										"tire",
+										"brokenglass",
+										"steeringwheel",
+										"dashboard2",
+										
+										/* Crappicons */
+										"landrover",
+										"mustang",
+										"toyota",
+										"truck2",
+									);
+										
+									foreach($icontypes as $currenticontype)
+									{
+										$identification = $iconset . "-" . $currenticontype;
+										?>
+										<li class='nxs-float-left nxs-icon'>
+											<a href='#' onclick='nxs_js_selecticonitem("<?php echo $identification;?>"); return false;'>
+												<span class="<?php echo $identification; ?>"></span>
+											</a>
+										</li>
+										<?php
+									}
+									?>
+								</ul>
+							</div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div> <!-- END content -->
+
+                    <!-- SMILIES -->
                     <div class="content2">
 						<div class="box">
 							<div class="box-title"><h4><?php nxs_l18n_e("Smilies", "nxs_td"); ?></h4></div>
@@ -581,6 +792,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
                     
+                    <!-- ANIMALS -->
                     <div class="content2">
 						<div class="box">
 							<div class="box-title"><h4><?php nxs_l18n_e("Animals", "nxs_td"); ?></h4></div>
@@ -614,7 +826,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"silverfish",
 										"caterpillar",
 										"beetle",
-										"bone",  
+										"bone",
+										"paw",  
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -634,58 +847,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 						</div>
 						<div class="nxs-clear"></div>
 					</div> <!-- END content -->
-                    
-                    <div class="content2">
-						<div class="box">
-							<div class="box-title"><h4><?php nxs_l18n_e("Vehicles", "nxs_td"); ?></h4></div>
-							<div class="box-content">
-								<ul>
-									<?php
-									$iconset = "nxs-icon";
-									$icontypes = array
-									(									
-										"truck",
-										"car",
-										"airplane",
-										"train1",
-										"dry-van",
-										"flat-bed",
-										"truck3",
-										"taxi",
-										"carside",
-										"bus",
-										"rocket",
-										"rocket2",
-										"towtruck",
-										"cartruck",
-										"boat",
-										"bike",
-										
-										/* Crappicons */
-										"landrover",
-										"mustang",
-										"toyota",
-										"truck2",
-									);
-										
-									foreach($icontypes as $currenticontype)
-									{
-										$identification = $iconset . "-" . $currenticontype;
-										?>
-										<li class='nxs-float-left nxs-icon'>
-											<a href='#' onclick='nxs_js_selecticonitem("<?php echo $identification;?>"); return false;'>
-												<span class="<?php echo $identification; ?>"></span>
-											</a>
-										</li>
-										<?php
-									}
-									?>
-								</ul>
-							</div>
-						</div>
-						<div class="nxs-clear"></div>
-					</div> <!-- END content -->
-                    
+                                        
+                    <!-- ZODIAC -->
                     <div class="content2">
 						<div class="box">
 							<div class="box-title"><h4><?php nxs_l18n_e("Zodiac signs", "nxs_td"); ?></h4></div>

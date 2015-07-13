@@ -130,20 +130,20 @@ function nxs_getwidgets_functions_AF($result, $args)
 	// BUSINESS RULES WIDGETS
 	
 	if ($nxsposttype == "busrulesset") {
-		$result[] = array("widgetid" => "busrulepostid");
-		$result[] = array("widgetid" => "busrulecategory");
-		$result[] = array("widgetid" => "busrulepostauthor");
-		$result[] = array("widgetid" => "busrulearchivetype");
-		$result[] = array("widgetid" => "busrulecatchall");
-		$result[] = array("widgetid" => "busrulehome");
-		$result[] = array("widgetid" => "busrule404");
-		$result[] = array("widgetid" => "busrulearchivecat");
-		$result[] = array("widgetid" => "busrulearchive");
-		$result[] = array("widgetid" => "busrulesearch");
-		$result[] = array("widgetid" => "busrulemaintenance");
-		$result[] = array("widgetid" => "busruleposttype");
-		$result[] = array("widgetid" => "busrulehaspostcontent");
-		$result[] = array("widgetid" => "busruleauthentication");		
+		$result[] = array("widgetid" => "busrulepostid", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulecategory", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulepostauthor", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulearchivetype", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulecatchall", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulehome", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrule404", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulearchivecat", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulearchive", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulesearch", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulemaintenance", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busruleposttype", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulehaspostcontent", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busruleauthentication", "tags" => array("nexus"));		
 	}
 	
 	if ($nxsposttype == "genericlist") {
@@ -158,7 +158,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 	}
 	
 	if ($nxsposttype == "subheader" || $nxsposttype == "header") {
-		$result[] = array("widgetid" => "wordpresstitle");
+		$result[] = array("widgetid" => "wordpresstitle", "tags" => array("nexus"));
 	}
 	
 	if 
@@ -168,7 +168,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$nxsposttype == "pagelet"
 	)
 	{
-		$result[] = array("widgetid" => "comments");
+		$result[] = array("widgetid" => "comments", "tags" => array("nexus"));
 	}
 
 	
