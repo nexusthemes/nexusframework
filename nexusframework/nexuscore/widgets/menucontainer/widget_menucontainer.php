@@ -658,8 +658,17 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                 jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function(){
                     nxs_js_menu_mini_expand(this, '<?php echo $placeholderid; ?>');
                     nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+
+                    var self = this;
+
+                    jQ_nxs(document).off('nxs_event_resizeend.menu_mini_expand');
+                    jQ_nxs(document).on('nxs_event_resizeend.menu_mini_expand', function(){
+                        nxs_js_change_menu_mini_expand_height(self, '<?php echo $placeholderid; ?>');
+                        nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+                        return false;
+                    });
                     return false;
-                })
+                });
             </script>
 
         </div> <!-- END nxs-menu-minified -->

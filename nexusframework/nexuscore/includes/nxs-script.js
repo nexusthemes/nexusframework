@@ -310,6 +310,33 @@ function nxs_js_disabledocumentscrollwhenhoveringoverelement(e)
 function nxs_js_menu_mini_expand(obj, placeholderid) 
 {
 	var expander = jQ_nxs(obj).siblings(".nxs-menu-mini-nav-expander-" + placeholderid);
+	var extendMenuHeight = nxs_js_calc_menu_mini_height(expander, obj);
+
+	jQ_nxs(expander).toggleClass("nxs-expand");
+
+	if (extendMenuHeight) {
+		jQ_nxs(expander).height(extendMenuHeight);
+	} else {
+		jQ_nxs(expander).height('');
+	}
+}
+
+function nxs_js_change_menu_mini_expand_height(obj, placeholderid) 
+{
+	var expander = jQ_nxs(obj).siblings(".nxs-menu-mini-nav-expander-" + placeholderid);
+	var extendMenuHeight = nxs_js_calc_menu_mini_height(expander, obj);
+
+	console.log(expander);
+
+	if (extendMenuHeight) {
+		jQ_nxs(expander).height(extendMenuHeight);
+	} else {
+		jQ_nxs(expander).height('');
+	}
+}
+ 
+function nxs_js_calc_menu_mini_height(expander, obj) {
+	var extendMenuHeight = 0;
 
 	// set height on expander if the container is fixed and the menu does not fit in the screen
 	if ($('#nxs-fixed-header').length > 0) {
@@ -321,22 +348,7 @@ function nxs_js_menu_mini_expand(obj, placeholderid)
 		}
 	}
 
-	jQ_nxs(expander).toggleClass("nxs-expand");
-	if (jQ_nxs(expander).hasClass("nxs-expand"))
-	{
-		var menuHeight = $(expander).find('ul.nxs-menu-minified').height();
-		console.log(menuHeight);
-		console.log(extendMenuHeight);
-		if (menuHeight > extendMenuHeight) {
-			jQ_nxs(expander).height(extendMenuHeight);
-		}
-	}
-	else
-	{
-		if (extendMenuHeight) {
-			jQ_nxs(expander).height('');
-		}
-	}
+	return extendMenuHeight;
 }
 
 // kudos to http://stackoverflow.com/questions/3885817/how-to-check-if-a-number-is-float-or-integer

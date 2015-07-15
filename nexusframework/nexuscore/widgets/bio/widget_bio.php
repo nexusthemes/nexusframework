@@ -777,11 +777,9 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		$person = '<' . $subtitle_heading . ' class="nxs-title">' . $person . '</' . $subtitle_heading . '>'; 
 	}
 	if ($line1 != "") { $line1 = '
-		<div class="nxs-clear nxs-margin-top5"></div>
 		<' . $subtitle_heading . ' class="nxs-title">' . $line1 . '</' . $subtitle_heading . '>'; 
 	}
 	if ($line2 != "") { $line2 = '
-		<div class="nxs-clear nxs-margin-top5"></div>
 		<' . $subtitle_heading . ' class="nxs-title">' . $line2 . '</' . $subtitle_heading . '>'; 
 	}
 	
@@ -790,7 +788,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// General top info
 	if ($person != "") {
 		$info = '	
-		<div class="wrapper" style="height: ' . $wrapper_height . 'px;">
+		<div class="wrapper">
 			<div class="wrapper-container">'. 
 				$person .
 				$line1 .

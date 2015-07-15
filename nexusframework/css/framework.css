@@ -1358,10 +1358,11 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 
 /* BIO 
 ------------------------------------------------------------------------------------------ */
-.nxs-bio .image-wrapper										{ right: 0; left: 0; top: 0; bottom: 0; border-style: solid; }
+.nxs-bio .image-wrapper										{ border-style: solid; }
 .nxs-bio .image-wrapper img									{ width: 100%; height: 100%; }
-.nxs-bio .wrapper											{ display: table; }
-.nxs-bio .wrapper-container 								{ display: table-cell; vertical-align: middle; width: 100%; }
+.nxs-bio .wrapper											{ display: block; }
+.nxs-bio .wrapper-container 								{ display: block; width: 100%; }
+.nxs-bio .nxs-title 										{ margin-bottom: 0.4em; }
 .nxs-bio .nxs-title a										{ font-weight: normal !important; }
 .nxs-bio ul.nxs-social-list a								{ margin: 5px 10px 0px 0 !important; }
 .nxs-bio ul.nxs-social-list a:last-child 					{ margin-right: 0px !important; }
