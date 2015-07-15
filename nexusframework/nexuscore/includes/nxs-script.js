@@ -1447,12 +1447,14 @@ function nxs_js_redirect_top(url)
 			}
 			
 			var isButton = e.target.nodeName == "BUTTON";
+			var isSelect = e.target.nodeName == "SELECT";
 			var isInput = e.target.nodeName == "INPUT";
 			var isTextArea = e.target.nodeName == "TEXTAREA";
 			var isInAnchor = e.target.nodeName == "A" || (jQuery(e.target).closest('a').length > 0);
-			var isHandledOutsideFramework = isButton || isTextArea || isInput || isInAnchor;
+			var isHandledOutsideFramework = isButton || isSelect || isInput || isTextArea || isInAnchor;
 			
 			nxs_js_log("isHandledOutsideFramework; " + isHandledOutsideFramework);
+			nxs_js_log("isSelect? " + isSelect);
 			nxs_js_log("isButton? " + isButton);
 			nxs_js_log("isInput? " + isInput);
 			nxs_js_log("isTextArea? " + isTextArea);
