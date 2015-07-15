@@ -372,7 +372,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Hover class
-	if ($destination_articleid != "") { $hover_state = 'hover'; }
+	if ($destination_articleid != "" || $destination_url != "") { $hover_state = 'hover'; }
 	// Hover class
 	if ($transition != "") { $hover_state = ''; }
 	

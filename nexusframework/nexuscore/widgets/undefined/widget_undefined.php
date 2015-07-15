@@ -157,8 +157,6 @@ function nxs_widgets_undefined_home_rendersheet($args)
 			<div class="nxs-popup-content-canvas-cropper" style="width: 900px;"> <!-- explicit max width -->
 				<div class="nxs-popup-content-canvas">
 					<style>
-						.isotope-filter { background-color: #900; padding: 2px; border-radius: 5px; margin-bottom: 10px; color: white !important; box-shadow: none !important; }
-						.isotope-filter.active { background-color: #F00; }
 						.nxsfiltercontainer { margin-bottom: 20px;}
 					</style>
 		      <div class="content2">
@@ -168,7 +166,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 		      		foreach ($distincttags as $currenttag)
 		      		{
 		      			?>
-			      		<a class="isotope-filter isotope-filter-<?php echo $currenttag; ?>" href="#" onclick="nxs_js_undefinedupdatefilter(this, '<?php echo $currenttag; ?>'); return false;"><?php echo $currenttag; ?></a>
+			      		<a class="nxsbutton1 isotope-filter isotope-filter-<?php echo $currenttag; ?>" href="#" onclick="nxs_js_undefinedupdatefilter(this, '<?php echo $currenttag; ?>'); return false;"><?php echo $currenttag; ?></a>
 			      		<?php
 		      		}
 		      		?>
@@ -270,16 +268,24 @@ function nxs_widgets_undefined_home_rendersheet($args)
 
 		  <script src='<?php echo nxs_getframeworkurl(); ?>/js/isotope/isotope.pkgd.min.js'></script>
     	<script>
+    		function onAnimationFinished()
+    		{
+				  // code to be executed after the animation finishes
+				  nxs_js_alert("wop");
+				};
+					
     		function nxs_js_undefinedupdatefilter(element, filter)
     		{
-    			jQuery(".isotope-filter").removeClass("active");
-    			jQuery(element).addClass("active");
+    			jQuery(".isotope-filter").removeClass("nxsbutton").addClass("nxsbutton1");
+    			jQuery(element).addClass("nxsbutton").removeClass("nxsbutton1");
     			
     			var thefilter = "." + filter;
     			if (filter == "all")
     			{
     				thefilter = "*";
     			}
+    			
+    			
     			
   				$('.isotope-grid').isotope
   				(
@@ -295,7 +301,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
     		}
 
 				//nxs_js_undefinedupdatefilter(null, "all");
-				jQuery(".isotope-filter-all").addClass("active");
+				jQuery(".isotope-filter-all").addClass("nxsbutton").removeClass("nxsbutton1");
     	</script>
     </div>
   </div>

@@ -248,7 +248,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	{
 		$get_wordpress_date_format = get_option('date_format');
 		$formatteddate = mysql2date($get_wordpress_date_format, $currentpostdate);
-    $datehtml = $formatteddate;
+    	$datehtml = $formatteddate;
 	}
 	
 	// Categories
@@ -275,7 +275,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		
 		$authorurl = get_author_posts_url($currentpost->post_author);
 		$authorname = get_the_author_meta("display_name", $currentpost->post_author);
-		$author .= '
+		$authorhtml .= '
 			<span class="nxs-author">
 				<a href="' . $authorurl . '">' . $authorname . '</a>
 			</span>';
@@ -374,19 +374,26 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		echo $htmltitle;
 				
 		// Meta data
-		
-		if ( $datehtml != "" || $categorieshtml || $author != "" ) 
+
+		if ( $datehtml || $categorieshtml || $authorhtml ) 
 		{
 			echo '<div class="nxs-blog-meta nxs-applylinkvarcolor">'; 
-				
-				if ( $datehtml != "" && $categorieshtml != "" || $datehtml != "" && $author != "" ) 
-				{ 
+
+				if ( $datehtml ) {
 					echo $datehtml;
-					echo '<span class="nxs-seperator"> | </span>'; 
+					if ( $categorieshtml || $authorhtml) {
+						echo '<span class="nxs-seperator"> | </span>';
+					}
 				}
-				echo $categorieshtml;
-				if ( $categorieshtml != "" && $author != ""	) { echo '<span class="nxs-seperator"> | </span>'; }
-				echo $author;
+
+				if ( $categorieshtml ) {
+					echo $categorieshtml;
+					if ( $authorhtml ) { 
+						echo '<span class="nxs-seperator"> | </span>';
+					}
+				}
+
+				echo $authorhtml;
 			echo '</div>';
 		}
 		

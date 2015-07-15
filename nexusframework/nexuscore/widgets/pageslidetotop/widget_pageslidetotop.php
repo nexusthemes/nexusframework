@@ -8,6 +8,11 @@ function nxs_widgets_pageslidetotop_gettitle() {
 	return nxs_l18n__("Slide to top", "nxs_td");
 }
 
+// Unistyle
+function nxs_widgets_pageslidetotop_getunifiedstylinggroup() {
+	return "pageslidetotopwidget";
+}
+
 function nxs_widgets_pageslidetotop_registerhooksforpagewidget($args)
 {	
 	$pagedecoratorid = $args["pagedecoratorid"]; 
@@ -185,6 +190,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_pageslidetotop_gettitle(),
 		"sheeticonid" => nxs_widgets_pageslidetotop_geticonid(),
+		"unifiedstyling" 	=> array("group" => nxs_widgets_pageslidetotop_getunifiedstylinggroup(),),
 		"footerfiller" => true,
 		"fields" => array
 		(
@@ -202,6 +208,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"id" 				=> "icon",
 				"type" 				=> "icon",
 				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -210,6 +217,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"type"     			=> "select",
 				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -217,6 +225,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"id" 				=> "background_color",
 				"type" 				=> "colorzen",
 				"label" 			=> nxs_l18n__("Background color", "nxs_td"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -224,6 +233,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"id" 				=> "background_hover_color",
 				"type" 				=> "colorzen",
 				"label" 			=> nxs_l18n__("Background hover color", "nxs_td"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -232,6 +242,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"type" 				=> "colorvariation",
 				"scope" 			=> "link",
 				"label" 			=> "Link color",
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -243,6 +254,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"layout" 			=> "3x3",
 				"default" 			=> "right bottom",
 				"label" 			=> nxs_l18n__("Docking position", "nxs_td"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -251,6 +263,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> "Distance from window",
 				"dropdown" 			=> nxs_style_getdropdownitems("distance"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -258,7 +271,8 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 				"id" 				=> "offset",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Top scroll till visible", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("offset")
+				"dropdown" 			=> nxs_style_getdropdownitems("offset"),
+				"unistylablefield"	=> true
 			),
 
 			array
@@ -268,6 +282,8 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 			),
 		)
 	);
+
+	nxs_extend_widgetoptionfields($options, array("unistyle"));	
 	
 	return $options;
 }
@@ -378,7 +394,12 @@ function nxs_widgets_pageslidetotop_initplaceholderdata($args)
 
 	$args['icon'] = "nxs-icon-arrow-up-light";
 	$args['icon_scale'] = "1-0";
+	$args['background_color'] = "c12";
 	$args['docking_position'] = "right bottom";
+
+	// current values as defined by unistyle prefail over the above "default" props
+	$unistylegroup = nxs_widgets_pageslidetotop_getunifiedstylinggroup();
+	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 		
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	

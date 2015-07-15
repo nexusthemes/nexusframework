@@ -708,14 +708,14 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// Icon font
 	if ($use_icon != "") {
 		
-		if ($rss != "") 		{ $rss = 			'<li><a target="_blank" href="' . $rss . '">		<span class="nxs-icon-rss"></span></a></li>'; }
-		if ($twitter != "") 	{ $twitter = 		'<li><a target="_blank" href="' . $twitter . '">	<span class="nxs-icon-twitter-2"></span></a></li>'; }
-		if ($facebook != "") 	{ $facebook = 		'<li><a target="_blank" href="' . $facebook . '">	<span class="nxs-icon-facebook"></span></a></li>'; }
-		if ($linkedin != "") 	{ $linkedin = 		'<li><a target="_blank" href="' . $linkedin . '">	<span class="nxs-icon-linkedin"></span></a></li>'; }
-		if ($google != "") 	{ $google = 	'<li><a target="_blank" href="' . $google . '">	<span class="nxs-icon-google-plus"></span></a></li>'; }
-		if ($youtube != "") 	{ $youtube = 		'<li><a target="_blank" href="' . $youtube . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
-		if ($skypechat != "") 	{ $skypechat = 		'<li><a href="skype:' . $skypechat . '?chat">		<span class="nxs-icon-skype"></span></a></li>'; }
-		if ($emailaddress != "") 	{ $emailaddress = 		'<li><a target="_blank" href="mailto:' . $emailaddress . '">		<span class="nxs-icon-contact"></span></a></li>'; }
+		if ($rss != "") 			{ $rss = 			'<li><a target="_blank" href="' . $rss . '">		<span class="nxs-icon-rss"></span></a></li>'; }
+		if ($twitter != "") 		{ $twitter = 		'<li><a target="_blank" href="' . $twitter . '">	<span class="nxs-icon-twitter-2"></span></a></li>'; }
+		if ($facebook != "") 		{ $facebook = 		'<li><a target="_blank" href="' . $facebook . '">	<span class="nxs-icon-facebook"></span></a></li>'; }
+		if ($linkedin != "") 		{ $linkedin = 		'<li><a target="_blank" href="' . $linkedin . '">	<span class="nxs-icon-linkedin"></span></a></li>'; }
+		if ($google != "") 			{ $google = 		'<li><a target="_blank" href="' . $google . '">	<span class="nxs-icon-google-plus"></span></a></li>'; }
+		if ($youtube != "") 		{ $youtube = 		'<li><a target="_blank" href="' . $youtube . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
+		if ($skypechat != "") 		{ $skypechat = 		'<li><a href="skype:' . $skypechat . '?chat">		<span class="nxs-icon-skype"></span></a></li>'; }
+		if ($emailaddress != "") 	{ $emailaddress = 	'<li><a target="_blank" href="mailto:' . $emailaddress . '">		<span class="nxs-icon-contact"></span></a></li>'; }
             
 		if 		($halign == 'left') 	{ $alignment = ''; } 
 		else if ($halign == 'center') 	{ $alignment = 'nxs-center'; } 
@@ -811,7 +811,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	
 	// FILLER
 	if ($htmltext != "") {
-		$content_filler = '<div class="nxs-clear nxs-padding-top15"></div>';
+		$content_filler = '<div class="nxs-clear nxs-margin-bottom10"></div>';
 	} else {
 		$content_filler = '<div class="nxs-clear"></div>';
 	}
@@ -819,7 +819,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	$bio_result = '
 		<div class="header-wrapper">' .
 			$htmlforimage .
-			$afterimagefiller . 
+			'<div class="nxs-margin-bottom10"></div>' .
 			$info .
 		'</div>' .
 		$content_filler .

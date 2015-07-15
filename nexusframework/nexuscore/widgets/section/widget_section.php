@@ -1,7 +1,7 @@
 <?php
 
 function nxs_widgets_section_geticonid() {
-	return "nxs-icon-link";
+	return "nxs-icon-sections";
 }
 
 function nxs_widgets_section_gettitle()

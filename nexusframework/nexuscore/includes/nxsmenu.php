@@ -708,8 +708,8 @@
 			if (nxs_issiteinmaintenancemode())
 			{
 				?>
-				<li>
-					<a href="#" onclick="nxs_js_popup_site_neweditsession('maintenancehome'); return false;" class='site nxs-hidewheneditorinactive' title="<?php nxs_l18n_e("Maintenance mode activated", "nxs_td"); ?>">
+				<li class="nxs-hidewheneditorinactive">
+					<a href="#" onclick="nxs_js_popup_site_neweditsession('maintenancehome'); return false;" class='site' title="<?php nxs_l18n_e("Maintenance mode activated", "nxs_td"); ?>">
 						<span class='nxs-icon-construction'></span>
 					</a>
 				</li>

@@ -1057,7 +1057,15 @@ function nxs_init()
 	{
 		if (nxs_has_adminpermissions())
 		{
-			// ok
+			// OK
+		}
+		else if( defined( 'WP_CLI' ) )
+		{
+			// WP-CLI always should have access
+		}
+		else if (is_user_logged_in())
+		{
+			// OK
 		}
 		else
 		{

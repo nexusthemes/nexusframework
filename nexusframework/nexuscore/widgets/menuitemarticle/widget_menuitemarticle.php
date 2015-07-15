@@ -248,7 +248,14 @@ function nxs_widgets_menuitemarticle_desktop_render($args) {
 
     $font_variant = $placeholdermetadata["font_variant"];
     $parent_height = $placeholdermetadata["parent_height"];
+    $submenu_height = $placeholdermetadata["submenu_height"];
 
+    if($issubitem == true){
+    	$menuitem_height = $submenu_height;
+    } else {
+		$menuitem_height = $parent_height;
+    }
+    
     $destination_articleid = $placeholdermetadata["destination_articleid"];
     $url = nxs_geturl_for_postid($destination_articleid);
 
@@ -290,7 +297,7 @@ function nxs_widgets_menuitemarticle_desktop_render($args) {
     // http://stackoverflow.com/questions/7018919/how-to-bind-touchstart-and-click-events-but-not-respond-to-both
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height".$parent_height."' >";
+    $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height".$menuitem_height."' >";
     $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";

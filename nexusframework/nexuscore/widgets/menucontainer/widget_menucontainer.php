@@ -167,6 +167,7 @@ function nxs_widgets_menucontainer_home_getoptions($args) {
                 "label" 			=> nxs_l18n__("Font variant", "nxs_td"),
                 "dropdown" 			=> array(
                     ""=>"Default",
+                    "capitals"=>"Normal-caps",
                     "small-caps"=>"Small-caps",
                 ),
                 "unistylablefield"	=> true
@@ -187,6 +188,23 @@ function nxs_widgets_menucontainer_home_getoptions($args) {
                     "0.8x"	=>"0.8x",
                 ),
                 "unistylablefield"	=> true
+            ),
+            array(
+                "id"                => "submenu_height",
+                "type"              => "select",
+                "label"             => nxs_l18n__("Submenu item height", "nxs_td"),
+                "dropdown"          => array(
+                    "1x"    =>"1x",
+                    "2x"    =>"2x",
+                    "1.5x"  =>"1.5x",
+                    "1.4x"  =>"1.4x",
+                    "1.3x"  =>"1.3x",
+                    "1.2x"  =>"1.2x",
+                    "1.1x"  =>"1.1x",
+                    "0.9x"  =>"0.9x",
+                    "0.8x"  =>"0.8x",
+                ),
+                "unistylablefield"  => true
             ),
             array(
                 "id" 				=> "menu_fontsize",
@@ -365,6 +383,9 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
     else if ($font_variant == 'small-caps')	{
         $font_variant = "nxs-small-caps";
     }
+    else if ($font_variant == 'capitals') {
+        $font_variant = "nxs-capitalize";
+    }
 
     // Menu item height
     if (empty($parent_height) || $parent_height == '1x')    { $parent_height = "10"; }
@@ -376,6 +397,18 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
     else if ($parent_height == '1.1x') 						{ $parent_height = "11"; }
     else if ($parent_height == '0.9x') 						{ $parent_height = "09"; }
     else if ($parent_height == '0.8x') 						{ $parent_height = "08"; }
+
+
+    // Submenu item height
+    if (empty($submenu_height) || $submenu_height == '1x')    { $submenu_height = "10"; }
+    else if ($submenu_height == '2x')                        { $submenu_height = "20"; }
+    else if ($submenu_height == '1.5x')                      { $submenu_height = "15"; }
+    else if ($submenu_height == '1.4x')                      { $submenu_height = "14"; }
+    else if ($submenu_height == '1.3x')                      { $submenu_height = "13"; }
+    else if ($submenu_height == '1.2x')                      { $submenu_height = "12"; }
+    else if ($submenu_height == '1.1x')                      { $submenu_height = "11"; }
+    else if ($submenu_height == '0.9x')                      { $submenu_height = "09"; }
+    else if ($submenu_height == '0.8x')                      { $submenu_height = "08"; }
 
     // Menu fontsize
     if (empty($menu_fontsize) || $menu_fontsize == '1x')    { $menu_fontsize = "10"; }
@@ -493,6 +526,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
             $placeholdermetadata["menuitem_active_color"] = $menuitem_active_color_cssclass;
             $placeholdermetadata["font_variant"] =  $font_variant;
             $placeholdermetadata["parent_height"] = $parent_height;
+            $placeholdermetadata["submenu_height"] = $submenu_height;
 
             $subargs = array("placeholdermetadata" => $placeholdermetadata);
 
@@ -526,7 +560,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
         echo '<div class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
 
         $outer_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $menuitem_color); ?>
-                <a href='#' class="nxs_js_menu_mini_expand <?php echo $outer_color_cssclass; ?>">
+                <a href='#' class="nxs_js_menu_mini_expand-<?php echo $placeholderid; ?> <?php echo $outer_color_cssclass; ?>">
                     <div style="text-align: center">
                         <span class="nxs-icon-menucontainer"></span>
                         <span>&nbsp;<?php echo $minified_label; ?></span>
@@ -592,6 +626,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
             $placeholdermetadata["font_variant"] =  $font_variant;
             $placeholdermetadata["parent_height"] = $parent_height;
+            $placeholdermetadata["submenu_height"] = $submenu_height;
             $placeholdermetadata["menuitem_color"] = $outer_color_cssclass;
             $placeholdermetadata["menuitem_active_color"] = $menuitem_active_color_cssclass;
 
@@ -619,8 +654,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
             </div> <!-- END nxs-menu-mini-nav-expander -->
             <script>
-                jQ_nxs('a.nxs_js_menu_mini_expand').off('click.menu_mini_expand');
-                jQ_nxs('a.nxs_js_menu_mini_expand').on('click.menu_mini_expand', function(){
+                jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
+                jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function(){
                     nxs_js_menu_mini_expand(this, '<?php echo $placeholderid; ?>');
                     nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
 

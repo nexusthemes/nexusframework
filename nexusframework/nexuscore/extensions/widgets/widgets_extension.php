@@ -130,20 +130,20 @@ function nxs_getwidgets_functions_AF($result, $args)
 	// BUSINESS RULES WIDGETS
 	
 	if ($nxsposttype == "busrulesset") {
-		$result[] = array("widgetid" => "busrulepostid");
-		$result[] = array("widgetid" => "busrulecategory");
-		$result[] = array("widgetid" => "busrulepostauthor");
-		$result[] = array("widgetid" => "busrulearchivetype");
-		$result[] = array("widgetid" => "busrulecatchall");
-		$result[] = array("widgetid" => "busrulehome");
-		$result[] = array("widgetid" => "busrule404");
-		$result[] = array("widgetid" => "busrulearchivecat");
-		$result[] = array("widgetid" => "busrulearchive");
-		$result[] = array("widgetid" => "busrulesearch");
-		$result[] = array("widgetid" => "busrulemaintenance");
-		$result[] = array("widgetid" => "busruleposttype");
-		$result[] = array("widgetid" => "busrulehaspostcontent");
-		$result[] = array("widgetid" => "busruleauthentication");		
+		$result[] = array("widgetid" => "busrulepostid", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulecategory", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulepostauthor", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulearchivetype", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulecatchall", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulehome", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrule404", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulearchivecat", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulearchive", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulesearch", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulemaintenance", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busruleposttype", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulehaspostcontent", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busruleauthentication", "tags" => array("nexus"));		
 	}
 	
 	if ($nxsposttype == "genericlist") {
@@ -158,7 +158,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 	}
 	
 	if ($nxsposttype == "subheader" || $nxsposttype == "header") {
-		$result[] = array("widgetid" => "wordpresstitle");
+		$result[] = array("widgetid" => "wordpresstitle", "tags" => array("nexus"));
 	}
 	
 	if 
@@ -168,7 +168,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$nxsposttype == "pagelet"
 	)
 	{
-		$result[] = array("widgetid" => "comments");
+		$result[] = array("widgetid" => "comments", "tags" => array("nexus"));
 	}
 
 	
@@ -329,6 +329,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			// $result[] = array("widgetid" => "contactitemhidden");
 			// $result[] = array("widgetid" => "contactitemattachment");
@@ -340,6 +341,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemtext", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "formitemcaptcha", "tags" => array("nexus"));
@@ -387,10 +389,12 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "pagebackground", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "pagepopup", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "pageslidetotop", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "pageinpagesectionmenu", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "pagefixedheader", "tags" => array("nexus"));
+
 		if ( $enableconceptualwidgets )
 		{
-			$result[] = array("widgetid" => "pagefixedheader", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "pageinpagesectionmenu", "tags" => array("nexus"));
+			
 		}
 		//$result[] = array("widgetid" => "pagevideo");
 		//$result[] = array("widgetid" => "pagegap");
@@ -410,6 +414,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			"contactitemdate",
 			"contactitemdatetime",
 			"contactitemselect",
+			"contactitemmultiselect",
 			"contactitemsecret",
 			"contactitemreplyto",
 			"formitemcaptcha",
@@ -510,6 +515,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("contactitemdate");
 	nxs_ext_lazyload_widget("contactitemdatetime");	
 	nxs_ext_lazyload_widget("contactitemselect");
+	nxs_ext_lazyload_widget("contactitemmultiselect");
 	nxs_ext_lazyload_widget("contactitemhidden");
 	nxs_ext_lazyload_widget("contactitemattachment");
 	nxs_ext_lazyload_widget("formitemcaptcha");
@@ -562,10 +568,11 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("pagepopup");
 	nxs_ext_lazyload_widget("pageslidetotop");
 	nxs_ext_lazyload_widget("pageinpagesectionmenu");
+	nxs_ext_lazyload_widget("pagefixedheader");
 
 	if ($enableconceptualwidgets)
 	{
-		nxs_ext_lazyload_widget("pagefixedheader");
+		
 	}
 	//nxs_ext_lazyload_widget("pagevideo");
 	//nxs_ext_lazyload_widget("pagegap");

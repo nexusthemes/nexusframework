@@ -253,7 +253,17 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
 function nxs_widgets_menuitemcustom_desktop_render($args) {
 
     $placeholdermetadata = $args["placeholdermetadata"];
+    $currentdepth = $placeholdermetadata["depthindex"];
 
+    if ($currentdepth == 0 || $currentdepth == "") {
+        $currentdepth = 1;
+    }
+
+    $issubitem = false;
+    if ($currentdepth > 1) {
+        $issubitem = true;
+    }
+    
     $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
 
     $icon = $placeholdermetadata["icon"];
@@ -262,6 +272,13 @@ function nxs_widgets_menuitemcustom_desktop_render($args) {
 
     $font_variant = $placeholdermetadata["font_variant"];
     $parent_height = $placeholdermetadata["parent_height"];
+    $submenu_height = $placeholdermetadata["submenu_height"];
+
+    if($issubitem == true){
+        $menuitem_height = $submenu_height;
+    } else {
+        $menuitem_height = $parent_height;
+    }
 
     $url = $placeholdermetadata["destination_url"];
     $destination_target = $placeholdermetadata["destination_target"];
@@ -284,7 +301,7 @@ function nxs_widgets_menuitemcustom_desktop_render($args) {
     }
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height{$parent_height} " . $font_variant . "' style='" . $font_variant . "' >";
+    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height{$menuitem_height} " . $font_variant . "' style='" . $font_variant . "' >";
     $cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " attr='" . $destination_relationatt . "' " . $anchorclass . ">";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";

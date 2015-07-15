@@ -307,9 +307,6 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 /* DEFINITION LISTS */
 .nxs-definitionlistitemtext-item h4					{ width: 100%; }
 
-/* DEFAULT POPUP ACTIVE STATE */
-.nxs-admin-wrap .active								{ box-shadow: 0px 0px 0px 3px red; }
-
 /* DEFAULT POPUP COLOR PICKER */
 .nxs-admin-wrap .color-sample						{ margin-right: 10px; padding: 10px; }
 .nxs-admin-wrap .color-sample:hover					{ cursor: pointer; }
@@ -878,7 +875,8 @@ a.nxsbutton2:hover 									{ color: #FDDCB4 !important; border-color: black !im
 	first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... 
 */
 .nxs-admin-wrap .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } 
-.nxs-admin-wrap ul.tabs li a:hover, a:focus			{ color: #D54E21; background-color: #fff; outline: none; }
+.nxs-admin-wrap ul.tabs li a:hover, 
+.nxs-admin-wrap ul.tabs li a:focus					{ color: #D54E21; background-color: #fff; outline: none; }
 .nxs-admin-wrap ul.tabs li.ui-state-active a 		{ background-color: #fff; outline: none; }
 .nxs-admin-wrap ul.tabs li.ui-tabs-selected a 		{ background: #FCFCFC;}
 .nxs-admin-wrap .ui-tabs .ui-tabs-panel 			{ display: block; border-width: 0; }
@@ -1388,14 +1386,11 @@ div.nxs-section h5 div.serperator-before,
 div.nxs-section h5 div.serperator-after {
 	position: relative;
 	display: inline-block;
-	top: 3px;
+	top: -3px;
 	width: 33%;
 	height: 15px;
-	background: url(../images/anchor-seperator.png) repeat-x;
+	border-bottom: 2px dashed;
 }
-
-div.nxs-section h5 div.serperator-before 			{ background-position: center left; }
-div.nxs-section h5 div.serperator-after 			{ background-position: center right; }
 
 /* ADMIN GROWL
 ------------------------------------------------------------------------------------------ */
