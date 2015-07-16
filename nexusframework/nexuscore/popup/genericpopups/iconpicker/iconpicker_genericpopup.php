@@ -578,6 +578,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"waves",
 										"oxygen",
 										"education",
+										"beer",
 									);
 									
 										
@@ -723,6 +724,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"brokenglass",
 										"steeringwheel",
 										"dashboard2",
+										"mot",
 										
 										/* Crappicons */
 										"landrover",
