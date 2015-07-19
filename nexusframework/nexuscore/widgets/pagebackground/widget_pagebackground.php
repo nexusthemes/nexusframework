@@ -82,12 +82,20 @@ function nxs_widgets_pagebackground_beforeend_head()
 		
 		if ($image_size == "cover")
 		{
-			$backgroundimagehtml .= '
-			jQuery("body").css("-webkit-background-size", "cover");
-			jQuery("body").css("-moz-background-size", "cover");
-			jQuery("body").css("-o-background-size", "cover");
-			jQuery("body").css("background-size", "cover");
-			';
+			if ($image_isfixed != "")
+			{
+				$backgroundimagehtml .= '
+				jQuery("body").css("-webkit-background-size", "cover");
+				jQuery("body").css("-moz-background-size", "cover");
+				jQuery("body").css("-o-background-size", "cover");
+				jQuery("body").css("background-size", "cover");
+				';
+			} else {
+				echo '<div id="nxs-background-image"></div>';
+				$backgroundimagehtml .= '
+				jQuery("#nxs-background-image").css("background-image", "url(' . $imageurl . ')");
+				';
+			}
 		}
 		else if ($image_size == "contain")
 		{
@@ -117,6 +125,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 
 		$backgroundimagehtml .= '
 			jQuery("body").css("background-position", "' . $image_position . '");
+			jQuery("#nxs-background-image").css("background-position", "' . $image_position . '");
 			';
 		/*
 		$backgroundimagehtml .= '
