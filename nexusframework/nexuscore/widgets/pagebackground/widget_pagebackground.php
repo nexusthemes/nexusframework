@@ -68,9 +68,13 @@ function nxs_widgets_pagebackground_beforeend_head()
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl = $imagemetadata[0];
 		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
-		$backgroundimagehtml .= '
-		jQuery("body").css("background-image", "url(' . $imageurl . ')");
-		';
+		if ($image_size == "cover" && $image_isfixed == ""){
+			// do nothing
+		} else {
+			$backgroundimagehtml .= '
+			jQuery("body").css("background-image", "url(' . $imageurl . ')");
+			';
+		}
 		
 		// background size
 		if ($image_isfixed != "")
