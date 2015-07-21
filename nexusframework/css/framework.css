@@ -533,6 +533,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-padding10												{ padding: 10px; }
 /* left */
 .nxs-padding-left10											{ padding-left: 10px !important; }
+.nxs-padding-left20											{ padding-left: 20px; }
 .nxs-padding-left30											{ padding-left: 30px; }
 
 /* MIN HEIGHT */
@@ -1611,7 +1612,7 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-blog .nxs-image-wrapper.nxs-stretch					{ float: none; margin-bottom: 15px; }
 
 /* minimal icon */
-.nxs-blog .nxs-blog-minimal ul li 							{ line-height: 1.625em; font-size: 15px; margin-top: 10px; padding-left: 20px; position: relative; }
+.nxs-blog .nxs-blog-minimal ul li 							{ line-height: 1.625em; font-size: 15px; margin-top: 10px; position: relative; }
 .nxs-blog .nxs-blog-minimal ul li span.font-icon			{ font-size: 16px !important; position: absolute; left: 0px; top: 3px; }
 
 /* minimal image */
