@@ -868,7 +868,10 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		// Minimal layout icon
 		$iconcssclass_font = nxs_getcssclassesforlookup('', $font_icon);
 		if 	($font_icon == "") { $font_icon = ''; } 
-		else { $font_icon = '<span class="' . $iconcssclass_font . ' font-icon"></span>'; }
+		else { 
+			$font_icon = '<span class="' . $iconcssclass_font . ' font-icon"></span>'; 
+			$minimal_padding = "nxs-padding-left20";
+		}
 		
 		/* SINGLE BLOG ENTRY BUTTON
 		---------------------------------------------------------------------------------------------------- */
@@ -1235,7 +1238,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		
 				foreach ($pages as $currentpost) {
 					echo '
-						<li class="nxs-applylinkvarcolor nxs-default-p nxs-padding-bottom0">
+						<li class="nxs-applylinkvarcolor nxs-default-p nxs-padding-bottom0 '.$minimal_padding.'">
 							' . $font_icon . '
 							<a href="' . nxs_geturl_for_postid($currentpost->ID) . '"><span>' . $currentpost->post_title . '</span></a>
 						</li>';
@@ -1244,7 +1247,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 				if (count($pages) == 0 && isset($altflow_nomatches_alttext) && $altflow_nomatches_alttext != "")
 				{
 					echo '
-						<li class="nxs-applylinkvarcolor nxs-default-p nxs-padding-bottom0">
+						<li class="nxs-applylinkvarcolor nxs-default-p nxs-padding-bottom0 '.$minimal_padding.'">
 							' . $font_icon . $altflow_nomatches_alttext . '
 						</li>';
 				}
