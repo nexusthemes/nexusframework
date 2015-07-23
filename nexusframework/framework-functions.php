@@ -326,7 +326,7 @@ add_action( 'pre_get_posts', 'custom_posts_per_page' );
 $shouldlimiterrorreporting = true;
 if (nxs_isdebug())
 {
-	if ($_REQUEST["nxs"] == "nobuffer")
+	if (isset($_REQUEST["nxs"]) && $_REQUEST["nxs"] == "nobuffer")
 	{
 		$shouldlimiterrorreporting = false;
 	}
