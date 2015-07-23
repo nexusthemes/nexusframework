@@ -353,7 +353,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 #nxs-supersized .caption-aligner .nxs-placeholder.nxs-inline		{ display: table-cell !important; }
 .slidecaption-container												{ margin: 0px !important; } 
 #nxs-supersized.has-height,
-#nxs-supersized.has-height.caption-aligner		{ height: 400px !important; }
+#nxs-supersized.has-height .caption-aligner		{ height: 400px !important; }
 .caption-aligner													{ width: 440px !important; border-radius: 0px; padding: 0px; }
 .fixed #slidecaption .nxs-title										{ font-size: 30px !important; }
 .fixed #slidecaption p												{ font-size: 17px !important; }
