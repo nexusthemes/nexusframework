@@ -1845,7 +1845,16 @@ function nxs_render_postfooterlink()
 		}
 		else
 		{
-			$authenticatelink = "<a href=\"#\" onclick=\"nxs_js_popup_site_neweditsession('loginhome'); return false;\">Login</a>";
+			if (has_action("login_form"))
+			{
+				$currenturl = get_permalink();
+				$url = wp_login_url($currenturl);
+				$authenticatelink = "<a href=\"{$url}\">Login</a>";
+			}
+			else
+			{
+				$authenticatelink = "<a href=\"#\" onclick=\"nxs_js_popup_site_neweditsession('loginhome'); return false;\">Login</a>";
+			}
 		}
 		
 		$footerhtmltemplate = str_replace("{{{authenticatelink}}}", $authenticatelink, $footerhtmltemplate);
