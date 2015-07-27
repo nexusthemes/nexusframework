@@ -41,6 +41,8 @@
 		$update_url = admin_url('admin.php?page=nxs_admin_update');
 		$restart_url = admin_url('admin.php?page=nxs_admin_restart');
 		$themeswitch_url = admin_url('admin.php?page=nxs_admin_themeswitch');
+		$allthemes_url = admin_url('admin.php?page=nxs_admin_allthemes');
+		$backuprestore_url = admin_url('admin.php?page=nxs_admin_backup_and_restore');
 		
 		$showcptsurl = nxs_geturlcurrentpage();
 		$showcptsurl = nxs_addqueryparametertourl_v2($showcptsurl, "shownexustypesinbackend", "true", true, true);

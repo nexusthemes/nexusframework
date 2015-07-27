@@ -398,6 +398,8 @@ function nxs_license_addadminpages()
 	add_submenu_page("nxs_backend_overview", 'Update', 'Update', 'switch_themes', 'nxs_admin_update', 'nxs_license_update_page_content', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'Restart', 'Restart', 'switch_themes', 'nxs_admin_restart', 'nxs_license_restart_page_content', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'ThemeSwitch', 'ThemeSwitch', 'switch_themes', 'nxs_admin_themeswitch', 'nxs_license_themeswitch_page_content', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'All Themes', 'All Themes', 'switch_themes', 'nxs_admin_allthemes', 'nxs_redirect_to_all_themes', '', 81 );
+	add_submenu_page("nxs_backend_overview", 'Backup and Restore', 'Backup &amp; Restore', 'switch_themes', 'nxs_admin_backup_and_restore', 'nxs_redirect_to_backup_and_restore', '', 81 );
 }
 
 function plugin_admin_init()
@@ -1196,4 +1198,24 @@ function nxs_license_themeswitch_page_content()
 		<?php
 	}
 }
+
+function nxs_redirect_to_absolute_url($redirect_url)
+{
+	echo "<p>Redirecting...</p>";
+	echo "<p>If redirecting takes to long, please click <a href='" . $redirect_url . "'>here</a></p>";
+	echo "<script> window.location.href = '" . $redirect_url . "'; </script>";
+}
+
+function nxs_redirect_to_all_themes()
+{
+	$redirect_url = 'http://nexusthemes.com/wordpress-themes/';
+	nxs_redirect_to_absolute_url($redirect_url);
+}
+
+function nxs_redirect_to_backup_and_restore()
+{
+	$redirect_url = 'http://nexusthemes.com/support/how-to-backup-and-restore-your-wordpress-website/';
+	nxs_redirect_to_absolute_url($redirect_url);
+}
+
 ?>
