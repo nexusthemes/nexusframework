@@ -163,7 +163,14 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"id" 				=> "caption_width",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Caption width", "nxs_td"),
-				"dropdown" 			=> array("50"=>"50%","40"=>"40%","30"=>"30%","20"=>"20%"),
+				"dropdown" 			=> array
+				(
+					"100"=>"100%",
+					"50"=>"50%",
+					"40"=>"40%",
+					"30"=>"30%",
+					"20"=>"20%"
+				),
 				"unistylablefield"	=> true
 			),
 			array(
