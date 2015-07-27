@@ -1983,6 +1983,17 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 	-ms-animation: 		none;
 }
 
+/* BACKGROUND PAGEDECORATOR
+---------------------------------------------------------------------------------------------------- */
+
+#nxs-background-image {
+	position: absolute;
+	height: 100%;
+	background-size: cover;
+	width: 100%;
+	z-index: 0;
+}
+
 /* FIXED HEADER PAGE DECORATOR
 ---------------------------------------------------------------------------------------------------- */
 
@@ -2024,7 +2035,7 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 .nxs-slidetotop-position-center-top 						{ left: 50%; }
 .nxs-slidetotop-position-center-bottom 						{ left: 50% }
 
-/* ANCHOR POINT WIDGET
+/* SECTION WIDGET
 ---------------------------------------------------------------------------------------------------- */
 
 .nxs-section-container.hide {
