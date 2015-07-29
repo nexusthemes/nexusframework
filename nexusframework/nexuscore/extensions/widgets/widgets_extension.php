@@ -76,15 +76,22 @@ function nxs_requirewidget($widget)
 	$action = "nxs_ext_inject_widget_" . $widget;
 	if (!has_action($action))
 	{
-		// we gaan wel door, iemand kan per ongeluk of met opzet bijv. een plugin hebben uitgeschakeld		
-		if (nxs_has_adminpermissions())
+		if ($widget == "")
 		{
-			echo "Warning; looks like widget '" . $widget . "' is missing (maybe you deactivated a required plugin?) [nxs_requirewidget]; no action $action";
-			// nxs_dumpstacktrace();
+			// absorb the error; 
 		}
 		else
 		{
-			echo "<!-- Warning; looks like widget '" . $widget . "' is missing (maybe you deactivated a required plugin?) [nxs_requirewidget] -->";
+			// we gaan wel door, iemand kan per ongeluk of met opzet bijv. een plugin hebben uitgeschakeld		
+			if (nxs_has_adminpermissions())
+			{
+				echo "Warning; looks like widget '" . $widget . "' is missing (maybe you deactivated a required plugin?) [nxs_requirewidget]; no action $action";
+				// nxs_dumpstacktrace();
+			}
+			else
+			{
+				echo "<!-- Warning; looks like widget '" . $widget . "' is missing (maybe you deactivated a required plugin?) [nxs_requirewidget] -->";
+			}
 		}
 		
 		$result["result"] = "NACK";

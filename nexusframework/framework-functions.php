@@ -535,7 +535,7 @@ function nxs_framework_authentication_popup_top()
 {
 	?>
 	<div class="nxs-loginlogowrapper">
-		<a target="_blank" title="Premium WordPress themes - Nexus Themes" href='http://www.nexusthemes.com'>
+		<a target="_blank" title="Premium WordPress themes - Nexus Themes" href='http://nexusthemes.com'>
 			<div id="logo"></div>
 			<div class="nxs-clear"></div>
 		</a>
@@ -543,6 +543,37 @@ function nxs_framework_authentication_popup_top()
 	<?php
 }
 add_action('nxs_authentication_popup_top', 'nxs_framework_authentication_popup_top');
+
+add_action('login_head', 'nxs_framework_login_head');
+function nxs_framework_login_head()
+{
+	$url = nxs_getframeworkurl() . "/images/logo.png";
+	?>
+	<style type="text/css">
+		body.login #login h1 a 
+		{ 
+			background: url('<?php echo $url; ?>') no-repeat scroll center bottom transparent;
+			background-size: contain;
+			width: 300px;
+		}
+  </style>
+  <?php
+}
+
+add_action('login_headertitle', 'nxs_framework_login_headertitle');
+function nxs_framework_login_headertitle($result)
+{
+	$result = "Nexus Themes";
+	return $result;
+}
+
+add_action('login_headerurl', 'nxs_framework_login_headerurl');
+function nxs_framework_login_headerurl($result)
+{
+	$meta = nxs_theme_getmeta();
+	$result = $meta["url"];
+	return $result;
+}
 
 //
 // sidebars (could have been any number, but 8 sounds like sufficient ...)

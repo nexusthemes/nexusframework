@@ -384,20 +384,6 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 				<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
 				<ul>
 
-				<a href='http://nexusthemes.com/features-widgets/' target='_blank' title='" . nxs_l18n__("Documentation[nxs:hovermenu,tooltip]", "nxs_td") ."'>
-				<li title='" . nxs_l18n__("Documentation[nxs:hovermenu,tooltip]", "nxs_td") ."' class='nxs-hovermenu-button'>
-				<img src='" . get_bloginfo('template_url') . "/images/icon-brokenwidget.png' />
-				</li>
-				</a>
-								
-				<li title='" . nxs_l18n__("Move[nxs:hovermenu,tooltip]", "nxs_td") ."' class='cursor nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder' id='draggableplaceholderid_" . $gphs_placeholderid . "'>
-				<div class='nxs-drag-helper' style='display: none;'>
-				<div class='placeholder'>
-				<img src='" . get_bloginfo('template_url') . "/images/icon-brokenwidget.png' />
-				</div>
-				</div>
-				</li>
-
 				<a class='nxs-no-event-bubbling' href='#' onclick='nxs_js_popup_placeholder_wipe(\"" . $nxs_global_current_postid_being_rendered . "\", \"" . $gphs_placeholderid . "\"); return false;'>
 				<li title='" . nxs_l18n__("Remove widget[nxs:hovermenu,tooltip]", "nxs_td") ."'><span class='nxs-icon-trash'></span></li>
 				</a>

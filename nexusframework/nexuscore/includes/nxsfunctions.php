@@ -8922,15 +8922,21 @@ function nxs_getrenderedwidget($args)
  	$requirewidgetresult = nxs_requirewidget($placeholdertemplate);
  	if ($requirewidgetresult["result"] == "NACK")
  	{
- 		// too bad, it failed
- 		if (true) // nxs_has_adminpermissions())
+ 		if ($placeholdertemplate == "")
  		{
- 			echo "[nxs: rendering of widget [$placeholdertemplate] failed, returning]";
  		}
  		else
  		{
-	 		echo "[nxs: rendering of widget failed, returning]";
-	 	}
+	 		// too bad, it failed
+	 		if (true) // nxs_has_adminpermissions())
+	 		{
+	 			echo "[nxs: rendering of widget [$placeholdertemplate] failed, returning]";
+	 		}
+	 		else
+	 		{
+		 		echo "[nxs: rendering of widget failed, returning]";
+		 	}
+		}
  		return;
  	}
 		
