@@ -400,7 +400,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	} else {
 		// Appending custom widget class
 		// Responsive display
-		if ($responsive_display == "") { $responsive_display = 'never'; }
+		if ($responsive_display == "") { $responsive_display = 'callout720'; }
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display;
 	}
 	
