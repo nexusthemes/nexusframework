@@ -3103,89 +3103,108 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-aquarius:before 			{ content: "\2652"; }
 .nxs-icon-pisces:before 			{ content: "\2653"; }
 
-/* NT PRODUCT IMAGE */
-.prod-img { 
-	position: relative; 
-	/* background: url(http://89.18.175.44/nexusthemesv4/wp-content/uploads/sites/22/2015/07/digital-agency-wordpress-theme.png?quality=100.3014122909390); */
-}
+/* NT PRODUCT IMAGES
+---------------------------------------------------------------------------------------------------- */
+.prod-img1 { /* background: url(http://89.18.175.44/nexusthemesv4/wp-content/uploads/sites/22/2015/07/digital-agency-wordpress-theme.png?quality=100.3014122909390); */ }
+.prod-img2 { /*background: url(http://89.18.175.44/nexusthemesv4/wp-content/uploads/sites/22/2015/07/responsive-digital-agency-wordpress-theme.png?quality=100.3014122909390);*/ }
 
-.dark-shadow { 
-	width: 100%; 
-	height: 29.3em; 
-	background-image:
-    radial-gradient(
-      circle at bottom center,
-      #808080,
-      transparent 29.3em
-    ); 
-}
-.light-shadow { 
-	width: 100%; 
-	height: 7.6em; 
-	background-image:
-    radial-gradient(
-      ellipse at top center,
-      white,
-      transparent 30em
-    ); 
-}
+/* bg shadows */
+.prod-img1 .dark-shadow 							{ background-image: radial-gradient(circle at bottom center, #808080, transparent 29.3em); } 
+.prod-img2 .dark-shadow 							{ background-image: radial-gradient(ellipse at bottom center, #808080, transparent 43.3em); }
+.prod-img1 .light-shadow 							{ background-image: radial-gradient(ellipse at top center, white, transparent 30em); }
+.prod-img2 .light-shadow 							{ background-image: radial-gradient(ellipse at top center, white, transparent 45em); }
 
-/* shadow */
-.prod-img .bottom.device-laptop,
-.prod-img .bg.device-tablet,
-.prod-img .bg.device-phone,
-.prod-img .bottom.device-imac,
-.prod-img .foot2.device-imac { box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.5); }
+.prod-img1 .dark-shadow 							{ height: 29.3em; }
+.prod-img1 .light-shadow 							{ height: 7.6em; }
+.prod-img2 .dark-shadow 							{ height: 27.9em; }
+.prod-img2 .light-shadow 							{ height: 3.6em; }
+
+/* devices shadow */
+.device-laptop.bottom,
+.device-tablet.bg,
+.device-phone.bg,
+.device-imac.bottom,
+.device-imac.foot2,
+.prod-img2 .bg.device-tablet,
+.prod-img2 .bg.device-phone,
+.prod-img2 .bg.device-phone2 { box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.5); }
 
 /* colors */
-.prod-img .bg,
-.prod-img .button.device-tablet,
-.prod-img .button.device-phone {
-  background-image:
-    linear-gradient(
-      225deg, 
-      #B9B9B9, 
-	  black 20%
-    );
-}
+.bg { background-image: linear-gradient(225deg, #B9B9B9, black 20%); }
 
-.prod-img .cut.device-laptop,
-.prod-img .bottom.device-laptop,
-.prod-img .foot.device-imac { background-color: #636363; }
+.prod-img1 .device-laptop.cut,
+.prod-img1 .device-laptop.bottom,
+.prod-img1 .device-imac.foot,
+.prod-img1 .device-tablet.button,
+.prod-img1 .device-phone.button,
+.prod-img2 .device-phone2.camera,
+.prod-img2 .device-phone2.speaker,
+.prod-img2 .device-phone.camera,
+.prod-img2 .device-phone.speaker,
+.prod-img2 .device-tablet.navbar1 { background-color: #636363; }
 
-.prod-img .front.device-laptop,
-.prod-img .bottom.device-imac,
-.prod-img .foot2.device-imac { background-color: #B9B9B9; }
+.prod-img1 .device-laptop.front,
+.prod-img1 .device-imac.bottom,
+.prod-img1 .device-imac.foot2,
+.prod-img2 .device-tablet.navbar2,
+.prod-img2 .device-phone.navbar,
+.prod-img2 .device-phone2.navbar,
+.prod-img2 .device-phone.footer,
+.prod-img2 .device-phone2.footer { background-color: #B9B9B9; }
 
-/* button */
-.prod-img .button.device-tablet,
-.prod-img .button.device-phone { 
-	border-radius: 10px; 
-	width: 0.6em;
-    height: 0.6em;
-    top: 32.7em;
-}
-.prod-img .button.device-tablet { left: 60.9em; }
-.prod-img .button.device-phone  { left: 74.1em; }
+/* prod1 */
+.prod-img1 .device.device-imac 						{ width: 34.5em; height: 19.3em; top: 3.8em;  left: 27.2em; background-color: red; }
+.prod-img1 .device.device-laptop 					{ width: 24em;   height: 15.2em; top: 16.4em; left: 8.8em; background-color: blue;}
+.prod-img1 .device.device-tablet 					{ width: 10.3em; height: 13.8em; top: 18.5em; left: 56em; background-color: green; }
+.prod-img1 .device.device-phone 					{ width: 3.7em;  height: 5.3em;  top: 27em;   left: 72.5em; background-color: yellow; }
 
-.prod-img .device.device-imac 						{ width: 34.5em; height: 19.3em; top: 3.8em;  left: 27.2em; background-color: red; }
-.prod-img .device.device-laptop 					{ width: 24em;   height: 15.2em; top: 16.4em; left: 8.8em; background-color: blue;}
-.prod-img .device.device-tablet 					{ width: 10.3em; height: 13.8em; top: 18.5em; left: 56em; background-color: green; }
-.prod-img .device.device-phone 						{ width: 3.7em;  height: 5.3em;  top: 27em;   left: 72.5em; background-color: yellow; }
+.prod-img1 .bg.device-imac 							{ width: 37.3em; height: 22.3em; top: 2.2em;  left: 25.8em; border-radius: 16px; }
+.prod-img1 .bg.device-laptop 						{ width: 26.2em; height: 18.2em; top: 15.2em; left: 7.7em; border-radius: 10px; }
+.prod-img1 .bg.device-tablet 						{ width: 13.3em; height: 16.8em; top: 16.9em; left: 54.5em; border-radius: 10px; }
+.prod-img1 .bg.device-phone 						{ width: 4.3em;  height: 8.3em;  top: 25.5em; left: 72.2em; border-radius: 10px; }
 
-.prod-img .bg.device-imac 							{ width: 37.3em; height: 22.3em; top: 2.2em;  left: 25.8em; border-radius: 16px; }
-.prod-img .bg.device-laptop 						{ width: 26.2em; height: 18.2em; top: 15.2em; left: 7.7em; border-radius: 10px; }
-.prod-img .bg.device-tablet 						{ width: 13.3em; height: 16.8em; top: 16.9em; left: 54.5em; border-radius: 10px; }
-.prod-img .bg.device-phone 							{ width: 4.3em;  height: 8.3em;  top: 25.5em; left: 72.2em; border-radius: 10px; }
+.prod-img1 .device-laptop.front 					{ width: 35em;   height: 1em;    top: 32.4em; left: 3.3em; }
+.prod-img1 .device-laptop.cut 						{ width: 4.8em;  height: 0.5em;  top: 32.4em; left: 18.3em; }
+.prod-img1 .device-laptop.bottom 					{ width: 35em;   height: 0.5em;  top: 33.4em; left: 3.3em; border-radius: 0px 0px 15px 15px; }
 
-.prod-img .front.device-laptop 						{ width: 35em;   height: 1em;    top: 32.4em; left: 3.3em; }
-.prod-img .cut.device-laptop 						{ width: 4.8em;  height: 0.5em;  top: 32.4em; left: 18.3em; }
-.prod-img .bottom.device-laptop 					{ width: 35em;   height: 0.5em;  top: 33.4em; left: 3.3em; border-radius: 0px 0px 15px 15px; }
+.prod-img1 .device-imac.foot 						{ width: 7.7em;  height: 2.5em;  top: 28em;   left: 40.6em; }
+.prod-img1 .device-imac.foot2 						{ width: 11.2em; height: 1.9em;  top: 30.3em; left: 38.8em; border-radius: 25px 25px 0px 0px; }
+.prod-img1 .device-imac.bottom 						{ width: 37.3em; height: 3.5em;  top: 24.5em; left: 25.8em; }
 
-.prod-img .foot.device-imac 						{ width: 7.7em;  height: 2.5em;  top: 28em;   left: 40.6em; }
-.prod-img .foot2.device-imac 						{ width: 11.2em; height: 1.9em;  top: 30.3em; left: 38.8em; border-radius: 25px 25px 0px 0px; }
-.prod-img .bottom.device-imac 						{ width: 37.3em; height: 3.5em;  top: 24.5em; left: 25.8em; }
+.prod-img1 .button.device-tablet,
+.prod-img1 .button.device-phone 					{ border-radius: 10px; width: 0.6em; height: 0.6em; }
+.prod-img1 .button.device-tablet		 			{ left: 60.9em; top: 32.7em; }
+.prod-img1 .button.device-phone  					{ left: 74.1em; top: 32.7em; }
 
+.nxs-icon.device 									{ color: black; top: 25.4em; left: 43.6em; }
+.device.nxs-icon:before 							{ font-size: 1.5em; }
 
-.nxs-icon.device { color: black; top: 25.4em; left: 43.6em; }
-.device.nxs-icon:before { font-size: 1.5em; }
+/* prod2 */
+.prod-img2 .device.device-tablet 					{ width: 32.6em; height: 21.3em; top: 6.5em;  left: 15.2em; background-color: green; }
+.prod-img2 .device.device-phone 					{ width: 10.0em; height: 14.4em; top: 11.5em; left: 45.8em; background-color: yellow; }
+.prod-img2 .device.device-phone2 					{ width: 17.8em; height: 6.6em;  top: 20.3em; left: 54.4em; background-color: red; }
+
+.prod-img2 .bg.device-tablet 						{ width: 40.5em; height: 27.2em; top: 2.1em;  left: 11.4em; border-radius: 30px; }
+.prod-img2 .bg.device-phone 						{ width: 11.9em; height: 24.8em; top: 6em;    left: 44.9em; border-radius: 30px; }
+.prod-img2 .bg.device-phone2 						{ width: 24.8em; height: 11.9em; top: 17.4em; left: 50.9em; border-radius: 30px; }
+
+.prod-img2 .device-phone2.camera 					{ width: 0.5em;  height: 0.5em;  top: 23em;   left: 74.2em; border-radius: 10px; }
+.prod-img2 .device-phone2.speaker					{ width: 0.5em;  height: 2.1em;  top: 22.2em; left: 73.3em; border-radius: 10px; }
+
+.prod-img2 .device-phone.camera 					{ width: 0.5em;  height: 0.5em;  top: 7em;    left: 50.6em; border-radius: 10px; }
+.prod-img2 .device-phone.speaker					{ width: 2.1em;  height: 0.5em;  top: 7.9em;  left: 49.8em; border-radius: 10px; }
+
+.prod-img2 .device-tablet.navbar1 					{ width: 32.6em; height: 0.8em;  top: 3.3em;  left: 15.2em; }
+.prod-img2 .device-tablet.navbar2 					{ width: 32.6em; height: 2.4em;  top: 4.1em;  left: 15.2em; }
+.prod-img2 .device-phone.navbar						{ width: 10.0em; height: 2.1em;  top: 9.4em;  left: 45.8em; }
+.prod-img2 .device-phone2.navbar 					{ width: 17.8em; height: 2.0em;  top: 18.3em; left: 54.4em; }
+.prod-img2 .device-phone.footer						{ width: 10.0em; height: 1.4em;  top: 25.9em; left: 45.8em; }
+.prod-img2 .device-phone2.footer 					{ width: 17.8em; height: 1.3em;  top: 26.9em; left: 54.4em; }
+
+.prod-img2 .button.device-tablet,
+.prod-img2 .button.device-phone,
+.prod-img2 .button.device-phone2 					{ border-radius: 30px; width: 2em; height: 2em; }
+
+.prod-img2 .button.device-tablet		 			{ left: 60.9em; top: 32.7em; }
+.prod-img2 .button.device-phone,
+.prod-img2 .button.device-phone2  					{ left: 49.8em; top: 28em; }
