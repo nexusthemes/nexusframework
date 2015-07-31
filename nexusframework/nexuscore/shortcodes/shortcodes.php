@@ -15,7 +15,7 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 			$rowattributes
 		)
 	);
-		
+	
 	global $nxs_global_current_nxsposttype_being_rendered;
 	global $nxs_global_current_postid_being_rendered;
 	global $nxs_global_current_postmeta_being_rendered;
@@ -65,7 +65,6 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	}
 	
 	
-	
 	if ($pagerowtemplate == "141214")
 	{
 		// promote this row to exceptional responsive row
@@ -92,7 +91,7 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	}
 	else
 	{
-		echo "Unsupported pagerowtemplate; " . $pagerowtemplate;
+		// echo "Unsupported pagerowtemplate; [$pagerowtemplate]";
 		$pagerowtemplate = "one";
 	}
 	
@@ -265,6 +264,12 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 
 	// global variable no longer needed
 	$nxs_global_row_render_statebag = null;
+	
+	if ($pagerowtemplate == "")
+	{
+		//
+		$output = "";
+	}
 	
 	return $output;
 }
