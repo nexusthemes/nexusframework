@@ -919,3 +919,55 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-one-third.nxs-placeholder { border-right: none; }
 	
 }
+
+/* NT PRODUCT IMAGES
+------------------------------------------------------------------------------------------ */
+@media only screen and ( max-width: 1439px ) {
+.prod-img1 iframe.imac 		{ transform: scale(0.2693); -webkit-transform: scale(0.2693); -o-transform: scale(0.2693); -ms-transform: scale(0.2693); -moz-transform: scale(0.2693); }
+.prod-img1 iframe.laptop 	{ transform: scale(0.2345); -webkit-transform: scale(0.2345); -o-transform: scale(0.2345); -ms-transform: scale(0.2345); -moz-transform: scale(0.2345); }
+.prod-img1 iframe.tablet 	{ transform: scale(0.1680); -webkit-transform: scale(0.1680); -o-transform: scale(0.1680); -ms-transform: scale(0.1680); -moz-transform: scale(0.1680); }
+.prod-img1 iframe.phone 	{ transform: scale(0.1472); -webkit-transform: scale(0.1472); -o-transform: scale(0.1472); -ms-transform: scale(0.1472); -moz-transform: scale(0.1472); }
+}
+
+@media only screen and ( max-width: 1199px ){
+.prod-img1 iframe.imac 		{ transform: scale(0.2156); -webkit-transform: scale(0.2156); -o-transform: scale(0.2156); -ms-transform: scale(0.2156); -moz-transform: scale(0.2156); }
+.prod-img1 iframe.laptop 	{ transform: scale(0.1875); -webkit-transform: scale(0.1875); -o-transform: scale(0.1875); -ms-transform: scale(0.1875); -moz-transform: scale(0.1875); }
+.prod-img1 iframe.tablet 	{ transform: scale(0.1342); -webkit-transform: scale(0.1342); -o-transform: scale(0.1342); -ms-transform: scale(0.1342); -moz-transform: scale(0.1342); }
+.prod-img1 iframe.phone 	{ transform: scale(0.1160); -webkit-transform: scale(0.1160); -o-transform: scale(0.1160); -ms-transform: scale(0.1160); -moz-transform: scale(0.1160); }
+}
+
+@media only screen and ( max-width: 959px ) {
+.prod-img1 iframe.imac 		{ transform: scale(0.1615); -webkit-transform: scale(0.1615); -o-transform: scale(0.1615); -ms-transform: scale(0.1615); -moz-transform: scale(0.1615); }
+.prod-img1 iframe.laptop 	{ transform: scale(0.1405); -webkit-transform: scale(0.1405); -o-transform: scale(0.1405); -ms-transform: scale(0.1405); -moz-transform: scale(0.1405); }
+.prod-img1 iframe.tablet 	{ transform: scale(0.0873); -webkit-transform: scale(0.1005); -o-transform: scale(0.1005); -ms-transform: scale(0.1005); -moz-transform: scale(0.1005); }
+.prod-img1 iframe.phone 	{ transform: scale(0.0873); -webkit-transform: scale(0.0873); -o-transform: scale(0.0873); -ms-transform: scale(0.0873); -moz-transform: scale(0.0873); }
+}
+
+@media only screen and ( max-width: 719px ) {
+.prod-img1 iframe.imac 		{ transform: scale(0.1078); -webkit-transform: scale(0.1078); -o-transform: scale(0.1078); -ms-transform: scale(0.1078); -moz-transform: scale(0.1078); }
+.prod-img1 iframe.laptop 	{ transform: scale(0.0940); -webkit-transform: scale(0.0940); -o-transform: scale(0.0940); -ms-transform: scale(0.0940); -moz-transform: scale(0.0940); }
+.prod-img1 iframe.tablet 	{ transform: scale(0.0680); -webkit-transform: scale(0.0680); -o-transform: scale(0.0680); -ms-transform: scale(0.0680); -moz-transform: scale(0.0680); }
+.prod-img1 iframe.phone 	{ transform: scale(0.0590); -webkit-transform: scale(0.0590); -o-transform: scale(0.0590); -ms-transform: scale(0.0590); -moz-transform: scale(0.0590); }
+}
+
+@media only screen and ( max-width: 479px ) {
+.prod-img1 iframe.imac 		{ transform: scale(0.0715); -webkit-transform: scale(0.0715); -o-transform: scale(0.0715); -ms-transform: scale(0.0715); -moz-transform: scale(0.0715); }
+.prod-img1 iframe.laptop 	{ transform: scale(0.0625); -webkit-transform: scale(0.0625); -o-transform: scale(0.0625); -ms-transform: scale(0.0625); -moz-transform: scale(0.0625); }
+.prod-img1 iframe.tablet 	{ transform: scale(0.0442); -webkit-transform: scale(0.0442); -o-transform: scale(0.0442); -ms-transform: scale(0.0442); -moz-transform: scale(0.0442); }
+.prod-img1 iframe.phone 	{ transform: scale(0.0372); -webkit-transform: scale(0.0372); -o-transform: scale(0.0372); -ms-transform: scale(0.0372); -moz-transform: scale(0.0372); }
+}
+
+@media only screen and ( max-width: 959px ) {
+.prod-img1 .bg.device-imac,
+.prod-img1 .bg.device-laptop,
+.prod-img1 .bg.device-tablet 	{ border-radius: 7px; }
+.prod-img1 .bg.device-phone 	{ border-radius: 3px; }
+}
+
+@media only screen and ( max-width: 719px ) {
+.prod-img1 .bg.device-imac,
+.prod-img1 .bg.device-laptop,
+.prod-img1 .bg.device-tablet 	{ border-radius: 5px; }
+.prod-img1 .bg.device-phone 	{ border-radius: 2px; }
+}
+

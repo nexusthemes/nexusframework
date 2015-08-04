@@ -3153,10 +3153,10 @@ span.reviewer 															{ margin-left: 5px; }
 .prod-img2 .device-phone2.footer { background-color: #B9B9B9; }
 
 /* prod1 */
-.prod-img1 .device.device-imac 						{ width: 34.5em; height: 19.3em; top: 3.8em;  left: 27.2em; background-color: red; }
-.prod-img1 .device.device-laptop 					{ width: 24em;   height: 15.2em; top: 16.4em; left: 8.8em; background-color: blue;}
-.prod-img1 .device.device-tablet 					{ width: 10.3em; height: 13.8em; top: 18.5em; left: 56em; background-color: green; }
-.prod-img1 .device.device-phone 					{ width: 3.7em;  height: 5.3em;  top: 27em;   left: 72.5em; background-color: yellow; }
+.prod-img1 .device.device-imac 						{ width: 34.5em; height: 19.3em; top: 3.8em;  left: 27.2em;	overflow: hidden; background-color: red;  }
+.prod-img1 .device.device-laptop 					{ width: 24em;   height: 15.2em; top: 16.4em; left: 8.8em;	overflow: hidden; background-color: blue; }
+.prod-img1 .device.device-tablet 					{ width: 10.3em; height: 13.8em; top: 18.5em; left: 56em;	overflow: hidden; background-color: green; }
+.prod-img1 .device.device-phone 					{ width: 3.7em;  height: 5.3em;  top: 27em;   left: 72.5em;	overflow: hidden; background-color: yellow; }
 
 .prod-img1 .bg.device-imac 							{ width: 37.3em; height: 22.3em; top: 2.2em;  left: 25.8em; border-radius: 16px; }
 .prod-img1 .bg.device-laptop 						{ width: 26.2em; height: 18.2em; top: 15.2em; left: 7.7em; border-radius: 10px; }
@@ -3175,6 +3175,12 @@ span.reviewer 															{ margin-left: 5px; }
 .prod-img1 .button.device-phone 					{ border-radius: 10px; width: 0.6em; height: 0.6em; }
 .prod-img1 .button.device-tablet		 			{ left: 60.9em; top: 32.7em; }
 .prod-img1 .button.device-phone  					{ left: 74.1em; top: 32.7em; }
+
+.prod-img1 iframe 									{ margin: 0; padding: 0; position: relative; background-color: #fff; border-color: #000; transform-origin: top left; -webkit-transform-origin: top left; -o-transform-origin: top left; -ms-transform-origin: top left; -moz-transform-origin: top left; }
+.prod-img1 iframe.imac  							{ width: 1600px; height: 894px; transform: scale(0.3233); -webkit-transform: scale(0.3233); -o-transform: scale(0.3233); -ms-transform: scale(0.3233); -moz-transform: scale(0.3233); }
+.prod-img1 iframe.laptop  							{ width: 1280px; height: 809px; transform: scale(0.281); -webkit-transform: scale(0.281); -o-transform: scale(0.281); -ms-transform: scale(0.281); -moz-transform: scale(0.281); }
+.prod-img1 iframe.tablet  							{ width: 768px; height: 1028px; transform: scale(0.202); -webkit-transform: scale(0.202); -o-transform: scale(0.202); -ms-transform: scale(0.202); -moz-transform: scale(0.202); }
+.prod-img1 iframe.phone  							{ width: 320px; height: 480px; transform: scale(0.175); -webkit-transform: scale(0.175); -o-transform: scale(0.175); -ms-transform: scale(0.175); -moz-transform: scale(0.175); }
 
 .nxs-icon.device 									{ color: black; top: 25.4em; left: 43.6em; }
 .device.nxs-icon:before 							{ font-size: 1.5em; }
