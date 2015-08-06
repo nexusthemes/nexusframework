@@ -920,7 +920,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 	
 }
 
-/* NT PRODUCT IMAGES
+/* NT PRODUCT IMAGES 1
 ------------------------------------------------------------------------------------------ */
 @media only screen and ( max-width: 1439px ) {
 .prod-img1 iframe.imac 		{ transform: scale(0.2693); -webkit-transform: scale(0.2693); -o-transform: scale(0.2693); -ms-transform: scale(0.2693); -moz-transform: scale(0.2693); }
@@ -951,7 +951,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 }
 
 @media only screen and ( max-width: 479px ) {
-.prod-img1 iframe.imac 		{ transform: scale(0.0715); -webkit-transform: scale(0.0715); -o-transform: scale(0.0715); -ms-transform: scale(0.0715); -moz-transform: scale(0.0715); }
+.prod-img1 iframe.imac 		{ transform: scale(0.0719); -webkit-transform: scale(0.0719); -o-transform: scale(0.0719); -ms-transform: scale(0.0719); -moz-transform: scale(0.0719); }
 .prod-img1 iframe.laptop 	{ transform: scale(0.0625); -webkit-transform: scale(0.0625); -o-transform: scale(0.0625); -ms-transform: scale(0.0625); -moz-transform: scale(0.0625); }
 .prod-img1 iframe.tablet 	{ transform: scale(0.0442); -webkit-transform: scale(0.0442); -o-transform: scale(0.0442); -ms-transform: scale(0.0442); -moz-transform: scale(0.0442); }
 .prod-img1 iframe.phone 	{ transform: scale(0.0372); -webkit-transform: scale(0.0372); -o-transform: scale(0.0372); -ms-transform: scale(0.0372); -moz-transform: scale(0.0372); }
@@ -969,5 +969,49 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .prod-img1 .bg.device-laptop,
 .prod-img1 .bg.device-tablet 	{ border-radius: 5px; }
 .prod-img1 .bg.device-phone 	{ border-radius: 2px; }
+}
+
+/* NT PRODUCT IMAGES 2
+		------------------------------------------------------------------------------------------ */
+@media only screen and ( max-width: 1439px ) {
+.prod-img2 iframe.tablet 	{ transform: scale(0.398); -webkit-transform: scale(0.398); -o-transform: scale(0.398); -ms-transform: scale(0.398); -moz-transform: scale(0.398); }
+.prod-img2 iframe.phone 	{ transform: scale(0.393); -webkit-transform: scale(0.393); -o-transform: scale(0.393); -ms-transform: scale(0.393); -moz-transform: scale(0.393); }
+.prod-img2 iframe.phone2 	{ transform: scale(0.465); -webkit-transform: scale(0.465); -o-transform: scale(0.465); -ms-transform: scale(0.465); -moz-transform: scale(0.465); }
+}
+
+@media only screen and ( max-width: 1199px ){
+.prod-img2 iframe.tablet 	{ transform: scale(0.318); -webkit-transform: scale(0.318); -o-transform: scale(0.318); -ms-transform: scale(0.318); -moz-transform: scale(0.318); }
+.prod-img2 iframe.phone 	{ transform: scale(0.415); -webkit-transform: scale(0.415); -o-transform: scale(0.415); -ms-transform: scale(0.415); -moz-transform: scale(0.415); }
+.prod-img2 iframe.phone2 	{ transform: scale(0.371); -webkit-transform: scale(0.371); -o-transform: scale(0.371); -ms-transform: scale(0.371); -moz-transform: scale(0.371); }
+}
+
+@media only screen and ( max-width: 959px ) {
+.prod-img2 iframe.tablet 	{ transform: scale(0.239); -webkit-transform: scale(0.239); -o-transform: scale(0.239); -ms-transform: scale(0.239); -moz-transform: scale(0.239); }
+.prod-img2 iframe.phone 	{ transform: scale(0.236); -webkit-transform: scale(0.236); -o-transform: scale(0.236); -ms-transform: scale(0.236); -moz-transform: scale(0.236); }
+.prod-img2 iframe.phone2 	{ transform: scale(0.278); -webkit-transform: scale(0.278); -o-transform: scale(0.278); -ms-transform: scale(0.278); -moz-transform: scale(0.278); }
+}
+
+@media only screen and ( max-width: 719px ) {
+.prod-img2 iframe.tablet 	{ transform: scale(0.159); -webkit-transform: scale(0.159); -o-transform: scale(0.159); -ms-transform: scale(0.159); -moz-transform: scale(0.159); }
+.prod-img2 iframe.phone 	{ transform: scale(0.157); -webkit-transform: scale(0.157); -o-transform: scale(0.157); -ms-transform: scale(0.157); -moz-transform: scale(0.157); }
+.prod-img2 iframe.phone2 	{ transform: scale(0.187); -webkit-transform: scale(0.187); -o-transform: scale(0.187); -ms-transform: scale(0.187); -moz-transform: scale(0.187); }
+}
+
+@media only screen and ( max-width: 479px ) {
+.prod-img2 iframe.tablet 	{ transform: scale(0.106); -webkit-transform: scale(0.106); -o-transform: scale(0.106); -ms-transform: scale(0.106); -moz-transform: scale(0.106); }
+.prod-img2 iframe.phone 	{ transform: scale(0.104); -webkit-transform: scale(0.104); -o-transform: scale(0.104); -ms-transform: scale(0.104); -moz-transform: scale(0.104); }
+.prod-img2 iframe.phone2 	{ transform: scale(0.123); -webkit-transform: scale(0.123); -o-transform: scale(0.123); -ms-transform: scale(0.123); -moz-transform: scale(0.123); }
+}
+
+@media only screen and ( max-width: 959px ) {
+.prod-img2 .bg.device-tablet 	{ border-radius: 12px; }
+.prod-img2 .bg.device-phone,
+.prod-img2 .bg.device-phone2 	{ border-radius: 8px; }
+}
+
+@media only screen and ( max-width: 719px ) {
+.prod-img2 .bg.device-tablet 	{ border-radius: 8px; }
+.prod-img2 .bg.device-phone,
+.prod-img2 .bg.device-phone2 	{ border-radius: 5px; }
 }
 

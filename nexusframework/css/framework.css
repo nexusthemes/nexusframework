@@ -3186,9 +3186,9 @@ span.reviewer 															{ margin-left: 5px; }
 .device.nxs-icon:before 							{ font-size: 1.5em; }
 
 /* prod2 */
-.prod-img2 .device.device-tablet 					{ width: 32.6em; height: 21.3em; top: 6.5em;  left: 15.2em; background-color: green; }
-.prod-img2 .device.device-phone 					{ width: 10.0em; height: 14.4em; top: 11.5em; left: 45.8em; background-color: yellow; }
-.prod-img2 .device.device-phone2 					{ width: 17.8em; height: 6.6em;  top: 20.3em; left: 54.4em; background-color: red; }
+.prod-img2 .device.device-tablet 					{ width: 32.6em; height: 21.3em; top: 6.5em;  left: 15.2em; overflow: hidden; background-color: green; }
+.prod-img2 .device.device-phone 					{ width: 10.0em; height: 14.4em; top: 11.5em; left: 45.8em; overflow: hidden; background-color: yellow; }
+.prod-img2 .device.device-phone2 					{ width: 17.8em; height: 6.6em;  top: 20.3em; left: 54.4em; overflow: hidden; background-color: red; }
 
 .prod-img2 .bg.device-tablet 						{ width: 40.5em; height: 27.2em; top: 2.1em;  left: 11.4em; border-radius: 30px; }
 .prod-img2 .bg.device-phone 						{ width: 11.9em; height: 24.8em; top: 6em;    left: 44.9em; border-radius: 30px; }
@@ -3214,3 +3214,9 @@ span.reviewer 															{ margin-left: 5px; }
 .prod-img2 .button.device-tablet		 			{ left: 60.9em; top: 32.7em; }
 .prod-img2 .button.device-phone,
 .prod-img2 .button.device-phone2  					{ left: 49.8em; top: 28em; }
+
+.prod-img2 iframe 									{ margin: 0; padding: 0; position: relative; background-color: #fff; border-color: #000; transform-origin: top left; -webkit-transform-origin: top left; -o-transform-origin: top left; -ms-transform-origin: top left; -moz-transform-origin: top left; }
+.prod-img2 iframe.tablet  							{ width: 1028px; height: 670px; transform: scale(0.478); -webkit-transform: scale(0.478); -o-transform: scale(0.478); -ms-transform: scale(0.478); -moz-transform: scale(0.478); }
+.prod-img2 iframe.phone  							{ width: 320px; height: 458px; transform: scale(0.472); -webkit-transform: scale(0.472); -o-transform: scale(0.472); -ms-transform: scale(0.472); -moz-transform: scale(0.472); }
+.prod-img2 iframe.phone2  							{ width: 480px; height: 178px; transform: scale(0.556); -webkit-transform: scale(0.556); -o-transform: scale(0.556); -ms-transform: scale(0.556); -moz-transform: scale(0.556); }
+
