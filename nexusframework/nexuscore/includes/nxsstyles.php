@@ -93,9 +93,9 @@ function nxs_getstyletypeoptions() {
 			"values" 			=> array("left"=>nxs_l18n__("left", "nxs_td"), "center"=>nxs_l18n__("center", "nxs_td"), "right"=>nxs_l18n__("right", "nxs_td")),
 			"icons" 			=> array("left"=>nxs_l18n__("leftalign", "nxs_td"), "center"=>nxs_l18n__("centeralign", "nxs_td"), "right"=>nxs_l18n__("rightalign", "nxs_td"))
 		),
-		"delaypopup_seconds" => array (
+		"popup_trigger" => array (
 			"subtype" 			=> "textlookup",
-			"values" 			=> array("0"=>nxs_l18n__("No delay", "nxs_td"), "5"=>nxs_l18n__("5 seconds", "nxs_td"), "20"=>nxs_l18n__("20 seconds", "nxs_td"))
+			"values" 			=> array("0"=>nxs_l18n__("Show instantly", "nxs_td"), "exit"=>nxs_l18n__("Show on exit intent", "nxs_td"), "5"=>nxs_l18n__("Show after 5 seconds delay", "nxs_td"), "20"=>nxs_l18n__("Show after 20 seconds delay", "nxs_td"))
 		),
 		"repeatpopup_scope" => array (
 			"subtype" 			=> "textlookup",

@@ -15,8 +15,8 @@ function nxs_widgets_pagepopup_registerhooksforpagewidget($args)
 		
 	global $nxs_pagepopup_pagedecoratorid;
 	$nxs_pagepopup_pagedecoratorid = $pagedecoratorid;
-	global $nxs_pageslider_pagedecoratorwidgetplaceholderid;
-	$nxs_pageslider_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
+	global $nxs_pagepopup_pagedecoratorwidgetplaceholderid;
+	$nxs_pagepopup_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
 	
 	add_action('nxs_beforeend_head', 'nxs_widgets_pagepopup_beforeend_head');
 }
@@ -25,9 +25,11 @@ function nxs_widgets_pagepopup_registerhooksforpagewidget($args)
 function nxs_widgets_pagepopup_beforeend_head()
 {
 	global $nxs_pagepopup_pagedecoratorid;
-	global $nxs_pageslider_pagedecoratorwidgetplaceholderid;
+	global $nxs_pagepopup_pagedecoratorwidgetplaceholderid;
+
+	$placeholderid = $nxs_pagepopup_pagedecoratorwidgetplaceholderid;
 	
-	$metadata = nxs_getwidgetmetadata($nxs_pagepopup_pagedecoratorid, $nxs_pageslider_pagedecoratorwidgetplaceholderid);
+	$metadata = nxs_getwidgetmetadata($nxs_pagepopup_pagedecoratorid, $nxs_pagepopup_pagedecoratorwidgetplaceholderid);
 	extract($metadata);
 	
 	// Linked title
@@ -43,9 +45,20 @@ function nxs_widgets_pagepopup_beforeend_head()
 	// prevent administrators from seeing annoying edit features
 	$destination_url = nxs_addqueryparametertourl_v2($destination_url, "nxs_impersonate", "anonymous", false, true);
 	
-	if ($delaypopup_seconds != "")
+	$trigger_on_exit = false;
+
+	if ($popup_trigger != "")
 	{
-		$delaypopup_milliseconds = $delaypopup_seconds * 1000;
+		if ($popup_trigger == "exit")
+		{
+			$trigger_on_exit = true;
+			$delaypopup_milliseconds = 0;
+		}
+
+		else
+		{
+			$delaypopup_milliseconds = $popup_trigger * 1000;
+		}
 	}
 	else
 	{
@@ -67,6 +80,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 			function()
 			{
 				var shouldshow = true;	// todo: filter based on device?
+				var triggerOnExit = <?php echo ($trigger_on_exit) ? 'true' : 'false'; ?>;
 				
 				if ((jQuery(window).width() * 0.9) < <?php echo $width; ?>)
 				{
@@ -80,8 +94,23 @@ function nxs_widgets_pagepopup_beforeend_head()
 				
 				if (shouldshow)
 				{
-					// don't show it when the height of the screen is insufficient
-					setTimeout(function() { nxs_js_pagepopup_activate() }, <?php echo $delaypopup_milliseconds; ?>);
+					if (triggerOnExit) {
+						var triggered = false;
+						var nxs_html = document.documentElement;
+						$(nxs_html).on('mouseleave', function(event){
+							if (triggered === false) {
+								if (event.clientY > 20) { return; }
+
+								triggered = true;
+								nxs_js_pagepopup_activate();
+							}
+						});
+					}
+
+					else
+					{
+						setTimeout(function() { nxs_js_pagepopup_activate() }, <?php echo $delaypopup_milliseconds; ?>);
+					}
 				}
 				else
 				{
@@ -111,7 +140,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 						"clientshortscopedata": nxs_js_popup_getescapedshortscopedata(),
 						"clientqueryparameters": nxs_js_escaped_getqueryparametervalues(),
 						"pagedecoratorid": "<?php echo $nxs_pagepopup_pagedecoratorid; ?>",
-						"placeholderid": "<?php echo $nxs_pageslider_pagedecoratorwidgetplaceholderid; ?>"
+						"placeholderid": "<?php echo $nxs_pagepopup_pagedecoratorwidgetplaceholderid; ?>"
 					},
 					cache: false,
 					dataType: 'JSON',
@@ -145,7 +174,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 								var fillbackgroundcolor = 'white'; // 'yellow';
 								
 								var html = "";
-								html += "<div style=\"margin: 0 auto; display: table;\">";	// horizontal alignment
+								html += "<div id='pagepopup_<?php echo $placeholderid; ?>' style=\"margin: 0 auto; display: table;\">";	// horizontal alignment
 								// note; the height of the iframe is 5 pixels too big; therefore we set the backgroundcolor of
 								// the wrapping div to the same backgound color
 								
@@ -175,9 +204,6 @@ function nxs_widgets_pagepopup_beforeend_head()
 								nxs_js_popup_setsessiondata("nxs_customhtml_scaffoldingtype", "nothing");
 								nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", html);
 								nxs_js_popup_navigateto_v2("customhtml", false);
-								
-
-								
 							}
 							else
 							{
@@ -236,10 +262,10 @@ function nxs_widgets_pagepopup_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
 			),
 			array(
-				"id"     			=> "delaypopup_seconds",
+				"id"     			=> "popup_trigger",
 				"type"     			=> "select",
 				"label"    			=> nxs_l18n__("Delay popup", "nxs_td"),
-				"dropdown"   		=> nxs_style_getdropdownitems("delaypopup_seconds"),
+				"dropdown"   		=> nxs_style_getdropdownitems("popup_trigger"),
 				"unistylablefield"	=> true
 			),
 			array(
