@@ -1,0 +1,2 @@
+All credits to https://github.com/carlsednaoui/ouibounce
+(forked at https://github.com/nexusthemes/ouibounce)

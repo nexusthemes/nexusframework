@@ -525,7 +525,7 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 			
 			$currentlypointstopostid = $metadata[$localkey];
 			$globalid_of_post_to_which_current_pointerrefers = nxs_get_globalid($currentlypointstopostid, false);	// very important, the 2nd parameter is set to FALSE!!)
-			
+						
 			//echo "[found local key:" . $localkey . " having value:" . $currentlypointstopostid . "]<br />";						
 			//echo "[found global key:" . $globalkey . " having value:" . $globalid_that_is_correct . "]<br />";											
 			//echo "[lookup postid:" . $currentlypointstopostid . " having globalid:" . $globalid_of_post_to_which_current_pointerrefers . "]<br />";
@@ -540,64 +540,86 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 			}
 			else
 			{
-				//echo "[widget field $localkey is NOT ok, localvalue: " . $metadata[$localkey] . "]<br />";
-	
-				$postid_to_which_we_should_refer = nxs_get_postidsaccordingtoglobalid($globalid_that_is_correct);
-				if (count($postid_to_which_we_should_refer) == 1)
+				// er is een inconsistentie; de postid en globalid verwijzen verschillend
+				
+				if (nxs_global_globalidexists($globalid_that_is_correct))
 				{
-					echo "<span title='More information in the HTML DOM'>[...]</span>";
+					// als de globalid voorkomt, gaan we er vanuit dat de postid onjuist is					
 					
-					// 
-					if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)
-					{
-		    		echo "<!-- ";
-		    	}
-					echo "[data integrity inconsistency]<br />";
-					echo "[field needs to be updated; it points to " . $currentlypointstopostid . " while (according to globalid) it should point to " . $postid_to_which_we_should_refer[0] . "]<br />";
-					
-					if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)
-					{
-		    		echo " -->";
-		    	}
-					
-					// indien de postid lookup niet overeenkomt met de (reverse) postid die geldig is volgens de globals,
-					// dan kunnen we hier een update uitvoeren
-					$metakeyvaluestoupdate[$localkey] = $postid_to_which_we_should_refer[0];
-				}
-				else if (count($postidsaccordingtoglobalid) == 0)
-				{
-					if ($currentlypointstopostid > 0)
+					//echo "[widget field $localkey is NOT ok, localvalue: " . $metadata[$localkey] . "]<br />";
+		
+					$postid_to_which_we_should_refer = nxs_get_postidsaccordingtoglobalid($globalid_that_is_correct);
+					if (count($postid_to_which_we_should_refer) == 1)
 					{
 						echo "<span title='More information in the HTML DOM'>[...]</span>";
-					
+						
 						// 
 						if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)
 						{
 			    		echo "<!-- ";
 			    	}
-						
-						// global id not found; it appears post information is missing
-						echo "[data integrity inconsistency]<br />[field points to globalid (post information) that is not found; maybe you forgot to import some data? field will be ignored/not be updated]<br />";
-						// update to post local postid to 0 to ensure no incorrect things are being used
-						$metakeyvaluestoupdate[$localkey] = 0;
+						echo "[data integrity inconsistency]<br />";
+						echo "[field needs to be updated; it points to " . $currentlypointstopostid . " while (according to globalid) it should point to " . $postid_to_which_we_should_refer[0] . "]<br />";
 						
 						if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)
 						{
 			    		echo " -->";
 			    	}
+						
+						// indien de postid lookup niet overeenkomt met de (reverse) postid die geldig is volgens de globals,
+						// dan kunnen we hier een update uitvoeren
+						$metakeyvaluestoupdate[$localkey] = $postid_to_which_we_should_refer[0];
 					}
-					else
+					else if (count($postidsaccordingtoglobalid) == 0)
 					{
-						//echo "[inconsistency remark absorbed; postid points to 0, globalid is not found]<br />";
+						if ($currentlypointstopostid > 0)
+						{
+							echo "<span title='More information in the HTML DOM'>[...]</span>";
+						
+							// 
+							if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)
+							{
+				    		echo "<!-- ";
+				    	}
+							
+							// global id not found; it appears post information is missing
+							echo "[data integrity inconsistency]<br />[field points to globalid (post information) that is not found; maybe you forgot to import some data? field will be ignored/not be updated]<br />";
+							// update to post local postid to 0 to ensure no incorrect things are being used
+							$metakeyvaluestoupdate[$localkey] = 0;
+							
+							if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)
+							{
+				    		echo " -->";
+				    	}
+						}
+						else
+						{
+							//echo "[inconsistency remark absorbed; postid points to 0, globalid is not found]<br />";
+						}
+					}
+					else 
+					{
+						// dit had bij de eerste stap van de consistentheid al gefixed moeten zijn?
+						// multiple globalids found... not sure what to do now; 
+						echo "[data integrity inconsistency]<br />[sanity check failed; globalid is used multiple times, unable to update field as its uncertain to which globalid the field should be updated to]<br />";
+						// we zouden er hierbij voor kunnen kiezen om te verwijzen naar de eerste, of oudste, of andere logica
+						// het beste is echter om de gebruiker een keuze te laten maken aangezien de kans zeer aanwezig is dat het systeem een verkeerde keuze zou maken.
 					}
 				}
-				else 
+				else
 				{
-					// dit had bij de eerste stap van de consistentheid al gefixed moeten zijn?
-					// multiple globalids found... not sure what to do now; 
-					echo "[data integrity inconsistency]<br />[sanity check failed; globalid is used multiple times, unable to update field as its uncertain to which globalid the field should be updated to]<br />";
-					// we zouden er hierbij voor kunnen kiezen om te verwijzen naar de eerste, of oudste, of andere logica
-					// het beste is echter om de gebruiker een keuze te laten maken aangezien de kans zeer aanwezig is dat het systeem een verkeerde keuze zou maken.
+					
+					// de metadata verwijst naar een globalid die niet (meer?) bestaat,
+					// de oplossing is om te kijken of de verwezen postid wel bestaat en dan die als waarheid aan te nemen
+					$correct_postid_to_which_we_should_refer = $currentlypointstopostid;
+					$correct_globalid = nxs_get_globalid($correct_postid_to_which_we_should_refer, true);
+					$metakeyvaluestoupdate[$globalkey] = $correct_globalid;
+					
+					if ($correct_globalid == "NXS-NULL")
+					{
+						// als blijkt dat de postid in zijn geheel niet bestaat, maken we ook die leeg
+						$metakeyvaluestoupdate[$localkey] = 0;
+					}
 				}
 			}
 		}

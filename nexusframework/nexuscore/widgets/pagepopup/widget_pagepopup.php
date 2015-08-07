@@ -57,7 +57,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 
 		<?php
 		$url = $destination_url;
-		$maxheight = 500;
+		$maxheight = 750;
 		// $width = 340;		// 1 column
 		$width = 738;		// 2 columns
 		?>
@@ -149,13 +149,14 @@ function nxs_widgets_pagepopup_beforeend_head()
 								// note; the height of the iframe is 5 pixels too big; therefore we set the backgroundcolor of
 								// the wrapping div to the same backgound color
 								
-								var semiborder = "padding-top: 5px; -moz-border-radius: 15px; border-radius: 15px; border: 10px solid rgb(127, 127, 127); border: 10px solid rgba(127, 127, 127, .5); -webkit-background-clip: padding-box; /* for Safari */ background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */";
+								var semiborder = "";
+								// "padding-top: 5px; -moz-border-radius: 15px; border-radius: 15px; border: 10px solid rgb(127, 127, 127); border: 10px solid rgba(127, 127, 127, .5); -webkit-background-clip: padding-box; /* for Safari */ background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */";
 
 								html += "<div style=\"padding-top: 10px;\">";	// padding 
 								
 								html += "<div style=\"position:relative;\"><a href=\"#\" onclick=\"nxs_js_closepopup_unconditionally(); return false;\"><span style=\"color: white; position: absolute; right: 0px; top: -10px;\" class=\"nxs-icon-remove-sign\"></span></a></div>";
-								html += "<div style=\"" + semiborder + ";background-color: " + fillbackgroundcolor + "\">";	// surrounding shade
-								html += "<iframe id=\"pagepopupiframe\" width=\"" + width + "px\" frameborder=\"0\" onload=\"nxs_js_iframeloadedpagepopup();\" style=\"-webkit-transform: translate3d(0px, 0px, 0px); border: none; background-color: " + fillbackgroundcolor + ";\" src=\"<?php echo $url; ?>\"></iframe>";
+								html += "<div style=\"" + semiborder + ";xbackground-color: " + fillbackgroundcolor + "\">";	// surrounding shade
+								html += "<iframe id=\"pagepopupiframe\" ALLOWTRANSPARENCY=\"true\" width=\"" + width + "px\" frameborder=\"0\" onload=\"nxs_js_iframeloadedpagepopup();\" style=\"-webkit-transform: translate3d(0px, 0px, 0px); border: none; xbackground-color: " + fillbackgroundcolor + ";\" src=\"<?php echo $url; ?>\"></iframe>";
 								html += "</div>";	// end surrounding shade
 								html += "</div>";	// end horizontal alignment
 

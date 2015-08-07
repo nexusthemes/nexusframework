@@ -5377,6 +5377,7 @@ function nxs_global_globalidexists($globalid)
 	return $result;
 }
 
+// get postidbyglobalid
 function nxs_get_postidaccordingtoglobalid($globalid)
 {
 	$postids = nxs_get_postidsaccordingtoglobalid($globalid);

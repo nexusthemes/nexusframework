@@ -976,7 +976,26 @@ function nxs_init()
 				$postid = $_REQUEST["postid"];
 				echo "dumppost $postid<br />";
 				$exists = nxs_postexistsbyid($postid);
-				if ($exists) { echo "post exist<br />"; } else { echo "post does not exist<br />"; }
+				if ($exists) 
+				{ 
+					$link = get_permalink($postid);
+					echo "post exist (open <a target='_blank' href='$link'>$link</a>)<br />"; 
+					
+					if (function_exists("nxs_qa_ispostidreferenced"))
+					{
+						echo "<br />--------------<br />";
+						echo "<br />Is referenced?<br />";
+						$verbose = true;
+						$result = nxs_qa_ispostidreferenced($postid, $verbose);
+						var_dump($result);
+						echo "<br />--------------<br />";
+					}
+					
+				} 
+				else
+				{ 
+					echo "post does not exist<br />"; 
+				}
 				$posttype = get_post_type($postid);
 				echo "post type:{$posttype}<br />";
 				$needleglobalid = nxs_get_globalid($postid, false);
@@ -994,6 +1013,7 @@ function nxs_init()
 					echo "<br />";
 					echo "<hr />";
 				}
+				
 				
 				die();
 			}
