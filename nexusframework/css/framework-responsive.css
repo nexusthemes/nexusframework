@@ -981,7 +981,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 
 @media only screen and ( max-width: 1199px ){
 .prod-img2 iframe.tablet 	{ transform: scale(0.318); -webkit-transform: scale(0.318); -o-transform: scale(0.318); -ms-transform: scale(0.318); -moz-transform: scale(0.318); }
-.prod-img2 iframe.phone 	{ transform: scale(0.415); -webkit-transform: scale(0.415); -o-transform: scale(0.415); -ms-transform: scale(0.415); -moz-transform: scale(0.415); }
+.prod-img2 iframe.phone 	{ transform: scale(0.314); -webkit-transform: scale(0.314); -o-transform: scale(0.314); -ms-transform: scale(0.314); -moz-transform: scale(0.314); }
 .prod-img2 iframe.phone2 	{ transform: scale(0.371); -webkit-transform: scale(0.371); -o-transform: scale(0.371); -ms-transform: scale(0.371); -moz-transform: scale(0.371); }
 }
 
