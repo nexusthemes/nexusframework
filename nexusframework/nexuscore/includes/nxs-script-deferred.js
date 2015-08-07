@@ -245,223 +245,7 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 			url: ajaxurl, 
 			success: function(response) 
 			{
-				nxs_js_alert_wait_finish(waitgrowltoken);
-				
-				nxs_js_log(response);
-				if (response.result == "OK")
-				{
-					if (response.html != null && !nxs_js_stringisblank(response.html))
-					{
-						// OK
-						var elementidlastfocussed = nxs_js_popup_getshortscopedata('elementidlastfocussed');
-						
-						// wipe de shortscope data
-						nxs_js_popup_clearshortscopedata();
-						
-						// dim hover menu's die op dit moment zichtbaar zijn
-						jQ_nxs(".nxs-hover-menu").addClass('nxs-suppress');
-						
-						//
-						nxs_js_pop_resetdynamiccontentcontainer();
-						
-						// remove any previously defined nxs-active indicators (for text-widgets; if these
-						// are removed, the nxs-active indicator somehow remains (so this basically is
-						// a workaround).
-						jQ_nxs("#nxsbox_window.nxs-active").removeClass("nxs-active");
-						
-						jQ_nxs('.nxs-popup-dyncontentcontainer').html(response.html);
-													
-						// width=1, see #1283672893762
-						nxsbox_show(response.title, "#nxsbox_inline?height=1&width=1&inlineId=nxs_ajax_nxsbox&modal=true", "");
-						jQ_nxs("#nxsbox_overlay").show();
-						jQ_nxs("#nxsbox_window").show();
-						
-						//
-						// enable dragging of the window
-						//
-						jQ_nxs("#nxsbox_window").draggable
-						(
-							{
-								handle: ".nxs-admin-header",
-								start: function() 
-								{
-									if (!jQ_nxs(".nxs-popup-dyncontentcontainer").hasClass('nxs-wasdragged'))
-									{
-										jQ_nxs(".nxs-popup-dyncontentcontainer").addClass('nxs-wasdragged');
-									}
-								}
-							}
-						)
-						
-						// ensure the "back" document is not scrollable when the popup shows
-						nxs_js_disabledocumentscrollwhenhoveringoverelement('.nxs-popup-content-canvas-cropper');
-						
-						// enable "chosen" script to enhance dropdownlists
-						//nxs_js_log("chosen select done");
-						jQuery(".chosen-select").chosen({allow_single_deselect: true});
-
-						//nxs_js_log("chosen select done");
-						
-						nxs_js_popupshows = true;
-						
-						// show/hide buttons as indicated by the popup for initialization
-						// note, this will be overriden if the popup appears to be dirty (handled below)
-						var initialbuttonstate = nxs_js_popup_get_initialbuttonstate();
-						if (initialbuttonstate == 'showokifnotdirty')
-						{
-							// show ok, hide cancel, hide save
-							if (jQ_nxs('#nxs_popup_genericokbutton').length > 0)
-							{
-								jQ_nxs('#nxs_popup_genericokbutton').show();										
-								if (jQ_nxs('#nxs_popup_genericcancelbutton').length > 0)
-								{
-									jQ_nxs('#nxs_popup_genericcancelbutton').hide();
-								}
-								if (jQ_nxs('#nxs_popup_genericsavebutton').length > 0)
-								{
-									jQ_nxs('#nxs_popup_genericsavebutton').hide();
-								}
-							}
-							else
-							{
-								//nxs_js_log('cannot apply initialbuttonstate; ok button not found');
-							}
-						}
-						else if (initialbuttonstate == 'showcancel')
-						{
-							// show cancel, hide ok, hide save
-							if (jQ_nxs('#nxs_popup_genericcancelbutton').length > 0)
-							{
-								jQ_nxs('#nxs_popup_genericcancelbutton').show();										
-								if (jQ_nxs('#nxs_popup_genericokbutton').length > 0)
-								{
-									jQ_nxs('#nxs_popup_genericokbutton').hide();
-								}
-								if (jQ_nxs('#nxs_popup_genericsavebutton').length > 0)
-								{
-									jQ_nxs('#nxs_popup_genericsavebutton').hide();
-								}
-							}
-							else
-							{
-								nxs_js_log('cannot apply initialbuttonstate; cancel button not found');
-							}
-						}
-						else if (initialbuttonstate == 'none')
-						{
-							// ok :)
-						}
-						else
-						{
-							nxs_js_log('unsupported initialbuttonstate;' + initialbuttonstate);
-						}
-						
-						// enable 'save' buttons if session indicates 'dirty' fields
-						if (nxs_js_popup_sessiondata_is_dirty())
-						{
-							nxs_js_popup_handle_becomes_dirty_first_time();
-						}
-						
-						// enables textboxes to automatically set the dirty flag when text is entered
-						nxs_js_popup_processautodirtyhandling();
-													
-						// close de popup als er 'naast' de pop up wordt geklikt (we undo-en de modal eigenschap)
-						// dit is een workaround/fix; de modal van de nxsbox zorgt er voor dat de MCE editor
-						// niet goed her-initiatiseert
-						jQ_nxs("#nxsbox_overlay").unbind("click.popupzekerweten");
-						jQ_nxs("#nxsbox_overlay").bind("click.popupzekerweten", function(e) 
-						{
-							nxs_js_log('345897');
-							// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
-							// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
-							e.stopPropagation();
-            	nxs_js_closepopup_unconditionally_if_not_dirty();
-						});
-
-						jQ_nxs(document).unbind("keyup.popupcloser");
-						jQ_nxs(document).bind("keyup.popupcloser", 
-							function(e)
-							{ 
-								if (e.keyCode == 27 && nxs_js_popupshows == true)	// handled
-								{
-									//nxs_js_log("closing popup (if not dirty)");
-								
-									// 27 == escape
-									nxs_js_closepopup_unconditionally_if_not_dirty();
-									
-									// set focus to the body
-									jQ_nxs("body").focus();
-																		
-									// absorb the event
-									return false;
-								}
-							}
-						);
-						
-						jQ_nxs("#nxsbox_window").unbind("click.stoppropagation");
-						jQ_nxs("#nxsbox_window").bind("click.stoppropagation", function(e) 
-						{
-							// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
-							// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
-							e.stopPropagation();
-						})
-						
-						// if a nxs_js_execute_after_popup_shows function is present in the dom (optionally), execute it!
-						if(typeof nxs_js_execute_after_popup_shows == 'function') 
-						{
-							nxs_js_execute_after_popup_shows();
-						}
-						
-						
-						nxs_js_log("broadcasting afterpopupshows");
-						
-						// broadcast clientside trigger for dom elements to be notified when the popup shows
-						jQ_nxs(window).trigger('nxs_jstrigger_afterpopupshows');
-
-						nxs_js_log("unbinding broadcast receivers");
-						
-						// remove all listeners
-						jQ_nxs(window).unbind("nxs_jstrigger_afterpopupshows");
-						
-						// reset last focus to specified element (if available)
-						if (elementidlastfocussed != null)
-						{
-							//nxs_js_log('resetting focus ... ');
-							if (jQ_nxs('#' + elementidlastfocussed).length > 0)
-							{
-								jQ_nxs('#' + elementidlastfocussed).focus();
-							}
-						}
-						
-						// reset de hoogte op het moment dat er plaatjes in de popup zitten die 
-						// nog niet beschikbaar/ingeladen zijn
-						jQ_nxs('.nxs-popup-dyncontentcontainer img').load
-						(
-							function()
-							{
-								//nxs_js_log('loading of image finished');
-								nxs_js_reset_popup_dimensions();
-							}
-						);
-														
-						// reset height of popup
-						nxs_js_reset_popup_dimensions();
-						
-						// handle enter auto submit popup								
-						nxs_js_popup_registerautosubmitwhenuserpressesenter();
-					}
-					else
-					{
-						nxs_js_popup_notifyservererror();
-						nxs_js_log('html is null or empty?');
-						nxs_js_log(html);
-					}
-				}
-				else
-				{
-					nxs_js_popup_notifyservererror();
-					nxs_js_log(response);
-				}
+				nxs_js_popup_render_inner(waitgrowltoken, response);
 			},
 			error: function(response)
 			{
@@ -474,6 +258,227 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 	);
 }
 
+
+function nxs_js_popup_render_inner(waitgrowltoken, response)
+{
+	nxs_js_alert_wait_finish(waitgrowltoken);
+				
+	nxs_js_log(response);
+	if (response.result == "OK")
+	{
+		if (response.html != null && !nxs_js_stringisblank(response.html))
+		{
+			// OK
+			var elementidlastfocussed = nxs_js_popup_getshortscopedata('elementidlastfocussed');
+			
+			// wipe de shortscope data
+			nxs_js_popup_clearshortscopedata();
+			
+			// dim hover menu's die op dit moment zichtbaar zijn
+			jQ_nxs(".nxs-hover-menu").addClass('nxs-suppress');
+			
+			//
+			nxs_js_pop_resetdynamiccontentcontainer();
+			
+			// remove any previously defined nxs-active indicators (for text-widgets; if these
+			// are removed, the nxs-active indicator somehow remains (so this basically is
+			// a workaround).
+			jQ_nxs("#nxsbox_window.nxs-active").removeClass("nxs-active");
+			
+			jQ_nxs('.nxs-popup-dyncontentcontainer').html(response.html);
+										
+			// width=1, see #1283672893762
+			nxsbox_show(response.title, "#nxsbox_inline?height=1&width=1&inlineId=nxs_ajax_nxsbox&modal=true", "");
+			jQ_nxs("#nxsbox_overlay").show();
+			jQ_nxs("#nxsbox_window").show();
+			
+			//
+			// enable dragging of the window
+			//
+			jQ_nxs("#nxsbox_window").draggable
+			(
+				{
+					handle: ".nxs-admin-header",
+					start: function() 
+					{
+						if (!jQ_nxs(".nxs-popup-dyncontentcontainer").hasClass('nxs-wasdragged'))
+						{
+							jQ_nxs(".nxs-popup-dyncontentcontainer").addClass('nxs-wasdragged');
+						}
+					}
+				}
+			)
+			
+			// ensure the "back" document is not scrollable when the popup shows
+			nxs_js_disabledocumentscrollwhenhoveringoverelement('.nxs-popup-content-canvas-cropper');
+			
+			// enable "chosen" script to enhance dropdownlists
+			//nxs_js_log("chosen select done");
+			jQuery(".chosen-select").chosen({allow_single_deselect: true});
+
+			//nxs_js_log("chosen select done");
+			
+			nxs_js_popupshows = true;
+			
+			// show/hide buttons as indicated by the popup for initialization
+			// note, this will be overriden if the popup appears to be dirty (handled below)
+			var initialbuttonstate = nxs_js_popup_get_initialbuttonstate();
+			if (initialbuttonstate == 'showokifnotdirty')
+			{
+				// show ok, hide cancel, hide save
+				if (jQ_nxs('#nxs_popup_genericokbutton').length > 0)
+				{
+					jQ_nxs('#nxs_popup_genericokbutton').show();										
+					if (jQ_nxs('#nxs_popup_genericcancelbutton').length > 0)
+					{
+						jQ_nxs('#nxs_popup_genericcancelbutton').hide();
+					}
+					if (jQ_nxs('#nxs_popup_genericsavebutton').length > 0)
+					{
+						jQ_nxs('#nxs_popup_genericsavebutton').hide();
+					}
+				}
+				else
+				{
+					//nxs_js_log('cannot apply initialbuttonstate; ok button not found');
+				}
+			}
+			else if (initialbuttonstate == 'showcancel')
+			{
+				// show cancel, hide ok, hide save
+				if (jQ_nxs('#nxs_popup_genericcancelbutton').length > 0)
+				{
+					jQ_nxs('#nxs_popup_genericcancelbutton').show();										
+					if (jQ_nxs('#nxs_popup_genericokbutton').length > 0)
+					{
+						jQ_nxs('#nxs_popup_genericokbutton').hide();
+					}
+					if (jQ_nxs('#nxs_popup_genericsavebutton').length > 0)
+					{
+						jQ_nxs('#nxs_popup_genericsavebutton').hide();
+					}
+				}
+				else
+				{
+					nxs_js_log('cannot apply initialbuttonstate; cancel button not found');
+				}
+			}
+			else if (initialbuttonstate == 'none')
+			{
+				// ok :)
+			}
+			else
+			{
+				nxs_js_log('unsupported initialbuttonstate;' + initialbuttonstate);
+			}
+			
+			// enable 'save' buttons if session indicates 'dirty' fields
+			if (nxs_js_popup_sessiondata_is_dirty())
+			{
+				nxs_js_popup_handle_becomes_dirty_first_time();
+			}
+			
+			// enables textboxes to automatically set the dirty flag when text is entered
+			nxs_js_popup_processautodirtyhandling();
+										
+			// close de popup als er 'naast' de pop up wordt geklikt (we undo-en de modal eigenschap)
+			// dit is een workaround/fix; de modal van de nxsbox zorgt er voor dat de MCE editor
+			// niet goed her-initiatiseert
+			jQ_nxs("#nxsbox_overlay").unbind("click.popupzekerweten");
+			jQ_nxs("#nxsbox_overlay").bind("click.popupzekerweten", function(e) 
+			{
+				nxs_js_log('345897');
+				// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
+				// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
+				e.stopPropagation();
+      	nxs_js_closepopup_unconditionally_if_not_dirty();
+			});
+
+			jQ_nxs(document).unbind("keyup.popupcloser");
+			jQ_nxs(document).bind("keyup.popupcloser", 
+				function(e)
+				{ 
+					if (e.keyCode == 27 && nxs_js_popupshows == true)	// handled
+					{
+						//nxs_js_log("closing popup (if not dirty)");
+					
+						// 27 == escape
+						nxs_js_closepopup_unconditionally_if_not_dirty();
+						
+						// set focus to the body
+						jQ_nxs("body").focus();
+															
+						// absorb the event
+						return false;
+					}
+				}
+			);
+			
+			jQ_nxs("#nxsbox_window").unbind("click.stoppropagation");
+			jQ_nxs("#nxsbox_window").bind("click.stoppropagation", function(e) 
+			{
+				// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
+				// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
+				e.stopPropagation();
+			})
+			
+			// if a nxs_js_execute_after_popup_shows function is present in the dom (optionally), execute it!
+			if(typeof nxs_js_execute_after_popup_shows == 'function') 
+			{
+				nxs_js_execute_after_popup_shows();
+			}
+			
+			
+			nxs_js_log("broadcasting afterpopupshows");
+			
+			// broadcast clientside trigger for dom elements to be notified when the popup shows
+			jQ_nxs(window).trigger('nxs_jstrigger_afterpopupshows');
+
+			nxs_js_log("unbinding broadcast receivers");
+			
+			// remove all listeners
+			jQ_nxs(window).unbind("nxs_jstrigger_afterpopupshows");
+			
+			// reset last focus to specified element (if available)
+			if (elementidlastfocussed != null)
+			{
+				//nxs_js_log('resetting focus ... ');
+				if (jQ_nxs('#' + elementidlastfocussed).length > 0)
+				{
+					jQ_nxs('#' + elementidlastfocussed).focus();
+				}
+			}
+			
+			// reset de hoogte op het moment dat er plaatjes in de popup zitten die 
+			// nog niet beschikbaar/ingeladen zijn
+			jQ_nxs('.nxs-popup-dyncontentcontainer img').load
+			(
+				function()
+				{
+					//nxs_js_log('loading of image finished');
+					nxs_js_reset_popup_dimensions();
+				}
+			);
+											
+			// reset height of popup
+			nxs_js_reset_popup_dimensions();
+			
+			// handle enter auto submit popup								
+			nxs_js_popup_registerautosubmitwhenuserpressesenter();
+		}
+		else
+		{
+			nxs_js_popup_notifyservererror();
+			nxs_js_log('html is null or empty?');
+			nxs_js_log(html);
+		}
+	}
+	else
+	{
+		nxs_js_popup_notifyservererror();
+		nxs_js_log(response);
+	}
+}
 
 function nxs_js_popupsession_startnewcontext()
 {

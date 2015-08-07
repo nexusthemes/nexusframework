@@ -66,7 +66,57 @@ function nxs_widgets_pagepopup_beforeend_head()
 	}
 	
 	?>
+	<style>
+		@media only screen and (min-width: 0px)
+		{
+			#pagepopupiframe .nxs-one-whole {
+			    width: 44.4em;
+			}
+			#pagepopupiframe .nxs-one-whole {
+			    width: 44.4em;
+			}
+		}
+	</style>
 	<script type='text/javascript'>
+
+		var prefetchedresult = { available:false };
+
+		function nxs_js_pagepopup_prefetch()
+		{
+			// first check (server side) whether the popup should show
+			var ajaxurl = nxs_js_get_adminurladminajax();
+			jQ_nxs.ajax
+			(
+				{
+					async: true,
+					type: 'POST',
+					data: 
+					{
+						"action": "nxs_ajax_webmethods",
+						"webmethod": "shouldshowpagepopup",
+						"clientpopupsessioncontext": nxs_js_getescaped_popupsession_context(),
+						"clientpopupsessiondata": nxs_js_getescaped_popupsession_data(),
+						"clientshortscopedata": nxs_js_popup_getescapedshortscopedata(),
+						"clientqueryparameters": nxs_js_escaped_getqueryparametervalues(),
+						"pagedecoratorid": "<?php echo $nxs_pagepopup_pagedecoratorid; ?>",
+						"placeholderid": "<?php echo $nxs_pagepopup_pagedecoratorwidgetplaceholderid; ?>"
+					},
+					cache: false,
+					dataType: 'JSON',
+					url: ajaxurl, 
+					success: function(response) 
+					{
+						nxs_js_log(response);
+						if (response.result == "OK")
+						{
+							prefetchedresult.response = response;
+							prefetchedresult.available = true;
+							nxs_js_log("prefetched data is now available");
+						}
+					}
+				}
+			);
+		}
 
 		<?php
 		$url = $destination_url;
@@ -94,7 +144,11 @@ function nxs_widgets_pagepopup_beforeend_head()
 				
 				if (shouldshow)
 				{
-					if (triggerOnExit) {
+					nxs_js_log("prefetching data");
+					nxs_js_pagepopup_prefetch();
+					
+					if (triggerOnExit) 
+					{
 						var triggered = false;
 						var nxs_html = document.documentElement;
 						$(nxs_html).on('mouseleave', function(event){
@@ -106,7 +160,6 @@ function nxs_widgets_pagepopup_beforeend_head()
 							}
 						});
 					}
-
 					else
 					{
 						setTimeout(function() { nxs_js_pagepopup_activate() }, <?php echo $delaypopup_milliseconds; ?>);
@@ -125,95 +178,93 @@ function nxs_widgets_pagepopup_beforeend_head()
 		{
 			nxs_js_log('activating popup');
 			
-			// first check (server side) whether the popup should show
-			var ajaxurl = nxs_js_get_adminurladminajax();
-			jQ_nxs.ajax
-			(
+			if (prefetchedresult.available==false)
+			{
+				// todo: invoke this method using timed recursive invocation)
+				nxs_js_log('sorry, prefetched data not (yet?) available, nothing to do');
+				return;
+			}
+			
+			nxs_js_log('prefetched data is available');
+			
+			var response = prefetchedresult.response;
+			
+			nxs_js_log(response);
+			if (response.result == "OK")
+			{
+				nxs_js_log("BOOM!");
+			
+				// step 1; if specified, set a cookie to indicate the popup was shown before
+				if (response.setcookie != null && !nxs_js_stringisblank(response.setcookie))
 				{
-					type: 'POST',
-					data: 
-					{
-						"action": "nxs_ajax_webmethods",
-						"webmethod": "shouldshowpagepopup",
-						"clientpopupsessioncontext": nxs_js_getescaped_popupsession_context(),
-						"clientpopupsessiondata": nxs_js_getescaped_popupsession_data(),
-						"clientshortscopedata": nxs_js_popup_getescapedshortscopedata(),
-						"clientqueryparameters": nxs_js_escaped_getqueryparametervalues(),
-						"pagedecoratorid": "<?php echo $nxs_pagepopup_pagedecoratorid; ?>",
-						"placeholderid": "<?php echo $nxs_pagepopup_pagedecoratorwidgetplaceholderid; ?>"
-					},
-					cache: false,
-					dataType: 'JSON',
-					url: ajaxurl, 
-					success: function(response) 
-					{
-						nxs_js_log(response);
-						if (response.result == "OK")
-						{
-							// step 1; if specified, set a cookie to indicate the popup was shown before
-							if (response.setcookie != null && !nxs_js_stringisblank(response.setcookie))
-							{
-								// set cookie
-								nxs_js_setcookie(response.setcookie, 'set');
-							}
-							
-							// step 2; show the popup, if it should
-							if ("yes" == response.shouldshow)
-							{
-								var width = <?php echo $width; ?>;
-													
-								// 
-								nxs_js_popupsession_startnewcontext();
-								
-								nxs_js_popup_setsessioncontext("popup_current_dimensions", "gallerybox");
-								
-								nxs_js_popup_setsessioncontext("contextprocessor", "site");
-								nxs_js_popup_setsessiondata("nxs_customhtml_popupheadertitle", "<?php echo $popuptitle; ?>");
-								// nxs_js_popup_setsessiondata("minwidth", minwidth);
-
-								var fillbackgroundcolor = 'white'; // 'yellow';
-								
-								var html = "";
-								html += "<div id='pagepopup_<?php echo $placeholderid; ?>' style=\"margin: 0 auto; display: table;\">";	// horizontal alignment
-								// note; the height of the iframe is 5 pixels too big; therefore we set the backgroundcolor of
-								// the wrapping div to the same backgound color
-								
-								var semiborder = "";
-								// "padding-top: 5px; -moz-border-radius: 15px; border-radius: 15px; border: 10px solid rgb(127, 127, 127); border: 10px solid rgba(127, 127, 127, .5); -webkit-background-clip: padding-box; /* for Safari */ background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */";
-
-								html += "<div style=\"padding-top: 10px;\">";	// padding 
-								
-								html += "<div style=\"position:relative;\"><a href=\"#\" onclick=\"nxs_js_closepopup_unconditionally(); return false;\"><span style=\"color: white; position: absolute; right: 0px; top: -10px;\" class=\"nxs-icon-remove-sign\"></span></a></div>";
-								html += "<div style=\"" + semiborder + ";xbackground-color: " + fillbackgroundcolor + "\">";	// surrounding shade
-								html += "<iframe id=\"pagepopupiframe\" ALLOWTRANSPARENCY=\"true\" width=\"" + width + "px\" frameborder=\"0\" onload=\"nxs_js_iframeloadedpagepopup();\" style=\"-webkit-transform: translate3d(0px, 0px, 0px); border: none; xbackground-color: " + fillbackgroundcolor + ";\" src=\"<?php echo $url; ?>\"></iframe>";
-								html += "</div>";	// end surrounding shade
-								html += "</div>";	// end horizontal alignment
-
-								html += "</div>";	// end padding
-
-								// the script below is cut off in a stupid way
-								// since otherwise the browsers are not able to 
-								// interpret it correctly ... (script in script)
-								html += "<" + "script>";
-								html += "f" + "unction nxs_js_execute_after_popup_shows() { ";
-								html += "j" + "Query('#nxsbox_window').addClass('nxs-gallerypopup'); }";
-								html += "</" + "script>";
-								
-								//nxs_js_htmldialogmessageok_v2("test", html, "none")
-								
-								nxs_js_popup_setsessiondata("nxs_customhtml_scaffoldingtype", "nothing");
-								nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", html);
-								nxs_js_popup_navigateto_v2("customhtml", false);
-							}
-							else
-							{
-								//
-								nxs_js_log("server told us not to show the popup");
-							}
-						}
-					}
+					// set cookie
+					nxs_js_setcookie(response.setcookie, 'set');
 				}
-			);
+				
+				// step 2; show the popup, if it should
+				if ("yes" == response.shouldshow)
+				{
+					var width = <?php echo $width; ?>;
+										
+					// 
+					nxs_js_popupsession_startnewcontext();
+					
+					nxs_js_popup_setsessioncontext("popup_current_dimensions", "gallerybox");
+					
+					nxs_js_popup_setsessioncontext("contextprocessor", "site");
+					nxs_js_popup_setsessiondata("nxs_customhtml_popupheadertitle", "<?php echo $popuptitle; ?>");
+					// nxs_js_popup_setsessiondata("minwidth", minwidth);
+
+					var fillbackgroundcolor = 'white'; // 'yellow';
+					
+					var html = "";
+					html += "<div id='pagepopup_<?php echo $placeholderid; ?>' style=\"margin: 0 auto; display: table;\">";	// horizontal alignment
+					// note; the height of the iframe is 5 pixels too big; therefore we set the backgroundcolor of
+					// the wrapping div to the same backgound color
+					
+					var semiborder = "";
+					// "padding-top: 5px; -moz-border-radius: 15px; border-radius: 15px; border: 10px solid rgb(127, 127, 127); border: 10px solid rgba(127, 127, 127, .5); -webkit-background-clip: padding-box; /* for Safari */ background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */";
+
+					html += "<div style=\"padding-top: 10px;\">";	// padding 
+					
+					html += "<div style=\"position:relative;\"><a href=\"#\" onclick=\"nxs_js_closepopup_unconditionally(); return false;\"><span style=\"color: white; position: absolute; right: 0px; top: -10px;\" class=\"nxs-icon-remove-sign\"></span></a></div>";
+					html += "<div style=\"" + semiborder + ";xbackground-color: " + fillbackgroundcolor + "\">";	// surrounding shade
+						
+					html += "<div id=\"pagepopupiframe\" style=\"width:" + width + "px\">";
+					html += prefetchedresult.response.html;
+					html += "</div>";
+						
+					// html += "<iframe id=\"pagepopupiframe\" ALLOWTRANSPARENCY=\"true\" width=\"" + width + "px\" frameborder=\"0\" onload=\"nxs_js_iframeloadedpagepopup();\" style=\"-webkit-transform: translate3d(0px, 0px, 0px); border: none; xbackground-color: " + fillbackgroundcolor + ";\" src=\"<?php echo $url; ?>\"></iframe>";
+					html += "</div>";	// end surrounding shade
+					html += "</div>";	// end horizontal alignment
+
+					html += "</div>";	// end padding
+
+					// the script below is cut off in a stupid way
+					// since otherwise the browsers are not able to 
+					// interpret it correctly ... (script in script)
+					html += "<" + "script>";
+					html += "f" + "unction nxs_js_execute_after_popup_shows() { ";
+					html += "j" + "Query('#nxsbox_window').addClass('nxs-gallerypopup'); }";
+					html += "</" + "script>";
+					
+					// update the html
+					response.html = html;
+					
+					//nxs_js_htmldialogmessageok_v2("test", html, "none")
+					
+					nxs_js_popup_setsessiondata("nxs_customhtml_scaffoldingtype", "nothing");
+					nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", html);
+					
+					nxs_js_popup_render_inner(null, response);
+					// nxs_js_popup_navigateto_v2("customhtml", false);
+				}
+				else
+				{
+					//
+					nxs_js_log("server told us not to show the popup");
+				}
+			}
 		}
 		
 		function nxs_js_iframeloadedpagepopup()

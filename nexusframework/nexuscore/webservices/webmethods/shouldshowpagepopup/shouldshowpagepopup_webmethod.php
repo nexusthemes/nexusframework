@@ -16,6 +16,7 @@ function nxs_webmethod_shouldshowpagepopup()
 	$shouldsetcookie = false;
 	
 	$repeatpopup_scope = $widgetmetadata["repeatpopup_scope"];
+	$destination_articleid = $widgetmetadata["destination_articleid"];
 	
 	if ($repeatpopup_scope == "eachrequest")
 	{
@@ -43,12 +44,20 @@ function nxs_webmethod_shouldshowpagepopup()
 		nxs_webmethod_return_nack("unexpected repeatpopup_scope?" . $repeatpopup_scope);
 	}
 	
-	//var_dump($_COOKIE);
-	//nxs_webmethod_return_nack("lala?" . $repeatpopup_scope);
-
+	if (nxs_isdebug())
+	{
+		//$shouldsetcookie = true;
+		$shouldshow = "yes";
+	}
 	
 	$responseargs = array();
 	$responseargs["shouldshow"] = $shouldshow;
+	if ($shouldshow == "yes")
+	{
+		// 
+		$html = nxs_getrenderedhtml($destination_articleid, "default");
+		$responseargs["html"] = $html;
+	}	
 	
 	if ($shouldsetcookie)
 	{
