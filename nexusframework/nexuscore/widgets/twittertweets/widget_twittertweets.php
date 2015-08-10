@@ -447,7 +447,7 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 							
 								extract($currenttweet, EXTR_PREFIX_ALL, "curtweet");
 								extract($currenttweetowner, EXTR_PREFIX_ALL, "cuttweetowner");
-													
+
 								//$datetime_format = apply_filters( 'displaytweets_datetime_format', "M j" );
 								if ($datetime_format == "")
 								{
@@ -460,8 +460,17 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 								
 								<div class="twitter-content">';
 								
+									if (is_ssl())
+									{
+										$imgurl = $cuttweetowner_profile_image_url_https;
+									}
+									else
+									{
+										$imgurl = $cuttweetowner_profile_image_url;
+									}
+								
 									// Image
-									echo '<img src=' . $cuttweetowner_profile_image_url . ' />  ';
+									echo '<img src=' . $imgurl . ' />  ';
 									
 									// Name
 									echo '
