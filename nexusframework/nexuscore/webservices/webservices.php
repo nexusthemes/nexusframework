@@ -165,7 +165,7 @@ function nxs_ajax_webmethods()
 		{
 			$hasaccess = true;
 		}
-		else if ($webmethod == "shouldshowpagepopup")
+		else if ($webmethod == "pagepopup")
 		{
 			$hasaccess = true;
 		}

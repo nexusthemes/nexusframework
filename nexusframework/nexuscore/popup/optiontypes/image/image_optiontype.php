@@ -1,4 +1,40 @@
 <?php
+
+function nxs_popup_optiontype_image_shouldrenderphotopackpromo()
+{
+	$result = true;
+	
+	if (function_exists("nxs_sm_processstate_photopack"))
+	{
+		// photopack is installed and active
+		$result = false;
+	}
+	else
+	{
+		// photopack is not installed
+		$meta = nxs_theme_getmeta();
+		$themeid = $thememeta["id"];
+		
+		$listofexcludedthemeids = array
+		(
+			"homebuilder", "homeimprovement", "homeremodeling", "horseranche", "naturephotographer",
+			"photoartist", "photographyportfolio", "photographystudio", "professionalphotographer",
+			"homerepair", "hairstylist", "resort", "interiordesign", "golfclub", "makeupartist",
+			"flooring", "illustrator", "beautyspa", "modelportfolio", "homedecor", "graphicdesign", 
+			"constructionbusiness", "musicstudio", "recordlabel", "beautician", "weddingphotographer",
+			"dancestudio", "eventcompany", "videoproduction", "logistics", "transportation"
+		);
+		
+		if (in_array($themeid, $listofexcludedthemeids))
+		{
+			$result = false;
+		}
+	}
+	
+	$result = apply_filters("nxs_shouldrenderphotopackpromo", $result);
+	return $result;
+}
+
 function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $runtimeblendeddata) 
 {
 	$allow_featuredimage = false;
@@ -165,7 +201,26 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
         </div>
         
         <?php 
-    }
+  }
+  
+  if (nxs_popup_optiontype_image_shouldrenderphotopackpromo())
+	{
+  	?>
+		<div class="content2">
+			<div class="box">
+				<div class="box-content">
+					Tip: To avoid the hassle with finding nice photos,
+					cutting them in the right proportions/aspect ratio, optimal filesize and 
+					arranging a valid license to avoid copyright 
+					infringements, consider purchasing the photopack.
+					<br />
+					<a class="nxsbutton1" href='http://nexusthemes.com/cart/?add-to-cart=6399&trigger=iopphotopack&themeid=<?php echo nxs_getthemeid(); ?>' target='_blank'>Purchase photopack</a>
+				</div>
+				<div class="nxs-clear"></div>				
+			</div>
+		</div>
+  	<?php
+  }
 	
 	?>
 	<script type='text/javascript'>

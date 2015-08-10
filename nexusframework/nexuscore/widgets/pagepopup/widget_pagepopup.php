@@ -67,14 +67,38 @@ function nxs_widgets_pagepopup_beforeend_head()
 	
 	?>
 	<style>
-		@media only screen and (min-width: 0px)
+		#pagepopupiframe .nxs-one-whole  
 		{
-			#pagepopupiframe .nxs-one-whole {
-			    width: 44.4em;
-			}
-			#pagepopupiframe .nxs-one-whole {
-			    width: 44.4em;
-			}
+			width: 300px;
+		}
+		.nxs-viewport-gt-319	#pagepopupiframe .nxs-one-whole  
+		{
+			width: 300px;
+		}
+		.nxs-viewport-gt-479 	#pagepopupiframe .nxs-one-whole 
+		{
+			width: 470px;
+		}
+		.nxs-viewport-gt-719 	#pagepopupiframe .nxs-one-whole 
+		{
+			width: 673px;
+		}
+		.nxs-viewport-gt-959 	#pagepopupiframe .nxs-one-whole 
+		{
+			width: 673px;
+		}
+		.nxs-viewport-gt-1199 	#pagepopupiframe .nxs-one-whole 
+		{
+			width: 673px;
+		}
+		.nxs-viewport-gt-1439	#pagepopupiframe .nxs-one-whole 
+		{
+			width: 673px;
+		}
+		#pagepopupiframe img
+		{
+			box-shadow: none !important;
+			-webkit-box-shadow: none !important;
 		}
 	</style>
 	<script type='text/javascript'>
@@ -93,7 +117,8 @@ function nxs_widgets_pagepopup_beforeend_head()
 					data: 
 					{
 						"action": "nxs_ajax_webmethods",
-						"webmethod": "shouldshowpagepopup",
+						"webmethod": "pagepopup",
+						"subaction": "prefetch",
 						"clientpopupsessioncontext": nxs_js_getescaped_popupsession_context(),
 						"clientpopupsessiondata": nxs_js_getescaped_popupsession_data(),
 						"clientshortscopedata": nxs_js_popup_getescapedshortscopedata(),
@@ -113,6 +138,38 @@ function nxs_widgets_pagepopup_beforeend_head()
 							prefetchedresult.available = true;
 							nxs_js_log("prefetched data is now available");
 						}
+					}
+				}
+			);
+		}
+		
+		function nxs_js_pagepopup_tagshowing()
+		{
+			// first check (server side) whether the popup should show
+			var ajaxurl = nxs_js_get_adminurladminajax();
+			jQ_nxs.ajax
+			(
+				{
+					async: true,
+					type: 'POST',
+					data: 
+					{
+						"action": "nxs_ajax_webmethods",
+						"webmethod": "pagepopup",
+						"subaction": "tag",
+						"clientpopupsessioncontext": nxs_js_getescaped_popupsession_context(),
+						"clientpopupsessiondata": nxs_js_getescaped_popupsession_data(),
+						"clientshortscopedata": nxs_js_popup_getescapedshortscopedata(),
+						"clientqueryparameters": nxs_js_escaped_getqueryparametervalues(),
+						"pagedecoratorid": "<?php echo $nxs_pagepopup_pagedecoratorid; ?>",
+						"placeholderid": "<?php echo $nxs_pagepopup_pagedecoratorwidgetplaceholderid; ?>"
+					},
+					cache: false,
+					dataType: 'JSON',
+					url: ajaxurl, 
+					success: function(response) 
+					{
+						nxs_js_log(response);
 					}
 				}
 			);
@@ -172,8 +229,6 @@ function nxs_widgets_pagepopup_beforeend_head()
 			}
 		);
 		
-		
-		
 		function nxs_js_pagepopup_activate()
 		{
 			nxs_js_log('activating popup');
@@ -181,7 +236,8 @@ function nxs_widgets_pagepopup_beforeend_head()
 			if (prefetchedresult.available==false)
 			{
 				// todo: invoke this method using timed recursive invocation)
-				nxs_js_log('sorry, prefetched data not (yet?) available, nothing to do');
+				nxs_js_log('sorry, prefetched data not (yet?) available, retrying...');
+				setTimeout(function() { nxs_js_pagepopup_activate() }, 100);
 				return;
 			}
 			
@@ -251,13 +307,14 @@ function nxs_widgets_pagepopup_beforeend_head()
 					// update the html
 					response.html = html;
 					
-					//nxs_js_htmldialogmessageok_v2("test", html, "none")
-					
 					nxs_js_popup_setsessiondata("nxs_customhtml_scaffoldingtype", "nothing");
 					nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", html);
 					
 					nxs_js_popup_render_inner(null, response);
-					// nxs_js_popup_navigateto_v2("customhtml", false);
+					
+					//
+					nxs_js_pagepopup_tagshowing();
+					// 
 				}
 				else
 				{

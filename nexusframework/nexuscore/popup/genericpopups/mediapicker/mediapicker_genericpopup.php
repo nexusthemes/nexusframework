@@ -326,6 +326,28 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 						
 						<div class="nxs-clear padding"></div>
 						
+						<?php
+						nxs_ext_inject_popup_optiontype("image");
+						if (nxs_popup_optiontype_image_shouldrenderphotopackpromo())
+						{
+					  	?>
+							<div class="content2">
+								<div class="box">
+									<div class="xbox-content">
+										Tip: To avoid the hassle with finding nice photos,
+										cutting them in the right proportions/aspect ratio, optimal filesize and 
+										arranging a valid license to avoid copyright 
+										infringements, consider purchasing the photopack.
+										<br />
+										<a class="nxsbutton1" href='http://nexusthemes.com/cart/?add-to-cart=6399&trigger=iopphotopack2&themeid=<?php echo nxs_getthemeid(); ?>' target='_blank'>Purchase photopack</a>
+									</div>
+									<div class="nxs-clear"></div>				
+								</div>
+							</div>
+					  	<?php
+					  }						
+						?>
+						
 						<table>
 							
 							<thead>
