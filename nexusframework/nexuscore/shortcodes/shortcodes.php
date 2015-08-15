@@ -526,13 +526,20 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		
 		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgettype_cssclass, $ph_runtimecssclass);
 		
-		$output .= "<li class='nxs-placeholder nxs-overflow nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "'>";
+		$output .= "<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "'>";
 		$output .= $menutopleft;	// will be empty if not allowed, or not needed
 		$output .= $menutopright;	// will be empty if not allowed, or not needed
 		$output .= $placeholdercursors;	// will be empty if not allowed, or not needed
 		
 		$concatenated_css = nxs_concatenateargswithspaces($ph_colorzen, $ph_linkcolorvar, $ph_border_radius, $ph_borderwidth);
-		$output .= '<div class="ABC nxs-height100 ' . $concatenated_css . ' ">';
+		
+		$heightclass = "";
+		if ($widgetmetadata["ph_valign"] == "nxs-valign-top")
+		{
+			$heightclass = "nxs-height100";
+		}
+		
+		$output .= '<div class="ABC $heightclass ' . $concatenated_css . ' ">';
 
 		$concatenated_css = nxs_concatenateargswithspaces($ph_padding, $ph_valign);
 		$output .= '<div class="XYZ ' . $concatenated_css . '">';

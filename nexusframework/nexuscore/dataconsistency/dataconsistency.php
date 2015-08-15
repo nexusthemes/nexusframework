@@ -439,6 +439,13 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 			$globalkey = $metakey;
 			$globalid_that_is_correct = $valueformetakey;
 			
+			if ($globalid_that_is_correct == "")
+			{
+				// looks like bogus data
+				// perhaps we should do soemthing here...
+				continue;
+			}
+			
 			// we found a global key
 			$globalkeypieces = explode("_", $globalkey);
 			if (count($globalkeypieces) == 2)

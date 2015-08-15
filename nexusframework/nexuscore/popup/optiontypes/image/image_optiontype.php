@@ -208,13 +208,10 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
   	?>
 		<div class="content2">
 			<div class="box">
-				<div class="box-content">
-					Tip: To avoid the hassle with finding nice photos,
-					cutting them in the right proportions/aspect ratio, optimal filesize and 
-					arranging a valid license to avoid copyright 
-					infringements, consider purchasing the photopack.
+				<div class="xbox-content">
+					Tip: Can't find suitable image for your theme? You can buy all the photos you saw in the theme demo here: 
 					<br />
-					<a class="nxsbutton1" href='http://nexusthemes.com/cart/?add-to-cart=6399&trigger=iopphotopack&themeid=<?php echo nxs_getthemeid(); ?>' target='_blank'>Purchase photopack</a>
+					<a class="nxsbutton2" href='http://nexusthemes.com/cart/?add-to-cart=6399&trigger=iopphotopack2&themeid=<?php echo nxs_getthemeid(); ?>' target='_blank'>PURCHASE PHOTOPACK</a>
 				</div>
 				<div class="nxs-clear"></div>				
 			</div>

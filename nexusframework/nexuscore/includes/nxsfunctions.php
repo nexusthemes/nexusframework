@@ -5361,7 +5361,7 @@ function nxs_global_globalidexists($globalid)
 {
 	if ($globalid == "" || $globalid == "0" || $globalid == "NXS-NULL")
 	{
-		nxs_webmethod_return_nack("invalid parameter globalid;" . $globalid);
+		nxs_webmethod_return_nack("invalid parameter globalid; [{$globalid}]");
 	}
 	
 	$postids = nxs_get_postidsaccordingtoglobalid($globalid);
