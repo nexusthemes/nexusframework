@@ -211,7 +211,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"subheader",
 										"dashboard",
 										"pagepopup",
-										"inpagemenu",
+										"fixedheader",
 										"sections",
 										"inpage",
 										"menucontainer",
