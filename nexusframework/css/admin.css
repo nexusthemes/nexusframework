@@ -191,6 +191,7 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 .nxs-admin-wrap span.nxs-title 						{ display: block; float: left; color: #555555; font-style: italic; font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif !important; }
 .nxs-admin-wrap span.title a, 
 .nxs-admin-wrap span.nxs-title a					{ color: #222222; }
+.nxs-admin-wrap #nxsbox_window						{ width: auto; }
 .nxs-admin-wrap #nxsbox_window span.title a,
 .nxs-admin-wrap #nxsbox_window span.nxs-title a 		{ color: #222222; text-decoration: underline; }
 .nxs-admin-wrap #nxsbox_window span.title a:visited,
