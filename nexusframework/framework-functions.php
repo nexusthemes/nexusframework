@@ -2115,8 +2115,11 @@ add_action('init', 'nxs_init_themeboot');
 add_action("admin_menu", "nxs_admin_menu");  
 function nxs_admin_menu() 
 {
-	add_menu_page('Nexus Theme', 'Nexus Theme', 'switch_themes', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
-	add_submenu_page("nxs_backend_overview", 'Overview', 'Overview', 'switch_themes', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
+	if (!defined('NXS_WHITELABEL'))
+	{
+		add_menu_page('Nexus Theme', 'Nexus Theme', 'switch_themes', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
+		add_submenu_page("nxs_backend_overview", 'Overview', 'Overview', 'switch_themes', 'nxs_backend_overview', 'nxs_lazyactivate_backend_overview', '', nxs_getframeworkurl() . "/nexuscore/widgets/quote/img/quote_icon.png", '55.5');
+	}
 }  
 
 function nxs_lazyactivate_backend_overview() 
