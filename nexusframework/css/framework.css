@@ -3183,6 +3183,9 @@ span.reviewer 															{ margin-left: 5px; }
 .prod-img1 iframe.tablet  							{ width: 768px; height: 1028px; transform: scale(0.202); -webkit-transform: scale(0.202); -o-transform: scale(0.202); -ms-transform: scale(0.202); -moz-transform: scale(0.202); }
 .prod-img1 iframe.phone  							{ width: 320px; height: 480px; transform: scale(0.175); -webkit-transform: scale(0.175); -o-transform: scale(0.175); -ms-transform: scale(0.175); -moz-transform: scale(0.175); }
 
+.prod-img1 img,
+.prod-img2 img 										{ width: 100; display: block;}
+
 .nxs-icon.device 									{ color: black; top: 25.4em; left: 43.6em; }
 .device.nxs-icon:before 							{ font-size: 1.5em; }
 
