@@ -4,6 +4,11 @@ function nxs_popup_optiontype_image_shouldrenderphotopackpromo()
 {
 	$result = true;
 	
+	if (defined('NXS_WHITELABEL'))
+	{
+		$result = false;
+	}
+	
 	if (function_exists("nxs_sm_processstate_photopack"))
 	{
 		// photopack is installed and active
