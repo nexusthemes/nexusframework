@@ -555,15 +555,24 @@ function nxs_widgets_pageslider_beforeend_head()
 	
 	if ($aantalslides > 0)
 	{
+		// for nexusthemes.com
+		// the startslide and autoplay can be specified in the url
+		// this is for generating screenshots for the product image
 		$startslide = 0;
-		if ($_REQUEST['startslide'] && is_numeric($_REQUEST['startslide']))
+		if ($_REQUEST['slider_startslide'] != "" && is_numeric($_REQUEST['slider_startslide']))
 		{
-			$startslide = $_REQUEST['startslide'];
+			$startslide = $_REQUEST['slider_startslide'];
+
+			if (intval($startslide) > $aantalslides)
+			{
+				$startslide = 1;
+			}
 		}
 
 		$autoplay = 1;
-		if ($_REQUEST['autoplay_slider'] == "false")
+		if ($_REQUEST['slider_autoplay'] == "false")
 		{
+			$metadata_transition = "no-blink";
 			$autoplay = 0;
 		}
 

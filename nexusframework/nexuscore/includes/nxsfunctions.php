@@ -1749,11 +1749,14 @@ function nxs_ishandheld()
 	$isMobile = $mobiledetector->isMobile();
 	$result = $isTablet || $isMobile;
 
-	if ($_REQUEST['handheld'] == true)
+	// for nexusthemes.com
+	// for the product image screenshots the parameter handheld can be specified 
+	// this is because of a bug in the ipad landscape screenshot
+	if ($_REQUEST['handheld'] == "true")
 	{
 		$result = true;
 	}
-	
+
 	return $result;
 }
 

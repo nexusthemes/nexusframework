@@ -463,6 +463,21 @@ function nxs_getmappedfontfams($val)
 		// default; we will assume that the val represents the fontfamily itself (this is the new style)
 		$result[] = $val;
 	}
+
+	// for nexusthemes.com
+	// some fonts render too thin for the product image screenshots
+	// thats why we get bolder versions of some fonts
+	if ($_GET['screenshot'])
+	{
+		foreach ($result as $key => $value)
+		{
+			if ($value == "Raleway:100") 
+			{
+				$result[$key] = "Raleway:300";
+			}
+
+		}
+	}
 	
 	// $result = array();
 	
