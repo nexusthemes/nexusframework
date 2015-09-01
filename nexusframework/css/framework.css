@@ -954,7 +954,7 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 .nxs-text ul, 
 .nxs-text ol 												{ margin: 0 0 16px 25px; }
 .nxs-text ul li,
-.nxs-text ol li 											{ margin-top: 10px; line-height: 1.5em; }
+.nxs-text ol li 											{ margin-top: 10px; line-height: 1.5em; list-style-position: inside; }
 .nxs-text ul li:first-child,
 .nxs-text ol li:first-child 								{ margin-top: 0px; }
 .nxs-text ul 												{ list-style: square; }

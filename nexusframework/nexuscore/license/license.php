@@ -874,6 +874,10 @@ function nxs_licenseregister_invoke()
   		echo "It looks like your host cannot connect to $url<br />";
   		echo "To solve this problem:<br />";
   		echo "Contact your host to ensure they are not blocking access to our servers<br /><br />";
+  		?>
+  		<iframe width="420" height="315" src="https://www.youtube.com/embed/1Z1gjGes4P8" frameborder="0" allowfullscreen></iframe>
+  		<br /><br />
+  		<?php
   	}
   	else
   	{
