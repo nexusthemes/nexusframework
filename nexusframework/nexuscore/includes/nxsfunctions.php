@@ -1748,6 +1748,12 @@ function nxs_ishandheld()
 	$isTablet = $mobiledetector->isTablet();
 	$isMobile = $mobiledetector->isMobile();
 	$result = $isTablet || $isMobile;
+
+	if ($_REQUEST['handheld'] == true)
+	{
+		$result = true;
+	}
+	
 	return $result;
 }
 

@@ -555,6 +555,18 @@ function nxs_widgets_pageslider_beforeend_head()
 	
 	if ($aantalslides > 0)
 	{
+		$startslide = 0;
+		if ($_REQUEST['startslide'] && is_numeric($_REQUEST['startslide']))
+		{
+			$startslide = $_REQUEST['startslide'];
+		}
+
+		$autoplay = 1;
+		if ($_REQUEST['autoplay_slider'] == "false")
+		{
+			$autoplay = 0;
+		}
+
 		?>
 		<link rel="stylesheet" href="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/css/supersized.css" type="text/css" media="screen" />
 		<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/js/altsupersized.js"></script>
@@ -578,8 +590,8 @@ function nxs_widgets_pageslider_beforeend_head()
 							
 								// Functionality
 								slideshow               :   1,												// Slideshow on/off
-								autoplay				:	1,												// Slideshow starts playing automatically
-								start_slide             :   1,												// Start slide (0 is random)
+								autoplay				:	<?php echo $autoplay; ?>,						// Slideshow starts playing automatically
+								start_slide             :   <?php echo $startslide; ?>,						// Start slide (0 is random)
 								image_path				:	'http://demo4.horecamasters.nl/wordpress/wp-content/themes/rsw/images/supersized/',
 								stop_loop				:	0,												// Pauses slideshow on last slide
 								random					: 	0,												// Randomize slide order (Ignores start slide)
