@@ -534,12 +534,12 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		$concatenated_css = nxs_concatenateargswithspaces($ph_colorzen, $ph_linkcolorvar, $ph_border_radius, $ph_borderwidth);
 		
 		$heightclass = "";
-		if ($widgetmetadata["ph_valign"] == "nxs-valign-top")
+		if ($widgetmetadata["ph_valign"] == "nxs-valign-top" || $widgetmetadata["ph_valign"] == "")
 		{
 			$heightclass = "nxs-height100";
 		}
 		
-		$output .= '<div class="ABC $heightclass ' . $concatenated_css . ' ">';
+		$output .= "<div class='ABC $heightclass $concatenated_css'>";
 
 		$concatenated_css = nxs_concatenateargswithspaces($ph_padding, $ph_valign);
 		$output .= '<div class="XYZ ' . $concatenated_css . '">';
