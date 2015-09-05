@@ -240,9 +240,7 @@ function nxs_pagetemplate_handlecontent()
 					?>
 					<div class='nxs-article-container <?php echo $cssclass; ?>'>
 						<?php
-						
 				  	echo nxs_getrenderedhtml($contentpostid, "default");
-				  	
 				  	?>
 				  </div> <!-- END nxs-article-container -->
 				  <?php
@@ -263,6 +261,12 @@ function nxs_pagetemplate_handlecontent()
 						</div>
 						<?php
 					}
+					
+					//
+					// ---------------------------- BEGIN RENDER PLUGGABLE CONTENT
+					//
+					
+					do_action("nxs_action_rendercontent");
 				
 					//
 					// ---------------------------- BEGIN RENDER BACKEND CONTENT

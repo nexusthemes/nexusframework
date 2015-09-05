@@ -442,7 +442,7 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 			if ($globalid_that_is_correct == "")
 			{
 				// looks like bogus data
-				// perhaps we should do soemthing here...
+				// perhaps we should do something here...
 				continue;
 			}
 			
@@ -530,9 +530,11 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 				die();
 			}
 			
-			$currentlypointstopostid = $metadata[$localkey];
+			$currentlypointstopostid = $metadata[$localkey];			
 			$globalid_of_post_to_which_current_pointerrefers = nxs_get_globalid($currentlypointstopostid, false);	// very important, the 2nd parameter is set to FALSE!!)
-						
+
+
+			
 			//echo "[found local key:" . $localkey . " having value:" . $currentlypointstopostid . "]<br />";						
 			//echo "[found global key:" . $globalkey . " having value:" . $globalid_that_is_correct . "]<br />";											
 			//echo "[lookup postid:" . $currentlypointstopostid . " having globalid:" . $globalid_of_post_to_which_current_pointerrefers . "]<br />";
@@ -615,6 +617,7 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 				}
 				else
 				{
+					// xxxxxxxx
 					
 					// de metadata verwijst naar een globalid die niet (meer?) bestaat,
 					// de oplossing is om te kijken of de verwezen postid wel bestaat en dan die als waarheid aan te nemen
@@ -772,6 +775,14 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 						//echo "[current_unverifiedlocal_catid:$current_unverifiedlocal_catid]";
 						
 						$name = get_cat_name($current_unverifiedlocal_catid);
+						
+						if ($name == "")
+						{
+							// if its empty, perhaps its a product category instead of "regular" category
+							$category = get_term_by('id', $current_unverifiedlocal_catid, 'product_cat', 'ARRAY_A');
+    					$name = $category['name']; 
+						}
+						
 						//echo "[name:$name]";
 						
 						if (isset($name) && $name != "")
@@ -791,11 +802,20 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 						$newverifiedlocalids_brackets .= "[" . $currentnewverifiedlocalid . "]";
 					}
 
+					
+
 					// 3) store localids
-					$metakeyvaluestoupdate[$localkey] = $newverifiedlocalids_brackets;
+					if ($metadata[$localkey] != $newverifiedlocalids_brackets)
+					{
+						$metakeyvaluestoupdate[$localkey] = $newverifiedlocalids_brackets;
+					}
 					
 					// 4) update globalids
-					$metakeyvaluestoupdate[$globalkey] = nxs_get_globalids_categories($newverifiedlocalids_brackets);
+					$newvalue = nxs_get_globalids_categories($newverifiedlocalids_brackets);
+					if ($metadata[$globalkey] != $newvalue)
+					{
+						$metakeyvaluestoupdate[$globalkey] = $newvalue;
+					}
 					
 					echo "<span title='More information in the HTML DOM'>[...]</span>";
 					if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)

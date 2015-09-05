@@ -4480,6 +4480,9 @@ function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
 		}
 	}
 	
+	// allow plugins to further manipulate the output
+	$result = apply_filters("nxs_f_getwidgetmetadata", $result);
+	
 	return $result;
 }
 
@@ -5423,6 +5426,14 @@ function nxs_reset_globalid($postid)
 
 function nxs_reset_globalidtovalue($postid, $globalid)
 {
+	/*
+	if (nxs_isdebug())
+	{
+		var_dump(nxs_getstacktrace());
+		die();
+	}
+	*/   
+	
 	$metadatakey = 'nxs_globalid';
 	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($globalid));
 	return $globalid;
@@ -5486,6 +5497,12 @@ function nxs_get_globalids_categories($selectedcategoryidsinbrackets)
 	foreach (explode(',', $commaseperated) as $categoryid) 
 	{
 		$name = get_cat_name($categoryid);
+		if ($name == "")
+		{
+			// if its empty, perhaps its a product category instead of "regular" category
+			$category = get_term_by('id', $categoryid, 'product_cat', 'ARRAY_A');
+			$name = $category['name']; 
+		}
 		$result = $result . "[" . $name . "]";
 	}
 	return $result;
@@ -10338,32 +10355,33 @@ function nxs_lookuptable_getpostfixtoken()
 	return "}}";
 }
 
-// 
-function nxs_filter_translatelookup($metadata, $fields)
+// generic function to translate certain keys from metadata (listed in "fields"),
+// with a value marked in between the specified prefix and postfix tokens (p.e. {{ and }})
+// with the specified lookup array
+function nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup)
 {
-	$lookup = null;
 	$patterns = array();
 	$replacements = array();
+	$build = true;
 	
 	foreach ($fields as $currentfield)
 	{
 		$source = $metadata[$currentfield];
 		if (isset($source))
 		{
-			if (nxs_stringcontains($source, nxs_lookuptable_getprefixtoken()))
+			if (nxs_stringcontains($source, $prefixtoken))
 			{				
 				// very likely there's a lookup used, let's replace the tokens!
 				
-				if (!isset($lookup))
+				if ($build)
 				{
+					$build = false;
+
 					// optimization; only do this when the lookup is not yet set,
-					// note this can be further optimized
-					$includeruntimeitems = true;
-					$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
-					
+					// note this can be further optimized					
 					foreach ($lookup as $key => $val)
 					{
-						$patterns[] = '/' . nxs_lookuptable_getprefixtoken() . $key . nxs_lookuptable_getpostfixtoken() . '/';
+						$patterns[] = '/' . $prefixtoken . $key . $postfixtoken . '/';
 						$replacements[] = $val;
 					}
 				}
@@ -10379,6 +10397,19 @@ function nxs_filter_translatelookup($metadata, $fields)
 	}
 	
 	return $metadata;
+}
+
+// 
+function nxs_filter_translatelookup($metadata, $fields)
+{
+	$prefixtoken = nxs_lookuptable_getprefixtoken();
+	$postfixtoken = nxs_lookuptable_getpostfixtoken();
+
+	$includeruntimeitems = true;
+	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+	
+	$result = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
+	return $result;
 }
 
 // obsolete function

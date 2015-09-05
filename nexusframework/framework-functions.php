@@ -297,11 +297,7 @@ function nxs_isdebug()
 	{
 		$result = true;
 	}
-	else if ($remoteaddress == "80.126.37.213")
-	{
-		$result = true;
-	}
-	else if ($remoteaddress == "143.177.32.9")
+	else if ($remoteaddress == "188.207.117.125")
 	{
 		$result = true;
 	}
@@ -643,8 +639,8 @@ function nxs_wp_footer_debug()
 	}
 }
 
-add_action('init', 'nxs_init');
-add_action('admin_init', 'nxs_init');
+add_action('init', 'nxs_init', 200);
+add_action('admin_init', 'nxs_init', 200);
 function nxs_init() 
 {
 	if (nxs_has_adminpermissions())

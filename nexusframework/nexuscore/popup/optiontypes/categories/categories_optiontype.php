@@ -124,13 +124,21 @@ function nxs_popup_optiontype_categories_getitemstoextendbeforepersistoccurs($op
 	$result = array();
 	
 	$id = $optionvalues["id"];
+	$taxonomy = "category";
+	if (isset($optionvalues["taxonomy"]))
+	{
+		$taxonomy = $optionvalues["taxonomy"];	// bijv. "product_cat",
+	}
 	$value = $metadata[$id];
 	
 	// some types could use this function to insert additional meta data fields to be stored
 	// just before the values are saved. This is practical to store for set globalids
 	// of items that are to be threated in a special way when being imported/exported
-	
+	// TODO: it would be optimal to also send the taxonomy to the following function
 	$result[$id . '_catglobalids'] = nxs_get_globalids_categories($value);
+	
+	// TODO; also store the taxonomy
+	//$result[$id . '_cattaxonomy'] = $taxonomy;
 	
 	return $result;
 }

@@ -141,6 +141,14 @@ function nxs_widgets_image_home_getoptions($args)
 			),
 			array
 			( 
+				"id" 				=> "image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array
+			( 
 				"id" 				=> "image_shadow",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Image shadow", "nxs_td"),
@@ -326,6 +334,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	$shouldrenderalternative = false;
 	if 
 	(
+		$image_src == "" &&
 		$image_imageid == "" &&
 		$title == "" &&
 		nxs_has_adminpermissions()
@@ -344,7 +353,8 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Image metadata
-	if ($image_imageid != "") {
+	if ($image_imageid != "") 
+	{
 		$imagemetadata= wp_get_attachment_image_src($image_imageid, 'full', true);
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl 		= $imagemetadata[0];
@@ -352,6 +362,10 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		
 		$imagewidth 	= $imagemetadata[1] . "px";
 		$imageheight 	= $imagemetadata[2] . "px";	
+	}
+	if ($image_src != "")
+	{
+		$imageurl = $image_src;
 	}
 	
 	if ($destination_target == "_self") {
@@ -414,7 +428,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	else if ($destination_url != "") 			{ $html = '<a href="'.$destination_url .'" '.$destination_target_html.'>'.$html.'</a>'; }
 	
 	// Image
-	if ($image_imageid != "") 
+	if ($image_imageid != "" || $image_src != "") 
 	{
 		// if image is 'set'
 		$image_imageid = '

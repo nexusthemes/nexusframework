@@ -243,6 +243,14 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			array
+			( 
+				"id" 				=> "image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),
             
 			array
 			(
@@ -499,7 +507,8 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	$htmlsubtitle = '<'.$subtitle_heading.' class="' . $cssclasses .'">'.$subtitle.'</'.$subtitle_heading.'>';	
 	
 	// Image metadata
-	if ($image_imageid != "") {
+	if ($image_imageid != "") 
+	{
 		$imagemetadata= wp_get_attachment_image_src($image_imageid, 'full', true);
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl 		= $imagemetadata[0];
@@ -507,28 +516,38 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 
 		$imagewidth 	= $imagemetadata[1] . "px";
 		$imageheight 	= $imagemetadata[2] . "px";			
-        
-        if(!$image_size){ // for old sites, that did not supported the image alignment at that time
-            $image_size = "cover";
-        }
-        
-        if(!$image_position){ // for old sites, that did not supported the image alignment at that time
-            if($image_vpos == "top"){
-                $image_position = "center top";
-            } elseif($image_vpos == "center"){
-                $image_position = "center center";
-            } elseif($image_vpos == "bottom"){
-                $image_position = "center bottom";
-            } else {
-                $image_position = "center center";
-            }
-        }
-
-        if($image_size == "-"){ // if image size is not set, the image will be 'auto', which is as much as 'cover'
-            $image_size = "auto";
-        }
-        
-        $image_background = 'background: url('.$imageurl.') no-repeat ' . $image_position . '; background-size: '.$image_size.';';
+	}
+	if ($image_src != "")
+	{
+		$imageurl = $image_src;
+	}
+  if ($imageurl != "" ) 
+  {
+	  if(!$image_size)
+	  { 
+  		// for old sites, that did not supported the image alignment at that time
+      $image_size = "cover";
+	  }
+	  
+	  if(!$image_position)
+	  { 
+  		// for old sites, that did not supported the image alignment at that time
+      if($image_vpos == "top"){
+          $image_position = "center top";
+      } elseif($image_vpos == "center"){
+          $image_position = "center center";
+      } elseif($image_vpos == "bottom"){
+          $image_position = "center bottom";
+      } else {
+          $image_position = "center center";
+      }
+	  }
+	
+	  if($image_size == "-"){ // if image size is not set, the image will be 'auto', which is as much as 'cover'
+	      $image_size = "auto";
+	  }
+	  
+	  $image_background = 'background: url('.$imageurl.') no-repeat ' . $image_position . '; background-size: '.$image_size.';';
 	}
 	
 	// Text padding and margin
