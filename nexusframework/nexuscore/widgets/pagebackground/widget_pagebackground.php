@@ -68,6 +68,13 @@ function nxs_widgets_pagebackground_beforeend_head()
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl = $imagemetadata[0];
 		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
+
+		// background position
+		if (!$image_position) {
+			$image_position = "left top";
+		}
+
+		// image size
 		if ($image_size == "cover" && $image_isfixed == ""){
 			// do nothing
 		} else {
@@ -88,16 +95,44 @@ function nxs_widgets_pagebackground_beforeend_head()
 		{
 			if ($image_isfixed != "")
 			{
-				$backgroundimagehtml .= '
-				jQuery("body").css("-webkit-background-size", "cover");
-				jQuery("body").css("-moz-background-size", "cover");
-				jQuery("body").css("-o-background-size", "cover");
-				jQuery("body").css("background-size", "cover");
-				';
-			} else {
+				?>
+				<?php
+				if (nxs_ishandheld())
+				{
+					echo '<div id="nxs-background-image-fallback"></div>';
+					$backgroundimagehtml .= '
+					jQuery("#nxs-background-image-fallback").css("background-image", "url(' . $imageurl . ')");
+					jQuery("#nxs-background-image-fallback").css("background-position", "' . $image_position . '");
+
+					jQuery(window).on("nxs_event_resizeend.background", function(){
+						nxs_change_background_size();
+					});
+
+					jQuery(window).trigger("nxs_event_resizeend.background");
+
+					function nxs_change_background_size() {
+						var windowHeight = $(window).height();
+						var windowWidth = $(window).width();
+						jQuery("#nxs-background-image-fallback").css({ width: windowWidth, height: windowHeight });
+					}
+					';
+				}
+				else
+				{
+					$backgroundimagehtml .= '
+					jQuery("body").css("-webkit-background-size", "cover");
+					jQuery("body").css("-moz-background-size", "cover");
+					jQuery("body").css("-o-background-size", "cover");
+					jQuery("body").css("background-size", "cover");
+					';
+				}
+			}
+			else
+			{
 				echo '<div id="nxs-background-image"></div>';
 				$backgroundimagehtml .= '
 				jQuery("#nxs-background-image").css("background-image", "url(' . $imageurl . ')");
+				jQuery("#nxs-background-image").css("background-position", "' . $image_position . '");
 				';
 			}
 		}
@@ -122,20 +157,9 @@ function nxs_widgets_pagebackground_beforeend_head()
 			jQuery("body").css("background-repeat", "' . $repeatattribute . '");
 			';
 
-		// background position
-		if (!$image_position) {
-			$image_position = "left top";
-		}
-
 		$backgroundimagehtml .= '
 			jQuery("body").css("background-position", "' . $image_position . '");
-			jQuery("#nxs-background-image").css("background-position", "' . $image_position . '");
 			';
-		/*
-		$backgroundimagehtml .= '
-			jQuery("body").css("background-color", "#000");
-			';
-		*/
 	}
 	?>
 	<script type='text/javascript'>

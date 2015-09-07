@@ -1994,6 +1994,14 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 	z-index: 0;
 }
 
+#nxs-background-image-fallback {
+	position: fixed;
+	height: 100%;
+	background-size: cover;
+	width: 100%;
+	z-index: 0;
+}
+
 /* FIXED HEADER PAGE DECORATOR
 ---------------------------------------------------------------------------------------------------- */
 
