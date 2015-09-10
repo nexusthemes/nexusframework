@@ -461,7 +461,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 			}
 			echo $image_imageid;
 			
-		echo '<div>';
+		echo '</div>';
 		
 		
 		      

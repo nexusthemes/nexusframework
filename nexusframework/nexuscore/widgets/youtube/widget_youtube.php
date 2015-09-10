@@ -170,7 +170,7 @@ function nxs_widgets_youtube_home_getoptions($args)
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
-
+        
 function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 {
 	// Importing variables
@@ -186,7 +186,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = array_merge($temp_array, $args);
 	
 	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
+	// $mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	extract($mixedattributes);
 	
@@ -220,7 +220,25 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	{
 		$additionalparameters .= "&autoplay=0";
 	}
-
+	
+	//
+	if ($videoid == "" && $videourl != "")
+	{
+		// when a template sets the videourl, the videoid should be derived from that
+		if (nxs_stringstartswith($translationtop, "http"))
+		{
+			// when its a url pointing to youtube
+			$parsedurl = parse_url($videourl, PHP_URL_QUERY);
+			parse_str($parsedurl, $params);
+			$videoid = $params["v"];
+		}
+		else
+		{
+			// assumed the id is specified
+			$videoid = $videourl;
+		}
+	}
+	
 	if (nxs_has_adminpermissions())
 	{
 		if ($videoid == "")
@@ -236,6 +254,8 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	{
 		$renderBeheer = false;
 	}
+	
+	
 
 	if ($rendermode == "default")
 	{

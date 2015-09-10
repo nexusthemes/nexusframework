@@ -9460,6 +9460,12 @@ function nxs_gethtmlforbutton_mailchimp($button_text, $button_scale, $button_col
 
 function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title, $grayscale, $enlarge)
 {
+	$image_src = "";
+	return nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title, $grayscale, $enlarge);
+}
+
+function nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title, $grayscale, $enlarge)
+{
 	$image_alt = trim($image_alt);
 	$image_title = trim($image_title);
 
@@ -9492,13 +9498,21 @@ function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $
 	$image_alt = str_replace("\"", "&quote;", $image_alt);
 	
 	$wpsize = nxs_getwpimagesize($image_size);
-	$imagemetadata= wp_get_attachment_image_src($image_imageid, $wpsize, true);
-
-	// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
-	$imageurl 		= $imagemetadata[0];
-	$imageurl = nxs_img_getimageurlthemeversion($imageurl);
-	$imagewidth 	= $imagemetadata[1] . "px";
-	$imageheight 	= $imagemetadata[2] . "px";	
+	
+	if ($image_imageid != "")
+	{
+		$imagemetadata= wp_get_attachment_image_src($image_imageid, $wpsize, true);
+	
+		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
+		$imageurl 		= $imagemetadata[0];
+		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
+		$imagewidth 	= $imagemetadata[1] . "px";
+		$imageheight 	= $imagemetadata[2] . "px";	
+	}
+	else if ($image_src != "")
+	{
+		$imageurl = $image_src;
+	}
 	
 	$image_size_cssclass = nxs_getimagecsssizeclass($image_size);
 	$image_alignment_cssclass = nxs_getimagecssalignmentclass($image_alignment); // "nxs-icon-left";
@@ -9541,7 +9555,7 @@ function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $
 	
 	// Image
 	$result = '';
-	if ($image_imageid != "")
+	if ($image_imageid != "" || $image_src != "")
 	{
 		$result .= '<div class="nxs-relative">';
 		$result .= $image_border;
