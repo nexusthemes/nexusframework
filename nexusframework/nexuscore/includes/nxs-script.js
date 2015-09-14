@@ -4518,7 +4518,7 @@ function nxs_js_redirect_top(url)
 			{
 				locale = 'en_US';
 			}
-			var scripturl = 'http://connect.facebook.net/' + locale + '/all.js#xfbml=1';
+			var scripturl = '//connect.facebook.net/' + locale + '/all.js#xfbml=1';
 			
 			jQuery.getScript
 			(
