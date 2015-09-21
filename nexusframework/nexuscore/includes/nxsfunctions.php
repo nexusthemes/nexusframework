@@ -1809,6 +1809,10 @@ function nxs_storemedia_fromtheme($args)
 	
 	//error_log("nxs_storemedia_fromtheme; URL: $url");
 	
+	// http://89.18.175.44/bbeautician/wp-content/uploads/sales/beautician/2013/10/logo.png
+	// http://89.18.175.44/pestcontrol/wp-content/uploads/sites/110/2014/04/logo.png
+	// http://nexus_themes/wp-content/uploads/2014/02/reference11.jpg
+	
 	// url is bijv.
 	// http://89.18.175.44/beautician/wp-content/uploads/sales/beautician/2013/10/logo.png
 	
@@ -1816,7 +1820,7 @@ function nxs_storemedia_fromtheme($args)
 	{
 		// we splitten eerst de "sales/"
 		$urlpiecesfirst = explode("sales/", $url);
-		$url2 = $urlpiecesfirst[1];
+		$url2 = $urlpiecesfirst[1];	// p.e. beautician/2013/10/logo.png
 		$expected = true;
 	}
 	else if (nxs_stringcontains($url, "sites/"))
@@ -1824,7 +1828,15 @@ function nxs_storemedia_fromtheme($args)
 		// for example http://89.18.175.44/pestcontrol/wp-content/uploads/sites/110/2014/04/logo.png
 		// we splitten eerst de "sales/"
 		$urlpiecesfirst = explode("sites/", $url);
-		$url2 = $urlpiecesfirst[1];
+		$url2 = $urlpiecesfirst[1];	// p.e. 110/2014/04/logo.png
+		$expected = true;
+	}
+	else if (nxs_stringcontains($url, "nexus_themes"))
+	{
+		// for example http://nexus_themes/wp-content/uploads/2014/02/reference11.jpg
+		// we splitten eerst de "uploads/"
+		$urlpiecesfirst = explode("uploads/", $url);
+		$url2 = "placeholder/" . $urlpiecesfirst[1];	// p.e. placeholder/2014/02/reference11.jpg
 		$expected = true;
 	}
 	else
