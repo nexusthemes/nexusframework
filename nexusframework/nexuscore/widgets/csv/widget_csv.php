@@ -340,26 +340,44 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 	
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
-	
-	// Blend unistyling properties
-	$unistyle = $temp_array["unistyle"];
-	if (isset($unistyle) && $unistyle != "") {
-		// blend unistyle properties
-		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_csv_getunifiedstylinggroup(), $unistyle);
-		$temp_array = array_merge($temp_array, $unistyleproperties);	
+	if ($render_behaviour == "code")
+	{
+		//
+		$mixedattributes = $args;
 	}
+	else
+	{
+		// Every widget needs it's own unique id for all sorts of purposes
+		// The $postid and $placeholderid are used when building the HTML later on
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
 	
-	// Blend unicontent properties
-	$unicontent = $temp_array["unicontent"];
-	if (isset($unicontent) && $unicontent != "") {
-		// blend unistyle properties
-		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_csv_getunifiedcontentgroup(), $unicontent);
-		$temp_array = array_merge($temp_array, $unicontentproperties);
+		// Blend unistyling properties
+		$unistyle = $temp_array["unistyle"];
+		if (isset($unistyle) && $unistyle != "") {
+			// blend unistyle properties
+			$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_csv_getunifiedstylinggroup(), $unistyle);
+			$temp_array = array_merge($temp_array, $unistyleproperties);	
+		}
+		
+		// Blend unicontent properties
+		$unicontent = $temp_array["unicontent"];
+		if (isset($unicontent) && $unicontent != "") {
+			// blend unistyle properties
+			$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_csv_getunifiedcontentgroup(), $unicontent);
+			$temp_array = array_merge($temp_array, $unicontentproperties);
+		}
+		
+		// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
+		$mixedattributes = array_merge($temp_array, $args);
+		
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
+
 	}
-	
-	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
-	$mixedattributes = array_merge($temp_array, $args);
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
@@ -368,12 +386,6 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
 		
 	// Turn on output buffering
 	nxs_ob_start();
