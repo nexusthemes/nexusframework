@@ -458,6 +458,10 @@ function nxs_getmappedfontfams($val)
 	{
 		$result[] = "Open Sans";
 	}
+	else if ($val == "'Quicksand::latin")
+	{
+		$result[] = "Quicksand";
+	}
 	else
 	{
 		// default; we will assume that the val represents the fontfamily itself (this is the new style)
