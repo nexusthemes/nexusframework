@@ -1932,22 +1932,14 @@ function nxs_setjQ_nxs()
 {
 	?>
 	<script type="text/javascript">
-		var jqv = jQuery.fn.jquery;
-		if (jqv == "1.11.1")
-		{
-			//alert("goede versie!");
-		}
-		else
-		{
-			//alert("unexpected version " + jqv);
-		}
-
 		var jQ_nxs = jQuery.noConflict(true);
 		var jQuery = jQ_nxs;
-		var $ = jQ_nxs;
-
-		//
-		//var $nxs = $.noConflict(true);
+		
+		if (typeof $ === 'undefined') 
+		{
+			// only if $ was not yet set, set it!
+    	var $ = jQ_nxs;
+		}
 	</script>
 	<?php
 }		

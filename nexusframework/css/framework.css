@@ -2211,7 +2211,8 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .nxs-banner .banners-wrapper.banner-center 					{ text-align: center; }
 .nxs-banner .banners-wrapper.banner-right 					{ text-align: right; }
 
-.nxs-banner .image-wrapper 									{ display: inline-block; width: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; }
+
+.nxs-banner .image-wrapper 									{ display: inline-block; width: 11.8em; margin-bottom: 30px; border-right: 3.6em solid transparent; vertical-align: middle; }
 .nxs-banner .image-wrapper:last-child						{ border-right: 0; }
 .nxs-banner .image-wrapper .nxs-table						{ margin: 0 auto; }
 .nxs-banner .image-wrapper img	 							{ display: block; max-height: 100%; width: 100%; }

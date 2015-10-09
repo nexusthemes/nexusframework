@@ -1772,7 +1772,27 @@ function nxs_storemedia($args)
 		if ($result === false)
 		{
 			error_log("storing image from filter failed, using fallback implementation; $sourcefile");
-		 	$result = nxs_storemedia_remotehttpdownload($args);
+		 	
+		 	$sourcefile = get_template_directory() . "/resources/data/";
+			if (file_exists($sourcefile))
+			{
+				//error_log("found data directory in theme, using that one; $sourcefile");
+				// if the data folder exists, import from that directory
+				$result = nxs_storemedia_fromtheme($args);
+				
+				if ($result === false)
+				{
+					// TODO: do not log error; on our prod server this is not very practical
+					error_log("storing image from theme failed, using fallback implementation; $sourcefile");
+				 	$result = nxs_storemedia_remotehttpdownload($args);
+				}
+			}
+			else
+			{
+				// TODO: do not log error; on our prod server this is not very practical
+				error_log("did NOT find a data directory in theme, using fallback implementation; $sourcefile");
+			 	$result = nxs_storemedia_remotehttpdownload($args);
+			}
 		}
 	}
 	else
@@ -2558,16 +2578,20 @@ function nxs_isutf8($string)
 
 function nxs_toutf8string($in_str)
 {
-	$in_str=mb_convert_encoding($in_str,"UTF-8","auto");
+	$in_str_v2=mb_convert_encoding($in_str,"UTF-8","auto");
+	if ($in_str_v2 === false)
+	{
+		$in_str_v2 = $in_str;
+	}
 	
-	$cur_encoding = mb_detect_encoding($in_str) ; 
-  if($cur_encoding == "UTF-8" && nxs_isutf8($in_str)) 
+	$cur_encoding = mb_detect_encoding($in_str_v2) ; 
+  if($cur_encoding == "UTF-8" && nxs_isutf8($in_str_v2)) 
   {
-  	$result = $in_str; 
+  	$result = $in_str_v2; 
   }
   else 
   {
-    $result = utf8_encode($in_str); 
+    $result = utf8_encode($in_str_v2); 
   }
   
   return $result;
@@ -2827,7 +2851,11 @@ function nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, $wpcontentre
 	{
 		// the wp content
 		$text = do_shortcode(nxs_getwpcontent_for_postid($postid));
-		$item = nxs_toutf8string(strip_tags($text));
+		// 20151009 - disabled nxs_toutf8string; it produces garbled output on the blog widgets/
+		// on one of Kacems sites
+		//$item = nxs_toutf8string(strip_tags($text));	
+		$item = strip_tags($text);
+		
 		if ($item != "")
 		{
 			if (!in_array($item, $result))
