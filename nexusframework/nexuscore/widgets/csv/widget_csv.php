@@ -38,12 +38,12 @@ function nxs_widgets_csv_home_getoptions()
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_csv_getunifiedcontentgroup(),),
 		"fields" => array
 		(
-			// SEPERATOR
+			// SEPARATOR
 			
 			array( 
 				"id" 				=> "wrapper_sep_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Seperators", "nxs_td"),
+				"label" 			=> nxs_l18n__("Separators", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 			),
 			
@@ -62,7 +62,7 @@ function nxs_widgets_csv_home_getoptions()
 			array(
 				"id" 				=> "line_seperator",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Line seperator", "nxs_td"),
+				"label" 			=> nxs_l18n__("Line separator", "nxs_td"),
 				"dropdown" 			=> array
 				(
 					"@@@empty@@@"=>nxs_l18n__("Slash n", "nxs_td"),
