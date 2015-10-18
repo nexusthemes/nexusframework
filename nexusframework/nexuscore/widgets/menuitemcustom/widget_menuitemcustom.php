@@ -286,7 +286,7 @@ function nxs_widgets_menuitemcustom_desktop_render($args) {
     $destination_relationatt = $destination_relation;
 
     if (empty($url)) {
-        echo $anchorclass = "class='nxs-menuitemnolink'";
+        $anchorclass = "class='nxs-menuitemnolink'";
     }
     else {
        // echo $anchorclass = "class='{$cssclasssubitem}'";
