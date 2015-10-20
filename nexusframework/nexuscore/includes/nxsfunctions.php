@@ -5033,6 +5033,26 @@ function nxs_sendhtmlmail($fromname, $fromemail, $toemail, $subject, $body)
 	return nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body);
 }
 
+function nxs_f_wp_mail_from($result)
+{
+	global $nxs_global_mail_fromemail;
+	if ($nxs_global_mail_fromemail != "")
+	{
+		$result = $nxs_global_mail_fromemail;
+	}
+	return $result;
+}
+
+function nxs_f_wp_mail_from_name($result)
+{
+	global $nxs_global_mail_fromname;
+	if ($nxs_global_mail_fromname != "")
+	{
+		$result = $nxs_global_mail_fromname;
+	}
+	return $result;
+}
+
 function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body)
 {
 	$headers = 'From: ' . $fromname . ' <' . $fromemail . '>' . "\n\r";
@@ -5087,6 +5107,9 @@ function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	$nxs_global_mail_fromname = $fromname;
 	global $nxs_global_mail_fromemail;
 	$nxs_global_mail_fromemail = $fromemail;
+	
+	add_filter('wp_mail_from', 'nxs_f_wp_mail_from',10, 1);
+	add_filter('wp_mail_from_name', 'nxs_f_wp_mail_from_name', 10, 1);
 	
 	//
 	$headers .= 'Content-Type: text/html;' . "\n\r";
