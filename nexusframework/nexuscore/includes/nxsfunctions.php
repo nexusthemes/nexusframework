@@ -3145,7 +3145,7 @@ function nxs_str_lastreplace($search, $replace, $subject)
 }
 
 // todo: add in mem caching go to speed things up?
-// url get posturl getposturl
+// url get posturl getposturl geturlforpost
 function nxs_geturl_for_postid($postid)
 {
 	if ($postid == null)
@@ -9538,7 +9538,7 @@ function nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width,
 	}
 	
 	// Image metadata
-	if ($image_imageid == "") 
+	if ($image_imageid == "" && $image_src == "") 
 	{
 		return "";
 	}
@@ -9624,7 +9624,7 @@ function nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width,
 		$result .= $image_border;
 		$result .= '</div>';
 	}
-
+	
 	return $result;	
 }
 

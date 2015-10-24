@@ -115,7 +115,14 @@ function nxs_widgets_bio_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("border_width"),
 				"unistylablefield"	=> true
 			),	
-
+			array
+			( 
+				"id" 				=> "image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),
 			array( 
 				"id" 				=> "wrapper_image_end",
 				"type" 				=> "wrapperend"
@@ -807,7 +814,8 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	
 	// Default HTML
 	$htmltext = nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_showdropcap, $wrappingelement, $text_heightiq);
-	$htmlforimage = nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $image_title);
+	$htmlforimage = nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, "", "", $image_title, "", "");
+	
 	
 	// FILLER
 	if ($htmltext != "") {
