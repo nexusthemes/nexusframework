@@ -1403,13 +1403,13 @@
 						var oppositehsl = nxs_js_getoppositesaturationandlightforhsl(hsl);
 						var oppositergb = nxs_js_hsltorgb(oppositehsl);
 						var oppositehex = nxs_js_rgbtohex(oppositergb);
-						$('#vg_color_<?php echo $identification; ?>_o_m').miniColors('value', oppositehex);
+						jQ_nxs('#vg_color_<?php echo $identification; ?>_o_m').miniColors('value', oppositehex);
 						*/
 						/*
 						var complementaryhsl = nxs_js_getcomplementaryhsl(hsl);
 						var complementaryrgb = nxs_js_hsltorgb(complementaryhsl);
 						var complementaryhex = nxs_js_rgbtohex(complementaryrgb);
-						$('#vg_color_<?php echo $identification; ?>_o_m').miniColors('value', complementaryhex);
+						jQ_nxs('#vg_color_<?php echo $identification; ?>_o_m').miniColors('value', complementaryhex);
 						*/
 						?>
 						nxs_js_menu_handlecolorthemechanged();

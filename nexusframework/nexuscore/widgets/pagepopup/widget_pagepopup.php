@@ -208,7 +208,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 					{
 						var triggered = false;
 						var nxs_html = document.documentElement;
-						$(nxs_html).on('mouseleave', function(event){
+						jQ_nxs(nxs_html).on('mouseleave', function(event){
 							if (triggered === false) {
 								if (event.clientY > 20) { return; }
 
@@ -327,14 +327,14 @@ function nxs_widgets_pagepopup_beforeend_head()
 		function nxs_js_iframeloadedpagepopup()
 		{
 			var element = jQuery("#pagepopupiframe");
-			var height = $(element).contents().height();	// this only works if the iframe's page is of the same domain
+			var height = jQ_nxs(element).contents().height();	// this only works if the iframe's page is of the same domain
 			if (height > <?php echo $maxheight; ?>)
 			{
 				height = <?php echo $maxheight; ?>;
 			}
-			$(element).height(height); 
+			jQ_nxs(element).height(height); 
 			nxs_js_reset_popup_dimensions();	// required to vertical align the lightbox
-			$(element).niceScroll();
+			jQ_nxs(element).niceScroll();
 		}
 		
 	</script>

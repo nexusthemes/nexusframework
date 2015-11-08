@@ -314,31 +314,31 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	$script = '
 	<script>
 		// Enabling default menu styling
-		$( ".nxs-menu ul.menu" ).addClass( "nxs-menu" );
+		jQ_nxs( ".nxs-menu ul.menu" ).addClass( "nxs-menu" );
 		
 		// Enabling menu item height and font variant
-		$( "ul.menu li" ).addClass( "height' . $parent_height . ' ' . $font_variant . '" );
+		jQ_nxs( "ul.menu li" ).addClass( "height' . $parent_height . ' ' . $font_variant . '" );
 		
 		// Enabling menu item colorization
-		$( ".nxs-native-menu ul.menu" ).addClass( "nxs-applymenucolors item-fontsize' . $menu_fontsize . '" );
+		jQ_nxs( ".nxs-native-menu ul.menu" ).addClass( "nxs-applymenucolors item-fontsize' . $menu_fontsize . '" );
 		
 		// Enabling default menu item colorization
-		$( ".nxs-native-menu ul.menu li" ).addClass( "nxs-inactive" );
+		jQ_nxs( ".nxs-native-menu ul.menu li" ).addClass( "nxs-inactive" );
 
 		// Enabling active menu item colorization	
-		$( ".nxs-native-menu ul.menu li.current-menu-item" ).addClass( "nxs-active" );
+		jQ_nxs( ".nxs-native-menu ul.menu li.current-menu-item" ).addClass( "nxs-active" );
 		
 		// Enabling sub menu item colorization
-		$( ".nxs-native-menu ul.sub-menu" ).addClass( "nxs-sub-menu" );
+		jQ_nxs( ".nxs-native-menu ul.sub-menu" ).addClass( "nxs-sub-menu" );
 		
 		// Injecting classes
-		$( ".nxs-native-menu ul.menu" ).addClass( "' . 
+		jQ_nxs( ".nxs-native-menu ul.menu" ).addClass( "' . 
 			$menuitem_color_cssclass . 
 			$menuitem_hover_color_cssclass . 
 			$menuitem_active_color_cssclass . 
 		'" );
 		
-		$( ".nxs-native-menu ul.nxs-sub-menu" ).addClass( "' . 
+		jQ_nxs( ".nxs-native-menu ul.nxs-sub-menu" ).addClass( "' . 
 			$menuitem_sub_color_cssclass . 
 			$menuitem_sub_active_color_cssclass . 
 			$menuitem_sub_hover_color_cssclass . 

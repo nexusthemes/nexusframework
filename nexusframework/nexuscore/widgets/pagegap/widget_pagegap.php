@@ -325,7 +325,7 @@ function nxs_widgets_pagegap_betweenheadandcontent()
 		jQuery(document).bind('nxs_event_viewportchanged', function() { nxs_js_gap_updateheight(); } );
 		// first time
 		
-		$( window ).load(function() {
+		jQ_nxs( window ).load(function() {
 		  // Run code
 		  nxs_js_gap_updateheight();
 		});

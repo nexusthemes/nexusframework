@@ -339,7 +339,7 @@ function nxs_widgets_pagevideo_betweenheadandcontent()
   
 	<script type="text/javascript">
   	// '9bZkp7q19f0'
-    $('document').ready(function() {
+    jQ_nxs('document').ready(function() {
 			var options = { videoId: '<?php echo $youtubeid; ?>', start: 3 };
 			$('#wrapper').tubular(options);
 		});

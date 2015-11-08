@@ -141,15 +141,15 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 				?>
 
 					function nxs_js_set_fixedheader_padding() {
-						var fixedheaderheight = $('.nxs-fixed-header').height();
-						$('body').css('paddingTop', fixedheaderheight);
+						var fixedheaderheight = jQ_nxs('.nxs-fixed-header').height();
+						jQ_nxs('body').css('paddingTop', fixedheaderheight);
 					}
 
 					jQuery(document).bind('nxs_event_resizeend', function() {
 						nxs_js_set_fixedheader_padding();
 					});
 
-					$(document).ready(function(){
+					jQ_nxs(document).ready(function(){
 						nxs_js_set_fixedheader_padding();
 					});
 
@@ -161,11 +161,11 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 			else {
 			?>
 				function nxs_js_show_fixedheader() {
-					if ($(window).scrollTop() < <?php echo $offsetpixels; ?>) {
-						$("#nxs-fixed-header:visible").fadeOut(200);
+					if (jQ_nxs(window).scrollTop() < <?php echo $offsetpixels; ?>) {
+						jQ_nxs("#nxs-fixed-header:visible").fadeOut(200);
 					}
 					else {
-						$("#nxs-fixed-header:hidden").fadeIn(200);
+						jQ_nxs("#nxs-fixed-header:hidden").fadeIn(200);
 	
 						// tell the layout engine to post process the layout
 						// after the DOM is updated

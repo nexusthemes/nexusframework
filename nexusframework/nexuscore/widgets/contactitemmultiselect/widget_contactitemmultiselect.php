@@ -154,13 +154,13 @@ function nxs_widgets_contactitemmultiselect_renderincontactbox($args)
 
     <!----- the javascript below is to prevent that users have to hold down CTRL or CMD key to select multiple items and is coming from: http://stackoverflow.com/questions/12585863/how-can-i-make-an-html-multiple-select-act-like-the-control-button-is-held-down ----->
     <script type="text/javascript">    
-        $('#<?php echo $key; ?>').each(function(){    
-            var select = $(this), values = {};    
-            $('option',select).each(function(i, option){
+        jQ_nxs('#<?php echo $key; ?>').each(function(){    
+            var select = jQ_nxs(this), values = {};    
+            jQ_nxs('option',select).each(function(i, option){
                 values[option.value] = option.selected;        
             }).click(function(event){        
                 values[this.value] = !values[this.value];
-                $('option',select).each(function(i, option){            
+                jQ_nxs('option',select).each(function(i, option){            
                     option.selected = values[option.value];        
                 });    
             });
