@@ -579,6 +579,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"oxygen",
 										"education",
 										"beer",
+										"scaffold",
 									);
 									
 										
