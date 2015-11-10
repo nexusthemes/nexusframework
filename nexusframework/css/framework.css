@@ -3086,6 +3086,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-mot:before				{ content: "\e450";	}
 .nxs-icon-beer:before				{ content: "\e451";	}
 .nxs-icon-yelp:before				{ content: "\e452";	}
+.nxs-icon-scaffold:before			{ content: "\e453";	}
 
 
 /* Crappicons */
@@ -3112,6 +3113,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-capricorn:before 			{ content: "\2651"; }
 .nxs-icon-aquarius:before 			{ content: "\2652"; }
 .nxs-icon-pisces:before 			{ content: "\2653"; }
+
 
 /* NT PRODUCT IMAGES
 ---------------------------------------------------------------------------------------------------- */
