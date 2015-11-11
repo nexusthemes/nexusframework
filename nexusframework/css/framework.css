@@ -1988,18 +1988,18 @@ to 		{ opacity: 1; -ms-transform: translateY(0%); }
 
 #nxs-background-image {
 	position: absolute;
+	z-index: -999;
 	height: 100%;
 	background-size: cover;
 	width: 100%;
-	z-index: 0;
 }
 
 #nxs-background-image-fallback {
 	position: fixed;
+	z-index: -999;
 	height: 100%;
 	background-size: cover;
 	width: 100%;
-	z-index: 0;
 }
 
 /* FIXED HEADER PAGE DECORATOR
