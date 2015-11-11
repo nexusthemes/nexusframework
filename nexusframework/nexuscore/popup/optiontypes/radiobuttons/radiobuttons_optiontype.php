@@ -88,32 +88,32 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 	</div>
 
   	<script type="text/javascript">
-  		$(document).ready(function(){
-			$("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").hover(
+  		jQ_nxs(document).ready(function(){
+			jQ_nxs("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").hover(
 			  function() {
-			    $( this ).addClass("radiobuttons-item-hover");
+			    jQ_nxs( this ).addClass("radiobuttons-item-hover");
 			  }, function() {
-			    $( this ).removeClass("radiobuttons-item-hover");
+			    jQ_nxs( this ).removeClass("radiobuttons-item-hover");
 			  }
 			);
 
-			$("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").click(function(){
+			jQ_nxs("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").click(function(){
 				// ignore click if the item is disabled
-				if (!$(this).hasClass('radiobuttons-item-disabled')){
+				if (!jQ_nxs(this).hasClass('radiobuttons-item-disabled')){
 					// select the index of the clicked item
-					var selectedPosition = $(this).index();
+					var selectedPosition = jQ_nxs(this).index();
 
 					// set clicked item on active
-					$("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").removeClass('radiobuttons-item-active');
-					$(this).addClass('radiobuttons-item-active');
+					jQ_nxs("#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> li.radiobuttons-item").removeClass('radiobuttons-item-active');
+					jQ_nxs(this).addClass('radiobuttons-item-active');
 
 					// get the key and value of the item
-					var key = $(this).find('.nxs-radiobuttons-key').text();
-					var value = $(this).find('.nxs-radiobuttons-value').text();
+					var key = jQ_nxs(this).find('.nxs-radiobuttons-key').text();
+					var value = jQ_nxs(this).find('.nxs-radiobuttons-value').text();
 
 					// change the input and paragraph
-					$('#<?php echo $id; ?>').val(key);
-					$('#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> .nxs-radiobuttons-text').html(value);
+					jQ_nxs('#<?php echo $id; ?>').val(key);
+					jQ_nxs('#nxs-<?php echo $subtype; ?>-<?php echo $id; ?> .nxs-radiobuttons-text').html(value);
 
 					nxs_js_popup_sessiondata_make_dirty();
 				}

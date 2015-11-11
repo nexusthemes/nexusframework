@@ -111,8 +111,8 @@ function nxs_widgets_pagebackground_beforeend_head()
 					jQuery(window).trigger("nxs_event_resizeend.background");
 
 					function nxs_change_background_size() {
-						var windowHeight = $(window).height();
-						var windowWidth = $(window).width();
+						var windowHeight = jQ_nxs(window).height();
+						var windowWidth = jQ_nxs(window).width();
 						jQuery("#nxs-background-image-fallback").css({ width: windowWidth, height: windowHeight });
 					}
 					';

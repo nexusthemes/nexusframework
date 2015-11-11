@@ -1416,14 +1416,16 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					// Excerpt
 					$currentexcerpt = "";
 					if ($item_text_truncatelength != "") 
-					{
+					{						
 						// if the excerpt is set, use that one
 						$postforexcerpt = get_post($currentpostid);
 						$currentexcerpt = $postforexcerpt->post_excerpt;
 						
 						if (empty($currentexcerpt))
-						{
+						{							
 							$textblocks = nxs_get_text_blocks_on_page_v2($currentpostid, "");
+		
+							/* ---- */
 							
 							//$currentexcerpt = "TEST;$currentpostid;" . $currentexcerpt;
 							//var_dump($textblocks);
@@ -1457,6 +1459,9 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					if ($item_text_truncatelength != "" && $item_text_truncatelength != "0") 
 					{
 						$tekst = '<p class="nxs-default-p nxs-padding-bottom0 ' . $item_text_fontzen_cssclass . '"><span>' . $currentexcerpt . '</span></p>';
+					}
+					else
+					{
 					}
 					
 					// Blogentry button

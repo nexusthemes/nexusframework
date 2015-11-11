@@ -1772,7 +1772,27 @@ function nxs_storemedia($args)
 		if ($result === false)
 		{
 			error_log("storing image from filter failed, using fallback implementation; $sourcefile");
-		 	$result = nxs_storemedia_remotehttpdownload($args);
+		 	
+		 	$sourcefile = get_template_directory() . "/resources/data/";
+			if (file_exists($sourcefile))
+			{
+				//error_log("found data directory in theme, using that one; $sourcefile");
+				// if the data folder exists, import from that directory
+				$result = nxs_storemedia_fromtheme($args);
+				
+				if ($result === false)
+				{
+					// TODO: do not log error; on our prod server this is not very practical
+					error_log("storing image from theme failed, using fallback implementation; $sourcefile");
+				 	$result = nxs_storemedia_remotehttpdownload($args);
+				}
+			}
+			else
+			{
+				// TODO: do not log error; on our prod server this is not very practical
+				error_log("did NOT find a data directory in theme, using fallback implementation; $sourcefile");
+			 	$result = nxs_storemedia_remotehttpdownload($args);
+			}
 		}
 	}
 	else
@@ -1809,6 +1829,10 @@ function nxs_storemedia_fromtheme($args)
 	
 	//error_log("nxs_storemedia_fromtheme; URL: $url");
 	
+	// http://89.18.175.44/bbeautician/wp-content/uploads/sales/beautician/2013/10/logo.png
+	// http://89.18.175.44/pestcontrol/wp-content/uploads/sites/110/2014/04/logo.png
+	// http://nexus_themes/wp-content/uploads/2014/02/reference11.jpg
+	
 	// url is bijv.
 	// http://89.18.175.44/beautician/wp-content/uploads/sales/beautician/2013/10/logo.png
 	
@@ -1816,7 +1840,7 @@ function nxs_storemedia_fromtheme($args)
 	{
 		// we splitten eerst de "sales/"
 		$urlpiecesfirst = explode("sales/", $url);
-		$url2 = $urlpiecesfirst[1];
+		$url2 = $urlpiecesfirst[1];	// p.e. beautician/2013/10/logo.png
 		$expected = true;
 	}
 	else if (nxs_stringcontains($url, "sites/"))
@@ -1824,7 +1848,15 @@ function nxs_storemedia_fromtheme($args)
 		// for example http://89.18.175.44/pestcontrol/wp-content/uploads/sites/110/2014/04/logo.png
 		// we splitten eerst de "sales/"
 		$urlpiecesfirst = explode("sites/", $url);
-		$url2 = $urlpiecesfirst[1];
+		$url2 = $urlpiecesfirst[1];	// p.e. 110/2014/04/logo.png
+		$expected = true;
+	}
+	else if (nxs_stringcontains($url, "nexus_themes"))
+	{
+		// for example http://nexus_themes/wp-content/uploads/2014/02/reference11.jpg
+		// we splitten eerst de "uploads/"
+		$urlpiecesfirst = explode("uploads/", $url);
+		$url2 = "placeholder/" . $urlpiecesfirst[1];	// p.e. placeholder/2014/02/reference11.jpg
 		$expected = true;
 	}
 	else
@@ -2546,16 +2578,20 @@ function nxs_isutf8($string)
 
 function nxs_toutf8string($in_str)
 {
-	$in_str=mb_convert_encoding($in_str,"UTF-8","auto");
+	$in_str_v2=mb_convert_encoding($in_str,"UTF-8","auto");
+	if ($in_str_v2 === false)
+	{
+		$in_str_v2 = $in_str;
+	}
 	
-	$cur_encoding = mb_detect_encoding($in_str) ; 
-  if($cur_encoding == "UTF-8" && nxs_isutf8($in_str)) 
+	$cur_encoding = mb_detect_encoding($in_str_v2) ; 
+  if($cur_encoding == "UTF-8" && nxs_isutf8($in_str_v2)) 
   {
-  	$result = $in_str; 
+  	$result = $in_str_v2; 
   }
   else 
   {
-    $result = utf8_encode($in_str); 
+    $result = utf8_encode($in_str_v2); 
   }
   
   return $result;
@@ -2815,7 +2851,11 @@ function nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, $wpcontentre
 	{
 		// the wp content
 		$text = do_shortcode(nxs_getwpcontent_for_postid($postid));
-		$item = nxs_toutf8string(strip_tags($text));
+		// 20151009 - disabled nxs_toutf8string; it produces garbled output on the blog widgets/
+		// on one of Kacems sites
+		//$item = nxs_toutf8string(strip_tags($text));	
+		$item = strip_tags($text);
+		
 		if ($item != "")
 		{
 			if (!in_array($item, $result))
@@ -3105,7 +3145,7 @@ function nxs_str_lastreplace($search, $replace, $subject)
 }
 
 // todo: add in mem caching go to speed things up?
-// url get posturl getposturl
+// url get posturl getposturl geturlforpost
 function nxs_geturl_for_postid($postid)
 {
 	if ($postid == null)
@@ -4993,6 +5033,26 @@ function nxs_sendhtmlmail($fromname, $fromemail, $toemail, $subject, $body)
 	return nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body);
 }
 
+function nxs_f_wp_mail_from($result)
+{
+	global $nxs_global_mail_fromemail;
+	if ($nxs_global_mail_fromemail != "")
+	{
+		$result = $nxs_global_mail_fromemail;
+	}
+	return $result;
+}
+
+function nxs_f_wp_mail_from_name($result)
+{
+	global $nxs_global_mail_fromname;
+	if ($nxs_global_mail_fromname != "")
+	{
+		$result = $nxs_global_mail_fromname;
+	}
+	return $result;
+}
+
 function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body)
 {
 	$headers = 'From: ' . $fromname . ' <' . $fromemail . '>' . "\n\r";
@@ -5047,6 +5107,9 @@ function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	$nxs_global_mail_fromname = $fromname;
 	global $nxs_global_mail_fromemail;
 	$nxs_global_mail_fromemail = $fromemail;
+	
+	add_filter('wp_mail_from', 'nxs_f_wp_mail_from',10, 1);
+	add_filter('wp_mail_from_name', 'nxs_f_wp_mail_from_name', 10, 1);
 	
 	//
 	$headers .= 'Content-Type: text/html;' . "\n\r";
@@ -9475,7 +9538,7 @@ function nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width,
 	}
 	
 	// Image metadata
-	if ($image_imageid == "") 
+	if ($image_imageid == "" && $image_src == "") 
 	{
 		return "";
 	}
@@ -9561,7 +9624,7 @@ function nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width,
 		$result .= $image_border;
 		$result .= '</div>';
 	}
-
+	
 	return $result;	
 }
 

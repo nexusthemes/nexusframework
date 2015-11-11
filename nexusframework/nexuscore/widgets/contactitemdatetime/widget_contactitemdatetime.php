@@ -245,7 +245,6 @@ function nxs_widgets_contactitemdatetime_renderincontactbox($args)
 					},
 					beforeShow: function(input, inst) 
 					{
-						// nxs_js_log($('.ui-datepicker-prev'));
 	          jQuery('.ui-datepicker-prev').removeClass('nxs-frontendbutton2').addClass('nxs-frontendbutton2');
 	          jQuery('.ui-datepicker-next').removeClass('nxs-frontendbutton2').addClass('nxs-frontendbutton2');
 	          jQuery('#ui-datepicker-div').removeClass('nxs-datepicker').addClass('nxs-datepicker');

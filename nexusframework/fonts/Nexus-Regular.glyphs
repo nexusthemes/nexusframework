@@ -1,4 +1,7 @@
 {
+DisplayStrings = (
+/uniE453
+);
 date = "2014-09-12 11:47:48 +0000";
 designer = "Icomoon extended";
 designerURL = www.nexusthemes.com;
@@ -41144,11 +41147,93 @@ unicode = E452;
 },
 {
 glyphname = uniE453;
-lastChange = "2014-09-19 13:45:34 +0000";
+lastChange = "2015-11-10 10:08:08 +0000";
 layers = (
 {
 layerId = "C6537DE0-68DF-4C5B-B6D5-25B465FDDD7D";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"1472 1536 LINE",
+"1472 1408 LINE",
+"576 1408 LINE",
+"576 1536 LINE",
+"384 1536 LINE",
+"384 -384 LINE",
+"256 -384 LINE",
+"256 -512 LINE",
+"768 -512 LINE",
+"768 -384 LINE",
+"640 -384 LINE",
+"1024 -64 LINE",
+"1408 -384 LINE",
+"1280 -384 LINE",
+"1280 -512 LINE",
+"1792 -512 LINE",
+"1792 -384 LINE",
+"1664 -384 LINE",
+"1664 1536 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"896 0 LINE",
+"576 -256 LINE",
+"576 256 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1024 64 LINE",
+"640 384 LINE",
+"1408 384 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1472 -256 LINE",
+"1152 0 LINE",
+"1472 256 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"896 896 LINE",
+"576 640 LINE",
+"576 1152 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1408 512 LINE",
+"640 512 LINE",
+"1024 832 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1024 960 LINE",
+"640 1280 LINE",
+"1408 1280 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"1472 640 LINE",
+"1152 896 LINE",
+"1472 1152 LINE"
+);
+}
+);
 width = 2048;
 }
 );
