@@ -551,7 +551,11 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 			{
 				// er is een inconsistentie; de postid en globalid verwijzen verschillend
 				
-				if (nxs_global_globalidexists($globalid_that_is_correct))
+				if ($globalid_that_is_correct == "NXS-NULL")
+				{
+					$metakeyvaluestoupdate[$localkey] = 0;
+				}
+				else if (nxs_global_globalidexists($globalid_that_is_correct))
 				{
 					// als de globalid voorkomt, gaan we er vanuit dat de postid onjuist is					
 					
