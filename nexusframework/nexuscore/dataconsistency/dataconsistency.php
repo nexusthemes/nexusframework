@@ -553,7 +553,19 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 				
 				if ($globalid_that_is_correct == "NXS-NULL")
 				{
-					$metakeyvaluestoupdate[$localkey] = 0;
+					// xxxxxxxx
+					
+					// de metadata verwijst naar een globalid die niet (meer?) bestaat,
+					// de oplossing is om te kijken of de verwezen postid wel bestaat en dan die als waarheid aan te nemen
+					$correct_postid_to_which_we_should_refer = $currentlypointstopostid;
+					$correct_globalid = nxs_get_globalid($correct_postid_to_which_we_should_refer, true);
+					$metakeyvaluestoupdate[$globalkey] = $correct_globalid;
+					
+					if ($correct_globalid == "NXS-NULL")
+					{
+						// als blijkt dat de postid in zijn geheel niet bestaat, maken we ook die leeg
+						$metakeyvaluestoupdate[$localkey] = 0;
+					}
 				}
 				else if (nxs_global_globalidexists($globalid_that_is_correct))
 				{
