@@ -133,7 +133,7 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 				?>
 				<!-- facebook share -->		
 				<div class='nxs-share nxs-fbshare'>
-				<fb:share-button type="box_count" href="<?php echo $url; ?>"></fb:share-button>
+					<div class="fb-share-button" data-href="http://shareme" data-layout="box_count"></div>
 				</div>
 				<?php
 			}
@@ -184,17 +184,29 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 			}
 			?>
 			<?php      
-			if (false) // nxs_stringcontains($items, "pinterest"))
+			if (nxs_stringcontains($items, "pinterest"))
 			{
 				?>
 				<!-- pinterest -->
 				<?php
 				$pintitle = $currentpost->post_title;
 				$pinref = $url;
+				global $nxs_glb_pinterestdone;
+				
 				?>
 				<div class='nxs-share nxs-pinterest'>
-					<a data-pin-config="above" href="//pinterest.com/pin/create/button/" data-pin-do="buttonBookmark" ><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>
-					<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+
+					<a data-pin-do="buttonBookmark" data-pin-count="above" href="https://www.pinterest.com/pin/create/button/"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
+					<!-- Please call pinit.js only once per page -->
+					<?php
+					if ($nxs_glb_pinterestdone == "")
+					{
+						$nxs_glb_pinterestdone = "done";
+						?>
+						<script async defer src="//assets.pinterest.com/js/pinit.js"></script>
+						<?php
+					}
+					?>
 				</div>
 				<?php
 			}
