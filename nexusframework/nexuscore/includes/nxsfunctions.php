@@ -10434,7 +10434,7 @@ function nxs_lookuptable_getpostfixtoken()
 
 // generic function to translate certain keys from metadata (listed in "fields"),
 // with a value marked in between the specified prefix and postfix tokens (p.e. {{ and }})
-// with the specified lookup array (placeholders, lookups)
+// with the specified lookup array (placeholders, lookup)
 function nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup)
 {
 	$patterns = array();

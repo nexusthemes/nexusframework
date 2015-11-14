@@ -140,6 +140,18 @@ function nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $she
 			nxs_webmethod_return_nack("unable to get options; function not found; $functionnametoinvokealt");
 		}
 	}
+	
+	// allow plugins to enhance the output of the options
+	// (for example the stans plugin will post-process the 
+	// output to convert icon pickers to text)
+	$args = array
+	(
+		"contextprocessor" => "widgets",
+		"widget" => $widget,
+		"sheet" => $sheet,
+	);
+	$result = apply_filters("nxs_f_getpopupoptions", $result, $args);
+	
 	return $result;
 }
 
