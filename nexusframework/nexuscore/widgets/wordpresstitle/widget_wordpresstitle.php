@@ -159,6 +159,7 @@ function nxs_widgets_wordpresstitle_popupoptioncontent($optionvalues, $args, $ru
 	nxs_ob_start();
 	$containerpostid = $args["clientpopupsessioncontext"]["containerpostid"];
 	$title = nxs_gettitle_for_postid($containerpostid);
+	
 	?>
 	<a href="#" class='nxsbutton1 nxs-float-right' onclick="nxs_js_popup_pagetemplate_neweditsession('home'); return false;"><?php nxs_l18n_e('Edit', 'nxs_td'); ?></a>
 	<p><?php echo $title;?></p>
@@ -212,7 +213,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	else
 	{
 		$currentpost = get_post($nxs_global_current_containerpostid_being_rendered);
-		$title = $currentpost->post_title;
+		$title = nxs_gettitle_for_postid($nxs_global_current_containerpostid_being_rendered);
 		$currentpostdate = $currentpost->post_date;
 	}
 	

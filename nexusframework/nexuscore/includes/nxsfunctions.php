@@ -2492,9 +2492,8 @@ function nxs_getstacktrace()
 // posttitle
 function nxs_gettitle_for_postid($postid)
 {
-	$postdata = get_post($postid);
-	$title = $postdata->post_title;
-	return $title; 
+	$result = get_the_title($postid);
+	return $result; 
 }
 
 // 2012 06 04; GJ; in some particular situation (unclear yet when exactly) the result cannot be json encoded
@@ -3260,6 +3259,11 @@ function nxs_getsitemeta_internal($nackwhenerror)
 			// store site settings as pagemeta of specific postid
 			$postid = $postids[0];
 			$result = nxs_get_postmeta($postid);
+			
+			// allow plugins to tune the result
+			// (for example the stans plugin will post-process the 
+			// output to set the colors)
+			$result = apply_filters("nxs_f_getsitemeta", $result);
 			
 			$nxs_gl_cache_sitemeta = $result;
 		}
@@ -4521,7 +4525,11 @@ function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
 	}
 	
 	// allow plugins to further manipulate the output
-	$result = apply_filters("nxs_f_getwidgetmetadata", $result);
+	$args = array
+	(
+		
+	);
+	$result = apply_filters("nxs_f_getwidgetmetadata", $result, $args);
 	
 	return $result;
 }

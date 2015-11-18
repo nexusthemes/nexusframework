@@ -196,7 +196,14 @@ function nxs_widgets_text_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("border_width"),
 				"unistylablefield"	=> true
 			),	
-				
+			array
+			( 
+				"id" 				=> "image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),				
 			array( 
 				"id" 				=> "wrapper_image_begin",
 				"type" 				=> "wrapperend"
@@ -529,7 +536,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// If so > $shouldrenderalternative = true, which triggers the error message
 	$shouldrenderalternative = false;
 	
-	if ($image_imageid != "" && $image_url != "")
+	if ($image_imageid != "" && $image_src != "")
 	{
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Ambiguous: not clear which image to use (you picked an image, and entered the image url at the same time). Please only use one at a time.", "nxs_td");
@@ -547,7 +554,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	if (
 		$image_imageid == "" &&
-		$image_url == "" &&
+		$image_src == "" &&
 		$title == "" &&
 		$text == "" &&
 		$button_text == ""
@@ -735,10 +742,10 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$derived_imageurl = $imagemetadata[0];
 		$derived_imageurl = nxs_img_getimageurlthemeversion($derived_imageurl);
-	} else if ($image_url != "" && $image_size != "-") {
+	} else if ($image_src != "" && $image_size != "-") {
 		// Determines which image size, full or thumbnail, should be used    
 		$wpsize = nxs_getwpimagesize($image_size);
-		$derived_imageurl = $image_url;
+		$derived_imageurl = $image_src;
 		$derived_imageurl = nxs_img_getimageurlthemeversion($derived_imageurl);
 	}
 	
@@ -777,7 +784,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Default image 
 	$default_image = '<img src="'.$derived_imageurl.'" alt="'.$image_alt.'" title="'.$image_title.'" class="'.$enlarge.' '.$image_size_cssclass.' '.$image_alignment_cssclass.'"/>';
 	
-	if ($image_url != "" && $image_size != "auto-fit") {
+	if ($image_src != "" && $image_size != "auto-fit") {
 		$default_image = '';
 		$default_image .= '<div class="nxs-image-wrapper ' . $image_alignment_cssclass . ' ' . $image_size_cssclass . '" style="background: url('. $derived_imageurl . '); background-repeat:no-repeat; background-attachment:scroll; background-position:center; background-size: cover;"><img style="visibility: hidden;" src="'. $derived_imageurl . '" />&nbsp;';
 		$default_image .= '</div>';
@@ -839,7 +846,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		}
 		
 		if (
-			($title != "" || $icon != "") && ($image_imageid != "" || $image_url != "") ||
+			($title != "" || $icon != "") && ($image_imageid != "" || $image_src != "") ||
 			($title != "" || $icon != "") && $htmltext != "" ||
 			($title != "" || $icon != "") && $htmlforbutton != "") { 
 			echo $htmlfiller; 
@@ -858,18 +865,18 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 				echo '<div class="callout-banner '.$callout_color_cssclass.'"><h'.$callout_heading.'>'.$callout_text.'</h '.$callout_heading.'></div>';
 			}
 			
-			if ($image_imageid != "" || $image_url != "") { echo $image; }
+			if ($image_imageid != "" || $image_src != "") { echo $image; }
 			
 			echo '</div>';		
 		} else {
 			
-			if ($image_imageid != "" || $image_url != "") { echo $image; }
+			if ($image_imageid != "" || $image_src != "") { echo $image; }
 			
 		}
 		
 		if (
-			($image_imageid != "" || $image_url != "") && $htmltext != "" && $image_size == "auto-fit" ||
-			($image_imageid != "" || $image_url != "") && $htmltext == "" && $htmlforbutton != "") { 
+			($image_imageid != "" || $image_src != "") && $htmltext != "" && $image_size == "auto-fit" ||
+			($image_imageid != "" || $image_src != "") && $htmltext == "" && $htmlforbutton != "") { 
 			echo $htmlfiller; 
 		}
 		

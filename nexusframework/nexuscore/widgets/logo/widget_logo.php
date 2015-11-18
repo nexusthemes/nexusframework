@@ -85,7 +85,14 @@ function nxs_widgets_logo_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Align your logo to the left, center or right from the placeholder.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			
+			array
+			( 
+				"id" 				=> "image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
@@ -267,7 +274,14 @@ function nxs_widgets_logo_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Logo wrapper background", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			
+			array
+			( 
+				"id" 				=> "bg_image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
@@ -355,6 +369,7 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	$shouldrenderalternative = false;
 	if (
 		$image_imageid == "" &&
+		$image_src == "" &&
 		$title == "" &&
 		$subtitle == "" &&
 		nxs_has_adminpermissions()) {
@@ -378,6 +393,12 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 		$imagewidth 	= $imagemetadata[1] . "px";
 		$imageheight 	= $imagemetadata[2] . "px";	
+	}
+	else if ($image_src != "")
+	{
+		$imageurl = $image_src;
+		//$imagewidth 	= $imagemetadata[1] . "px";
+		//$imageheight 	= $imagemetadata[2] . "px";	
 	}
 
 	$alignment_image = "";
@@ -457,7 +478,7 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Logo
-	if ($image_imageid != "") {
+	if ($image_imageid != "" || $image_src != "") {
 		$image_maxheight_cssclass = nxs_getcssclassesforlookup("nxs-maxheight-", $image_maxheight);
 		
 		$inlinemaxheightstyle = '';
@@ -473,7 +494,8 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Image background
-	if ($bg_image_imageid != "") {
+	if ($bg_image_imageid != "") 
+	{
 		$imagemetadata= wp_get_attachment_image_src($bg_image_imageid, 'full', true);
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl 		= $imagemetadata[0];
@@ -481,6 +503,11 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 		$imagewidth 	= $imagemetadata[1] . "px";
 		$imageheight 	= $imagemetadata[2] . "px";	
 		
+		$image_background = 'background: url(' . $imageurl . ') no-repeat top center;';
+	}
+	else if ($bg_image_src != "") 
+	{
+		$imageurl 		= $bg_image_src;
 		$image_background = 'background: url(' . $imageurl . ') no-repeat top center;';
 	}
 	
@@ -499,7 +526,14 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	if ($image_background != "") { $image_background_cssclass = 'image-background'; }
 	
 	// Media query class
-	if (($image_imageid != "" && $title != "") || ($image_imageid != "" && $subtitle != "")) { $aligning_content = "aligning-content"; }
+	if 
+	(
+		(($image_imageid != "" || $image_src != "") && $title != "") || 
+		(($image_imageid != "" || $image_src != "") && $subtitle != "")
+	) 
+	{ 
+		$aligning_content = "aligning-content"; 
+	}
 	
 	
 	/* OUTPUT
