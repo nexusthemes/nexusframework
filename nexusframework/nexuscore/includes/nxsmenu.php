@@ -575,11 +575,39 @@
 		            	<div class="nxs-admin-header" onclick="jQ_nxs('#nxssnipprev').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight()"><h3><?php nxs_l18n_e("Snippet preview[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
 		            	<div id='nxssnipprev' class="content2">
 		                <div class="box">
-		                	<div id='nxs-seo-snippetwrapper'></div>
+	                    <p>This is what your page might look like on a Google search result page.</p>
+		                	<div id="snippet" class="output">
+							        </div>
+		                	<!-- <div id='nxs-seo-snippetwrapper'></div> -->
 						          <div class='nxs-clear'></div>
 						        </div>
 						      </div> <!-- end content2 -->
 		            </div> <!-- end block -->
+		            
+		            <?php
+
+            		$seofocuskeyword = "";
+            		$seotitle = "";
+            		$seometadescription = "";
+		            
+		            if (function_exists("wpseo_get_value"))
+		            {
+		            	if (is_singular())
+		            	{
+		            		$seofocuskeyword = wpseo_get_value('focuskw', $postid);
+		            		$seotitle = wpseo_get_value('title', $postid);
+		            		$seometadescription = wpseo_get_value('metadesc', $postid);
+		            		if ($seofocuskeyword === false) { $seofocuskeyword = ""; } 
+		            		if ($seotitle === false) { $seotitle = ""; } 
+		            		if ($seometadescription === false) { $seometadescription = ""; } 
+		            	}
+		            }
+		            else
+		            {
+		            	// yoast not installed?
+		            	$seotitle = "yoastv3 not found";
+		            }
+		            ?>
 		          	
 								<div id='nxs-seofields' style='display: none;'>
 			            <div class="block">
@@ -589,7 +617,7 @@
 				                <div class="box">
 				                  <div class="box-title"><p><?php nxs_l18n_e("Focus keyword[nxs:heading]", "nxs_td"); ?></p></div>
 				                  <div class="box-content">
-						              	<input id='nxs-seofocuskeyword' type='text' onkeydown="nxs_js_showseoupdatebutton();" />
+						              	<input id='nxs-seofocuskeyword' type='text' onkeydown="nxs_js_showseoupdatebutton();" value="<?php echo $seofocuskeyword; ?>" />
 							            </div>
 							            <div class='nxs-clear'></div>
 							          </div>
@@ -598,7 +626,7 @@
 				                <div class="box">
 				                  <div class="box-title"><p><?php nxs_l18n_e("SEO title[nxs:heading]", "nxs_td"); ?></p> <span id='seotitlecharsused'></span></p></div>
 				                  <div class="box-content">
-						              	<input id='nxs-seotitle' type='text' onkeydown="nxs_js_shownumofchars('#nxs-seotitle', '#seotitlecharsused'); nxs_js_showseoupdatebutton();" />
+						              	<input id='nxs-seotitle' type='text' onkeydown="nxs_js_shownumofchars('#nxs-seotitle', '#seotitlecharsused'); nxs_js_showseoupdatebutton();" value="<?php echo $seotitle; ?>" />
 							            </div>
 							            <div class='nxs-clear'></div>
 							        	</div>
@@ -607,7 +635,7 @@
 				                <div class="box">
 				                  <div class="box-title"><p><?php nxs_l18n_e("SEO meta description[nxs:heading]", "nxs_td"); ?></p> <span id='seodescriptioncharsused'></span></p></div>
 				                  <div class="box-content">
-						              	<input id='nxs-seometadescription' type='text' onkeydown="nxs_js_shownumofchars('#nxs-seometadescription', '#seodescriptioncharsused'); nxs_js_showseoupdatebutton();" />
+						              	<input id='nxs-seometadescription' type='text' onkeydown="nxs_js_shownumofchars('#nxs-seometadescription', '#seodescriptioncharsused'); nxs_js_showseoupdatebutton();" value="<?php echo $seometadescription; ?>" />
 							            </div>
 							            <div class='nxs-clear'></div>
 							        	</div>
@@ -628,13 +656,239 @@
 			
 									      
 									<div class="block">            	
-			            	<div class="nxs-admin-header" onclick="jQ_nxs('#nxsseoanalysisoutput').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight();"><h3><?php nxs_l18n_e("Search engine analysis[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
+			            	<div class="nxs-admin-header" onclick="jQ_nxs('#nxsseoanalysisoutput').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight();"><h3>Yoast <?php nxs_l18n_e("Search engine analysis[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3>
+			            	</div>
 			            	<div id="nxsseoanalysisoutput" class="content2">
+			            		
+			            		 <div id="output-container" class="output-container">
+				                    <div id="output" class="output">
+				                    </div>
+				                </div>
+				
+				                <div class="overallScore-container">
+				                  <div id="overallScore" class="overallScore">
+				                  </div>
+				                </div>
+			            		
 			                <div class="box">
 			                	<div id='nxs-seo-output'></div>
 							          <div class='nxs-clear'></div>
 							        </div>
-							       </div> <!-- end content2 -->
+							       </div> <!-- end content2 --> 
+							       		<style>
+
+#snippet_cite {
+    min-width: 20px;
+}
+
+#meta_container {
+    clear: both;
+}
+
+.snippet_container .title {
+    color: #1e0fbe;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    white-space: nowrap;
+    width: 512px;
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: normal;
+    margin: 0;
+}
+
+.snippet_container .url, .desc {
+    font-size: 13px;
+    line-height: 1.4;
+    display: block;
+
+}
+
+.snippet_container .url {
+    font-size: 14px;
+    line-height: 16px;
+    color: #006621;
+    font-style: normal;
+}
+
+.snippet_container .urlBase{
+    float: left;
+}
+
+.snippet_container .desc-default {
+    color: #333;
+}
+
+.snippet_container .desc-render {
+    color: #777;
+}
+
+.snippet_container .tooLong {
+    color: #f00 !important;
+}
+
+/* css for analyzer */
+
+.wpseoanalysis {
+    padding-right: 0px;
+}
+.wpseo-score-text {
+    display: inline-block;
+    width: 90%;
+}
+.wpseo-score-icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 3px 10px 0 3px;
+    border-radius: 50%;
+    background: #888;
+    vertical-align: top;
+}
+
+.wpseo-score-icon.good {
+    background-color: #7ad03a;
+}
+
+.wpseo-score-icon.ok {
+    background-color: #ee7c1b;
+}
+
+.wpseo-score-icon.bad {
+    background-color: #dd3d36;
+}
+
+.wpseo-score-icon.na {
+    background-color: #999;
+}
+
+.wpseo-score-icon.noindex {
+    background-color: #1e8cbe;
+}
+
+li.score {
+    list-style-type: none !important;
+}
+
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+/* overall score */
+
+#overallScore #score_circle {
+    fill: #999;
+}
+
+#overallScore #score_circle_shadow {
+    fill: #777;
+}
+
+#overallScore.good #score_circle {
+    fill: #9fda4f;
+}
+
+#overallScore.good #score_circle_shadow {
+    fill: #77b227;
+}
+
+#overallScore.ok #score_circle {
+    fill: #ffb81e;
+}
+
+#overallScore.ok #score_circle_shadow {
+    fill: #f49a00;
+}
+
+#overallScore.bad #score_circle {
+    fill: #ff4e47;
+}
+
+#overallScore.bad #score_circle_shadow {
+    fill: #ed261f;
+}
+
+
+/* loading dialog */
+
+.YoastSEO_msg .right,
+.YoastSEO_msg .left{
+    display: none;
+}
+
+@keyframes animatedBackground {
+    from { background-position: 0 0; }
+    to { background-position: 100% 0; }
+}
+
+.YoastSEO_msg .bufferbar {
+    display: block;
+    width: 100%;
+    height: 12px;
+    /*multiple background definitions for the sake of browsercompatibility*/
+
+    background-image: -webkit-linear-gradient(left, #ffffff, #0063ff, #ffffff,#0063ff);
+    background-image: -moz-linear-gradient(left, #ffffff, #0063ff, #ffffff,#0063ff);
+    background-image: -ms-linear-gradient(left, #ffffff, #0063ff, #ffffff,#0063ff);
+    background-image: -o-linear-gradient(left, #ffffff, #0063ff, #ffffff,#0063ff);
+    background-size: 300% 100%;
+    background-position: 0px 0px;
+    margin: 10px 0 10px 0;
+    border: 1px solid #dfdfdf;
+    animation: animatedBackground 5s linear infinite;
+}
+
+							       		</style>
+										    <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/seo/nxs-scraper.js"></script>
+										    <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/seo/yoast-seo.min.js"></script>
+							       		<script>
+									        YoastSEO = ( "undefined" === typeof YoastSEO ) ? {} : YoastSEO;
+									
+									        YoastSEO.analyzerArgs = {
+									            analyzer: true,
+									            snippetPreview: true,
+									            typeDelay: 300,
+									            typeDelayStep: 100,
+									            maxTypeDelay: 1500,
+									            dynamicDelay: true,
+									            multiKeyword: false,
+									            targets: {
+									                output: "output",
+									                overall: "overallScore",
+									                snippet: "snippet"
+									            },
+									            sampleText: {
+									                baseUrl: "",
+									                snippetCite: "example.org/example-post/",
+									                title: "This is an example title",
+									                keyword: "Choose a focus keyword",
+									                meta: "Your meta description by editing it right here",
+									                text: "Start writing your text!"
+									            },
+									            callbacks: {
+									                getData: function() { return {} }
+									            }
+									        };
+									
+									        window.onload = function() {
+									            var exampleScraper = new YoastSEO.ExampleScraper( YoastSEO.analyzerArgs, YoastSEO.app );
+									            YoastSEO.analyzerArgs.callbacks = {
+									                getData: exampleScraper.getData.bind( exampleScraper ),
+									                bindElementEvents: exampleScraper.bindElementEvents.bind( exampleScraper ),
+									                updateSnippetValues: exampleScraper.updateSnippetValues.bind( exampleScraper ),
+									                saveScores: exampleScraper.saveScores.bind( exampleScraper )
+									            };
+									            window.YoastSEO.app = new YoastSEO.App( YoastSEO.analyzerArgs );
+									            YoastSEO.app.refresh();
+									        };
+									    </script>
+							      
 			            </div> <!-- end block -->
 								<div class="nxs-clear padding"></div>
 								</div>

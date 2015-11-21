@@ -3759,9 +3759,63 @@ function nxs_addyoastseosupport()
 {
 	// for the page analysis, note that for the video content, a different patch is applied,
 	// since the video plugin doesn't apply the wpseo_pre_analysis_post_content filter, see #438957387
-	add_filter("wpseo_pre_analysis_post_content", "nxs_wpseo_pre_analysis_post_content");
-	add_filter("wpseo_video_index_content", "nxs_wpseo_video_index_content", 10, 2 );
+
+	// deprecated since Yoast 3.0
+	//add_filter("wpseo_pre_analysis_post_content", "nxs_wpseo_pre_analysis_post_content");
+	//add_filter("wpseo_video_index_content", "nxs_wpseo_video_index_content", 10, 2 );
+
+	if (is_admin())
+	{	
+		wp_enqueue_script( 'yoastbackendbridge', nxs_getframeworkurl() . '/js/seo/yoastbackendbridge.js', array(), nxs_getthemeversion(), TRUE );	
+	}
 	
+	add_action( 'admin_head', 'nxs_admin_addyoastv3support' );
+	
+	function nxs_admin_addyoastv3support() 
+	{
+		if (is_admin() && defined('WPSEO_VERSION') && version_compare(WPSEO_VERSION, '3.0.0') > 0)
+		{
+			global $post;
+			$postid = $post->ID;
+			if ($postid != "")
+			{
+				?>
+				<script>
+					var nxs_seo_backend_context = 'post';
+					var nxs_seo_backend_id = '<?php echo $postid; ?>';
+					var nxs_seo_backend_content = '';
+					
+					function nxs_js_get_adminurladminajax() 
+					{ 
+						return "<?php 	
+						// fix 20141002; we should use the wpurl instead of url
+						$result = get_bloginfo("wpurl");
+						if (!nxs_stringendswith($result, '/'))
+						{
+							// fix bug detected on Gerbers server
+							$result = $result . "/";
+						}
+						$result .= "index.php?nxs-webmethod-queryparameter=true";
+						echo $result;
+						?>";
+					}
+					
+					function nxs_js_log(s)
+					{
+						if ('console' in self && 'log' in console) 
+						{
+							console.log(s);
+							//var stacktrace = nxs_js_getqueryparametervalue("stacktrace");
+							
+							// practical debug tool; if ctrl is pressed, output the stacktrac
+							try { throw new Error("Stracktrace"); } catch (e) { console.log(e.stack); }
+						}
+					}
+				</script>
+				<?php
+			}
+		}
+	}
 }
 
 function nxs_getpagecssclass($pagemeta)

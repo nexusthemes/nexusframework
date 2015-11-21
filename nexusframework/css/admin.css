@@ -445,10 +445,14 @@ table.ui-datepicker-calendar td 					{ text-align: center !important; padding: 8
 	margin-right: 10px; }
 
 .nxs-admin-wrap .box #nxs-seo-output ul li					 		{ line-height: 19px; padding-left: 20px; }
-.nxs-admin-wrap .box #nxs-seo-output ul li.nxs-seoindicator-good	{ background: url(../images/stoplight-green.png) no-repeat 0px 3px; }
-.nxs-admin-wrap .box #nxs-seo-output ul li.nxs-seoindicator-ok 		{ background: url(../images/stoplight-yellow.png) no-repeat 0px 3px; }
-.nxs-admin-wrap .box #nxs-seo-output ul li.nxs-seoindicator-poor	{ background: url(../images/stoplight-orange.png) no-repeat 0px 3px; }
-.nxs-admin-wrap .box #nxs-seo-output ul li.nxs-seoindicator-bad		{ background: url(../images/stoplight-red.png) no-repeat 0px 3px; }
+.score .screen-reader-text { display: none; }
+.wpseo-score-icon { display: inline-block; width: 16px; height: 16px; }
+/*
+.wpseo-score-icon.good	{ background: url(../images/stoplight-green.png) no-repeat 0px 3px; }
+.wpseo-score-icon.ok 		{ background: url(../images/stoplight-yellow.png) no-repeat 0px 3px; }
+.wpseo-score-icon.poor	{ background: url(../images/stoplight-orange.png) no-repeat 0px 3px; }
+.wpseo-score-icon.bad		{ background: url(../images/stoplight-red.png) no-repeat 0px 3px; }
+*/
 
 /* ADMIN JQUERY DRAG
 ----------------------------------------------------------------------------------------------------*/

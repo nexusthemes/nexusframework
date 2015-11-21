@@ -11,7 +11,33 @@ function nxs_webmethod_getcontent()
 	
 	$args = $_REQUEST;
 	
-	if ($entity == "row")		// haalt de html op van een enkele row (GUI)
+	if ($entity == "anonymouspost")
+	{
+		// format of the context =anonymouspost_{postid}_{postid}
+		$containerpostid = $contextpieces[1];
+		if ($containerpostid == "")
+		{
+			nxs_webmethod_return_nack("containerpostid not set in context");
+		}
+		$postid = $contextpieces[2];
+		if ($postid == "")
+		{
+			nxs_webmethod_return_nack("postid not set in context");
+		}
+		
+		//
+		// for this specific webmethod we set the global render variables
+		global $nxs_global_current_containerpostid_being_rendered;
+		$nxs_global_current_containerpostid_being_rendered = $containerpostid;		
+				
+		$rendermode = "anonymous";
+		
+		$result = array();
+		$result["html"] = nxs_getrenderedhtml($postid, $rendermode); 
+		
+		nxs_webmethod_return_ok($result);	
+	}
+	else if ($entity == "row")		// haalt de html op van een enkele row (GUI)
 	{
 		// format of the context = row_{postid}_{rowid}
 		$containerpostid = $contextpieces[1];

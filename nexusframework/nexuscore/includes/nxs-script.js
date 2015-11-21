@@ -4811,6 +4811,15 @@ function nxs_js_redirect_top(url)
 		function nxs_js_refresh_seoanalysis_actualrequest()
 		{
 			jQ_nxs('#nxs-seofields').show();
+
+			// refresh yoast v3
+			if ("undefined" !== typeof YoastSEO )
+			{
+				console.log("refreshing Yoast SEO v3!");
+				YoastSEO.app.refresh();
+			}
+
+			return;
 		
 			var postid = nxs_js_getcontainerpostid();
 		
