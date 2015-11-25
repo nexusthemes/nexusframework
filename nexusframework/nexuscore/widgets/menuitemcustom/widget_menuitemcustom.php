@@ -285,16 +285,23 @@ function nxs_widgets_menuitemcustom_desktop_render($args) {
     $destination_relation = $placeholdermetadata["destination_relation"];
     $destination_relationatt = $destination_relation;
 
-    if (empty($url)) {
-        $anchorclass = "class='nxs-menuitemnolink'";
+    if (empty($url)) 
+    {
+    	$anchorclass = "class='nxs-menuitemnolink'";
     }
-    else {
-       // echo $anchorclass = "class='{$cssclasssubitem}'";
+    else 
+    {
+      // echo $anchorclass = "class='{$cssclasssubitem}'";
     }
 
-    if (empty($destination_target)) {
-        $targetatt = "target='_self'";
-    }
+		if (empty($destination_target)) 
+		{
+			$targetatt = "target='_self'";
+		} 
+		else 
+		{
+			$targetatt = "target='" . $destination_target . "'";
+		}
 
     if ($icon != "") {
         $icon = '<span class="' . $icon . ' ' . $icon_scale_cssclass . '"></span> ';

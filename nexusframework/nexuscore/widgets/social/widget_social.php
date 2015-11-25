@@ -634,8 +634,16 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		$custom_1_imageurl = $imagemetadata[0];
 		$custom_1_imageurl = nxs_img_getimageurlthemeversion($custom_1_imageurl);
 		
-		$custom_1_imagewidth = $imagemetadata[1] . "px";
-		$custom_1_imageheight = $imagemetadata[2] . "px";
+		if ($imagemetadata[1] != "" && $imagemetadata[2] != "")
+		{
+			$custom_1_imagewidth = $imagemetadata[1] . "px";
+			$custom_1_imageheight = $imagemetadata[2] . "px";
+		}
+		else
+		{
+			$custom_1_imagewidth = "32px";
+			$custom_1_imageheight = "32px";
+		}
 	
 		$custom_1_url = '
 			<a href="' . $custom_1_url . '" target="_new" style="width: ' . $custom_1_imagewidth . '; height: ' . $custom_1_imageheight . ';">
