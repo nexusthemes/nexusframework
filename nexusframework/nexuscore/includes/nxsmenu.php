@@ -575,10 +575,8 @@
 		            	<div class="nxs-admin-header" onclick="jQ_nxs('#nxssnipprev').toggleClass('nxs-toggle-hide'); nxs_js_refreshtopmenufillerheight()"><h3><?php nxs_l18n_e("Snippet preview[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
 		            	<div id='nxssnipprev' class="content2">
 		                <div class="box">
-	                    <p>This is what your page might look like on a Google search result page.</p>
 		                	<div id="snippet" class="output">
 							        </div>
-		                	<!-- <div id='nxs-seo-snippetwrapper'></div> -->
 						          <div class='nxs-clear'></div>
 						        </div>
 						      </div> <!-- end content2 -->
@@ -678,51 +676,52 @@
 							       		<style>
 
 #snippet_cite {
-    min-width: 20px;
+    min-width: 20px !important;
 }
 
 #meta_container {
-    clear: both;
+    clear: both !important;
 }
 
 .snippet_container .title {
-    color: #1e0fbe;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none;
-    white-space: nowrap;
-    width: 512px;
-    font-size: 18px;
-    line-height: 1.2;
-    font-weight: normal;
-    margin: 0;
+    color: #1e0fbe !important;
+    display: block !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    width: 512px !important;
+    font-size: 18px !important;
+    float: none !important;
+    line-height: 1.2 !important;
+    font-weight: normal !important;
+    margin: 0 !important;
 }
 
 .snippet_container .url, .desc {
-    font-size: 13px;
-    line-height: 1.4;
-    display: block;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    display: block !important;
 
 }
 
 .snippet_container .url {
-    font-size: 14px;
-    line-height: 16px;
-    color: #006621;
-    font-style: normal;
+    font-size: 14px !important;
+    line-height: 16px !important;
+    color: #006621 !important;
+    font-style: normal !important;
 }
 
 .snippet_container .urlBase{
-    float: left;
+    float: left !important;
 }
 
 .snippet_container .desc-default {
-    color: #333;
+    color: #333 !important;
 }
 
 .snippet_container .desc-render {
-    color: #777;
+    color: #777 !important;
 }
 
 .snippet_container .tooLong {
@@ -846,7 +845,7 @@ li.score {
 
 							       		</style>
 										    <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/seo/nxs-scraper.js"></script>
-										    <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/seo/yoast-seo.min.js"></script>
+										    <script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/seo/yoast-seo.js"></script>
 							       		<script>
 									        YoastSEO = ( "undefined" === typeof YoastSEO ) ? {} : YoastSEO;
 									

@@ -1193,7 +1193,7 @@ YoastSEO.App.prototype.createSnippetPreviewTitle = function( target ) {
 	target.appendChild( elem );
 	var title;
 	title = document.createElement( "span" );
-	title.contentEditable = true;
+	// title.contentEditable = false;
 	title.textContent = this.config.sampleText.title;
 	title.className = "title";
 	title.id = "snippet_title";
@@ -1224,7 +1224,7 @@ YoastSEO.App.prototype.createSnippetPreviewUrl = function( target ) {
 	cite.className = "url";
 	cite.id = "snippet_cite";
 	cite.textContent = this.config.sampleText.snippetCite;
-	cite.contentEditable = true;
+	//cite.contentEditable = false;
 	elem.appendChild( cite );
 };
 
@@ -1241,7 +1241,7 @@ YoastSEO.App.prototype.createSnippetPreviewMeta = function( target ) {
 	var meta = document.createElement( "span" );
 	meta.className = "desc";
 	meta.id = "snippet_meta";
-	meta.contentEditable = true;
+	//meta.contentEditable = false;
 	meta.textContent = this.config.sampleText.meta;
 	elem.appendChild( meta );
 };
