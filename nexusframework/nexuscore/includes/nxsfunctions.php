@@ -5964,6 +5964,22 @@ function nxs_getsearchresults($searchargs)
 		$skipserp_postid = -1;
 	}
 	
+	//echo "search...";
+	$args = array
+	(
+		"public" => true,
+		"exclude_from_search" => false,
+	);
+	$output = "names";
+	$operator = "and";
+	$posttypes = get_post_types($args, $output, $operator);
+	$posttypevalues = array_values($posttypes);
+	$posttypelist = "'" . implode("','", $posttypevalues) . "'";
+	//echo "before: $posttypelist <br />";
+	$posttypelist = str_replace("''", "", $posttypelist);
+	//echo "after: $posttypelist <br />";
+	//die();
+	
 	global $wpdb;
 	
 	$q = "
@@ -5985,7 +6001,7 @@ function nxs_getsearchresults($searchargs)
 			where 
 			(
 				(
-					post_type in ('post', 'page') 
+					post_type in ({$posttypelist}) 
 				)
 				and
 				(
