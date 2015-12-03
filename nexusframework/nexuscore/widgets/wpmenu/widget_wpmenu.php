@@ -371,7 +371,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 			
 				// Minified anchor
 				echo '			
-				<a href="#" onclick="nxs_js_menu_mini_expand(\'' . $placeholderid . '\'); nxs_gui_set_runtime_dimensions_enqueuerequest(\'nxs-menu-toggled\'); return false;">
+				<a href="#" class="nxs_js_menu_mini_expand-' . $placeholderid . '">
 					<div style="text-align: center">
 						<span class="nxs-icon-menucontainer"></span>
 						<span>' . $minified_label . '</span>
@@ -380,19 +380,39 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 				
 				// Minified expander
 				echo '
-                <div id="nxs-menu-mini-nav-expander-' . $placeholderid . '" style="display: none;">
+                <div class="nxs-menu-mini-nav-expander-' . $placeholderid . '" style="display: none;">
 
 					<div class="nxs-native-menu ' . $responsive . '" >
 						<ul>' . $sidebarcontent . '</ul>
 					</div>';
 					
 				echo '
-				</div> <!-- END nxs-menu-mini-nav-expander -->
+				</div> <!-- END nxs-menu-mini-nav-expander -->';
+				?>
+				<script>
+            jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
+            jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function()
+            {
+            	nxs_js_log('wpmenu mini expand click');
+              nxs_js_menu_mini_expand(this, '<?php echo $placeholderid; ?>');
+              nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+
+              var self = this;
+
+              jQ_nxs(document).off('nxs_event_resizeend.menu_mini_expand');
+              jQ_nxs(document).on('nxs_event_resizeend.menu_mini_expand', function(){
+                  nxs_js_change_menu_mini_expand_height(self, '<?php echo $placeholderid; ?>');
+                  nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+                  return false;
+              });
+              return false;
+            });
+        </script>
 				
 			</div> <!-- END nxs-menu-minified -->
 			
-			<div class="nxs-clear"></div>';
-			
+			<div class="nxs-clear"></div>
+			<?php
 			// Script
 			echo $script;
 		}

@@ -309,7 +309,15 @@ function nxs_js_disabledocumentscrollwhenhoveringoverelement(e)
 
 function nxs_js_menu_mini_expand(obj, placeholderid) 
 {
-	var expander = jQ_nxs(obj).siblings(".nxs-menu-mini-nav-expander-" + placeholderid);
+	nxs_js_log("mini expand triggered");
+	nxs_js_log(obj);
+	nxs_js_log(placeholderid);
+	
+	//var expander = jQ_nxs(obj).siblings(".nxs-menu-mini-nav-expander-" + placeholderid);
+	var expander = jQ_nxs(".nxs-menu-mini-nav-expander-" + placeholderid);
+	nxs_js_log("expander:");
+	nxs_js_log(expander);
+	
 	var extendMenuHeight = nxs_js_calc_menu_mini_height(expander, obj);
 
 	jQ_nxs(expander).toggleClass("nxs-expand");
