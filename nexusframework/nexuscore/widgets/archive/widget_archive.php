@@ -891,17 +891,23 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 		echo '<div class="' . $archivetype . ' nxs-blog nxs-archiveentries nxs-paging-page-' . $paging_page_class . ' ' . $metadata_layout . '">';
 		
 		echo $htmltitle;
+		
+		
+		
 			
 			// MINIMAL ICON
-			if ($items_layout == "minimal") {
-				
+			if ($items_layout == "minimal") 
+			{	
 				echo '<ul>';
 		
-				foreach ($pages as $currentpost) {
+				foreach ($pages as $currentpost) 
+				{
+					// $url = nxs_geturl_for_postid($currentpost->ID);
+					$url = get_permalink($currentpost);
 					echo '
 						<li class="nxs-applylinkvarcolor nxs-default-p nxs-padding-bottom0">
 							' . $font_icon . '
-							<a href="' . nxs_geturl_for_postid($currentpost->ID) . '"><span>' . $currentpost->post_title . '</span></a>
+							<a href="' . $url . '"><span>' . $currentpost->post_title . '</span></a>
 						</li>';
 				}
 				
@@ -924,11 +930,14 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 			
 					$pageindex = $pageindex + 1;
 					$currentpostid = $currentpost->ID;
+					
+					// $url = nxs_geturl_for_postid($currentpostid);
+					$url = get_permalink($currentpost);
 	
 					// archive title			
 					$archivetitel = '
 						<' . $itemheadingelement . ' class="nxs-title nxs-applylinkvarcolor">
-							<a href="' . nxs_geturl_for_postid($currentpostid) . '">' . $currentpost->post_title . '</a>
+							<a href="' . $url . '">' . $currentpost->post_title . '</a>
 						</' . $itemheadingelement . '>';
 				
 					// find images used on page
@@ -970,7 +979,8 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 						echo '</div>';
 				}
 			// DEFAULT				
-			} else if 	(!isset($items_layout) || $items_layout == "" || $items_layout == "extended") {
+			} else if 	(!isset($items_layout) || $items_layout == "" || $items_layout == "extended") 
+			{
 				$aantalpages = count($pages);
 				$pageindex = 0;
 				foreach ($pages as $currentpost) {
@@ -978,7 +988,9 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 					$pageindex = $pageindex + 1;
 					$currentpostid = $currentpost->ID;
 					
-					$currentposturl = nxs_geturl_for_postid($currentpostid);
+					// $currentposturl = nxs_geturl_for_postid($currentpostid);
+					$currentposturl = get_permalink($currentpost);
+					
 					$currentencodedposturl = urlencode($currentposturl);
 					$currenttitle = $currentpost->post_title;
 					$currentencodedtitle = urlencode($currenttitle);

@@ -359,11 +359,13 @@ function nxs_ensurenocacheoutput($buffer)
 function nxs_storecacheoutput($buffer)
 {
 	$shouldstore = true;
+	$nocacheexplanations = array();
 	
 	if(session_id() != '') 
 	{
 		// dont store; the session is set
 		$shouldstore = false;
+		$nocacheexplanations[] = "session is set/active";
 	}
 	
 	if ($shouldstore)
@@ -372,6 +374,7 @@ function nxs_storecacheoutput($buffer)
 		{
 			// dont store 404's
 			$shouldstore = false;
+			$nocacheexplanations[] = "is 404";
 		}
 	}
 	
@@ -386,6 +389,7 @@ function nxs_storecacheoutput($buffer)
 				if ( sizeof( $woocommerce->cart->get_cart() ) > 0 )
 				{
 					$shouldstore = false;
+					$nocacheexplanations[] = "woocommerce cart contains at least 1 item";
 				}
 			}
 		}
@@ -401,6 +405,7 @@ function nxs_storecacheoutput($buffer)
 		{
 			// if session has started, dont use the cache
 			$shouldstore = false;
+			$nocacheexplanations[] = "session is started";
 		}
 	}
 	
@@ -412,14 +417,17 @@ function nxs_storecacheoutput($buffer)
 			if ($nxs_gl_cache_pagecache == false)
 			{
 				$shouldstore = false;
+				$nocacheexplanations[] = "global nxs_gl_cache_pagecache told us to not cache";
 			}
 		}
 	}
+	
 	
 	$lowercasecontenttype = "";
 	if ($shouldstore)
 	{
 		$headerssent = headers_list();
+		
 		foreach ($headerssent as $currentheadersent)
 		{
 			$lowercase = strtolower($currentheadersent);
@@ -450,9 +458,7 @@ function nxs_storecacheoutput($buffer)
 			// unknown content, likely we dont want to store this
 			// return "$contenttype; fiets:" . $a . "]";
 			$shouldstore = false;
-			
-			//$buffer = "is lowercasecontenttype; [$lowercasecontenttype]";
-			//var_dump($lowercasecontenttype);
+			$nocacheexplanations[] = "unsupported contenttype";
 		}
 	}
 	
@@ -462,12 +468,14 @@ function nxs_storecacheoutput($buffer)
 		{
 			// useless to store
 			$shouldstore = false;
+			$nocacheexplanations[] = "buffer is empty";
 		}
 		else if (!nxs_stringcontains($buffer, "</html>"))
 		{
 			// case 2435987; this would indicate a partially rendered page is outputted
 			// partially rendered pages should never be stored as cached items
 			$shouldstore = false;
+			$nocacheexplanations[] = "no  end of html tag found in buffer";
 		}
 	}
 	
@@ -494,6 +502,11 @@ function nxs_storecacheoutput($buffer)
 	}
 	else
 	{
+	}
+	
+	if ($_REQUEST["nxs"] == "debugcache")
+	{
+		$buffer = nxs_prettyprint_array($nocacheexplanations);
 	}
 	
 	return $buffer;
@@ -561,6 +574,8 @@ function nxs_setupcache()
 	}
 	else
 	{
+		
+		
 		// proceed as usual... don't cache anything
 		nxs_ob_start("nxs_ensurenocacheoutput");
 	}
@@ -6084,6 +6099,7 @@ function nxs_setpageletid_forpageletinpost($postid, $pageletname, $pageletid)
 	nxs_merge_postmeta($postid, $modifiedmetadata);
 }
 
+// pretty_print
 function nxs_prettyprint_array($arr)
 {
 	$retStr = '<h1>Pretty print</h1>';

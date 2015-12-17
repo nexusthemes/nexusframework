@@ -699,6 +699,16 @@ function nxs_init()
 				var_dump($x);
 				die();
 			}
+			else if ($_REQUEST["nxs"] == "nxs_cache_getcachefolder")
+			{
+				$x = nxs_cache_getcachefolder();
+				var_dump($x);
+				echo "<br />";
+				$r = is_writable($x);
+				var_dump($r);
+				echo "<br />";
+				die();
+			}
   		else if ($_REQUEST["nxs"] == "HTTP_USER_AGENT")
   		{
   			echo $_SERVER["HTTP_USER_AGENT"];
