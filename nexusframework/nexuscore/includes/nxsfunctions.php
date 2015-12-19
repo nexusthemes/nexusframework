@@ -783,7 +783,7 @@ function nxs_busrule_process($busruletype, $metadata, &$statebag)
 	if ($requireresult["result"] == "OK")
 	{
 		// delegate
-		$functionnametoinvoke = 'nxs_busrule_' . $busruletype . '_process';
+		$functionnametoinvoke = "nxs_busrule_{$busruletype}_process";
 		if (function_exists($functionnametoinvoke))
 		{
 			$args = array();

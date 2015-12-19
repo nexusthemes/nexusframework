@@ -1614,7 +1614,7 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-blog .nxs-title										{ margin-bottom: 0px; }
 .nxs-blog .nxs-blogentry .nxs-button						{ margin-top: 15px; }
 .nxs-blog .nxs-pagination .nxs-button span					{ margin-left: 0px; }
-.nxs-blog .nxs-button.load-more								{ width: 100%; text-align: center; padding-left: 0px; padding-right: 0px; }
+.nxs-blog .nxs-button.load-more								{ width: 100%; text-align: center; padding-left: 0px; padding-right: 0px; .load-more.nxs-colorzen; box-sizing: border-box; }
 .nxs-blog .nxs-meta											{ margin-right: 15px; }
 .nxs-blog .nxs-image-wrapper								{ float: left; margin: 0 20px 10px 0; }
 .nxs-blog .nxs-image-wrapper.nxs-stretch					{ float: none; margin-bottom: 15px; }
