@@ -3095,6 +3095,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-beer:before				{ content: "\e451";	}
 .nxs-icon-yelp:before				{ content: "\e452";	}
 .nxs-icon-scaffold:before			{ content: "\e453";	}
+.nxs-icon-bowling:before			{ content: "\e454";	}
 
 
 /* Crappicons */
@@ -3242,4 +3243,3 @@ span.reviewer 															{ margin-left: 5px; }
 .prod-img2 iframe.tablet  							{ width: 1028px; height: 670px; transform: scale(0.478); -webkit-transform: scale(0.478); -o-transform: scale(0.478); -ms-transform: scale(0.478); -moz-transform: scale(0.478); }
 .prod-img2 iframe.phone  							{ width: 320px; height: 458px; transform: scale(0.472); -webkit-transform: scale(0.472); -o-transform: scale(0.472); -ms-transform: scale(0.472); -moz-transform: scale(0.472); }
 .prod-img2 iframe.phone2  							{ width: 480px; height: 178px; transform: scale(0.556); -webkit-transform: scale(0.556); -o-transform: scale(0.556); -ms-transform: scale(0.556); -moz-transform: scale(0.556); }
-
