@@ -1228,6 +1228,14 @@ function nxs_addnewarticle($args)
 		wp_publish_post($postid);
 	}
 	
+	if ($postmetas != "")
+	{
+		foreach ($postmetas as $postmetakey => $postmetavalue)
+		{
+			$r = add_post_meta($postid, $postmetakey, $postmetavalue);
+		}
+	}
+	
 	//
 	// create response
 	//
