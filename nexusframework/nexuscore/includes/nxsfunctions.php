@@ -10878,6 +10878,7 @@ function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 			'supports' => array
 			(
 				'title', 
+				'custom-fields',
 			),
 			
 			'taxonomies' => $taxonomies,
