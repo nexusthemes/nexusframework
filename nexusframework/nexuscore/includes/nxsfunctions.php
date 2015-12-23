@@ -7262,7 +7262,7 @@ function nxs_cleanimg()
 					// good, source file is there
 					
 					$metadata = wp_generate_attachment_metadata($origpostid, $sourceattachedfile );
-					wp_update_attachment_metadata($origpostid, $metadata);					
+					wp_update_attachment_metadata($origpostid, $metadata);
 					echo "<br />regenerated imgs for postid:" . $origpostid . "<br />";
 				}
 				else
@@ -9224,15 +9224,52 @@ function nxs_widgets_initplaceholderdatageneric($args, $widget_name)
 	return nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 }
 
-
 // TODO: use this function to load initial data, instead of relying on the import features
+
 function nxs_import_file_to_media($filepath)
 {
+	$importmeta = array
+	(
+		"filepath" => $filepath,
+	);
+	$compoundresult = nxs_import_file_to_media_v2($importmeta);
+	
+	$result = $compoundresult["insertresult"];
+	
+	return $result;
+}
+
+function nxs_import_file_to_media_v2($importmeta)
+{
+	$filepath = $importmeta["filepath"];
+	if ($filepath == "")
+	{
+		echo "filepath not set?";
+		die();
+	}
+	
 	$uploadinfo = wp_upload_dir();
 	$uploadpath = $uploadinfo["path"];
 	
-	$filename = $filepath; // dirname(dirname(dirname(__FILE__))) . "/screenshot.png";
+	$filename = $filepath;
 	$basename = basename($filename);
+	
+	/*
+	echo "<br />filename:";
+	var_dump($filename);
+	echo "<br />basename:";
+	var_dump($basename);
+	*/
+	
+	// get rid of possible query parameters, if they exist
+	$basenamepieces = explode("?", $basename);
+	//echo "<br />basenamepieces:";
+	//var_dump($basenamepieces);
+	
+	$basename = $basenamepieces[0];
+	//echo "<br />basename:";
+	//var_dump($basename);
+	
 	$fullpath = $uploadpath . "/" . $basename;
 
 	if (is_file($fullpath))
@@ -9244,6 +9281,8 @@ function nxs_import_file_to_media($filepath)
 		$output = copy($filename,$fullpath);
 		if (!$output)
 		{
+			error_log("nxs; unable to copy $filename to $fullpath");
+			
 			// TODO: retry using different name
 			// echo "unable to copy file, skipping";
 			return 0;
@@ -9261,11 +9300,36 @@ function nxs_import_file_to_media($filepath)
     'post_status' => 'inherit'
   );
 	
-	// Run the wp_insert_attachment function. This adds the file to the media library and generates the 
-	// thumbnails. If you wanted to attach this image to a post, you could pass the post id as a third 
+	// Run the wp_insert_attachment function. This adds the file to the media library and 
+	// generates the thumbnails. If you wanted to attach this image to a post, you could 
+	// pass the post id as a third 
 	// param and it'd magically happen.
-  $result = wp_insert_attachment( $attachment, $fullpath);
+  $insertresult = wp_insert_attachment( $attachment, $fullpath);
   
+  if ($insertresult != 0)
+  {
+  	require ( ABSPATH . 'wp-admin/includes/image.php' );
+  	
+  	// generate alternative formats
+  	//echo "generating meta";
+  	$generatemetaresult = wp_generate_attachment_metadata($insertresult, $fullpath);
+  	//var_dump($metadata);
+  	
+  	//echo "updatemeta:";
+		$updatemetaresult = wp_update_attachment_metadata($insertresult, $generatemetaresult);
+		//var_dump($updatemetaresult);
+	}
+	else
+	{
+		//echo "failed";
+	}
+	
+	$result = array
+	(
+		"insertresult" => $insertresult,
+		"generatemetaresult" => $generatemetaresult,
+		"updatemetaresult" => $updatemetaresult,
+	);
   return $result;
 }
 
