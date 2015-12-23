@@ -2690,6 +2690,55 @@ function nxs_get_main_titles_on_page($postid)
 	return $result;
 }
 
+function nxs_replicatepoststructure($replicatemetadata)
+{
+	extract($replicatemetadata);
+	
+	if ($destinationpostid == "") { nxs_webmethod_return_nack("destinationpostid empty? (shp)"); }
+	if ($destinationpostid == "0") { nxs_webmethod_return_nack("destinationpostid empty? (shp)"); }
+	if ($sourcepostid == "") { nxs_webmethod_return_nack("sourcepostid empty? (shp)"); }
+	if ($sourcepostid == "0") { nxs_webmethod_return_nack("sourcepostid empty? (shp)"); }
+	if ($sourcepostid == $destinationpostid) { nxs_webmethod_return_nack("sourcepostid is the same as the destination postid (shp)"); }
+	
+	// replicate the data structure and metafields from source to destination
+	$structure = nxs_parsepoststructure($sourcepostid);
+	nxs_storebinarypoststructure($destinationpostid, $structure);
+	
+	// replicate the data per row
+	$rowindex = 0;
+	foreach ($structure as $pagerow)
+	{
+		// ---------------- ROW META
+		
+		// replicate the metadata of the row
+		$pagerowid = nxs_parserowidfrompagerow($pagerow);
+		if (isset($pagerowid))
+		{
+			// get source meta
+			$metadata = nxs_getpagerowmetadata($sourcepostid, $pagerowid);
+			// store destination meta
+			nxs_overridepagerowmetadata($destinationpostid, $pagerowid, $metadata);
+		}
+		
+		// ---------------- WIDGET META
+		
+		// replicate the metadata of the widgets in the row
+		$content = $pagerow["content"];
+		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+		foreach ($placeholderids as $placeholderid)
+		{
+			// get source metadata
+			$metadata = nxs_getwidgetmetadata($sourcepostid, $placeholderid);
+			// store destination metadata
+			nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $metadata);
+		}
+	}
+	
+	// huray!
+	$result = array();
+	return $result;
+}
+
 // first_image get first image
 function nxs_get_key_imageid_in_post($postid)
 {
