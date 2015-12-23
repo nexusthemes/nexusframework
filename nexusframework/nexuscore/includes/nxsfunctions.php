@@ -9234,7 +9234,7 @@ function nxs_import_file_to_media($filepath)
 	);
 	$compoundresult = nxs_import_file_to_media_v2($importmeta);
 	
-	$result = $compoundresult["insertresult"];
+	$result = $compoundresult["postid"];
 	
 	return $result;
 }
@@ -9304,20 +9304,32 @@ function nxs_import_file_to_media_v2($importmeta)
 	// generates the thumbnails. If you wanted to attach this image to a post, you could 
 	// pass the post id as a third 
 	// param and it'd magically happen.
-  $insertresult = wp_insert_attachment( $attachment, $fullpath);
+  $postid = wp_insert_attachment( $attachment, $fullpath);
   
-  if ($insertresult != 0)
+  if ($postid != 0)
   {
   	require ( ABSPATH . 'wp-admin/includes/image.php' );
   	
   	// generate alternative formats
   	//echo "generating meta";
-  	$generatemetaresult = wp_generate_attachment_metadata($insertresult, $fullpath);
+  	$generatemetaresult = wp_generate_attachment_metadata($postid, $fullpath);
   	//var_dump($metadata);
   	
   	//echo "updatemeta:";
-		$updatemetaresult = wp_update_attachment_metadata($insertresult, $generatemetaresult);
+		$updatemetaresult = wp_update_attachment_metadata($postid, $generatemetaresult);
 		//var_dump($updatemetaresult);
+		
+		//
+		//
+		//
+		$postmetas = $importmeta["postmetas"];
+		if ($postmetas != "")
+		{
+			foreach ($postmetas as $postmetakey => $postmetavalue)
+			{
+				$r = add_post_meta($postid, $postmetakey, $postmetavalue);
+			}
+		}
 	}
 	else
 	{
@@ -9326,7 +9338,7 @@ function nxs_import_file_to_media_v2($importmeta)
 	
 	$result = array
 	(
-		"insertresult" => $insertresult,
+		"postid" => $postid,
 		"generatemetaresult" => $generatemetaresult,
 		"updatemetaresult" => $updatemetaresult,
 	);
