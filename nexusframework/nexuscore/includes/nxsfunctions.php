@@ -9308,7 +9308,7 @@ function nxs_import_file_to_media_v2($importmeta)
   
   if ($postid != 0)
   {
-  	require ( ABSPATH . 'wp-admin/includes/image.php' );
+  	require_once(ABSPATH . 'wp-admin/includes/image.php');
   	
   	// generate alternative formats
   	//echo "generating meta";
