@@ -134,6 +134,7 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 	<script type="text/javascript">
 
 		<?php
+			// if the offset is not set then their is no need for the nxs_js_show_fixedheader function
 			if ( $offset == '')
 			{
 				if ( $display == 'inline' )
@@ -156,31 +157,49 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 				<?php
 				}
 			}
-
-			// if the offset is not set then their is no need for the nxs_js_show_fixedheader function
+			
 			else {
 			?>
+				var fixedheaderisvisable = false;
+
 				function nxs_js_show_fixedheader() {
-					if (jQ_nxs(window).scrollTop() < <?php echo $offsetpixels; ?>) {
-						jQ_nxs("#nxs-fixed-header:visible").fadeOut(200);
+                    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+					if (scrollTop < <?php echo $offsetpixels; ?>) {
+						if (fixedheaderisvisable == true) {
+							jQ_nxs("#nxs-fixed-header").fadeOut(200);
+							fixedheaderisvisable = false;
+						}
 					}
 					else {
-						jQ_nxs("#nxs-fixed-header:hidden").fadeIn(200);
-	
-						// tell the layout engine to post process the layout
-						// after the DOM is updated
-						nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-pagefixedheader-show');
-
+						if (fixedheaderisvisable == false) {
+							jQ_nxs("#nxs-fixed-header").fadeIn(200);
+							fixedheaderisvisable = true;
+                            
+                            // tell the layout engine to post process the layout
+                            // after the DOM is updated
+//                            nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-pagefixedheader-show');
+						}
 					}
 				}
 
 				setTimeout(function() {
 					nxs_js_show_fixedheader();
 				}, 1000);
+        
+                var browser = jQ_nxs.browser;
 			
 				<?php if ($offsetpixels) { ?>
 					jQ_nxs(document).bind('nxs_event_windowscrolling.fixedheader', function() {
-						nxs_js_show_fixedheader();
+                        // firefox got more trouble with the nxs_js_show_fixedheader
+                        // this is because firefox got a harder time getting the scrollTop
+                        // so we put the throttle for firefox on 500ms
+                        
+                        if (browser.mozilla == true) {
+                            nxs_js_invokethrottled("showfixedheader", 500, nxs_js_show_fixedheader)
+                        } else {
+                            nxs_js_invokethrottled("showfixedheader", 250, nxs_js_show_fixedheader)
+                        }
 					});
 				<?php } ?>
 			<?php
