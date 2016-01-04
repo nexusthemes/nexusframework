@@ -160,25 +160,25 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 			
 			else {
 			?>
-				var fixedheaderisvisable = false;
+				var fixedheaderisvisible = false;
 
 				function nxs_js_show_fixedheader() {
                     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     
 					if (scrollTop < <?php echo $offsetpixels; ?>) {
-						if (fixedheaderisvisable == true) {
+						if (fixedheaderisvisible == true) {
 							jQ_nxs("#nxs-fixed-header").fadeOut(200);
-							fixedheaderisvisable = false;
+							fixedheaderisvisible = false;
 						}
 					}
 					else {
-						if (fixedheaderisvisable == false) {
+						if (fixedheaderisvisible == false) {
 							jQ_nxs("#nxs-fixed-header").fadeIn(200);
-							fixedheaderisvisable = true;
+							fixedheaderisvisible = true;
                             
                             // tell the layout engine to post process the layout
                             // after the DOM is updated
-//                            nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-pagefixedheader-show');
+                            nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-pagefixedheader-show');
 						}
 					}
 				}
