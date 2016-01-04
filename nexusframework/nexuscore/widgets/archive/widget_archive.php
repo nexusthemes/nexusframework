@@ -716,6 +716,10 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 		{
 			$searchargs = array();
 			$searchargs["phrase"] = $possiblesearchphrase;
+			$currentpage = get_query_var( 'paged', 0 );
+			$searchargs["currentpage"] = $currentpage;
+			$searchargs["itemsperpage"] = 10;	//
+			
 			$pages = nxs_getsearchresults($searchargs);
 		}
 		else
@@ -759,6 +763,10 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 				// paginate search request
 				$searchargs = array();
 				$searchargs["phrase"] = $possiblesearchphrase;
+				$currentpage = get_query_var( 'paged', 0 );
+				$searchargs["currentpage"] = $currentpage;
+				$searchargs["itemsperpage"] = 10;	//
+				
 				$allposts = nxs_getsearchresults($searchargs);
 			}
 			else

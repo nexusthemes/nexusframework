@@ -160,7 +160,7 @@
 				<div id="wrap-header">
 		     	<h2><span class="nxs-icon-pencil2"></span><a href='<?php echo $formsurl; ?>'><?php nxs_l18n_e("Forms", "nxs_td"); ?></a> &gt; <?php echo $formname;?></h2>
 		      <div class="nxs-clear padding"></div>
-		     	<a href="<?php echo $downloadlink; ?>" class="nxsbutton">Download</a>
+		     	<a href="<?php echo $downloadlink; ?>" target="_blank" download class="nxsbutton">Download</a>
 		     	<a href="<?php echo $deletelink; ?>" onclick="var answer = confirm('Sure?'); return answer;" class="nxsbutton2">Delete</a>
 		      <div class="nxs-clear padding"></div>
 		      <div class="nxs-admin-wrap">

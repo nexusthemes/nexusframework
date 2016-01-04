@@ -946,6 +946,11 @@ function nxs_licenseregister_invoke()
   		<p>
   			Unable to complete your registration<!-- 1 -->.<br />If you made a valid purchase
   			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
+  			<?php
+  			echo "<!-- ";
+  			echo $response["body"];
+  			echo "--> ";
+  			?>
   		</p>
 			<p>
 				&nbsp;

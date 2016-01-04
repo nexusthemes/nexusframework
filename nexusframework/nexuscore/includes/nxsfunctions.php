@@ -4922,6 +4922,7 @@ function nxs_initializewidget($args)
 	return $result;
 }
 
+/*
 function nxs_updatewidget($args) 
 {
 	extract($args);
@@ -4958,6 +4959,7 @@ function nxs_updatewidget($args)
 	
 	return $result;
 }
+*/
 
 function nxs_getdepth($postid, $placeholderid)
 {
@@ -6021,6 +6023,19 @@ function nxs_ispostfound($postid)
 function nxs_getsearchresults($searchargs)
 {
 	$searchphrase = $searchargs["phrase"];
+	$itemsperpage = $searchargs["itemsperpage"];
+	if ($itemsperpage == "")
+	{
+		$itemsperpage = 10;
+	}
+	
+	$currentpage = $searchargs["currentpage"];
+	if ($currentpage == "" || $currentpage < 0)
+	{
+		$currentpage = 0;
+	}
+	
+	$paging_skip = $currentpage * $itemsperpage;
 	
 	$sitemeta = nxs_getsitemeta();
 	
@@ -6047,10 +6062,7 @@ function nxs_getsearchresults($searchargs)
 	$posttypes = get_post_types($args, $output, $operator);
 	$posttypevalues = array_values($posttypes);
 	$posttypelist = "'" . implode("','", $posttypevalues) . "'";
-	//echo "before: $posttypelist <br />";
 	$posttypelist = str_replace("''", "", $posttypelist);
-	//echo "after: $posttypelist <br />";
-	//die();
 	
 	global $wpdb;
 	
@@ -6100,6 +6112,10 @@ function nxs_getsearchresults($searchargs)
 				)
 			)
 		)
+		ORDER BY
+			posts.post_date desc
+		LIMIT 
+			{$paging_skip},{$itemsperpage}		
 	";
 
 	$metafields = 'nxs_ph_%';
