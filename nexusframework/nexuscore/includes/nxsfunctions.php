@@ -6929,9 +6929,9 @@ function nxs_genericpopup_getunenrichedmetadataforcontext($args)
   foreach ($fields as $key => $propertiesofcurrentoption) 
   {
     $id = $propertiesofcurrentoption["id"];
-    if (array_key_exists($id, $metadata))
+    if (array_key_exists($id, $args))
     {
-	    $result[$id] = $metadata[$id];
+	    $result[$id] = $args[$id];
 		}
 		else
 		{
