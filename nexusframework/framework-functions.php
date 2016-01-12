@@ -2262,9 +2262,9 @@ function nxs_framework_getheadmeta($result)
 	else
 	{
 		$pieces = explode(".", $val);
-		$val = "L:" . $pieces[2] . "." . $pieces[3];
+		$val = $pieces[2] . "." . $pieces[3];
 	}
-	$result .= "{$val}" . " | ";
+	$result .= "L:{$val}" . " | ";
 	return $result;
 }
 add_filter("nxs_f_getheadmeta", "nxs_framework_getheadmeta");
