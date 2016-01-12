@@ -1767,7 +1767,7 @@ function nxs_ishandheld()
 	$filetoinclude = NXS_FRAMEWORKPATH . '/plugins/mobiledetect/Mobile_Detect.php';
 	require_once($filetoinclude);
 	
-	$mobiledetector = new Mobile_Detect();
+	$mobiledetector = new Nxs_Mobile_Detect();
 	$isTablet = $mobiledetector->isTablet();
 	$isMobile = $mobiledetector->isMobile();
 	$result = $isTablet || $isMobile;
@@ -5872,7 +5872,7 @@ function nxs_append_posttemplate($postid, $pagetemplate)
 		$newrow = array();
 		$newrow["rowindex"] = "new";
 		$newrow["pagerowtemplate"] = $pagerowtemplate;
-		$newrow["pagerowid"] = $pagerowid;
+		$newrow["pagerowid"] = nxs_getrandompagerowid();
 		$newrow["pagerowattributes"] = "pagerowtemplate='" . $pagerowtemplate . "' pagerowid='" . $pagerowid . "'";
 		$newrow["content"] = nxs_getpagerowtemplatecontent($pagerowtemplate);
 	
@@ -11075,6 +11075,14 @@ if ( ! function_exists( 'wp_slash' ) ) {
 
 		return $value;
 	}
+}
+
+function nxs_getheadmeta()
+{
+	$result = "";
+	$result = apply_filters("nxs_f_getheadmeta", $result);
+	
+	return $result;
 }
 
 ?>
