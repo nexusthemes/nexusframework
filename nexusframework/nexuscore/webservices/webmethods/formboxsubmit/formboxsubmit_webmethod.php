@@ -24,18 +24,9 @@ function nxs_webmethod_formboxsubmit()
 {
 	extract($_REQUEST);
  	
- 	if ($postid == "")
- 	{
- 		nxs_webmethod_return_nack("postid niet gevonden;");
- 	}
- 	if ($containerpostid == "")
- 	{
- 		nxs_webmethod_return_nack("containerpostid niet gevonden;");
- 	}
- 	if ($placeholderid == "")
- 	{
- 		nxs_webmethod_return_nack("placeholderid niet gevonden;");
- 	}
+ 	if ($postid == "") { nxs_webmethod_return_nack("postid niet gevonden;"); }
+ 	if ($containerpostid == "") { nxs_webmethod_return_nack("containerpostid niet gevonden;"); }
+ 	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid niet gevonden;"); }
  	
  	// ensure the widget exists
  	$widgetmetadata = nxs_getwidgetmetadata($postid, $placeholderid);
@@ -133,6 +124,7 @@ function nxs_webmethod_formboxsubmit()
 	
 	if ($atleastoneerrorfound === false)
 	{
+		// so far no errors were found
 	 	$url = nxs_geturl_for_postid($containerpostid)	;
 
 		// Get widget properties
