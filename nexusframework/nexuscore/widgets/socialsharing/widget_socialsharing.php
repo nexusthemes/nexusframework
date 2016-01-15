@@ -130,10 +130,11 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 			<?php
 			if (nxs_stringcontains($items, "fbshare"))
 			{
+				$urlcurrentpage = nxs_geturlcurrentpage();
 				?>
 				<!-- facebook share -->		
 				<div class='nxs-share nxs-fbshare'>
-					<div class="fb-share-button" data-href="http://shareme" data-layout="box_count"></div>
+					<div class="fb-share-button" data-href="<?php echo $urlcurrentpage; ?>" data-layout="box_count"></div>
 				</div>
 				<?php
 			}
@@ -175,7 +176,7 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 				<!-- linkedin -->
 				<div class='nxs-share nxs-linkedin'>
 					<script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
-					<script type="IN/Share" data-url="<?php echo $url; ?>" data-counter="top"></script>
+					<script type="IN/Share" data-showZero="true" data-url="<?php echo $url; ?>" data-counter="top"></script>
 					<script type='text/javascript'>
 						 IN.init();
 					</script>
