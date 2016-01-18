@@ -330,7 +330,7 @@ if (nxs_isdebug())
 
 if ($shouldlimiterrorreporting)
 {
-	error_reporting(E_ERROR | E_PARSE);
+	error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE);
 }
 
 // always

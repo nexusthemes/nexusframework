@@ -4922,45 +4922,6 @@ function nxs_initializewidget($args)
 	return $result;
 }
 
-/*
-function nxs_updatewidget($args) 
-{
-	extract($args);
-	
-	// verify all parameters are available
- 	if ($postid == "")
- 	{
- 		nxs_webmethod_return_nack("postid empty? (uphd)");
- 	}
- 	if ($placeholderid == "")
- 	{
- 		nxs_webmethod_return_nack("placeholderid empty? (iphd)");
- 	}
-	if ($placeholdertemplate == "")
- 	{
- 		nxs_webmethod_return_nack("placeholdertemplate empty? (update)");
- 	}
- 	
- 	// load widget
-	nxs_requirewidget($placeholdertemplate);
- 	
- 	// delegate
-	$functionnametoinvoke = 'nxs_widgets_' . $placeholdertemplate . '_updateplaceholderdata';
-	if (function_exists($functionnametoinvoke))
-	{
-		// extend the parameters			
-		$result = call_user_func($functionnametoinvoke, $args);
-		//$result['invoked'] = $placeholderid;
-	}
-	else
-	{
-		nxs_webmethod_return_nack("function not found; $functionnametoinvoke");
-	}
-	
-	return $result;
-}
-*/
-
 function nxs_getdepth($postid, $placeholderid)
 {
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
