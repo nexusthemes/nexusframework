@@ -8416,10 +8416,17 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
           		$requirecapability = $optionvalues["requirecapability"];
 	          	if ($requirecapability && isset($requirecapability))
 	          	{
-	          		if (!current_user_can($requirecapability))
+	          		if (is_super_admin())
 	          		{
-	          			$shouldshowfield = false;
+	          			// should show!
 	          		}
+	          		else
+	          		{
+		          		if (!current_user_can($requirecapability))
+		          		{
+		          			$shouldshowfield = false;
+		          		}
+		          	}
 	          	}
 	          	else
 	          	{
