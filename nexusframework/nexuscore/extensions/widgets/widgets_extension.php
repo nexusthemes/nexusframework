@@ -339,7 +339,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			// $result[] = array("widgetid" => "contactitemhidden");
-			// $result[] = array("widgetid" => "contactitemattachment");
+			$result[] = array("widgetid" => "contactitemattachment");
+			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
 		}
 		
 		// FORM
@@ -356,7 +357,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemreplyto", "tags" => array("nexus"));
 			
 			// $result[] = array("widgetid" => "contactitemhidden");
-			// $result[] = array("widgetid" => "contactitemattachment");
+			$result[] = array("widgetid" => "contactitemattachment");
+			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
 		}
 		
 		// DEFINITION LIST
@@ -525,6 +527,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("contactitemmultiselect");
 	nxs_ext_lazyload_widget("contactitemhidden");
 	nxs_ext_lazyload_widget("contactitemattachment");
+	nxs_ext_lazyload_widget("contactitemfileattachment");
 	nxs_ext_lazyload_widget("formitemcaptcha");
 	nxs_ext_lazyload_widget("formitemcheckbox");
 	nxs_ext_lazyload_widget("blog");

@@ -14,7 +14,7 @@ function nxs_widgets_contactitemdatetime_gettitle()
 function nxs_widgets_contactitemdatetime_getformitemsubmitresult($args)
 {
 	// $args consists of "metadata"
-	// combined with $_REQUEST this should feed us with all information
+	// combined with $_POST this should feed us with all information
 	// needed to produce the result :)
 	
 	extract($args);
@@ -41,9 +41,9 @@ function nxs_widgets_contactitemdatetime_getformitemsubmitresult($args)
 		$key = $prefix . $elementid;
 	}
 	
-	$value_date = $_REQUEST[$key . "_date"];
-	$value_hh = $_REQUEST[$key . "_hh"];
-	$value_mm = $_REQUEST[$key . "_mm"];
+	$value_date = $_POST[$key . "_date"];
+	$value_hh = $_POST[$key . "_hh"];
+	$value_mm = $_POST[$key . "_mm"];
 	
 	if ($isrequired != "")
 	{

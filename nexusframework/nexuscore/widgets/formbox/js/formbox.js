@@ -1,12 +1,12 @@
 function nxs_js_formbox_send(postid, placeholderid)
 {
-	var datatopost = {
-		"action": "nxs_ajax_webmethods",
-		"webmethod": "formboxsubmit",
-		"containerpostid": nxs_js_getcontainerpostid(),
-		"postid": postid,
-		"placeholderid": placeholderid,
-	}
+	var datatopost = new FormData();
+
+	datatopost.append("action", "nxs_ajax_webmethods");
+	datatopost.append("webmethod", "formboxsubmit");
+	datatopost.append("containerpostid", nxs_js_getcontainerpostid());
+	datatopost.append("postid", postid);
+	datatopost.append("placeholderid", placeholderid);
 	
 	// find input fields
 	jQuery("#nxs-widget-" + placeholderid).find("input").each
@@ -29,8 +29,13 @@ function nxs_js_formbox_send(postid, placeholderid)
 				{
 					newvalue = '';
 				}
-				
-				nxs_js_log(newvalue);
+			}
+			else if (jQuery('#' + newid).is(':file'))
+			{
+				nxs_js_log('file inputbox found');
+
+				var files = jQuery('#' + newid)[0].files;
+				newvalue = files[0];
 			}
 			else
 			{
@@ -39,12 +44,10 @@ function nxs_js_formbox_send(postid, placeholderid)
 			}
 			
 			nxs_js_log(newvalue);
-			datatopost[newid] = newvalue;
+			datatopost.append(newid, newvalue);
 		}
 	);
-	
-	// skjdfhskdljhf();
-	
+		
 	// find textareas
 	jQuery("#nxs-widget-" + placeholderid).find("textarea").each
 	(
@@ -54,7 +57,7 @@ function nxs_js_formbox_send(postid, placeholderid)
 			nxs_js_log(newid);
 			var newvalue = jQuery(this).val();
 			nxs_js_log(newvalue);
-			datatopost[newid] = newvalue;
+			datatopost.append(newid, newvalue);
 		}
 	);
 	
@@ -67,12 +70,10 @@ function nxs_js_formbox_send(postid, placeholderid)
 			nxs_js_log(newid);
 			var newvalue = jQuery(this).val();
 			nxs_js_log(newvalue);
-			datatopost[newid] = newvalue;
+			datatopost.append(newid, newvalue);
 		}
 	);
-	
-	// nxs_js_log(datatopost);
-	
+
 	// invoke ajax call
 	var ajaxurl = nxs_js_get_adminurladminajax();
 	jQ_nxs.ajax
@@ -82,7 +83,16 @@ function nxs_js_formbox_send(postid, placeholderid)
 			data: datatopost,
 			cache: false,
 			dataType: 'JSON',
+			processData: false, // Don't process the files
+        	contentType: false, // Set content type to false as jQuery will tell the server its a query string request
 			url: ajaxurl, 
+			beforeSend: function(XHR)
+			{
+				// FormBox data is shown in the network tab
+				// var xhr = new XMLHttpRequest;
+				// xhr.open('POST', '/', true);
+				// xhr.send(datatopost);
+			},
 			success: function(response) 
 			{
 				nxs_js_log(response);
@@ -139,7 +149,8 @@ function nxs_js_formbox_send(postid, placeholderid)
 				// knop weer tonen zodat gebruiker het nogmaals kan proberen...
 				jQuery("#" + placeholderid + "_button").show();
 				nxs_js_popup_notifyservererror();
-				nxs_js_log(response);
+				nxs_js_log('An error occured: ' + response);
+				console.log(response);
 			}										
 		}
 	);			

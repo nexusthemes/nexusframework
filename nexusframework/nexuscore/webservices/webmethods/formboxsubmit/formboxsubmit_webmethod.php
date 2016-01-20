@@ -22,7 +22,7 @@ function nxs_widgets_formboxitem_getformitemsubmitresult($widget, $args)
 
 function nxs_webmethod_formboxsubmit() 
 {
-	extract($_REQUEST);
+	extract($_POST);
  	
  	if ($postid == "")
  	{
@@ -73,7 +73,7 @@ function nxs_webmethod_formboxsubmit()
 			
 			$elementid = $currentplaceholdermetadata["elementid"];
 			$key = $prefix . $elementid;
-			$replytoemailaddress = $_REQUEST[$key];
+			$replytoemailaddress = $_POST[$key];
 		}
 		
 		if ($widget != "")
@@ -87,7 +87,13 @@ function nxs_webmethod_formboxsubmit()
 		 		$submitargs["placeholderid"] = $placeholderid;
 		 		$submitargs["metadata"] = $currentplaceholdermetadata;
 		 		//
+
+
+		 		// gets results from here
 		 		$subresult = nxs_widgets_formboxitem_getformitemsubmitresult($widget, $submitargs);
+
+		 		// var_dump($subresult);
+
 		 		if ($subresult["result"] == "OK")
 		 		{
 		 			$newerrors = $subresult["validationerrors"];
@@ -133,6 +139,9 @@ function nxs_webmethod_formboxsubmit()
 	
 	if ($atleastoneerrorfound === false)
 	{
+		// var_dump($outputlines);
+		// die();
+
 	 	$url = nxs_geturl_for_postid($containerpostid)	;
 
 		// Get widget properties

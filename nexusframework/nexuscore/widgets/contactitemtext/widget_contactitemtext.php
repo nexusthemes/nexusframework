@@ -40,7 +40,7 @@ function nxs_widgets_contactitemtext_getformitemsubmitresult($args)
 	{
 		$key = $prefix . $elementid;
 	}	
-	$value = $_REQUEST[$key];
+	$value = $_POST[$key];
 	
 	if ($isrequired != "")
 	{

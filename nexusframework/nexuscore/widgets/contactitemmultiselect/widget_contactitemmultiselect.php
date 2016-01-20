@@ -14,7 +14,7 @@ function nxs_widgets_contactitemmultiselect_gettitle()
 function nxs_widgets_contactitemmultiselect_getformitemsubmitresult($args)
 {
 	// $args consists of "metadata"
-	// combined with $_REQUEST this should feed us with all information
+	// combined with $_POST this should feed us with all information
 	// needed to produce the result :)
 	
 	extract($args);
@@ -42,8 +42,8 @@ function nxs_widgets_contactitemmultiselect_getformitemsubmitresult($args)
 	}	
     
     $i = 0;
-    $total_amount_of_options = count($_REQUEST[$key]);
-    foreach($_REQUEST[$key] as $choice){
+    $total_amount_of_options = count($_POST[$key]);
+    foreach($_POST[$key] as $choice){
         
         $last_item = false;
         $last_item = ($i == $total_amount_of_options - 1);
@@ -69,7 +69,6 @@ function nxs_widgets_contactitemmultiselect_getformitemsubmitresult($args)
 			$result["markclientsideelements"][] = $key;
 		}
 	}
-    
     
 	$result["output"] = "$formlabel: $value";
 	

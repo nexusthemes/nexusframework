@@ -29,7 +29,7 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
 	if ($privatekey == "") { $result["validationerrors"][] = nxs_l18n__("Private key of ReCaptcha is not configured", "nxs_td"); };
 	
 	// $metadata contains the submitted data
-	if ($_REQUEST["recaptcha_response_field"]) 
+	if ($_POST["recaptcha_response_field"]) 
 	{
 		require_once(NXS_FRAMEWORKPATH . '/plugins/recaptcha/recaptchalib.php');
 		
@@ -37,8 +37,8 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
   	(
   		$privatekey,
       $_SERVER["REMOTE_ADDR"],
-      $_REQUEST["recaptcha_challenge_field"],
-      $_REQUEST["recaptcha_response_field"]
+      $_POST["recaptcha_challenge_field"],
+      $_POST["recaptcha_response_field"]
     );
 
     if ($resp->is_valid) 
@@ -70,7 +70,7 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
 	{
 		$key = $prefix . $elementid;
 	}	
-	$value = $_REQUEST[$key];
+	$value = $_POST[$key];
 	*/
 	
 	//$result["output"] = "$formlabel: $value";

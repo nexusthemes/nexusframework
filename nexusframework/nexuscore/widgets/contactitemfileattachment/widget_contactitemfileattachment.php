@@ -1,17 +1,17 @@
 <?php
 
-function nxs_widgets_contactitemselect_geticonid()
+function nxs_widgets_contactitemfileattachment_geticonid()
 {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-arrow-down-light"; // . $widget_name;
+	return "nxs-icon-text"; // . $widget_name;
 }
 
-function nxs_widgets_contactitemselect_gettitle()
+function nxs_widgets_contactitemfileattachment_gettitle()
 {
-	return nxs_l18n__("Dropdown (single select)", "nxs_td");
+	return nxs_l18n__("File attachment input", "nxs_td");
 }
 
-function nxs_widgets_contactitemselect_getformitemsubmitresult($args)
+function nxs_widgets_contactitemfileattachment_getformitemsubmitresult($args)
 {
 	// $args consists of "metadata"
 	// combined with $_POST this should feed us with all information
@@ -40,7 +40,6 @@ function nxs_widgets_contactitemselect_getformitemsubmitresult($args)
 	{
 		$key = $prefix . $elementid;
 	}	
-	
 	$value = $_POST[$key];
 	
 	if ($isrequired != "")
@@ -53,6 +52,10 @@ function nxs_widgets_contactitemselect_getformitemsubmitresult($args)
 			$result["markclientsideelements"][] = $key;
 		}
 	}
+
+	$file = $_FILES[$key];
+
+	// var_dump($file);
 	
 	$result["output"] = "$formlabel: $value";
 	
@@ -62,11 +65,11 @@ function nxs_widgets_contactitemselect_getformitemsubmitresult($args)
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
 // hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
 // het bewerken van de placeholder kan opstarten
-function nxs_widgets_contactitemselect_renderincontactbox($args)
+function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
 {
+	//
 	extract($args);
 	
-	//
 	extract($metadata, EXTR_PREFIX_ALL, "metadata");
 	
 	$result = array();
@@ -83,7 +86,7 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 	{
 		$key = $prefix . $metadata_elementid;
 	}
-		
+	
 	//
 	// render actual control / html
 	//
@@ -92,63 +95,20 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 
 	?>
 	
-  <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
-	<select id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" value="<?php echo $value;?>">
-		
-		<?php
-		if (is_string($metadata_selectables))
-		{
-			$splitted = preg_split('/\r\n|[\r\n]/', $metadata_selectables);
-			foreach($splitted as $splittedpiece)
-			{
-				if ($splittedpiece == "")
-				{
-					// ignore
-				}
-				else
-				{
-				?>
-				<option value="<?php echo nxs_render_html_escape_doublequote($splittedpiece); ?>"><?php echo nxs_render_html_escape_gtlt($splittedpiece); ?></option>
-				<?php
-				}
-			}
-		} 
-		else if (is_array($metadata_selectables))
-		{
-			// echo "its not a string";
-			// assumed to be a variable
-			foreach ($metadata_selectables as $metadata_key => $metadata_val)
-			{
-				?>
-				<option value="<?php echo nxs_render_html_escape_doublequote($metadata_key); ?>"><?php echo nxs_render_html_escape_gtlt($metadata_val); ?></option>
-				<?php
-			}
-		}
-		else
-		{
-			//
-			?>
-			<option value="">Not supported</option>
-			<?php
-		}
-		?>
-	</select>
-	<div class="nxs-clear nxs-filler"></div>
-	<?php
-	
-	// var_dump($args);
+  <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label><br>
+  <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" />
+	<?php 
 	
 	$html = nxs_ob_get_contents();
 	nxs_ob_end_clean();
-
 	
-	$result["html"] = $html;	
+	$result["html"] = $html;
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
-
+	
 	return $result;
 }
 
-function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($args)
+function nxs_widgets_contactitemfileattachment_render_webpart_render_htmlvisualization($args)
 {
 	//
 	extract($args);
@@ -185,14 +145,14 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 	$hovermenuargs["enable_deletewidget"] = false;
 	$hovermenuargs["enable_deleterow"] = true;
 	$hovermenuargs["metadata"] = $mixedattributes;	
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);	
+	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	
 	/* ADMIN EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
 	nxs_ob_start();
 
-	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-contactitemselect-item";
+	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-contactitemfileattachment-item";
 	
 	/* ADMIN OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -201,7 +161,7 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 	<div class="nxs-dragrow-handler nxs-padding-menu-item">
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title nxs-width40"><h4><span class="nxs-icon-arrow-down-light" style="font-size: 16px;" /> Dropdown</h4></div>
+	        	<div class="box-title nxs-width40"><h4><span class="nxs-icon-attachment" style="font-size: 16px;" /> Attachment</h4></div>
 				<div class="box-content nxs-width60">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
@@ -222,12 +182,12 @@ function nxs_widgets_contactitemselect_render_webpart_render_htmlvisualization($
 }
 
 // Define the properties of this widget
-function nxs_widgets_contactitemselect_home_getoptions($args) 
+function nxs_widgets_contactitemfileattachment_home_getoptions($args) 
 {
 	$options = array
 	(
-		"sheettitle" => nxs_widgets_contactitemselect_gettitle(),
-		"sheeticonid" => nxs_widgets_contactitemselect_geticonid(),
+		"sheettitle" => nxs_widgets_contactitemfileattachment_gettitle(),
+		"sheeticonid" => nxs_widgets_contactitemfileattachment_geticonid(),
 	
 		"fields" => array
 		(
@@ -249,6 +209,16 @@ function nxs_widgets_contactitemselect_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Element ID", "nxs_td"),
 				"placeholder" => nxs_l18n__("Enter a unique ID for this element", "nxs_td"),
 			),
+			
+			array
+			( 
+				"id" 				=> "overriddenelementid",
+				"type" 				=> "input",
+				"visibility"	=> "text",
+				"label" 			=> nxs_l18n__("Override default element ID", "nxs_td"),
+				"placeholder" => nxs_l18n__("Leave blank to use default", "nxs_td"),
+			),
+			
 			array
 			( 
 				"id" 				=> "isrequired",
@@ -256,24 +226,18 @@ function nxs_widgets_contactitemselect_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Is required", "nxs_td"),
 			),
 
-			array
-			( 
-				"id" 				=> "selectables",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Options", "nxs_td"),
-				"rows"			=> "6",
-			),
 		)
 	);
 	
 	return $options;
 }
 
-function nxs_widgets_contactitemselect_initplaceholderdata($args)
+function nxs_widgets_contactitemfileattachment_initplaceholderdata($args)
 {
 	extract($args);
 
 	$args["elementid"] = nxs_generaterandomstring(6);
+	$args["numofrows"] = "1";
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	

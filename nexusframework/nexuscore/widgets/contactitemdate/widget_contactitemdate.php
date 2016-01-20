@@ -14,7 +14,7 @@ function nxs_widgets_contactitemdate_gettitle()
 function nxs_widgets_contactitemdate_getformitemsubmitresult($args)
 {
 	// $args consists of "metadata"
-	// combined with $_REQUEST this should feed us with all information
+	// combined with $_POST this should feed us with all information
 	// needed to produce the result :)
 	
 	extract($args);
@@ -41,7 +41,7 @@ function nxs_widgets_contactitemdate_getformitemsubmitresult($args)
 		$key = $prefix . $elementid;
 	}
 	
-	$value = $_REQUEST[$key];
+	$value = $_POST[$key];
 	
 	if ($isrequired != "")
 	{

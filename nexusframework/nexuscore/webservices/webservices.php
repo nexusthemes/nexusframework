@@ -35,6 +35,13 @@ add_action('wp_ajax_nopriv_nxs_ajax_webmethods', 'nxs_ajax_webmethods');
 function nxs_ajax_webmethods() 
 {
 	$webmethod = $_REQUEST["webmethod"];
+
+	// AJAX webmethods that make us of FormData use POST instead of REQUEST
+	if ($_POST["webmethod"] == "formboxsubmit")
+	{
+		$webmethod = $_POST["webmethod"];
+	}
+
 	if ($webmethod == "")
 	{
 		nxs_webmethod_return_nack("webmethod not specified;" . $webmethod);
@@ -44,6 +51,7 @@ function nxs_ajax_webmethods()
 	// the nxs_js_getescapeddictionary js function (here: *426759487653456)
 	
 	// otherwise the values like aa'aa would be returned as aa\'aa
+	$_POST = nxs_urldecodearrayvalues($_POST);
 	$_REQUEST = nxs_urldecodearrayvalues($_REQUEST);
 
 	// check permissions
@@ -54,7 +62,8 @@ function nxs_ajax_webmethods()
 		
 		if ($webmethod == "getsheet")
 		{
-			$clientpopupsessioncontext = $_REQUEST["clientpopupsessioncontext"];
+			// getsheet doesnt use POST so we don't have to check for that
+			$clientpopupsessioncontext = $_REQUEST["clientpopupsessioncontext"];			
 			$contextprocessor = $clientpopupsessioncontext["contextprocessor"];
 			$sheet = $clientpopupsessioncontext["sheet"];
 			
