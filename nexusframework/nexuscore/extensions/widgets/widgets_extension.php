@@ -339,7 +339,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			// $result[] = array("widgetid" => "contactitemhidden");
-			$result[] = array("widgetid" => "contactitemattachment");
+			// $result[] = array("widgetid" => "contactitemattachment");
 			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
 		}
 		
@@ -357,7 +357,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemreplyto", "tags" => array("nexus"));
 			
 			// $result[] = array("widgetid" => "contactitemhidden");
-			$result[] = array("widgetid" => "contactitemattachment");
+			// $result[] = array("widgetid" => "contactitemattachment");
 			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
 		}
 		

@@ -1767,7 +1767,7 @@ function nxs_ishandheld()
 	$filetoinclude = NXS_FRAMEWORKPATH . '/plugins/mobiledetect/Mobile_Detect.php';
 	require_once($filetoinclude);
 	
-	$mobiledetector = new Mobile_Detect();
+	$mobiledetector = new Nxs_Mobile_Detect();
 	$isTablet = $mobiledetector->isTablet();
 	$isMobile = $mobiledetector->isMobile();
 	$result = $isTablet || $isMobile;
@@ -4922,45 +4922,6 @@ function nxs_initializewidget($args)
 	return $result;
 }
 
-/*
-function nxs_updatewidget($args) 
-{
-	extract($args);
-	
-	// verify all parameters are available
- 	if ($postid == "")
- 	{
- 		nxs_webmethod_return_nack("postid empty? (uphd)");
- 	}
- 	if ($placeholderid == "")
- 	{
- 		nxs_webmethod_return_nack("placeholderid empty? (iphd)");
- 	}
-	if ($placeholdertemplate == "")
- 	{
- 		nxs_webmethod_return_nack("placeholdertemplate empty? (update)");
- 	}
- 	
- 	// load widget
-	nxs_requirewidget($placeholdertemplate);
- 	
- 	// delegate
-	$functionnametoinvoke = 'nxs_widgets_' . $placeholdertemplate . '_updateplaceholderdata';
-	if (function_exists($functionnametoinvoke))
-	{
-		// extend the parameters			
-		$result = call_user_func($functionnametoinvoke, $args);
-		//$result['invoked'] = $placeholderid;
-	}
-	else
-	{
-		nxs_webmethod_return_nack("function not found; $functionnametoinvoke");
-	}
-	
-	return $result;
-}
-*/
-
 function nxs_getdepth($postid, $placeholderid)
 {
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
@@ -5872,7 +5833,7 @@ function nxs_append_posttemplate($postid, $pagetemplate)
 		$newrow = array();
 		$newrow["rowindex"] = "new";
 		$newrow["pagerowtemplate"] = $pagerowtemplate;
-		$newrow["pagerowid"] = $pagerowid;
+		$newrow["pagerowid"] = nxs_getrandompagerowid();
 		$newrow["pagerowattributes"] = "pagerowtemplate='" . $pagerowtemplate . "' pagerowid='" . $pagerowid . "'";
 		$newrow["content"] = nxs_getpagerowtemplatecontent($pagerowtemplate);
 	
@@ -8455,10 +8416,17 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
           		$requirecapability = $optionvalues["requirecapability"];
 	          	if ($requirecapability && isset($requirecapability))
 	          	{
-	          		if (!current_user_can($requirecapability))
+	          		if (is_super_admin())
 	          		{
-	          			$shouldshowfield = false;
+	          			// should show!
 	          		}
+	          		else
+	          		{
+		          		if (!current_user_can($requirecapability))
+		          		{
+		          			$shouldshowfield = false;
+		          		}
+		          	}
 	          	}
 	          	else
 	          	{
@@ -11075,6 +11043,14 @@ if ( ! function_exists( 'wp_slash' ) ) {
 
 		return $value;
 	}
+}
+
+function nxs_getheadmeta()
+{
+	$result = "";
+	$result = apply_filters("nxs_f_getheadmeta", $result);
+	
+	return $result;
 }
 
 ?>

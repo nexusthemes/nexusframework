@@ -329,6 +329,30 @@ function nxs_getstyletypeoptions() {
 			"subtype" 			=> "multiplier",
 			"values" 			=> array(0.8, 1, 1.2, 1.4, 1.5, 1.6, 1.8, 2.0),
 		),
+		"file_extensions" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					""				=>nxs_l18n__("any", "nxs_td"),
+					"pdf"			=>nxs_l18n__("PDF", "nxs_td"),
+					"images"		=>nxs_l18n__("images (jpg, png, gif, bmp)", "nxs_td"),
+					"video"			=>nxs_l18n__("videos (avi, mov, mp4, mpg, wmv)", "nxs_td"),
+					"text"			=>nxs_l18n__("Text (doc, docx, rtf, log, pages, txt, xls, xlsx, xlr)", "nxs_td"),
+					"data"			=>nxs_l18n__("Data and presentations (csv, key, pps, ppt, pptx, xml)"),
+					"audio"			=>nxs_l18n__("Audio (m4a, mp3, wav, wma)")
+				)
+		),
+		"file_size" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array
+				(
+					""		=>nxs_l18n__("any", "nxs_td"),
+					"250kb"		=>nxs_l18n__("250 kb", "nxs_td"),
+					"500kb"		=>nxs_l18n__("500 kb", "nxs_td"),
+					"1mb"		=>nxs_l18n__("1 mb", "nxs_td"),
+					"2mb"		=>nxs_l18n__("2 mb", "nxs_td"),
+				)
+		),
 	);
 	return $options;
 }

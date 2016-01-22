@@ -57,6 +57,25 @@ function nxs_widgets_formbox_getstorageabsfolder($metadata)
 	return $storageabsfolder;
 }
 
+function nxs_widgets_formbox_getfileuploadstorageabsfolder($metadata)
+{
+	$upload_dir_meta = wp_upload_dir();
+	$upload_dir = $upload_dir_meta["basedir"];
+	
+	$formidentifier = nxs_widgets_formbox_getidentifier($metadata);
+
+	$storagerelfolder = "nxsformsfiles";
+	$storageabsfolder = "{$upload_dir}/{$storagerelfolder}/{$formidentifier}/";
+
+	if(!is_dir($storageabsfolder)) 
+	{
+		// if the folder doesn't yet exist, create it!
+		mkdir($storageabsfolder, 0755, true);
+	}
+
+	return $storageabsfolder;
+}
+
 function nxs_widgets_formbox_getidentifier($metadata)
 {
 	extract($metadata);

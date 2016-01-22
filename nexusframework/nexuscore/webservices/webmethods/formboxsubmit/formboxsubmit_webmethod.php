@@ -54,6 +54,7 @@ function nxs_webmethod_formboxsubmit()
  	$validationerrors = array();
  	$markclientsideelements = array();
  	$outputlines = array();
+ 	$fileuploads = array();
  	
  	// load the form fields, and delegate handling to the form elements
  	$index = -1;
@@ -114,6 +115,8 @@ function nxs_webmethod_formboxsubmit()
 		 				}
 		 			}
 
+		 			$fileuploads[] = $subresult["fileupload"];
+
 		 			$newoutput = $subresult["output"];
 		 			$outputlines[] = $newoutput;
 		 		}
@@ -136,13 +139,13 @@ function nxs_webmethod_formboxsubmit()
 			// empty widget is ignored
 		}
 	}
-	
+
 	if ($atleastoneerrorfound === false)
 	{
-		// var_dump($outputlines);
 		// die();
 
-	 	$url = nxs_geturl_for_postid($containerpostid)	;
+		// so far no errors were found
+	 	$url = nxs_geturl_for_postid($containerpostid);
 
 		// Get widget properties
 		$metadata = nxs_getwidgetmetadata($postid, $placeholderid);
@@ -154,7 +157,43 @@ function nxs_webmethod_formboxsubmit()
 		$metadata = nxs_filter_translatelookup($metadata, array("internal_email", "sender_email"));
 
 	 	extract($metadata);
-	
+
+	 	// upload files
+		foreach ($fileuploads as $fileupload)
+		{
+			$fileuploadstorageabsfolder = nxs_widgets_formbox_getfileuploadstorageabsfolder($metadata);
+
+			$filename = $fileupload["name"];
+			$fileext = pathinfo($filename, PATHINFO_EXTENSION);
+			$filetempname = $fileupload['tmp_name'];
+
+			$newfilename = nxs_create_guid();
+
+			$filedestination = "{$fileuploadstorageabsfolder}{$newfilename}.{$fileext}";
+
+			$moveuploadedfileresult = move_uploaded_file($filetempname, $filedestination);
+
+			if (!$moveuploadedfileresult)
+			{
+				$atleastoneerrorfound = true;
+ 				$validationerrors[] = "Failed to upload file";
+			}
+
+			// Change the outputlines for the file
+			foreach ($outputlines as $key => $value) {
+				$pos = strpos($value, $filetempname);
+				if ($pos)
+				{
+					$formlabel = substr($value, 0, $pos);
+					$start = strpos($filedestination, "wp-content");
+					$end = strlen($filedestination) - $start + 1;
+					$fileurl = substr($filedestination, -$end);
+					$outputlines[$key] = "{$formlabel}<a href='{$fileurl}'>{$filename}</a>";	
+				}
+			}
+		}
+
+		// store data in csv
 		$storageabspath = nxs_widgets_formbox_getpath($metadata);
 		if ($storageabspath != "")
 		{

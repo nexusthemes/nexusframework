@@ -3,7 +3,7 @@
 function nxs_widgets_contactitemfileattachment_geticonid()
 {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-text"; // . $widget_name;
+	return "nxs-icon-attachment"; // . $widget_name;
 }
 
 function nxs_widgets_contactitemfileattachment_gettitle()
@@ -28,6 +28,7 @@ function nxs_widgets_contactitemfileattachment_getformitemsubmitresult($args)
 	$result["result"] = "OK";
 	$result["validationerrors"] = array();
 	$result["markclientsideelements"] = array();
+	$result["fileupload"] = array();
 	
 	nxs_requirewidget("contactbox");
 	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
@@ -40,24 +41,56 @@ function nxs_widgets_contactitemfileattachment_getformitemsubmitresult($args)
 	{
 		$key = $prefix . $elementid;
 	}	
-	$value = $_POST[$key];
+	$value = $_FILES[$key];
 	
 	if ($isrequired != "")
 	{
 		// it is required field
-		if (trim($value) == '')
+		if (trim($value["name"]) == '')
 		{
 			// error
 			$result["validationerrors"][] = sprintf(nxs_l18n__("%s is a required field", "nxs_td"), $formlabel);
 			$result["markclientsideelements"][] = $key;
 		}
+
+		else
+		{
+			if (!isset($value['error']) || is_array($value['error']))
+			{
+				$result["validationerrors"][] = sprintf(nxs_l18n__("%s has nvalid parameters", "nxs_td"), $formlabel);
+				$result["markclientsideelements"][] = $key;
+		    }
+
+		    // Check $file['error'] value.
+		    switch ($value['error']) {
+		        case UPLOAD_ERR_OK:
+		            break;
+		        case UPLOAD_ERR_NO_FILE:
+		        	$result["validationerrors"][] = sprintf(nxs_l18n__("%s has no file sent.", "nxs_td"), $formlabel);
+					$result["markclientsideelements"][] = $key;
+		        case UPLOAD_ERR_INI_SIZE:
+		        case UPLOAD_ERR_FORM_SIZE:
+		        	$result["validationerrors"][] = sprintf(nxs_l18n__("%s has exceeded filesize limit.", "nxs_td"), $formlabel);
+					$result["markclientsideelements"][] = $key;
+		        default:
+		        	$result["validationerrors"][] = sprintf(nxs_l18n__("%s has unknown errors.", "nxs_td"), $formlabel);
+					$result["markclientsideelements"][] = $key;
+		    }
+		}
 	}
 
-	$file = $_FILES[$key];
+	$filename = $value["name"];
+	$filetemp = $value["tmp_name"];
+	$filesize = $value["size"];
+	$fileext = pathinfo($filename, PATHINFO_EXTENSION);
 
-	// var_dump($file);
+	// check here if it got the right file extension
+
 	
-	$result["output"] = "$formlabel: $value";
+	// normally the output is $formlabel: $value
+	// but for the file upload we give the $value later in the formboxsubmit_webmethod
+	$result["output"] = "$formlabel: $filetemp";
+	$result["fileupload"] = $value;
 	
 	return $result;
 }
@@ -95,7 +128,7 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
 
 	?>
 	
-  <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label><br>
+  <label class="field_name" style="display: block;"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label><br>
   <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" />
 	<?php 
 	
@@ -218,6 +251,20 @@ function nxs_widgets_contactitemfileattachment_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Override default element ID", "nxs_td"),
 				"placeholder" => nxs_l18n__("Leave blank to use default", "nxs_td"),
 			),
+
+			// array(
+			// 	"id" 				=> "file_size",
+			// 	"type" 				=> "select",
+			// 	"label" 			=> nxs_l18n__("Max file size", "nxs_td"),
+			// 	"dropdown" 			=> nxs_style_getdropdownitems("file_size"),
+			// ),
+
+			// array(
+			// 	"id" 				=> "file_extensions",
+			// 	"type" 				=> "select",
+			// 	"label" 			=> nxs_l18n__("Accepted file extensions", "nxs_td"),
+			// 	"dropdown" 			=> nxs_style_getdropdownitems("file_extensions"),
+			// ),
 			
 			array
 			( 

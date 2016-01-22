@@ -330,7 +330,7 @@ if (nxs_isdebug())
 
 if ($shouldlimiterrorreporting)
 {
-	error_reporting(E_ERROR | E_PARSE);
+	error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE);
 }
 
 // always
@@ -2245,6 +2245,29 @@ function nxs_template_include($template)
 	return $template;
 }
 add_filter('template_include', 'nxs_template_include', 9999);
+
+function nxs_framework_getheadmeta($result)
+{
+	$option .= "n"."x"."s";
+	$option .= "_";
+	$option .= "l"."i"."c";
+	$option .= "e"."n"."s";
+	$option .= "e"."k"."e";
+	$option .= "y";
+	$val = esc_attr(get_option($option));
+	if ($val == "") 
+	{ 
+		$val = "-"; 
+	}
+	else
+	{
+		$pieces = explode(".", $val);
+		$val = $pieces[2] . "." . $pieces[3];
+	}
+	$result .= "L:{$val}" . " | ";
+	return $result;
+}
+add_filter("nxs_f_getheadmeta", "nxs_framework_getheadmeta");
 
 add_filter('get_header', 'nxs_template_getheader');
 function nxs_template_getheader($name)

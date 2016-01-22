@@ -5,6 +5,8 @@
 	extract($_GET);
 	
 	$formsurl = home_url('/') . "?nxs_admin=admin&backendpagetype=forms";
+
+	$formidentifier = $formname;
 	
 	// 
 	$requirewidgetresult = nxs_requirewidget("formbox");
@@ -31,7 +33,29 @@
 		{
 			// file no longer exists, skip
 		}
-		
+
+		$extentionstart = strpos($formidentifier, ".php");
+		$formidentifier = substr($formidentifier, 0, $extentionstart);
+		$metadata = array($formidentifier);
+		$fileuploadstorageabsfolder = nxs_widgets_formbox_getfileuploadstorageabsfolder($metadata);
+
+		if (file_exists($fileuploadstorageabsfolder))
+		{
+			$files = glob($fileuploadstorageabsfolder . '*', GLOB_MARK);
+		    foreach ($files as $file) {
+		        unlink($file);
+		    }
+			$r = rmdir($fileuploadstorageabsfolder);
+			if (!$r)
+			{
+				nxs_webmethod_return_nack("failed. no write access?");
+			}
+		}
+		else
+		{
+			// file no longer exists, skip
+		}
+
 		// no matter the result, we will navigate to the Forms list page
 		?>
 		<script type='text/javascript'>

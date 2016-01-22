@@ -614,6 +614,8 @@ function nxs_pagetemplate_handleheader()
 	
 	$meta = nxs_theme_getmeta();
 	$version = $meta["version"];
+	
+	$headmeta = trim(nxs_getheadmeta()) . " v1";
 ?>
 <!DOCTYPE html>
 <?php nxs_render_htmlstarttag(); ?>
@@ -621,6 +623,7 @@ function nxs_pagetemplate_handleheader()
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
 	<!-- Nexus Framework | http://nexusthemes.com -->	
+	<!-- Nexus Meta | <?php echo $headmeta; ?> -->
 	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemename(); ?> | <?php echo $version; ?>" />
 	<title><?php wp_title(''); ?></title>
 	<?php nxs_render_htmlcorescripts(); ?>

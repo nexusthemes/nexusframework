@@ -15,6 +15,11 @@ function nxs_widgets_quote_getunifiedstylinggroup() {
 	return "quotewidget";
 }
 
+function nxs_widgets_quote_getunifiedcontentgroup()
+{
+	return "quotewidget";
+}
+
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -31,6 +36,7 @@ function nxs_widgets_quote_home_getoptions($args)
 		"sheeticonid" 		=> nxs_widgets_quote_geticonid(),
 		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/quote-widget/"),
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_quote_getunifiedstylinggroup(),),
+		"unifiedcontent" 	=> array ("group" => nxs_widgets_quote_getunifiedcontentgroup(),),
 		"fields" 			=> array(
 			
 			array( 
@@ -44,45 +50,50 @@ function nxs_widgets_quote_home_getoptions($args)
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),		
 				"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),	
 			array(
 				"id" 				=> "source",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Source", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Source URL", "nxs_td")
+				"label" 			=> nxs_l18n__("Source URL", "nxs_td"),
+				"unicontentablefield" => true,				
 			),
 			array(
 				"id" 				=> "quote_textsize",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Text textsize", "nxs_td"),
-				"dropdown" 			=> array(
-                    "14"	=>"1.4x",
-                    "12"	=>"1.3x",
-                    "11"	=>"1.1x",
-                    "10"	=>"1x",
-                    "09"	=>"0.9x",
-                    "08"	=>"0.8x",
-                ),
+				"dropdown" 			=> array
+				(
+          "14"	=>"1.4x",
+          "12"	=>"1.3x",
+          "11"	=>"1.1x",
+          "10"	=>"1x",
+          "09"	=>"0.9x",
+          "08"	=>"0.8x",
+        ),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id" 				=> "source_textsize",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Source textsize", "nxs_td"),
-				"dropdown" 			=> array(
-                    "14"	=>"1.4x",
-                    "12"	=>"1.3x",
-                    "11"	=>"1.1x",
-                    "10"	=>"1x",
-                    "09"	=>"0.9x",
-                    "08"	=>"0.8x",
-                ),
+				"dropdown" 			=> array
+				(
+          "14"	=>"1.4x",
+          "12"	=>"1.3x",
+          "11"	=>"1.1x",
+          "10"	=>"1x",
+          "09"	=>"0.9x",
+          "08"	=>"0.8x",
+        ),
 				"unistylablefield"	=> true
 			),
 			array(
@@ -90,7 +101,7 @@ function nxs_widgets_quote_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Quote width", "nxs_td"),
 				"dropdown" 			=> array(""=>"","90%"=>"90%","80%"=>"80%","70%"=>"70%","60%"=>"60%","50%"=>"50%","40%"=>"40%","30%"=>"30%","20%"=>"20%"),
-				"unistylablefield"	=> true
+				"unistylablefield"	=> true				
 			),
 			array(
 				"id" 				=> "stars",
@@ -111,11 +122,13 @@ function nxs_widgets_quote_home_getoptions($args)
 					"0.5"	=>"0.5",
 					"0"		=>"0",
 				),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "rating_text",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Text before stars", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -157,6 +170,15 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 		// blend unistyle properties
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_quote_getunifiedstylinggroup(), $unistyle);
 		$temp_array = array_merge($temp_array, $unistyleproperties);	
+	}
+	
+	// Blend unicontent properties
+	$unicontent = $temp_array["unicontent"];
+	if (isset($unicontent) && $unicontent != "") 
+	{
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_quote_getunifiedcontentgroup(), $unicontent);
+		$temp_array = array_merge($temp_array, $unicontentproperties);
 	}
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
@@ -292,6 +314,10 @@ function nxs_widgets_quote_initplaceholderdata($args)
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_quote_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
+
+// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_quote_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
 
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	

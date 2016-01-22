@@ -46,26 +46,6 @@ function nxs_widgets_banneritem_home_getoptions($args)
 				"localizablefield"	=> true,
 				"requirecapability" => nxs_cap_getdesigncapability(),
 			),
-			/*
-			array
-			(
-				"id" 				=> "title",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
-				"localizablefield"	=> true
-			),
-			*/
-			/*
-			array
-			(
-				"id" 				=> "text",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Text", "nxs_td"),
-				"placeholder" => nxs_l18n__("Text goes here", "nxs_td"),
-				"localizablefield"	=> true
-			),
-			*/
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
