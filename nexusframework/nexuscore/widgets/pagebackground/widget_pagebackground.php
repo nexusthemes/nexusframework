@@ -216,6 +216,7 @@ function nxs_widgets_pagebackground_home_getoptions($args)
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
+				"unicontentablefield" => true,				
 			),
 			array
 			(
