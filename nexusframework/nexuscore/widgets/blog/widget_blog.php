@@ -1005,7 +1005,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 			$publishedargs["order"] = "DESC"; 
 		} else if ($items_order == "random") {
 			$publishedargs["orderby"] = "rand";
-		} 
+		}
 		else
 		{
 			// unknown

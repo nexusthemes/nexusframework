@@ -9228,8 +9228,7 @@ function nxs_import_file_to_media_v2($importmeta)
 	$filepath = $importmeta["filepath"];
 	if ($filepath == "")
 	{
-		echo "filepath not set?";
-		die();
+		nxs_webmethod_return_nack("filepath not set?");
 	}
 	
 	$uploadinfo = wp_upload_dir();
@@ -9238,21 +9237,15 @@ function nxs_import_file_to_media_v2($importmeta)
 	$filename = $filepath;
 	$basename = basename($filename);
 	
-	/*
-	echo "<br />filename:";
-	var_dump($filename);
-	echo "<br />basename:";
-	var_dump($basename);
-	*/
-	
 	// get rid of possible query parameters, if they exist
 	$basenamepieces = explode("?", $basename);
-	//echo "<br />basenamepieces:";
-	//var_dump($basenamepieces);
-	
 	$basename = $basenamepieces[0];
-	//echo "<br />basename:";
-	//var_dump($basename);
+	
+	if ($importmeta["basename"] != "")
+	{
+		// overrule basename
+		$basename = $importmeta["basename"];
+	}
 	
 	$fullpath = $uploadpath . "/" . $basename;
 
@@ -9288,8 +9281,7 @@ function nxs_import_file_to_media_v2($importmeta)
 	// generates the thumbnails. If you wanted to attach this image to a post, you could 
 	// pass the post id as a third 
 	// param and it'd magically happen.
-  $postid = wp_insert_attachment( $attachment, $fullpath);
-  
+  $postid = wp_insert_attachment($attachment, $fullpath);
   if ($postid != 0)
   {
   	require_once(ABSPATH . 'wp-admin/includes/image.php');

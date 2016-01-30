@@ -993,6 +993,7 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 .nxs-tweets .twitter-content .nxs-twitter-name,
 .nxs-tweets .twitter-content .nxs-twitter-screenname		{ float: left; }
 .nxs-tweets .twitter-content .nxs-twitter-date				{ float: right; }
+iframe.twitter-share-button { margin-top: 41px;}
 
 /* COMMENTS 
 ---------------------------------------------------------------------------------------------------- */

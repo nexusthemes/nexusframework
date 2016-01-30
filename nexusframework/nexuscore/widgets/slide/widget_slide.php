@@ -41,6 +41,7 @@ function nxs_widgets_slide_home_getoptions($args)
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -48,6 +49,7 @@ function nxs_widgets_slide_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -55,6 +57,7 @@ function nxs_widgets_slide_home_getoptions($args)
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),
 				"placeholder" => nxs_l18n__("Text goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			
@@ -63,12 +66,14 @@ function nxs_widgets_slide_home_getoptions($args)
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the menu item to an article within your site.", "nxs_td"),
+				"unicontentablefield" => true,
 			),	
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "destination_target",
