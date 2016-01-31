@@ -237,6 +237,11 @@ function nxs_pagetemplate_handlecontent()
 				if ($renderdelegatedcontent)
 				{
 					$cssclass = nxs_getcssclassesforrowcontainer($contentpostid);
+
+					if (nxs_iseditor())
+					{
+						$cssclass.= " nxs-layout-editor-editable";
+					}
 					?>
 					<div class='nxs-article-container <?php echo $cssclass; ?>'>
 						<?php

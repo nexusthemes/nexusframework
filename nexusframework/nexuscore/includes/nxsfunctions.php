@@ -11045,4 +11045,23 @@ function nxs_getheadmeta()
 	return $result;
 }
 
+function nxs_getcurrentuserrole()
+{
+	global $wp_roles;
+	$current_user = wp_get_current_user();
+	$roles = $current_user->roles;
+	$role = array_shift($roles);
+	return isset($wp_roles->role_names[$role]) ? translate_user_role($wp_roles->role_names[$role] ) : false;
+}
+
+function nxs_iseditor()
+{
+	$role = nxs_getcurrentuserrole();
+	if ($role == "Editor")
+	{
+		return true;
+	}
+	return false;
+}
+
 ?>

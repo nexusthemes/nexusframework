@@ -294,6 +294,10 @@ function nxs_post_dialogappendrow_rendersheet($args)
 			
 			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding row[nxs:growl]", "nxs_td"); ?>");
 			var e = jQuery(".nxs-layout-editable.nxs-post-<?php echo $postid;?> .nxs-postrows")[0];
+			if (!e)
+			{
+				var e = jQuery(".nxs-layout-editor-editable.nxs-post-<?php echo $postid;?> .nxs-postrows")[0];
+			}
 			var totalrows = jQuery(e).find(".nxs-row").length;
 			var insertafterindex;
 			insertafterindex = totalrows - 1;
