@@ -3097,6 +3097,10 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-yelp:before				{ content: "\e452";	}
 .nxs-icon-scaffold:before			{ content: "\e453";	}
 .nxs-icon-bowling:before			{ content: "\e454";	}
+.nxs-icon-needle:before				{ content: "\e455";	}
+.nxs-icon-usb1:before				{ content: "\e456";	}
+.nxs-icon-usb2:before				{ content: "\e457";	}
+.nxs-icon-hdd:before				{ content: "\e458";	}
 
 
 /* Crappicons */
