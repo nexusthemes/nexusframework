@@ -9631,7 +9631,15 @@ function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $desti
 	
 	if ($destination_articleid != "")
 	{
-		$url = nxs_geturl_for_postid($destination_articleid);
+		$posttype = get_post_type($destination_articleid);
+		if ($posttype == "attachment")
+		{
+			$url = wp_get_attachment_url($destination_articleid);
+		}
+		else
+		{
+			$url = nxs_geturl_for_postid($destination_articleid);
+		}
 		$onclick = "";
 	}
 	else if ($destination_url != "")
