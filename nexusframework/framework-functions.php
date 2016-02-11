@@ -978,9 +978,16 @@ function nxs_init()
 			{
 				$postid = $_REQUEST["postid"];
 				echo "dumppost $postid<br />";
+				
 				$exists = nxs_postexistsbyid($postid);
 				if ($exists) 
-				{ 
+				{
+					$posttype = get_post_type($postid);
+					if ($posttype == "attachment")
+					{
+						$attachmenturl = wp_get_attachment_url($postid);
+						echo "attachmenturl {$attachmenturl}<br />"; 
+					}
 					$link = get_permalink($postid);
 					echo "post exist (open <a target='_blank' href='$link'>$link</a>)<br />"; 
 					
@@ -999,7 +1006,7 @@ function nxs_init()
 				{ 
 					echo "post does not exist<br />"; 
 				}
-				$posttype = get_post_type($postid);
+				
 				echo "post type:{$posttype}<br />";
 				$needleglobalid = nxs_get_globalid($postid, false);
 				echo "globalid: $needleglobalid<br />";

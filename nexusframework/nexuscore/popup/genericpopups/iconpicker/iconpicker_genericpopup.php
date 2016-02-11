@@ -261,6 +261,9 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"mobile2",
 										"security-camera",
 										"gallerybox",
+										"usb1",
+										"usb2",
+										"hdd",
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -580,7 +583,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"education",
 										"beer",
 										"scaffold",
-										"bowling"
+										"bowling",
+										"needle",
 									);
 									
 										

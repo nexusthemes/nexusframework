@@ -2349,6 +2349,13 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 
 .nxs-form input[type=checkbox]					{ box-shadow: none; -webkit-appearance: checkbox; }
 
+/* PHONE NUMBERS */
+a[href^="tel"]
+{
+	color:inherit !important;
+  text-decoration:none !important;
+}
+
 
 /* WORDPRESS DEFAULT HTML ELEMENTS
 ----------------------------------------------------------------------------------------------------
@@ -3097,6 +3104,10 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-yelp:before				{ content: "\e452";	}
 .nxs-icon-scaffold:before			{ content: "\e453";	}
 .nxs-icon-bowling:before			{ content: "\e454";	}
+.nxs-icon-needle:before				{ content: "\e455";	}
+.nxs-icon-usb1:before				{ content: "\e456";	}
+.nxs-icon-usb2:before				{ content: "\e457";	}
+.nxs-icon-hdd:before				{ content: "\e458";	}
 
 
 /* Crappicons */
