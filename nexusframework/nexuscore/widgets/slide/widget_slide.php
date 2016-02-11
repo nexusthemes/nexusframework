@@ -53,6 +53,14 @@ function nxs_widgets_slide_home_getoptions($args)
 				"localizablefield"	=> true
 			),
 			array(
+				"id" 				=> "alt",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("ALT", "nxs_td"),
+				"placeholder" => nxs_l18n__("ALT goes here", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			array(
 				"id" 				=> "text",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),
@@ -180,6 +188,7 @@ function nxs_widgets_slide_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	$image_imageid = $mixedattributes['image_imageid'];
+	$alt = $mixedattributes['alt'];
 	$title = $mixedattributes['title'];
 	$text = $mixedattributes['text'];
 	$destination_articleid = $mixedattributes['destination_articleid'];

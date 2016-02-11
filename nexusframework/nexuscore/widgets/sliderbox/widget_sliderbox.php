@@ -522,9 +522,8 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				}
 				
 				$title = $placeholdermetadata['title'];
-					
+				$alt = $placeholdermetadata['alt'];
 				$text = $placeholdermetadata['text'];
-
 				$destination_articleid = $placeholdermetadata['destination_articleid'];
 				
 				// articel link avaible
@@ -556,6 +555,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				$slidesdataset[] = array
 				(
 					"title" => $title,
+					"alt" => $alt,
 					"text" => $text,
 					"imageurl" => $imageurl,
 					"destinationurl" => $destinationurl,
@@ -845,6 +845,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 			foreach ($slidesdataset as $slidedataset) {
 				// Resetting variables for next slide
 				$title = ''; 
+				$alt = '';
 				$text = '';
 				$description = '';
 				$slide_button = '';
@@ -852,9 +853,14 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				
 
 				$slideindex++;
+
+				// ALT
+				if ($slidedataset["alt"] != "") { 
+					$alt = $slidedataset["alt"];
+				}
 				
 				// Image
-				$slide_image2 = '<img class="nxs-stretch nxs-slide-img" style="opacity: 0; '.$slide_img_inlinestyle.'" src="'.$slidedataset["imageurl"].'" />';
+				$slide_image2 = '<img alt="' . $alt . '" class="nxs-stretch nxs-slide-img" style="opacity: 0; '.$slide_img_inlinestyle.'" src="'.$slidedataset["imageurl"].'" />';
 				$slide_image = '
 					<div class="nxs-stretch nxs-slide-img" style="'.$slide_img_inlinestyle.' background: url('.$slidedataset["imageurl"].') no-repeat center">
 						'.$slide_image2.'
