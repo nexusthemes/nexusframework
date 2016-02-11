@@ -2772,18 +2772,6 @@ function nxs_site_sitestyling_getoptions($args)
 				"dropdown" 		=> nxs_style_getdropdownitems("border_width")
 			),
 			array(
-				"id" 			=> "site_page_border_right_width",
-				"type" 			=> "select",
-				"label" 		=> nxs_l18n__("Border right width", "nxs_td"),
-				"dropdown" 		=> nxs_style_getdropdownitems("border_width")
-			),
-			array(
-				"id" 			=> "site_page_border_left_width",
-				"type" 			=> "select",
-				"label" 		=> nxs_l18n__("Border left width", "nxs_td"),
-				"dropdown" 		=> nxs_style_getdropdownitems("border_width")
-			),
-			array(
 				"id" 			=> "site_page_border_bottom_width",
 				"type" 			=> "select",
 				"label" 		=> nxs_l18n__("Border bottom width", "nxs_td"),

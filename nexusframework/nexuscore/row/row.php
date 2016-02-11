@@ -91,25 +91,6 @@ function nxs_pagerow_home_getoptions($args)
 				"dropdown" 		=> nxs_style_getdropdownitems("border_width"),
 				"unistylablefield"	=> true
 			),
-			
-			array
-			(
-				"id" 				=> "r_border_right_width",
-				"type" 				=> "select",
-				"label" 			=> "Border right width",
-				"dropdown" 		=> nxs_style_getdropdownitems("border_width"),
-				"unistylablefield"	=> true
-			),
-			
-			array
-			(
-				"id" 				=> "r_border_left_width",
-				"type" 				=> "select",
-				"label" 			=> "Border left width",
-				"dropdown" 		=> nxs_style_getdropdownitems("border_width"),
-				"unistylablefield"	=> true
-			),
-			
 			array
 			(
 				"id" 				=> "r_border_bottom_width",

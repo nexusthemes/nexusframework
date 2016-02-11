@@ -58,20 +58,6 @@ function nxs_rowscontainer_backgroundstyle_getoptions($args)
 			),
 			array
 			(
-				"id" 				=> "rc_border_right_width",
-				"type" 				=> "select",
-				"label" 			=> "Border right width",
-				"dropdown" 			=> nxs_style_getdropdownitems("border_width")
-			),
-			array
-			(
-				"id" 				=> "rc_border_left_width",
-				"type" 				=> "select",
-				"label" 			=> "Border left width",
-				"dropdown" 			=> nxs_style_getdropdownitems("border_width")
-			),
-			array
-			(
 				"id" 				=> "rc_border_bottom_width",
 				"type" 				=> "select",
 				"label" 			=> "Border bottom width",

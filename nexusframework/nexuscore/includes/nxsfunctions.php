@@ -9916,12 +9916,10 @@ function nxs_getcssclassesforsitepage()
 	$site_page_padding_bottom = nxs_getcssclassesforlookup("nxs-padding-bottom-", $metadata["site_page_padding_bottom"]);
 	$site_page_margin_bottom = nxs_getcssclassesforlookup("nxs-margin-bottom-", $metadata["site_page_margin_bottom"]);
 	$site_page_border_top_width = nxs_getcssclassesforlookup("nxs-border-top-width-", $metadata["site_page_border_top_width"]);
-	$site_page_border_right_width = nxs_getcssclassesforlookup("nxs-border-right-width-", $metadata["site_page_border_right_width"]);
-	$site_page_border_left_width = nxs_getcssclassesforlookup("nxs-border-left-width-", $metadata["site_page_border_left_width"]);
 	$site_page_border_bottom_width = nxs_getcssclassesforlookup("nxs-border-bottom-width-", $metadata["site_page_border_bottom_width"]);
 	$site_page_border_radius = nxs_getcssclassesforlookup("nxs-border-radius-", $metadata["site_page_border_radius"]);
 	
-	$result = nxs_concatenateargswithspaces($site_page_colorzen, $site_page_linkcolorvar, $site_page_margin_top, $site_page_padding_top, $site_page_padding_bottom, $site_page_margin_bottom, $site_page_border_top_width, $site_page_border_right_width, $site_page_border_left_width,	$site_page_border_bottom_width, $site_page_border_radius);
+	$result = nxs_concatenateargswithspaces($site_page_colorzen, $site_page_linkcolorvar, $site_page_margin_top, $site_page_padding_top, $site_page_padding_bottom, $site_page_margin_bottom, $site_page_border_top_width, $site_page_border_bottom_width, $site_page_border_radius);
 
 	return $result;
 }
@@ -9938,8 +9936,6 @@ function nxs_getcssclassesforrowcontainer($rowcontainerid)
 	$rc_padding_bottom = nxs_getcssclassesforlookup("nxs-padding-bottom-", $metadata["rc_padding_bottom"]);
 	$rc_border_top_width = nxs_getcssclassesforlookup("nxs-border-top-width-", $metadata["rc_border_top_width"]);
 	$rc_border_bottom_width = nxs_getcssclassesforlookup("nxs-border-bottom-width-", $metadata["rc_border_bottom_width"]);
-	$rc_border_right_width = nxs_getcssclassesforlookup("nxs-border-right-width-", $metadata["rc_border_right_width"]);
-	$rc_border_left_width = nxs_getcssclassesforlookup("nxs-border-left-width-", $metadata["rc_border_left_width"]);
 	$rc_border_radius = nxs_getcssclassesforlookup("nxs-border-radius-", $metadata["rc_border_radius"]);
 	
 	$rc_cssclass = $metadata["rc_cssclass"];
@@ -9961,7 +9957,7 @@ function nxs_getcssclassesforrowcontainer($rowcontainerid)
 	//
 	$elementscontainer = "nxs-elements-container";
 	
-	$result = nxs_concatenateargswithspaces($rc_colorzen, $rc_linkcolorvar, $rc_margin_top, $rc_padding_top, $rc_padding_bottom, $rc_margin_bottom, $rc_border_top_width, $rc_border_bottom_width, $rc_border_right_width, $rc_border_left_width, $rc_border_radius, $layouteditable, $widgetseditable, $elementscontainer, $postclass);
+	$result = nxs_concatenateargswithspaces($rc_colorzen, $rc_linkcolorvar, $rc_margin_top, $rc_padding_top, $rc_padding_bottom, $rc_margin_bottom, $rc_border_top_width, $rc_border_bottom_width, $rc_border_radius, $layouteditable, $widgetseditable, $elementscontainer, $postclass);
 	
 	return $result;
 }
@@ -9976,8 +9972,6 @@ function nxs_getcssclassesforrow($metadata)
 	$r_padding_bottom = nxs_getcssclassesforlookup("nxs-padding-bottom-", $metadata["r_padding_bottom"]);
 	$r_border_top_width = nxs_getcssclassesforlookup("nxs-border-top-width-", $metadata["r_border_top_width"]);
 	$r_border_bottom_width = nxs_getcssclassesforlookup("nxs-border-bottom-width-", $metadata["r_border_bottom_width"]);
-	$r_border_right_width = nxs_getcssclassesforlookup("nxs-border-right-width-", $metadata["r_border_right_width"]);
-	$r_border_left_width = nxs_getcssclassesforlookup("nxs-border-left-width-", $metadata["r_border_left_width"]);
 	$r_border_radius = nxs_getcssclassesforlookup("nxs-border-radius-", $metadata["r_border_radius"]);
 	
 	$r_cssclass = $metadata["r_cssclass"];
@@ -9994,7 +9988,7 @@ function nxs_getcssclassesforrow($metadata)
 		$r_unistyle_cssclass = "";
 	}
 	
-	$result = nxs_concatenateargswithspaces($r_unistyleindicator_cssclass, $r_unistyle_cssclass, $r_colorzen, $r_linkcolorvar, $r_margin_top, $r_padding_top, $r_padding_bottom, $r_margin_bottom, $r_border_top_width, $r_border_bottom_width, $r_border_right_width, $r_border_left_width, $r_border_radius, $r_cssclass);
+	$result = nxs_concatenateargswithspaces($r_unistyleindicator_cssclass, $r_unistyle_cssclass, $r_colorzen, $r_linkcolorvar, $r_margin_top, $r_padding_top, $r_padding_bottom, $r_margin_bottom, $r_border_top_width, $r_border_bottom_width, $r_border_radius, $r_cssclass);
 	
 	return $result;
 }
