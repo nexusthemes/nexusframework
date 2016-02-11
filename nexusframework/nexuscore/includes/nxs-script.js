@@ -3242,9 +3242,9 @@ function nxs_js_redirect_top(url)
 			// reset heights of placeholder elements
 			jQ_nxs(".nxs-dyn-height").css('height', 'auto').removeClass("nxs-dyn-height");
 
-			var arerowsspreadalongmultirows = (widthofbrowserwindow <= 959 && nxs_js_issiteresponsive());
+			var arerowsspreadalongmultirows = (widthofbrowserwindow <= 959);
 			
-			if (!arerowsspreadalongmultirows || !nxs_js_issiteresponsive())
+			if (!arerowsspreadalongmultirows)
 			{
 				jQ_nxs("html").addClass("nxs-rows-nonresponsive");
 				jQ_nxs("html").removeClass("nxs-rows-responsive");
@@ -6238,14 +6238,7 @@ function nxs_js_deviceistouchdevice()
 
 function nxs_js_tagresponsiveness()
 {
-	if (nxs_js_issiteresponsive())
-	{
-		jQ_nxs("html").addClass("nxs-site-responsive");
-	}
-	else
-	{
-		jQ_nxs("html").addClass("nxs-site-noneresponsive");
-	}
+	jQ_nxs("html").addClass("nxs-site-responsive");
 }
 
 function nxs_js_tagfrontendbackend()

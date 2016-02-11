@@ -488,17 +488,14 @@ function nxs_framework_theme_styles()
 	if (!$iswordpressbackendshowing)
 	{
 		$sitemeta = nxs_getsitemeta();  
-		// if responsiveness is turned on
-		if (isset($sitemeta["responsivedesign"]) && $sitemeta["responsivedesign"] == "true")
-		{
-			wp_register_style('nxs-framework-style-responsive', 
+
+		wp_register_style('nxs-framework-style-responsive', 
 	    nxs_getframeworkurl() . '/css/framework-responsive.css', 
 	    array(), 
 	    nxs_getthemeversion(),
 	    'all' );
 	    
 	    wp_enqueue_style('nxs-framework-style-responsive');
-		}
 	}
 	
 	wp_enqueue_script( 'jquery-migrate', nxs_getframeworkurl() . '/js/migrate/jquery-migrate.js', array( 'jquery' ), nxs_getthemeversion(), TRUE );

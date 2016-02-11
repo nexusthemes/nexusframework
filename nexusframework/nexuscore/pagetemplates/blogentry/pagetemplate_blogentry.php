@@ -652,19 +652,9 @@ function nxs_pagetemplate_handleheader()
 
 	// dit wordt niet op goede plek ge-enqueued
 	
-
-	
-	// if responsiveness is turned on
-	if ($sitemeta["responsivedesign"] == "true")
-	{
 	?>
 	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
 	<?php
-	}
-	else
-	{
-		echo "<!-- responsive design deactivated -->";
-	}
 
 	//
 	nxs_render_headstyles();

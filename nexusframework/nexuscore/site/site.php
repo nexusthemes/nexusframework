@@ -2062,14 +2062,12 @@ function nxs_site_dashboardhome_rendersheet($args)
 		$faviconurl = $faviconlookup[0];
 		$faviconurl = nxs_img_getimageurlthemeversion($faviconurl);
 	}
-	
-	$responsivedesign = $sitemeta["responsivedesign"];
-	
+		
 	global $current_user;
 	global $user_ID;
-  get_currentuserinfo();
+  	get_currentuserinfo();
   
-  $nxs_user_email = $current_user->user_email;
+  	$nxs_user_email = $current_user->user_email;
   	
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
@@ -2090,24 +2088,6 @@ function nxs_site_dashboardhome_rendersheet($args)
 		}
 		$sitemeta["collectanonymousdata"] = $collectanonymousdata;		
 		nxs_mergesitemeta($sitemeta);
-	}
-	
-	if ($toggleresponsivedesign == "true")
-	{
-		if ($responsivedesign == "true")
-		{
-			// default its on
-			$responsivedesign = "false";
-		}
-		else
-		{
-			$responsivedesign = "true";
-		}
-		$fixeddata = array();
-		$fixeddata["responsivedesign"] = $responsivedesign;
-		nxs_mergesitemeta($fixeddata);
-		
-		$shouldrefresh = true;
 	}
 	
 	if ($togglewidescreen == "triggered")
@@ -2310,26 +2290,6 @@ function nxs_site_dashboardhome_rendersheet($args)
                 <span class='title'><?php echo $nxs_user_email; ?></span>
                 <div class="nxs-clear margin"></div>
               </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-
-	       	<!-- responsive design -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title"><h4><?php nxs_l18n_e("Responsive design[nxs:popup,label]", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_setshortscopedata('toggleresponsivedesign', 'true'); nxs_js_popup_refresh(); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change[nxs:popup,button]", "nxs_td"); ?></a>
-              	<?php if ($responsivedesign == "true") { ?>
-              		<span class='title'><?php nxs_l18n_e("Active[nxs:popup,button]", "nxs_td"); ?></span>
-              	<?php } else { ?>
-              		<span class='title'><?php nxs_l18n_e("Inactive[nxs:popup,button]", "nxs_td"); ?></span>
-              	<?php } ?>	
-              	
-                <div class="nxs-clear margin"></div>
-              </div>
-              
             </div>
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
