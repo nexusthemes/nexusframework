@@ -16,6 +16,11 @@
 	
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	
+	if (nxs_shouldshowadminbar())
+	{
+		$adminbarclass = "wpadminbar";
+	}
+	
 	if (is_singular())
 	{
 		global $post;
@@ -916,7 +921,7 @@ li.score {
 	</div> <!--END nxs-menu-wrap-->
 	
 	<div class="nxs-admin-wrap">
-		<ul class="admin nxs-no-click-propagation ">			
+		<ul class="admin nxs-no-click-propagation <?php echo $adminbarclass; ?>">			
 			<?php
 			
 			//

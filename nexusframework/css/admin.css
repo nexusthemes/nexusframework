@@ -30,6 +30,7 @@ Version: 2.1.0 Author: Nexus Studios Author URI: http://www.nexusthemes.com/ */
 }
 
 .nxs-front-end 										{ background: white; }
+.nxs-admin-wrap ul.admin.wpadminbar { margin-top: 33px; }
 .nxs-admin-wrap table th,
 .nxs-admin-wrap ul li span.header {
 	background-color: #F1F1F1;

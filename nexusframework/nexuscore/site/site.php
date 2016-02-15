@@ -2168,14 +2168,14 @@ function nxs_site_dashboardhome_rendersheet($args)
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
 
-					<!-- widgets management -->
+					<!-- wp management -->
 	        <div class="content2">
             <div class="box">
               <div class="box-title">
-              	<h4><?php nxs_l18n_e("Widgets management", "nxs_td"); ?></h4>
+              	<h4><?php nxs_l18n_e("WP management", "nxs_td"); ?></h4>
               </div>
               <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('widgetsmanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('wpmanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
               </div>
             </div>
             <div class="nxs-clear margin"></div>
@@ -2797,11 +2797,11 @@ function nxs_site_sitestyling_getoptions($args)
 /* WIDGETS MANAGEMENT
 ---------------------------------------------------------------------------------------------------- */
 
-function nxs_site_widgetsmanagementhome_getoptions($args)
+function nxs_site_wpmanagementhome_getoptions($args)
 {	
 	$options = array
 	(
-		"sheettitle" => nxs_l18n__("Widgets", "nxs_td"),
+		"sheettitle" => nxs_l18n__("WP management", "nxs_td"),
 		"footerfiller" => true,
 		"fields" => array(
 			
@@ -2814,6 +2814,17 @@ function nxs_site_widgetsmanagementhome_getoptions($args)
 				"id"		=> "widgetsmanagement_enableconceptual",
 				"type" 		=> "select",
 				"label" 	=> nxs_l18n__("Conceptual widgets", "nxs_td"),
+				"dropdown" 	=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Default (hide)", "nxs_td"), 
+					"hide" => nxs_l18n__("Hide", "nxs_td"), 
+					"show" => nxs_l18n__("Show", "nxs_td"), 
+				)
+			),
+			array( 
+				"id"		=> "wpmanagement_showadminbar",
+				"type" 		=> "select",
+				"label" 	=> nxs_l18n__("Show admin bar of WP", "nxs_td"),
 				"dropdown" 	=> array
 				(
 					"@@@nxsempty@@@" => nxs_l18n__("Default (hide)", "nxs_td"), 

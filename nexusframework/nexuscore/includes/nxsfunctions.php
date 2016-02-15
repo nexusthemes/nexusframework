@@ -58,12 +58,32 @@ function nxs_getframeworkurl()
 	return $result;
 }
 
+function nxs_shouldshowadminbar()
+{
+	$result = false;	// default hide the admin bar / adminbar / topbar
+	
+	$sitemeta = nxs_getsitemeta();
+	if ($sitemeta["wpmanagement_showadminbar"] == "show")
+	{
+		$result = true;
+	}
+	
+	// filters can overrule the output
+	
+	$result = apply_filters("nxs_f_shouldshowadminbar", $result);
+	
+	return $result;
+}
+
 function nxs_hideadminbar()
 {
-	// verberg het toolbar menu aan de bovenkant
-	add_filter('show_admin_bar', '__return_false');
-	wp_deregister_style('admin-bar');
-	remove_action('wp_head', '_admin_bar_bump_cb');
+	if (!nxs_shouldshowadminbar())
+	{
+		// verberg het toolbar menu aan de bovenkant
+		add_filter('show_admin_bar', '__return_false');
+		wp_deregister_style('admin-bar');
+		remove_action('wp_head', '_admin_bar_bump_cb');
+	}
 }
 
 // helper function used by some filters
@@ -168,12 +188,11 @@ function nxs_after_theme_setup()
 		nxs_setupcache();
 	}
 	
-	// we disable the admin bar, as 
-	show_admin_bar(false);
-	//add_filter("wp_admin_bar_class", "nxs_returnfalse");
-	
-	//
-	add_action("wp_footer", "remove_admin_bar_menus");
+	if (!nxs_shouldshowadminbar())
+	{
+		// we disable the admin bar, as 
+		show_admin_bar(false);
+	}
 }
 
 // stage0; first consideration stage; whether or not to cache data on this site
