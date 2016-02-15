@@ -20,10 +20,19 @@
 	{
 		global $post;
 		$postid = $post->ID;
-		$posttype = $post->post_type;
-		$postmeta = nxs_get_postmeta($postid);
-		$pagetemplate = nxs_getpagetemplateforpostid($postid);
-		$nxsposttype = nxs_getnxsposttype_by_wpposttype($posttype);
+		if ($postid == "" || $postid == 0)
+		{
+			$pagetemplate = "archive";
+			$posttype = "post";
+			$nxsposttype = nxs_getnxsposttype_by_wpposttype($posttype);
+		}
+		else
+		{
+			$posttype = $post->post_type;
+			$postmeta = nxs_get_postmeta($postid);
+			$pagetemplate = nxs_getpagetemplateforpostid($postid);
+			$nxsposttype = nxs_getnxsposttype_by_wpposttype($posttype);
+		}
 	}
 	else
 	{

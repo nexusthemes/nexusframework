@@ -6,7 +6,7 @@ function nxs_pagetemplate_archive_gettitle($args)
 }
 
 function nxs_pagetemplate_handlecontent()
-{
+{	
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 	
@@ -96,7 +96,7 @@ function nxs_pagetemplate_handlecontent()
 				//
 				// ---------------------------- BEGIN RENDER BLOG POST TOP / SUBHEADER
 				//
-				
+								
 				if (nxs_hastemplateproperties())
 				{
 					// derive the layout
@@ -162,6 +162,8 @@ function nxs_pagetemplate_handlecontent()
 					$contentpostid = get_the_ID();
 					$wpcontenthandler = "";
 				}
+				
+						
 				
 				if ($contentpostid != 0)
 				{
@@ -290,11 +292,137 @@ function nxs_pagetemplate_handlecontent()
 							<?php
 						}
 					}
+					
+					
 				}
 				else
 				{
 					// suppressed
 				}
+				
+				// WP BACKEND CONTENT				
+					
+				$templateproperties = nxs_gettemplateproperties();
+									
+				if ($templateproperties["result"] == "OK")
+				{
+					$wpcontenthandler = $templateproperties["wpcontenthandler"];
+					if ($wpcontenthandler == "")
+					{
+						// turn to default
+						$wpcontenthandler = "@template@onlywhenset";
+					}
+					
+					// 1111111
+					if ($wpcontenthandler == "@template@never")
+					{
+						// ignore
+					}
+					else
+					{
+						// 
+						$shouldrenderoriginaltemplate = true;
+						global $nxs_gl_templates_wp;
+						
+						// dont use this approach on nexusthemes.com
+						$homeurl = nxs_geturl_home();
+						
+						if ($homeurl == "http://nexusthemes.com/")
+						{
+							$wpposttype = nxs_getwpposttype($contentpostid);
+							if ($wpposttype == "product")
+							{
+								$shouldrenderoriginaltemplate = false;
+							}
+						}
+										
+						if ($shouldrenderoriginaltemplate)
+						{							
+							echo "<!-- 4 original template; $nxs_gl_templates_wp -->";
+
+							rewind_posts();
+
+							nxs_ob_start();
+							// delegate to the original template handler
+							//nxs_ob_start();
+							include($nxs_gl_templates_wp);
+							$wpmaincontenthtml = nxs_ob_get_contents();
+							nxs_ob_end_clean();
+						
+							// TODO: determine here whether we need to output this yes or no,
+							// depending on the configuration of backend content, and whether or not
+							// there actually is something relevant to render
+							$wpmaincontenthtmlsize = strlen($wpmaincontenthtml);
+							
+							$shouldrenderthis = false;
+							if ($wpcontenthandler == "@template@always")
+							{
+								$shouldrenderthis = true;
+								if ($wpmaincontenthtmlsize == 0)
+								{
+									$wpmaincontenthtml = "&nbsp;";
+								}
+							}
+							if ($wpmaincontenthtmlsize > 0)
+							{
+								$shouldrenderthis = true;
+							}
+						
+							if ($shouldrenderthis == true)
+							{
+								// reguliere post/page
+								?>
+								<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable entry-content nxs-content-<?php echo $contentpostid  . " " . $cssclass; ?>'>
+									<div class="nxs-postrows">
+										<div class="nxs-row   " id="nxs-pagerow-content">
+											<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
+												<ul class="nxs-placeholder-list"> 
+													<li class='nxs-placeholder nxs-containshovermenu1 nxs-one-whole '>
+														<!-- no front end editor -->
+														<div class="ABC nxs-height100  ">
+															<div class="XYZ ">
+																<div class="nxs-placeholder-content-wrap nxs-crop ">
+																	<div id="nxs-widget-l1206856119" class="nxs-widget nxs-widget-l11223344556 nxs-text ">
+																		<div>
+																			<div class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+																				<?php
+																				echo $wpmaincontenthtml;
+																				?>
+																			</div>
+																		</div>
+																		<div class="nxs-clear">
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</li>
+												</ul>
+												<div class="nxs-clear"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<?php
+							}
+							else
+							{
+								?>
+								<!-- wp back end content is empty, nothing to do here -->
+								<?php
+							}
+						}
+					}
+					rewind_posts();						
+					// 2222222
+					
+				}
+				else
+				{
+					// no rendering
+				}
+				
+				// END OF WP BACKEND CONTENT
 					
 				//
 				// ---------------------------- BEGIN RENDER BLOG POST BOTTOM / SUBFOOTER
