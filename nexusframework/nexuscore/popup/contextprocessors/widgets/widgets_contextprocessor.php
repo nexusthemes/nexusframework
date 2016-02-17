@@ -142,8 +142,6 @@ function nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $she
 	}
 	
 	// allow plugins to enhance the output of the options
-	// (for example the stans plugin will post-process the 
-	// output to convert icon pickers to text)
 	$args = array
 	(
 		"contextprocessor" => "widgets",

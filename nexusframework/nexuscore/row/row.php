@@ -18,7 +18,7 @@ function nxs_pagerow_home_getoptions($args)
 {
 	$options = array
 	(
-		"sheettitle" => "Row styling",
+		"sheettitle" => "Row properties",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_row_getunifiedstylinggroup(),

@@ -90,6 +90,14 @@ function nxs_popup_contextprocessor_pagerow_getoptions($args)
 		nxs_webmethod_return_nack("unable to get options; function not found; $functionnametoinvoke");
 	}
 	
+	// allow plugins to enhance the output of the options
+	$args = array
+	(
+		"contextprocessor" => "pagerow",
+		"sheet" => $sheet,
+	);
+	$result = apply_filters("nxs_f_getpopupoptions", $result, $args);
+	
 	return $result;
 }
 
