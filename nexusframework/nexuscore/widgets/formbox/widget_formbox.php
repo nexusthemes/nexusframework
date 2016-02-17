@@ -186,6 +186,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -282,7 +283,8 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
 				"tooltip" 			=> nxs_l18n__("Each form can have a custom set of input fields (text fields, dates, selections). Press the Edit button to the right to modify the fields used on this form.", "nxs_td"),
-				"label" 			=> nxs_l18n__("Form fields", "nxs_td")
+				"label" 			=> nxs_l18n__("Form fields", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "formidentifier",
@@ -366,6 +368,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Read more", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -431,7 +434,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("internal_email", "sender_email"));
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("button_text", "internal_email", "sender_email"));
 
 	
 	// Output the result array and setting the "result" position to "OK"
