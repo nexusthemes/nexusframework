@@ -39,7 +39,9 @@ function nxs_widgets_contactitemmultiselect_getformitemsubmitresult($args)
 	else
 	{
 		$key = $prefix . $elementid;
-	}	
+	}
+
+	$value = $_POST[$key];
     
     $i = 0;
     $total_amount_of_options = count($_POST[$key]);
