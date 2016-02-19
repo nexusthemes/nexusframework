@@ -6134,10 +6134,17 @@ function nxs_js_rerender_facebookbom()
 
 // kudos to http://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie
 // todo: the path of the cookie should be set to the root folder of the site, this is required for multisites that use folder names
-function nxs_js_setcookie(name, value) 
+function nxs_js_setcookie(name, value, expiretime) 
 {
 	var expires = "";
-  	document.cookie = name + "=" + value + expires + "; path=/";
+
+	if (expiretime) {
+		var d = new Date();
+	    d.setTime(d.getTime() + expiretime);
+	    var expires = " expires=" + d.toUTCString() + " ";
+	}
+
+  	document.cookie = name + "=" + value + "; " + expires + "; path=/";
 }
 
 function nxs_js_getcookie(c_name) 

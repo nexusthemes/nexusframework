@@ -253,8 +253,11 @@ function nxs_widgets_pagepopup_beforeend_head()
 				// step 1; if specified, set a cookie to indicate the popup was shown before
 				if (response.setcookie != null && !nxs_js_stringisblank(response.setcookie))
 				{
+					// expirte cookie in a week
+					expiretime = 7 * 24 * 60 * 60 * 1000;
+
 					// set cookie
-					nxs_js_setcookie(response.setcookie, 'set');
+					nxs_js_setcookie(response.setcookie, 'set', expiretime);
 				}
 				
 				// step 2; show the popup, if it should
