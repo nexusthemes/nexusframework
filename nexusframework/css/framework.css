@@ -53,6 +53,8 @@ blockquote {
 /* FALLBACK MODERNIZR TOGGLE
 ---------------------------------------------------------------------------------------------------- */
 
+.nxs-fallback 				{ display: none; }
+
 /* transitions */
 .nxs-m-csstransitions .transition.nxs-default				{ display: block; }
 .nxs-m-csstransitions .transition.nxs-fallback 				{ display: none; }

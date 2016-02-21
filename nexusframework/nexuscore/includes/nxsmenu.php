@@ -56,8 +56,8 @@
 	$sitemeta = nxs_getsitemeta();
 ?>
 <!-- loading all fonts -->
-<script type="text/javascript" src="//www.google.com/jsapi"></script>
-<script type="text/javascript">
+<script type="text/javascript" data-cfasync="false"  src="//www.google.com/jsapi"></script>
+<script type="text/javascript" data-cfasync="false" >
 	google.load('webfont','1');
 </script>
 
@@ -1091,28 +1091,32 @@ li.score {
 		  {
 				$wordpressbackendurl = get_edit_post_link($postid, array());	
 		  } 
+		  else if (is_archive())
+		  {
+		  	global $wp_query;
+		  	$tq = $wp_query->tax_query;
+		  	$qs = $tq->queries;
+		  	$q = $qs[0];
+		  	$taxonomy = $q["taxonomy"];
+		  	if ($taxonomy != "")
+		  	{
+			  	$terms = $q["terms"];
+			  	$term = $terms[0];
+			  	$termobj = get_term_by("slug", $term, $taxonomy);
+			  	
+			  	$termid = $termobj->term_id;
+					//var_dump($termid);		  	
+				  $wordpressbackendurl = admin_url("edit-tags.php?action=edit&taxonomy={$taxonomy}&tag_ID={$termid}");
+				}
+			 	else
+			 	{
+			 		$wordpressbackendurl = get_admin_url();	
+				}
+		  }
 		  else
 		  {
-		  	if (is_tax())
-		  	{
-			  	global $wp_query;
-			  	//var_dump($wp_query);
-			  	//die();
-			  	$tax_query = $wp_query->tax_query;
-			  	$queries = $tax_query->queries;
-			  	$taxonomy = $queries[0]["taxonomy"];	// example; product_cat
-			  	$terms = $queries[0]["terms"];
-			  	$firstterm = $terms[0];	// example; automative
-			  	$termmeta = get_term_by("slug", $firstterm, $taxonomy);
-			  	$termid = $termmeta->term_id;
-			  	
-					// When any custom taxonomy archive page is being displayed.
-		  		$wordpressbackendurl = get_admin_url() . "edit-tags.php?action=edit&taxonomy={$taxonomy}&tag_ID={$termid}";
-		  	}
-		  	else
-		  	{
-		  		$wordpressbackendurl = get_admin_url() . "admin.php?page=nxs_backend_overview&type=" . $nxsposttype . "&posttype=" . $posttype; 
-		  	}
+		  	// fall back
+		  	$wordpressbackendurl = get_admin_url();
 		  }
 		  
 		  do_action('nxs_ext_injectmenuitem');
