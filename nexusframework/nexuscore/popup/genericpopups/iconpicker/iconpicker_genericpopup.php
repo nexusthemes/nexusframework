@@ -585,6 +585,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"scaffold",
 										"bowling",
 										"needle",
+										"tennisball",
 									);
 									
 										
