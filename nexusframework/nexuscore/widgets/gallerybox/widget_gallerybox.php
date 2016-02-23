@@ -98,6 +98,7 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
 				"label" 			=> nxs_l18n__("Photos", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "orientation",
