@@ -107,6 +107,7 @@ function nxs_widgets_galleryitem_home_getoptions($args)
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Choose image", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
+				"unicontentablefield" => true,				
 				"localizablefield"	=> true
 			),
 			array
@@ -115,6 +116,7 @@ function nxs_widgets_galleryitem_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,				
 				"localizablefield"	=> true
 			),
 			array
@@ -124,11 +126,9 @@ function nxs_widgets_galleryitem_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),
 				"placeholder" => nxs_l18n__("Text goes here", "nxs_td"),
 				"rows" => 4,
+				"unicontentablefield" => true,				
 				"localizablefield"	=> true
 			),
-
-			
-			
 		)
 	);
 	

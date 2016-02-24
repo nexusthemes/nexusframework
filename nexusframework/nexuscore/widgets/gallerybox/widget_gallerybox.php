@@ -48,7 +48,8 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> "Title",
 				"placeholder" 		=> "Title goes here",
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "title_heading",
