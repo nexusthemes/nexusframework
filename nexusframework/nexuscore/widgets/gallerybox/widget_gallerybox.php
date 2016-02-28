@@ -48,7 +48,8 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> "Title",
 				"placeholder" 		=> "Title goes here",
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "title_heading",
@@ -98,6 +99,7 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
 				"label" 			=> nxs_l18n__("Photos", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "orientation",

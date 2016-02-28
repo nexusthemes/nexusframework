@@ -62,10 +62,13 @@ function nxs_shouldshowadminbar()
 {
 	$result = false;	// default hide the admin bar / adminbar / topbar
 	
-	$sitemeta = nxs_getsitemeta();
-	if ($sitemeta["wpmanagement_showadminbar"] == "show")
+	if (nxs_hassitemeta())
 	{
-		$result = true;
+		$sitemeta = nxs_getsitemeta();
+		if ($sitemeta["wpmanagement_showadminbar"] == "show")
+		{
+			$result = true;
+		}
 	}
 	
 	// filters can overrule the output
@@ -9278,6 +9281,7 @@ function nxs_import_file_to_media_v2($importmeta)
 		if (!$output)
 		{
 			error_log("nxs; unable to copy $filename to $fullpath");
+			error_log("nxs; importmeta basename: [" . $importmeta["basename"] . "]");
 			
 			// TODO: retry using different name
 			// echo "unable to copy file, skipping";

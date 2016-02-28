@@ -53,6 +53,8 @@ blockquote {
 /* FALLBACK MODERNIZR TOGGLE
 ---------------------------------------------------------------------------------------------------- */
 
+.nxs-fallback 				{ display: none; }
+
 /* transitions */
 .nxs-m-csstransitions .transition.nxs-default				{ display: block; }
 .nxs-m-csstransitions .transition.nxs-fallback 				{ display: none; }
@@ -856,6 +858,11 @@ ul.nxs-menu li.nxs-touched ul li.height11					{ height: 55px; }
 ul.nxs-menu li.nxs-touched ul li.height10					{ height: 50px; }
 ul.nxs-menu li.nxs-touched ul li.height09					{ height: 45px; }
 ul.nxs-menu li.nxs-touched ul li.height08					{ height: 40px; }
+
+/* prevent double scrollbar if menu is place in footer 
+   having sub items outside the window */
+li.menu-item > ul { display: none; }
+li.menu-item.nxs-touched > ul { display: inherit; }
 
 /* WORDPRESS NATIVE MENU 
 ---------------------------------------------------------------------------------------------------- */
@@ -3117,6 +3124,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-usb1:before				{ content: "\e456";	}
 .nxs-icon-usb2:before				{ content: "\e457";	}
 .nxs-icon-hdd:before				{ content: "\e458";	}
+.nxs-icon-tennisball:before			{ content: "\e459";	}
 
 
 /* Crappicons */

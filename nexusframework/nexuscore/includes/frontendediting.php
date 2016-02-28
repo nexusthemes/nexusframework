@@ -7,7 +7,7 @@
 <div id="nxs_ajax_nxsbox" style="display:none">
 	<div class="nxs-popup-dyncontentcontainer nxs-do-selectable nxs-shadow1"></div>
 </div>
-<script type="text/javascript">
+<script data-cfasync="false" type="text/javascript">
 	<?php
 
 	global $nxs_global_current_containerpostid_being_rendered;
@@ -389,7 +389,7 @@ if (is_admin)
 { 
 	// WP backend is showing
 	?>
-	<script type='text/javascript'> var nxsboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingnxsbox.png" }; </script>	
+	<script data-cfasync="false" type='text/javascript'> var nxsboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingnxsbox.png" }; </script>	
 	<?php 
 }
 
@@ -399,7 +399,7 @@ if (!has_action("nxs_clientsidesupport"))
 	{
 		// only logged in users can ask questions
 		?>
-		<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/support-deferred.js.php?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
+		<script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/support-deferred.js.php?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
 		<?php
 	}
 }
@@ -408,11 +408,11 @@ else
 	do_action("nxs_clientsidesupport");
 }
 ?>
-<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(); ?>"></script>
-<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-deferred.js?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
-<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-admin-deferred.js?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
-<script type="text/javascript" src="//www.google.com/jsapi"></script>
-<script type="text/javascript">
+<script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(); ?>"></script>
+<script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-deferred.js?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
+<script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-admin-deferred.js?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
+<script data-cfasync="false" type="text/javascript" src="//www.google.com/jsapi"></script>
+<script data-cfasync="false" type="text/javascript">
 	google.load('webfont','1');
 </script>
 <?php
@@ -484,7 +484,7 @@ if (count($fontsbeingused) > 0)
 	<?php
 }
 ?>
-<script type='text/javascript'>
+<script data-cfasync="false" type='text/javascript'>
 	// instant colorshake
 	nxs_js_colorshake();
 	
