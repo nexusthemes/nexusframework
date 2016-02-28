@@ -379,12 +379,20 @@ function nxs_youtube_videoid_popupcontent($optionvalues, $args, $runtimeblendedd
 			try
 			{ 
 				var videourl = jQuery('.videourl-<?php echo $id; ?>').val();
-				nxs_js_log(videourl);
 				var urlitems = parseUri(videourl);
-				nxs_js_log(urlitems);
-				video = urlitems.queryKey.v;
 
-				nxs_js_log(video);
+				var video = "";
+				if (urlitems.host == "youtu.be")
+				{
+					if (urlitems.path != "")
+					{
+						video = urlitems.path.substr(1);
+					}
+				}
+				else
+				{
+					video = urlitems.queryKey.v;
+				}
 
 				jQuery('#<?php echo $altid; ?>').val(video);
 			}
