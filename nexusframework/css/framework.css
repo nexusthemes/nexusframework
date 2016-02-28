@@ -2213,6 +2213,15 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 	-webkit-transform:rotate(197deg);
 }
 
+
+/* VECTOR ART WIDGET
+---------------------------------------------------------------------------------------------------- */
+
+.nxs_vectorart svg {
+	display: block;
+}
+
+
 /* BANNER
 ---------------------------------------------------------------------------------------------------- */
 
@@ -3134,7 +3143,6 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-capricorn:before 			{ content: "\2651"; }
 .nxs-icon-aquarius:before 			{ content: "\2652"; }
 .nxs-icon-pisces:before 			{ content: "\2653"; }
-
 
 /* NT PRODUCT IMAGES
 ---------------------------------------------------------------------------------------------------- */

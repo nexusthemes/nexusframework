@@ -283,6 +283,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		if ($enableconceptualwidgets)
 		{
 			$result[] = array("widgetid" => "filmrollbox", "tags" => array("nexus"));
+			// $result[] = array("widgetid" => "vectorart", "tags" => array("nexus"));
 		}
 	} 
 	
@@ -563,6 +564,7 @@ function nxs_lazyload_widgets()
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("wpmenu");
+		// nxs_ext_lazyload_widget("vectorart");
 	}
 	
 	nxs_ext_lazyload_widget("target");
