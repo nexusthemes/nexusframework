@@ -27,10 +27,10 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 	
 	$linktype = $temp_array['linktype'];
 	$linktarget = $temp_array['linktarget'];
-	$linkttext = $temp_array['linktext'];
+	$linktext = $temp_array['linktext'];
 	$linkpostid = $temp_array['linkpostid'];
 	$linkhref = $temp_array['linkhref'];
-	
+
 	if ($linkhref == "")
 	{
 		$linkhref = "http://";
@@ -303,7 +303,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 		      			<h4><?php nxs_l18n_e("Text", "nxs_td"); ?></h4>
 		      		</div>
 		      		<div class="box-content">
-		      		<input id='linktext' type='text' value='<?php echo $linktext; ?>' />
+		      		<input id='linktext' type='text' value="<?php echo htmlentities($linktext);?>" />
 		      		</div>
 		      	</div>
 		      	<div class="nxs-clear margin"></div>
