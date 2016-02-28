@@ -179,7 +179,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							tinymce.init
 							(
 								{
-									entity_encoding : "raw",
+									entity_encoding : "named",
 									width: "100%",
 									baseURL: "<?php echo includes_url() . "/js/tinymce"; ?>",
 									relative_urls: false,
@@ -187,7 +187,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 									convert_urls: false,
 									browser_spellcheck: true,
 									fix_list_elements: true,
-									entities : "38,amp,60,lt,62,gt",
+									// entities : "38,amp,60,lt,62,gt",
 									keep_styles: false,
 									forced_root_block: "p",
 									selector:'#<?php echo $internaltextareaid; ?>',
