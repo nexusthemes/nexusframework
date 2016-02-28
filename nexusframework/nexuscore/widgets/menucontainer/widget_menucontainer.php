@@ -657,6 +657,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                 jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
                 jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function(){
                     nxs_js_menu_mini_expand(this, '<?php echo $placeholderid; ?>');
+                    nxs_js_change_menu_mini_expand_height(this, '<?php echo $placeholderid; ?>');
                     nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
 
                     var self = this;
