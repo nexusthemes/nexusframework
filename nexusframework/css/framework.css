@@ -3127,6 +3127,13 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-usb2:before				{ content: "\e457";	}
 .nxs-icon-hdd:before				{ content: "\e458";	}
 .nxs-icon-tennisball:before			{ content: "\e459";	}
+.nxs-icon-nurse:before				{ content: "\e460";	}
+.nxs-icon-ekg:before				{ content: "\e461";	}
+.nxs-icon-firstaid:before			{ content: "\e462";	}
+.nxs-icon-pill:before				{ content: "\e463";	}
+.nxs-icon-syringe:before			{ content: "\e464";	}
+.nxs-icon-cpr:before				{ content: "\e465";	}
+.nxs-icon-ekg2:before				{ content: "\e466";	}
 
 
 /* Crappicons */
