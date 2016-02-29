@@ -1974,15 +1974,8 @@ function nxs_performdataconsistencycheck()
 
 function nxs_setjQ_nxs()
 {
-	if (!is_admin())
-	{
-		?>
-		<script type='text/javascript' data-cfasync="false" src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js?ver=4.4.2'></script>
-		<script type='text/javascript' data-cfasync="false" src='//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js?ver=1.11.1'></script>
-		<?php
-	}
 	?>
-	<script data-cfasync="false" type="text/javascript">
+	<script type="text/javascript">
 		var jQ_nxs = jQuery.noConflict(true);
 		var jQuery = jQ_nxs;
 		
@@ -1994,17 +1987,29 @@ function nxs_setjQ_nxs()
 	</script>
 	<?php
 }		
+	
 
 function nxs_clearunwantedscripts()
 {
 	// if we are in the frontend ...
 	if (!is_admin())
 	{
+		// the theme could break if pointing to an incompatible version
+		// therefore we remove jquery scripts added by third party plugins, such as NGG
+  	//wp_deregister_script('jquery');
+  	
+  	
+  	// 25 aug 2014; removed; woocommerce adds various scripts that are dependent upon
+  	// jquery, and we ignore those too when using the approach below...
   	function nxs_modify_scripts() 
   	{
-  		// we use and inject our own version of jquery and jquery-ui
   		wp_deregister_script('jquery');
 			wp_deregister_script('jquery-ui');
+			$dependencies = false;
+      wp_register_script('jquery', "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js", $dependencies);
+      wp_enqueue_script('jquery');
+      
+      wp_enqueue_script('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js', array('jquery'), '1.11.1');
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
 		add_action('wp_head','nxs_setjQ_nxs');
@@ -2014,6 +2019,7 @@ function nxs_clearunwantedscripts()
   	add_action('admin_head','nxs_setjQ_nxs');
   }
 }
+
 
 function nxs_addsupportforadditionalimageformats()
 {
