@@ -43,16 +43,69 @@ function nxs_widgets_vectorart_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_configuration_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Configuration", "nxs_td"),
+				"label" 			=> nxs_l18n__("Vector art configuration", "nxs_td"),
+			),
+
+			array( 
+				"id" 				=> "color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+
+			array(
+				"id" 				=> "height",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Height", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("maxheight"),
+				"tooltip" 			=> nxs_l18n__("Height of the vector art.", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+
+			array(
+				"id" 				=> "width",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Width", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("width_percentage"),
+				"tooltip" 			=> nxs_l18n__("Width of the vector.", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+
+			array(
+				"id" 				=> "flip",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Flip", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("flip"),
+				"tooltip" 			=> nxs_l18n__("Flip vector art", "nxs_td"),
+				"unistylablefield"	=> true
 			),
 			
+			array( 
+					"type" 				=> "wrapperend"
+			),
+
+			array( 
+				"id" 				=> "wrapper_shape_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Shape configuration", "nxs_td"),
+			),
+
+			array(
+				"id" 				=> "repeat",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Repeat", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("repeat"),
+				"tooltip" 			=> nxs_l18n__("Repeating shape in the vector art", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+
 			array( 
 					"type" 				=> "wrapperend"
 			),
 		)
 	);
 	
-	// nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
+	nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
 	
 	return $options;
 }
@@ -133,17 +186,107 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 		$alternativemessage = nxs_l18n__("Warning:please move the vectorart to a row that has exactly 1 column", "nxs_td");
 	}
 
-	$style = "width:100%;";
-	$color = "#000000";
+	// REPEAT
+	$repeat = substr($repeat, 0, strrpos($repeat, "-"));
+	$repeat = intval($repeat);
 
+	// CLASSES
+	$svgclass = "nxs-width{$width} nxs-height-{$height}";
+	$pathclass = "nxs-colorzen nxs-colorzen-{$color}";
+
+	// STYLES
+	$svgstyle = "";
+	// flip
+	if ($flip == "vertical")
+	{
+		$svgstyle = "transform: scaleY(-1); ";
+	}
+
+	if ($flip == "horizontal")
+	{
+		$svgstyle = "transform: scaleX(-1);";
+	}
+
+	if ($flip == "both")
+	{
+		$svgstyle = "transform: scale(-1);";
+	}
+
+	// HEIGHT
+	$height = str_replace("-", ".", $height);
+	$height = floatval($height);
+	$viewbox_default_height = 5.194;
+	$viewbox_height = $viewbox_default_height * $height;
+
+	// SHAPE
+	$shape = 2;
+
+	// PATH
+	$path = '';
+	$pathwidth = round(100 / $repeat, 1);
+	$pathwidthhalf = round($pathwidth / 2, 1);
+
+	// $test = 
+	for ($i = 0; $i < $repeat; $i++)
+	{
+		$start = round($i * $pathwidth, 1);
+		if ($shape == 0)
+		{
+			$y1 = 11.601  * $height;
+			$path .= "<path class='{$pathclass}' d='M{$start},{$viewbox_height}c0,0,{$pathwidthhalf}-{$y1},{$pathwidth},0'/>";
+		}
+
+		else if ($shape == 1)
+		{
+			$y1 = 11.688  * $height;
+			$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$pathwidthhalf},{$y1},{$pathwidth},0v{$viewbox_height}H{$start}V0z'/>";
+		}
+
+		else if ($shape == 2)
+		{
+			$end = $start + $pathwidth;
+			$middle = $start + $pathwidthhalf;
+			$path .= "<polygon class='{$pathclass}' points='{$start},{$viewbox_height} {$middle},0 {$end},{$viewbox_height}'/>";
+		}
+
+		else if ($shape == 3)
+		{
+			$end = $start + $pathwidth;
+			$middle = $start + $pathwidthhalf;
+			// $path .= "<polygon class='{$pathclass}' points='{$start},{$viewbox_height} {$middle},0 {$end},{$viewbox_height}'/>";
+			$path .= "<polygon class='{$pathclass}' points='{$start},0 {$middle},{$viewbox_height} {$end},0 {$end},{$viewbox_height} {$start},{$viewbox_height}'/>";
+		}
+
+		else if ($shape == 4)
+		{
+			$x1 = 15.875 / $repeat;
+			$x2 = 32.936 / $repeat;
+			$y1 = 9.688 * $height;
+			$y2 = 2.598 * $height;
+			$y3 = 6.843 * $height;
+			$v1 = $viewbox_height / 2;
+			$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$x1},{$y1},{$pathwidthhalf},{$y2}c{$x2}-{$y3},{$pathwidthhalf},{$v1},{$pathwidthhalf},{$v1}H{$start}V0z'/>";
+		}
+
+		else if ($shape == 5)
+		{
+			$end = $start + $pathwidth;
+			$path .= "<polygon class='{$pathclass}' points='{$start},0 {$end},{$viewbox_height} {$start},{$viewbox_height}'/>";
+		}
+	}
+	
 	?>
-
+	
 	<div class="nxs_vectorart" id="vectorart_<?php echo $placeholderid;?>">
-		<svg style="<?php echo $style; ?>" x="0px" y="0px" viewBox="0 0 100 5.194" preserveAspectRatio="none">
-			<path fill="<?php echo $color; ?>" d="M0,5.194c0,0,50-11.601,100,0"/>
-		</svg>
-		<svg style="<?php echo $style; ?>" x="0px" y="0px" viewBox="0 0 100 5.194" preserveAspectRatio="none">
-			<path fill="<?php echo $color; ?>" d="M0,0c0,0,49.88,11.688,100,0v5.193H0V0z"/>
+		<svg class="<?php echo $svgclass; ?>" style="<?php echo $svgstyle; ?>" x="0px" y="0px" viewBox="0 0 100 <?php echo $viewbox_height; ?>" preserveAspectRatio="none">
+			<defs>
+				<linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+					<stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+					<stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+				</linearGradient>
+			</defs>
+			
+			<?php echo $path; ?>
 		</svg>
 	</div>
 

@@ -353,6 +353,34 @@ function nxs_getstyletypeoptions() {
 					"2mb"		=>nxs_l18n__("2 mb", "nxs_td"),
 				)
 		),
+		"width_percentage" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array(
+				"100"	=>nxs_l18n__("100%", "nxs_td"),
+				"90"	=>nxs_l18n__("90%", "nxs_td"),
+				"80"	=>nxs_l18n__("80%", "nxs_td"),
+				"70"	=>nxs_l18n__("70%", "nxs_td"),
+				"60"	=>nxs_l18n__("60%", "nxs_td"),
+				"50"	=>nxs_l18n__("50%", "nxs_td"),
+				"40"	=>nxs_l18n__("40%", "nxs_td"),
+				"30"	=>nxs_l18n__("30%", "nxs_td"),
+				"20"	=>nxs_l18n__("20%", "nxs_td"),
+				"10"	=>nxs_l18n__("10%", "nxs_td"),
+			),
+		),
+		"repeat" => array (
+			"subtype" 			=> "multiplier",
+			"values" 			=> array("", 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20),
+		),
+		"flip" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array(
+				"none"				=>nxs_l18n__("none", "nxs_td"),
+				"horizontal"		=>nxs_l18n__("horizontal", "nxs_td"),
+				"vertical"			=>nxs_l18n__("vertical", "nxs_td"),
+				"both"				=>nxs_l18n__("horizontal & vertical", "nxs_td")
+			),
+		),
 	);
 	return $options;
 }

@@ -6025,6 +6025,8 @@ function nxs_js_getlineairgradientcss(colora, colorb)
 	var vendor = nxs_js_getvendorprefix();
 	
 	result += "background-color: " + colora + ";";
+	result += "fill: " + colora + ";";
+	
 	if (vendor == "o" || vendor == "?")
 	{
 		result += "background: -o-linear-gradient(" + colorb + ", " + colora + ");";
@@ -6057,6 +6059,7 @@ function nxs_js_getflatbackgroundnogradientcss(hexcolor, alphafactor)
 	if (alphafactor == 1)
 	{
 		result += "background-color: " + hexcolor + ";";
+		result += "fill: " + hexcolor + ";";
 	}
 	else if (alphafactor < 1)
 	{
@@ -6065,6 +6068,9 @@ function nxs_js_getflatbackgroundnogradientcss(hexcolor, alphafactor)
 		
 		result += "background: rgb(" + hexcolor.r + ", " + hexcolor.g + ", " + hexcolor.b + "); /* The Fallback */ ";
 		result += "background: rgba(" + hexcolor.r + ", " + hexcolor.g + ", " + hexcolor.b + ", " + alphafactor + ");";
+
+		result += "fill: rgb(" + hexcolor.r + ", " + hexcolor.g + ", " + hexcolor.b + "); /* The Fallback */ ";
+		result += "fill: rgba(" + hexcolor.r + ", " + hexcolor.g + ", " + hexcolor.b + ", " + alphafactor + ");";
 
 		//nxs_js_log("hexcolor:" + hexcolor + "; alpha:" + alphafactor);   	
 		//nxs_js_log("output:" + result);   	
