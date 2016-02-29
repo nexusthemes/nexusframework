@@ -861,8 +861,8 @@ ul.nxs-menu li.nxs-touched ul li.height08					{ height: 40px; }
 
 /* prevent double scrollbar if menu is place in footer 
    having sub items outside the window */
-li.menu-item > ul { display: none; }
-li.menu-item.nxs-touched > ul { display: inherit; }
+#nxs-footer ul.nxs-menu > li.menu-item > ul { display: none; }
+#nxs-footer ul.nxs-menu > li.menu-item.nxs-touched > ul { display: inherit; }
 
 /* WORDPRESS NATIVE MENU 
 ---------------------------------------------------------------------------------------------------- */

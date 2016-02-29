@@ -678,6 +678,31 @@ function nxs_init()
   			var_dump($uploaddir);
   			die();
   		}
+  		else if ($_REQUEST["nxs"] == "checklicenseserver")
+  		{
+  			$url = nxs_license_getlicenseserverurl($purpose);
+  			echo $url;
+  			echo "<br />";
+  			echo "<pre>";
+  			$content = file_get_contents($url);
+  			var_dump($content);
+  			
+  			echo "<br /> CURL:<br />";
+  			
+		    $ch = curl_init();
+		    curl_setopt($ch, CURLOPT_URL, $Url);
+		    curl_setopt($ch, CURLOPT_REFERER, "http://www.example.org/yay.htm");
+		    curl_setopt($ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0");
+		    curl_setopt($ch, CURLOPT_HEADER, 0);
+		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+		    $output = curl_exec($ch);
+		    curl_close($ch);
+		 
+		    var_dump($output);
+  			
+  			die();
+  		}
   		else if ($_REQUEST["nxs"] == "template")
   		{
 				$t = get_template();
@@ -1017,6 +1042,11 @@ function nxs_init()
 					echo "meta key: $key<br />";
 					echo "meta val: <br />";
 					echo "<pre>";
+					if ($_REQUEST["fix"] == "true")
+					{
+						$val = preg_replace('~\xc2\xa0~', '&nbsp;', $val);
+						//$val = esc_html($val);
+					}
 					var_dump($val);
 					echo "</pre>";
 					echo "<br />";
