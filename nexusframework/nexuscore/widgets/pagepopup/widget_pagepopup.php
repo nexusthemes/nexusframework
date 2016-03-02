@@ -131,12 +131,12 @@ function nxs_widgets_pagepopup_beforeend_head()
 					url: ajaxurl, 
 					success: function(response) 
 					{
-						nxs_js_log(response);
+						//nxs_js_log(response);
 						if (response.result == "OK")
 						{
 							prefetchedresult.response = response;
 							prefetchedresult.available = true;
-							nxs_js_log("prefetched data is now available");
+							//nxs_js_log("prefetched data is now available");
 						}
 					}
 				}
@@ -248,7 +248,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 			nxs_js_log(response);
 			if (response.result == "OK")
 			{
-				nxs_js_log("BOOM!");
+				//nxs_js_log("BOOM!");
 			
 				// step 1; if specified, set a cookie to indicate the popup was shown before
 				if (response.setcookie != null && !nxs_js_stringisblank(response.setcookie))
@@ -322,7 +322,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 				else
 				{
 					//
-					nxs_js_log("server told us not to show the popup");
+					//nxs_js_log("server told us not to show the popup");
 				}
 			}
 		}

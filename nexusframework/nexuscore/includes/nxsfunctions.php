@@ -6368,10 +6368,22 @@ function nxs_webmethod_return_ok($args)
 	// add 'result' to array
 	$args["result"] = "OK";
 	
-
-	
 	// sanitize malformed utf8 (if the case)
 	$args = nxs_array_toutf8string($args);
+	
+	// in some very rare situations the json_encode
+	// can stall/break the execution (see support ticket 13459)
+	// if there's weird Unicode characters in the HTML such as (C2 A0)
+	// which is a no-break character that is messed up
+	// (invoking json_encode on that output would not throw an exception
+	// but truly crash the server). To solve that problem, we use the following
+	// kudos to:
+	// http://stackoverflow.com/questions/12837682/non-breaking-utf-8-0xc2a0-space-and-preg-replace-strange-behaviour
+	foreach ($args as $k => $v)
+	{
+		$v = preg_replace('~\xc2\xa0~', ' ', $v);
+		$args[$k] = $v;
+	}
 	
 	$output=json_encode($args);
 	echo $output;

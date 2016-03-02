@@ -586,6 +586,13 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"bowling",
 										"needle",
 										"tennisball",
+										"nurse",
+										"ekg",
+										"firstaid",
+										"pill",
+										"syringe",
+										"cpr",
+										"ekg2",
 									);
 									
 										
