@@ -1,15 +1,10 @@
 <?php
 function nxs_popup_optiontype_shape_renderhtmlinpopup($optionvalues, $args, $runtimeblendeddata) 
-{
-	$sampletext = nxs_l18n__("Sample shape", "nxs_td");
-	$colorset_flat_enabled = "true";
-	$colorset_lightgradient_enabled = "true";
-	$colorset_mediumgradient_enabled = "true";
-	
+{	
 	extract($optionvalues);
 	extract($args);
 	extract($runtimeblendeddata);
-	
+
 	if (isset($$id))
 	{
 		$value = $$id;	// $id is the parametername, $$id is the value of that parameter
@@ -19,58 +14,54 @@ function nxs_popup_optiontype_shape_renderhtmlinpopup($optionvalues, $args, $run
 		$value = "";
 	}
 	
-	echo '
+	?>
 	<div class="content2">
-	    <div class="box">';
-	    	echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip);
-	    	?>
-          <div class="box-content">
+	    <div class="box">
+	    	<?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
+        	<div class="box-content">
           	<ul>
-	          	<li onclick='nxs_js_startshapepicker_<?php echo $id;?>(); return false;' style='cursor: pointer;' class='nxs-float-left'>
-	          		<?php if (isset($value) && $value != "") { ?>
-									<div class="nxs-shape-<?php echo $value; ?> border-radius-small color-sample">
-										<p><?php echo $sampletext; ?></p>
-									</div>
-								<?php 
-								} 
-								else 
-								{
-									// when no color is selected
-									?>
-									<p><?php echo "Not selected"; ?></p>
-									<?php 
-								} 
-								?>
-							</li>
+	          	<li onclick='nxs_js_startcolorzenpicker_<?php echo $id;?>(); return false;' style='cursor: pointer;' class='nxs-float-left'>
+	          		<?php
+	          		if (isset($value) && $value != "")
+	          		{
+          				$shapepaths = nxs_getshapepaths();
+          				$path = $shapepaths[$value];
+          				?>
+						<svg class="nxs-width100" x="0px" y="0px" viewBox="0 0 100 5.194" preserveAspectRatio="none">
+							<?php echo $path;?>
+						</svg>
+						<?php 
+					} 
+					else 
+					{
+						// when no color is selected
+						?>
+						<p><?php echo "Not selected"; ?></p>
+						<?php 
+					} 
+					?>
+				</li>
           	</ul>
-          	<?php
-          	echo '
-          	<input type="hidden" name="' . $id . '" id="' . $id . '" value="' . $value . '"></input>
-          	<a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_startshapepicker_' . $id . '(); return false;">' . nxs_l18n__("Change", "nxs_td") .'</a>
+          	<input type="hidden" name="<?php echo $id; ?>" id="<?php echo $id; ?>" value="<?php echo $value; ?>"></input>
+          	<a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_startshapepicker_<?php echo $id;?>(); return false;"><?php echo nxs_l18n__("Change", "nxs_td"); ?></a>
           </div>
         </div>
         <div class="nxs-clear"></div>
-      </div>
-  ';
-  ?>
-  <script type="text/javascript">
+    </div>
+    
+	<script type="text/javascript">
 		function nxs_js_startshapepicker_<?php echo $id;?>()
 		{
-			nxs_js_setpopupdatefromcontrols(); 
+			nxs_js_setpopupdatefromcontrols();
+
 			nxs_js_popup_setsessiondata("nxs_shapepicker_invoker", nxs_js_popup_getcurrentsheet()); 
-			nxs_js_popup_setsessiondata("nxs_shapepicker_sampletext", "<?php echo $sampletext;?>"); 
 			nxs_js_popup_setsessiondata("nxs_shapepicker_targetvariable", "<?php echo $id;?>"); 
 			nxs_js_popup_setsessiondata("nxs_shapepicker_currentvalue", "<?php echo $value;?>");
-			
-			nxs_js_popup_setsessiondata("nxs_shapepicker_colorset_flat_enabled", "<?php echo $colorset_flat_enabled;?>");
-			nxs_js_popup_setsessiondata("nxs_shapepicker_colorset_lightgradient_enabled", "<?php echo $colorset_lightgradient_enabled;?>");
-			nxs_js_popup_setsessiondata("nxs_shapepicker_colorset_mediumgradient_enabled", "<?php echo $colorset_mediumgradient_enabled;?>");
 			
 			nxs_js_popup_navigateto("shapepicker");
 		}
 	</script>
   <?php
-	//
 }
 
 function nxs_popup_optiontype_shape_renderstorestatecontroldata($optionvalues)

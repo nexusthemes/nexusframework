@@ -49,6 +49,8 @@ function nxs_widgets_vectorart_home_getoptions($args)
 			array( 
 				"id" 				=> "color",
 				"type" 				=> "colorzen",
+				"colorset_lightgradient_enabled" => false,
+				"colorset_mediumgradient_enabled" => false,
 				"label" 			=> nxs_l18n__("Color", "nxs_td"),
 				"unistylablefield"	=> true
 			),
@@ -88,6 +90,13 @@ function nxs_widgets_vectorart_home_getoptions($args)
 				"id" 				=> "wrapper_shape_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Shape configuration", "nxs_td"),
+			),
+
+			array( 
+				"id" 				=> "shape",
+				"type" 				=> "shape",
+				"label" 			=> nxs_l18n__("Shape", "nxs_td"),
+				"unistylablefield"	=> true
 			),
 
 			array(
@@ -183,15 +192,26 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 
 	if ($nxs_global_row_render_statebag["pagerowtemplate"] != "one") {
 		$shouldrenderalternative = true;
-		$alternativemessage = nxs_l18n__("Warning:please move the vectorart to a row that has exactly 1 column", "nxs_td");
+		$alternativehint = nxs_l18n__("Warning: please move the vectorart to a row that has exactly 1 column", "nxs_td");
 	}
 
 	// REPEAT
 	$repeat = substr($repeat, 0, strrpos($repeat, "-"));
 	$repeat = intval($repeat);
 
+	if ($repeat == "")
+	{
+		$repeat = 1;
+	}
+
+	// COLOR
+	if ($color == "")
+	{
+		$color = "base2";
+	}
+
 	// CLASSES
-	$svgclass = "nxs-width{$width} nxs-height-{$height}";
+	$svgclass = "nxs-width{$width}";
 	$pathclass = "nxs-colorzen nxs-colorzen-{$color}";
 
 	// STYLES
@@ -213,43 +233,53 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 	}
 
 	// HEIGHT
+	if ($height == "")
+	{
+		$height = "1-0";
+	}
 	$height = str_replace("-", ".", $height);
 	$height = floatval($height);
 	$viewbox_default_height = 5.194;
 	$viewbox_height = $viewbox_default_height * $height;
 
 	// SHAPE
-	$shape = 2;
+	if ($shape == "")
+	{
+		$shouldrenderalternative = true;
+		$alternativehint = nxs_l18n__("Minimal: shape", "nxs_td");
+	}
 
 	// PATH
 	$path = '';
 	$pathwidth = round(100 / $repeat, 1);
 	$pathwidthhalf = round($pathwidth / 2, 1);
 
+	// $shape = "wave2";
+
 	// $test = 
 	for ($i = 0; $i < $repeat; $i++)
 	{
 		$start = round($i * $pathwidth, 1);
-		if ($shape == 0)
+		if ($shape == "semiellipses")
 		{
-			$y1 = 11.601  * $height;
+			$y1 = round(11.601  * $height, 3);
 			$path .= "<path class='{$pathclass}' d='M{$start},{$viewbox_height}c0,0,{$pathwidthhalf}-{$y1},{$pathwidth},0'/>";
 		}
 
-		else if ($shape == 1)
+		else if ($shape == "semiellipses-inverse")
 		{
-			$y1 = 11.688  * $height;
+			$y1 = round(11.688  * $height, 3);
 			$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$pathwidthhalf},{$y1},{$pathwidth},0v{$viewbox_height}H{$start}V0z'/>";
 		}
 
-		else if ($shape == 2)
+		else if ($shape == "triangle")
 		{
 			$end = $start + $pathwidth;
 			$middle = $start + $pathwidthhalf;
 			$path .= "<polygon class='{$pathclass}' points='{$start},{$viewbox_height} {$middle},0 {$end},{$viewbox_height}'/>";
 		}
 
-		else if ($shape == 3)
+		else if ($shape == "triangle-inverse")
 		{
 			$end = $start + $pathwidth;
 			$middle = $start + $pathwidthhalf;
@@ -257,54 +287,88 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 			$path .= "<polygon class='{$pathclass}' points='{$start},0 {$middle},{$viewbox_height} {$end},0 {$end},{$viewbox_height} {$start},{$viewbox_height}'/>";
 		}
 
-		else if ($shape == 4)
-		{
-			$x1 = 15.875 / $repeat;
-			$x2 = 32.936 / $repeat;
-			$y1 = 9.688 * $height;
-			$y2 = 2.598 * $height;
-			$y3 = 6.843 * $height;
-			$v1 = $viewbox_height / 2;
-			$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$x1},{$y1},{$pathwidthhalf},{$y2}c{$x2}-{$y3},{$pathwidthhalf},{$v1},{$pathwidthhalf},{$v1}H{$start}V0z'/>";
-		}
-
-		else if ($shape == 5)
+		else if ($shape == "right-triangle")
 		{
 			$end = $start + $pathwidth;
 			$path .= "<polygon class='{$pathclass}' points='{$start},0 {$end},{$viewbox_height} {$start},{$viewbox_height}'/>";
 		}
-	}
-	
-	?>
-	
-	<div class="nxs_vectorart" id="vectorart_<?php echo $placeholderid;?>">
-		<svg class="<?php echo $svgclass; ?>" style="<?php echo $svgstyle; ?>" x="0px" y="0px" viewBox="0 0 100 <?php echo $viewbox_height; ?>" preserveAspectRatio="none">
-			<defs>
-				<linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-					<stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
-					<stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
-				</linearGradient>
-			</defs>
+
+		else if ($shape == "wave")
+		{
+			$x1 = round(15.875 / $repeat, 3);
+			$x2 = round(32.936 / $repeat, 3);
+			$y1 = round(9.688 * $height, 3);
+			$y2 = round(2.598 * $height, 3);
+			$y3 = round(6.843 * $height, 3);
+			$v1 = $viewbox_height / 2;
+			$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$x1},{$y1},{$pathwidthhalf},{$y2}c{$x2}-{$y3},{$pathwidthhalf},{$v1},{$pathwidthhalf},{$v1}H{$start}V0z'/>";
+		}
+
+		else if ($shape == "wave2")
+		{
+			// $x1 = round(27 / $repeat, 3);
+			// $x2 = round(55.938 / $repeat, 3);
+			// $x3 = round(9.938 / $repeat, 3);
+			// $y1 = round(2.597 * $height, 3);
+
+
+			$v1 = $viewbox_height / 2;
+			$bla = 100 / $repeat;
+			$t1 = 9.938 / $repeat;
+			$q = 27 / $repeat;
+			$t2 = 73 / $repeat;
+
+			// $t2 = 55.938;
+
+
+			// <path d="M0,3.796c0,0,4.969,3.825,13.5,3.825s14.469-7.653,23-7.653S50,3.796,50,3.796v3.825H0V3.796z"/>
+			// <path d="M50,3.796c0,0,4.969,3.825,13.5,3.825s14.469-7.653,23-7.653S100,3.796,100,3.796v3.825H50V3.796z"/>
 			
-			<?php echo $path; ?>
-		</svg>
-	</div>
 
-	<script type='text/javascript'>
+			// <path d="M00,2.598c0,0,4.969,2.597,13.5,2.597S27.969,0,36.5,0S050,2.598,050,2.598v2.597H0V2.598z"/>
+			// <path d="M50,2.598c0,0,4.969,2.597,13.5,2.597S77.969,0,86.5,0S100,2.598,100,2.598v2.597H50V2.598z"/>
 
-    </script>
+			// <path d="M00,2.598c0,0,9.938,2.597,27.0,2.597S55.938,0,73.0,0s027,2.598,027,2.598v2.597H0V2.598z"/>
 
-    <?php
+			// $path = "<path fill='#000000' d='M{$start},{$v1}c0,0,{$t1},{$v1},{$q},{$v1}S27.969,0,{$t2},0S50,{$v1},{$bla},{$v1}v{$v1}H{$start}V{$v1}z'/>";
+
+
+			// $path .= "<path fill='#000000' d='M{$start},{$v1}c0,0,{$x3},{$y1},{$x1},{$y1}S{$x2},0,{$bla},0s{$x1},{$v1},{$x1},{$v1}v{$v1}H{$start}V{$v1}z'/>";
+		}
+
+		else if ($shape == "sharkteeth")
+		{
+			$end = $start + $pathwidth;
+			$middle = $start + $pathwidthhalf;
+			$y1 = round($viewbox_height * 0.8, 3);
+			$y2 = round($viewbox_height * 0.2, 3);
+			$path .= "<polygon class='{$pathclass}' points='{$start},{$y1} {$middle},0 {$end},{$y1} {$end},{$viewbox_height} {$middle},{$y2} {$start},{$viewbox_height}'/>";
+		}
+	}
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
 	if ($shouldrenderalternative) {
-		if ($alternativemessage != "" && $alternativemessage != null) {
-			nxs_renderplaceholderwarning($alternativemessage);
+		if ($alternativehint == "") {
+			$alternativehint = nxs_l18n__("Missing input", "nxs_td");
 		}
+		nxs_renderplaceholderwarning($alternativehint); 
 	} else {
-		
+		?>
+		<div class="nxs_vectorart" id="vectorart_<?php echo $placeholderid;?>">
+			<svg class="<?php echo $svgclass; ?>" style="<?php echo $svgstyle; ?>" x="0px" y="0px" viewBox="0 0 100 <?php echo $viewbox_height; ?>" preserveAspectRatio="none">
+				<defs>
+					<linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+						<stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+					</linearGradient>
+				</defs>
+				
+				<?php echo $path; ?>
+			</svg>
+		</div>
+		<?php
 	}
 	
 	/* ------------------------------------------------------------------------------------------------- */
@@ -324,8 +388,9 @@ function nxs_widgets_vectorart_initplaceholderdata($args)
 {
 	extract($args);
 
-	// $args['button_color'] = "base2";
-	
+	$args['height'] = "1-0";
+	$args['width'] = "100";
+
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_vectorart_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);

@@ -28,6 +28,23 @@ function nxs_getcoloralphas() {
 	return $result;
 }
 
+function nxs_getshapepaths() {
+	$result = array();
+	$result["semiellipses"] 		= "<path fill='#000000' d='M0,5.194c0,0,50-11.601,100,0'/>";
+	$result["semiellipses-inverse"]	= "<path fill='#000000' d='M0,0c0,0,50,11.688,100,0v5.194H0V0z'/>";
+	$result["triangle"] = "<polygon fill='#000000' points='0,5.194 50,0 100,5.194'/>";
+	$result["triangle-inverse"] = "<polygon fill='#000000' points='0,0 50,5.194 100,0 100,5.194 0,5.194'/>";
+	$result["right-triangle"] = "<polygon fill='#000000' points='0,0 100,5.194 0,5.194'/>";
+	$result["wave"] = "<path fill='#000000' d='M0,0c0,0,15.875,9.688,50,2.598c32.936-6.843,50,2.596,50,2.596H0V0z'/>";
+	$result["sharkteeth"] = "<polygon fill='#000000' points='0,4.155 50,0 100,4.155 100,5.194 50,1.0388 0,5.194'></polygon>";
+
+	// enable themes to overrule the shapes
+	$args = array();
+	$result = apply_filters("nxs_getshapepaths", $result, $args);
+	
+	return $result;
+}
+
 function nxs_getcolorsinpalette() {
 	$result = array();
 	$result[] = "base";
