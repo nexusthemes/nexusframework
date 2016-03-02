@@ -1104,10 +1104,12 @@ function nxs_addnewarticle($args)
 	$original_slug = $slug;
 
 	$c = 2;
-	while ( true ) {
+	while ( true ) 
+	{
 		$check_post_id = nxs_getpostidbyslug($slug);
-
-		if ( !$check_post_id ) {
+		if ( !$check_post_id ) 
+		{
+			// means it doesn't yet exist
 			break;
 		}
 
