@@ -131,6 +131,7 @@ function nxs_widgets_blog_home_getoptions($args)
 				"id" 				=> "items_filter_catids",
 				"type" 				=> "categories",
 				"label" 			=> nxs_l18n__("Categories", "nxs_td"),
+				"unicontentablefield" => true,
 				"editable" 			=> "false",
 			),	
 			
