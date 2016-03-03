@@ -4808,7 +4808,7 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 		}
 		
 		$unigroup = $options["unifiedstyling"]["group"];
-		if (!isset($unigroup) || $unigroup == "") { nxs_webmethod_return_nack("unigroup not set"); }
+		if (!isset($unigroup) || $unigroup == "") { echo "a) options: "; var_dump($options);nxs_webmethod_return_nack("unigroup not set"); }
 		nxs_unistyle_persistunistyle($unigroup, $unistyle, $unistyleablefields);
 	}
 	
@@ -4848,7 +4848,7 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 		}
 		
 		$unigroup = $options["unifiedcontent"]["group"];
-		if (!isset($unigroup) || $unigroup == "") { nxs_webmethod_return_nack("unigroup not set"); }
+		if (!isset($unigroup) || $unigroup == "") { echo "b) options: "; var_dump($options);nxs_webmethod_return_nack("unigroup not set"); }
 		nxs_unicontent_persistunicontent($unigroup, $unicontent, $unicontentablefields);
 	}
 	else
@@ -6712,7 +6712,7 @@ function nxs_mergepagerowmetadata_internal_v2($postid, $pagerowid, $updatedvalue
 		}
 		
 		$unigroup = $options["unifiedstyling"]["group"];
-		if (!isset($unigroup) || $unigroup == "") { nxs_webmethod_return_nack("unigroup not set"); }
+		if (!isset($unigroup) || $unigroup == "") { echo "c) options: "; var_dump($options); nxs_webmethod_return_nack("unigroup not set"); }
 		nxs_unistyle_persistunistyle($unigroup, $unistyle, $unistyleablefields);
 	}
 }
