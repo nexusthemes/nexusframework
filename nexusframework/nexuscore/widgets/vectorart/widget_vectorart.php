@@ -74,6 +74,14 @@ function nxs_widgets_vectorart_home_getoptions($args)
 			),
 
 			array(
+				"id" 				=> "alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+
+			array(
 				"id" 				=> "flip",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Flip", "nxs_td"),
@@ -211,7 +219,13 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 	}
 
 	// CLASSES
-	$svgclass = "nxs-width{$width}";
+	// alignment
+	if ($alignment == "" || is_null($alignment))
+	{
+		$alignment = "center";
+	}
+
+	$svgclass = "nxs-width{$width} align{$alignment}";
 	$pathclass = "nxs-colorzen nxs-colorzen-{$color}";
 
 	// STYLES
@@ -251,15 +265,13 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 
 	// PATH
 	$path = '';
-	$pathwidth = round(100 / $repeat, 1);
-	$pathwidthhalf = round($pathwidth / 2, 1);
-
-	// $shape = "wave2";
+	$pathwidth = round(100 / $repeat, 3);
+	$pathwidthhalf = round($pathwidth / 2, 3);
 
 	// $test = 
 	for ($i = 0; $i < $repeat; $i++)
 	{
-		$start = round($i * $pathwidth, 1);
+		$start = round($i * $pathwidth, 3);
 		if ($shape == "semiellipses")
 		{
 			$y1 = round(11.601  * $height, 3);
@@ -306,34 +318,13 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 
 		else if ($shape == "wave2")
 		{
-			// $x1 = round(27 / $repeat, 3);
-			// $x2 = round(55.938 / $repeat, 3);
-			// $x3 = round(9.938 / $repeat, 3);
-			// $y1 = round(2.597 * $height, 3);
-
-
 			$v1 = $viewbox_height / 2;
-			$bla = 100 / $repeat;
-			$t1 = 9.938 / $repeat;
-			$q = 27 / $repeat;
-			$t2 = 73 / $repeat;
-
-			// $t2 = 55.938;
-
-
-			// <path d="M0,3.796c0,0,4.969,3.825,13.5,3.825s14.469-7.653,23-7.653S50,3.796,50,3.796v3.825H0V3.796z"/>
-			// <path d="M50,3.796c0,0,4.969,3.825,13.5,3.825s14.469-7.653,23-7.653S100,3.796,100,3.796v3.825H50V3.796z"/>
-			
-
-			// <path d="M00,2.598c0,0,4.969,2.597,13.5,2.597S27.969,0,36.5,0S050,2.598,050,2.598v2.597H0V2.598z"/>
-			// <path d="M50,2.598c0,0,4.969,2.597,13.5,2.597S77.969,0,86.5,0S100,2.598,100,2.598v2.597H50V2.598z"/>
-
-			// <path d="M00,2.598c0,0,9.938,2.597,27.0,2.597S55.938,0,73.0,0s027,2.598,027,2.598v2.597H0V2.598z"/>
-
-			// $path = "<path fill='#000000' d='M{$start},{$v1}c0,0,{$t1},{$v1},{$q},{$v1}S27.969,0,{$t2},0S50,{$v1},{$bla},{$v1}v{$v1}H{$start}V{$v1}z'/>";
-
-
-			// $path .= "<path fill='#000000' d='M{$start},{$v1}c0,0,{$x3},{$y1},{$x1},{$y1}S{$x2},0,{$bla},0s{$x1},{$v1},{$x1},{$v1}v{$v1}H{$start}V{$v1}z'/>";
+			$x1 = round(10 / $repeat, 3);
+			$x2 = round(27 / $repeat, 3);
+			$test = $i * 100 / $repeat;
+			$x3 = round(73 / $repeat + $test, 3);
+			$x4 = round(56 / $repeat + $test, 3);
+			$path .= "<path class='{$pathclass}' d='M{$start},{$v1}c0,0,{$x1},{$v1},{$x2},{$v1}S{$x4},0,{$x3},0s{$x2},{$v1},{$x2},{$v1}v{$v1}H{$start}V{$v1}z'/>";
 		}
 
 		else if ($shape == "sharkteeth")
@@ -365,7 +356,9 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 					</linearGradient>
 				</defs>
 				
-				<?php echo $path; ?>
+				<?php 
+				echo $path; 
+				?>
 			</svg>
 		</div>
 		<?php
@@ -390,6 +383,7 @@ function nxs_widgets_vectorart_initplaceholderdata($args)
 
 	$args['height'] = "1-0";
 	$args['width'] = "100";
+	$args['alignment'] = "center";
 
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_vectorart_getunifiedstylinggroup();
