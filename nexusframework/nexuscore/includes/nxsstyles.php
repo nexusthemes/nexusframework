@@ -30,14 +30,14 @@ function nxs_getcoloralphas() {
 
 function nxs_getshapepaths() {
 	$result = array();
-	$result["semiellipses"] 		= "<path fill='#000000' d='M0,5.194c0,0,50-11.601,100,0'/>";
-	$result["semiellipses-inverse"]	= "<path fill='#000000' d='M0,0c0,0,50,11.688,100,0v5.194H0V0z'/>";
-	$result["triangle"] = "<polygon fill='#000000' points='0,5.194 50,0 100,5.194'/>";
-	$result["triangle-inverse"] = "<polygon fill='#000000' points='0,0 50,5.194 100,0 100,5.194 0,5.194'/>";
-	$result["right-triangle"] = "<polygon fill='#000000' points='0,0 100,5.194 0,5.194'/>";
-	// $result["wave"] = "<path fill='#000000' d='M0,0c0,0,15.875,9.688,50,2.598c32.936-6.843,50,2.596,50,2.596H0V0z'/>";
-	$result["wave2"] = "<path fill='#000000' d='M0,2.597c0,0,10,2.597,27,2.597S56,0,73,0s27,2.597,27,2.597v2.597H0V2.597z'/>";
-	$result["sharkteeth"] = "<polygon fill='#000000' points='0,4.155 50,0 100,4.155 100,5.194 50,1.0388 0,5.194'></polygon>";
+	$result["semiellipses"] 		= "<path fill='#000000' d='M0,5c0,0,50-11,100,0'/>";
+	$result["semiellipses-inverse"]	= "<path fill='#000000' d='M0,0c0,0,50,11,100,0v5H0V0z'/>";
+	$result["triangle"] = "<polygon fill='#000000' points='0,5 50,0 100,5'/>";
+	$result["triangle-inverse"] = "<polygon fill='#000000' points='0,0 50,5 100,0 100,5 0,5'/>";
+	$result["right-triangle"] = "<polygon fill='#000000' points='0,0 100,5 0,5'/>";
+	// $result["wave"] = "<path fill='#000000' d='M0,0c0,0,15.875,9.688,50,2.5c32.936-6.843,50,2.5,50,2.5H0V0z'/>";
+	$result["wave2"] = "<path fill='#000000' d='M0,2.5c0,0,10,2.5,27,2.5S56,0,73,0s27,2.5,27,2.5v2.5H0V2.5z'/>";
+	$result["sharkteeth"] = "<polygon fill='#000000' points='0,4.155 50,0 100,4.155 100,5 50,1.0388 0,5'/>";
 
 	// enable themes to overrule the shapes
 	$args = array();

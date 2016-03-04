@@ -198,6 +198,12 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 	// If so > $shouldrenderalternative = true, which triggers the error message
 	$shouldrenderalternative = false;
 
+	if ($shape == "")
+	{
+		$shouldrenderalternative = true;
+		$alternativehint = nxs_l18n__("Minimal: shape", "nxs_td");
+	}
+
 	if ($nxs_global_row_render_statebag["pagerowtemplate"] != "one") {
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Warning: please move the vectorart to a row that has exactly 1 column", "nxs_td");
@@ -218,19 +224,15 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 		$color = "base2";
 	}
 
-	// CLASSES
-	// alignment
+	// SVG CLASS
 	if ($alignment == "" || is_null($alignment))
 	{
 		$alignment = "center";
 	}
-
 	$svgclass = "nxs-width{$width} align{$alignment}";
-	$pathclass = "nxs-colorzen nxs-colorzen-{$color}";
 
-	// STYLES
+	// SVG STYLES
 	$svgstyle = "";
-	// flip
 	if ($flip == "vertical")
 	{
 		$svgstyle = "transform: scaleY(-1); ";
@@ -253,90 +255,54 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 	}
 	$height = str_replace("-", ".", $height);
 	$height = floatval($height);
-	$viewbox_default_height = 5.194;
-	$viewbox_height = $viewbox_default_height * $height;
 
-	// SHAPE
-	if ($shape == "")
-	{
-		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Minimal: shape", "nxs_td");
+	// VIEWBOX
+	$default_viewbox_height = 5;
+	$viewbox_height = $default_viewbox_height * $height;
+
+	// get the basic shape path
+	$shapepaths = nxs_getshapepaths();
+	$path = $shapepaths[$shape];
+
+	// we strip the basic shape path of some text
+	// we will build up the path later on again
+	$stripstrings = array("fill='#000000' ", "/>", "></path>", "></polygon>", "></rect>", "></ellipse>", "></circle>");
+	foreach ($stripstrings as $str) {
+		$path = str_replace($str, "", $path);
 	}
 
-	// PATH
-	$path = '';
-	$pathwidth = round(100 / $repeat, 3);
-	$pathwidthhalf = round($pathwidth / 2, 3);
+	// duplicates m$ excel's ceiling function
+	// some small gaps may occur when using the round() for the scaleX;
+	// this function is fix that
+	if( !function_exists('ceiling') )
+	{
+	    function ceiling($number, $significance = 1)
+	    {
+	        return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
+	    }
+	}
 
-	// $test = 
+	// calculating the scale X and Y
+	$scaleX = ceiling(1 / $repeat, 0.001);
+	$scaleY = $height;
+
+	// we will build each path here and place in into $paths.
+	$paths = "";
 	for ($i = 0; $i < $repeat; $i++)
 	{
-		$start = round($i * $pathwidth, 3);
-		if ($shape == "semiellipses")
-		{
-			$y1 = round(11.601  * $height, 3);
-			$path .= "<path class='{$pathclass}' d='M{$start},{$viewbox_height}c0,0,{$pathwidthhalf}-{$y1},{$pathwidth},0'/>";
-		}
+		// calculating the translateX (depends on how many paths their should be)
+		$translateX = round(100 / $repeat * $i, 3);
 
-		else if ($shape == "semiellipses-inverse")
-		{
-			$y1 = round(11.688  * $height, 3);
-			$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$pathwidthhalf},{$y1},{$pathwidth},0v{$viewbox_height}H{$start}V0z'/>";
-		}
+		// building the path class (for color fill)
+		$pathclass = " class='nxs-colorzen nxs-colorzen-{$color}'";
 
-		else if ($shape == "triangle")
-		{
-			$end = $start + $pathwidth;
-			$middle = $start + $pathwidthhalf;
-			$path .= "<polygon class='{$pathclass}' points='{$start},{$viewbox_height} {$middle},0 {$end},{$viewbox_height}'/>";
-		}
+		// building the pathstyle
+		$pathstyle = " style='transform: translateX({$translateX}%) scaleX({$scaleX}) scaleY({$scaleY});'";
 
-		else if ($shape == "triangle-inverse")
-		{
-			$end = $start + $pathwidth;
-			$middle = $start + $pathwidthhalf;
-			// $path .= "<polygon class='{$pathclass}' points='{$start},{$viewbox_height} {$middle},0 {$end},{$viewbox_height}'/>";
-			$path .= "<polygon class='{$pathclass}' points='{$start},0 {$middle},{$viewbox_height} {$end},0 {$end},{$viewbox_height} {$start},{$viewbox_height}'/>";
-		}
-
-		else if ($shape == "right-triangle")
-		{
-			$end = $start + $pathwidth;
-			$path .= "<polygon class='{$pathclass}' points='{$start},0 {$end},{$viewbox_height} {$start},{$viewbox_height}'/>";
-		}
-
-		// else if ($shape == "wave")
-		// {
-		// 	$x1 = round(15.875 / $repeat, 3);
-		// 	$x2 = round(32.936 / $repeat, 3);
-		// 	$y1 = round(9.688 * $height, 3);
-		// 	$y2 = round(2.598 * $height, 3);
-		// 	$y3 = round(6.843 * $height, 3);
-		// 	$v1 = $viewbox_height / 2;
-		// 	$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$x1},{$y1},{$pathwidthhalf},{$y2}c{$x2}-{$y3},{$pathwidthhalf},{$v1},{$pathwidthhalf},{$v1}H{$start}V0z'/>";
-		// }
-
-		else if ($shape == "wave2")
-		{
-			$v1 = $viewbox_height / 2;
-			$x1 = round(10 / $repeat, 3);
-			$x2 = round(27 / $repeat, 3);
-			$test = $i * 100 / $repeat;
-			$x3 = round(73 / $repeat + $test, 3);
-			$x4 = round(56 / $repeat + $test, 3);
-			$path .= "<path class='{$pathclass}' d='M{$start},{$v1}c0,0,{$x1},{$v1},{$x2},{$v1}S{$x4},0,{$x3},0s{$x2},{$v1},{$x2},{$v1}v{$v1}H{$start}V{$v1}z'/>";
-		}
-
-		else if ($shape == "sharkteeth")
-		{
-			$end = $start + $pathwidth;
-			$middle = $start + $pathwidthhalf;
-			$y1 = round($viewbox_height * 0.8, 3);
-			$y2 = round($viewbox_height * 0.2, 3);
-			$path .= "<polygon class='{$pathclass}' points='{$start},{$y1} {$middle},0 {$end},{$y1} {$end},{$viewbox_height} {$middle},{$y2} {$start},{$viewbox_height}'/>";
-		}
+		// add the path to $paths
+		$paths .= $path . $pathclass . $pathstyle . "/>";
 	}
-	
+
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
@@ -349,16 +315,7 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 		?>
 		<div class="nxs_vectorart" id="vectorart_<?php echo $placeholderid;?>">
 			<svg class="<?php echo $svgclass; ?>" style="<?php echo $svgstyle; ?>" x="0px" y="0px" viewBox="0 0 100 <?php echo $viewbox_height; ?>" preserveAspectRatio="none">
-				<defs>
-					<linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
-						<stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
-					</linearGradient>
-				</defs>
-				
-				<?php 
-				echo $path; 
-				?>
+				<?php echo $paths; ?>
 			</svg>
 		</div>
 		<?php
