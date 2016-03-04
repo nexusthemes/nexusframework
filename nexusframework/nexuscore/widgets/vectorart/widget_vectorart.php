@@ -305,16 +305,16 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 			$path .= "<polygon class='{$pathclass}' points='{$start},0 {$end},{$viewbox_height} {$start},{$viewbox_height}'/>";
 		}
 
-		else if ($shape == "wave")
-		{
-			$x1 = round(15.875 / $repeat, 3);
-			$x2 = round(32.936 / $repeat, 3);
-			$y1 = round(9.688 * $height, 3);
-			$y2 = round(2.598 * $height, 3);
-			$y3 = round(6.843 * $height, 3);
-			$v1 = $viewbox_height / 2;
-			$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$x1},{$y1},{$pathwidthhalf},{$y2}c{$x2}-{$y3},{$pathwidthhalf},{$v1},{$pathwidthhalf},{$v1}H{$start}V0z'/>";
-		}
+		// else if ($shape == "wave")
+		// {
+		// 	$x1 = round(15.875 / $repeat, 3);
+		// 	$x2 = round(32.936 / $repeat, 3);
+		// 	$y1 = round(9.688 * $height, 3);
+		// 	$y2 = round(2.598 * $height, 3);
+		// 	$y3 = round(6.843 * $height, 3);
+		// 	$v1 = $viewbox_height / 2;
+		// 	$path .= "<path class='{$pathclass}' d='M{$start},0c0,0,{$x1},{$y1},{$pathwidthhalf},{$y2}c{$x2}-{$y3},{$pathwidthhalf},{$v1},{$pathwidthhalf},{$v1}H{$start}V0z'/>";
+		// }
 
 		else if ($shape == "wave2")
 		{
