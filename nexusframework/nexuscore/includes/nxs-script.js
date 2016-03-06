@@ -347,8 +347,8 @@ function nxs_js_calc_menu_mini_height(expander, obj) {
 	var extendMenuHeight = 0;
 
 	// set height on expander if the container is fixed and the menu does not fit in the screen
-	if ($('#nxs-fixed-header').length > 0) {
-		if ($(expander).closest('#nxs-fixed-header').length > 0) {
+	if (jQ_nxs('#nxs-fixed-header').length > 0) {
+		if (jQ_nxs(expander).closest('#nxs-fixed-header').length > 0) {
 			var top = jQ_nxs(obj).offset().top;
 			var bottom = top + jQ_nxs(obj).outerHeight();
 			var scrollTop = jQ_nxs(window).scrollTop();
