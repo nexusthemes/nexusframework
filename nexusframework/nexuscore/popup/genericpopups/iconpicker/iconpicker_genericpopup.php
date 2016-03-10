@@ -110,6 +110,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"busy",
 										"categories",
 										"tumbler",
+										"vector",
 
 									);
 										
