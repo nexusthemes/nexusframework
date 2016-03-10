@@ -7347,7 +7347,10 @@ function nxs_colorization_getpalettenames($addnonefirstelement)
 		if (nxs_stringstartswith($currentkey, $metakeystart))
 		{
 			$currentname = nxs_stringreplacefirst($currentkey, $metakeystart, "");
-			$result[$currentname] = $currentname;
+			if ($currentname != "")
+			{
+				$result[$currentname] = $currentname;
+			}
 		}
 	}
 	

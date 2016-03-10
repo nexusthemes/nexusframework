@@ -367,7 +367,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 			</div>';
 			
 			echo '
-			<div class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
+			<div style="display:none" class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
 			
 				// Minified anchor
 				echo '			

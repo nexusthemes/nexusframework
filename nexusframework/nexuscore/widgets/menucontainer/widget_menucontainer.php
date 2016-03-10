@@ -557,7 +557,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
         /*** OUTPUT MINIFIED MENU ***/
 
-        echo '<div class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
+        echo '<div style="display: none" class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
 
         $outer_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $menuitem_color); ?>
                 <a href='#' class="nxs_js_menu_mini_expand-<?php echo $placeholderid; ?> <?php echo $outer_color_cssclass; ?>">
