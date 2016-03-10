@@ -344,8 +344,8 @@ function nxs_widgets_gallerybox_initplaceholderdata($args)
 	$subargs["nxsposttype"] = "genericlist";
 	$subargs["nxssubposttype"] = "gallery";	// NOTE!
 	$subargs["poststatus"] = "publish";
-	$subargs["titel"] = nxs_l18n__("Gallery items", "nxs_td") . " " . nxs_generaterandomstring(6);
-	$subargs["slug"] = $subargs["titel"];
+	$subargs["titel"] = nxs_l18n__("Gallery items", "nxs_td");
+	$subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
 	$subargs["postwizard"] = "defaultgenericlist";
 	
 	$response = nxs_addnewarticle($subargs);

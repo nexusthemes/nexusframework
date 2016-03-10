@@ -689,8 +689,8 @@ function nxs_widgets_googlebusinessphoto_initplaceholderdata($args)
 	$subargs["nxsposttype"] = "genericlist";
 	$subargs["nxssubposttype"] = "googlebusphotoslides";	// NOTE!
 	$subargs["poststatus"] = "publish";
-	$subargs["titel"] = "google business photo items" . " " . nxs_generaterandomstring(6);
-	$subargs["slug"] = $subargs["titel"];
+	$subargs["titel"] = "google business photo items";
+	$subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
 	$subargs["postwizard"] = "defaultgenericlist";
 	
 	$response = nxs_addnewarticle($subargs);

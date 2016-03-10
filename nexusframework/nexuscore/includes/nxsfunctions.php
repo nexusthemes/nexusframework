@@ -1114,7 +1114,7 @@ function nxs_addnewarticle($args)
 		}
 
 		if ( $c > 25 ) {
-			nxs_webmethod_return_nack("unable to find a available slug");
+			nxs_webmethod_return_nack("unable to find a available slug $slug");
 		}
 		
 		$slug = $original_slug . '-' . $c;
@@ -6647,6 +6647,16 @@ function nxs_updateseooption($postid, $key, $val)
 function nxs_allocatenewpagerowid($postid)
 {
 	$random = rand(1000000000, 9999999999);
+	if ($random == "")
+	{
+		// retry ?
+		$random = rand(1000000000, 9999999999);
+	}
+	
+	if ($random == "")
+	{
+		nxs_webmethod_return_nack("random is empty?!");
+	}
 	
 	return "prid" . $random;
 }
