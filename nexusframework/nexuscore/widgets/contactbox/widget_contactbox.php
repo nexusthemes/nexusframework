@@ -581,7 +581,7 @@ function nxs_widgets_contactbox_initplaceholderdata($args)
 	$subargs["nxsposttype"] = "genericlist";
 	$subargs["nxssubposttype"] = "contact";	// NOTE!
 	$subargs["poststatus"] = "publish";
-	$subargs["titel"] = nxs_l18n__("contact items", "nxs_td");
+	$subargs["titel"] = nxs_l18n__("contact items", "nxs_td") . " " . nxs_generaterandomstring(6);
 	$subargs["slug"] = $subargs["titel"];
 	$subargs["postwizard"] = "defaultgenericlist";
 	

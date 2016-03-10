@@ -787,7 +787,7 @@ function nxs_widgets_menucontainer_initplaceholderdata($args) {
     $subargs = array();
     $subargs["nxsposttype"] = "menu";
     $subargs["poststatus"] = "publish";
-    $subargs["titel"] = nxs_l18n__("Menu items", "nxs_td");
+    $subargs["titel"] = nxs_l18n__("Menu items", "nxs_td") . " " . nxs_generaterandomstring(6);
     $subargs["slug"] = $subargs["titel"];
     $subargs["postwizard"] = "defaultmenu";
 

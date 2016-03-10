@@ -37,6 +37,7 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> "Title",
 				"placeholder" 		=> "Title goes here",
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -296,7 +297,7 @@ function nxs_widgets_definitionlistbox_initplaceholderdata($args)
 	$subargs["nxsposttype"] = "genericlist";
 	$subargs["nxssubposttype"] = "definitionlist";	// NOTE!
 	$subargs["poststatus"] = "publish";
-	$subargs["titel"] = nxs_l18n__("definitionlist items", "nxs_td");
+	$subargs["titel"] = nxs_l18n__("definitionlist items", "nxs_td") . " " . nxs_generaterandomstring(6);
 	$subargs["slug"] = $subargs["titel"];
 	$subargs["postwizard"] = "defaultgenericlist";
 	

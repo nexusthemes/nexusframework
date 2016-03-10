@@ -594,7 +594,7 @@ function nxs_widgets_eventsbox_initplaceholderdata($args)
 	$subargs["nxsposttype"] = "genericlist";
 	$subargs["nxssubposttype"] = "eventsbox";	// NOTE!
 	$subargs["poststatus"] = "publish";
-	$subargs["titel"] = nxs_l18n__("Events items[title]", "nxs_td");
+	$subargs["titel"] = nxs_l18n__("Events items[title]", "nxs_td") . " " . nxs_generaterandomstring(6);
 	$subargs["slug"] = nxs_l18n__("Events[slug]", "nxs_td");
 	$subargs["postwizard"] = "defaultgenericlist";
 
