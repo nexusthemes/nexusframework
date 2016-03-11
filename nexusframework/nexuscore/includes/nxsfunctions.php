@@ -1673,20 +1673,38 @@ function nxs_getpostrowtemplates($args)
 
 function nxs_getrandomplaceholderid()
 {
-	$randomnummer = rand(1000000000, 9999999999);
-	return $randomnummer;
+	$random = rand(1, getrandmax());
+	
+	if ($random == "")
+	{
+		nxs_webmethod_return_nack("random is empty?! (2)");
+	}
+	
+	return $random;
 }
 
 function nxs_getrandompagerowid()
 {
-	$randomnummer = rand(1000000000, 9999999999);
-	return $randomnummer;
+	$random = rand(1, getrandmax());
+	
+	if ($random == "")
+	{
+		nxs_webmethod_return_nack("random is empty?! (3)");
+	}
+	
+	return $random;
 }
 
 function nxs_getrandompostname()
 {
-	$randomnummer = rand(1000000, 9999999) . 'PID';
-	return $randomnummer;
+	$random = rand(1000000, 9999999) . 'PID';
+	
+	if ($random == "")
+	{
+		nxs_webmethod_return_nack("random is empty?! (4)");
+	}
+	
+	return $random;
 }
 
 // kudos to http://stackoverflow.com/questions/4356289/php-random-string-generator
@@ -6646,16 +6664,11 @@ function nxs_updateseooption($postid, $key, $val)
 // that will be inserted or appended to the post
 function nxs_allocatenewpagerowid($postid)
 {
-	$random = rand(1000000000, 9999999999);
-	if ($random == "")
-	{
-		// retry ?
-		$random = rand(1000000000, 9999999999);
-	}
+	$random = rand(1, getrandmax());
 	
 	if ($random == "")
 	{
-		nxs_webmethod_return_nack("random is empty?!");
+		nxs_webmethod_return_nack("random is empty?! (1)");
 	}
 	
 	return "prid" . $random;

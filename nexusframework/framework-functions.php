@@ -756,6 +756,15 @@ function nxs_init()
 		  	phpinfo();
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "rand")
+		  {
+		  	$random = rand($_REQUEST["min"], $_REQUEST["max"]);
+		  	$highest = getrandmax();
+		  	echo "random result: [{$random}] highest: [{$highest}]";
+		  	
+		  	
+		  	die();
+		  }
 		  else if ($_REQUEST["nxs"] == "wp_upload_dir")
 		  {
 		  	$x = wp_upload_dir();
