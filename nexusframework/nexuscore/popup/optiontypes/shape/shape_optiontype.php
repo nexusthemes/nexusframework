@@ -20,7 +20,7 @@ function nxs_popup_optiontype_shape_renderhtmlinpopup($optionvalues, $args, $run
 	    	<?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
         	<div class="box-content">
           	<ul>
-	          	<li onclick='nxs_js_startcolorzenpicker_<?php echo $id;?>(); return false;' style='cursor: pointer;' class='nxs-float-left'>
+	          	<li onclick='nxs_js_startshapepicker_<?php echo $id;?>(); return false;' style='cursor: pointer;' class='nxs-float-left'>
 	          		<?php
 	          		if (isset($value) && $value != "")
 	          		{

@@ -278,12 +278,12 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "gallerybox", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "definitionlistbox", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "sliderbox", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "vectorart", "tags" => array("nexus"));
 		
 		
 		if ($enableconceptualwidgets)
 		{
 			$result[] = array("widgetid" => "filmrollbox", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "vectorart", "tags" => array("nexus"));
 		}
 	} 
 	
@@ -559,12 +559,12 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("eventsboxitem");
 	nxs_ext_lazyload_widget("csv");
 	nxs_ext_lazyload_widget("section");
-    nxs_ext_lazyload_widget("pagination");
+  nxs_ext_lazyload_widget("pagination");
+	nxs_ext_lazyload_widget("vectorart");
     
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("wpmenu");
-		nxs_ext_lazyload_widget("vectorart");
 	}
 	
 	nxs_ext_lazyload_widget("target");
