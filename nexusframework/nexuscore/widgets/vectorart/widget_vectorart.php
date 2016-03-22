@@ -1,12 +1,12 @@
 <?php
 
 function nxs_widgets_vectorart_geticonid() {
-	return "nxs-icon-image";
+	return "nxs-icon-vector";
 }
 
 // Setting the widget title
 function nxs_widgets_vectorart_gettitle() {
-	return nxs_l18n__("vectorart[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Vectorart", "nxs_td");
 }
 
 // Unistyle
@@ -338,9 +338,11 @@ function nxs_widgets_vectorart_initplaceholderdata($args)
 {
 	extract($args);
 
+	// defaults
 	$args['height'] = "1-0";
 	$args['width'] = "100";
 	$args['alignment'] = "center";
+	$args['ph_margin_bottom'] = "0-0";
 
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_vectorart_getunifiedstylinggroup();

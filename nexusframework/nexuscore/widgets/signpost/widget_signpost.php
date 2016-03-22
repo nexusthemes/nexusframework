@@ -15,6 +15,11 @@ function nxs_widgets_signpost_getunifiedstylinggroup() {
 	return "signpostwidget";
 }
 
+// Unicontent
+function nxs_widgets_signpostt_getunifiedcontentgroup() {
+	return "signpostwidget";
+}
+
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -34,6 +39,10 @@ function nxs_widgets_signpost_home_getoptions($args)
 		(
 			"group" => nxs_widgets_signpost_getunifiedstylinggroup(),
 		),
+		"unifiedcontent" 	=> array 
+		(
+			"group" => nxs_widgets_signpost_getunifiedcontentgroup(),
+		),
 		"fields" => array
 		(
 			// TITLE
@@ -50,6 +59,7 @@ function nxs_widgets_signpost_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),		
 			array(
@@ -85,6 +95,7 @@ function nxs_widgets_signpost_home_getoptions($args)
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Choose image", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -140,6 +151,7 @@ function nxs_widgets_signpost_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),
 				"placeholder" => nxs_l18n__("Text goes here", "nxs_td"),
 				"rows" => 4,
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			
@@ -161,6 +173,7 @@ function nxs_widgets_signpost_home_getoptions($args)
 				"id" 				=> "button_text",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -182,12 +195,14 @@ function nxs_widgets_signpost_home_getoptions($args)
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
+				"unicontentablefield" => true,
 			),			
 			array(
 				"id" 				=> "destination_target",
@@ -250,13 +265,21 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 	// The $postid and $placeholderid are used when building the HTML later on
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
 	
-	// Unistyle
+	// Blend unistyle properties
 	$unistyle = $temp_array["unistyle"];
-	if (isset($unistyle) && $unistyle != "") {
-		// blend unistyle properties
+	if (isset($unistyle) && $unistyle != "") 
+	{
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_signpost_getunifiedstylinggroup(), $unistyle);
 		$temp_array = array_merge($temp_array, $unistyleproperties);
 	}
+
+	// Blend unicontent properties
+	$unicontent = $temp_array["unicontent"];
+	if (isset($unicontent) && $unicontent != "") {
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_signpost_getunifiedcontentgroup(), $unicontent);
+		$temp_array = array_merge($temp_array, $unicontentproperties);
+	}	
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
@@ -462,6 +485,10 @@ function nxs_widgets_signpost_initplaceholderdata($args)
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_signpost_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
+	
+		// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_signpost_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	

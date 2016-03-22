@@ -315,6 +315,23 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	$lat = $$altid["lat"];
 	$lng = $$altid["lng"];
 
+	if ($maptypeid == "")
+	{
+		$maptypeid = "ROADMAP";
+	}
+	if ($zoom == "")
+	{
+		$zoom = "14";
+	}
+	if ($lat == "")
+	{
+		$lat = "40.8";
+	}
+	if ($lng == "")
+	{
+		$lng = "-74";
+	}
+	
 	nxs_ob_start();
 	?>
 

@@ -572,7 +572,7 @@ function nxs_widgets_filmrollbox_initplaceholderdata($args)
 	$subargs["nxssubposttype"] = "filmrollbox";	// NOTE!
 	$subargs["poststatus"] = "publish";
 	$subargs["titel"] = nxs_l18n__("Slider items[title]", "nxs_td");
-	$subargs["slug"] = nxs_l18n__("Slider items[slug]", "nxs_td");
+	$subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
 	$subargs["postwizard"] = "defaultgenericlist";
 	
 	$response = nxs_addnewarticle($subargs);

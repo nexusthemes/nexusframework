@@ -557,7 +557,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
         /*** OUTPUT MINIFIED MENU ***/
 
-        echo '<div class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
+        echo '<div style="display: none" class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
 
         $outer_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $menuitem_color); ?>
                 <a href='#' class="nxs_js_menu_mini_expand-<?php echo $placeholderid; ?> <?php echo $outer_color_cssclass; ?>">
@@ -788,7 +788,7 @@ function nxs_widgets_menucontainer_initplaceholderdata($args) {
     $subargs["nxsposttype"] = "menu";
     $subargs["poststatus"] = "publish";
     $subargs["titel"] = nxs_l18n__("Menu items", "nxs_td");
-    $subargs["slug"] = $subargs["titel"];
+    $subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
     $subargs["postwizard"] = "defaultmenu";
 
     $response = nxs_addnewarticle($subargs);

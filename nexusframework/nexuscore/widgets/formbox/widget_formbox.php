@@ -785,7 +785,7 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	$subargs["nxssubposttype"] = "form";	// NOTE!
 	$subargs["poststatus"] = "publish";
 	$subargs["titel"] = nxs_l18n__("form items", "nxs_td");
-	$subargs["slug"] = $subargs["titel"];
+	$subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
 	$subargs["postwizard"] = "defaultgenericlist";
 	
 	$response = nxs_addnewarticle($subargs);

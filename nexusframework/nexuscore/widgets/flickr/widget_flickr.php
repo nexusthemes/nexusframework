@@ -318,25 +318,6 @@ function nxs_widgets_flickr_initplaceholderdata($args)
 {
 	extract($args);
 	
-	// create a new generic list with subtype flickr
-	// assign the newly create list to the list property
-	
-	$subargs = array();
-	$subargs["nxsposttype"] = "genericlist";
-	$subargs["nxssubposttype"] = "flickr";	// NOTE!
-	$subargs["poststatus"] = "publish";
-	$subargs["titel"] = nxs_l18n__("flickr items", "nxs_td");
-	$subargs["slug"] = $subargs["titel"];
-	$subargs["postwizard"] = "defaultgenericlist";
-	
-	$response = nxs_addnewarticle($subargs);
-	if ($response["result"] == "OK")
-	{
-		$args["items_genericlistid"] = $response["postid"];
-		$args["items_genericlistid_globalid"] = nxs_get_globalid($response["postid"], true);
-	} else {
-	}
-	
 	$args['button_color'] = "base2";
 	$args['title_heading'] = "2";
 	$args['button_scale'] = "1-0";

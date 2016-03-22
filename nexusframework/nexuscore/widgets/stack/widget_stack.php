@@ -208,7 +208,7 @@ function nxs_widgets_stack_initplaceholderdata($args)
 	$subargs["nxssubposttype"] = "stack";	// NOTE!
 	$subargs["poststatus"] = "publish";
 	$subargs["titel"] = "stack items";
-	$subargs["slug"] = "stack items";
+	$subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
 	$subargs["postwizard"] = "defaultgenericlist";
 	
 	$response = nxs_addnewarticle($subargs);

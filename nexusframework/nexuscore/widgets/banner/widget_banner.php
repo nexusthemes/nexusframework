@@ -391,7 +391,7 @@ function nxs_widgets_banner_initplaceholderdata($args)
 	$subargs["nxssubposttype"] = "banner";	// NOTE!
 	$subargs["poststatus"] = "publish";
 	$subargs["titel"] = nxs_l18n__("banner items", "nxs_td");
-	$subargs["slug"] = $subargs["titel"];
+	$subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
 	$subargs["postwizard"] = "defaultgenericlist";
 	
 	$response = nxs_addnewarticle($subargs);

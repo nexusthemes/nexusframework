@@ -595,7 +595,7 @@ function nxs_widgets_eventsbox_initplaceholderdata($args)
 	$subargs["nxssubposttype"] = "eventsbox";	// NOTE!
 	$subargs["poststatus"] = "publish";
 	$subargs["titel"] = nxs_l18n__("Events items[title]", "nxs_td");
-	$subargs["slug"] = nxs_l18n__("Events[slug]", "nxs_td");
+	$subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
 	$subargs["postwizard"] = "defaultgenericlist";
 
 	// current values as defined by unistyle prefail over the above "default" props
