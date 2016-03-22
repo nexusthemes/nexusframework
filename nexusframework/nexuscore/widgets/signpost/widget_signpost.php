@@ -16,7 +16,7 @@ function nxs_widgets_signpost_getunifiedstylinggroup() {
 }
 
 // Unicontent
-function nxs_widgets_signpostt_getunifiedcontentgroup() {
+function nxs_widgets_signpost_getunifiedcontentgroup() {
 	return "signpostwidget";
 }
 
