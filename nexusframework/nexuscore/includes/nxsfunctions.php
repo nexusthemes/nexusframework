@@ -2212,6 +2212,14 @@ function nxs_getcontentsofpoststructure($postid, $poststructure)
 	return $content;
 }
 
+function nxs_getrowindex_forpostidplaceholderid($postid, $placeholderid)
+{
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	$result = nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid);
+	return $result;
+}
+
+// pagerowid
 function nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid)
 {
 	$result = "nvt (" . $placeholderid . ")";
@@ -4859,6 +4867,7 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 			foreach ($allvalues as $currentkey => $currentvalue)
 			{
 				if (nxs_stringstartswith($currentkey, $currentfieldid))
+
 				{
 					$unicontentablefields[$currentkey] = $currentvalue;
 				}
@@ -7351,6 +7360,79 @@ function nxs_localization_getlocalizablefieldids($options)
 }
 
 /* COLOR PALETTE */
+
+function nxs_colorization_hextorgb($hex) 
+{
+	$hex = str_replace("#", "", $hex);
+	
+	if(strlen($hex) == 3) 
+	{
+	  $r = hexdec($hex[0].$hex[0]);
+	  $g = hexdec($hex[1].$hex[1]);
+	  $b = hexdec($hex[2].$hex[2]);
+	} 
+	else if(strlen($hex) == 6)
+	{
+	  $r = hexdec($hex[0].$hex[1]);
+	  $g = hexdec($hex[2].$hex[3]);
+	  $b = hexdec($hex[4].$hex[5]);
+	}
+	else
+	{
+		nxs_webmethod_return_nack("unsupported input? $hex (expected 3 or 6 chars, p.e. FFFFFF)");
+	}
+
+	$result= array
+	(
+		"r" => $r, 
+		"g" => $g,
+		"b" => $b
+	); 
+	return $result;
+}
+
+function nxs_colorization_rgbtohsl($rgb)
+{
+	$r = $rgb["r"] / 255;
+	$g = $rgb["g"] / 255;
+	$b = $rgb["b"] / 255;
+	
+  $max = max($r, $g, $b);
+  $min = min($r, $g, $b);
+  $h = $s = $l = ($max + $min) / 2;
+
+  if($max == $min)
+  {
+    $h = $s = 0; // achromatic
+  }
+  else
+  {
+  	$d = $max - $min;
+    $s = $l > 0.5 ? $d / (2 - $max - $min) : $d / ($max + $min);
+    switch($max)
+    {
+      case $r: 
+      	$h = ($g - $b) / $d + ($g < $b ? 6 : 0); 
+      	break;
+      case $g: 
+      	$h = ($b - $r) / $d + 2; 
+      	break;
+      case $b: 
+      	$h = ($r - $g) / $d + 4; 
+      	break;
+    }
+    $h /= 6;
+  }
+  
+  $result = array
+  (
+  	"h" => $h,
+  	"s" => $s,
+  	"l" => $l,
+  );
+
+  return $result;
+}
 
 // get list of possible unistyle names that can be selected
 // for a speficic group
