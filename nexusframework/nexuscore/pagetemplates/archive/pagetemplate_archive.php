@@ -633,25 +633,9 @@ function nxs_pagetemplate_handleheader()
 		
 	//
 	nxs_render_headstyles();
-
-	if ($analyticsUA != "") { ?>
-	<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '<?php echo $analyticsUA; ?>']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-	</script>
-	<?php } ?>
+	nxs_analytics_handleanalytics();
 	
-	
-	<?php if (is_user_logged_in()) { ?>
+	if (is_user_logged_in()) { ?>
 	
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
 	<script type="text/javascript">
