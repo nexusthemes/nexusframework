@@ -2219,7 +2219,8 @@ function nxs_getrowindex_forpostidplaceholderid($postid, $placeholderid)
 	return $result;
 }
 
-// pagerowid
+// NOTE; this is the rowindex, not the pagerowid! (rowindexes always start with 0,
+// the pagerowid is the unique id of the row!
 function nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid)
 {
 	$result = "nvt (" . $placeholderid . ")";
@@ -2236,6 +2237,36 @@ function nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid)
 	}
 	return $result;
 }
+
+/*
+*/
+
+function nxs_getpagerowid_forpostidplaceholderid($postid, $placeholderid)
+{
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	$result = nxs_getpagerowid_for_placeholderid($parsedpoststructure, $placeholderid);
+	return $result;
+}
+
+// NOTE; this is the pagerowid (not the rowindex!)
+function nxs_getpagerowid_for_placeholderid($parsedpoststructure, $placeholderid)
+{
+	$result = "notset";
+	foreach ($parsedpoststructure as $rowindex => $row)
+	{		
+		$outercontent = $row["outercontent"];
+		if (nxs_stringcontains($outercontent, $placeholderid))
+		{
+			// gotcha
+			$result = $row["pagerowid"];
+			break;
+		}
+	}
+	return $result;
+}
+
+/*
+*/
 
 function nxs_parserowidfrompagerow($parsedrowfromstructure)
 {
