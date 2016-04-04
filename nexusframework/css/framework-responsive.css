@@ -1015,3 +1015,15 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .prod-img2 .bg.device-phone2 	{ border-radius: 5px; }
 }
 
+/* tweaks for cropped size 2x images on page with sidebar, see ticket 16549 */
+.nxs-viewport-gt-719 #nxs-content .has-sidebar img.nxs-icon-left.nxs-icon-width-2-0
+{    width: 160px;    height: 160px; }
+
+.nxs-viewport-gt-959 #nxs-content .has-sidebar img.nxs-icon-left.nxs-icon-width-2-0
+{    width: 120px;    height: 120px; }
+
+.nxs-viewport-gt-1199 #nxs-content .has-sidebar img.nxs-icon-left.nxs-icon-width-2-0
+{    width: 147px;    height: 147px; }
+
+.nxs-viewport-gt-1439 #nxs-content .has-sidebar img.nxs-icon-left.nxs-icon-width-2-0
+{    width: 177px;    height: 177px; }
