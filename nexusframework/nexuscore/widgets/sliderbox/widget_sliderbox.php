@@ -369,7 +369,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 	else 							{ $pause_transition = "true"; }
 	
 	// SLIDER WIDTH
-	$margin = (100% - $slider_width)/2;
+	$margin = (100 - $slider_width)/2;
 	$margin_left = 'margin-left: '.$margin.'%;';
 	$margin_right = 'margin-right: '.$margin.'%;';
 	$slider_width = 'max-width: '.$slider_width.' !important;';
