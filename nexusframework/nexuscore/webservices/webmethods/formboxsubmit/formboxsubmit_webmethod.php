@@ -184,10 +184,13 @@ function nxs_webmethod_formboxsubmit()
 				$pos = strpos($value, $filetempname);
 				if ($pos)
 				{
+					$fileuploadstorageabsfolderurl = nxs_widgets_formbox_getfileuploadstorageabsfolderurl($metadata);
+					$filedestinationurl = "{$fileuploadstorageabsfolderurl}{$newfilename}.{$fileext}";
+
 					$formlabel = substr($value, 0, $pos);
-					$start = strpos($filedestination, "wp-content");
-					$end = strlen($filedestination) - $start + 1;
-					$fileurl = substr($filedestination, -$end);
+					$start = 0;
+					$end = strlen($filedestinationurl) - $start + 1;
+					$fileurl = substr($filedestinationurl, -$end);
 					$outputlines[$key] = "{$formlabel}<a href='{$fileurl}'>{$filename}</a>";	
 				}
 			}

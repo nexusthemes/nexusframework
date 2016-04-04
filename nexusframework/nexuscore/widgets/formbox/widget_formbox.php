@@ -76,6 +76,19 @@ function nxs_widgets_formbox_getfileuploadstorageabsfolder($metadata)
 	return $storageabsfolder;
 }
 
+function nxs_widgets_formbox_getfileuploadstorageabsfolderurl($metadata)
+{
+	$upload_dir_meta = wp_upload_dir();
+	$upload_dir = $upload_dir_meta["baseurl"];
+	
+	$formidentifier = nxs_widgets_formbox_getidentifier($metadata);
+
+	$storagerelfolder = "nxsformsfiles";
+	$storageabsfolder = "{$upload_dir}/{$storagerelfolder}/{$formidentifier}/";
+
+	return $storageabsfolder;
+}
+
 function nxs_widgets_formbox_getidentifier($metadata)
 {
 	extract($metadata);
