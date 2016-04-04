@@ -16,7 +16,7 @@ function nxs_widgets_signpost_getunifiedstylinggroup() {
 }
 
 // Unicontent
-function nxs_widgets_signpostt_getunifiedcontentgroup() {
+function nxs_widgets_signpost_getunifiedcontentgroup() {
 	return "signpostwidget";
 }
 
@@ -285,7 +285,10 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = array_merge($temp_array, $args);
 	
 	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
+	//$mixedattributes = nxs_localization_localize($mixedattributes);
+	
+	// Lookup atts
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text", "destination_url"));
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();

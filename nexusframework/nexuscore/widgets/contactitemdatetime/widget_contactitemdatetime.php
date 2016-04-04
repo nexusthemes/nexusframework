@@ -178,8 +178,10 @@ function nxs_widgets_contactitemdatetime_renderincontactbox($args)
 	  		$am = "AM";
 	  		$pm = "PM";
 	  	}
-	  	
+	  	// see https://en.wikipedia.org/wiki/12-hour_clock
+	  	// Midnight (start of day) 12:00 a.m = 00:00
 	  	?>
+	  	<option value='12 <?php echo $am; ?>'>12 <?php echo $am; ?></option>
 	  	<option value='01 <?php echo $am; ?>'>01 <?php echo $am; ?></option>
 	  	<option value='02 <?php echo $am; ?>'>02 <?php echo $am; ?></option>
 	  	<option value='03 <?php echo $am; ?>'>03 <?php echo $am; ?></option>
@@ -191,8 +193,10 @@ function nxs_widgets_contactitemdatetime_renderincontactbox($args)
 	  	<option value='09 <?php echo $am; ?>'>09 <?php echo $am; ?></option>
 	  	<option value='10 <?php echo $am; ?>'>10 <?php echo $am; ?></option>
 	  	<option value='11 <?php echo $am; ?>'>11 <?php echo $am; ?></option>
-	  	<option value='12 <?php echo $am; ?>'>12 <?php echo $am; ?></option>
-	  	
+	  	<?php
+			// 12pm = noon = 12:00
+			?>
+	  	<option value='12 <?php echo $pm; ?>'>12 <?php echo $pm; ?></option>
 	  	<option value='01 <?php echo $pm; ?>'>01 <?php echo $pm; ?></option>
 	  	<option value='02 <?php echo $pm; ?>'>02 <?php echo $pm; ?></option>
 	  	<option value='03 <?php echo $pm; ?>'>03 <?php echo $pm; ?></option>
@@ -203,9 +207,10 @@ function nxs_widgets_contactitemdatetime_renderincontactbox($args)
 	  	<option value='08 <?php echo $pm; ?>'>08 <?php echo $pm; ?></option>
 	  	<option value='09 <?php echo $pm; ?>'>09 <?php echo $pm; ?></option>
 	  	<option value='10 <?php echo $pm; ?>'>10 <?php echo $pm; ?></option>
-	  	<option value='11 <?php echo $pm; ?>'>11 <?php echo $pm; ?></option>
-	  	<option value='12 <?php echo $pm; ?>'>12 <?php echo $pm; ?></option>
+	  	<option value='11 <?php echo $pm; ?>'>11 <?php echo $pm; ?></option>	  	
 	  	<?php
+	  	// 11:59 p.m.	23:59
+	  	// Midnight (end of day) shown as start of next day	24:00
 	  }
   	?>
   </select>

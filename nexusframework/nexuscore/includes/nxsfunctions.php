@@ -2212,6 +2212,15 @@ function nxs_getcontentsofpoststructure($postid, $poststructure)
 	return $content;
 }
 
+function nxs_getrowindex_forpostidplaceholderid($postid, $placeholderid)
+{
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	$result = nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid);
+	return $result;
+}
+
+// NOTE; this is the rowindex, not the pagerowid! (rowindexes always start with 0,
+// the pagerowid is the unique id of the row!
 function nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid)
 {
 	$result = "nvt (" . $placeholderid . ")";
@@ -2228,6 +2237,36 @@ function nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid)
 	}
 	return $result;
 }
+
+/*
+*/
+
+function nxs_getpagerowid_forpostidplaceholderid($postid, $placeholderid)
+{
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	$result = nxs_getpagerowid_for_placeholderid($parsedpoststructure, $placeholderid);
+	return $result;
+}
+
+// NOTE; this is the pagerowid (not the rowindex!)
+function nxs_getpagerowid_for_placeholderid($parsedpoststructure, $placeholderid)
+{
+	$result = "notset";
+	foreach ($parsedpoststructure as $rowindex => $row)
+	{		
+		$outercontent = $row["outercontent"];
+		if (nxs_stringcontains($outercontent, $placeholderid))
+		{
+			// gotcha
+			$result = $row["pagerowid"];
+			break;
+		}
+	}
+	return $result;
+}
+
+/*
+*/
 
 function nxs_parserowidfrompagerow($parsedrowfromstructure)
 {
@@ -3806,6 +3845,26 @@ function nxs_get_postmeta($postid)
 	return $result;
 }
 
+function nxs_analytics_handleanalytics()
+{
+	// see https://developers.google.com/analytics/devguides/collection/analyticsjs/#the_javascript_tracking_snippet
+	$analyticsUA = nxs_seo_getanalyticsua();
+	if ($analyticsUA != "") 
+	{
+		?>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			ga('create', '<?php echo $analyticsUA; ?>', 'auto');
+			ga('send', 'pageview');	
+		</script>
+		<?php 
+	} 
+}
+
 function nxs_wpseo_video_index_content($content, $vid)
 {
   $postid = $vid['post_id'];
@@ -4859,6 +4918,7 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 			foreach ($allvalues as $currentkey => $currentvalue)
 			{
 				if (nxs_stringstartswith($currentkey, $currentfieldid))
+
 				{
 					$unicontentablefields[$currentkey] = $currentvalue;
 				}
@@ -7351,6 +7411,79 @@ function nxs_localization_getlocalizablefieldids($options)
 }
 
 /* COLOR PALETTE */
+
+function nxs_colorization_hextorgb($hex) 
+{
+	$hex = str_replace("#", "", $hex);
+	
+	if(strlen($hex) == 3) 
+	{
+	  $r = hexdec($hex[0].$hex[0]);
+	  $g = hexdec($hex[1].$hex[1]);
+	  $b = hexdec($hex[2].$hex[2]);
+	} 
+	else if(strlen($hex) == 6)
+	{
+	  $r = hexdec($hex[0].$hex[1]);
+	  $g = hexdec($hex[2].$hex[3]);
+	  $b = hexdec($hex[4].$hex[5]);
+	}
+	else
+	{
+		nxs_webmethod_return_nack("unsupported input? $hex (expected 3 or 6 chars, p.e. FFFFFF)");
+	}
+
+	$result= array
+	(
+		"r" => $r, 
+		"g" => $g,
+		"b" => $b
+	); 
+	return $result;
+}
+
+function nxs_colorization_rgbtohsl($rgb)
+{
+	$r = $rgb["r"] / 255;
+	$g = $rgb["g"] / 255;
+	$b = $rgb["b"] / 255;
+	
+  $max = max($r, $g, $b);
+  $min = min($r, $g, $b);
+  $h = $s = $l = ($max + $min) / 2;
+
+  if($max == $min)
+  {
+    $h = $s = 0; // achromatic
+  }
+  else
+  {
+  	$d = $max - $min;
+    $s = $l > 0.5 ? $d / (2 - $max - $min) : $d / ($max + $min);
+    switch($max)
+    {
+      case $r: 
+      	$h = ($g - $b) / $d + ($g < $b ? 6 : 0); 
+      	break;
+      case $g: 
+      	$h = ($b - $r) / $d + 2; 
+      	break;
+      case $b: 
+      	$h = ($r - $g) / $d + 4; 
+      	break;
+    }
+    $h /= 6;
+  }
+  
+  $result = array
+  (
+  	"h" => $h,
+  	"s" => $s,
+  	"l" => $l,
+  );
+
+  return $result;
+}
 
 // get list of possible unistyle names that can be selected
 // for a speficic group
