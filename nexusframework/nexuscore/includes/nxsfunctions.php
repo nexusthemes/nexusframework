@@ -89,12 +89,14 @@ function nxs_hideadminbar()
 	}
 }
 
-// helper function used by some filters
+// helper function used by some filters 
+// return_true
 function nxs_returntrue()
 {
 	return true;
 }
 
+// search tags; return_false
 function nxs_returnfalse()
 {
 	return false;
@@ -11260,6 +11262,61 @@ function nxs_iseditor()
 		return true;
 	}
 	return false;
+}
+
+function nxs_wp_getpostidbymeta($key, $value)
+{
+	$result = "";
+	
+	// find post that has nxs_themeid as metadata
+	global $wpdb;
+	$r = $wpdb->get_results("SELECT p.ID
+	  FROM $wpdb->posts as p
+	  LEFT JOIN 
+	      $wpdb->postmeta as m on (p.ID = m.post_id and 
+	                                        m.meta_key = '{$key}')
+	                                        where m.meta_value = '{$value}'
+	                                        ");
+	
+	if (count($r) == 1)
+	{
+		$post = $r[0];
+		$result = $post->ID;
+	}
+	else if (count($r) == 0)
+	{
+		$result = "";
+	}
+	if (count($r) > 1)
+	{
+		echo "fatal; multiple posts found with $key $value <br />";
+		var_dump($r);
+		die();
+	}
+	
+	return $result;
+}
+
+function nxs_wp_getpostidsbymeta($key, $value)
+{
+	$result = array();
+	
+	// find post that has nxs_themeid as metadata
+	global $wpdb;
+	$r = $wpdb->get_results("SELECT p.ID
+	  FROM $wpdb->posts as p
+	  LEFT JOIN 
+	      $wpdb->postmeta as m on (p.ID = m.post_id and 
+	                                        m.meta_key = '{$key}')
+	                                        where m.meta_value = '{$value}'
+	                                        ");
+	
+	foreach ($r as $post)
+	{
+		$result[] = $post->ID;
+	}
+	
+	return $result;
 }
 
 ?>
