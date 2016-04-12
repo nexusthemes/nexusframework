@@ -756,6 +756,14 @@ function nxs_init()
 		  	phpinfo();
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "dumppostidswithmeta")
+		  {
+		  	$key = $_REQUEST["key"];
+		  	$value = $_REQUEST["value"];
+		  	$r = nxs_wp_getpostidsbymeta($key, $value);
+		  	var_dump($r);
+		  	die();
+		  }
 		  else if ($_REQUEST["nxs"] == "rand")
 		  {
 		  	$random = rand($_REQUEST["min"], $_REQUEST["max"]);
