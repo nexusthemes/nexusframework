@@ -756,6 +756,14 @@ function nxs_init()
 		  	phpinfo();
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "dumppostidswithmeta")
+		  {
+		  	$key = $_REQUEST["key"];
+		  	$value = $_REQUEST["value"];
+		  	$r = nxs_wp_getpostidsbymeta($key, $value);
+		  	var_dump($r);
+		  	die();
+		  }
 		  else if ($_REQUEST["nxs"] == "rand")
 		  {
 		  	$random = rand($_REQUEST["min"], $_REQUEST["max"]);
@@ -2196,7 +2204,10 @@ function nxs_after_data_import()
 
 function nxs_cap_hasdesigncapabilities()
 {
-	return current_user_can(nxs_cap_getdesigncapability()) || is_super_admin();
+	$result = current_user_can(nxs_cap_getdesigncapability()) || is_super_admin();
+	// allow plugins to override the behaviour
+	$result = apply_filters('nxs_f_cap_hasdesigncapabilities', $result);
+	return $result;
 }
 
 function nxs_setuprolesandcapabilities()
