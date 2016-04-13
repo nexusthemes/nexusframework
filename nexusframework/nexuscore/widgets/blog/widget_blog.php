@@ -375,35 +375,6 @@ function nxs_widgets_blog_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
-			// COUNTERS (METADATA PER ITEM)
-			
-			array( 
-				"id" 					=> "wrapper_counters_begin",
-				"type" 					=> "wrapperbegin",
-				"label" 				=> nxs_l18n__("Social counters", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
-				"unistylablefield"	=> true
-			),
-			
-			array( 
-				"id" 				=> "twittercounters",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Twitter counters", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array( 
-				"id" 				=> "facebookcounters",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Facebook counters", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			
-			array( 
-				"id" 				=> "wrapper_counters_end",
-				"type" 				=> "wrapperend",
-				"unistylablefield"	=> true
-			),
-			
 			// METADATA
 			
 			array( 
@@ -1483,23 +1454,6 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					}
 					*/
 					
-					// share counters
-					
-					if ($twittercounters != ""){
-						// ensure the functions of socialsharing are available to us
-						nxs_requirewidget("socialsharing");
-						$twittercounters = '<div class="sharecounter">' . nxs_widgets_socialsharing_twitter_render($currentposturl, $currentposttitle) . '</div>';
-					}
-					
-					if ($facebookcounters != ""){
-						// ensure the functions of socialsharing are available to us
-					    nxs_requirewidget("socialsharing");
-					    $facebookcounters = '<div class="sharecounter">' . nxs_widgets_socialsharing_fblike_render($currentposturl) . '</div>';
-					}
-					if ($twittercounters != "" || $facebookcounters != "") { $sharecounters = "sharecounters-on"; }
-					
-					//
-					
 					if ($twitter != "") {
 						$twitter = '
 						<li>
@@ -1569,14 +1523,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					---------------------------------------------------------------------------------------------------- */
 					
 					echo '
-						<div class="nxs-blogentry nxs-relative ' . $sharecounters . '">
-						
-							<div class="sharecounters">';
-								echo $twittercounters;
-								echo $facebookcounters;
-								echo'
-							</div>
-	
+						<div class="nxs-blogentry nxs-relative">
 							<div class="info-wrapper">';
 		
 								echo $blogtitel;
