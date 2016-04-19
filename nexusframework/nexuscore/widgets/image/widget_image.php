@@ -394,8 +394,8 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	if ($image_shadow != "") { $image_shadow = 'nxs-shadow'; }
 	
 	// Hover effects
-	if ($enlarge != "" && ($destination_articleid != "" || $destination_url != "")) { $enlarge = 'nxs-enlarge'; }
-	if ($grayscale != "" && ($destination_articleid != "" || $destination_url != "")) {	$grayscale = 'nxs-grayscale'; }
+	if ($enlarge != "") { $enlarge = 'nxs-enlarge'; }
+	if ($grayscale != "") {	$grayscale = 'nxs-grayscale'; }
 	
 	// Border radius
 	if ($image_border_radius != "") {$border_radius = 'border-radius: '.$image_border_radius.';';}
