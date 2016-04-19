@@ -9747,7 +9747,7 @@ function nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title
 	return nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata);
 }
 	
-function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata)
+function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata, $destination_rel = false)
 {
 	if ($title == "")
 	{
@@ -9769,6 +9769,11 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
  				$destination_target_html = 'target="_blank"';
  			}
 		}
+	}
+
+	$destination_rel_html = '';
+	if ($destination_rel == "nofollow") {
+		$destination_rel_html = 'rel="nofollow"';
 	}
 	
 	// Title alignment
@@ -9813,11 +9818,11 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 	if ($destination_articleid != "") 
 	{
 		$destination_url = nxs_geturl_for_postid($destination_articleid);
-		$result = '<a href="' . $destination_url .'" '.$destination_target_html.'>' . $result . '</a>';
+		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_rel_html.'>' . $result . '</a>';
 	}
 	else if ($destination_url != "") 
 	{
-		$result = '<a href="' . $destination_url .'" '.$destination_target_html.'>' . $result . '</a>';
+		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_rel_html.'>' . $result . '</a>';
 	}
 	
 	return $result;

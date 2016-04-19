@@ -246,6 +246,18 @@ function nxs_widgets_image_home_getoptions($args)
 					"_self"=>nxs_l18n__("Current window", "nxs_td"),
 				),
 				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "destination_rel", 
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Rel", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Default", "nxs_td"),
+					"dofollow"=>nxs_l18n__("Do follow", "nxs_td"),
+					"nofollow"=>nxs_l18n__("No follow", "nxs_td"),
+				),
+				"unistylablefield"	=> true
 			),						
 			array( 
 				"id" 				=> "wrapper_link_end",
@@ -384,9 +396,14 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
  			}
 		}
 	}
+
+	$destination_rel_html = '';
+	if ($destination_rel == "nofollow") {
+		$destination_rel_html = 'rel="nofollow"';
+	}
 	
 	// Title
-	$htmltitle = nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata);
+	$htmltitle = nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata, $destination_rel);
 
 	$image_border_width = nxs_getcssclassesforlookup("nxs-border-width-", $image_border_width);
 	
@@ -424,8 +441,8 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	$destination_articleid = nxs_geturl_for_postid($destination_articleid);
 	
 	// Image link
-	if 		($destination_articleid != "") 		{ $html = '<a href="'.$destination_articleid .'" '.$destination_target_html.'>'.$html.'</a>'; } 
-	else if ($destination_url != "") 			{ $html = '<a href="'.$destination_url .'" '.$destination_target_html.'>'.$html.'</a>'; }
+	if 		($destination_articleid != "") 		{ $html = '<a href="'.$destination_articleid .'" '.$destination_target_html.' '.$destination_rel_html.'>'.$html.'</a>'; } 
+	else if ($destination_url != "") 			{ $html = '<a href="'.$destination_url .'" '.$destination_target_html.' '.$destination_rel_html.'>'.$html.'</a>'; }
 	
 	// Image
 	if ($image_imageid != "" || $image_src != "") 
