@@ -254,7 +254,7 @@ function nxs_widgets_image_home_getoptions($args)
 				"dropdown" 			=> array
 				(
 					"@@@empty@@@"=>nxs_l18n__("Default", "nxs_td"),
-					"dofollow"=>nxs_l18n__("Do follow", "nxs_td"),
+					"dofollow"=>nxs_l18n__("Follow", "nxs_td"),
 					"nofollow"=>nxs_l18n__("No follow", "nxs_td"),
 				),
 				"unistylablefield"	=> true
