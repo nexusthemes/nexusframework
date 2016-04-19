@@ -27,6 +27,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 	
 	$linktype = $temp_array['linktype'];
 	$linktarget = $temp_array['linktarget'];
+	$linkrel = $temp_array['linkrel'];
 	$linktext = $temp_array['linktext'];
 	$linkpostid = $temp_array['linkpostid'];
 	$linkhref = $temp_array['linkhref'];
@@ -295,6 +296,21 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 		            </div>
 		        </div>
 		        <div class="nxs-clear"></div>
+		      </div> <!--END content-->	
+
+		      <div class="content2">
+		        <div class="box">
+		            <div class="box-title">
+		              <h4><?php nxs_l18n_e("Link rel", "nxs_td"); ?></h4>
+		             </div>
+		            <div class="box-content">
+		            	<select id='linkrel'>
+		            		<option <?php if ($linkrel=='') echo "selected='selected'"; ?> value=''><?php nxs_l18n_e("Follow", "nxs_td"); ?></option>
+		            		<option <?php if ($linkrel=='nofollow') echo "selected='selected'"; ?> value='nofollow'><?php nxs_l18n_e("No follow", "nxs_td"); ?></option>
+		            	</select>
+		            </div>
+		        </div>
+		        <div class="nxs-clear"></div>
 		      </div> <!--END content-->				      
 		      
 		      <div class="content2">
@@ -337,6 +353,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 			nxs_js_popup_storestatecontroldata_dropdown('linktype', 'linktype');
 			nxs_js_popup_storestatecontroldata_dropdown('linkpostid', 'linkpostid');
 			nxs_js_popup_storestatecontroldata_dropdown('linktarget', 'linktarget');
+			nxs_js_popup_storestatecontroldata_dropdown('linkrel', 'linkrel');
 			nxs_js_popup_storestatecontroldata_textbox('linktext', 'linktext');
 			nxs_js_popup_storestatecontroldata_textbox('linkhref', 'linkhref');
 			nxs_js_popup_storestatecontroldata_textbox('linkmailto', 'linkmailto');
@@ -401,6 +418,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 			nxs_js_popup_setsessioncontext('tinymceinittrigger', "setanchor");
 			nxs_js_popup_setsessioncontext('linktext', nxs_js_popup_getsessiondata('linktext'));
 			nxs_js_popup_setsessioncontext('linktarget', nxs_js_popup_getsessiondata('linktarget'));
+			nxs_js_popup_setsessioncontext('linkrel', nxs_js_popup_getsessiondata('linkrel'));
 			nxs_js_popup_setsessioncontext('linktitle', nxs_js_popup_getsessiondata('linktitle'));
 			nxs_js_popup_setsessioncontext('linkhref', url);
 			
