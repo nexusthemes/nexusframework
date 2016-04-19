@@ -65,6 +65,38 @@ function nxs_webmethod_addcomment()
 	{
 		nxs_webmethod_return_nack("unable to create comment;");
 	}
+
+	// if the back-end is configured to: E-mail me whenever	anyone posts a comment
+	// then a email should be send to the admin when a comment is placed.
+	$comments_notify = get_option('comments_notify');
+	
+	if ($comments_notify == true)
+	{
+		$post_url = get_permalink($containerpostid);
+		$post_title = get_the_title($containerpostid);
+
+		$toemail = get_option('admin_email');
+		$subject = "{$name} placed a comment in {$post_title}";
+
+		if ($initialapprovalstate == 0) { $commentstate = "hold"; }
+		if ($initialapprovalstate == 1) { $commentstate = "approved"; }
+
+		$body = "New comment on your post: <a href='{$post_url}'>{$post_title}</a><br /><br />";
+		$body .= "Name: {$name} <br />";
+		$body .= "Email: {$email} <br />";
+
+		if ($website != "") { $body .= "Website: {$website} <br />"; }
+
+		$body .= "Comment: {$comment} <br />";
+		$body .= "Comment state: {$commentstate} <br />";
+		
+		add_filter('wp_mail_from', 'nxs_f_wp_mail_from', 10, 1);
+		add_filter('wp_mail_from_name', 'nxs_f_wp_mail_from_name', 10, 1);
+		
+		$headers .= 'Content-Type: text/html;' . "\n\r";
+
+	    wp_mail($toemail, $subject, $body, $headers);
+	}
 	
 	//
 	// create response
