@@ -1262,6 +1262,8 @@ function nxs_addnewarticle($args)
 		}
 	}
 	
+	
+	
 	//
 	// create response
 	//
@@ -3613,6 +3615,16 @@ function nxs_updatepagetemplate($args)
 function nxs_set_nxssubposttype($postid, $nxssubposttype)
 {
 	$result = wp_set_object_terms(strval($postid), $nxssubposttype, "nxs_tax_subposttype");
+	if (is_wp_error($result)) 
+	{
+		$msg = $result->get_error_message();
+		error_log("nxs_set_nxssubposttype invoked with $postid $nxssubposttype error result $msg");
+	}
+	else
+	{
+		//error_log("nxs_set_nxssubposttype; result: $result");
+	}
+	return $result;
 }
 
 function nxs_get_nxssubposttype($postid)
