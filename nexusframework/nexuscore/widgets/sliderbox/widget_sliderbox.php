@@ -601,17 +601,21 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 				}
 
 				
+
+				
 				$reccatidsforcatidincommasep = nxs_convert_stringwithbracketlist_to_stringwithcommas($catidsinbrackets);
 				$reccatidsforcatid = explode(',', $reccatidsforcatidincommasep);
 				$reccatidsforpost = array_unique($reccatidsforcatid);
-				//var_dump($reccatidsforpost);
+				$reccatidsforpost = implode(",", $reccatidsforpost);
 				
 				$args = array
 				( 
 					"numberposts" => -1,
 					"offset" => $offset,
 					'category' => $reccatidsforpost,
-					'numberposts' => $numberposts
+					'numberposts' => $numberposts,
+					//"post_status" => "publish",
+					"post_type" => array("post", "page"),
 				);
 				
 				// Order of posts
@@ -635,9 +639,9 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					// unknown
 				}
 				
+				
 				// get all posts and posts that have this category
 				$postsforslides = get_posts( $args );
-				
 				foreach ($postsforslides as $slidepost)
 				{
 					$postid = $slidepost->ID;
