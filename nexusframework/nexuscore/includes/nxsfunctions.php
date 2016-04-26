@@ -3046,6 +3046,12 @@ function nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, $wpcontentre
 			
 			$stripped = strip_tags($text);
 			$item = $stripped;
+			
+			// apply lookup tables
+			$temp  = array("text" => $item);
+			$temp = nxs_filter_translatelookup($temp, array("text"));
+			$item = $temp["text"];
+			
 			if ($item != "")
 			{
 				if (!in_array($item, $result))
