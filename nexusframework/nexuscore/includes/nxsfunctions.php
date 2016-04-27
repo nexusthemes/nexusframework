@@ -6698,6 +6698,16 @@ function nxs_strleft($s1, $s2)
 	return substr($s1, 0, strpos($s1, $s2));
 }
 
+function nxs_ishttps()
+{
+	$result = false;
+	if ($_SERVER["HTTPS"] == "on")
+	{
+		$result = true;
+	}
+	return $result;
+}
+
 // current url geturl currentpage currenturl
 function nxs_geturlcurrentpage()
 {

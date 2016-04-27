@@ -126,7 +126,8 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
   
   if ($publickey != "" && $privatekey != "")
   {
-  	echo recaptcha_get_html($publickey);
+  	$use_ssl = nxs_ishttps();
+  	echo recaptcha_get_html($publickey, null, $use_ssl);
   }
   else
   {
