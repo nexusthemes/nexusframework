@@ -650,7 +650,32 @@ function nxs_init()
   			echo "homeurl:" . get_home_url() . "<br />";
   			echo "nxs homeurl:" . nxs_geturl_home() . "<br />";  			
   			die();
-  		}  		
+  		} 
+  		else if ($_REQUEST["nxs"] == "showclip")
+  		{
+  			echo "clipboardmeta:<br />";
+  			nxs_ensure_sessionstarted();
+  			var_dump($_SESSION["nxs_clipboardmeta"]);
+  			var_dump($_SESSION);
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "testsession")
+  		{
+				echo "sessionid: " . session_id() . "<br />";
+  			nxs_ensure_sessionstarted();
+  			echo "sessionid: " . session_id() . "<br />";
+				if (empty($_SESSION['count'])) {
+				   $_SESSION['count'] = 1;
+				} else {
+				   $_SESSION['count']++;
+				}
+				?>
+				<p>
+				Hello visitor, you have seen this page <?php echo $_SESSION['count']; ?> times.
+				</p>
+				<?php
+  			die();
+  		}
   		else if ($_REQUEST["nxs"] == "checkphoton")
   		{
   			if (function_exists("jetpack_photon_url"))

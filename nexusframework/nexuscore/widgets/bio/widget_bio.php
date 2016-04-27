@@ -695,7 +695,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	
 	
 	// Social list
-	if ($rss == "" && $twitter == "" && $facebook == "" && $linkedin == "" && $google == "" && $youtube == "" && $skypechat == "") {
+	if ($emailaddress == "" && $rss == "" && $twitter == "" && $facebook == "" && $linkedin == "" && $google == "" && $youtube == "" && $skypechat == "") {
 		// do nothing
 	} else {
 		$social_list = '
