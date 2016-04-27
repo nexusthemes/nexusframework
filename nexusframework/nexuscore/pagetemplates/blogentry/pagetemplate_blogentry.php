@@ -353,6 +353,7 @@ function nxs_pagetemplate_handlecontent()
 														<?php 
 														if (nxs_has_adminpermissions()) 
 														{ 
+															$wordpressbackendurl = get_edit_post_link($contentpostid, array());	
 															?>
 															<div class='nxs-hover-menu-positioner'>
 																<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
