@@ -14,12 +14,12 @@ function nxs_widgets_carouselitem_gettitle()
 
 // Unistyle
 function nxs_widgets_carouselitem_getunifiedstylinggroup() {
-	return "carouselwidget";
+	return "carouselitemwidget";
 }
 
 // Unicontent
 function nxs_widgets_carouselitem_getunifiedcontentgroup() {
-	return "carouselwidget";
+	return "carouselitemwidget";
 }
 
 /* WIDGET STRUCTURE
@@ -36,8 +36,8 @@ function nxs_widgets_carouselitem_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_carouselitem_gettitle(),
 		"sheeticonid" => nxs_widgets_carouselitem_geticonid(),
-		"unifiedstyling" 	=> array("group" => nxs_widgets_carousel_getunifiedstylinggroup(),),
-		"unifiedcontent" 	=> array ("group" => nxs_widgets_carousel_getunifiedcontentgroup(),),
+		"unifiedstyling" 	=> array("group" => nxs_widgets_carouselitem_getunifiedstylinggroup(),),
+		"unifiedcontent" 	=> array ("group" => nxs_widgets_carouselitem_getunifiedcontentgroup(),),
 		"fields" => array
 		(
 			// TITLE
@@ -51,14 +51,16 @@ function nxs_widgets_carouselitem_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
-			array(
+			array
+			(	
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
 				"unicontentablefield" => true,
 				"tooltip" 			=> nxs_l18n__("Link the menu item to an article within your site.", "nxs_td"),
 			),
-			array(
+			array
+			(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
@@ -93,7 +95,7 @@ function nxs_widgets_carouselitem_render_webpart_render_htmlvisualization($args)
 	$unistyle = $temp_array["unistyle"];
 	if (isset($unistyle) && $unistyle != "") {
 		// blend unistyle properties
-		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_carousel_getunifiedstylinggroup(), $unistyle);
+		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_carouselitem_getunifiedstylinggroup(), $unistyle);
 		$temp_array = array_merge($temp_array, $unistyleproperties);
 	}
 	
@@ -101,7 +103,7 @@ function nxs_widgets_carouselitem_render_webpart_render_htmlvisualization($args)
 	$unicontent = $temp_array["unicontent"];
 	if (isset($unicontent) && $unicontent != "") {
 		// blend unistyle properties
-		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_carousel_getunifiedcontentgroup(), $unicontent);
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_carouselitem_getunifiedcontentgroup(), $unicontent);
 		$temp_array = array_merge($temp_array, $unicontentproperties);
 	}
 	
@@ -209,11 +211,11 @@ function nxs_widgets_carouselitem_initplaceholderdata($args)
 	$args['ph_margin_bottom'] = "0-0";
 	
 	// current values as defined by unistyle prefail over the above "default" props
-	$unistylegroup = nxs_widgets_carousel_getunifiedstylinggroup();
+	$unistylegroup = nxs_widgets_carouselitem_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 	
 	// current values as defined by unicontent prefail over the above "default" props
-	$unicontentgroup = nxs_widgets_carousel_getunifiedcontentgroup();
+	$unicontentgroup = nxs_widgets_carouselitem_getunifiedcontentgroup();
 	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);	
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);

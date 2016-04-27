@@ -15,6 +15,11 @@ function nxs_widgets_carousel_getunifiedstylinggroup() {
 	return "carousel";
 }
 
+// Unicontent
+function nxs_widgets_carousel_getunifiedcontentgroup() {
+	return "carousel";
+}
+
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -49,6 +54,7 @@ function nxs_widgets_carousel_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -169,7 +175,8 @@ function nxs_widgets_carousel_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
-			array( 
+			array
+			( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
@@ -177,7 +184,8 @@ function nxs_widgets_carousel_home_getoptions($args)
 			/* OVERLAY
 			---------------------------------------------------------------------------------------------------- */
 			
-			array( 
+			array
+			( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Overlay", "nxs_td"),
@@ -214,7 +222,7 @@ function nxs_widgets_carousel_home_getoptions($args)
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
-function randomImage_2 ( $array ) {
+function nxs_widgets_carousel_randomImage_2 ( $array ) {
 	$total = count($array);
 	$call = rand(0,$total-1);
 	return $array[$call];
@@ -447,7 +455,7 @@ function nxs_widgets_carousel_render_webpart_render_htmlvisualization($args)
 		// Carousel
 		echo '
 		<div class="carousel-wrapper nxs-align-center '.$image_size.'" >
-			'.randomImage_2($carousel).'
+			'.nxs_widgets_carousel_randomImage_2($carousel).'
 		</div>';
 			
 	}
@@ -493,9 +501,13 @@ function nxs_widgets_carousel_initplaceholderdata($args)
 	$args['image_size'] = "stretch";
 	$args['image_filter'] = "none";
 	
+	// current values as defined by unistyle prefail over the above "default" props
+	$unistylegroup = nxs_widgets_carousel_getunifiedstylinggroup();
+	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 	
-	
-	$args['unistyle'] = nxs_unistyle_getdefaultname(nxs_widgets_carousel_getunifiedstylinggroup());
+	// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_carousel_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
 		
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
