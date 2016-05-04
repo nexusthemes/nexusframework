@@ -110,7 +110,7 @@ function nxs_widgets_contactitemmultiselect_renderincontactbox($args)
 
 	?>
 	
-  <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label><br />
+  <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
 
 	<select id="<?php echo $key; ?>" name="<?php echo $key; ?>[]" class="field_name" style="width: 100%;" multiple="multiple">
 		

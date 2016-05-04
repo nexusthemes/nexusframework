@@ -2359,6 +2359,7 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 /* CONTACT */
 .nxs-form input,
 .nxs-form textarea											{ box-shadow: 0px 0px 0px 1px gray inset; -webkit-appearance: none; }
+.nxs-form label 											{ display: block; }
 
 /* Modernizr fallback */
 .nxs-m-no-boxshadow .nxs-form input,
