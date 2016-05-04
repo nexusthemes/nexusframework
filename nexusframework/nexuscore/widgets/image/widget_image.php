@@ -373,6 +373,16 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	{
 		$imageurl = $image_src;
 	}
+
+	// give warning when both image reference and image external url is set
+	if ($image_imageid != "")
+	{
+		if ($image_src != "")
+		{
+			$warning = nxs_l18n__("Warning: Widget is configured with both image reference and image external URL. The iamge external URL will be visible for visitors.", "nxs_td");
+			nxs_renderplaceholderwarning($warning);
+		}
+	}
 	
 	if ($destination_target == "_self") {
 		$destination_target_html = 'target="_self"';
@@ -460,7 +470,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		{
 			$alternativehint = nxs_l18n__("Missing input", "nxs_td");
 		}
-		nxs_renderplaceholderwarning($alternativehint);			
+		nxs_renderplaceholderwarning($alternativehint);
 	} else {
 		
 		// logo class is necessary to enable autoscaling for "original" sized images
