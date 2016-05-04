@@ -383,6 +383,12 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 			nxs_renderplaceholderwarning($warning);
 		}
 	}
+
+	if (filter_var($image_src, FILTER_VALIDATE_URL) === FALSE)
+	{
+		$shouldrenderalternative = true;
+		$alternativehint = nxs_l18n__("Warning: The Image src got an incorrect value. It must be an URL.", "nxs_td");
+	}
 	
 	if ($destination_target == "_self") {
 		$destination_target_html = 'target="_self"';
