@@ -301,7 +301,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 		      <div class="content2">
 		        <div class="box">
 		            <div class="box-title">
-		              <h4><?php nxs_l18n_e("Link rel", "nxs_td"); ?></h4>
+		              <h4><?php nxs_l18n_e("Link relation", "nxs_td"); ?></h4>
 		             </div>
 		            <div class="box-content">
 		            	<select id='linkrel'>

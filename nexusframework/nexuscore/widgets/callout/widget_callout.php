@@ -221,6 +221,12 @@ function nxs_widgets_callout_home_getoptions($args)
 					"_self"=>nxs_l18n__("Current window", "nxs_td"),
 				),
 				"unistylablefield"	=> true
+			),	
+			array(
+				"id" 				=> "destination_relation", 
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Link relation", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("link_relation"),
 			),			
 			array( 
 				"id" 				=> "wrapper_end",
@@ -622,6 +628,11 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
  	} else {
  		$destination_target = "_self";
 	}
+
+	$destination_relation_html = '';
+	if ($destination_relation == "nofollow") {
+		$destination_relation_html = 'rel="nofollow"';
+	}
 	
 	// Button
 	if ($url != "" && $button_text != ""){
@@ -651,7 +662,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	else
 	{
 		if ($url != ""){
-			echo '<a target="'.$destination_target.'" '.$onclick.' href="' . $url . '">';
+			echo '<a target="'.$destination_target.'" '.$destination_relation_html.' '.$onclick.' href="' . $url . '">';
 		}
 		
 			echo '

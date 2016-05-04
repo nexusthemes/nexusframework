@@ -179,6 +179,12 @@ function nxs_widgets_logo_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "destination_relation", 
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Link relation", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("link_relation"),
+			),	
 
 			array( 
 				"id" 				=> "wrapper_end",
@@ -443,6 +449,11 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 		$target = "target='".$destination_target."'";
 	}
 
+	$destination_relation_html = '';
+	if ($destination_relation == "nofollow") {
+		$destination_relation_html = 'rel="nofollow"';
+	}
+
 	
 	// Positioning
 	if ($top != "" || $left != "") 	{ $absolute = 'nxs-absolute'; }
@@ -551,7 +562,7 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 			
 			<div class="wrapper nxs-applylinkvarcolor '.$table_cell.' '.$bgcolor_cssclass.'">';
 				
-				if ($url != "") { echo '<a class="'.$stop_absolute.' '.$absolute.'" style="'.$top.' '.$left.'" '.$target.' href="'.$url.'">'; }
+				if ($url != "") { echo '<a class="'.$stop_absolute.' '.$absolute.'" style="'.$top.' '.$left.'" '.$target.' '.$destination_relation_html.' href="'.$url.'">'; }
 				
 				echo $logo; 
 				

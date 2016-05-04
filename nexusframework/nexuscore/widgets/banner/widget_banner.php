@@ -258,6 +258,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				$destination_articleid = $placeholdermetadata['destination_articleid'];
 				$destination_url = $placeholdermetadata['destination_url'];
 				$destination_target = $placeholdermetadata['destination_target'];
+				$destination_relation = $placeholdermetadata['destination_relation'];
 				
                 
 				// Url
@@ -277,13 +278,17 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 					$target = "target='".$destination_target."'";
 				}
 
-				
+				$destination_relation_html = '';
+				if ($destination_relation == "nofollow") {
+					$destination_relation_html = 'rel="nofollow"';
+				}
+
 				// add image to html
 				$image = '<img class="image image-background '.$image_filter.'" '.$image_alt_attribute.' src="'.$banner_imageurl.'" style="'.$image_border_width.'">';
 				
 				// add item to banner array
 				if ($url != "") {
-					$image = '<a href="'.$url.'"'.$target.'">'.$image.'</a>';
+					$image = '<a href="'.$url.'"'.$target.'" '.$destination_relation_html.'>'.$image.'</a>';
 				}
 				
 				$banner[] = $image;				

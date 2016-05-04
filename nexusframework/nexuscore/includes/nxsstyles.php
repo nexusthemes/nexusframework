@@ -399,6 +399,14 @@ function nxs_getstyletypeoptions() {
 				"both"				=>nxs_l18n__("horizontal & vertical", "nxs_td")
 			),
 		),
+		"link_relation" => array (
+			"subtype" 			=> "textlookup",
+			"values" 			=> array(
+				""					=>nxs_l18n__("Default", "nxs_td"),
+				"dofollow"			=>nxs_l18n__("Follow", "nxs_td"),
+				"nofollow"			=>nxs_l18n__("No follow", "nxs_td"),
+			),
+		),
 	);
 	return $options;
 }

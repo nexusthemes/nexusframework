@@ -73,10 +73,12 @@ function nxs_widgets_banneritem_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
-
-		
-
-		
+			array(
+				"id" 				=> "destination_relation", 
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Link relation", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("link_relation"),
+			),	
 		)
 	);
 	

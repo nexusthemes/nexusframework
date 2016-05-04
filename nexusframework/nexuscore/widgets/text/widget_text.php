@@ -305,6 +305,12 @@ function nxs_widgets_text_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "destination_relation", 
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Link relation", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("link_relation"),
+			),	
 			
 			array( 
 				"id" 				=> "wrapper_end_link",
@@ -615,7 +621,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	$htmltext = nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_showdropcap, $wrappingelement, '', $text_fontzen);
 	
 	$button_heightiq = "";
-	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $button_heightiq, $button_fontzen);
+	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $button_heightiq, $button_fontzen, $destination_relation);
 	$htmlfiller = nxs_gethtmlforfiller();
 	
 	// Callout color
@@ -700,6 +706,11 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
  			}
 		}
 	}
+
+	$destination_relation_html = '';
+	if ($destination_relation == "nofollow") {
+		$destination_relation_html = 'rel="nofollow"';
+	}
 	
 	// fix tel links
 	if ($destination_url != "") 
@@ -720,9 +731,9 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	// Linked title
 	if ($destination_articleid != "") {
-		$titlehtml = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';
+		$titlehtml = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';
 	} else if ($destination_url != "") {
-		$titlehtml = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';
+		$titlehtml = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';
 	}
 	
 	// Applying link colors to title
@@ -776,9 +787,9 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	// Linked image
 	if ($destination_articleid != "") {
-		$image = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$image.'</a>';
+		$image = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$image.'</a>';
 	} else if ($destination_url != "") {
-		$image = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$image.'</a>';
+		$image = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$image.'</a>';
 	}
 	
 	// Default image 
@@ -792,9 +803,9 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	// Linked default image
 	if ($destination_articleid != "") {
-		$default_image = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$default_image.'</a>';
+		$default_image = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$default_image.'</a>';
 	} else if ($destination_url != "") {
-		$default_image = '<a '.$destination_target_html.' href="'.$destination_url .'">'.$default_image.'</a>';
+		$default_image = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$default_image.'</a>';
 	}
 	
 	if ($image_border_width != "") {

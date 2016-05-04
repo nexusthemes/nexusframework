@@ -9763,7 +9763,7 @@ function nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title
 	return nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata);
 }
 	
-function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata, $destination_rel = false)
+function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata, $destination_relation = false)
 {
 	if ($title == "")
 	{
@@ -9787,9 +9787,9 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 		}
 	}
 
-	$destination_rel_html = '';
-	if ($destination_rel == "nofollow") {
-		$destination_rel_html = 'rel="nofollow"';
+	$destination_relation_html = '';
+	if ($destination_relation == "nofollow") {
+		$destination_relation_html = 'rel="nofollow"';
 	}
 	
 	// Title alignment
@@ -9834,17 +9834,17 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 	if ($destination_articleid != "") 
 	{
 		$destination_url = nxs_geturl_for_postid($destination_articleid);
-		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_rel_html.'>' . $result . '</a>';
+		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
 	}
 	else if ($destination_url != "") 
 	{
-		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_rel_html.'>' . $result . '</a>';
+		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
 	}
 	
 	return $result;
 }
 
-function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $text_heightiq, $button_fontzen)
+function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $text_heightiq, $button_fontzen, $destination_relation = false)
 {
 	if ($button_text == "")
 	{
@@ -9940,10 +9940,15 @@ function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $desti
  	{
  		$destination_target = "_self";
 	}
+
+	$destination_relation_html = '';
+	if ($destination_relation == "nofollow") {
+		$destination_relation_html = 'rel="nofollow"';
+	}
 	
 	$result = '';
 	$result .= '<p class="' . $button_alignment . ' nxs-padding-bottom0">';
-	$result .= '<a target="' . $destination_target . '" ' . $onclick . ' class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '" href="' . $url . '">' . $button_text . '</a>';
+	$result .= '<a target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '" href="' . $url . '">' . $button_text . '</a>';
 	$result .= '</p>';
 	
 	return $result;
