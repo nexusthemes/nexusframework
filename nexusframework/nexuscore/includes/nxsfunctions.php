@@ -8506,6 +8506,14 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	{
 		$unistyle = $unistyle_session;
 	}
+	$unistyleprevious_session = $args["clientpopupsessiondata"]["unistyleprevious"];
+	if ($unistyleprevious_session != "" && $unistyle_session == "")
+	{
+		// user removed the unistyle
+		$unistyle = "";
+		$persisteddata["unistyle"] = "";
+	}
+	
 	if (isset($unistyle) && $unistyle != "") 
 	{
 		// apply the universal style (from persisted datasource, or sessiondata)
@@ -8525,10 +8533,26 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 		{
 			// blend unistyle properties
 			$unistyledata = nxs_unistyle_getunistyleproperties($group, $unistyle);
+			
+			if (false) // $_SERVER['REQUEST_METHOD'] === 'POST') 
+			{
+				echo "lala;";
+				echo "unistyle_persisted:[$unistyle_persisted] | ";
+				echo "unistyle session:[$unistyle_session] ";
+				$json = json_encode($unistyledata);
+				
+				echo "json unistyle data: [$json] ";
+				
+				//echo "testgj";
+				die();
+			}
+			
 			// NOTE; the unistyledata _CAN_ be overridden by the user,
 			// since the unistyledata is blended with clientpopupsessiondata and shortscopedata
 		}
-	}	
+	}
+	
+	
 	
 	// ---
 	
