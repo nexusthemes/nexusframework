@@ -8196,7 +8196,7 @@ function nxs_unicontent_deleteunicontent($group, $name)
 {
 	if (!isset($group) || $group == "") { nxs_webmethod_return_nack("group is not set"); }
 	if (!isset($name) || $name == "" || $name == "@@@nxsempty@@@") { nxs_webmethod_return_nack("name is not set"); }
-	if (!nxs_unicontent_exists($group, $name)) { nxs_webmethod_return_nack("name unicontent not found"); }
+	if (!nxs_unicontent_exists($group, $name)) { nxs_webmethod_return_nack("name unicontent not found ([$group] [$name])"); }
 	
 	global $wpdb;
 	// rename the unicontent of all widgets on all posts having a nxs structure

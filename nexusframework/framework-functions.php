@@ -1355,6 +1355,10 @@ function nxs_render_postfooterlink()
 	}
 	$footerhtmltemplate = apply_filters('nxs_footerhtmltemplate', $footerhtmltemplate);
 	
+	// apply lookup tables
+	$temp  = array("text" => $footerhtmltemplate);
+	$temp = nxs_filter_translatelookup($temp, array("text"));
+	$footerhtmltemplate = $temp["text"];
 	
 	$lookup = array
 	(
