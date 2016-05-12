@@ -5134,7 +5134,7 @@ function nxs_render_popup_header_v2($title, $iconid, $sheethelp) {
 	echo '
 	<div class="nxs-admin-header">
 		<a href=\'#\' onclick=\'nxs_js_closepopup_unconditionally_if_not_dirty(); return  false;\'>
-			<span class="nxs-popup-closer nxs-icon-remove-sign" title="Close popup"></span>
+			<span class="nxs-popup-closer nxs-icon-remove-sign" title="'. nxs_l18n__("Close popup", "nxs_td") .'"></span>
 		</a>
 		';
 		
@@ -6481,8 +6481,11 @@ function nxs_webmethod_return_ok($args)
 	// http://stackoverflow.com/questions/12837682/non-breaking-utf-8-0xc2a0-space-and-preg-replace-strange-behaviour
 	foreach ($args as $k => $v)
 	{
-		$v = preg_replace('~\xc2\xa0~', ' ', $v);
-		$args[$k] = $v;
+		if (is_string($v))
+		{
+			$v = preg_replace('~\xc2\xa0~', ' ', $v);
+			$args[$k] = $v;
+		}
 	}
 	
 	$output=json_encode($args);
@@ -6708,20 +6711,29 @@ function nxs_ishttps()
 	return $result;
 }
 
-// current url geturl currentpage currenturl
-function nxs_geturlcurrentpage()
+function nxs_geturicurrentpage()
 {
 	// note; the "fragment" part (after "#"), is not available by definition;
 	// its something browsers use; its not send to the server (unless some clientside
 	// logic does so)
   if(!isset($_SERVER['REQUEST_URI']))
   {
-  	$serverrequri = $_SERVER['PHP_SELF'];
+  	$result = $_SERVER['PHP_SELF'];
   }
   else
   {
-    $serverrequri = $_SERVER['REQUEST_URI'];
+    $result = $_SERVER['REQUEST_URI'];
   }
+  return $result;
+}
+
+// current url geturl currentpage currenturl
+function nxs_geturlcurrentpage()
+{
+	// note; the "fragment" part (after "#"), is not available by definition;
+	// its something browsers use; its not send to the server (unless some clientside
+	// logic does so)
+  $serverrequri = nxs_geturicurrentpage();
   $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
   $protocol = nxs_strleft(strtolower($_SERVER["SERVER_PROTOCOL"]), "/").$s;
   $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);

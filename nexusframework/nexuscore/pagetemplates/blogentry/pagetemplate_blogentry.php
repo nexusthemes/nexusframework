@@ -254,6 +254,7 @@ function nxs_pagetemplate_handlecontent()
 					// ---------------------------- BEGIN RENDER SHORTCUT TO ADD NEW ROW
 					//
 					
+					$shouldrenderaddnewrowoption = apply_filters('nxs_f_shouldrenderaddnewrowoption', $shouldrenderaddnewrowoption);
 					if ($shouldrenderaddnewrowoption)
 					{
 						?>
@@ -310,7 +311,7 @@ function nxs_pagetemplate_handlecontent()
 												
 						if ($shouldrenderoriginaltemplate)
 						{							
-							echo "<!-- 4 original template; $nxs_gl_templates_wp -->";
+							echo "<!-- 4 original template; [$nxs_gl_templates_wp] -->";
 
 							rewind_posts();
 

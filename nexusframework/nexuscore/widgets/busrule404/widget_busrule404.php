@@ -158,12 +158,14 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 	else
 	{
 		global $post;
-		if (!nxs_has_adminpermissions() && is_singular() && !nxs_postwithstatusexistsbyid($post->ID, 'publish'))
+		if (!nxs_has_adminpermissions() && is_singular())
 		{
-			
-			// another way to trigger the 404, is
-			// if an anonymous user requests a non-published post or page
-			$isnotfound = true;
+			if ($post->post_status !== "publish")
+			{
+				// another way to trigger the 404, is
+				// if an anonymous user requests a non-published post or page
+				$isnotfound = true;
+			}
 		}
 	}
 	

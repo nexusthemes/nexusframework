@@ -2315,7 +2315,6 @@ function nxs_template_include($template)
 		global $nxs_gl_templates_wp;
 		$nxs_gl_templates_wp = $template;
 		
-		
 		if (is_attachment())
 		{
 			// leave template as-is
