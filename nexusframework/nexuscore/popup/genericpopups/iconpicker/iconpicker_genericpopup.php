@@ -1091,7 +1091,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"indianrestaurant",
 										"italianrestaurant",
 										"autodetailing",
-										"japaneserestaurant",
 									);
 										
 									foreach($icontypes as $currenticontype)
