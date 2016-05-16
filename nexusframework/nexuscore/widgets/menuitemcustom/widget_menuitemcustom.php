@@ -270,6 +270,12 @@ function nxs_widgets_menuitemcustom_desktop_render($args) {
     $icon_scale = "0-5";
     $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
 
+    $desk_cssclass = $placeholdermetadata["menuitem_color"];
+    $desk_cssclass_inactiveitemlink = $desk_cssclass;
+
+    $desk_cssclass_active = $placeholdermetadata["menuitem_active_color"];
+    $desk_cssclass_activeitemlink = $desk_cssclass_active;
+
     $font_variant = $placeholdermetadata["font_variant"];
     $parent_height = $placeholdermetadata["parent_height"];
     $submenu_height = $placeholdermetadata["submenu_height"];
@@ -285,6 +291,18 @@ function nxs_widgets_menuitemcustom_desktop_render($args) {
     $destination_relation = $placeholdermetadata["destination_relation"];
     $destination_relationatt = $destination_relation;
 
+    $gotactivechild = $placeholdermetadata["gotactivechild"];
+    $isactiveitem = ($gotactivechild != "");
+
+    if ($isactiveitem) {
+        $class = "{$desk_cssclass_activeitemlink} nxs-active ";
+        $itemcolor = " {$desk_cssclass_activeitemlink}";
+    }
+    else {
+        // inactief subitem
+        $itemcolor = " {$desk_cssclass_inactiveitemlink}";
+    }
+
     if (empty($url)) 
     {
     	$anchorclass = "class='nxs-menuitemnolink'";
@@ -294,22 +312,22 @@ function nxs_widgets_menuitemcustom_desktop_render($args) {
       // echo $anchorclass = "class='{$cssclasssubitem}'";
     }
 
-		if (empty($destination_target)) 
-		{
-			$targetatt = "target='_self'";
-		} 
-		else 
-		{
-			$targetatt = "target='" . $destination_target . "'";
-		}
+	if (empty($destination_target)) 
+	{
+		$targetatt = "target='_self'";
+	} 
+	else 
+	{
+		$targetatt = "target='" . $destination_target . "'";
+	}
 
     if ($icon != "") {
         $icon = '<span class="' . $icon . ' ' . $icon_scale_cssclass . '"></span> ';
     }
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height{$menuitem_height} " . $font_variant . "' style='" . $font_variant . "' >";
-    $cache = $cache . "<a itemprop='url' href='" . $url . "' " . $targetatt . " attr='" . $destination_relationatt . "' " . $anchorclass . ">";
+    $cache = $cache . "<li class='menu-item menu-item-custom nxs-inactive height{$menuitem_height} {$font_variant} {$class}' style='{$font_variant}' >";
+    $cache = $cache . "<a itemprop='url' href='{$url}' {$targetatt} attr='{$destination_relationatt}' {$anchorclass}>";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";
 
@@ -365,7 +383,7 @@ function nxs_widgets_menuitemcustom_mobile_render($args) {
     if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> ';}
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-custom menu-depth-" . $currentdepth . " {$class}'>";
+    $cache = $cache . "<li class='menu-item menu-item-custom menu-depth-{$currentdepth} {$class}'>";
     $cache = $cache . "<a itemprop='url' href='{$url}' {$anchorclass}'>";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";

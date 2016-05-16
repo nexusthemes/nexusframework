@@ -450,6 +450,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
         $elementcountfordepth = array();
         $elementcountfordepth[$currentdepth] = 0;
 
+        $parentid = nxs_menu_getactiveitemparentid($menu_menuid, $poststructure);
+
         /*** OUTPUT DEFAULT MENU ***/
 
         echo "<div class='nxs-menu-aligner nxs-applylinkvarcolor " . $horclass . " " . $halign . "'>";
@@ -527,6 +529,12 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
             $placeholdermetadata["font_variant"] =  $font_variant;
             $placeholdermetadata["parent_height"] = $parent_height;
             $placeholdermetadata["submenu_height"] = $submenu_height;
+            $placeholdermetadata["gotactivechild"] = false;
+
+            if ($parentid == $placeholderid)
+            {
+                $placeholdermetadata["gotactivechild"] = true;
+            }
 
             $subargs = array("placeholdermetadata" => $placeholdermetadata);
 
@@ -690,6 +698,57 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
     $nxs_global_row_render_statebag["upgradetoexceptionalresponsiverow"] = "true";
 
+    return $result;
+}
+
+/**
+ * Get active menu item parent id
+ * @param $menu_menuid
+ * @param $poststructure
+ * @return string
+ */
+function nxs_menu_getactiveitemparentid($menu_menuid, $poststructure) {
+    global $nxs_global_current_containerpostid_being_rendered;
+    global $nxs_global_current_postid_being_rendered;
+    $current_categoryid = strval(get_the_category()[0]->cat_ID);
+
+    $temp_parentid = "";
+    $result = "";
+
+    foreach ($poststructure as $key => $pagerow) {
+        $content = $pagerow["content"];
+        $placeholderid = nxs_parsepagerow($content);
+        $placeholdermetadata = nxs_getwidgetmetadata($menu_menuid, $placeholderid);
+        // localize fields
+        $placeholdermetadata = nxs_localization_localize($placeholdermetadata);
+
+        $currentdepth = $placeholdermetadata["depthindex"];
+        
+        if ($currentdepth == 1) {
+            $temp_parentid = $placeholderid;
+        }
+
+        if ($currentdepth == 2) {
+            $destination_articleid = $placeholdermetadata["destination_articleid"];
+            $destination_category = $placeholdermetadata["destination_category"];
+            $destination_category = str_replace("[", "", $destination_category);
+            $destination_category = str_replace("]", "", $destination_category);
+
+            if ($destination_articleid)
+            {
+                $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
+            }
+            if ($destination_category) {
+                $isactiveitem = ($destination_category == $current_categoryid);
+            }
+
+            if ($isactiveitem)
+            {
+                $result = $temp_parentid;
+            }
+        }
+    }
+    
     return $result;
 }
 

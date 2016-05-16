@@ -259,7 +259,9 @@ function nxs_widgets_menuitemcategory_desktop_render($args){
     $anchorclass = "";
     $class = "";
 
-    if (is_category($destination_category)) {
+    $gotactivechild = $placeholdermetadata["gotactivechild"];
+
+    if (is_category($destination_category) || $gotactivechild != "") {
         $isactiveitem = true;
     } else {
         $isactiveitem = false;
@@ -292,8 +294,8 @@ function nxs_widgets_menuitemcategory_desktop_render($args){
     $anchorclass = "class='{$anchorclass}'";
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-post " . $class . " " . $font_variant . " height".$menuitem_height."' >";
-    $cache = $cache . "<a itemprop='url' href='" . $url . "' nxsurl='" . $url . "' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' " . $anchorclass . ">";
+    $cache = $cache . "<li class='menu-item menu-item-post {$class} {$font_variant} height{$menuitem_height}' >";
+    $cache = $cache . "<a itemprop='url' href='{$url}' nxsurl='{$url}' ontouchstart='nxs_js_menuitemclick(this, \"touch\"); return false;' onmouseenter='nxs_js_menuitemclick(this, \"mouseenter\"); return false;' onmouseleave='nxs_js_menuitemclick(this, \"mouseleave\"); return false;' onclick='nxs_js_menuitemclick(this, \"click\"); return false;' {$anchorclass}>";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";
 
@@ -334,8 +336,7 @@ function nxs_widgets_menuitemcategory_mobile_render($args) {
     $destination_category = str_replace("[", "", $destination_category);
     $destination_category = str_replace("]", "", $destination_category);
 
-    if (is_category($destination_category))
-    {
+    if (is_category($destination_category)) {
         $isactiveitem = true;
     } else {
         $isactiveitem = false;
@@ -360,8 +361,8 @@ function nxs_widgets_menuitemcategory_mobile_render($args) {
     $url = get_category_link($destination_category);
 
     $cache = "";
-    $cache = $cache . "<li class='menu-item menu-item-post menu-depth-" . $currentdepth . " {$class}'>";
-    $cache = $cache . "<a itemprop='url' href='" . $url . "' {$anchorclass}>";
+    $cache = $cache . "<li class='menu-item menu-item-post menu-depth-{$currentdepth} {$class}'>";
+    $cache = $cache . "<a itemprop='url' href='{$url}' {$anchorclass}>";
     $cache = $cache . "<div itemprop='name'>{$icon}{$title}</div>";
     $cache = $cache . "</a>";
     $cache = $cache . "</li>";
