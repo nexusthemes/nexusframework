@@ -770,6 +770,8 @@ ul.nxs-menu li ul.nxs-sub-menu li.height10 a				{ line-height: 50px; }
 ul.nxs-menu li ul.nxs-sub-menu li.height09 a				{ line-height: 45px; }
 ul.nxs-menu li ul.nxs-sub-menu li.height08 a				{ line-height: 40px; }
 
+/* keep the text in an item on one line */
+ul.nxs-menu li ul.nxs-sub-menu li a div 					{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 
 ul.nxs-menu li ul { 
 	opacity: 0; 
