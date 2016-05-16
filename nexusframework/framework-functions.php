@@ -892,6 +892,79 @@ function nxs_init()
 				echo "$jsonsitemeta<br />";
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "fixwrongglobalidsmanual")
+		  {
+		  	global $wpdb;
+	
+				$q = "
+						select post_id postid, meta_value globalid
+						from $wpdb->postmeta
+						where meta_value in 
+						(
+							select distinct meta_value 
+							from 
+								$wpdb->postmeta 
+							where meta_key = 'nxs_globalid' 
+							group by meta_value 
+							having  count(1) > 1
+						)
+						order by globalid asc, postid desc
+					";
+					
+				$dbresult = $wpdb->get_results($q, ARRAY_A );
+				var_dump($dbresult);
+				
+				if (count($dbresult) > 0)
+				{
+					// er zijn globalids gevonden die gedeeld worden over meerdere postid's; inconsistentie!
+					// we resetten de global ids van de nieuwste post's, de oudste (met de laagste postid) is leidend!
+					
+					$globalid = "";
+					$postid = "";
+					
+			  	foreach ($dbresult as $dbrow)
+			  	{
+			  		$currentpostid = $dbrow["postid"];
+			  		$currentglobalid = $dbrow["globalid"];
+			  		
+			  		if ($currentpostid == $postid && $currentglobalid == $globalid)
+			  		{
+			  			// found a duplicate; replace all existing ones with 
+			  			// the single new one (keeping the globalid)
+			  			delete_post_meta($currentpostid, "nxs_globalid");
+			  			nxs_reset_globalidtovalue($currentpostid, $currentglobalid);
+			  		}
+			  		else if ($currentpostid != $postid)
+			  		{
+			  			// we found a new postid
+			  			$globalid = $currentglobalid;
+			  			$postid = $currentpostid;
+			  			continue;
+			  		}
+			  		else if ($currentglobalid != $globalid)
+			  		{
+			  			// the postid is the same, but the globalid is different
+				  		$currentpostid = $dbrow["postid"];
+		
+			  			// resetten globalid voor deze postid (we keep the last one)
+			  			$newglobalidforthispostid = nxs_reset_globalid($currentpostid);
+			  			$result["log"] .= "[...]";
+			  			
+			  			if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)
+							{
+				    		echo "<!-- ";
+				    	}
+			  			echo "$currentpostid; from $globalid to $newglobalidforthispostid<br />";
+			  			if (NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT)
+							{
+				    		echo " -->";
+				    	}
+			  		}
+			  	}
+				}
+				echo "manual fix done :)";
+				die();
+		  }
 		  else if ($_REQUEST["nxs"] == "setactivesitesettingspostid")
 		  {
 		  	$postid = $_REQUEST["postid"];

@@ -140,23 +140,33 @@ function nxs_sm_processstate_dataverification_impl($currentstate)
 			// we resetten de global ids van de nieuwste post's, de oudste (met de laagste postid) is leidend!
 			
 			$globalid = "";
+			$postid = "";
 			
 	  	foreach ($dbresult as $dbrow)
 	  	{
+	  		$currentpostid = $dbrow["postid"];
 	  		$currentglobalid = $dbrow["globalid"];
 	  		
-	  		if ($currentglobalid != $globalid)
+	  		if ($currentpostid == $postid && $currentglobalid == $globalid)
 	  		{
-	  			// set postid; we will keep this record; this is the meta row with the highest postid; we will
-	  			// assume this is the one we should keep (higher postid means added later to the system)
+	  			// found a duplicate; replace all existing ones with 
+	  			// the single new one (keeping the globalid)
+	  			delete_post_meta($currentpostid, "nxs_globalid");
+	  			nxs_reset_globalidtovalue($currentpostid, $currentglobalid);
+	  		}
+	  		else if ($currentpostid != $postid)
+	  		{
+	  			// we found a new postid
 	  			$globalid = $currentglobalid;
+	  			$postid = $currentpostid;
 	  			continue;
 	  		}
-	  		else
+	  		else if ($currentglobalid != $globalid)
 	  		{
+	  			// the postid is the same, but the globalid is different
 		  		$currentpostid = $dbrow["postid"];
 
-	  			// resetten globalid voor deze postid
+	  			// resetten globalid voor deze postid (we keep the last one)
 	  			$newglobalidforthispostid = nxs_reset_globalid($currentpostid);
 	  			$result["log"] .= "[...]";
 	  			
