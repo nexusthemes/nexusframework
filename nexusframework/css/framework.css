@@ -1693,6 +1693,9 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 	-webkit-background-size: cover !important;
 }
 
+/* IE edge bug fix. overflow hidden doesn't work on table elements. */
+.nxs-radial .radial:last-of-type 							{ display: block; }
+
 .nxs-radial .text-wrapper	 								{ display: table-cell; vertical-align: middle; }
 .nxs-radial .title-wrapper									{ text-align: center; padding: 10px 0; position: absolute; width: 100%; bottom: 15%; }
 .nxs-radial .transition.nxs-default p						{ text-align: center; width: 70%;  margin: 0 auto; }
