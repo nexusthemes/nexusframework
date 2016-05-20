@@ -594,6 +594,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"syringe",
 										"cpr",
 										"ekg2",
+										"angieslist",
 									);
 									
 										
