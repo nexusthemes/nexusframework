@@ -3139,8 +3139,6 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-syringe:before, .nxs-icon-plasticsurgery:before			{ content: "\e464";	}
 .nxs-icon-cpr:before, .nxs-icon-massage:before						{ content: "\e465";	}
 .nxs-icon-ekg2:before				{ content: "\e466";	}
-
-/* Business Types */
 .nxs-icon-vector:before, .nxs-icon-graphicdesign:before				{ content: "\e467";	}
 .nxs-icon-japaneserestaurant:before		{ content: "\e468";	}
 .nxs-icon-resort:before					{ content: "\e469";	}
@@ -3315,6 +3313,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-indianrestaurant:before		{ content: "\e638";	}
 .nxs-icon-italianrestaurant:before		{ content: "\e639";	}
 .nxs-icon-autodetailing:before			{ content: "\e640";	}
+.nxs-icon-angieslist:before				{ content: "\e641";	}
 
 
 /* Crappicons */
