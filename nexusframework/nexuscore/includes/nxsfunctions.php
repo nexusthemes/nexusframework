@@ -2668,7 +2668,18 @@ if(!function_exists('mb_convert_encoding'))
 { 
 	function mb_convert_encoding($string, $target_encoding, $source_encoding) 
 	{ 
-    $string = iconv($source_encoding, $target_encoding, $string); 
+		if ($source_encoding == "UTF-8" && $target_encoding == "HTML-ENTITIES")
+		{
+			// 2016 05 27; found issue while rendering html widgets in WC; resulting in blank output
+			// to avoid error; leave string as is for this particular convert task
+			// Notice: iconv(): Wrong charset, conversion from `UTF-8' to `HTML-ENTITIES'
+			// resulting in string that only have a space as output
+		}
+		else
+		{
+    	$string = iconv($source_encoding, $target_encoding, $string);
+    }
+    
     return $string; 
 	}
 }

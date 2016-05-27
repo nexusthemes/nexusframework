@@ -191,8 +191,11 @@
 		        <table>
 		          <thead>
 		            <tr>
+		            	<th scope="col" class="nxs-title">
+	                	<span class="nxs-margin-left15">#</span>
+	              	</th>
 		            	<?php
-		            	$isfirst = true;
+		            	$isfirst = false;
 		            	foreach ($headers as $currentheader)
 		            	{
 		            		if ($isfirst)
@@ -215,8 +218,11 @@
 		          </thead>
 		          <tfoot>
 		            <tr>
+		            	<th scope="col" class="nxs-title">
+	                	<span class="nxs-margin-left15">#</span>
+	              	</th>
 									<?php
-									$isfirst = true;
+									$isfirst = false;
 		            	foreach ($headers as $currentheader)
 		            	{
 		            		if ($isfirst)
@@ -239,10 +245,14 @@
 		          </tfoot>
 		          <tbody>
 		            <?php
+		            $index = 0;
+		            ?>
+		            <?php
 								foreach (explode("\r\n", $contents) as $row) 
 			      		{
 			      			if ($row != "")
 			      			{
+				      			$index++;		      				
 			      				$rowparts = explode(";", $row);
 										$isheader = count($rowparts) == 1;
 		      					?>
@@ -259,8 +269,13 @@
 				      			{
 				      				$colspan = "1";
 				      			}
-				      			$isfirst = true;
+				      			$isfirst = false;
 				      			$valuepercolumn = nxs_forms_parserow($row, $headers);
+				      			?>
+				      			<td>
+		                	<span class="nxs-margin-left15"><?php echo $index; ?></span>
+		              	</td>
+				      			<?php
 				      			foreach ($headers as $currentheader)
 			            	{
 			            		if ($isfirst)
