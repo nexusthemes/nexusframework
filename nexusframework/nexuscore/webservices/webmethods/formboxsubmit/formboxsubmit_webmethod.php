@@ -271,31 +271,19 @@ function nxs_webmethod_formboxsubmit()
 		}
 		else if ($internal_email != "" && nxs_isvalidemailaddress($internal_email))
 		{
-			$headers = 'From: ' . $sender_name . ' <' . $sender_email . '>' . "\r\n";
-			
-			if ($replytoemailaddress != "")
-			{	
-				$headers = "Reply-to: {$replytoemailaddress}\r\n";
-			}
-			
 			$body = "";
-			
 			if ($mail_body_includesourceurl != "")
 			{
-				$body .= nxs_l18n__("This form was posted from url:", "nxs_td") . $url . " \r\n";
+				$body .= nxs_l18n__("This form was posted from url:", "nxs_td") . $url . "<br />";
 			}
-			
 			foreach ($outputlines as $currentoutputline)
 			{
-				$body .= $currentoutputline . " \r\n";
+				$body .= $currentoutputline . " <br />";
 			}
+			$ccemail = "";
+			$bccemail = "";
+			$mailresult = nxs_sendhtmlmail_v3($sender_name, $sender_email, $internal_email, $ccemail, $bccemail, $replytoemailaddress, $subject_email, $body);
 			
-			global $nxs_global_mail_fromname;
-			$nxs_global_mail_fromname = $sender_name;
-			global $nxs_global_mail_fromemail;
-			$nxs_global_mail_fromemail = $sender_email;
-
-			$mailresult = wp_mail($internal_email, $subject_email, $body, $headers);
 			if (!$mailresult)
 			{
 				global $ts_mail_errors;

@@ -5285,19 +5285,31 @@ function nxs_f_wp_mail_from_name($result)
 
 function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body)
 {
-	$headers = 'From: ' . $fromname . ' <' . $fromemail . '>' . "\n\r";
+	$replytomail = "";
+	$result = nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemail, $replytomail, $subject, $body);
+	return $result;
+}
+
+function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemail, $replytomail, $subject, $body)
+{
+	$headers = "";
+	$headers .= 'From: ' . $fromname . ' <' . $fromemail . '>' . "\r\n";
+	if ($replytomail != "")
+	{	
+		$headers .= "Reply-to: {$replytomail}\r\n";
+	}
 	
 	if ($ccemail != "")
 	{
 		if (is_string($ccemail))
 		{
-			$headers .= "Cc: " . $ccemail . "\n\r";
+			$headers .= "Cc: " . $ccemail . "\r\n";
 		}
 		else if (is_array($ccemail))
 		{
 			foreach ($ccemail as $currentccemail)
 			{
-				$headers .= "Cc: $currentccemail" . "\n\r";;
+				$headers .= "Cc: $currentccemail" . "\r\n";;
 			}
 		}
 		else
@@ -5314,13 +5326,13 @@ function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	{
 		if (is_string($bccemail))
 		{
-			$headers .= "Bcc: $bccemail" . "\n\r";
+			$headers .= "Bcc: $bccemail" . "\r\n";
 		}
 		else if (is_array($bccemail))
 		{
 			foreach ($bccemail as $currentbccemail)
 			{
-				$headers .= "Bcc: $currentbccemail" . "\n\r";
+				$headers .= "Bcc: $currentbccemail" . "\r\n";
 			}
 		}
 		else
@@ -5338,11 +5350,11 @@ function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	global $nxs_global_mail_fromemail;
 	$nxs_global_mail_fromemail = $fromemail;
 	
-	add_filter('wp_mail_from', 'nxs_f_wp_mail_from',10, 1);
-	add_filter('wp_mail_from_name', 'nxs_f_wp_mail_from_name', 10, 1);
+	add_filter('wp_mail_from', 'nxs_f_wp_mail_from', 999, 1);
+	add_filter('wp_mail_from_name', 'nxs_f_wp_mail_from_name', 999, 1);
 	
 	//
-	$headers .= 'Content-Type: text/html;' . "\n\r";
+	$headers .= 'Content-Type: text/html;' . "\r\n";
 	$result = wp_mail($toemail, $subject, $body, $headers);
 	
 	if ($result == false)
