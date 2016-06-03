@@ -5350,13 +5350,17 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	global $nxs_global_mail_fromemail;
 	$nxs_global_mail_fromemail = $fromemail;
 	
+	//error_log("nxs_sendhtmlmail_v3 adding filters 999 $nxs_global_mail_fromname $nxs_global_mail_fromemail");
 	
 	add_filter('wp_mail_from', 'nxs_f_wp_mail_from', 999, 1);
 	add_filter('wp_mail_from_name', 'nxs_f_wp_mail_from_name', 999, 1);
 	
 	//
 	$headers .= 'Content-Type: text/html;' . "\r\n";
+	//error_log("nxs_sendhtmlmail_v3 before wp_mail");
+	//error_log("nxs_sendhtmlmail_v3 headers; $headers");
 	$result = wp_mail($toemail, $subject, $body, $headers);
+	//error_log("nxs_sendhtmlmail_v3 after wp_mail");
 	
 	if ($result == false)
 	{
