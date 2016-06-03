@@ -5350,6 +5350,7 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	global $nxs_global_mail_fromemail;
 	$nxs_global_mail_fromemail = $fromemail;
 	
+	
 	add_filter('wp_mail_from', 'nxs_f_wp_mail_from', 999, 1);
 	add_filter('wp_mail_from_name', 'nxs_f_wp_mail_from_name', 999, 1);
 	
@@ -6511,7 +6512,14 @@ function nxs_webmethod_return_ok($args)
 		}
 	}
 	
-	$output=json_encode($args);
+	$options = 0;
+	
+	if ($_REQUEST["nxs_json_output_format"] == "prettyprint")
+	{
+		$options = $options | JSON_PRETTY_PRINT;
+	}
+	
+	$output=json_encode($args, $options);
 	echo $output;
 	
 	exit();
