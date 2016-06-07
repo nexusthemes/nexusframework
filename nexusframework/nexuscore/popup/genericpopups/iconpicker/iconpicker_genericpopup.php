@@ -648,6 +648,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"houzz",
 										"google-drive",
 										"yelp",
+										"snapchat",
+										"angieslist",
 										
 									);
 										
