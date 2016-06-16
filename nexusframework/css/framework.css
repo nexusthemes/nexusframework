@@ -2452,6 +2452,10 @@ a[href^="tel"]
 .entry-content blockquote:before 							{ content: "\e64c"; position: absolute; font-family: 'nexus'; font-size: 200%; top: -6px; }
 .entry-content blockquote p									{ margin-left: 60px; font-style: italic; }
 
+/* YOAST */
+
+div#nxsseoanalysisoutput li.score { clear: both; }
+
 /* WOOCOMMERCE
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
