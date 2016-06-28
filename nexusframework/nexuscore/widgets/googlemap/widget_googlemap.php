@@ -209,6 +209,9 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	
 	$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "");
 
+	$sitemeta = nxs_getsitemeta_internal(false);
+	$apikey = trim($sitemeta["googlemapsapikey"]);
+
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
@@ -249,7 +252,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 					var w = window;
 					var d = w.document;
 					var script = d.createElement('script');
-					script.setAttribute('src', 'https://maps.google.com/maps/api/js?v=3&sensor=true&callback=mapOnLoad');
+					script.setAttribute('src', 'https://maps.google.com/maps/api/js?v=3&key=<?php echo $apikey; ?>&sensor=true&callback=mapOnLoad');
 					d.documentElement.firstChild.appendChild(script);
 					w.mapOnLoad = function () 
 					{

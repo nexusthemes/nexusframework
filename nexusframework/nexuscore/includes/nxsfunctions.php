@@ -5481,7 +5481,12 @@ function nxs_gethomepageid()
 function nxs_getmaintenancedurationinsecs()
 {
 	$meta = nxs_getsitemeta();
-	return $meta["maintenance_duration"];
+	$result = $meta["maintenance_duration"];
+	if ($result == "-" || $result == "")
+	{
+		$result = 0;
+	}
+	return $result;
 }
 
 function nxs_site_get_anonymousaccess()

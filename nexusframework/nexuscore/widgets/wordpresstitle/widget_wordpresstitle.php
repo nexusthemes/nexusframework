@@ -213,7 +213,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	else
 	{
 		$currentpost = get_post($nxs_global_current_containerpostid_being_rendered);
-		$title = nxs_gettitle_for_postid($nxs_global_current_containerpostid_being_rendered);
+		$title = get_the_title(); // nxs_gettitle_for_postid($nxs_global_current_containerpostid_being_rendered);
 		$currentpostdate = $currentpost->post_date;
 	}
 	

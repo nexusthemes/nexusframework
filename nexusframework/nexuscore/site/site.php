@@ -2194,6 +2194,18 @@ function nxs_site_dashboardhome_rendersheet($args)
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
 
+					<!-- integrations -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Integrations", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('integrationshome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
 					<!-- cache management -->
 	        <div class="content2">
             <div class="box">
@@ -2581,6 +2593,36 @@ function nxs_site_marketingmanagementhome_getoptions($args)
 				"id" 			=> "pagecaching",
 				"label"			=> nxs_l18n__("Page caching", "nxs_td"),
 				"type" 			=> "checkbox",
+			),
+		)
+	);
+	return $options;
+}
+
+/* INTEGRATIONS
+---------------------------------------------------------------------------------------------------- */
+function nxs_site_integrationshome_getoptions($args)
+{	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Integrations", "nxs_td"),
+		"fields" => array
+		(
+			array( 
+				"id" 			=> "googletagmanager",
+				"label"			=> nxs_l18n__("Google Tag Manager", "nxs_td"),
+				"type" 			=> "textarea",
+			),
+			array(
+				"id" 			=> "analyticsUA",
+				"label"			=> nxs_l18n__("Google Analytics UA", "nxs_td"),
+				"type" 			=> "input",
+			),
+			array(
+				"id" 			=> "googlemapsapikey",
+				"label"			=> nxs_l18n__("Google Maps API key", "nxs_td"),
+				"type" 			=> "input",
+				"" => "",
 			),
 		)
 	);
@@ -3466,7 +3508,7 @@ function nxs_site_maintenancehome_getoptions($args)
 				"type" 			=> "select",
 				"label" 		=> nxs_l18n__("Maintenance mode", "nxs_td"),
 				"dropdown" 		=> array(
-					"0"			=>nxs_l18n__("Online; no maintenance", "nxs_td"), 
+					"-"			=>nxs_l18n__("Online; no maintenance", "nxs_td"), 
 					"3600"		=>nxs_l18n__("Offline (approx. 1 hour)", "nxs_td"), 
 					"14400"		=>nxs_l18n__("Offline (approx. 4 hours)", "nxs_td"), 
 					"86400"		=>nxs_l18n__("Offline (approx. 1 day)", "nxs_td"), 
