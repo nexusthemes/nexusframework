@@ -195,6 +195,11 @@ function nxs_has_enough_memory_available_v2($shouldtrytoincrease)
 	// in time...
 	global $nxs_gl_memlimitini;
 	$memory_limit = ini_get('memory_limit');
+	
+	// some servers return a lowercase "m" (p.e. 256m),
+	// instead of upper case; convert those
+	$memory_limit = str_replace("m", "M", $memory_limit);
+	
 	$nxs_gl_memlimitini = $memory_limit;
 	if (preg_match('/^(\d+)(.)$/', $memory_limit, $matches)) {
 	    if ($matches[2] == 'G') {
