@@ -218,8 +218,68 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	nxs_ob_start();
 	?>
 		<div id="map_canvas_<?php echo $placeholderid;?>" class="nxs-runtime-autocellsize nxs-minheight <?php echo $minheight_cssclass; ?>"></div>
-
+		<div id="alt_map_canvas_<?php echo $placeholderid;?>" style="display:none; padding: 5px; margin: 5px;" class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+			<?php
+			if (is_user_logged_in())
+			{
+				if ($apikey == "")
+				{
+					// its not set; explain its mandatory 
+					?>
+					Google Maps temporary placeholder<br />
+					<br />
+					Problem; Google Maps API key not yet configured<br />
+					<br />
+					<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Click here to learn how to configure the Google Maps API key</a>
+					<?php
+				}
+				else
+				{
+					// its set; explain its not (yet) valid
+					?>
+					Google Maps temporary placeholder<br />
+					<br />
+					Problem; Google Maps API key not (yet?) valid<br />
+					<br />
+					Possible reasons;<br />
+					1) It can take up to 5 mins before the API key starts to work. If you 
+					updated the existing or created a new key, please be patient and wait 5 mins
+					and retry.<br />
+					2) Perhaps you entered an incorrect API key (p.e. one that cannot be used
+					for this domain, or perhaps you made a typo when copy pasting it)<br />
+					3) Perhaps you exceeded the free quota that Google provides. In that case you
+					could consider upgrading to the paid version.<br />
+					<br />
+					<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=invalidapikeyset'>Click here to learn how to configure the Google Maps API key</a>
+					
+					<?php
+				}
+			}
+			else
+			{
+				?>
+				Google Maps temporary placeholder<br />
+				(login to see how to fix this)
+				<?php
+			}
+			?>
+		</div>
 		<script type='text/javascript'>
+			
+			jQuery(window).bind 
+			(
+				"nxs_js_trigger_googlemapsapikeyinvalid", 
+				function(e) 
+				{
+					// if the google maps api key is invalid, show a tip on how to fix it,
+					// instead of the default "oops" from Google
+					//var hinthtml = "<div>Google Maps API not yet configured</div>";
+					jQuery("#map_canvas_<?php echo $placeholderid;?>").hide();
+					jQuery("#alt_map_canvas_<?php echo $placeholderid;?>").show();
+					// remove the front end options to configure this widget
+					jQuery("#alt_map_canvas_<?php echo $placeholderid;?>").closest(".nxs-placeholder").find(".nxs-hover-menu").remove();
+				}
+			);
 			
 			function nxs_ext_widget_googlemap_init_<?php echo $placeholderid; ?>()
 			{
@@ -245,6 +305,38 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 			{
 				if (!nxs_js_mapslazyloaded && !nxs_js_mapslazyloading)
 				{
+					// intercept error messages being logged to the console,
+					// interpret the fact if the google maps key is not valid,
+					// and if so, broadcast an event
+					(
+						function () 
+						{
+						  var err = console.error;
+						  console.error = function () 
+						  {
+						  	if (arguments[0] != null)
+						  	{
+						  		msg = arguments[0];
+						  		if (msg.indexOf("Google Maps API error: MissingKeyMapError") > -1)
+						  		{
+						  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
+						  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
+						  			//return;
+						  		}
+						  		else if (msg.indexOf("Google Maps API error: InvalidKeyMapError") > -1)
+						  		{
+						  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
+						  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
+						  			//return;
+						  		}
+						  		
+						  	}
+						  	
+						    err.apply(this, Array.prototype.slice.call(arguments));
+						  };
+						}()
+					);
+					
 					//nxs_js_log('loading...');
 					
 					nxs_js_mapslazyloading = true;
@@ -252,7 +344,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 					var w = window;
 					var d = w.document;
 					var script = d.createElement('script');
-					script.setAttribute('src', 'https://maps.google.com/maps/api/js?v=3&key=<?php echo $apikey; ?>&sensor=true&callback=mapOnLoad');
+					script.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?v=3&key=<?php echo $apikey; ?>&sensor=true&callback=mapOnLoad');
 					d.documentElement.firstChild.appendChild(script);
 					w.mapOnLoad = function () 
 					{

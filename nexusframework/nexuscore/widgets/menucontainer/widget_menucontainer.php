@@ -710,7 +710,10 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 function nxs_menu_getactiveitemparentid($menu_menuid, $poststructure) {
     global $nxs_global_current_containerpostid_being_rendered;
     global $nxs_global_current_postid_being_rendered;
-    $current_categoryid = strval(get_the_category()[0]->cat_ID);
+    $cat = get_the_category();
+    $cat0 = $cat[0];
+    $catid = $cat0->cat_ID;
+    $current_categoryid = strval($catid);
 
     $temp_parentid = "";
     $result = "";

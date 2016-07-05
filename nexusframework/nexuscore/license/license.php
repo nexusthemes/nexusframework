@@ -184,7 +184,7 @@ function nxs_license_checkupdate($value)
 		// 
 	}
 	
-	$licensekey = esc_attr(get_option('nxs_licensekey'));
+	$licensekey = nxs_license_getlicensekey();
 	if ($licensekey == "")
 	{
 		$shouldcheck = false;
@@ -422,13 +422,19 @@ function plugin_admin_init()
 		add_action('admin_notices', 'nxs_license_notifyunregistersuccess');
 	}
 	
-	$licensekey = esc_attr(get_option('nxs_licensekey'));
+	$licensekey = nxs_license_getlicensekey();
 	if ($licensekey == "")
 	{
 		add_action('admin_notices', 'nxs_license_notifynolicense');
 	}
 }
 add_action( 'admin_init', 'plugin_admin_init' );
+
+function nxs_license_getlicensekey()
+{
+	$licensekey = esc_attr(get_option('nxs_licensekey'));
+	return $licensekey;
+}
 
 function nxs_section_license_callback()
 {
@@ -983,7 +989,7 @@ function nxs_licenseregister_invoke()
 
 function nxs_licenseregister_callback()
 {
-	$licensekey = esc_attr(get_option('nxs_licensekey'));
+	$licensekey = nxs_license_getlicensekey();
 	if ($licensekey == "")
 	{
 		if ($_REQUEST["nxs_license_register"] == "true")
@@ -1056,7 +1062,7 @@ function nxs_licenseregister_callback()
 		}
 		else
 		{
-			$licensekey = esc_attr(get_option('nxs_licensekey'));
+			$licensekey = nxs_license_getlicensekey();
 			$checkupdatesurl = admin_url('admin.php?page=nxs_admin_update');
 			?>
 			<p>
@@ -1087,7 +1093,7 @@ function nxs_licensekey_callback()
 		nxs_license_clearupdatetransient();
 	}
 	
-  $licensekey = esc_attr(get_option('nxs_licensekey'));
+  $licensekey = nxs_license_getlicensekey();
 	echo "<input type='text' name='nxs_licensekey' onkeydown='jQuery(\"#submit\").show();' onchange='jQuery(\"#submit\").show();' value='{$licensekey}' style='width:30%' />";
 	?>
   <p class='submit'>
