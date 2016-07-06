@@ -2338,8 +2338,14 @@ function nxs_setuprolesandcapabilities()
 function nxs_after_switch_theme()
 {
 	// toggle option
-	update_option('nxs_do_postthemeactivation', 'true');
-	nxs_setuprolesandcapabilities();
+	
+	// only mark the theme to require postthemeactivation if there's no active site settings
+	// (preventing theme from doing sanity check if this was done before)
+  if (!nxs_hassitemeta())
+  {
+		update_option('nxs_do_postthemeactivation', 'true');
+		nxs_setuprolesandcapabilities();
+	}
 	
 	do_action("nxs_theme_switchedmanually");
 	
