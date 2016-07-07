@@ -6468,7 +6468,7 @@ if (!function_exists('http_response_code'))
 }
 
 function nxs_webmethod_return_ok($args)
-{		
+{
 	if (headers_sent($filename, $linenum)) 
 	{
 		echo "nxs headers already send; $filename $linenum";
@@ -6483,8 +6483,12 @@ function nxs_webmethod_return_ok($args)
 		$existingoutput[] = nxs_ob_get_clean();
 	}
 	
+	
+	
 	nxs_set_jsonheader();
 	http_response_code(200);
+
+
 
 	//header($_SERVER['SERVER_PROTOCOL'] . " 200 OK");
 	//header("Status: 200 OK"); // for fast cgi
@@ -6521,14 +6525,19 @@ function nxs_webmethod_return_ok($args)
 		}
 	}
 	
-	$options = 0;
-	
 	if ($_REQUEST["nxs_json_output_format"] == "prettyprint")
 	{
+		$options = 0;
 		$options = $options | JSON_PRETTY_PRINT;
+		$output = json_encode($args, $options);
 	}
-	
-	$output=json_encode($args, $options);
+	else
+	{
+		// important!! the json_encode can return nothing,
+		// on some servers, when the 2nd parameter (options),
+		// is specified; ticket 22986!
+		$output = json_encode($args);
+	}
 	echo $output;
 	
 	exit();
