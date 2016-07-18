@@ -235,17 +235,26 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 	$svgstyle = "";
 	if ($flip == "vertical")
 	{
-		$svgstyle = "transform: scaleY(-1); ";
+		// we use the .01 fraction since on windows chrome browsers
+		// sometimes the rounding off fails
+		// see #3294867238576
+		$svgstyle = "transform: scaleY(-1.01); ";
 	}
 
 	if ($flip == "horizontal")
 	{
-		$svgstyle = "transform: scaleX(-1);";
+		// we use the .01 fraction since on windows chrome browsers
+		// sometimes the rounding off fails
+		// see #3294867238576
+		$svgstyle = "transform: scaleX(-1.01);";
 	}
 
 	if ($flip == "both")
 	{
-		$svgstyle = "transform: scale(-1);";
+		// we use the .01 fraction since on windows chrome browsers
+		// sometimes the rounding off fails
+		// see #3294867238576
+		$svgstyle = "transform: scale(-1.01);";
 	}
 
 	// HEIGHT
@@ -312,8 +321,11 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 		}
 		nxs_renderplaceholderwarning($alternativehint); 
 	} else {
+		// we use hidden overflow because of the .01 fraction we use, since on windows chrome browsers
+		// sometimes the rounding off fails, see #3294867238576
+
 		?>
-		<div class="nxs_vectorart" id="vectorart_<?php echo $placeholderid;?>">
+		<div class="nxs_vectorart" id="vectorart_<?php echo $placeholderid;?>" style="overflow: hidden;">
 			<svg class="<?php echo $svgclass; ?>" style="<?php echo $svgstyle; ?>" x="0px" y="0px" viewBox="0 0 100 <?php echo $viewbox_height; ?>" preserveAspectRatio="none">
 				<?php echo $paths; ?>
 			</svg>
