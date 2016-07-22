@@ -579,6 +579,10 @@ function nxs_setupcache()
 				}
 			}
 		}
+		else
+		{
+			//error_log("cache stage 2 file not found $file");
+		}
 			
 		if ($nxs_shouldusecache_stage2)
 		{
@@ -5455,7 +5459,7 @@ function nxs_renderpagetemplate($pagetemplate, $args)
 {
 	nxs_requirepagetemplate($pagetemplate);
 
-	$functionnametoinvoke = 'nxs_pagetemplate_' . $pagetemplate . '_render';
+	$functionnametoinvoke = "nxs_pagetemplate_{$pagetemplate}_render";
 	
 	//
 	// invoke

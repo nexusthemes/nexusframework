@@ -515,8 +515,19 @@ function nxs_session_hasstartedactivesession()
 	return $r;
 }
 
+function nxs_initializesessionfrombrowsercookieifexists()
+{
+	if (isset($_COOKIE[session_name()]))
+	{
+		error_log($_COOKIE[session_name()]);
+		nxs_ensure_sessionstarted();
+	}
+}
+
 function nxs_ensure_sessionstarted()
 {
+	
+	
 	// init session
   if (!session_id()) 
   {
