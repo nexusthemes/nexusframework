@@ -26,7 +26,8 @@ function nxs_webmethod_pagepopup()
 		}
 		else if ($repeatpopup_scope == "eachnewsession")
 		{
-			nxs_ensure_sessionstarted();
+			// don't create a new one if its not there yet
+			nxs_initializesessionfrombrowsercookieifexists();
 			if (!isset($_SESSION["nxs_pagepopup_shown_$pagedecoratorid_$placeholderid"]))
 			{
 				$shouldshow = "yes";	
@@ -78,9 +79,10 @@ function nxs_webmethod_pagepopup()
 		
 		if ($repeatpopup_scope == "eachnewsession")
 		{
+			// this creates a new session
 			nxs_ensure_sessionstarted();
 			$_SESSION["nxs_pagepopup_shown_$pagedecoratorid_$placeholderid"] = true;
-			// todo: log!
+			
 			$responseargs = array();
 			$responseargs["markedasshown"] = "true";
 			
