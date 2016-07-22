@@ -27,7 +27,7 @@ if (is_singular())
 	else
 	{
 		// default framework generic
-		$filetobeincluded = NXS_FRAMEWORKPATH . '/page-template-' . $nxsposttype . '.php';
+		$filetobeincluded = NXS_FRAMEWORKPATH . "/page-template-{$nxsposttype}.php";
 		if (file_exists($filetobeincluded))
 		{
 			// rendering continues by the included file...
