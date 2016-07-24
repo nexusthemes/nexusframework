@@ -519,7 +519,6 @@ function nxs_initializesessionfrombrowsercookieifexists()
 {
 	if (isset($_COOKIE[session_name()]))
 	{
-		error_log($_COOKIE[session_name()]);
 		nxs_ensure_sessionstarted();
 	}
 }

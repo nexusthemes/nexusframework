@@ -2988,19 +2988,19 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
 					// name
 					echo '
 					<td class="lookuptable-item">
-						<span class="nxs-margin-left15">' . $currentname . '<span>
+						<span class="nxs-margin-left15">' . nxs_htmlescape($currentname) . '<span>						
 					</td>';
 
 					// value
 					echo '
 					<td class="lookuptable-item">
-						<span class="nxs-margin-left15">' . $currentvalue . '<span>
+						<span class="nxs-margin-left15">' . nxs_htmlescape($currentvalue) . '<span>
 					</td>';
 					
 					// Edit button
 					echo'
 					<td class="nxs-width5">
-						<a href="#" title="Edit" onclick="nxs_js_editlookuptableitem(\''  . nxs_render_html_escape_singlequote($currentname) . '\',\''  . nxs_render_html_escape_singlequote($currentvalue) . '\'); return false;">
+						<a href="#" title="Edit" onclick="nxs_js_editlookuptableitem(' . nxs_htmlescape(json_encode($currentname)) . ',' . nxs_htmlescape(json_encode($currentvalue)) . '); return false;">
 							<span class="nxs-icon nxs-icon-plug"></span>
 						</a>
 					</td>';
@@ -3008,7 +3008,7 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
 					// Remove button
 					echo'
 					<td class="nxs-width5">
-						<a href="#" title="Remove" onclick="nxs_js_deletelookuptableitem(\''  . $currentname . '\'); return false;">
+						<a href="#" title="Remove" onclick="nxs_js_deletelookuptableitem(' . nxs_htmlescape(json_encode($currentname)) . '); return false;">
 							<span class="nxs-icon nxs-icon-trash"></span>
 						</a>
 					</td>

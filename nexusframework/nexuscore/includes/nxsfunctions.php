@@ -8914,6 +8914,19 @@ function nxs_shoulddebugmeta()
 	return $result;
 }
 
+function nxs_print_filters_for($hook = '') 
+{
+  global $wp_filter;
+  if( empty( $hook ) || !isset( $wp_filter[$hook] ) )
+  {
+  	return;
+  }
+
+  print '<pre>';
+  print_r( $wp_filter[$hook] );
+  print '</pre>';
+}
+
 function nxs_widgets_setgenericwidgethovermenu_v2($args)
 {
 	// defaults
@@ -11395,7 +11408,7 @@ function nxs_wp_getpostidbymeta($key, $value)
 {
 	$result = "";
 	
-	// find post that has nxs_themeid as metadata
+	// find post that has a particular key/value combination as metadata
 	global $wpdb;
 	$r = $wpdb->get_results("SELECT p.ID
 	  FROM $wpdb->posts as p
