@@ -659,7 +659,14 @@ function nxs_init()
   {
   	if (isset($_REQUEST["nxs"]))
   	{
-  		if ($_REQUEST["nxs"] == "urlinfo")
+  		if ($_REQUEST["nxs"] == "requirethemeactivation")
+  		{
+  			update_option('nxs_do_postthemeactivation', 'true');
+				nxs_setuprolesandcapabilities();
+				echo "now switch to 2015 and back and the re-activation should start :)";
+				die();
+  		}
+  		else if ($_REQUEST["nxs"] == "urlinfo")
   		{
   			echo "siteurl:" . get_site_url() . "<br />";
   			echo "homeurl:" . get_home_url() . "<br />";
