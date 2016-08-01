@@ -404,19 +404,8 @@ require_once(NXS_FRAMEWORKPATH . '/nexuscore/webservices/webservices.php');
 // note that if this _is_ a webmethod, the system will stop execution after this method
 add_action('init', 'nxs_handlewebmethods', 999999);
 
-
-if (is_admin() && nxs_isdataconsistencyvalidationrequired()) 
-{
-	// skip for now... to be implemented
-	// add_action('admin_notices', 'nxs_dataconsistency_notify_data_inconsistent');
-}
-
-// todo: fix data verification part
-// require_once(NXS_FRAMEWORKPATH . '/nexuscore/backend/data-verification.php');
-
 //After category is updated, set a flag to do a data consistency check
 add_action('edited_terms', 'nxs_dataconsistency_after_edited_terms');
-
 
 // compliance with feeds
 nxs_addfeedsupport();
@@ -525,8 +514,6 @@ function nxs_initializesessionfrombrowsercookieifexists()
 
 function nxs_ensure_sessionstarted()
 {
-	
-	
 	// init session
   if (!session_id()) 
   {
@@ -659,7 +646,49 @@ function nxs_init()
   {
   	if (isset($_REQUEST["nxs"]))
   	{
-  		if ($_REQUEST["nxs"] == "requirethemeactivation")
+  		if ($_REQUEST["nxs"] == "debug_rules")
+  		{
+  			$rules = get_option('rewrite_rules');
+  			echo nxs_prettyprint_array($rules);
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "fix_rules")
+  		{
+  			nxs_wp_resetrewriterules();
+  			echo "tuned rules :)";
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "flush_rewrite_rules")
+  		{
+  			//echo "category_base:";
+  			//$category_base       = get_option( 'category_base' );
+  			//var_dump($category_base);
+  			//die();
+  			global $wp_rewrite;
+  			
+  			$wp_rewrite->set_permalink_structure( '' );
+				$wp_rewrite->flush_rules( true );
+  			
+  			$permalink_structure = get_option( 'permalink_structure' );
+  			$category_base = get_option( 'category_base' );
+  			$category_base = get_option( 'category_base' );
+  			$wp_rewrite->set_permalink_structure($permalink_structure);
+  			$wp_rewrite->set_category_base($category_base);
+  			
+  			$wp_rewrite->flush_rules( $hard );
+
+  			$wp_rewrite->set_permalink_structure( $permalink_structure );
+  			$wp_rewrite->set_category_base( $category_base );
+  			
+  			$wp_rewrite->flush_rules( $hard );
+  			
+  			// update_option( 'rewrite_rules', '' );
+  			
+  			
+  			echo "flush, aha!";
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "requirethemeactivation")
   		{
   			update_option('nxs_do_postthemeactivation', 'true');
 				nxs_setuprolesandcapabilities();
@@ -2390,7 +2419,7 @@ add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');
 function nxs_template_include($template)
 {
 	define('NXS_TEMPLATEINCLUDED', true);	
-
+	
 	// force all pages to be handled by page-template.php
 	// note, this overrides all regular templates (like woocommerce), on purpose
 
@@ -2424,7 +2453,7 @@ function nxs_template_include($template)
 		{
 			$template = NXS_FRAMEWORKPATH . '/page-template.php';
 		}
-	}
+	}	
 		
 	return $template;
 }

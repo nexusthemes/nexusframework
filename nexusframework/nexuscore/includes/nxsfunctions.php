@@ -154,6 +154,8 @@ add_action("nxs_load_l18ns", "nxs_ensure_theme_translations_are_loaded");
 // de options worden immers niet ge-importeerd en ge-exporteerd.
 function nxs_after_theme_setup()
 {
+	
+	
 	do_action("nxs_load_l18ns");
 	
 	// set het nxs_themepath indien dat nog niet was gedaan	
@@ -186,6 +188,7 @@ function nxs_after_theme_setup()
 	 		}
 	 	}
  	}
+	
 	
 	//
 	if (nxs_shouldusecache_stage0())
@@ -223,6 +226,8 @@ function nxs_shouldusecache_stage0()
 // stage1; second consideration stage; whether or not to cache data on this site
 function nxs_shouldusecache_stage1()
 {
+	
+	
 	$result = false;
 	
 	if (!is_user_logged_in())
@@ -4543,6 +4548,21 @@ function nxs_wp_retouchhomepage()
 	
 	update_option('show_on_front', 'page');
 	update_option('page_on_front', $postid);
+}
+
+function nxs_wp_resetrewriterules()
+{
+	// 20160801; weird situation; on rare themes (like the mobile_repair_wordpress_theme),
+	// the rewrite rules are not properly set when the themes activates. Accessing
+	// blog posts in that case results in a 404 even though the posts are there.
+	// to resolve this, we wipe the rewrite rules and instruct WP to rebuild them
+	global $wp_rewrite;
+	// 
+	update_option('rewrite_rules', '');
+	$wp_rewrite->flush_rules();
+	
+	$wp_rewrite->wp_rewrite_rules();
+	$wp_rewrite->flush_rules();
 }
 
 function nxs_is404page($postid)

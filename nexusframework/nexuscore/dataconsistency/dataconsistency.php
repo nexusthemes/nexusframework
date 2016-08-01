@@ -376,6 +376,14 @@ function nxs_ensuredataconsistency_chunked($chunkedsteps)
 	}
 	else if ($scope == "13")
 	{
+		error_log("step 13 invoked; nxs_wp_resetrewriterules");
+		// resetting permalinks
+		nxs_wp_resetrewriterules();
+		?><h2><?php echo nxs_l18n__("Resetting rewrite rules", "nxs_td"); ?></h2><?php
+		$nextchunkedsteps = array("scope"=>"14");
+	}
+	else if ($scope == "14")
+	{
 		?><h2><?php echo nxs_l18n__("Done", "nxs_td"); ?></h2><?php
 
 		// this was the last step
