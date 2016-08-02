@@ -62,7 +62,10 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							{
 								nxs_js_log("removing tinymce evidence from the DOM");
 								// 
-								tinymce.remove();
+								if (tinymce != null)
+								{
+									tinymce.remove();
+								}
 								
 								// remove textarea from dom
 								jQ_nxs(".nxsbox_window textarea").remove();
