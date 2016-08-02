@@ -875,7 +875,11 @@ function nxs_licenseregister_invoke()
   	$successful = false;
   	
   	$firstmsg = $response->get_error_message();
-  	if ($firstmsg == "couldn't connect to host")
+  	if 
+  	(
+  		$firstmsg == "couldn't connect to host" || 
+  		$firstmsg == "connect() timed out!"
+  	)
   	{
   		echo "It looks like your host cannot connect to $url<br />";
   		echo "To solve this problem:<br />";
@@ -884,6 +888,10 @@ function nxs_licenseregister_invoke()
   		<iframe width="420" height="315" src="https://www.youtube.com/embed/1Z1gjGes4P8" frameborder="0" allowfullscreen></iframe>
   		<br /><br />
   		<?php
+			echo " <!-- ";
+			var_dump($url);
+			var_dump($response);	
+			echo " --> ";
   	}
   	else
   	{
@@ -970,6 +978,8 @@ function nxs_licenseregister_invoke()
   }
   else
   {
+  	// not succesful
+  	
   	update_option('nxs_licensekey', "");
 		?>
 		<p>
