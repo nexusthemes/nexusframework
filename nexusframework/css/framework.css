@@ -461,6 +461,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 
 /* HEIGHT */
 .nxs-height100												{ height: 100%; }
+.nxs-column-1-1 .nxs-height100 				{ height: auto; }
 
 /* max-height */
 .nxs-max-height-100											{ max-height: 100% !important; }
