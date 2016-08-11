@@ -28,7 +28,8 @@ function nxs_popup_optiontype_custom_renderhtmlinpopup($optionvalues, $args, $ru
 	          	<div class="box-content">
 	          	<?php
 		          	nxs_popup_optiontype_custom_runfunctionifitexists($optionvalues, $args, $runtimeblendeddata);
-		        ?>
+		          	echo $customcontent;
+		       		?>
 	          	</div>
 	        </div>
 	        <div class="nxs-clear"></div>

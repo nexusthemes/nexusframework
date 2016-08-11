@@ -2622,8 +2622,14 @@ function nxs_site_integrationshome_getoptions($args)
 				"id" 			=> "googlemapsapikey",
 				"label"			=> nxs_l18n__("Google Maps API key", "nxs_td"),
 				"type" 			=> "input",
-				"" => "",
 			),
+			array(
+				"id" 			=> "googlemapsapikeyhint",
+				"label"			=> "",
+				"type" 				=> "custom",
+				"customcontent" => "<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Click here to learn how to configure the Google Maps API key</a>",
+			),
+			
 		)
 	);
 	return $options;

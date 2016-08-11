@@ -230,7 +230,8 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 					<br />
 					Problem; Google Maps API key not yet configured<br />
 					<br />
-					<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Click here to learn how to configure the Google Maps API key</a>
+					<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Click here to learn how to configure the Google Maps API key</a><br />
+					<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession("integrationshome"); return false;'>Click here to configure your Google Maps API Key</a>
 					<?php
 				}
 				else
@@ -250,6 +251,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 					3) Perhaps you exceeded the free quota that Google provides. In that case you
 					could consider upgrading to the paid version.<br />
 					<br />
+					<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession("integrationshome"); return false;'>Click here to re-configure your Google Maps API Key</a><br />
 					<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=invalidapikeyset'>Click here to learn how to configure the Google Maps API key</a>
 					
 					<?php
@@ -445,6 +447,19 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
             	<input id="<?php echo $id; ?>" class='nxs-float-left nxs-width70' placeholder='<?php nxs_l18n_e('Address sample placeholder','nxs_td'); ?>' name="address" type='text' value='<?php echo $address; ?>' />
             </div>
         </div>
+        <?php
+				$sitemeta = nxs_getsitemeta_internal(false);
+				$apikey = trim($sitemeta["googlemapsapikey"]);
+        if ($apikey == "")
+        {
+        	?>
+	        <div class="nxs-clear"></div>
+	       	<div style='margin-top: 10px;'>
+	       		Note; to use the search function a (free) <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Google Maps API key is required (learn more)</a>
+	       	</div>
+	      	<?php
+	    	}
+	      ?>  
         <div class="nxs-clear"></div>
 	</div> <!--END content-->
 
@@ -472,10 +487,19 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	    	jQuery('#<?php echo $altid["lng"]; ?>').val(lng);
 		}
 
-    	function nxs_js_ext_widget_googlemap_search_map()
+    function nxs_js_ext_widget_googlemap_search_map()
 		{
 			var adres;
 			adres = jQuery('#<?php echo $id; ?>').val();
+			
+			if (adres == '')
+			{			
+     		nxs_js_alert("<?php nxs_l18n_e('Please enter an address first','nxs_td'); ?>");
+     		jQ_nxs("#googlemap_visualization").focus();
+     		return;
+     	}
+			
+			
 			var geocoder = new google.maps.Geocoder();
 			geocoder.geocode
 			(
@@ -493,6 +517,16 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 		        
 		        nxs_js_alert("<?php nxs_l18n_e('Address was found; map is updated','nxs_td'); ?>");
 		      } 
+		      else if (status == google.maps.GeocoderStatus.ZERO_RESULTS)
+	      	{
+	      		var searchedfor = jQuery('#<?php echo $id; ?>').val();
+	      		nxs_js_alert("<?php nxs_l18n_e('No results found for','nxs_td'); ?>" + " '" + searchedfor + "'");
+	      	}
+		      else if (status == google.maps.GeocoderStatus.REQUEST_DENIED)
+	      	{
+	      		var fix = "<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession(\"integrationshome\"); return false;'>Click here to configure your Google Maps API Key</a>";
+	      		nxs_js_alert_sticky("Request denied; configure the Google Maps API key first.<br /><br />" + fix);
+	      	}
 		      else 
 		      {
 		        nxs_js_alert("<?php nxs_l18n_e('Location was not found','nxs_td'); ?> " + status);
