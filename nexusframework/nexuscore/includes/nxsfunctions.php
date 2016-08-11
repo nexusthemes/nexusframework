@@ -189,7 +189,6 @@ function nxs_after_theme_setup()
 	 	}
  	}
 	
-	
 	//
 	if (nxs_shouldusecache_stage0())
 	{
@@ -504,7 +503,7 @@ function nxs_storecacheoutput($buffer)
 			// case 2435987; this would indicate a partially rendered page is outputted
 			// partially rendered pages should never be stored as cached items
 			$shouldstore = false;
-			$nocacheexplanations[] = "no  end of html tag found in buffer";
+			$nocacheexplanations[] = "no end of html tag found in buffer";
 		}
 	}
 	
@@ -607,8 +606,6 @@ function nxs_setupcache()
 	}
 	else
 	{
-		
-		
 		// proceed as usual... don't cache anything
 		nxs_ob_start("nxs_ensurenocacheoutput");
 	}
@@ -2626,6 +2623,10 @@ function nxs_array_toutf8string($result)
 			{
 				$result[$resultkey] = nxs_toutf8string($resultvalue);
 			}
+
+			// also fix the special character \u00a0 (no breaking space),
+			// as this one also could result into issues
+			$result[$resultkey] = preg_replace('~\x{00a0}~siu', ' ', $result[$resultkey]);   
 		}
 		else if (is_array($resultvalue))
 		{

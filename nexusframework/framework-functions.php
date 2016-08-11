@@ -2200,7 +2200,28 @@ function nxs_addsupportforadditionalimageformats()
 	add_image_size('nxs_cropped_320x512', 320, 512, TRUE );	// used by the gallerybox
 }
 
+// tell the duplicate_post plugin to not clone the nxs_globalid custom meta field
+add_filter('pre_option_duplicate_post_blacklist', 'nxs_pre_option_duplicate_post_blacklist');
+function nxs_pre_option_duplicate_post_blacklist($result)
+{
+	$exclude = "nxs_globalid";
+	if ($result == "")
+	{
+		$result = $exclude;
+	}
+	else
+	{
+		$ignorecasing = false;
+		if (!nxs_stringcontains_v2($result, $exclude, $ignorecasing))
+		{
+			$result .= ",{$exclude}";
+		}
+	}
+	return $result;
+}
+
 add_filter('image_size_names_choose', 'nxs_custom_sizes');
+// 
 
 function nxs_custom_sizes( $sizes ) {
     return array_merge( $sizes, array(

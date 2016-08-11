@@ -1786,11 +1786,9 @@ var nxs_sm_isprocessingstateonserverside = false;
 
 function nxs_js_sm_handleunexpectederrorwhileactivating(response)
 {
-	nxs_js_alert_sticky("Bad news; an error occured while activating the theme. Please first check our <a target='_blank' href='http://nexusthemes.com/support/how-to-install-a-wordpress-theme/'>installation guide</a>. The good news is that we can try to help you out, if you <a target='_blank' href='http://www.nexusthemes.com'>contact us</a>.");
-
 	jQ_nxs("#waitwrap").hide();
 	jQ_nxs("#errorwrap").show();
-	
+
 	if (response != null)
 	{
 		if (response.responseText != null)
@@ -1798,22 +1796,50 @@ function nxs_js_sm_handleunexpectederrorwhileactivating(response)
 			var lowercase = response.responseText.toLowerCase();
 			if (lowercase.indexOf("under development") > -1)
 			{
-				nxs_js_alert_sticky("Hint: site is under development.");
+				nxs_js_alert_sticky("Unable to activate the theme; the site is under construction / in maintenace mode");
+				nxs_js_alert_sticky("To resolve the issue, disable the under construction mode and retry.");
+			}
+			else if (lowercase.indexOf("destination path already exists, and is not writeable") > -1)
+			{
+				nxs_js_alert_sticky("Failed to override file on server; no write permission");
+
+				var response = JSON.parse(response.responseText);
+				var message = response.message;
+
+				if (lowercase.indexOf("uploads") > -1)
+				{
+					nxs_js_alert_sticky("Contact your hosting provider to ensure the files in the WordPress uploads folder can be overriden, for example:<br /><br /> " + message);
+				}
+				else
+				{
+					nxs_js_log("message:" + message);
+					nxs_js_alert_sticky("To resolve the issue ask your hosting provider to enable write access to override the file:<br /><br /> " + message);
+				}
 			}
 			else if (lowercase.indexOf("bytes exhausted (tried to allocate") > -1)
 			{
+				nxs_js_alert_sticky("Unable to proceed as there is not enough memory available");
 				// solutions; http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28
-				nxs_js_alert_sticky("Hint: not enough memory. See http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28");
+				nxs_js_alert_sticky("To resolve the issue, see http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28");
 			}
 			else if (lowercase.indexOf("maximum execution time") > -1 && lowercase.indexOf("exceeded") > -1)
 			{
-				nxs_js_alert_sticky("Problem: max time-out exceeded. Solution; Import the initial content manually.");
+				nxs_js_alert_sticky("Unable to proceed as the maximum execution time was exceeded");
+				nxs_js_alert_sticky("To resolve the issue, either ask your hosting provider to increase the maximum execution time, or import the initial content manually through FTP.");
 			}
 			else
 			{
-				nxs_js_alert_sticky("Sorry, no hint available");
+				nxs_js_alert_sticky("Unable to proceed ... (other)");
 			}
 		}
+		else
+		{
+			nxs_js_alert_sticky("Unable to proceed ... (empty responsetext)");
+		}
+	}
+	else
+	{
+		nxs_js_alert_sticky("Unable to proceed ... (empty response)");
 	}
 }
 
