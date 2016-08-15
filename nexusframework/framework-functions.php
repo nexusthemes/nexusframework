@@ -372,7 +372,7 @@ if (stripos(get_option('siteurl'), 'https://') === 0)
 define('NXS_DEFINE_NXSSERVERVALUECACHING', true);	// default to true (improved performance), false means all transients are ignored
 define('NXS_DEFINE_NXSALLOWSERVICECOMMUNICATION', false);	// default to true (improved user experience with tips etc), false means we can test failover
 define('NXS_DEFINE_NXSDEBUGNEXUSSERVICEFAILURES', false);	// default to false
-define('NXS_DEFINE_NXSDEBUGWEBSERVICES', true);	// default to false
+define('NXS_DEFINE_NXSDEBUGWEBSERVICES', false);	// default to false
 define('NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT', true);	// default to true
 
 //

@@ -17,6 +17,12 @@ function nxs_widgets_tumbler_getunifiedstylinggroup() {
 	return "tumblerwidget";
 }
 
+// Unicontent
+function nxs_widgets_tumbler_getunifiedcontentgroup() {
+	return "tumblerwidget";
+}
+
+
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -36,6 +42,7 @@ function nxs_widgets_tumbler_home_getoptions($args)
 		(
 			"group" => nxs_widgets_tumbler_getunifiedstylinggroup(),
 		),
+		"unifiedcontent" 	=> array ("group" => nxs_widgets_tumbler_getunifiedcontentgroup(),),
 		"fields" => array
 		(
 			// TITLE
@@ -52,6 +59,7 @@ function nxs_widgets_tumbler_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),	
 			array(
@@ -102,6 +110,7 @@ function nxs_widgets_tumbler_home_getoptions($args)
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Choose image", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -147,6 +156,7 @@ function nxs_widgets_tumbler_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
 				"rows" 				=> "8",
+				"unicontentablefield" => true,
 				"localizablefield"	=> true,
 			),
 			array( 
@@ -176,6 +186,7 @@ function nxs_widgets_tumbler_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
 				"placeholder" 		=> "Read more",
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -195,12 +206,14 @@ function nxs_widgets_tumbler_home_getoptions($args)
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Button link", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "destination_js",
@@ -208,6 +221,7 @@ function nxs_widgets_tumbler_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Javascript", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Apply javascript when the button is pressed.", "nxs_td"),
 				"requirecapability" => nxs_cap_getdesigncapability(),
+				"unicontentablefield" => true,
 			),			
 			
 			array( 
@@ -243,6 +257,14 @@ function nxs_widgets_tumbler_render_webpart_render_htmlvisualization($args)
 		// blend unistyle properties
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_tumbler_getunifiedstylinggroup(), $unistyle);
 		$temp_array = array_merge($temp_array, $unistyleproperties);
+	}
+	
+	// Blend unicontent properties
+	$unicontent = $temp_array["unicontent"];
+	if (isset($unicontent) && $unicontent != "") {
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_tumbler_getunifiedcontentgroup(), $unicontent);
+		$temp_array = array_merge($temp_array, $unicontentproperties);
 	}
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
@@ -490,6 +512,10 @@ function nxs_widgets_tumbler_initplaceholderdata($args)
 	$unistylegroup = nxs_widgets_tumbler_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 
+	// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_tumbler_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
+	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
 	$result = array();
