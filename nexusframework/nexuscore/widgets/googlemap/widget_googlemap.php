@@ -127,7 +127,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				),
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_googlemap_map_popupcontent",
-				"label" 			=> nxs_l18n__("Address", "nxs_td"),
+				"label" 			=> nxs_l18n__("Locate Address", "nxs_td"),
 				"layouttype"		=> "custom",
 				"localizablefield"	=> "true"
 			),

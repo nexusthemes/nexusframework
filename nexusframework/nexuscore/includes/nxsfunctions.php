@@ -2327,6 +2327,54 @@ function nxs_getwidgetsmetadatainpost_v2($filter)
 	return $result;
 }
 
+function nxs_getallpostids()
+{
+	$result = array();
+	
+	global $wpdb;
+
+	// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
+	// as these can use the nxsstructure too (for example WooCommerce 'product'). This saves development
+	// time for plugins, and increases consistency of data for end-users
+	$q = "
+			select ID postid
+			from $wpdb->posts
+		";
+		
+	$dbresult = $wpdb->get_results($q, ARRAY_A );
+	
+	if (count($dbresult) > 0)
+	{
+		$cnt = 0;
+		foreach ($dbresult as $dbrow)
+		{	  		
+			$result[] = $dbrow["postid"];
+		}
+	}
+	
+	return $result;
+}
+
+function nxs_getwidgetsmetadatainsite($filter)
+{
+	$result = array();
+	
+	$widgettype = $filter["widgettype"];
+	$postids = nxs_getallpostids();
+	foreach ($postids as $postid)
+	{
+		$subfilter = array
+		(
+			"postid" => $postid,
+			"widgettype" => $widgettype,
+		);
+		$subresult = nxs_getwidgetsmetadatainpost_v2($filter);
+		$result[$postid] = $subresult;
+	}
+	
+	return $result;
+}
+
 function nxs_parsepoststructure($postid)
 {
 	// haal de contents op van de pagina voor postid

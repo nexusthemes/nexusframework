@@ -1194,7 +1194,7 @@ li.score {
 			{
 				?>
 				<li class="nxs-hidewheneditorinactive nxs-sub-menu" style='opacity: 0.5;'>
-					<a class='site' title="<?php nxs_l18n_e("Page decorator", "nxs_td"); ?>" href='#' onclick="nxs_js_alert('This page has no pagedecorator configured');  return false;">
+					<a class='site' title="<?php nxs_l18n_e("Page decorator", "nxs_td"); ?>" href='#' onclick="nxs_js_alert_sticky('This page has no pagedecorator configured. To learn to enable it, see <a target=\'_blank\' style=\'color: blue; text-decoration: underline;\' href=\'https://www.youtube.com/watch?v=gz0p0J0iUHQ&feature=youtu.be\'>this support video</a>');  return false;">
 						<span class='nxs-icon-pagedecorator'></span>
 					</a>
 				</li>
