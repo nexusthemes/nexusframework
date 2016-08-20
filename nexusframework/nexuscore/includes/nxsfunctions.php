@@ -2368,8 +2368,11 @@ function nxs_getwidgetsmetadatainsite($filter)
 			"postid" => $postid,
 			"widgettype" => $widgettype,
 		);
-		$subresult = nxs_getwidgetsmetadatainpost_v2($filter);
-		$result[$postid] = $subresult;
+		$subresult = nxs_getwidgetsmetadatainpost_v2($subfilter);
+		if (count($subresult) > 0)
+		{
+			$result[$postid] = $subresult;
+		}
 	}
 	
 	return $result;
@@ -2646,6 +2649,19 @@ function nxs_getstacktrace()
 	{
 		$result = array();
 		$result["tip"] = "stacktrace suppressed; only available for admin users";
+			
+		/* 
+		// uncomment these lines to debug issues
+		if ($_REQUEST["a"] == "2")
+		{
+			$result = debug_backtrace();
+		}
+		else
+		{
+			$result = array();
+			$result["tip"] = "stacktrace suppressed; only available for admin users";
+		}
+		*/
 	}
 	
 	return $result;
@@ -3145,7 +3161,7 @@ function nxs_getwpposttype($postid)
 	$postdata = get_page($postid);
 	if ($postdata == null)
 	{
-		nxs_webmethod_return_nack("postid not found;" . $postid);
+		nxs_webmethod_return_nack("nxs_getwpposttype; postid not found;" . $postid);
 	}
 	$result = $postdata->post_type;
 	return $result;
