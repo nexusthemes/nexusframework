@@ -29,7 +29,7 @@
 		$guieffectsenabled = "false";
 	}
 	
-	if (isset($containerpostid) && $containerpostid != 0)
+	if (isset($containerpostid) && $containerpostid > 0)
 	{
 		$pagetemplate = nxs_getpagetemplateforpostid($containerpostid);
 	}
