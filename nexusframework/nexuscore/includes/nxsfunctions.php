@@ -2785,7 +2785,7 @@ function nxs_toutf8string($in_str)
   {
     $result = utf8_encode($in_str_v2); 
   }
-  
+    
   return $result;
 }
 
@@ -6490,7 +6490,7 @@ function nxs_webmethod_return($args)
 	{
 		nxs_webmethod_return_ok($args);
 	}
-	else
+	else 
 	{
 		nxs_webmethod_return_nack($args["message"]);
 	}
@@ -6524,7 +6524,7 @@ function nxs_set_jsonheader()
 	{
 		if(!headers_sent())
 		{
-			header('Content-type: application/json');
+			header('Content-Type: application/json; charset=utf-8');
 		}
 	}
 	else
@@ -6612,10 +6612,13 @@ function nxs_webmethod_return_ok($args)
 			$v = preg_replace('~\xc2\xa0~', ' ', $v);
 			$args[$k] = $v;
 		}
+		
+		
 	}
 	
 	if ($_REQUEST["nxs_json_output_format"] == "prettyprint")
 	{
+		// only works in PHP 5.4 and above
 		$options = 0;
 		$options = $options | JSON_PRETTY_PRINT;
 		$output = json_encode($args, $options);
@@ -6625,8 +6628,17 @@ function nxs_webmethod_return_ok($args)
 		// important!! the json_encode can return nothing,
 		// on some servers, when the 2nd parameter (options),
 		// is specified; ticket 22986!
+		
+	  if ($_REQUEST["aaa"] == "aaa")
+		{
+			
+		}
+		
 		$output = json_encode($args);
 	}
+	
+
+	
 	echo $output;
 	
 	exit();

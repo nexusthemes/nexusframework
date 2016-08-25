@@ -3,12 +3,12 @@
 function nxs_widgets_formitemcaptcha_geticonid()
 {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-key";
+	return "nxs-icon-search";
 }
 
 function nxs_widgets_formitemcaptcha_gettitle()
 {
-	return nxs_l18n__("Captcha input", "nxs_td");
+	return nxs_l18n__("ReCaptcha 2.0", "nxs_td");
 }
 
 function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
@@ -20,7 +20,7 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
 	$result["result"] = "OK";
 	$result["validationerrors"] = array();
 	$result["markclientsideelements"] = array();
-		
+	
 	// TODO: retrieve public and private key from configured properties
 	$publickey = $metadata["recaptcha_publickey"];
 	if ($publickey == "") { $result["validationerrors"][] = nxs_l18n__("Public key of ReCaptcha is not configured", "nxs_td"); };
@@ -29,19 +29,12 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
 	if ($privatekey == "") { $result["validationerrors"][] = nxs_l18n__("Private key of ReCaptcha is not configured", "nxs_td"); };
 	
 	// $metadata contains the submitted data
-	if ($_POST["recaptcha_response_field"]) 
+	$response=$_POST["g-recaptcha-response"];
+	if ($response) 
 	{
-		require_once(NXS_FRAMEWORKPATH . '/plugins/recaptcha/recaptchalib.php');
-		
-  	$resp = recaptcha_check_answer
-  	(
-  		$privatekey,
-      $_SERVER["REMOTE_ADDR"],
-      $_POST["recaptcha_challenge_field"],
-      $_POST["recaptcha_response_field"]
-    );
-
-    if ($resp->is_valid) 
+		$verify=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$privatekey}&response={$response}");
+		$captcha_success=json_decode($verify);
+		if ($captcha_success->success==true)
     {
     	// echo "You got it!";
     	// $result["validationerrors"][] = nxs_l18n__("Captcha was correctly entered", "nxs_td");
@@ -58,23 +51,6 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
 		$result["validationerrors"][] = nxs_l18n__("The captcha is required", "nxs_td");
 	}
 	
-	/*
-	nxs_requirewidget("contactbox");
-	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
-	
-	if ($overriddenelementid != "")
-	{
-		$key = $overriddenelementid;
-	}
-	else
-	{
-		$key = $prefix . $elementid;
-	}	
-	$value = $_POST[$key];
-	*/
-	
-	//$result["output"] = "$formlabel: $value";
-	
 	return $result;
 }
 
@@ -88,7 +64,7 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
 	extract($metadata, EXTR_PREFIX_ALL, "metadata");
 	
 	//
-	require_once(NXS_FRAMEWORKPATH . '/plugins/recaptcha/recaptchalib.php');
+	//require_once(NXS_FRAMEWORKPATH . '/plugins/recaptcha/recaptchalib.php');
   
   $publickey = $metadata["recaptcha_publickey"];
   $privatekey = $metadata["recaptcha_privatekey"];
@@ -127,7 +103,10 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
   if ($publickey != "" && $privatekey != "")
   {
   	$use_ssl = nxs_ishttps();
-  	echo recaptcha_get_html($publickey, null, $use_ssl);
+  	?>
+  	<script src='https://www.google.com/recaptcha/api.js'></script>
+  	<div class="g-recaptcha" data-sitekey="<?php echo $publickey; ?>"></div>
+  	<?php
   }
   else
   {
@@ -148,7 +127,8 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
 			{
 				//
 				nxs_js_log("redrawing captchas");
-				Recaptcha.reload();
+				// Recaptcha.reload();
+				grecaptcha.reset();
 			}
 		);
   </script>
@@ -219,8 +199,8 @@ function nxs_widgets_formitemcaptcha_render_webpart_render_htmlvisualization($ar
 	<div class="nxs-dragrow-handler nxs-padding-menu-item">
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title">
-					<h4>ReCaptcha element</h4>
+	      <div class="box-title">
+	      	<span class="nxs-icon-search" style="font-size: 16px;">ReCaptcha2.0</span>
 				</div>
 				<div class="box-content"></div>
 			</div>
@@ -290,14 +270,14 @@ function nxs_widgets_formitemcaptcha_home_getoptions($args)
 			( 
 				"id" 				=> "recaptcha_publickey",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("ReCaptcha public key", "nxs_td"),
+				"label" 			=> nxs_l18n__("ReCaptcha Site key", "nxs_td"),
 			),
 			
 			array
 			( 
 				"id" 				=> "recaptcha_privatekey",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("ReCaptcha private key", "nxs_td"),
+				"label" 			=> nxs_l18n__("ReCaptcha Secret key", "nxs_td"),
 			),
 		)
 	);
