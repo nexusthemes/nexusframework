@@ -4997,8 +4997,17 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 			// find derivations of this field, also the globalids
 			foreach ($allvalues as $currentkey => $currentvalue)
 			{
-				if (nxs_stringstartswith($currentkey, $currentfieldid))
+				if ($currentkey == $currentfieldid)
 				{
+					// exact match
+					$unistyleablefields[$currentkey] = $currentvalue;
+				}
+				else if (nxs_stringstartswith($currentkey, "{$currentfieldid}_g"))
+				{
+					// for the globalid "versions" (p.e. "a" => "a_globalid")
+					// note that this does not make much sense for unistyling,
+					// as unistyling does not likely have globalid fields (those
+					// are more unicontent related, but regardless).
 					$unistyleablefields[$currentkey] = $currentvalue;
 				}
 			}
@@ -5029,22 +5038,27 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 		// all fields, and we include all ones starting with unicontentablefieldids,
 		// for example "foo" and "foo_globalid"; all ones are added, "foo*").
 
-		
 		$unicontentablefields = array();
 		$fieldids = nxs_unicontent_getunicontentablefieldids($options);
+		
 		foreach ($fieldids as $currentfieldid)
 		{
 			// find derivations of this field, also the globalids
 			foreach ($allvalues as $currentkey => $currentvalue)
 			{
-				if (nxs_stringstartswith($currentkey, $currentfieldid))
-
+				if ($currentkey == $currentfieldid)
 				{
+					// exact match
+					$unicontentablefields[$currentkey] = $currentvalue;
+				}
+				else if (nxs_stringstartswith($currentkey, "{$currentfieldid}_g"))
+				{
+					// for the globalid "versions" (p.e. "image_imageid" => "image_imageid_globalid")
 					$unicontentablefields[$currentkey] = $currentvalue;
 				}
 			}
 		}
-		
+		 
 		$unigroup = $options["unifiedcontent"]["group"];
 		if (!isset($unigroup) || $unigroup == "") { echo "b) options: "; var_dump($options);nxs_webmethod_return_nack("unigroup not set"); }
 		nxs_unicontent_persistunicontent($unigroup, $unicontent, $unicontentablefields);
@@ -8462,7 +8476,7 @@ function nxs_unicontent_persistunicontent($group, $name, $contentproperties)
 
 	$metadata = array();
 	$metadata[$metakey] = $contentproperties;
-
+	
 	nxs_mergesitemeta($metadata);
 }
 

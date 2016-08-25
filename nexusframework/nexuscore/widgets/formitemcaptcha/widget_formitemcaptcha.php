@@ -63,9 +63,6 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
 	
 	extract($metadata, EXTR_PREFIX_ALL, "metadata");
 	
-	//
-	//require_once(NXS_FRAMEWORKPATH . '/plugins/recaptcha/recaptchalib.php');
-  
   $publickey = $metadata["recaptcha_publickey"];
   $privatekey = $metadata["recaptcha_privatekey"];
   
