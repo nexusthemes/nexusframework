@@ -617,8 +617,6 @@ function nxs_pagetemplate_handleheader()
 		$faviconid = "";
 	}
 
-	$analyticsUA = nxs_seo_getanalyticsua();	
-	
 	$meta = nxs_theme_getmeta();
 	$version = $meta["version"];
 	
@@ -702,7 +700,15 @@ function nxs_pagetemplate_handleheader()
 	// Google Tag Manager
 	if ($sitemeta["googletagmanager"] != "")
 	{
-		echo $sitemeta["googletagmanager"];
+		if (!is_user_logged_in())
+		{
+			echo "<!-- Google Tag Manager -->";
+			echo $sitemeta["googletagmanager"];
+		}
+		else
+		{
+			?><!-- Google Tag Manager is suppressed for authenticated users (see https://github.com/nexusthemes/communityrfc/issues/60) --><?php
+		}
 	}
 	?>
 	<?php if (nxs_showloadcover()) { ?>

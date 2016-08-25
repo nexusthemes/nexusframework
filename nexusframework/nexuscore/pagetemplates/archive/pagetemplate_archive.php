@@ -597,8 +597,6 @@ function nxs_pagetemplate_handleheader()
 	{
 		$faviconid = "";
 	}
-
-	$analyticsUA = nxs_seo_getanalyticsua();	
 ?>
 <!DOCTYPE html>
 <?php nxs_render_htmlstarttag(); ?>
