@@ -29,6 +29,11 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 		$autoresize_min_height = "350";
 	}
 	
+	if ($autoresize_max_height == "")
+	{
+		$autoresize_max_height = "350";
+	}
+	
 	//
 	
 	?>
@@ -226,6 +231,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 						      toolbar: "undo redo | styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code | <?php do_action("nxs_action_tinymce_toolbar"); ?>",
 							    setup: nxs_tinymce_registereventhandlers,							    
 							    autoresize_min_height: <?php echo $autoresize_min_height; ?>,
+							    autoresize_max_height: <?php echo $autoresize_max_height; ?>,
 								}
 							);
 								
