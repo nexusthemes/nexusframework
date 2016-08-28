@@ -459,7 +459,7 @@ function nxs_widgets_template_render_webpart_render_htmlvisualization($args)
 	// This function does not fare well with CSS3 transitions targeting "all"
 	$heightiqprio = "p1";
 	$title_heightiqgroup = "title";
-  	$titlecssclasses = $title_fontsize_cssclass;
+  $titlecssclasses = $title_fontsize_cssclass;
 	$titlecssclasses = nxs_concatenateargswithspaces($titlecssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
 	
 	// Title

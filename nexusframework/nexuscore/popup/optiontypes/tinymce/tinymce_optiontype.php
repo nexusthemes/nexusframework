@@ -24,6 +24,11 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 		$value = wpautop($value);
 	}
 	
+	if ($autoresize_min_height == "")
+	{
+		$autoresize_min_height = "350";
+	}
+	
 	//
 	
 	?>
@@ -153,9 +158,25 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							);
 							
 							<?php do_action("nxs_action_tinymce_registereventhandlers"); ?>
+							<?php 
 							
-							// set focus to the tinymce editor
-							nxs_tinymce_claimfocus();
+							if ($claimfocus == "")
+							{
+								?>
+								// set focus to the tinymce editor
+								nxs_tinymce_claimfocus();
+								nxs_js_log("focus claimed by tinymce");
+								<?php
+							}
+							else
+							{
+								// dont claim focus (this is used for example in the google maps
+								// widget, there the primary focus is the map, not the tinymce editor
+								?>
+								nxs_js_log("focus NOT claimed by tinymce");
+								<?php
+							}
+							?>
 							
 							nxs_js_log("finished setup of handlers");
 						}
@@ -198,12 +219,13 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 									menubar: false,
 									theme: "modern",
 							    plugins:  [
-						        "advlist lists image charmap print preview anchor",
+						        "advlist lists image charmap print preview anchor autoresize",
 						        "searchreplace visualblocks code fullscreen",
 						        "insertdatetime media table contextmenu paste link"
 							    ],
 						      toolbar: "undo redo | styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code | <?php do_action("nxs_action_tinymce_toolbar"); ?>",
 							    setup: nxs_tinymce_registereventhandlers,							    
+							    autoresize_min_height: <?php echo $autoresize_min_height; ?>,
 								}
 							);
 								

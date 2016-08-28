@@ -1,5 +1,81 @@
 <?php 
 
+// widget specific shortcodes
+function nxs_sc_googlemap($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	global $nxs_sc_googlemap_cnt;
+	$nxs_sc_googlemap_cnt++;
+	
+	$height = intval($height);
+	if ($height == 0)
+	{
+		$height = 200;	// fallback
+	}
+	
+	$zoom = intval($zoom);
+	if ($zoom == 0)
+	{
+		$zoom = 17;	// fallback
+	}
+	
+	if ($maptype == "")
+	{
+		$maptype = "";	// fallback
+	}
+	
+	if ($id == "")
+	{
+		global $nxs_global_row_render_statebag;
+		global $nxs_global_current_containerpostid_being_rendered;
+		global $nxs_global_current_postid_being_rendered;
+		global $nxs_global_placeholder_render_statebag;
+		
+		$widgetmetadata = $nxs_global_placeholder_render_statebag["widgetmetadata"];
+		$postid = $widgetmetadata["postid"];
+		$placeholderid = $widgetmetadata["placeholderid"];
+		
+		$id = "scmap_{$nxs_sc_googlemap_cnt}_{$postid}_{$placeholderid}";
+	}
+	
+	nxs_requirewidget("googlemap");
+	nxs_ob_start();
+
+	?>
+		<style>.mapsheightofcontainer{height:100%;}</style>
+		<div id='mapcontainer_<?php echo $id; ?>' style='height: <?php echo $height; ?>px; width: 100%; overflow: hidden;'>
+			<?php
+			$args = array
+			(
+				"render_behaviour" => "code",
+				"map_canvas_class" => "mapsheightofcontainer",
+				"placeholderid" => $id,
+				"lat" => $lat,
+				"lng" => $lng,
+				"zoom" => $zoom,
+				"maptypeid" => $maptypeid,
+			);
+			$renderresult = nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args);
+			echo $renderresult["html"];
+			?>
+		</div>
+		<!--
+		<div style='height: <?php echo $height; ?>px; background-color: red;'>
+			this is the background of the map
+		</div>
+		-->
+	<?php
+	$output = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	
+	return $output;
+}
+add_shortcode('nxsgooglemap', 'nxs_sc_googlemap');
+
+
+// layout specific shortcodes
+
 function nxs_nxspagerow($rowattributes, $content = null, $name='') 
 {
 	extract

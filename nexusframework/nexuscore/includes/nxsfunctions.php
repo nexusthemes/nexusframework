@@ -2145,7 +2145,7 @@ function nxs_cloneplaceholder($postid, $placeholderidtobecloned)
 {
 	if ($postid== "")
 	{
-		nxs_webmethod_return_nack("postid not set");
+		nxs_webmethod_return_nack("postid not set (cloneph)");
 	}
 	if ($placeholderidtobecloned == "")
 	{
@@ -3921,7 +3921,7 @@ function nxs_get_postmeta($postid)
 {
 	if ($postid == "")
 	{
-		nxs_webmethod_return_nack("postid not set");
+		nxs_webmethod_return_nack("postid not set (getpostmeta)");
 	}
 	
 	global $nxs_gl_cache_postmeta;
@@ -4950,7 +4950,7 @@ function nxs_mergewidgetmetadata_internal($postid, $placeholderid, $updatedvalue
 // persists the widget's metadata (assumes the global data is already enriched)
 function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedvalues, $behaviourargs)
 {
-	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); }
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_mergewidgetmetadata_internal_v2)"); }
 	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
 	if ($updatedvalues == "") { nxs_webmethod_return_nack("updatedvalues not set"); }
 	
@@ -5111,7 +5111,7 @@ function nxs_overridewidgetmetadata($postid, $placeholderid, $metadata)
 
 function nxs_persistwidgettype($postid, $placeholderid, $placeholdertemplate)
 {
-	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); }
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_persistwidgettype)"); }
 	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
 	
  	$datatomerge = array();
@@ -5126,7 +5126,7 @@ function nxs_initializewidget($args)
 	extract($args["clientpopupsessioncontext"]);
 	$placeholdertemplate = $args["placeholdertemplate"];
 	
-	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set"); }
+	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set (nxs_initializewidget)"); }
 	if (!isset($placeholderid)) { nxs_webmethod_return_nack("placeholderid not set"); }
 	if (!isset($placeholdertemplate)) { nxs_webmethod_return_nack("placeholdertemplate not set"); }
 
@@ -7249,7 +7249,7 @@ function nxs_widgets_mergeunenrichedmetadata($widget, $args)
 	$postid = $args["postid"];
 	$placeholderid = $args["placeholderid"];
 
-	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); }
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_widgets_mergeunenrichedmetadata)"); }
  	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
 
 	// determine what data to store	
@@ -9065,7 +9065,7 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
 	
 	extract($args);
 	
-	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set"); }
+	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set (nxs_widgets_setgenericwidgethovermenu_v2)"); }
 	if (!isset($placeholderid)) { nxs_webmethod_return_nack("placeholderid not set"); }
 	if (!isset($placeholdertemplate)) { nxs_webmethod_return_nack("placeholdertemplate not set"); }
 	
