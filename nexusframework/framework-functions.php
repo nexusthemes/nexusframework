@@ -261,8 +261,6 @@ nxs_mem_increasememifneeded();
 // case in the WP backend...
 define('DONOTCACHEPAGE', 'true');
 
-add_theme_support( 'title-tag' ); // since we use a dynamic title in the head
-
 //
 // FEATURES IMAGES
 //
