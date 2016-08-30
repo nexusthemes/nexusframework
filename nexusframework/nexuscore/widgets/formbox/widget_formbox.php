@@ -538,7 +538,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	// Button
 	$htmlbutton = '
 	<p class="' . $button_alignment_cssclass . '">
-		<a id="' . $placeholderid . '_button" 
+		<a rel="nofollow" id="' . $placeholderid . '_button" 
 			class="nxs-button ' . $button_color_cssclass . ' ' . $button_scale_cssclass . '" 
 			href="#" 
 			onclick="' . $invoke . '; return false;">' 
