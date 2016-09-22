@@ -45,7 +45,7 @@ function nxs_widgets_contactbox_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_contactbox_gettitle(),
 		"sheeticonid" => nxs_widgets_contactbox_geticonid(),
-		"sheethelp" => nxs_l18n__("http://nexusthemes.com/contact-box-widget/"),
+		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_contactbox_getunifiedstylinggroup(),

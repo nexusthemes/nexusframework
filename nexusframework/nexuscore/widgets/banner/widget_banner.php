@@ -29,7 +29,7 @@ function nxs_widgets_banner_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_banner_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_banner_geticonid(),
-		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/banner-widget/"),
+		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_banner_getunifiedstylinggroup(),),
 		"fields" => array
 		(
@@ -250,9 +250,10 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 				$banner_imageheight 	= $lookup[2]. "px";		
 				
 				$image_alt_attribute = "";
-				if ($placeholdermetadata['image_alt'] != "") {
+				if ($placeholdermetadata['image_alt'] != "") 
+				{
 					$image_alt = $placeholdermetadata['image_alt'];
-				$image_alt_attribute = 'alt="'.$image_alt.'"';
+					$image_alt_attribute = 'alt="'.$image_alt.'"';
 				}
 
 				$destination_articleid = $placeholdermetadata['destination_articleid'];

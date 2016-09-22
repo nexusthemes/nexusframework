@@ -33,7 +33,7 @@ function nxs_widgets_csv_home_getoptions()
 	(
 		"sheettitle" 		=> "CSV table",
 		"sheeticonid" 		=> nxs_widgets_csv_geticonid(),
-		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/csv-widget/"),
+		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_csv_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_csv_getunifiedcontentgroup(),),
 		"fields" => array

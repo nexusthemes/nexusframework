@@ -27,7 +27,7 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_eventsbox_gettitle(),
 		"sheeticonid" => nxs_widgets_eventsbox_geticonid(),
-		"sheethelp" => nxs_l18n__("http://nexusthemes.com/events-widget/"),
+		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_eventsbox_getunifiedstylinggroup(),
@@ -176,7 +176,7 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
-				"placeholder"		=> nxs_l18n__("http://www.nexusthemes.com", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"localizablefield"	=> true
 			),

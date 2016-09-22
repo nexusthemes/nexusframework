@@ -39,7 +39,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 	}
 	else
 	{
-		$destination_url = "http://www.nexusthemes.com";
+		$destination_url = "http://www.example.org";
 	}
 	
 	// prevent administrators from seeing annoying edit features
@@ -392,7 +392,7 @@ function nxs_widgets_pagepopup_home_getoptions($args)
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
-				"placeholder"		=> nxs_l18n__("http://www.nexusthemes.com", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"localizablefield"	=> true
 			),

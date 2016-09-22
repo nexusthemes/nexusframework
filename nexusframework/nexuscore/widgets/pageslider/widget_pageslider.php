@@ -61,7 +61,7 @@ function nxs_widgets_pageslider_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_pageslider_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_pageslider_geticonid(),
-		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/pageslider-widget/"),
+		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_pageslider_getunifiedstylinggroup(),),
 		"fields" => array
 		(
@@ -555,7 +555,6 @@ function nxs_widgets_pageslider_beforeend_head()
 	
 	if ($aantalslides > 0)
 	{
-		// for nexusthemes.com
 		// the startslide and autoplay can be specified in the url
 		// this is for generating screenshots for the product image
 		$startslide = 0;

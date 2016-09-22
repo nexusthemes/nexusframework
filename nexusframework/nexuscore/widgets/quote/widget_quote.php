@@ -34,7 +34,7 @@ function nxs_widgets_quote_home_getoptions($args)
 	$options = array (
 		"sheettitle" 		=> nxs_widgets_quote_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_quote_geticonid(),
-		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/quote-widget/"),
+		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_quote_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_quote_getunifiedcontentgroup(),),
 		"fields" 			=> array(

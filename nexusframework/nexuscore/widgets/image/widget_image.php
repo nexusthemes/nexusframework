@@ -34,7 +34,7 @@ function nxs_widgets_image_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_image_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_image_geticonid(),
-		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/image-widget/"),
+		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_image_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_image_getunifiedcontentgroup(),),
 		"fields" => array
@@ -230,7 +230,7 @@ function nxs_widgets_image_home_getoptions($args)
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
-				"placeholder"		=> nxs_l18n__("http://www.nexusthemes.com", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the image to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
@@ -429,7 +429,12 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	
 	// Border radius
 	if ($image_border_radius != "") {$border_radius = 'border-radius: '.$image_border_radius.';';}
-	
+
+	if ($image_alt == "" && $image_imageid != 0)
+	{
+		// fallback; use the alt text as specified in the media manager
+		$image_alt = get_post_meta($image_imageid, '_wp_attachment_image_alt', true);
+	}
 	
 	// Original vs stretched images
 	if ($image_size == 'original') {

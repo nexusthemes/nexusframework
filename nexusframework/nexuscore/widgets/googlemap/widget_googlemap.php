@@ -30,7 +30,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_googlemap_gettitle(),
 		"sheeticonid" => nxs_widgets_googlemap_geticonid(),
-		"sheethelp" => nxs_l18n__("http://nexusthemes.com/googlemap-widget/"),
+		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_googlemap_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_googlemap_getunifiedcontentgroup(),),
 		"fields" => array
@@ -290,7 +290,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
-				"placeholder"		=> nxs_l18n__("http://www.nexusthemes.com", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
@@ -707,18 +707,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 					<br />
 					Problem; Google Maps API key not (yet?) valid<br />
 					<br />
-					Possible reasons;<br />
-					1) It can take up to 5 mins before the API key starts to work. If you 
-					updated the existing or created a new key, please be patient and wait 5 mins
-					and retry.<br />
-					2) Perhaps you entered an incorrect API key (p.e. one that cannot be used
-					for this domain, or perhaps you made a typo when copy pasting it)<br />
-					3) Perhaps you exceeded the free quota that Google provides. In that case you
-					could consider upgrading to the paid version.<br />
-					<br />
-					<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession("integrationshome"); return false;'>Click here to re-configure your Google Maps API Key</a><br />
-					<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=invalidapikeyset'>Click here to learn how to configure the Google Maps API key</a>
-					
+					Please check <a target='_blank' href='http://oopssomethingwentwrong.com/'>oopssomethingwentwrong.com</a> on how to resolve this.
 					<?php
 				}
 			}
@@ -803,7 +792,12 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 						  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
 						  			//return;
 						  		}
-						  		
+						  		else if (msg.indexOf("Google Maps API error: RefererNotAllowedMapError") > -1)
+						  		{
+						  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
+						  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
+						  			//return;
+						  		}
 						  	}
 						  	
 						    err.apply(this, Array.prototype.slice.call(arguments));

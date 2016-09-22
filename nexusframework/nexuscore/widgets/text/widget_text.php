@@ -34,7 +34,7 @@ function nxs_widgets_text_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_text_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_text_geticonid(),
-		"sheethelp" 		=> nxs_l18n__("http://nexusthemes.com/text-widget/"),
+		"sheethelp" 		=> nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=826980725"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_text_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_text_getunifiedcontentgroup(),),
 		"fields" => array
@@ -277,7 +277,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
-				"placeholder"		=> nxs_l18n__("http://www.nexusthemes.com", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
@@ -776,6 +776,12 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Hover effects
 	if ($enlarge != "") { $enlarge = 'nxs-enlarge'; }
 	if ($grayscale != "") {	$grayscale = 'nxs-grayscale'; }
+	
+	if ($image_alt == "" && $image_imageid != 0)
+	{
+		// fallback; use the alt text as specified in the media manager
+		$image_alt = get_post_meta($image_imageid, '_wp_attachment_image_alt', true);
+	}
 	
 	// Image with border functionality
 	$image = '

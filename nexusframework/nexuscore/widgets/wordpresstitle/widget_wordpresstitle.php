@@ -178,7 +178,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 {	
 	extract($args);
 	
-	global $nxs_global_row_render_statebag;	
+	global $nxs_global_row_render_statebag;
 	global $nxs_global_current_containerpostid_being_rendered;
 	global $nxs_global_current_postid_being_rendered;
 	
