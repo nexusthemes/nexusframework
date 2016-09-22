@@ -31,7 +31,7 @@ function nxs_commentsprovider_wordpressnative_getflyoutmenuhtml()
 function nxs_commentsprovider_wordpressnative_getpostcommentcounthtml($args)
 {
 	// preconditions
-	if (!isset($args["postid"])){ nxs_webmethod_return_nack("postid not set"); }
+	if (!isset($args["postid"])){ nxs_webmethod_return_nack("postid not set (commentsprovider wpnative)"); }
 	
 	//
 	$postid = $args["postid"];

@@ -4823,7 +4823,7 @@ function nxs_js_redirect_top(url)
 			// refresh yoast v3
 			if ("undefined" !== typeof YoastSEO )
 			{
-				console.log("refreshing Yoast SEO v3!");
+				//console.log("refreshing Yoast SEO v3!");
 				YoastSEO.app.refresh();
 			}
 

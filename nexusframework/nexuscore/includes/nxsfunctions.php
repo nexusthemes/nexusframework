@@ -847,25 +847,8 @@ function nxs_cap_getdesigncapability()
 
 function nxs_hastemplateproperties()
 {
-	global $nxs_gl_cache_hastemplateproperties;
-	if (!isset($nxs_gl_cache_hastemplateproperties))
-	{
-		$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
-		if ( $query->have_posts() ) 
-		{
-			$result = true;
-		}
-		else
-		{
-			$result = false;
-		}
-		
-		$nxs_gl_cache_hastemplateproperties = $result;
-	}
-	else
-	{
-		$result = $nxs_gl_cache_hastemplateproperties;
-	}
+	
+	$result = true;
 	
 	return $result;
 }
@@ -11579,6 +11562,28 @@ function nxs_wp_getpostidsbymeta($key, $value)
 	}
 	
 	return $result;
+}
+
+function nxs_reseller_getreseller()
+{
+	$result = esc_attr(get_option('nxs_reseller'));
+	return $result;
+}
+
+function nxs_reseller_setreseller($reseller)
+{
+	update_option('nxs_reseller', "reseller");
+}
+
+function nxs_warranty_getwarrantystate()
+{
+	$result = esc_attr(get_option('nxs_warrantystate'));
+	return $result;
+}
+
+function nxs_warranty_break()
+{
+	update_option('nxs_warrantystate', "broken");
 }
 
 ?>

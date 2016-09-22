@@ -917,6 +917,9 @@ function nxs_js_closepopup()
 // closes the active popup that was opened using the function nxs_js_popup_navigateto
 function nxs_js_closepopup_unconditionally()
 {
+	// allow plugin triggered implementations
+	jQ_nxs(document).trigger('nxs_event_popup_closeunconditionally');
+	
 	if (nxs_js_requirespagerefresh)
 	{
 		nxs_js_broadcastpopupcloses();

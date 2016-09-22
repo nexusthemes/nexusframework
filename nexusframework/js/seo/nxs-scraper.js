@@ -54,7 +54,7 @@ YoastSEO.ExampleScraper.prototype.getDataFromInput = function( inputType ) {
 				val = $('.nxs-main')[0].outerHTML;
 			}
 			
-			console.log('nxs yoast v3 bridge; just received the html of the dom;');
+			//console.log('nxs yoast v3 bridge; just received the html of the dom;');
 			//console.log(val);
 			break;
 		case "url":

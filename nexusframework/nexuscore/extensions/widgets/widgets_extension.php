@@ -280,11 +280,9 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "sliderbox", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "vectorart", "tags" => array("nexus"));
 		
-		
 		if ($enableconceptualwidgets)
 		{
 			$result[] = array("widgetid" => "filmrollbox", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "logocreator", "tags" => array("nexus"));
 		}
 	} 
 	
@@ -566,7 +564,6 @@ function nxs_lazyload_widgets()
 	if ($enableconceptualwidgets)
 	{
 		nxs_ext_lazyload_widget("wpmenu");
-		nxs_ext_lazyload_widget("logocreator");
 	}
 	
 	nxs_ext_lazyload_widget("target");

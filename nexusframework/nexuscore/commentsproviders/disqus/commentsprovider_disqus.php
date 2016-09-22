@@ -157,7 +157,7 @@ function nxs_commentsprovider_disqus_home_getoptions()
 function nxs_commentsprovider_disqus_getpostcommentcounthtml($args)
 {
 	// preconditions
-	if (!isset($args["postid"])){ nxs_webmethod_return_nack("postid not set"); }
+	if (!isset($args["postid"])){ nxs_webmethod_return_nack("postid not set (discus)"); }
 	
 	//
 	$postid = $args["postid"];
