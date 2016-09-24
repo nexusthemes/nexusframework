@@ -267,6 +267,108 @@ define('DONOTCACHEPAGE', 'true');
 add_theme_support("post-thumbnails");	// if sites use feature images we support them, the size of the thumbnails is set in the 'aftertheme'
 add_action('after_setup_theme', 'nxs_addsupportforadditionalimageformats');
 
+if (is_admin())
+{
+	function nxs_layoutengine_callback($post)
+	{
+		// Noncename needed to verify where the data originated
+		echo '<input type="hidden" name="nxs_layoutengine_noncename" id="nxs_layoutengine_noncename" value="' . wp_create_nonce( __FILE__ ) . '" />';
+		
+		// Get the location data if its already been entered
+		$nxs_layoutengine = get_post_meta($post->ID, 'nxs_layoutengine', true);
+		
+		// TODO: dynamically populate the possible layout engines based upon a the configured rules
+		$values = array("", "default", "landingpage");
+		?>
+    <select name='nxs_layoutengine' id='nxs_layoutengine'>
+      <?php 
+      foreach ($values as $value)
+      {
+      	$selected = "";
+    		if ($value == $nxs_layoutengine)
+    		{
+    			$selected = "selected ";	
+    		}  	
+      	?>
+      	<option <?php echo $selected; ?> value="<?php echo $value; ?>"><?php echo esc_html($value); ?></option>
+      	<?php 
+      }
+      ?>
+    </select>
+    <?php
+	}
+	
+	function nxs_layoutengine_save_callback($post_id, $post) 
+	{
+		error_log("nxs_layoutengine_save_callback triggered");
+		
+		/*
+		// verify this came from the our screen and with proper authorization,
+		// because save_post can be triggered at other times
+		if ( !wp_verify_nonce( $_POST['nxs_layoutengine_noncename'], wp_create_nonce( __FILE__ ) )) 
+		{
+			return $post->ID;
+		}
+		*/
+	
+		// Is the user allowed to edit the post or page?
+		if ( !current_user_can( 'edit_post', $post->ID ))
+		{
+			return $post->ID;
+		}
+	
+		// OK, we're authenticated: we need to find and save the data
+		// We'll put it into an array to make it easier to loop though.
+		
+		$nxs_layoutengine = $_POST['nxs_layoutengine'];
+		$meta['nxs_layoutengine'] = $nxs_layoutengine;
+		
+		error_log("nxs_layoutengine_save_callback; selected: $nxs_layoutengine");
+		
+		
+		// Add values of $events_meta as custom fields
+		
+		foreach ($meta as $key => $value) 
+		{ 
+			// Cycle through the $events_meta array!
+			if( $post->post_type == 'revision' ) 
+			{
+				error_log("nxs_layoutengine_save_callback; revision");
+				return; // Don't store custom data twice
+			}
+			error_log("nxs_layoutengine_save_callback; NO revision");
+			
+			$value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
+			if(get_post_meta($post->ID, $key, FALSE)) 
+			{ 
+				// If the custom field already has a value
+				update_post_meta($post->ID, $key, $value);
+				error_log("nxs_layoutengine_save_callback; update");
+			} 
+			else 
+			{ 
+				// If the custom field doesn't have a value
+				add_post_meta($post->ID, $key, $value);
+				error_log("nxs_layoutengine_save_callback; add");
+			}
+			if(!$value)
+			{
+				delete_post_meta($post->ID, $key); // Delete if blank
+				error_log("nxs_layoutengine_save_callback; delete");
+			}
+		}
+	}
+	add_action('save_post', 'nxs_layoutengine_save_callback', 1, 2); // save the custom fields
+	
+	function nxs_add_meta_boxes()
+	{
+		add_meta_box('nxs_layoutengine', 'Layout', 'nxs_layoutengine_callback', 'post', 'side', 'default');
+		add_meta_box('nxs_layoutengine', 'Layout', 'nxs_layoutengine_callback', 'page', 'side', 'default');
+	}
+	
+	add_action( 'add_meta_boxes', 'nxs_add_meta_boxes' );
+}
+
 // whenever the current blog is switched, we clear the sitemeta
 add_action("switch_blog", "nxs_sitemeta_clearcache");
 

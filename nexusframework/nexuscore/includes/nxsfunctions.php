@@ -970,93 +970,116 @@ function nxs_gettemplateproperties_internal()
 {
 	$result = array();
 	
-	$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
-		
-	$statebag = array();
-	$statebag["vars"] = array();
-	$statebag["out"] = array();
-	
-	//
-	// initial values
-	//
+	$ishandled = false;
 	
 	if (is_singular())
 	{
-		$statebag["out"]["content_postid"] = get_the_ID();
-	}
-	else if (is_archive())
-	{
+		// users can overrule the layout engine
+		$postid = get_the_ID();
+		
+		$nxs_layoutengine = get_post_meta($postid, 'nxs_layoutengine', true);
+		if ($nxs_layoutengine == "landingpage")
+		{
+			$ishandled = true;
+			$result = array
+			(
+				"content_postid" => $postid,
+				"wpcontenthandler" => "@template@onlywhenset",
+				"result" => "OK",
+			);
+		}
 	}
 	
-	if ( $query->have_posts() ) 	
-	{
-		$postid = $query->posts[0]->ID;
-		$result["templaterulespostid"] = $postid;
-		$businessrules = nxs_parsepoststructure($postid);
-				
-		$index = 0;
-		foreach ($businessrules as $currentbusinessrule) 
-		{
-			$content = $currentbusinessrule["content"];
-			$businessruleelementid = nxs_parsepagerow($content);
-			$placeholdermetadata = nxs_getwidgetmetadata($postid, $businessruleelementid);
-			$placeholdertype = $placeholdermetadata["type"];					
+	if (!$ishandled)
+	{	
+		$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
 			
-			if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) 
-			{
-				// empty row / rule, ignore it
-			}
-			else 
-			{
-				// store this item as one of the matching rules
-				$busrule_processresult = nxs_busrule_process($placeholdertype, $placeholdermetadata, $statebag);
-				if ($busrule_processresult["result"] == "OK")
-				{
-					$traceitem = array
-					(
-						"placeholdertype" => $placeholdertype,
-						"ismatch" => $busrule_processresult["ismatch"],
-					);
-					$result["trace"][] = $traceitem;
+		$statebag = array();
+		$statebag["vars"] = array();
+		$statebag["out"] = array();
+		
+		//
+		// initial values
+		//
+		
+		if (is_singular())
+		{
+			$statebag["out"]["content_postid"] = get_the_ID();
+		}
+		else if (is_archive())
+		{
+		}
+		
+		if ( $query->have_posts() ) 	
+		{
+			$postid = $query->posts[0]->ID;
+			$result["templaterulespostid"] = $postid;
+			$businessrules = nxs_parsepoststructure($postid);
 					
-					if ($busrule_processresult["ismatch"] == "true")
+			$index = 0;
+			foreach ($businessrules as $currentbusinessrule) 
+			{
+				$content = $currentbusinessrule["content"];
+				$businessruleelementid = nxs_parsepagerow($content);
+				$placeholdermetadata = nxs_getwidgetmetadata($postid, $businessruleelementid);
+				$placeholdertype = $placeholdermetadata["type"];					
+				
+				if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) 
+				{
+					// empty row / rule, ignore it
+				}
+				else 
+				{
+					// store this item as one of the matching rules
+					$busrule_processresult = nxs_busrule_process($placeholdertype, $placeholdermetadata, $statebag);
+					if ($busrule_processresult["result"] == "OK")
 					{
-						$lastmatchingrule = $placeholdertype;
+						$traceitem = array
+						(
+							"placeholdertype" => $placeholdertype,
+							"ismatch" => $busrule_processresult["ismatch"],
+						);
+						$result["trace"][] = $traceitem;
 						
-						// the process function is responsible for filling the out property
-						if ($busrule_processresult["stopruleprocessingonmatch"] == "true")
+						if ($busrule_processresult["ismatch"] == "true")
 						{
-							break;
+							$lastmatchingrule = $placeholdertype;
+							
+							// the process function is responsible for filling the out property
+							if ($busrule_processresult["stopruleprocessingonmatch"] == "true")
+							{
+								break;
+							}
+						}
+						else
+						{
+							// continu to next rule
 						}
 					}
 					else
 					{
-						// continu to next rule
+						// if applying of a rule failed, we skip it
 					}
 				}
-				else
-				{
-					// if applying of a rule failed, we skip it
-				}
 			}
+			
+			// the system should have derived site wide elements
+			$sitewideelements = nxs_pagetemplates_getsitewideelements();
+			foreach($sitewideelements as $currentsitewideelement)
+	  	{
+	  		$result[$currentsitewideelement] = $statebag["out"][$currentsitewideelement];
+	  	}
+	  	
+	  	$result["lastmatchingrule"] = $lastmatchingrule;
+			
+			$result["result"] = "OK";
 		}
-		
-		// the system should have derived site wide elements
-		$sitewideelements = nxs_pagetemplates_getsitewideelements();
-		foreach($sitewideelements as $currentsitewideelement)
-  	{
-  		$result[$currentsitewideelement] = $statebag["out"][$currentsitewideelement];
-  	}
-  	
-  	$result["lastmatchingrule"] = $lastmatchingrule;
-		
-		$result["result"] = "OK";
+		else
+		{
+			$result["result"] = "NACK";
+		}
 	}
-	else
-	{
-		$result["result"] = "NACK";
-	}
-		
+	
 	return $result;
 }
 
