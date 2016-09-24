@@ -46,12 +46,14 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 		}
 	}
 	
+	$persistmode = $optionvalues["persistmode"];
+	
 	echo '
 	<div class="content2" ' . $content2style . '>
 	    <div class="box">
 	        ' . nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip) . '
           <div class="box-content">
-						<input type="text" id="'. $id . '" name="'. $id . '" value="' . nxs_render_html_escape_doublequote($value) . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" ' . $readonly . ' />
+						<input class="nxs-persistmode-'.$persistmode.'" type="text" id="'. $id . '" name="'. $id . '" value="' . nxs_render_html_escape_doublequote($value) . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" ' . $readonly . ' />
 						' . $lookuphelphtml . '
           </div>
         </div>
@@ -64,7 +66,22 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 function nxs_popup_optiontype_input_renderstorestatecontroldata($optionvalues)
 {
 	$id = $optionvalues["id"];
-	echo 'nxs_js_popup_storestatecontroldata_textbox("' . $id . '", "' . $id . '");';	
+	$persistmode = $optionvalues["persistmode"];
+	if ($persistmode == "shortscope")
+	{
+		// store the value in the shortscope data (only available for the upcoming post)
+		?>
+		if (jQ_nxs('#<?php echo $id; ?>').length > 0)
+		{
+			nxs_js_popup_setshortscopedata('<?php echo $id; ?>', jQ_nxs('#<?php echo $id; ?>').val());
+		}
+		<?php
+	}
+	else if ($persistmode == "sessiondata" || $persistmode == "")
+	{
+		// default; store in session
+		echo 'nxs_js_popup_storestatecontroldata_textbox("' . $id . '", "' . $id . '");';	
+	}
 }
 
 function nxs_popup_optiontype_input_getitemstoextendbeforepersistoccurs($optionvalues, $metadata)

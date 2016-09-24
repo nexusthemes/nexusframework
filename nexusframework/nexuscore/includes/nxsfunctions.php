@@ -1060,6 +1060,7 @@ function nxs_gettemplateproperties_internal()
 	return $result;
 }
 
+// add_new_article
 function nxs_addnewarticle($args)
 {	
 	extract($args);
@@ -1260,6 +1261,7 @@ function nxs_addnewarticle($args)
 	$responseargs = array();
 	$responseargs["result"] = "OK";
 	$responseargs["postid"] = $postid;
+	$responseargs["globalid"] = nxs_get_globalid($postid, true);
 	$responseargs["url"] = $url;
 	
 	return $responseargs;
@@ -3401,6 +3403,14 @@ function nxs_geturl_for_postid($postid)
 	return $result; 
 }
 
+// geturlforglobalid (convenience function)
+function nxs_geturl_for_globalid($globalid)
+{
+	$postid = nxs_get_postidaccordingtoglobalid($globalid);
+	$result = nxs_geturl_for_postid($postid);	
+	return $result;
+}
+
 function nxs_ensure_validsitemeta()
 {
 	// following line will crash if 0 or multiple sitemeta's exist
@@ -3701,9 +3711,12 @@ function nxs_set_nxssubposttype($postid, $nxssubposttype)
 	return $result;
 }
 
+// note; only invoke this function AFTER the nxs_create_post_types_and_taxonomies() function 
+// of the framework is invoked, or else the taxonomy won't be available,
+// meaning it will return "nxserr" error messages!
 function nxs_get_nxssubposttype($postid)
 {
-	if ($postid== "")
+	if ($postid == "")
 	{
 		echo "postid is niet geset? (subpt a)";
 		return "postid is niet geset? (subpt) b";
@@ -3728,17 +3741,20 @@ function nxs_get_nxssubposttype($postid)
 			else
 			{
 				// unexpected; we found 0, or multiple taxonomies?
-				$result = "nxserr (1)";
+				error_log("nxs_get_nxssubposttype for $postid nxserr(1)");
+				$result = false;
 			}
 		}
 		else
 		{
-			$result = "nxser (2)";
+			error_log("nxs_get_nxssubposttype for $postid nxserr(2)");
+			$result = false;
 		}		
 	}
 	else
 	{
-		$result = "nxserr (3)";
+		error_log("nxs_get_nxssubposttype for $postid nxserr(3)");
+		$result = false;
 	}
 	
 	return $result;
@@ -5575,6 +5591,13 @@ function nxs_gethomepageid()
 	return $meta["home_postid"];
 }
 
+function nxs_gethomeglobalid()
+{
+	$homepostid = nxs_gethomepageid();
+	$result = nxs_get_globalid($homepostid, true);
+	return $result;
+}
+
 function nxs_getmaintenancedurationinsecs()
 {
 	$meta = nxs_getsitemeta();
@@ -5801,7 +5824,7 @@ function nxs_global_globalidexists($globalid)
 	return $result;
 }
 
-// get postidbyglobalid
+// get postidbyglobalid, postid_by_globalid, postid_for_globalid, postidforglobalid
 function nxs_get_postidaccordingtoglobalid($globalid)
 {
 	$postids = nxs_get_postidsaccordingtoglobalid($globalid);
@@ -5851,6 +5874,7 @@ function nxs_reset_globalidtovalue($postid, $globalid)
 	return $globalid;
 }
 
+// getglobalid_by_postid,getglobalid_for_postid
 function nxs_get_globalid($postid, $createwhennotexists)
 {	
 	if ($postid == "")
@@ -8885,7 +8909,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	      <?php } ?>
 	  	</div> <!-- nxs-popup-content-canvas -->
 	  </div> <!-- END nxs-popup-content-canvas-cropper -->
-	  <div class="content2">          
+	  <div class="content2 popup-footer-container">          
         <div class="box">
       	  <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'>Save</a>
           <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'>OK</a>

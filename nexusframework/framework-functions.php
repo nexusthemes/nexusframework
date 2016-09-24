@@ -1180,7 +1180,7 @@ function nxs_init()
 						echo "attachmenturl {$attachmenturl}<br />"; 
 					}
 					$link = get_permalink($postid);
-					echo "post exist (open <a target='_blank' href='$link'>$link</a>)<br />"; 
+					echo "post exists (open <a target='_blank' href='$link'>$link</a>)<br />";
 					
 					if (function_exists("nxs_qa_ispostidreferenced"))
 					{
@@ -1192,6 +1192,8 @@ function nxs_init()
 						echo "<br />--------------<br />";
 					}
 					
+					$subposttype = nxs_get_nxssubposttype($postid);
+					echo "subposttype {$subposttype}<br />"; 
 				} 
 				else
 				{ 
