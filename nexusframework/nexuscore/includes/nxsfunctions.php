@@ -977,8 +977,8 @@ function nxs_gettemplateproperties_internal()
 		// users can overrule the layout engine
 		$postid = get_the_ID();
 		
-		$nxs_layoutengine = get_post_meta($postid, 'nxs_layoutengine', true);
-		if ($nxs_layoutengine == "landingpage")
+		$nxs_semanticlayout = get_post_meta($postid, 'nxs_semanticlayout', true);
+		if ($nxs_semanticlayout == "landingpage")
 		{
 			$ishandled = true;
 			$result = array

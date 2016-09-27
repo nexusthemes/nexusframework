@@ -77,7 +77,10 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 	{
 		$datepublished = get_the_date('d-m-Y', $postid);
 	}
-		
+	
+	$currentlayout = get_post_meta($postid, 'nxs_semanticlayout', true);
+	$editurl = get_edit_post_link($postid);
+
 	nxs_ob_start();
 
 	?>
@@ -89,116 +92,8 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 
 			<div class="nxs-popup-content-canvas-cropper">
 				<div class="nxs-popup-content-canvas">
-
-		      <div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-	          		<h4><?php nxs_l18n_e("Template[nxs:heading]", "nxs_td"); ?></h4>
-		           </div>
-		          <div class="box-content">
-					      <a class='nxsbutton1 nxs-float-right' title="<?php nxs_l18n_e("Change template[nxs:title]", "nxs_td"); ?>" href='#' onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'home'); return false;"><?php nxs_l18n_e("Change template[nxs:popup,header]", "nxs_td"); ?></a>
-					      <?php nxs_l18n_e("Page (webpage)[nxs:popup,header]", "nxs_td"); ?>
-					    </div>
-					  </div>
-					  <div class="nxs-clear"></div>
-					</div>
 					
-					<?php
-					// layout is deprecated
-					if (!nxs_hastemplateproperties())
-					{
-						?>
-						<!-- layout -->
-						<div class="content2">
-			        <div class="box">
-			          <div class="box-title">
-		          		<h4><?php nxs_l18n_e("Layout[nxs:heading]", "nxs_td"); ?></h4>
-			           </div>
-			          <div class="box-content">
-						      <a class='nxsbutton1 nxs-float-right' title="<?php nxs_l18n_e("Change", "nxs_td"); ?>" href='#' onclick="nxs_js_popup_navigateto('layout'); return false;"><?php nxs_l18n_e("Change[nxs:popup,header]", "nxs_td"); ?></a>
-						    </div>
-						  </div>
-						  <div class="nxs-clear"></div>
-						</div>
-						<?php
-					}
-					?>
-
-					<!-- design -->
-					<div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-	          		<h4><?php nxs_l18n_e("Styling[nxs:heading]", "nxs_td"); ?></h4>
-		           </div>
-		          <div class="box-content">
-					      <a class='nxsbutton1 nxs-float-right' title="<?php nxs_l18n_e("Change", "nxs_td"); ?>" href='#' onclick="nxs_js_popup_navigateto('styling'); return false;"><?php nxs_l18n_e("Change[nxs:popup,header]", "nxs_td"); ?></a>
-					    </div>
-					  </div>
-					  <div class="nxs-clear"></div>
-					</div>
-					
-					<!-- pagedecorator -->
-					<div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-	          		<h4><?php nxs_l18n_e("Pagedecorator[nxs:heading]", "nxs_td"); ?></h4>
-		           </div>
-		          <div class="box-content">
-		          	<?php
-								if ($pagedecorator_postid != "") 
-								{
-			          	$refurl = nxs_geturl_for_postid($pagedecorator_postid);
-									$nxsrefurlspecial = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
-									$refurl = nxs_addqueryparametertourl_v2($refurl, "nxsrefurlspecial", $nxsrefurlspecial, false);
-									?>
-									<a class='nxsbutton1 nxs-float-left' href='<?php echo $refurl;?>'><?php nxs_l18n_e("Edit[nxs:popup,header]", "nxs_td"); ?></a>
-		          		<?php
-		          	}
-		          	?>
-					      <a class='nxsbutton1 nxs-float-right' title="<?php nxs_l18n_e("Change", "nxs_td"); ?>" href='#' onclick="nxs_js_popup_navigateto('pagedecoratorhome'); return false;"><?php nxs_l18n_e("Change[nxs:popup,header]", "nxs_td"); ?></a>
-					    </div>
-					  </div>
-					  <div class="nxs-clear"></div>
-					</div>
-															
-					
-					<div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-	          		<h4><?php nxs_l18n_e("Title[nxs:heading]", "nxs_td"); ?></h4>
-		           </div>
-		          <div class="box-content">
-		          	<input id="titel" type='text' name="titel" value='<?php echo nxs_render_html_escape_singlequote($titel); ?>' />
-		        	</div>
-		        </div>
-		        <div class="nxs-clear"></div>
-		      </div> <!--END content-->
-					
-					<!-- poststatus -->
-					
-					<div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-								<h4><?php nxs_l18n_e("Post status[nxs:heading]", "nxs_td"); ?></h4>		                
-		           </div>
-		          <div class="box-content">
-		          	<select id='poststatus'>
-	            		<option <?php if ($poststatus=='publish') echo "selected='selected'"; ?> value='publish'><?php nxs_l18n_e("Publish[nxs:ddl]", "nxs_td"); ?></option>
-	            		<option <?php if ($poststatus=='pending') echo "selected='selected'"; ?> value='pending'><?php nxs_l18n_e("Pending[nxs:ddl]", "nxs_td"); ?></option>
-	            		<option <?php if ($poststatus=='draft') echo "selected='selected'"; ?> value='draft'><?php nxs_l18n_e("Draft[nxs:ddl]", "nxs_td"); ?></option>
-	            		<option <?php if ($poststatus=='auto-draft') echo "selected='selected'"; ?> value='auto-draft'><?php nxs_l18n_e("Auto draft[nxs:ddl]", "nxs_td"); ?></option>
-	            		<option <?php if ($poststatus=='future') echo "selected='selected'"; ?> value='future'><?php nxs_l18n_e("Future[nxs:ddl]", "nxs_td"); ?></option>
-	            		<option <?php if ($poststatus=='private') echo "selected='selected'"; ?> value='private'><?php nxs_l18n_e("Private[nxs:ddl]", "nxs_td"); ?></option>
-	            		<option <?php if ($poststatus=='inherit') echo "selected='selected'"; ?> value='inherit'><?php nxs_l18n_e("Inherit[nxs:ddl]", "nxs_td"); ?></option>
-	            		<option <?php if ($poststatus=='trash') echo "selected='selected'"; ?> value='trash'><?php nxs_l18n_e("Trash[nxs:ddl]", "nxs_td"); ?></option>
-	            	</select>
-		        	</div>
-		        </div>
-		        <div class="nxs-clear"></div>
-		      </div> <!--END content-->
-					
-					<!-- -->					
-					
+					<!-- address --> 
 		      <div class="content2">
 		        <div class="box">
 		          <div class="box-title">
@@ -224,8 +119,21 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 		        </div>
 		        <div class="nxs-clear"></div>
 		      </div> <!--END content-->
-		      <!-- categories -->
 		      
+					<!-- title -->
+					<div class="content2">
+		        <div class="box">
+		          <div class="box-title">
+	          		<h4><?php nxs_l18n_e("Title[nxs:heading]", "nxs_td"); ?></h4>
+		           </div>
+		          <div class="box-content">
+		          	<input id="titel" type='text' name="titel" value='<?php echo nxs_render_html_escape_singlequote($titel); ?>' />
+		        	</div>
+		        </div>
+		        <div class="nxs-clear"></div>
+		      </div> <!--END content-->
+					
+		      <!-- categories -->
 		 			<div class="content2">
 		        <div class="box">
 		          <div class="box-title">
@@ -261,34 +169,55 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 							    ?>	   
 							  </ul>
 							  <div class='nxs-clear nxs-margin-top5'></div>       	
-							  <a class="nxsbutton1 nxs-float-left" href="#" onclick="nxs_js_startcategorieseditor(); return false;"><?php nxs_l18n_e("Edit categories[nxs:popup,button]", "nxs_td"); ?></a>
+							  <a class="nxsbutton1 nxs-float-left" href="<?php echo admin_url('edit-tags.php?taxonomy=category'); ?>"><?php nxs_l18n_e("Edit categories[nxs:popup,button]", "nxs_td"); ?></a>
 							  
 		          </div>
 		        </div>
 		        <div class="nxs-clear"></div>
-		      </div> <!--END content-->    		
+		      </div> <!--END content-->
 
-					<!-- date published -->
-					
-					<?php
-					
-						nxs_requirepopup_optiontype("date");
-						$sub_optionvalues = array
-						(
-							"id" 				=> "datepublished",
-							"type" 				=> "date",
-							"label" 			=> nxs_l18n__("Date published", "nxs_td"),
-						);
-						$sub_args = array();
-						$sub_runtimeblendeddata = array
-						(
-							/* "minheight" 	=> $minheight, */
-							"dateformat"	=> "dd-mm-yy",
-							"datepublished" => $datepublished,
-						);
-						nxs_popup_optiontype_date_renderhtmlinpopup($sub_optionvalues, $sub_args, $sub_runtimeblendeddata);
-					?>
+					<!-- layout -->
+					<div class="content2">
+		        <div class="box">
+		          <div class="box-title">
+	          		<h4><?php nxs_l18n_e("Layout", "nxs_td"); ?></h4>
+		           </div>
+		          <div class="box-content">
+		          	<span><?php echo $currentlayout; ?></span>
+					      <a class='nxsbutton1 nxs-float-right' href='<?php echo $editurl; ?>'>Change</a>
+					    </div>
+					  </div>
+					  <div class="nxs-clear"></div>
+					</div>
 
+					<!-- design -->
+					<div class="content2">
+		        <div class="box">
+		          <div class="box-title">
+	          		<h4><?php nxs_l18n_e("Styling[nxs:heading]", "nxs_td"); ?></h4>
+		           </div>
+		          <div class="box-content">
+					      <a class='nxsbutton1 nxs-float-right' title="<?php nxs_l18n_e("Change", "nxs_td"); ?>" href='#' onclick="nxs_js_popup_navigateto('styling'); return false;"><?php nxs_l18n_e("Change[nxs:popup,header]", "nxs_td"); ?></a>
+					    </div>
+					  </div>
+					  <div class="nxs-clear"></div>
+					</div>
+
+		      <div class="content2">
+		        <div class="box">
+		          <div class="box-title">
+	          		<h4><?php nxs_l18n_e("Type", "nxs_td"); ?></h4>
+		           </div>
+		          <div class="box-content">
+					      <a class='nxsbutton1 nxs-float-right' title="<?php nxs_l18n_e("Change template[nxs:title]", "nxs_td"); ?>" href='#' onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'home'); return false;">
+					      	<?php nxs_l18n_e("Change type", "nxs_td"); ?>
+					      </a>
+					      <?php nxs_l18n_e("Page (webpage)[nxs:popup,header]", "nxs_td"); ?>
+					    </div>
+					  </div>
+					  <div class="nxs-clear"></div>
+					</div>
+					
 		      <div class="content2">
 		        <div class="box">
 		

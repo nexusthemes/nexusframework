@@ -127,7 +127,7 @@ function nxs_postwizard_pdt1_home_getsheethtml($args)
 						    ?>	   
 						  </ul>
 						  <div class='nxs-clear nxs-margin-top5'></div>
-						  <a class="nxsbutton1 nxs-float-left" href="#" onclick="nxs_js_startcategorieseditor(); return false;"><?php nxs_l18n_e("Edit categories[nxs:popup,button]", "nxs_td"); ?></a>
+						  <a class="nxsbutton1 nxs-float-left" href="<?php echo admin_url('edit-tags.php?taxonomy=category'); ?>"><?php nxs_l18n_e("Edit categories[nxs:popup,button]", "nxs_td"); ?></a>
 	          </div>
 	        </div>
 	        <div class="nxs-clear"></div>

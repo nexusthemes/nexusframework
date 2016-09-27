@@ -92,11 +92,11 @@ nxs_ext_lazyload_postwizard("generic");
 nxs_ext_lazyload_postwizard("pdt1");
 nxs_ext_lazyload_postwizard("pdt2");
 nxs_ext_lazyload_postwizard("pdt3");
+nxs_ext_lazyload_postwizard("landingpage");
 
 //
 // enqueue available postwizards
 //
-
 add_filter("nxs_getpostwizards", "nxs_ext_getpostwizards", 10, 2);	// default prio, 2 arguments (args and result)
 function nxs_ext_getpostwizards($result, $args)
 {
@@ -104,6 +104,7 @@ function nxs_ext_getpostwizards($result, $args)
 	{
 		$result[] = array("postwizard" => "pdt2");
 		$result[] = array("postwizard" => "pdt1");
+		$result[] = array("postwizard" => "landingpage");
 	}
 	
 	return $result;

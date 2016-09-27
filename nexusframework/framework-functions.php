@@ -269,23 +269,58 @@ add_action('after_setup_theme', 'nxs_addsupportforadditionalimageformats');
 
 if (is_admin())
 {
-	function nxs_layoutengine_callback($post)
+	function nxs_semanticlayout_callback($post)
 	{
 		// Noncename needed to verify where the data originated
-		echo '<input type="hidden" name="nxs_layoutengine_noncename" id="nxs_layoutengine_noncename" value="' . wp_create_nonce( __FILE__ ) . '" />';
+		echo '<input type="hidden" name="nxs_semanticlayout_noncename" id="nxs_semanticlayout_noncename" value="' . wp_create_nonce( __FILE__ ) . '" />';
 		
 		// Get the location data if its already been entered
-		$nxs_layoutengine = get_post_meta($post->ID, 'nxs_layoutengine', true);
+		$nxs_semanticlayout = get_post_meta($post->ID, 'nxs_semanticlayout', true);
 		
 		// TODO: dynamically populate the possible layout engines based upon a the configured rules
 		$values = array("", "default", "landingpage");
+		
+		// 
+		$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
+		if ( $query->have_posts() ) 	
+		{
+			$thepostid = $query->posts[0]->ID;
+		
+			$filter = array
+			(
+				"postid" => $thepostid,
+				"widgettype" => "busrulesemanticlayout",
+			);
+			$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
+			
+			foreach ($widgetsmetadata as $widgetmetadata)
+			{
+				$filter_id = $widgetmetadata["filter_id"];
+				if (!in_array($filter_id, $values))
+				{
+					$values[] = $filter_id;
+				}
+			}
+		}
+		
+		// add the current option if its not there (preventing us from wiping it)
+		if (!in_array($nxs_semanticlayout, $values))
+		{
+			$values[] = $nxs_semanticlayout;
+		}
+		
 		?>
-    <select name='nxs_layoutengine' id='nxs_layoutengine'>
+		<p>
+			The theme will determine the layout by default. To override the layout, pick a custom layout.
+			<a target='_blank' href='https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1679867339'>More here.</a>
+			
+		</p>
+    <select name='nxs_semanticlayout' id='nxs_semanticlayout'>
       <?php 
       foreach ($values as $value)
       {
       	$selected = "";
-    		if ($value == $nxs_layoutengine)
+    		if ($value == $nxs_semanticlayout)
     		{
     			$selected = "selected ";	
     		}  	
@@ -295,17 +330,19 @@ if (is_admin())
       }
       ?>
     </select>
+    
+    
     <?php
 	}
 	
-	function nxs_layoutengine_save_callback($post_id, $post) 
+	function nxs_semanticlayout_save_callback($post_id, $post) 
 	{
-		error_log("nxs_layoutengine_save_callback triggered");
+		error_log("nxs_semanticlayout_save_callback triggered");
 		
 		/*
 		// verify this came from the our screen and with proper authorization,
 		// because save_post can be triggered at other times
-		if ( !wp_verify_nonce( $_POST['nxs_layoutengine_noncename'], wp_create_nonce( __FILE__ ) )) 
+		if ( !wp_verify_nonce( $_POST['nxs_semanticlayout_noncename'], wp_create_nonce( __FILE__ ) )) 
 		{
 			return $post->ID;
 		}
@@ -320,10 +357,10 @@ if (is_admin())
 		// OK, we're authenticated: we need to find and save the data
 		// We'll put it into an array to make it easier to loop though.
 		
-		$nxs_layoutengine = $_POST['nxs_layoutengine'];
-		$meta['nxs_layoutengine'] = $nxs_layoutengine;
+		$nxs_semanticlayout = $_POST['nxs_semanticlayout'];
+		$meta['nxs_semanticlayout'] = $nxs_semanticlayout;
 		
-		error_log("nxs_layoutengine_save_callback; selected: $nxs_layoutengine");
+		error_log("nxs_semanticlayout_save_callback; selected: $nxs_semanticlayout");
 		
 		
 		// Add values of $events_meta as custom fields
@@ -333,37 +370,37 @@ if (is_admin())
 			// Cycle through the $events_meta array!
 			if( $post->post_type == 'revision' ) 
 			{
-				error_log("nxs_layoutengine_save_callback; revision");
+				error_log("nxs_semanticlayout_save_callback; revision");
 				return; // Don't store custom data twice
 			}
-			error_log("nxs_layoutengine_save_callback; NO revision");
+			error_log("nxs_semanticlayout_save_callback; NO revision");
 			
 			$value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
 			if(get_post_meta($post->ID, $key, FALSE)) 
 			{ 
 				// If the custom field already has a value
 				update_post_meta($post->ID, $key, $value);
-				error_log("nxs_layoutengine_save_callback; update");
+				error_log("nxs_semanticlayout_save_callback; update");
 			} 
 			else 
 			{ 
 				// If the custom field doesn't have a value
 				add_post_meta($post->ID, $key, $value);
-				error_log("nxs_layoutengine_save_callback; add");
+				error_log("nxs_semanticlayout_save_callback; add");
 			}
 			if(!$value)
 			{
 				delete_post_meta($post->ID, $key); // Delete if blank
-				error_log("nxs_layoutengine_save_callback; delete");
+				error_log("nxs_semanticlayout_save_callback; delete");
 			}
 		}
 	}
-	add_action('save_post', 'nxs_layoutengine_save_callback', 1, 2); // save the custom fields
+	add_action('save_post', 'nxs_semanticlayout_save_callback', 1, 2); // save the custom fields
 	
 	function nxs_add_meta_boxes()
 	{
-		add_meta_box('nxs_layoutengine', 'Layout', 'nxs_layoutengine_callback', 'post', 'side', 'default');
-		add_meta_box('nxs_layoutengine', 'Layout', 'nxs_layoutengine_callback', 'page', 'side', 'default');
+		add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', 'post', 'side', 'default');
+		add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', 'page', 'side', 'default');
 	}
 	
 	add_action( 'add_meta_boxes', 'nxs_add_meta_boxes' );

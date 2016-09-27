@@ -13,6 +13,68 @@
 
 	$page_title = get_the_title();
 	
+	//
+	
+	$state = nxs_warranty_getwarrantystate();
+	if ($state == "")
+	{
+		$homeurl = nxs_geturl_home();
+		nxs_ob_start();
+		?>
+		<div>
+			Please read carefully before proceeding.<br />
+			<br />
+			The functionality on this page is meant to be configured by resellers only.<br />
+			It is not intended to be used by end users.<br />
+			<br />
+			Should you decide to proceed, you will void your warrantee / license.<br />
+			<br />
+			<a href=\'<?php echo $homeurl; ?>\' class=\'nxsbutton1\'>Back to safety</a>
+			<a target=\'_blank\' href=\'https://nexusthemes.com/support/nexus-themes-implementation-partners/\' class=\'nxsbutton1\'>Find a reseller</a>
+			<a href=\'#\' class=\'nxsbutton2\' onclick=\'nxs_js_voidwarrantee(); return false;\'>Proceed; void my warrantee</a>
+		</div>		
+		<?php
+		$html = nxs_ob_get_contents();
+		// remove line breaks
+		$html = str_replace("\n", "", $html);
+		$html = str_replace("\r", "", $html);
+		nxs_ob_end_clean();
+		?>
+		<script>
+			function nxs_js_voidwarrantee()
+			{
+				var r = confirm("Are you sure?");
+				if (r == true) 
+				{
+					// todo: invoke a ajax call to void the warrantee
+					
+					jQuery(document).unbind('nxs_event_popup_closeunconditionally');
+					nxs_js_closepopup_unconditionally();
+					nxs_js_alert_veryshort("Warrantee voided...");
+				} 
+				else 
+				{
+				  //x = "You pressed Cancel!";
+				}
+			}
+			jQ_nxs(window).bind("load", function() 
+			{
+				var html = '<?php echo $html; ?>';
+				nxs_js_htmldialogmessageok("<span class='nxs-icon-notification'></span>Caution !", html);
+				jQuery(document).bind
+				(
+					'nxs_event_popup_closeunconditionally', 
+					function() 
+					{
+						// perhaps redirect ?
+						nxs_js_redirect('<?php echo $homeurl; ?>');
+					}
+				);
+			});
+		</script>	
+		<?php
+	}
+	
 	?>
 	
   <div id="wrap-header">

@@ -47,13 +47,18 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 	}
 	
 	$persistmode = $optionvalues["persistmode"];
+	$autofocusattribute = "";
+	if ($optionvalues["autofocus"] != "")
+	{
+		$autofocusattribute = "autofocus";
+	}
 	
 	echo '
 	<div class="content2" ' . $content2style . '>
 	    <div class="box">
 	        ' . nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip) . '
           <div class="box-content">
-						<input class="nxs-persistmode-'.$persistmode.'" type="text" id="'. $id . '" name="'. $id . '" value="' . nxs_render_html_escape_doublequote($value) . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" ' . $readonly . ' />
+						<input class="nxs-persistmode-'.$persistmode.'" type="text" id="'. $id . '" name="'. $id . '" value="' . nxs_render_html_escape_doublequote($value) . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" ' . $readonly . ' ' . $autofocusattribute . ' />
 						' . $lookuphelphtml . '
           </div>
         </div>
@@ -61,6 +66,12 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
       </div>
       ';
 	//
+	if ($optionvalues["autofocus"] != "")
+	{
+		?>
+		<script>setTimeout(function (){ jQ_nxs('#<?php echo $id; ?>').focus(); }, 100);</script>
+		<?php
+	}
 }
 
 function nxs_popup_optiontype_input_renderstorestatecontroldata($optionvalues)

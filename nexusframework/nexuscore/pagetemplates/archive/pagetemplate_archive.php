@@ -234,11 +234,6 @@ function nxs_pagetemplate_handlecontent()
 													<div class='nxs-hover-menu-positioner'>
 														<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
 													    <ul class="">
-													      <li title='Edit' class='nxs-hovermenu-button'>
-													      	<a href='#' title='Edit' class="nxs-defaultwidgetclickhandler" onclick="nxs_js_popup_postcontent_neweditsession('wpcontent'); return false;">
-													        	<span class="nxs-icon-text"></span>
-													        </a>
-													    	</li>
 													    	<li title='Edit' class='nxs-hovermenu-button'>
 													      	<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress">
 													        	<span class="nxs-icon-wordpresssidebar"></span>

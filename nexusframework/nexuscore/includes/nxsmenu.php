@@ -994,12 +994,17 @@ li.score {
 		  	</a>
 		  </li>
 		  <li class="nxs-sub-menu nxs-hidewheneditorinactive">
-		  	<a href="<?php echo home_url('/'); ?>?nxs_admin=admin&backendpagetype=artikelen" title="<?php nxs_l18n_e("Pages[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
+		  	<a href="<?php echo admin_url('edit.php?post_type=page'); ?>" title="<?php nxs_l18n_e("Pages[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
 		  		<span class='nxs-icon-article-overview'></span>
 		  	</a>
 		    <ul> 	
+		    	<li>
+		      	<a href="<?php echo admin_url('edit.php'); ?>" title="<?php nxs_l18n_e("Blog Posts", "nxs_td"); ?>" class="site">
+		      		<span class='nxs-icon-book'></span>		
+		      	</a>
+		      </li>
 		      <li>
-		      	<a href="<?php echo home_url('/'); ?>?nxs_admin=admin&backendpagetype=mediamanager" title="<?php nxs_l18n_e("Media manager[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
+		      	<a href="<?php echo admin_url('upload.php'); ?>" title="<?php nxs_l18n_e("Media manager[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
 		      		<span class='nxs-icon-image'></span>		
 		      	</a>
 		      </li>

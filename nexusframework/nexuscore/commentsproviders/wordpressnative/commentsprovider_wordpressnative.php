@@ -17,7 +17,7 @@ function nxs_commentsprovider_wordpressnative_getflyoutmenuhtml()
 	nxs_ob_start();
 	?>
 			<li class="nxs-hidewheneditorinactive">
-				<a href="<?php echo home_url('/'); ?>?nxs_admin=admin&backendpagetype=comments" title="<?php nxs_l18n_e("Comments[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
+				<a href="<?php echo admin_url('edit-comments.php'); ?>" title="<?php nxs_l18n_e("Comments[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
 					<span class='nxs-icon-comments'></span>
 				</a>
 			</li>
