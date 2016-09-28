@@ -278,7 +278,9 @@ function nxs_webmethod_formboxsubmit()
 			}
 			foreach ($outputlines as $currentoutputline)
 			{
-				$body .= $currentoutputline . " <br />";
+				$tunedcurrentoutputline = $currentoutputline;
+				$tunedcurrentoutputline = str_replace("\n","<br />",$tunedcurrentoutputline);
+				$body .= $tunedcurrentoutputline . " <br />";
 			}
 			$ccemail = "";
 			$bccemail = "";
