@@ -18,7 +18,7 @@ table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details
 ruby, section, summary, time, mark, audio, video, textarea { border-color: white; }
 
 /* vertical alignment */ 
-body														{ height: 100%; word-break: break-all; }
+body														{ height: 100%; }
 #nxs-container {
 	/* the "overflow: auto; property is necessary to prevent parent div's to move when a margin is set on the child div */
 	overflow: auto; 
