@@ -1779,13 +1779,14 @@ function nxs_pagetemplate_webpage_updatedata($args)
 		$my_post['ID'] = $postid;
 		$my_post['post_title'] = $titel;
 		$my_post['post_name'] = $slug;
-		$my_post['post_status'] = $poststatus;
-		
+		//$my_post['post_status'] = $poststatus;
+		/*
 		if ($datepublishedddmmyyyy != "")
 		{
 			$my_post['edit_date'] = true; // see http://kovshenin.com/2009/wordpress-the-wp_update_post-dates-in-drafts/
 			$my_post['post_date'] = $datepublishedddmmyyyyformatted;
 		}
+		*/
 
 		$feedback = wp_update_post($my_post);
 		

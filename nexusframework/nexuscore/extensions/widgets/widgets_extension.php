@@ -152,6 +152,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "busrulehaspostcontent", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busruleauthentication", "tags" => array("nexus"));		
 		$result[] = array("widgetid" => "busrulesemanticlayout", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busruleurl", "tags" => array("nexus"));
 	}
 	
 	if ($nxsposttype == "genericlist") {
@@ -605,6 +606,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("busruleposttype");
 	nxs_ext_lazyload_widget("busrulehaspostcontent");
 	nxs_ext_lazyload_widget("busrulesemanticlayout");
+	nxs_ext_lazyload_widget("busruleurl");
 	
 	// DEPRECATED
 	

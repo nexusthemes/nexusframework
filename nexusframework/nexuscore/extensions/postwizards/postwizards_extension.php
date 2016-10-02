@@ -104,7 +104,11 @@ function nxs_ext_getpostwizards($result, $args)
 	{
 		$result[] = array("postwizard" => "pdt2");
 		$result[] = array("postwizard" => "pdt1");
-		$result[] = array("postwizard" => "landingpage");
+		
+		if (nxs_enableconceptualwidgets())
+		{
+			$result[] = array("postwizard" => "landingpage");
+		}
 	}
 	
 	return $result;

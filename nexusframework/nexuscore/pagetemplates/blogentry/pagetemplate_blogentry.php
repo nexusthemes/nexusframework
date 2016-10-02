@@ -1242,10 +1242,10 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 		function nxs_js_savepopupdata()
 		{
 			nxs_js_popup_storestatecontroldata_textbox("titel", "titel");
-			nxs_js_popup_storestatecontroldata_dropdown("poststatus", "poststatus");
+			//nxs_js_popup_storestatecontroldata_dropdown("poststatus", "poststatus");
 			nxs_js_popup_storestatecontroldata_textbox("slug", "slug");
 			nxs_js_popup_storestatecontroldata_textbox("cssclass", "cssclass");
-			nxs_js_popup_storestatecontroldata_textbox("datepublished", "datepublished");
+			//nxs_js_popup_storestatecontroldata_textbox("datepublished", "datepublished");
 			
 			nxs_js_popup_storestatecontroldata_checkbox('markashomepage', 'markashomepage');
 			nxs_js_popup_storestatecontroldata_checkbox('markas404page', 'markas404page');
@@ -1303,11 +1303,11 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 						"titel": nxs_js_popup_getsessiondata("titel"),
 						"slug": nxs_js_popup_getsessiondata("slug"),
 						"cssclass": nxs_js_popup_getsessiondata("cssclass"),
-						"poststatus": nxs_js_popup_getsessiondata("poststatus"),
+						//"poststatus": nxs_js_popup_getsessiondata("poststatus"),
 						"markashomepage": nxs_js_popup_getsessiondata("markashomepage"),
 						"markas404page": nxs_js_popup_getsessiondata("markas404page"),
 						"selectedcategoryids": nxs_js_popup_getsessiondata("selectedcategoryids"),
-						"datepublishedddmmyyyy": nxs_js_popup_getsessiondata("datepublished")
+						//"datepublishedddmmyyyy": nxs_js_popup_getsessiondata("datepublished")
 					},
 					dataType: 'JSON',
 					url: ajaxurl, 
@@ -1848,13 +1848,15 @@ function nxs_pagetemplate_blogentry_updatedata($args)
 		$my_post['ID'] = $postid;
 		$my_post['post_title'] = $titel;
 		$my_post['post_name'] = $slug;
-		$my_post['post_status'] = $poststatus;
+		//$my_post['post_status'] = $poststatus;
 		
+		/*
 		if ($datepublishedddmmyyyy != "")
 		{
 			$my_post['edit_date'] = true; // see http://kovshenin.com/2009/wordpress-the-wp_update_post-dates-in-drafts/
 			$my_post['post_date'] = $datepublishedddmmyyyyformatted;
 		}
+		*/
 		wp_update_post($my_post);
 		
 		// Update categories

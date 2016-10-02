@@ -1931,9 +1931,16 @@ function nxs_site_newposthome_rendersheet($args)
     <div class="content2">
       <div class="box">
       	<?php
+      	$behaviour = "";
       	if ($postwizard=="pdt2")
       	{
-      		// a post
+      		// default behaviour for posts is to create those in the WP backend,
+      		// plugins can change that behaviour
+	      	$behaviour = apply_filters("nxs_postwizard_newblogbehaviour", "backend");
+	      }
+      	if ($behaviour == "backend")
+      	{
+      		// a post, to be created in the backend
       		?>
       		<a id='nxs_popup_genericsavebutton' href='<?php echo admin_url('post-new.php'); ?>' class="nxsbutton nxs-float-right"><?php nxs_l18n_e("Next[nxs:popup,button]", "nxs_td"); ?></a>
       		<?php
