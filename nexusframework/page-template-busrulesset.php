@@ -16,7 +16,7 @@
 	//
 	
 	$state = nxs_warranty_getwarrantystate();
-	if ($state == "")
+	if (false) // $state == "")
 	{
 		$homeurl = nxs_geturl_home();
 		nxs_ob_start();

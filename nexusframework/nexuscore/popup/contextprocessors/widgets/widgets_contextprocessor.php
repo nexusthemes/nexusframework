@@ -119,6 +119,13 @@ function nxs_popup_contextprocessor_widgets_getoptions($args)
 
 function nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $sheet)
 {
+	if ($widget == "")
+	{
+		echo "widget not set nxs_popup_contextprocessor_widgets_getoptions_widgetsheet;";
+		nxs_dumpstacktrace();
+		die();
+	}
+	
 	$functionnametoinvoke = 'nxs_widgets_' . $widget . '_' . $sheet . '_getoptions';
 	if (function_exists($functionnametoinvoke))
 	{
@@ -127,6 +134,7 @@ function nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $she
 	else
 	{
 		// alternative: generic implementation for widgets
+		$origwidget = $widget;
 		$widget = "generic";
 		nxs_requirewidget($widget);
 	
@@ -137,7 +145,7 @@ function nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $she
 		}
 		else
 		{
-			nxs_webmethod_return_nack("unable to get options; function not found; $functionnametoinvokealt");
+			nxs_webmethod_return_nack("unable to get options; function not found; $functionnametoinvokealt ([$origwidget]/[$sheet])");
 		}
 	}
 	

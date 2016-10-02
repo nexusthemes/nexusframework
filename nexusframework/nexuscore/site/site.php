@@ -2594,8 +2594,13 @@ function nxs_site_marketingmanagementhome_getoptions($args)
 		"fields" => array
 		(
 			array( 
+				"id" 			=> "googletagmanagerid",
+				"label"			=> nxs_l18n__("Google Tag Manager ID", "nxs_td"),
+				"type" 			=> "textarea",
+			),
+			array( 
 				"id" 			=> "googletagmanager",
-				"label"			=> nxs_l18n__("Google Tag Manager", "nxs_td"),
+				"label"			=> nxs_l18n__("Google Tag Manager (obsolete)", "nxs_td"),
 				"type" 			=> "textarea",
 			),
 			array(
@@ -3172,8 +3177,13 @@ function nxs_site_integrationshome_getoptions($args)
 		"fields" => array
 		(
 			array( 
+				"id" 			=> "googletagmanagerid",
+				"label"			=> nxs_l18n__("Google Tag Manager ID", "nxs_td") . "<br />GTM-XXXXXX",
+				"type" 			=> "input",
+			),
+			array( 
 				"id" 			=> "googletagmanager",
-				"label"			=> nxs_l18n__("Google Tag Manager", "nxs_td"),
+				"label"			=> nxs_l18n__("Google Tag Manager (Obsolete)", "nxs_td"),
 				"type" 			=> "textarea",
 			),
 			array(

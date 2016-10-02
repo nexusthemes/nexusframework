@@ -339,9 +339,27 @@ function nxs_getstyletypeoptions() {
 			"subtype" 			=> "multiplier",
 			"values" 			=> array("", 0, 0.1, 0.2, 0.3, 0.5, 0.7, 1, 1.5),
 		),
-		"offset" => array (
+		"offset" => array 
+		(
 			"subtype" 			=> "multiplier",
-			"values" 			=> array("", 40, 80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480),
+			"values" 			=> array
+			(
+				""				=> nxs_l18n__("Default", "nxs_td"),
+        "40"	=> nxs_l18n__("40", "nxs_td"),
+        "80"	=> nxs_l18n__("80", "nxs_td"),
+        "120"	=> nxs_l18n__("120", "nxs_td"),
+        "160"	=> nxs_l18n__("160", "nxs_td"),
+        "200"	=> nxs_l18n__("200", "nxs_td"),
+        "240"	=> nxs_l18n__("240", "nxs_td"),
+        "280"	=> nxs_l18n__("280", "nxs_td"),
+        "320"	=> nxs_l18n__("320", "nxs_td"),
+        "360"	=> nxs_l18n__("360", "nxs_td"),
+        "400"	=> nxs_l18n__("400", "nxs_td"),
+        "440"	=> nxs_l18n__("440", "nxs_td"),
+        "480"	=> nxs_l18n__("480", "nxs_td"),
+        "heightofscreen"	=> nxs_l18n__("heightofscreen", "nxs_td"),
+
+			)	
 		),
 		"items_scale" => array (
 			"subtype" 			=> "multiplier",
