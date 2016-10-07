@@ -57,6 +57,10 @@ function nxs_webmethod_clipboardpaste()
 			}
 			
 			nxs_overridewidgetmetadata($postid, $placeholderid, $metadata);
+			
+			// clone referenced fields in this widget when needed
+			nxs_clonereferencedfieldsforwidget($postid, $placeholderid);
+			
 		 	nxs_after_postcontents_updated($postid);
 		 	$growl = nxs_l18n__("Paste succesful[nxs:growl]", "nxs_td");
 		 	
@@ -118,9 +122,13 @@ function nxs_webmethod_clipboardpaste()
 			{
 				// get source metadata
 				$metadata = $clipboardata["widgetsmetadata"][$placeholderindex];
+				
 				// store destination metadata
 				nxs_overridewidgetmetadata($postid, $placeholderid, $metadata);
 				
+				// clone referenced fields in this widget when needed
+				nxs_clonereferencedfieldsforwidget($postid, $placeholderid);
+
 				$placeholderindex++;
 			}
 			
@@ -151,6 +159,14 @@ function nxs_webmethod_clipboardpaste()
 				"destinationpostid" => $destinationpostid,
 			);
 			nxs_replicatepoststructure($replicatemetadata);
+			
+			// loop over all widgets in the destination (replicated) post
+			$placeholderidstometadatainpost = nxs_getwidgetsmetadatainpost($destinationpostid);
+			foreach ($placeholderidstometadatainpost as $currentplaceholderid => $currentmetadata)
+			{
+				// clone the widgets that are referencing other posts (if any)
+				nxs_clonereferencedfieldsforwidget($destinationpostid, $currentplaceholderid);
+			}
 		}
 		else
 		{

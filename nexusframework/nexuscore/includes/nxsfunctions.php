@@ -2868,6 +2868,157 @@ function nxs_get_main_titles_on_page($postid)
 	return $result;
 }
 
+function nxs_clonepost($postid)
+{
+	if (!nxs_postexistsbyid($postid))
+	{
+		echo "nothing to clone? $postid";
+		die();
+	}
+	
+	//$sessionid = nxs_generaterandomstring(5);
+	
+	// grab the basic lookups, like the posttype and the globalid, etc.
+	$posttype = get_post_type($postid);
+	$nxsposttype = nxs_getnxsposttype_by_postid($postid);
+	$nxssubposttype = nxs_get_nxssubposttype($postid);
+	$globalid = nxs_get_globalid($postid, true);
+	$title = nxs_gettitle_for_postid($postid);
+	$slug = nxs_getslug_for_postid($postid);
+	$nxs_semanticlayout = get_post_meta($postid, 'nxs_semanticlayout', true);
+	$structure = nxs_parsepoststructure($postid);
+	
+	$destinationpostid = "";
+	$destinationglobalid = "";
+	
+	if (in_array($posttype, array("nxs_genericlist")))
+	{
+		$newpost_args = array();
+		$newpost_args["slug"] = $slug;	// sessionid toevoegen?
+		$newpost_args["titel"] = $title;
+		$newpost_args["wpposttype"] = $posttype;
+		$newpost_args["nxsposttype"] = $nxsposttype;
+		$newpost_args["nxssubposttype"] = $nxssubposttype;
+		$newpost_args["postwizard"] = "skip";
+		//$newpost_args["globalid"] = $currentpostglobalid;
+		//$newpost_args["postmetas"] = $postmetas;
+		$response = nxs_addnewarticle($newpost_args);
+		$destinationpostid = $response["postid"];
+		$destinationglobalid = $response["globalid"];
+		
+		// replicate the structure of the post
+		nxs_storebinarypoststructure($destinationpostid, $structure);
+		
+		// replicate the data per row
+		$rowindex = 0;
+		foreach ($structure as $pagerow)
+		{
+			// ---------------- ROW META
+			
+			// replicate the metadata of the row
+			$pagerowid = nxs_parserowidfrompagerow($pagerow);
+			if (isset($pagerowid))
+			{
+				// get source meta
+				$rowmetadata = nxs_getpagerowmetadata($postid, $pagerowid);
+				// store destination meta
+				nxs_overridepagerowmetadata($destinationpostid, $pagerowid, $rowmetadata);
+			}
+			
+			// ---------------- WIDGET META
+			
+			// replicate the metadata of the widgets in the row
+			$filter = array("postid" => $postid);
+			$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
+			
+			foreach ($widgetsmetadata as $placeholderid => $widgetmetadata)
+			{
+				nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $widgetmetadata);
+			}
+		}
+	}
+	else
+	{
+		echo "to be implemented; $posttype";
+		die();
+	}
+	
+	$result = array
+	(
+		"destinationpostid" => $destinationpostid,
+		"destinationglobalid" => $destinationglobalid,
+	);
+	
+	return $result;
+}
+
+// will update the metadata of the widget postid, placeholderid,
+// for the fields that reference other widgets, by cloning the existing
+// referencing posts, and then updating the meta fields of the widget itself
+// this is a function that is being used AFTER the pasting of a widget, row or
+// entire page is has cloned al fields by value, to ensure that referenced
+// fields are cloned too (instead of both the source and destination using
+// the same generic lists for example)
+function nxs_clonereferencedfieldsforwidget($postid, $placeholderid)
+{
+	// grab the existing widgetmetadata of this widget
+	$metadata = nxs_getwidgetmetadata($postid, $placeholderid);
+	$placeholdertemplate = $metadata["type"];
+	
+	// clone referenced entities
+	// for debugging this could be done based upon the IP address
+	//$ip = $_SERVER['REMOTE_ADDR'];
+	//$shouldclonereferencedgenericlists = ($ip == "83.162.43.67");
+	$shouldclonereferencedgenericlists = true;				
+	
+	$isdirty = false;
+	
+	if ($shouldclonereferencedgenericlists)
+	{
+		// loop over properties of the widgettype
+		// if one of the properties represents a genericlist,
+		// then clone that genericlist post,
+		// give it a new unique globalid and postid
+		// and update the widgetmeta of "this" widget we are pasting,
+		// such that it will point to that cloned entity
+		nxs_requirewidget($placeholdertemplate);
+		$widget = $placeholdertemplate;
+		$sheet = "home";
+		$functionnametoinvoke = 'nxs_widgets_' . $widget . '_' . $sheet . '_getoptions';
+		if (function_exists($functionnametoinvoke))
+		{
+			// todo: 20161007; a better solution would be to loop over the properties through reflection
+			// instead of looking for the hardcoded "items_genericlistid" fieldname,
+			// but for now this should be enough
+			if ($metadata["items_genericlistid"] != "" && $metadata["items_genericlistid"] != "0")
+			{
+				//error_log("clone generic lists = genericlist set");
+				
+				// we found a referenced post; clone that post first
+				$tobeclonedpostid = $metadata["items_genericlistid"];
+				//error_log("clone generic lists = cloning $tobeclonedpostid");
+				$clonedresult = nxs_clonepost($tobeclonedpostid);
+				//error_log("clone generic lists = clone finished " . json_encode($clonedresult));
+				// update the metadata with the cloned result
+				$metadata["items_genericlistid"] = $clonedresult["destinationpostid"];
+				$metadata["items_genericlistid_globalid"] = $clonedresult["destinationglobalid"];
+				
+				$isdirty = true;
+			}
+		}
+		else
+		{
+			// for old style widgets we don't support this
+		}
+	}
+	
+	if ($isdirty)
+	{
+		// update the widgetmetadata
+		nxs_overridewidgetmetadata($postid, $placeholderid, $metadata);
+	}
+}
+
 function nxs_replicatepoststructure($replicatemetadata)
 {
 	extract($replicatemetadata);
