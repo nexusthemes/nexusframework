@@ -357,7 +357,7 @@ function nxs_getstyletypeoptions() {
         "400"	=> nxs_l18n__("400", "nxs_td"),
         "440"	=> nxs_l18n__("440", "nxs_td"),
         "480"	=> nxs_l18n__("480", "nxs_td"),
-        "heightofscreen"	=> nxs_l18n__("heightofscreen", "nxs_td"),
+        "heightofscreen"	=> nxs_l18n__("height of screen", "nxs_td"),
 
 			)	
 		),

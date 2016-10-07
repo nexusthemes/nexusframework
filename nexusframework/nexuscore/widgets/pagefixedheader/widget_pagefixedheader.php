@@ -91,7 +91,11 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 	// Offset
 	$offsetpixels = 0;
 	$visible_class = '';
-	if ( $offset != '' )
+	if ($offset == 'heightofscreen' )
+	{
+		$offsetpixels = $offset;
+	}
+	else if ( $offset != '' )
 	{
 		$offsetpixels = substr($offset, 0, -2);
 	} else {
@@ -161,11 +165,33 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 			else {
 			?>
 				var fixedheaderisvisible = false;
+				function nxs_js_fixedheader_gettoggleoffset()
+				{
+					var result;
+
+					<?php 
+					if ($offsetpixels == "heightofscreen") 
+					{
+						//
+						?>
+						result = window.innerHeight;
+						<?php
+					}
+					else
+					{
+						?>
+						result = <?php echo $offsetpixels; ?>;
+						<?php
+					}
+					?>
+					
+					return result;
+				}
 
 				function nxs_js_show_fixedheader() {
                     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     
-					if (scrollTop < <?php echo $offsetpixels; ?>) {
+					if (scrollTop < nxs_js_fixedheader_gettoggleoffset()) {
 						if (fixedheaderisvisible == true) {
 							jQ_nxs("#nxs-fixed-header").fadeOut(200);
 							fixedheaderisvisible = false;
@@ -190,17 +216,25 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
                 var browser = jQ_nxs.browser;
 			
 				<?php if ($offsetpixels) { ?>
-					jQ_nxs(document).bind('nxs_event_windowscrolling.fixedheader', function() {
-                        // firefox got more trouble with the nxs_js_show_fixedheader
-                        // this is because firefox got a harder time getting the scrollTop
-                        // so we put the throttle for firefox on 500ms
-                        
-                        if (browser.mozilla == true) {
-                            nxs_js_invokethrottled("showfixedheader", 500, nxs_js_show_fixedheader)
-                        } else {
-                            nxs_js_invokethrottled("showfixedheader", 250, nxs_js_show_fixedheader)
-                        }
-					});
+					jQ_nxs(document).bind
+					(
+						'nxs_event_windowscrolling.fixedheader', 
+						function() 
+						{
+              // firefox got more trouble with the nxs_js_show_fixedheader
+              // this is because firefox got a harder time getting the scrollTop
+              // so we put the throttle for firefox on 500ms
+              
+              if (browser.mozilla == true) 
+              {
+              	nxs_js_invokethrottled("showfixedheader", 500, nxs_js_show_fixedheader)
+              } 
+              else 
+              {
+                nxs_js_invokethrottled("showfixedheader", 250, nxs_js_show_fixedheader)
+              }
+						}
+					);
 				<?php } ?>
 			<?php
 			}

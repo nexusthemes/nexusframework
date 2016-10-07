@@ -57,7 +57,16 @@
 	    <div class="content2">
 	    	<div class="box">
 					<?php nxs_render_backbutton(); ?>
-					<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'dialogappendgenericlistitem'); return false;"><?php nxs_l18n_e("Add[nxs:heading]", "nxs_td"); ?></a>
+					<?php
+					
+					$buttontext = nxs_l18n__("Add", "nxs_td");
+					if ($nxssubposttype == "pagedecorator")
+					{
+						$buttontext = nxs_l18n__("Add Widget", "nxs_td");
+					}
+					
+					?>					
+					<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'dialogappendgenericlistitem'); return false;"><?php echo $buttontext;  ?></a>
 					<?php
 					$showbulkbutton = false;
 					if ($nxssubposttype == "gallery")
