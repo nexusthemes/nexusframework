@@ -994,12 +994,12 @@ li.score {
 		  	</a>
 		  </li>
 		  <li class="nxs-sub-menu nxs-hidewheneditorinactive">
-		  	<a href="<?php echo admin_url('edit.php?post_type=page'); ?>" title="<?php nxs_l18n_e("Pages[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
+		  	<a href="<?php echo admin_url('edit.php?post_type=page&orderby=date&order=desc'); ?>" title="<?php nxs_l18n_e("Pages[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
 		  		<span class='nxs-icon-article-overview'></span>
 		  	</a>
 		    <ul> 	
 		    	<li>
-		      	<a href="<?php echo admin_url('edit.php'); ?>" title="<?php nxs_l18n_e("Blog Posts", "nxs_td"); ?>" class="site">
+		      	<a href="<?php echo admin_url('edit.php?orderby=date&order=desc'); ?>" title="<?php nxs_l18n_e("Blog Posts", "nxs_td"); ?>" class="site">
 		      		<span class='nxs-icon-book'></span>		
 		      	</a>
 		      </li>
