@@ -534,9 +534,10 @@ function nxs_getmappedfontfams($val)
 	{
 		$result[] = "Raleway:100";
 	}
+	
 	else if ($val == "'Helvetica Neue',Helvetica,sans-serif")
 	{
-		$result[] = "Helvetica";
+		// $result[] = "Helvetica";
 	}
 	else if ($val == "'Vidaloka', serif")
 	{
@@ -608,13 +609,15 @@ function nxs_getfonts()
 		"'Righteous', cursive" 									=> array("text"  => "'Righteous', cursive"),
 		"'UnifrakturMaguntia', cursive" 						=> array("text"  => "'UnifrakturMaguntia', cursive"),
 		"'Raleway', cursive" 									=> array("text"  => "'Raleway', cursive"),
-		"'Helvetica Neue',Helvetica,sans-serif" 				=> array("text"  => "'Helvetica Neue',Helvetica,sans-serif"),
+		//"'Helvetica Neue',Helvetica,sans-serif" 				=> array("text"  => "'Helvetica Neue',Helvetica,sans-serif"),	// returns a 301
 		"'Vidaloka', serif" 									=> array("text"  => "'Vidaloka',serif",),
 		"'Great Vibes', serif" 									=> array("text"  => "'Great Vibes',serif",),
 		"'Oswald', sans-serif" 									=> array("text"  => "'Oswald', sans-serif",),
 		"'Open Sans', sans-serif" 								=> array("text"  => "'Open Sans', sans-serif",),
 		//"'Noto+Sans::latin,greek-ext,greek'" 								=> array("text"  => "'Noto+Sans::latin,greek-ext,greek'",),
 	);
+	
+	// debug
 	
 	// add fonts as configured in the site management
 	$nackwhenerror = false;
