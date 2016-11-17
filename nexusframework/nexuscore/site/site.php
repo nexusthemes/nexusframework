@@ -2961,14 +2961,19 @@ function nxs_site_newlandingpage_getoptions($args)
 		require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
 		$licensekey = nxs_license_getlicensekey();
 		
-		$indexjsonurl = "http://landingpages.optimizepress.c1.us-e1.nexusthemes.com/?contentprovider=getindex&licensekey={$licensekey}";
+		$indexjsonurl = "https://turnkeypagesprovider.websitesexamples.com/?contentprovider=getindex&licensekey={$licensekey}";
 		$indexjson = file_get_contents($indexjsonurl);
 		$json = json_decode($indexjson, true);
+		
 		$landingpages = $json["items"];
 		$tags = $json["tags"];
 		
 		$tagfilterhtml = "";
 		$tagfilterhtml .= "Filter:<br /><br />";
+		if ($json == "")
+		{
+			var_dump($indexjson);
+		}
 		foreach ($tags as $tag => $tagmeta)
 		{
 			$title = $tagmeta["title"];

@@ -127,19 +127,11 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	$additionalrowclasses = "";
 	
 	$upgradetofullwidth = $nxs_global_row_render_statebag["upgradetowidescreen"];	
-		
-	/*
-	$suppressfilleratrow0 = $nxs_global_row_render_statebag["suppressfilleratrow0"];
-	$upgradetoexceptionalresponsiverow = $nxs_global_row_render_statebag["upgradetoexceptionalresponsiverow"];	
-	$upgradetoexceptionalresponsiverow2 = $nxs_global_row_render_statebag["upgradetoexceptionalresponsiverow2"];	
-	*/
-
 	
 	if (isset($nxs_global_row_render_statebag["rrs_cssclass"]))
 	{
 		$additionalrowclasses .= $nxs_global_row_render_statebag["rrs_cssclass"];
 	}
-	
 	
 	if ($pagerowtemplate == "141214")
 	{
