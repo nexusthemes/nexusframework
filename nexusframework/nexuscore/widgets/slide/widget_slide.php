@@ -44,6 +44,16 @@ function nxs_widgets_slide_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			
+			array
+			( 
+				"id" 				=> "image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),		
+			
 			array(
 				"id" 				=> "title",
 				"type" 				=> "input",
