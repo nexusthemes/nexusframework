@@ -177,6 +177,26 @@ function nxs_widgets_pagebackground_beforeend_head()
 		);
 	</script>
 	<?php
+	
+	if ($_REQUEST["screenshot"] == "true")
+	{
+		if ($imageurl != "") 
+		{
+			?>
+			<script>
+				jQ_nxs(document).ready
+				(
+					function() 
+					{
+						var html = "<div class='screenshothelper' style='position: absolute; opacity: 0;'><img src='<?php echo $imageurl; ?>' /></div>";
+						$('body').prepend(html);
+						console.log("screenshothelper installed");
+					}
+				);
+			</script>
+			<?php
+		}
+	}
 }
 
 /* WIDGET STRUCTURE
@@ -357,6 +377,8 @@ function nxs_widgets_pagebackground_render_webpart_render_htmlvisualization($arg
 		/* ------------------------------------------------------------------------------------------------- */
 	}
 	
+	
+	
 	/* ------------------------------------------------------------------------------------------------- */
 	 
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
@@ -367,6 +389,7 @@ function nxs_widgets_pagebackground_render_webpart_render_htmlvisualization($arg
 	// The framework uses this array with its accompanying values to render the page
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
+
 	return $result;
 }
 

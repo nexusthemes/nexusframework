@@ -558,7 +558,7 @@ function nxs_widgets_pageslider_beforeend_head()
 		// the startslide and autoplay can be specified in the url
 		// this is for generating screenshots for the product image
 		$startslide = 0;
-		if ($_REQUEST['slider_startslide'] != "" && is_numeric($_REQUEST['slider_startslide']))
+		if ($_REQUEST['nxs_screenshot_format'] != "")
 		{
 			$startslide = $_REQUEST['slider_startslide'];
 
@@ -569,10 +569,109 @@ function nxs_widgets_pageslider_beforeend_head()
 		}
 
 		$autoplay = 1;
-		if ($_REQUEST['slider_autoplay'] == "false")
+		if ($_REQUEST['nxs_screenshot_format'] != "")
 		{
 			$metadata_transition = "no-blink";
 			$autoplay = 0;
+
+			// ---
+
+			// the global $nxs_pageslider_pagesliderid is set in nxs_widgets_pageslider_registerhooksforpagewidget($args)
+			global $nxs_pageslider_pagesliderid;
+			$structure = nxs_parsepoststructure($nxs_pageslider_pagesliderid);
+			$pagerow = $structure[0];	// grab first slide
+			$content = $pagerow["content"];
+			$slideplaceholderid = nxs_parsepagerow($content);
+			
+			$placeholdermetadata = nxs_getwidgetmetadata($nxs_pageslider_pagesliderid, $slideplaceholderid);
+			$placeholdermetadata = nxs_filter_translatelookup($placeholdermetadata, array("title","text", "button_text","destination_url", "image_src"));	
+			
+			$imageid = $placeholdermetadata['image_imageid'];
+			$lookup = wp_get_attachment_image_src($imageid, 'full', true);
+			$imageurl = $lookup[0];
+			$imageurl = nxs_img_getimageurlthemeversion($imageurl);											
+			
+			if ($imageid == "")
+			{
+				$imageurl = $placeholdermetadata['image_src'];
+			}
+			
+			if ($_REQUEST["screenshot"] == "true")
+			{
+				if ($imageurl != "") 
+				{
+					?>
+					<script>
+						jQ_nxs(document).ready
+						(
+							function() 
+							{
+								var html = "<div class='screenshothelper' style='position: absolute; opacity: 0;'><img src='<?php echo $imageurl; ?>' /></div>";
+								$('body').prepend(html);
+								console.log("screenshothelper installed");
+							}
+						);
+					</script>
+					<?php
+				}
+			}
+
+			// ---
+			
+			
+
+
+			?>
+			<style>
+				.supersized {  }
+				#staticbg 
+				{ 
+					/* background-color: red; */
+					position: fixed;
+					width: 100%;
+				}
+				#staticbg img
+				{ 
+					<?php
+					if ($_REQUEST['nxs_screenshot_format'] == "macbook")
+					{
+						?>
+						height: 1100px;
+						<?php
+					}
+					else if ($_REQUEST['nxs_screenshot_format'] == "imac")
+					{
+						?>
+						height: 1200px;
+						<?php
+					}
+					else 
+					{
+						// best practise to hide the slider for any handheld
+						?>
+						height: 0px;
+						<?php
+					}
+					?>
+				}
+			</style>
+			<script>
+				jQuery(document).ready
+				(
+					function() 
+					{
+						//console.log("yippie");
+						jQuery("body").prepend(jQuery("<div id='staticbg'><img src='<?php echo $imageurl; ?>' /></div>"));
+						//jQuery("#staticbg").css("width", "700px");
+						//jQuery("#staticbg").css("height", jQuery(window).height() + "px");
+						//jQuery("#staticbg img").css("width", jQuery(window).width() + "px");
+						//jQuery("#staticbg img").css("height", jQuery(window).height() + "px");
+						//console.log("jajee");
+					}
+				);
+			</script>
+			<?php
+			return;
 		}
 
 		?>
@@ -640,7 +739,7 @@ function nxs_widgets_pageslider_beforeend_head()
 										$placeholdertype = $placeholdermetadata["type"];					
 										
 										// Lookup atts
-										$placeholdermetadata = nxs_filter_translatelookup($placeholdermetadata, array("title","text", "button_text","destination_url"));	
+										$placeholdermetadata = nxs_filter_translatelookup($placeholdermetadata, array("title","text", "button_text","destination_url", "image_src"));	
 
 										if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) {
 											// fix Wendy
@@ -650,6 +749,7 @@ function nxs_widgets_pageslider_beforeend_head()
 											$bodytekst = $placeholdermetadata['text'];
 											
 											$imageid = $placeholdermetadata['image_imageid'];
+											$imagesrc = $placeholdermetadata['image_src'];
 											$destination_url = $placeholdermetadata['destination_url'];
 											$targetpageid = $placeholdermetadata['destination_articleid'];
 											
@@ -691,7 +791,12 @@ function nxs_widgets_pageslider_beforeend_head()
 											
 											$lookup = wp_get_attachment_image_src($imageid, 'full', true);
 											$imageurl = $lookup[0];
-											$imageurl = nxs_img_getimageurlthemeversion($imageurl);											
+											$imageurl = nxs_img_getimageurlthemeversion($imageurl);		
+											
+											if ($imageid == "")
+											{
+												$imageurl = $imagesrc;
+											}									
 											
 											if ($isfirst) {
 												$isfirst = false;
@@ -962,38 +1067,46 @@ function nxs_widgets_pageslider_betweenheadandcontent()
                     <span class="slidenumber"></span> / <span class="totalslides"></span>
                 </div>
                 
-                
                 <!-- THUMB TRAY TOGGLE -->                   
                 <div class="">
-                    <a id="tray-button" href="#" onclick="return false;">
-                        <span class="pagesliderthumbtrayshowhide nxs-toggle general-ui-styling nxs-icon-arrow-up"></span>
-                    </a>
+                  <a id="tray-button" href="#" onclick="return false;">
+                    <span class="pagesliderthumbtrayshowhide nxs-toggle general-ui-styling nxs-icon-arrow-up"></span>
+                  </a>
                 </div>
                 
                 <!-- SLIDE CAPTIONS -->
                 <div id="slidecaption"></div>
                 
-                <script type='text/javascript'>
-                    jQuery(window).load
-                    (
-                        function()
-                        {
-                        	if (api)
-                        	{
-	                          if (!api.options.autoplay)
-	                          {
-	                              jQuery(".pagesliderplaypausetoggle").toggle();
-	                          }
+                <?php
+                if ($_REQUEST['nxs_screenshot_format'] != "")
+                {
+                	// ignore for screenshot
+              	}
+              	else
+              	{
+              		?>                
+	                <script type='text/javascript'>
+	                  jQuery(window).load
+	                  (
+	                    function()
+	                    {
+	                    	if (api == null)
+	                    	{
+	                    		nxs_js_log("pageslider api not (yet?) found");
+	                    	}
+	                    	else
+	                    	{
+	                        if (!api.options.autoplay)
+	                        {
+	                            jQuery(".pagesliderplaypausetoggle").toggle();
 	                        }
-	                        else
-                        	{
-                        		nxs_js_log("pageslider api not (yet?) found");
-                        	}
-                        }
-                    );
-                </script>
-                
-                
+	                      }
+	                    }
+	                  );
+	                </script>
+                	<?php
+                }
+                ?>
                 <!--Navigation-->
                 <ul id="slide-list"></ul>
                 

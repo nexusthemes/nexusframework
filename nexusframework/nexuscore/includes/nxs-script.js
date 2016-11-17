@@ -1,7 +1,7 @@
 /*************************************************************************/
 /*************************************************************************/
 /*
-    Copyright 2012-2014 Nexus Themes
+    Copyright 2012-2016 Nexus Themes
 */
 /*************************************************************************/
 /*************************************************************************/
@@ -94,6 +94,19 @@ function nxs_js_getvendorprefix()
 		}
 	}
 	return nxs_js_vendorprefix_internal;
+}
+
+//
+var nxs_allloaded;
+nxs_allloaded = false;
+jQ_nxs(window).on("load", function() 
+{
+	nxs_allloaded = true;
+}
+);
+function nxs_js_okforscreenshot()
+{
+	return nxs_allloaded;
 }
 
 // the popupsessiondata is empty initially.
