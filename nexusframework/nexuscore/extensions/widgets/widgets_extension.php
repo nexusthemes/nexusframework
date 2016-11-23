@@ -295,6 +295,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "menuitemarticle", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "menuitemcustom", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "menuitemcategory", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "menuitemsemantictaxonomy", "tags" => array("nexus"));
 	}
 	
 	/* GENERIC LISTS POSTTYPE
@@ -436,6 +437,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			"galleryitem", 
 			"image", 
 			"menuitemarticle", 
+			"menuitemsemantictaxonomy",
 			"menuitemcustom", 
 			"menuitemcategory", 
 			"slide", 
@@ -495,6 +497,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("menucontainer");
 	nxs_ext_lazyload_widget("wordpresssidebar");
 	nxs_ext_lazyload_widget("menuitemgeneric");
+	nxs_ext_lazyload_widget("menuitemsemantictaxonomy");
 	nxs_ext_lazyload_widget("menuitemarticle");
 	nxs_ext_lazyload_widget("menuitemcustom");
 	nxs_ext_lazyload_widget("menuitemcategory");

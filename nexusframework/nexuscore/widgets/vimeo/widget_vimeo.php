@@ -179,7 +179,7 @@ function nxs_widgets_vimeo_render_webpart_render_htmlvisualization($args)
 			echo '   
 			<div class="video-container">
 			
-				<iframe class="nxs-vimeo-iframe nxs-youtube-iframe" src="'.$scheme.'://player.vimeo.com/video/'.$videoid.'" frameborder="0"></iframe>
+				<iframe class="nxs-vimeo-iframe nxs-youtube-iframe" src="'.$scheme.'://player.vimeo.com/video/'.$videoid.'" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 			
 			</div>
 		</div>';

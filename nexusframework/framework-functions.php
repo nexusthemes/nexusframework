@@ -2771,4 +2771,16 @@ function nxs_init_handledebug()
 	}
 }
 
+function nxs_load_plugins()
+{
+	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-businesssite/nxs-businesssite.php';
+	if (file_exists($path))
+	{
+		require_once($path);
+	}
+}
+
+//
+nxs_load_plugins();
+
 do_action('nxs_framework_loaded');

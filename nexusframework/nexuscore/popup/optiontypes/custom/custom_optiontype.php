@@ -51,10 +51,11 @@ function nxs_popup_optiontype_custom_runfunctionifitexists($optionvalues, $args,
 	extract($optionvalues);
 
 	echo $custom;
-  	// if handler is set, delegate rendering to handler
-  	if (isset($customcontenthandler))
-  	{
-  		$functionnametoinvoke = $customcontenthandler;
+	
+	// if handler is set, delegate rendering to handler
+	if (isset($customcontenthandler))
+	{
+		$functionnametoinvoke = $customcontenthandler;
 		if (function_exists($functionnametoinvoke))
 		{
 			$p = array();
@@ -68,7 +69,7 @@ function nxs_popup_optiontype_custom_runfunctionifitexists($optionvalues, $args,
 		{
 			echo "function not found; " . $customcontenthandler;
 		}
-  	}
+	}
 }
 
 function nxs_popup_optiontype_custom_renderstorestatecontroldata($optionvalues)

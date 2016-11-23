@@ -273,13 +273,20 @@ function nxs_widgets_target_home_getoptions($args)
 ---------------------------------------------------------------------------------------------------- */
 
 function nxs_widgets_target_render_webpart_render_htmlvisualization($args) 
-{	
+{
 	// Importing variables
 	extract($args);
 	
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	}
 	
 	// blend unistyle properties
 	$unistyle = $temp_array["unistyle"];
@@ -305,6 +312,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text"));
+
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
@@ -319,7 +327,11 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	$hovermenuargs["placeholderid"] = $placeholderid;
 	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
 	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	
+	if ($postid != "" && $placeholderid != "")
+	{
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 	
 	// Turn on output buffering
 	nxs_ob_start();

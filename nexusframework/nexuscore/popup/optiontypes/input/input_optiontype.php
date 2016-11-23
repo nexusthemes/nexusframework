@@ -60,6 +60,7 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
           <div class="box-content">
 						<input class="nxs-persistmode-'.$persistmode.'" type="text" id="'. $id . '" name="'. $id . '" value="' . nxs_render_html_escape_doublequote($value) . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" ' . $readonly . ' ' . $autofocusattribute . ' />
 						' . $lookuphelphtml . '
+						' . $footernote . '
           </div>
         </div>
         <div class="nxs-clear"></div>

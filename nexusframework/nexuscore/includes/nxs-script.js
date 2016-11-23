@@ -104,8 +104,21 @@ jQ_nxs(window).on("load", function()
 	nxs_allloaded = true;
 }
 );
+
 function nxs_js_okforscreenshot()
 {
+	// disable the scrollbar
+	var css = '::-webkit-scrollbar { display: none; }',
+	head = document.head || document.getElementsByTagName('head')[0],
+	style = document.createElement('style');
+	style.type = 'text/css';
+	if (style.styleSheet){
+	  style.styleSheet.cssText = css;
+	} else {
+	  style.appendChild(document.createTextNode(css));
+	}
+	head.appendChild(style);
+	
 	return nxs_allloaded;
 }
 

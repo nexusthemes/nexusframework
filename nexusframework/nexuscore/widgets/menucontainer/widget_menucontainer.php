@@ -33,16 +33,17 @@ add_action("nxs_getwidgets", "nxs_widgets_menucontainer_inject", 10, 2);	// defa
  * @param $args
  * @return array
  */
-function nxs_widgets_menucontainer_inject($result, $args) {
-    $nxsposttype = $args["nxsposttype"];
+function nxs_widgets_menucontainer_inject($result, $args) 
+{
+  $nxsposttype = $args["nxsposttype"];
 
-    if ( $nxsposttype == "header" || $nxsposttype == "footer") {
-        $result[] = array (
-            "widgetid" => "menucontainer",
-        );
-    }
+  if ( $nxsposttype == "header" || $nxsposttype == "footer") {
+      $result[] = array (
+          "widgetid" => "menucontainer",
+      );
+  }
 
-    return $result;
+  return $result;
 }
 
 /*** WIDGET STRUCTURE ***/
@@ -52,8 +53,8 @@ function nxs_widgets_menucontainer_inject($result, $args) {
  * @param $args
  * @return array
  */
-function nxs_widgets_menucontainer_home_getoptions($args) {
-
+function nxs_widgets_menucontainer_home_getoptions($args) 
+{
     // CORE WIDGET OPTIONS
     $options = array(
         "sheettitle" => nxs_widgets_menucontainer_gettitle(),
@@ -245,50 +246,47 @@ function nxs_widgets_menucontainer_home_getoptions($args) {
     return $options;
 }
 
-/*** WIDGET HTML ***/
+// output
+function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args) 
+{
+  extract($args);
 
-/**
- * Rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
- * hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
- * het bewerken van de placeholder kan opstarten
- * @param $args
- * @return array
- */
-function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args) {
+  $menuplaceholderid = $placeholderid;
 
-    extract($args);
+  global $nxs_global_row_render_statebag;
+  global $nxs_global_placeholder_render_statebag;
 
-    $menuplaceholderid = $placeholderid;
+  $temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
 
-    global $nxs_global_row_render_statebag;
-    global $nxs_global_placeholder_render_statebag;
+  $unistyle = $temp_array["unistyle"];
 
-    $temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+  if (isset($unistyle) && $unistyle != "") 
+  {
+    // blend unistyle properties
+    $unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_menucontainer_getunifiedstylinggroup(), $unistyle);
+    $temp_array = array_merge($temp_array, $unistyleproperties);
+  }
 
-    $unistyle = $temp_array["unistyle"];
+  $mixedattributes = array_merge($temp_array, $args);
+  extract($mixedattributes);
 
-    if (isset($unistyle) && $unistyle != "") {
-        // blend unistyle properties
-        $unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_menucontainer_getunifiedstylinggroup(), $unistyle);
-        $temp_array = array_merge($temp_array, $unistyleproperties);
-    }
+  // determine default behaviour
+  if (!isset($responsive_display) || $responsive_display == "") 
+  {
+    // backwords compatibility; if the responsive_display is not set,
+    // this should default to display960
+    $responsive_display = "display960";
+  }
 
-    $mixedattributes = array_merge($temp_array, $args);
-    extract($mixedattributes);
+  $result = array();
+  $result["result"] = "OK";
 
-    // determine default behaviour
-    if (!isset($responsive_display) || $responsive_display == "") {
-        // backwords compatibility; if the responsive_display is not set,
-        // this should default to display960
-        $responsive_display = "display960";
-    }
-
-    $result = array();
-    $result["result"] = "OK";
-
+	/*** WIDGET HOVER MENU ***/
+	if (true)
+	{
     nxs_ob_start();
 
-    /*** WIDGET HOVER MENU ***/ ?>
+    ?>
 
     <ul class="">
         <li title='Edit' class='nxs-hovermenu-button'>
@@ -356,349 +354,436 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
     $nxs_global_placeholder_render_statebag["menutopright"] = $menu;
     $nxs_global_placeholder_render_statebag["widgetcropping"] = "no";	// menu container will exist beyond regular widget container
+	}
+	
+  nxs_ob_start();
 
-    nxs_ob_start();
+  /*** EXPRESSIONS ***/
+  $menu_menuid = $temp_array['menu_menuid'];
+  $poststructure = nxs_parsepoststructure($menu_menuid);
 
-    /*** EXPRESSIONS ***/
-    $menu_menuid = $temp_array['menu_menuid'];
-    $poststructure = nxs_parsepoststructure($menu_menuid);
-
-    $orientation = "";
-    if ($orientation == "" || $orientation == "horizontal") {
-        $corecssclass = "nxs-menu";
-    }
-    else if ($orientation == "vertical") {
-    $corecssclass = "nxs-menu-vertical";
-    }
-    else {
+  $orientation = "";
+  if ($orientation == "" || $orientation == "horizontal") 
+  {
     $corecssclass = "nxs-menu";
+  }
+  else if ($orientation == "vertical") 
+  {
+  	$corecssclass = "nxs-menu-vertical";
+  }
+  else 
+  {
+  	$corecssclass = "nxs-menu";
+  }
+
+  $nxs_global_placeholder_render_statebag["widgetclass"] = $corecssclass . " ";
+
+  // Font variant
+  if (empty($font_variant)) 
+  {
+    $font_variant = "";
+  }
+  else if ($font_variant == 'small-caps')	
+  {
+    $font_variant = "nxs-small-caps";
+  }
+  else if ($font_variant == 'capitals') 
+  {
+    $font_variant = "nxs-capitalize";
+  }
+
+  // Menu item height
+  if (empty($parent_height) || $parent_height == '1x')    { $parent_height = "10"; }
+  else if ($parent_height == '2x') 						{ $parent_height = "20"; }
+  else if ($parent_height == '1.5x') 						{ $parent_height = "15"; }
+  else if ($parent_height == '1.4x') 						{ $parent_height = "14"; }
+  else if ($parent_height == '1.3x') 						{ $parent_height = "13"; }
+  else if ($parent_height == '1.2x') 						{ $parent_height = "12"; }
+  else if ($parent_height == '1.1x') 						{ $parent_height = "11"; }
+  else if ($parent_height == '0.9x') 						{ $parent_height = "09"; }
+  else if ($parent_height == '0.8x') 						{ $parent_height = "08"; }
+
+  // Submenu item height
+  if (empty($submenu_height) || $submenu_height == '1x')    { $submenu_height = "10"; }
+  else if ($submenu_height == '2x')                        { $submenu_height = "20"; }
+  else if ($submenu_height == '1.5x')                      { $submenu_height = "15"; }
+  else if ($submenu_height == '1.4x')                      { $submenu_height = "14"; }
+  else if ($submenu_height == '1.3x')                      { $submenu_height = "13"; }
+  else if ($submenu_height == '1.2x')                      { $submenu_height = "12"; }
+  else if ($submenu_height == '1.1x')                      { $submenu_height = "11"; }
+  else if ($submenu_height == '0.9x')                      { $submenu_height = "09"; }
+  else if ($submenu_height == '0.8x')                      { $submenu_height = "08"; }
+
+  // Menu fontsize
+  if (empty($menu_fontsize) || $menu_fontsize == '1x')    { $menu_fontsize = "10"; }
+  else if ($menu_fontsize == '1.4x') 		                { $menu_fontsize = "14"; }
+  else if ($menu_fontsize == '1.3x') 		                { $menu_fontsize = "13"; }
+  else if ($menu_fontsize == '1.2x') 		                { $menu_fontsize = "12"; }
+  else if ($menu_fontsize == '1.1x') 		                { $menu_fontsize = "11"; }
+  else if ($menu_fontsize == '0.9x') 		                { $menu_fontsize = "09"; }
+  else if ($menu_fontsize == '0.8x') 		                { $menu_fontsize = "08"; }
+
+  // Submenu fontsize
+  if 		(empty($submenu_fontsize) || $submenu_fontsize == '1x')     { $submenu_fontsize = "10"; }
+  else if ($submenu_fontsize == '0.9x') 	                            { $submenu_fontsize = "09"; }
+  else if ($submenu_fontsize == '0.8x') 	                            { $submenu_fontsize = "08"; }
+
+  $menuitem_border_width_cssclass 	= nxs_getcssclassesforlookup("nxs-border-width-", $menuitem_border_width);
+  $menuitem_color_cssclass 			= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-", $menuitem_color);
+  $menuitem_active_color_cssclass 	= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-active-", $menuitem_active_color);
+  $menuitem_hover_color_cssclass 		= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-hover-", $menuitem_hover_color);
+
+  $concatenated = nxs_concatenateargswithspaces("nxs-applymenucolors", $corecssclass, $menuitem_border_width_cssclass, $menuitem_color_cssclass, $menuitem_active_color_cssclass, $menuitem_hover_color_cssclass);
+
+  $menuitem_sub_border_width_cssclass = nxs_getcssclassesforlookup("nxs-border-width-", $menuitem_sub_border_width);
+  $menuitem_sub_color_cssclass 		= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-sub-", $menuitem_sub_color);
+  $menuitem_sub_active_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-menuitem-sub-active-", $menuitem_sub_active_color);
+  $menuitem_sub_hover_color_cssclass 	= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-sub-hover-", $menuitem_sub_hover_color);
+
+	// 
+  $memstructure = nxs_menu_getmemstructure($menu_menuid, $poststructure);
+  
+  // allow the memstructure to be populated with dynamic runtime items
+  $extendedmemstructure = array();
+  $isdirty = false;
+  foreach ($memstructure as $attributes)
+  {
+  	$extendedmemstructure[] = $attributes;
+  	
+  	$type = $attributes["type"];
+  	if ($type == "menuitemsemantictaxonomy")
+  	{
+  		$taxonomy = $attributes["taxonomy"];
+  		
+  		// grab the model
+  		global $businesssite_instance;
+  		$model = $businesssite_instance->getcontentmodel();
+  		$serviceinstances = $model[$taxonomy]["instances"];
+  		
+  		foreach ($serviceinstances as $index => $instance)
+  		{	
+  			if ($instance["enabled"] != "")
+  			{
+  				$content = $instance["content"];
+  				
+		  		$newelement = array
+		  		(
+		  			"type" => "menuitemcustom",
+		  			"postid" => $attributes["postid"],
+		  			"placeholderid" => $attributes["placeholderid"],
+		  			"title" => $content["post_title"],	// "runtime element",
+		  			"destination_url" => $instance["url"],
+		  			"depthindex" => $attributes["depthindex"] + 1,	// nest inside "this" element
+		  		);
+		  		$extendedmemstructure[] = $newelement;
+		  		$isdirty = true;
+		  	}
+	  	}
+  	}
+  }
+  
+  if ($isdirty)
+  {
+  	$memstructure = $extendedmemstructure;
+  }
+  
+  // allow other the memstructure itself to expand the structure
+  // (dynamically populated items)
+    
+  /*** OUTPUT ***/
+
+  if (count($memstructure) == 0) 
+  {
+    nxs_renderplaceholderwarning(nxs_l18n__("No menu items[nxs:warning]", "nxs_td"));
+  }
+  else 
+  {
+    $cache = "";
+
+    $previousdepth = 1;
+    $currentdepth = 1;
+
+    $elementcountfordepth = array();
+    $elementcountfordepth[$currentdepth] = 0;
+    
+    $parentid = nxs_menu_getactiveitemparentid($menu_menuid, $memstructure);
+
+    /*** OUTPUT DEFAULT MENU ***/
+
+    echo "<div class='nxs-menu-aligner nxs-applylinkvarcolor " . $horclass . " " . $halign . "'>";
+    echo "<ul id='nxs-menu-id-{$placeholderid}' class='{$concatenated} item-fontsize{$menu_fontsize} {$responsive_display}' itemscope='itemscope' itemtype='http://schema.org/SiteNavigationElement'>";
+
+    foreach ($memstructure as $index => $attributes) 
+    {
+      $placeholdertype = $attributes["type"];
+      if (!isset($placeholdertype) || $placeholdertype == "" || $placeholdertype == "undefined") {
+      // continu the foreach
+          continue;
+      }
+
+      $currentdepth = $attributes["depthindex"];
+
+      if ($currentdepth == 0 || $currentdepth == "") {
+          $currentdepth = 1;
+      }
+
+      $issubitem = false;
+      if ($currentdepth > 1) {
+          $issubitem = true;
+      }
+
+      // Setting depths of menu items
+      if ($currentdepth == $previousdepth + 1) 
+      {
+        $concatenated = nxs_concatenateargswithspaces($menuitem_sub_border_width_cssclass, $menuitem_sub_color_cssclass, $menuitem_sub_active_color_cssclass, $menuitem_sub_hover_color_cssclass);
+
+        // 1 dieper dan de vorige betekent een nieuwe ul tag-openen
+        $cache = $cache . "<ul class='nxs-sub-menu {$concatenated} item-fontsize{$submenu_fontsize}'>";
+      }
+      else if ($currentdepth == $previousdepth) 
+      {
+        // gelijke diepte
+        if ($elementcountfordepth[$currentdepth] > 0) 
+        {
+          // let op, geloof het of niet, maar het commentaar regeltje is
+          // van belang, anders spuugt het systeem de </ niet uit ?!
+          $cache = $cache . "</li>";
+        }
+      }
+      else if ($currentdepth <= $previousdepth - 1) 
+      {
+        // close the last LI of the previous level, this should only happen 1x !!
+        if ($elementcountfordepth[$currentdepth] > 0) 
+        {
+          // als we hier komen,
+          $cache = $cache . "<!-- HERE {$currentdepth} : {$previousdepth} -->";
+          $cache = $cache . "</li>";
+        }
+
+        $numofmissinguls = ($previousdepth - $currentdepth) + 1;
+
+        for ($currentmissingul = 1; $currentmissingul < $numofmissinguls; $currentmissingul++) 
+        {
+          $cache = $cache . "<!-- currentdepth:" . $currentdepth . "/" . $previousdepth . " -->";
+          $cache = $cache . "</ul>";
+          $cache = $cache . "</li>";
+        }
+      }
+      else 
+      {
+        $cache = $cache . "<!-- warning, incorrect depth delta ?! -->";
+      }
+
+      nxs_requirewidget($placeholdertype);
+      $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_desktop_render";
+
+      if (!function_exists($functionnametoinvoke)) 
+      {
+          nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
+      }
+
+      $attributes["menuitem_color"] = $menuitem_color_cssclass;
+      $attributes["menuitem_active_color"] = $menuitem_active_color_cssclass;
+      $attributes["font_variant"] =  $font_variant;
+      $attributes["parent_height"] = $parent_height;
+      $attributes["submenu_height"] = $submenu_height;
+      $attributes["gotactivechild"] = false;
+
+      if ($parentid == $placeholderid)
+      {
+          $attributes["gotactivechild"] = true;
+      }
+
+      $subargs = array("placeholdermetadata" => $attributes);
+      $subresult = call_user_func($functionnametoinvoke, $subargs);
+      $cache .= $subresult;
+
+      $elementcountforcurrentdepth = 0;
+      if (isset($elementcountfordepth[$currentdepth])) 
+      {
+        $elementcountforcurrentdepth = $elementcountfordepth[$currentdepth];
+      }
+      $elementcountfordepth[$currentdepth] = $elementcountforcurrentdepth + 1;
+
+      // update previous depth to current depth
+      $previousdepth = $currentdepth;
+    }
+      
+    // als we hier komen, kan het zijn dat de currentdepth > 1 is
+    // in dat geval moeten we ul tags sluiten
+    while ($currentdepth > 0) 
+    {
+      if ($elementcountfordepth[$currentdepth] > 0) 
+      {
+        $cache = $cache . "</li>";	// deze is het niet
+      }
+      $cache = $cache . "</ul><!--tail-->";
+      $currentdepth = $currentdepth - 1;
     }
 
-    $nxs_global_placeholder_render_statebag["widgetclass"] = $corecssclass . " ";
+    echo $cache;
 
-    // Font variant
-    if (empty($font_variant)) {
-        $font_variant = "";
-    }
-    else if ($font_variant == 'small-caps')	{
-        $font_variant = "nxs-small-caps";
-    }
-    else if ($font_variant == 'capitals') {
-        $font_variant = "nxs-capitalize";
-    }
+    /*** OUTPUT MINIFIED MENU ***/
 
-    // Menu item height
-    if (empty($parent_height) || $parent_height == '1x')    { $parent_height = "10"; }
-    else if ($parent_height == '2x') 						{ $parent_height = "20"; }
-    else if ($parent_height == '1.5x') 						{ $parent_height = "15"; }
-    else if ($parent_height == '1.4x') 						{ $parent_height = "14"; }
-    else if ($parent_height == '1.3x') 						{ $parent_height = "13"; }
-    else if ($parent_height == '1.2x') 						{ $parent_height = "12"; }
-    else if ($parent_height == '1.1x') 						{ $parent_height = "11"; }
-    else if ($parent_height == '0.9x') 						{ $parent_height = "09"; }
-    else if ($parent_height == '0.8x') 						{ $parent_height = "08"; }
+    echo '<div style="display: none" class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
 
+    $outer_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $menuitem_color); 
+    ?>
+    <a href='#' class="nxs_js_menu_mini_expand-<?php echo $placeholderid; ?> <?php echo $outer_color_cssclass; ?>">
+      <div style="text-align: center">
+        <span class="nxs-icon-menucontainer"></span>
+        <span>&nbsp;<?php echo $minified_label; ?></span>
+      </div>
+    </a>
 
-    // Submenu item height
-    if (empty($submenu_height) || $submenu_height == '1x')    { $submenu_height = "10"; }
-    else if ($submenu_height == '2x')                        { $submenu_height = "20"; }
-    else if ($submenu_height == '1.5x')                      { $submenu_height = "15"; }
-    else if ($submenu_height == '1.4x')                      { $submenu_height = "14"; }
-    else if ($submenu_height == '1.3x')                      { $submenu_height = "13"; }
-    else if ($submenu_height == '1.2x')                      { $submenu_height = "12"; }
-    else if ($submenu_height == '1.1x')                      { $submenu_height = "11"; }
-    else if ($submenu_height == '0.9x')                      { $submenu_height = "09"; }
-    else if ($submenu_height == '0.8x')                      { $submenu_height = "08"; }
+    <div class='nxs-menu-mini-nav-expander-<?php echo $placeholderid; ?>' style="display: none;">
 
-    // Menu fontsize
-    if (empty($menu_fontsize) || $menu_fontsize == '1x')    { $menu_fontsize = "10"; }
-    else if ($menu_fontsize == '1.4x') 		                { $menu_fontsize = "14"; }
-    else if ($menu_fontsize == '1.3x') 		                { $menu_fontsize = "13"; }
-    else if ($menu_fontsize == '1.2x') 		                { $menu_fontsize = "12"; }
-    else if ($menu_fontsize == '1.1x') 		                { $menu_fontsize = "11"; }
-    else if ($menu_fontsize == '0.9x') 		                { $menu_fontsize = "09"; }
-    else if ($menu_fontsize == '0.8x') 		                { $menu_fontsize = "08"; }
-
-    // Submenu fontsize
-    if 		(empty($submenu_fontsize) || $submenu_fontsize == '1x')     { $submenu_fontsize = "10"; }
-    else if ($submenu_fontsize == '0.9x') 	                            { $submenu_fontsize = "09"; }
-    else if ($submenu_fontsize == '0.8x') 	                            { $submenu_fontsize = "08"; }
-
-    $menuitem_border_width_cssclass 	= nxs_getcssclassesforlookup("nxs-border-width-", $menuitem_border_width);
-    $menuitem_color_cssclass 			= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-", $menuitem_color);
-    $menuitem_active_color_cssclass 	= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-active-", $menuitem_active_color);
-    $menuitem_hover_color_cssclass 		= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-hover-", $menuitem_hover_color);
-
+    <?php
     $concatenated = nxs_concatenateargswithspaces("nxs-applymenucolors", $corecssclass, $menuitem_border_width_cssclass, $menuitem_color_cssclass, $menuitem_active_color_cssclass, $menuitem_hover_color_cssclass);
 
-    $menuitem_sub_border_width_cssclass = nxs_getcssclassesforlookup("nxs-border-width-", $menuitem_sub_border_width);
-    $menuitem_sub_color_cssclass 		= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-sub-", $menuitem_sub_color);
-    $menuitem_sub_active_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-menuitem-sub-active-", $menuitem_sub_active_color);
-    $menuitem_sub_hover_color_cssclass 	= nxs_getcssclassesforlookup("nxs-colorzen-menuitem-sub-hover-", $menuitem_sub_hover_color);
+    echo "<ul id='nxs-menu-minified-id-" . $placeholderid . "' class='" . $concatenated . " nxs-menu-minified nav' itemscope='itemscope' itemtype='http://schema.org/SiteNavigationElement'>";
 
-    /*** OUTPUT ***/
+    $cache = "";
 
-    if (count($poststructure) == 0) {
-        nxs_renderplaceholderwarning(nxs_l18n__("No menu items[nxs:warning]", "nxs_td"));
+    $previousdepth = 1;
+    $currentdepth = 1;
+
+    $elementcountfordepth = array();
+
+    foreach ($memstructure as $index => $attributes)
+    {
+      $placeholdertype = $attributes["type"];
+
+      if (!isset($placeholdertype) || $placeholdertype == "" || $placeholdertype == "undefined") 
+      {
+        // continu the foreach
+        continue;
+      }
+
+      $currentdepth = $attributes["depthindex"];
+
+      if ($currentdepth == 0 || $currentdepth == "") 
+      {
+        $currentdepth = 1;
+      }
+
+      if ($currentdepth == $previousdepth + 1) 
+      {
+        // eentje dieper
+      }
+      else if ($currentdepth == $previousdepth) 
+      {
+        // gelijke diepte
+      }
+      else if ($currentdepth <= $previousdepth - 1) 
+      {
+        // eentje minder diep
+      }
+      else 
+      {
+        $cache = $cache . "<!-- warning, incorrect depth delta ?! -->";
+      }
+
+      $issubitem = false;
+
+      if ($currentdepth > 1) 
+      {
+        $issubitem = true;
+      }
+
+      $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_mobile_render";
+
+      if (!function_exists($functionnametoinvoke)) 
+      {
+        nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
+      }
+
+      $attributes["font_variant"] =  $font_variant;
+      $attributes["parent_height"] = $parent_height;
+      $attributes["submenu_height"] = $submenu_height;
+      $attributes["menuitem_color"] = $outer_color_cssclass;
+      $attributes["menuitem_active_color"] = $menuitem_active_color_cssclass;
+
+      $mobsubargs = array("placeholdermetadata" => $attributes);
+
+      $mobsubresult = call_user_func($functionnametoinvoke, $mobsubargs);
+
+      $cache .= $mobsubresult;
+
+      // update previous depth to current depth
+      $previousdepth = $currentdepth;
     }
-    else {
-        $cache = "";
-
-        $previousdepth = 1;
-        $currentdepth = 1;
-
-        $elementcountfordepth = array();
-        $elementcountfordepth[$currentdepth] = 0;
-
-        $parentid = nxs_menu_getactiveitemparentid($menu_menuid, $poststructure);
-
-        /*** OUTPUT DEFAULT MENU ***/
-
-        echo "<div class='nxs-menu-aligner nxs-applylinkvarcolor " . $horclass . " " . $halign . "'>";
-        echo "<ul id='nxs-menu-id-{$placeholderid}' class='{$concatenated} item-fontsize{$menu_fontsize} {$responsive_display}' itemscope='itemscope' itemtype='http://schema.org/SiteNavigationElement'>";
-
-        foreach ($poststructure as $pagerow) {
-            $content = $pagerow["content"];
-            $placeholderid = nxs_parsepagerow($content);
-            $placeholdermetadata = nxs_getwidgetmetadata($menu_menuid, $placeholderid);
-            // localize fields
-            $placeholdermetadata = nxs_localization_localize($placeholdermetadata);
-
-            $placeholdertype = $placeholdermetadata["type"];
-            if (!isset($placeholdertype) || $placeholdertype == "" || $placeholdertype == "undefined") {
-            // continu the foreach
-                continue;
-            }
-
-            $currentdepth = $placeholdermetadata["depthindex"];
-
-            if ($currentdepth == 0 || $currentdepth == "") {
-                $currentdepth = 1;
-            }
-
-            $issubitem = false;
-            if ($currentdepth > 1) {
-                $issubitem = true;
-            }
-
-            // Setting depths of menu items
-            if ($currentdepth == $previousdepth + 1) {
-
-            $concatenated = nxs_concatenateargswithspaces($menuitem_sub_border_width_cssclass, $menuitem_sub_color_cssclass, $menuitem_sub_active_color_cssclass, $menuitem_sub_hover_color_cssclass);
-
-            // 1 dieper dan de vorige betekent een nieuwe ul tag-openen
-            $cache = $cache . "<ul class='nxs-sub-menu {$concatenated} item-fontsize{$submenu_fontsize}'>";
-            }
-            else if ($currentdepth == $previousdepth) {
-                // gelijke diepte
-                if ($elementcountfordepth[$currentdepth] > 0) {
-                    // let op, geloof het of niet, maar het commentaar regeltje is
-                    // van belang, anders spuugt het systeem de </ niet uit ?!
-                    $cache = $cache . "</li><!--GJ2-->";
-                }
-            }
-            else if ($currentdepth <= $previousdepth - 1) {
-                // close the last LI of the previous level, this should only happen 1x !!
-                if ($elementcountfordepth[$currentdepth] > 0) {
-                    // als we hier komen,
-                    $cache = $cache . "<!-- HERE {$currentdepth} : {$previousdepth} -->";
-                    $cache = $cache . "</li>";
-                }
-
-                $numofmissinguls = ($previousdepth - $currentdepth) + 1;
-
-                for ($currentmissingul = 1; $currentmissingul < $numofmissinguls; $currentmissingul++) {
-                    $cache = $cache . "<!-- currentdepth:" . $currentdepth . "/" . $previousdepth . " -->";
-                    $cache = $cache . "</ul>";
-                    $cache = $cache . "</li>";
-                }
-            }
-            else {
-                $cache = $cache . "<!-- warning, incorrect depth delta ?! -->";
-            }
-
-            nxs_requirewidget($placeholdertype);
-            $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_desktop_render";
-
-            if (!function_exists($functionnametoinvoke)) {
-                nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
-            }
-
-            $placeholdermetadata["menuitem_color"] = $menuitem_color_cssclass;
-            $placeholdermetadata["menuitem_active_color"] = $menuitem_active_color_cssclass;
-            $placeholdermetadata["font_variant"] =  $font_variant;
-            $placeholdermetadata["parent_height"] = $parent_height;
-            $placeholdermetadata["submenu_height"] = $submenu_height;
-            $placeholdermetadata["gotactivechild"] = false;
-
-            if ($parentid == $placeholderid)
-            {
-                $placeholdermetadata["gotactivechild"] = true;
-            }
-
-            $subargs = array("placeholdermetadata" => $placeholdermetadata);
-
-            $subresult = call_user_func($functionnametoinvoke, $subargs);
-
-            $cache .= $subresult;
-
-            $elementcountforcurrentdepth = 0;
-            if (isset($elementcountfordepth[$currentdepth])) {
-                $elementcountforcurrentdepth = $elementcountfordepth[$currentdepth];
-            }
-            $elementcountfordepth[$currentdepth] = $elementcountforcurrentdepth + 1;
 
-            // update previous depth to current depth
-            $previousdepth = $currentdepth;
-        }
-        // als we hier komen, kan het zijn dat de currentdepth > 1 is
-        // in dat geval moeten we ul tags sluiten
-        while ($currentdepth > 0) {
-            if ($elementcountfordepth[$currentdepth] > 0) {
-                $cache = $cache . "</li>";	// deze is het niet
-            }
-            $cache = $cache . "</ul><!--tail-->";
-            $currentdepth = $currentdepth - 1;
-        }
-
-        echo $cache;
-
-        /*** OUTPUT MINIFIED MENU ***/
-
-        echo '<div style="display: none" class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
-
-        $outer_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $menuitem_color); ?>
-                <a href='#' class="nxs_js_menu_mini_expand-<?php echo $placeholderid; ?> <?php echo $outer_color_cssclass; ?>">
-                    <div style="text-align: center">
-                        <span class="nxs-icon-menucontainer"></span>
-                        <span>&nbsp;<?php echo $minified_label; ?></span>
-                    </div>
-                </a>
-
-                <div class='nxs-menu-mini-nav-expander-<?php echo $placeholderid; ?>' style="display: none;">
-
-        <?php
-        $concatenated = nxs_concatenateargswithspaces("nxs-applymenucolors", $corecssclass, $menuitem_border_width_cssclass, $menuitem_color_cssclass, $menuitem_active_color_cssclass, $menuitem_hover_color_cssclass);
-
-        echo "<ul id='nxs-menu-minified-id-" . $placeholderid . "' class='" . $concatenated . " nxs-menu-minified nav' itemscope='itemscope' itemtype='http://schema.org/SiteNavigationElement'>";
-
-        $cache = "";
-
-        $previousdepth = 1;
-        $currentdepth = 1;
-
-        $elementcountfordepth = array();
-
-        foreach ($poststructure as $pagerow) {
-            $content = $pagerow["content"];
-            $placeholderid = nxs_parsepagerow($content);
-            $placeholdermetadata = nxs_getwidgetmetadata($menu_menuid, $placeholderid);
-
-            $placeholdertype = $placeholdermetadata["type"];
-
-            if (!isset($placeholdertype) || $placeholdertype == "" || $placeholdertype == "undefined") {
-                // continu the foreach
-                continue;
-            }
-
-            $currentdepth = $placeholdermetadata["depthindex"];
-
-            if ($currentdepth == 0 || $currentdepth == "") {
-                $currentdepth = 1;
-            }
-
-            if ($currentdepth == $previousdepth + 1) {
-                // eentje dieper
-            }
-            else if ($currentdepth == $previousdepth) {
-                // gelijke diepte
-            }
-            else if ($currentdepth <= $previousdepth - 1) {
-                // eentje minder diep
-            }
-            else {
-                $cache = $cache . "<!-- warning, incorrect depth delta ?! -->";
-            }
-
-            $issubitem = false;
-
-            if ($currentdepth > 1) {
-                $issubitem = true;
-            }
-
-            $functionnametoinvoke = "nxs_widgets_" . $placeholdertype . "_mobile_render";
-
-            if (!function_exists($functionnametoinvoke)) {
-                nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
-            }
-
-            $placeholdermetadata["font_variant"] =  $font_variant;
-            $placeholdermetadata["parent_height"] = $parent_height;
-            $placeholdermetadata["submenu_height"] = $submenu_height;
-            $placeholdermetadata["menuitem_color"] = $outer_color_cssclass;
-            $placeholdermetadata["menuitem_active_color"] = $menuitem_active_color_cssclass;
-
-            $mobsubargs = array("placeholdermetadata" => $placeholdermetadata);
-
-            $mobsubresult = call_user_func($functionnametoinvoke, $mobsubargs);
-
-            $cache .= $mobsubresult;
-
-            // update previous depth to current depth
-            $previousdepth = $currentdepth;
-        }
-
-        // als we hier komen, kan het zijn dat de currentdepth > 1 is
-        // in dat geval moeten we ul tags sluiten
-        while ($currentdepth > 0) {
-            $currentdepth = $currentdepth - 1;
-        }
-
-        $cache = $cache . "</ul>";
-
-        echo $cache;
-
-        ?>
-
-            </div> <!-- END nxs-menu-mini-nav-expander -->
-            <script>
-                jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
-                jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function(){
-                    nxs_js_menu_mini_expand(this, '<?php echo $placeholderid; ?>');
-                    nxs_js_change_menu_mini_expand_height(this, '<?php echo $placeholderid; ?>');
-                    nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
-
-                    var self = this;
-
-                    jQ_nxs(document).off('nxs_event_resizeend.menu_mini_expand');
-                    jQ_nxs(document).on('nxs_event_resizeend.menu_mini_expand', function(){
-                        nxs_js_change_menu_mini_expand_height(self, '<?php echo $placeholderid; ?>');
-                        nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
-                        return false;
-                    });
-                    return false;
-                });
-            </script>
-
-        </div> <!-- END nxs-menu-minified -->
-
-        <?php
-
-    } // if (count == 0)
-
-    echo "</div> <!-- menu aligner -->";
-    echo "<div class='nxs-clear'></div>";
-
-    $html = nxs_ob_get_contents();
-
-    nxs_ob_end_clean();
-
-    $result["html"] = $html;
-    $result["replacedomid"] = 'nxs-widget-' . $placeholderid;
-
-    $nxs_global_row_render_statebag["upgradetoexceptionalresponsiverow"] = "true";
-
-    return $result;
+    // als we hier komen, kan het zijn dat de currentdepth > 1 is
+    // in dat geval moeten we ul tags sluiten
+    while ($currentdepth > 0) 
+    {
+      $currentdepth = $currentdepth - 1;
+    }
+
+    $cache = $cache . "</ul>";
+
+    echo $cache;
+
+    ?>
+    </div> <!-- END nxs-menu-mini-nav-expander -->
+    <script>
+      jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
+      jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function(){
+          nxs_js_menu_mini_expand(this, '<?php echo $placeholderid; ?>');
+          nxs_js_change_menu_mini_expand_height(this, '<?php echo $placeholderid; ?>');
+          nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+
+          var self = this;
+
+          jQ_nxs(document).off('nxs_event_resizeend.menu_mini_expand');
+          jQ_nxs(document).on('nxs_event_resizeend.menu_mini_expand', function(){
+              nxs_js_change_menu_mini_expand_height(self, '<?php echo $placeholderid; ?>');
+              nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+              return false;
+          });
+          return false;
+      });
+    </script>
+
+    </div> <!-- END nxs-menu-minified -->
+
+    <?php
+
+  } // if (count == 0)
+
+  echo "</div> <!-- menu aligner -->";
+  echo "<div class='nxs-clear'></div>";
+
+  $html = nxs_ob_get_contents();
+
+  nxs_ob_end_clean();
+
+  $result["html"] = $html;
+  $result["replacedomid"] = 'nxs-widget-' . $placeholderid;
+
+  $nxs_global_row_render_statebag["upgradetoexceptionalresponsiverow"] = "true";
+
+  return $result;
+}
+
+function nxs_menu_getmemstructure($menu_menuid, $poststructure)
+{
+	$result = array();
+	
+	// converts the poststructure into an memory structure
+	foreach ($poststructure as $key => $pagerow) 
+	{
+		$content = $pagerow["content"];
+    $placeholderid = nxs_parsepagerow($content);
+    $placeholdermetadata = nxs_getwidgetmetadata($menu_menuid, $placeholderid);
+    // localize fields
+    $placeholdermetadata = nxs_localization_localize($placeholdermetadata);
+ 
+    $result[] = $placeholdermetadata;
+	}
+	
+	return $result;
 }
 
 /**
@@ -707,52 +792,50 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
  * @param $poststructure
  * @return string
  */
-function nxs_menu_getactiveitemparentid($menu_menuid, $poststructure) {
-    global $nxs_global_current_containerpostid_being_rendered;
-    global $nxs_global_current_postid_being_rendered;
-    $cat = get_the_category();
-    $cat0 = $cat[0];
-    $catid = $cat0->cat_ID;
-    $current_categoryid = strval($catid);
+function nxs_menu_getactiveitemparentid($menu_menuid, $memstructure) 
+{
+  global $nxs_global_current_containerpostid_being_rendered;
+  global $nxs_global_current_postid_being_rendered;
+  $cat = get_the_category();
+  $cat0 = $cat[0];
+  $catid = $cat0->cat_ID;
+  $current_categoryid = strval($catid);
 
-    $temp_parentid = "";
-    $result = "";
+  $temp_parentid = "";
+  $result = "";
 
-    foreach ($poststructure as $key => $pagerow) {
-        $content = $pagerow["content"];
-        $placeholderid = nxs_parsepagerow($content);
-        $placeholdermetadata = nxs_getwidgetmetadata($menu_menuid, $placeholderid);
-        // localize fields
-        $placeholdermetadata = nxs_localization_localize($placeholdermetadata);
-
-        $currentdepth = $placeholdermetadata["depthindex"];
-        
-        if ($currentdepth == 1) {
-            $temp_parentid = $placeholderid;
-        }
-
-        if ($currentdepth == 2) {
-            $destination_articleid = $placeholdermetadata["destination_articleid"];
-            $destination_category = $placeholdermetadata["destination_category"];
-            $destination_category = str_replace("[", "", $destination_category);
-            $destination_category = str_replace("]", "", $destination_category);
-
-            if ($destination_articleid)
-            {
-                $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
-            }
-            if ($destination_category) {
-                $isactiveitem = ($destination_category == $current_categoryid);
-            }
-
-            if ($isactiveitem)
-            {
-                $result = $temp_parentid;
-            }
-        }
-    }
+  foreach ($memstructure as $index => $attributes) 
+  {    
+    $currentdepth = $attributes["depthindex"];
     
-    return $result;
+    if ($currentdepth == 1) 
+    {
+      $temp_parentid = $placeholderid;
+    }
+
+    if ($currentdepth == 2) 
+    {
+      $destination_articleid = $attributes["destination_articleid"];
+      $destination_category = $attributes["destination_category"];
+      $destination_category = str_replace("[", "", $destination_category);
+      $destination_category = str_replace("]", "", $destination_category);
+
+      if ($destination_articleid)
+      {
+          $isactiveitem = ($destination_articleid == $nxs_global_current_containerpostid_being_rendered || $destination_articleid == $nxs_global_current_postid_being_rendered);
+      }
+      if ($destination_category) {
+          $isactiveitem = ($destination_category == $current_categoryid);
+      }
+
+      if ($isactiveitem)
+      {
+          $result = $temp_parentid;
+      }
+    }
+  }
+  
+  return $result;
 }
 
 /**
@@ -805,6 +888,13 @@ function nxs_page_render_popup_getrenderedmenuitems($postid) {
             $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
         }
         else if ($placeholdertype == "menuitemcustom") {
+            //
+            $title = $placeholdermetadata["title"];
+            $depthindex = $placeholdermetadata["depthindex"];
+
+            $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
+        }
+        else if ($placeholdertype == "menuitemsemantictaxonomy") {
             //
             $title = $placeholdermetadata["title"];
             $depthindex = $placeholdermetadata["depthindex"];

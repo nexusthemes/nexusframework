@@ -313,6 +313,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> "Email address to notify",
 				"placeholder" 		=> "Internal email",
 				"tooltip" 			=> nxs_l18n__("Enter here a valid existing e-mail address (most likely: your e-mail address) that should be notified when this form is submitted, for example yourname@yourdomain.com", "nxs_td"),
+				"footernote" => "<div class='content' style='font-size: smaller; font-style: italic;'><a target='_blank' href='https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1536984796'>Not receiving e-mails? Click here</a></div>",
 			),
 			array(
 				"id" 				=> "subject_email",
