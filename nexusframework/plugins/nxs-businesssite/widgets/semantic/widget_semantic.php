@@ -27,6 +27,9 @@ function nxs_widgets_semantic_getunifiedcontentgroup() {
 // Define the properties of this widget
 function nxs_widgets_semantic_home_getoptions($args) 
 {
+	global $businesssite_instance;
+	$nxs_siteid = $businesssite_instance->getsiteid();
+	
 	// CORE WIDGET OPTIONS
 	
 	$options = array
@@ -39,13 +42,45 @@ function nxs_widgets_semantic_home_getoptions($args)
 		"fields" => array
 		(
 			// link to the business editor
+			array(
+          "id" 				=> "wrapper_items_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Items", "nxs_td"),
+      ),
 			array
 			(
 				"id" 				=> "editorlink",
 				"type" 				=> "custom",
-				"custom"	=> "<div><a target='_blank' class='nxsbutton' href='http://joeplumbermodeleditor.testgj.c1.us-e1.nexusthemes.com/services/'>Edit</a></div>",
+				"custom"	=> "<div><a target='_blank' class='nxsbutton' href='http://businessmodeleditor.testgj.c1.us-e1.nexusthemes.com/{$nxs_siteid}'>Edit</a></div>",
 				"label" 			=> nxs_l18n__("Services", "nxs_td"),
 			),
+			 array(
+          "id" 				=> "wrapper_items_end",
+          "type" 				=> "wrapperend",
+      ),
+			
+			// VISUALIZATION
+      array(
+          "id" 				=> "wrapper_title_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Visualization", "nxs_td"),
+      ),
+      array
+      (
+				"id" 					=> "itemsstyle",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Style", "nxs_td"),
+				"dropdown" 		=> array
+				(
+					"text" => "Text",
+					"target" => "Target",
+				),
+				"unistylablefield" => true,
+			),
+      array(
+          "id" 				=> "wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),
 		)
 	);
 	
@@ -139,7 +174,10 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	$contentproviderurl = "https://turnkeypagesprovider.websitesexamples.com/?contentprovider=getsemantic&widget=services";
+	global $businesssite_instance;
+	$nxs_siteid = $businesssite_instance->getsiteid();
+
+	$contentproviderurl = "https://turnkeypagesprovider.websitesexamples.com/?contentprovider=getsemantic&widget=services&nxs_siteid={$nxs_siteid}&itemsstyle={$itemsstyle}";
 	$contentmetajson = file_get_contents($contentproviderurl);
 	$contentmeta = json_decode($contentmetajson, true);
 	$html = $contentmeta["html"];

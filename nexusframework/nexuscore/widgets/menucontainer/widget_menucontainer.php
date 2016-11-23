@@ -472,7 +472,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 		  			"postid" => $attributes["postid"],
 		  			"placeholderid" => $attributes["placeholderid"],
 		  			"title" => $content["post_title"],	// "runtime element",
-		  			"destination_url" => $instance["url"],
+		  			"destination_url" => $content["url"],
 		  			"depthindex" => $attributes["depthindex"] + 1,	// nest inside "this" element
 		  		);
 		  		$extendedmemstructure[] = $newelement;
