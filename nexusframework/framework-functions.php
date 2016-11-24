@@ -1563,12 +1563,13 @@ function nxs_add_metaboxes()
 		return;
 	}
 	
-  add_meta_box('nexus_meta', nxs_l18n__("Content[nxs:metaboxheading]", "nxs_td"), 'nxs_backend_meta_box', 'post', 'normal', 'default');
-  add_meta_box('nexus_meta', nxs_l18n__("Content[nxs:metaboxheading]", "nxs_td"), 'nxs_backend_meta_box', 'page', 'normal', 'default');
+  //add_meta_box('nexus_meta', nxs_l18n__("Content[nxs:metaboxheading]", "nxs_td"), 'nxs_backend_meta_box', 'post', 'normal', 'default');
+  //add_meta_box('nexus_meta', nxs_l18n__("Content[nxs:metaboxheading]", "nxs_td"), 'nxs_backend_meta_box', 'page', 'normal', 'default');
 }
 
 function nxs_backend_meta_box()
 {
+	/*
 	?>
 	<div>
 		<p><?php nxs_l18n_e("Edit content explanation[nxs:button]", "nxs_td"); ?></p>
@@ -1601,6 +1602,7 @@ function nxs_backend_meta_box()
 
 	</script>
 	<?php
+	*/
 }
 
 add_action('nxs_action_postfooterlink', 'nxs_render_postfooterlink');
@@ -2395,6 +2397,10 @@ function nxs_create_post_types_and_taxonomies()
 {
 	// allow categories to be linked to pages too
   register_taxonomy_for_object_type('category', 'page');
+  
+  // allow pages to have excerpts too
+  add_post_type_support('page', 'excerpt');
+  
   // we also need to extend the query when a category page is requested,
   // as register_taxonomy_for_object_type unfortunately doesn't handle this itself (weird!?!)
   add_action('pre_get_posts', 'nxs_pre_get_posts_categorypageextension');  
@@ -2773,7 +2779,14 @@ function nxs_init_handledebug()
 
 function nxs_load_plugins()
 {
+	//
 	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-businesssite/nxs-businesssite.php';
+	if (file_exists($path))
+	{
+		require_once($path);
+	}
+	//
+	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-businessmodeleditor/nxs-businessmodeleditor.php';
 	if (file_exists($path))
 	{
 		require_once($path);

@@ -177,27 +177,62 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 	global $businesssite_instance;
 	$nxs_siteid = $businesssite_instance->getsiteid();
 
+	/*
 	$contentproviderurl = "https://turnkeypagesprovider.websitesexamples.com/?contentprovider=getsemantic&widget=services&nxs_siteid={$nxs_siteid}&itemsstyle={$itemsstyle}";
 	$contentmetajson = file_get_contents($contentproviderurl);
 	$contentmeta = json_decode($contentmetajson, true);
 	$html = $contentmeta["html"];
+	*/
 	
 	// the html can contain placeholders
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
 	$taxonomy = "services";
+	
+	$html = "";
+	$html .= "<style>";
+	$html .= ".taxonomy-instances > div { min-height: 400px; width: 400px; float:left; margin:5px; padding: 5px; border-color: black; border-style: solid; border-width: 1px; }";
+	$html .= "</style>";
+	$html .= "<div><h1>{$taxonomy}</h1>";
+	$html .= "<div class='taxonomy-instances'>";	
+
 	foreach ($contentmodel[$taxonomy]["instances"] as $instance)
 	{
 		$semantic = $instance["semantic"];
+		$post_title = $instance["content"]["post_title"];		
+		$post_excerpt = $instance["content"]["post_excerpt"];
 		$url = $instance["content"]["url"];
-		//var_dump($contentmodel);
-		//die();
-		$html = str_replace("{{services.{$semantic}.url}}", $url, $html);
+		
+		//
+		
+		$image_src = "";
+		/*
+		if ($nxs_semantic_media != "")
+		{
+			$image_src = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&scope=semantic&requestedwidth=400&requestedheight=200&debug=false&semantic={$semantic}&url={$nxs_semantic_media}";
+		}
+		*/
+		$args = array
+		(
+			"render_behaviour" => "code",
+			"title" => $post_title,
+			"text" => $post_excerpt,
+			"image_src" => $image_src,
+			"destination_url" => $url,
+		);
+		//$itemsstyle = "text";
+		nxs_requirewidget($itemsstyle);
+		$functionnametoinvoke = "nxs_widgets_{$itemsstyle}_render_webpart_render_htmlvisualization";
+		if (function_exists($functionnametoinvoke))
+		{
+			$subresult = call_user_func($functionnametoinvoke, $args);
+			$subhtml = $subresult["html"];
+			$html .= "<div>{$subhtml}</div>";
+		}
 	}
+	$html .= "</div>";	
 	
-	//echo "<div>hoi:{$html}</div>";
-	//var_dump($contentmetajson);
 	echo $html;
 	// 
 	
