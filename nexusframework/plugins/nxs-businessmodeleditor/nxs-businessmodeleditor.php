@@ -26,7 +26,6 @@ function nxs_businessmodeleditor_init()
 	// widgets
 	nxs_lazyload_plugin_widget(__FILE__, "serviceset");
 	nxs_lazyload_plugin_widget(__FILE__, "service");
-	nxs_lazyload_plugin_widget(__FILE__, "customservice");
 	
 	// if this is an API call, delegate it
 	if 
@@ -68,7 +67,6 @@ function nxs_businessmodeleditor_getwidgets($result, $widgetargs)
 		if ($nxssubposttype == "serviceset") 
 		{	
 			$result[] = array("widgetid" => "service", "tags" => array("businessmodeleditor"));
-			$result[] = array("widgetid" => "customservice", "tags" => array("businessmodeleditor"));
 		}
 	}
 	

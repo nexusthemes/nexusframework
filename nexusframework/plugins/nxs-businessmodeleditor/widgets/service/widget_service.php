@@ -29,26 +29,9 @@ function nxs_widgets_service_getunifiedcontentgroup() {
 // Define the properties of this widget
 function nxs_widgets_service_home_getoptions() 
 {
-	// todo: afhankelijk van de businesstype die gekozen is
-	$semanticoptions = array
-	(
-	  "@@@empty@@@"=>nxs_l18n__("Not set", "nxs_td"),
-		"centralheating" => "Central Heating",
-		"plumbing" => "Plumbing",
-		"sanitary" => "Sanitary",
-		"sewerage" => "Sewerage",
-	);
-	
-	$flavoroptions = array
-	(
-		"pietje_1" => "Variation 1 from copywriter Pietje",
-	);
-	
-	// 
-	
 	$options = array
 	(
-		"sheettitle" 		=> "Service",
+		"sheettitle" 		=> "Custom Service",
 		"sheeticonid" 		=> nxs_widgets_service_geticonid(),
 		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_service_getunifiedstylinggroup(),),
@@ -57,24 +40,20 @@ function nxs_widgets_service_home_getoptions()
 		"fields" => array
 		(
 			array
-			(
-				"id" 				=> "semantic",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Semantic", "nxs_td"),
-				"dropdown" 			=> $semanticoptions,
+			( 
+				"id"								=> "filter_postid",
+				"type" 							=> "selectpost",
+				"post_status"				=> array("publish", "future"),
+				"previewlink_enable"=> "false",
+				"label" 						=> nxs_l18n__("Post or page", "nxs_td"),
+				"tooltip" 					=> nxs_l18n__("Select the post or page that represents this service", "nxs_td"),
+				"post_type" 				=> array("post","page")
 			),
 			array
 			(
 				"id" 				=> "enabled",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Enabled", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "flavor",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Flavor", "nxs_td"),
-				"dropdown" 			=> $flavoroptions,
 			),
 		),
 	);
@@ -180,7 +159,9 @@ function nxs_widgets_service_render_webpart_render_htmlvisualization($args)
 		$color = "red";
 	}
 	
-	echo "<div style='background-color: {$color}; color: white; margin: 10px; padding: 10px;'>semantic:" . $semantic . "</div>";
+	$title = nxs_gettitle_for_postid($filter_postid);
+	if ($title == "") { $title = "not set ($filter_postid)"; }
+	echo "<div style='background-color: {$color}; color: white; margin: 10px; padding: 10px;'>semantic:" . $title . "</div>";
 	
 	/* ------------------------------------------------------------------------------------------------- */
 	 

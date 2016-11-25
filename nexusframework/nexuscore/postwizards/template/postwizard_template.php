@@ -1,15 +1,15 @@
 <?php
 
-function nxs_postwizard_landingpage_gettitle($args)
+function nxs_postwizard_template_gettitle($args)
 {
-	return __("Landing page", "nxs_td");
+	return __("Template", "nxs_td");
 }
 
-function nxs_postwizard_landingpage_renderpreview($args)
+function nxs_postwizard_template_renderpreview($args)
 {
 	?>
 	<script>
-		nxs_js_popup_site_neweditsession('newlandingpage'); 
+		nxs_js_popup_site_neweditsession('newtemplate'); 
 	</script>	
 	<?php
 }
@@ -26,4 +26,3 @@ function nxs_postwizard_postwizard_setuppost($args)
 	echo "not implemented";
 	die();
 }
-

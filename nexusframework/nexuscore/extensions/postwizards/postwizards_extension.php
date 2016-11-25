@@ -92,7 +92,7 @@ nxs_ext_lazyload_postwizard("generic");
 nxs_ext_lazyload_postwizard("pdt1");
 nxs_ext_lazyload_postwizard("pdt2");
 nxs_ext_lazyload_postwizard("pdt3");
-nxs_ext_lazyload_postwizard("landingpage");
+nxs_ext_lazyload_postwizard("template");
 
 //
 // enqueue available postwizards
@@ -107,7 +107,7 @@ function nxs_ext_getpostwizards($result, $args)
 		
 		if (nxs_enableconceptualwidgets())
 		{
-			$result[] = array("postwizard" => "landingpage");
+			$result[] = array("postwizard" => "template");
 		}
 	}
 	

@@ -28,7 +28,9 @@ function nxs_widgets_semantic_getunifiedcontentgroup() {
 function nxs_widgets_semantic_home_getoptions($args) 
 {
 	global $businesssite_instance;
-	$nxs_siteid = $businesssite_instance->getsiteid();
+	$contentmodel = $businesssite_instance->getcontentmodel();
+	
+	$servicesediturl = nxs_geturl_for_postid($contentmodel["services"]["postid"]);
 	
 	// CORE WIDGET OPTIONS
 	
@@ -39,6 +41,7 @@ function nxs_widgets_semantic_home_getoptions($args)
 		"sheethelp" 		=> nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=826980725"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_semantic_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_semantic_getunifiedcontentgroup(),),
+		"footerfiller" => true,	// add some space at the bottom
 		"fields" => array
 		(
 			// link to the business editor
@@ -51,7 +54,7 @@ function nxs_widgets_semantic_home_getoptions($args)
 			(
 				"id" 				=> "editorlink",
 				"type" 				=> "custom",
-				"custom"	=> "<div><a target='_blank' class='nxsbutton' href='http://businessmodeleditor.testgj.c1.us-e1.nexusthemes.com/{$nxs_siteid}'>Edit</a></div>",
+				"custom"	=> "<div><a class='nxsbutton' href='{$servicesediturl}'>Edit</a></div>",
 				"label" 			=> nxs_l18n__("Services", "nxs_td"),
 			),
 			 array(
@@ -173,9 +176,6 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
-
-	global $businesssite_instance;
-	$nxs_siteid = $businesssite_instance->getsiteid();
 
 	/*
 	$contentproviderurl = "https://turnkeypagesprovider.websitesexamples.com/?contentprovider=getsemantic&widget=services&nxs_siteid={$nxs_siteid}&itemsstyle={$itemsstyle}";

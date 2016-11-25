@@ -193,11 +193,6 @@ function nxs_widgets_serviceset_render_webpart_render_htmlvisualization($args)
 				$type = $placeholdermetadata["type"];
 				if ($type == "service")
 				{
-					$semantic = $placeholdermetadata["semantic"];
-					echo "<div>service: $semantic</div>";
-				}
-				else if ($type == "customservice")
-				{
 					$title = $placeholdermetadata["title"];
 					echo "<div>service: $title</div>";
 				}

@@ -54,6 +54,10 @@
 	$postrowtemplates = nxs_getpostrowtemplates($prtargs);
 	
 	$sitemeta = nxs_getsitemeta();
+	global $businesssite_instance;
+	$contentmodel = $businesssite_instance->getcontentmodel();
+	$editorurl = $contentmodel["model"]["editorurl"];
+	$servicesurl = $contentmodel["services"]["url"];
 ?>
 <!-- loading all fonts -->
 <script type="text/javascript" data-cfasync="false"  src="//www.google.com/jsapi"></script>
@@ -993,6 +997,20 @@ li.score {
 		  		<span class='nxs-icon-article-new'></span>
 		  	</a>
 		  </li>
+		  <!-- -->
+		  <li class="nxs-sub-menu nxs-hidewheneditorinactive">
+		  	<a href="<?php echo $editorurl; ?>" title="<?php nxs_l18n_e("Business Model", "nxs_td"); ?>" class="site">
+		  		<span class='nxs-icon-tree'></span>
+		  	</a>
+		  	<ul> 	
+		    	<li>
+		      	<a href="<?php echo $servicesurl; ?>" title="<?php nxs_l18n_e("Services", "nxs_td"); ?>" class="site">
+		      		<span class='nxs-icon-publicrelations'></span>		
+		      	</a>
+		      </li>
+		    </ul>
+		  </li>
+		  <!-- -->
 		  <li class="nxs-sub-menu nxs-hidewheneditorinactive">
 		  	<a href="<?php echo admin_url('edit.php?post_type=page&orderby=date&order=desc'); ?>" title="<?php nxs_l18n_e("Pages[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
 		  		<span class='nxs-icon-article-overview'></span>

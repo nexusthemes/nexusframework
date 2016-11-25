@@ -2784,7 +2784,12 @@ function nxs_site_createcontent($args)
 		{
 			$postmetas["nxs_semanticlayout"] = $contentcurrentpost["nxs_semanticlayout"];
 		}
-
+		if ($contentcurrentpost["nxs_semantic_taxonomy"] != "")
+		{
+			$postmetas["nxs_semantic_taxonomy"] = $contentcurrentpost["nxs_semantic_taxonomy"];
+		}
+		
+		/*
 		// temporary implementation for the landing pages that Johan made as nxs_templateparts
 		if ($posttype == "nxs_templatepart")
 		{
@@ -2796,7 +2801,8 @@ function nxs_site_createcontent($args)
 		
 		// while "pasting" templateparts; create a page instead of a templatepart
 		if ($posttype == "nxs_templatepart") { $posttype = "page"; }
-
+		*/
+		
 		$newpost_args = array();
 		$newpost_args["slug"] = $contentcurrentpost["slug"];	// . "_copy";
 		$newpost_args["titel"] = $contentcurrentpost["title"];	// . "_copy"];
@@ -2806,6 +2812,9 @@ function nxs_site_createcontent($args)
 			$newpost_args["titel"] = $overridetitle;
 			$newpost_args["slug"] = $overridetitle;
 		}
+		
+		$newpost_args["post_excerpt"] = $contentcurrentpost["excerpt"];
+		$newpost_args["post_content"] = $contentcurrentpost["content"];
 		
 		$newpost_args["wpposttype"] = $posttype;
 		$newpost_args["nxsposttype"] = $nxsposttype;
@@ -2822,6 +2831,9 @@ function nxs_site_createcontent($args)
 		$newpost_args["postmetas"] = $postmetas;
 		$response = nxs_addnewarticle($newpost_args);
 		$destinationpostid = $response["postid"];
+		
+		error_log("just inserted destinationpostid: $destinationpostid");
+		
 		$destinationglobalid = $response["globalid"];
 		
 		// replicate the structure of the post
@@ -2895,6 +2907,33 @@ function nxs_site_createcontent($args)
 				nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $widgetmetadata);
 			}
 		}
+		
+		// post processing
+		if ($contentcurrentpost["nxs_semantic_taxonomy"] != "")
+		{
+			$taxonomy = $contentcurrentpost["nxs_semantic_taxonomy"];
+			
+			// this post represents a taxonomy like for exapmle a service; 
+			// we automatically add the newly created post to the list of 
+			// services
+			global $businesssite_instance;
+			$contentmodel = $businesssite_instance->getcontentmodel();
+			$servicesetpostid = $contentmodel[$taxonomy]["postid"];
+			// add an additional row to that post
+			// appends a new "one" row, with the specified widget properties to an existing post
+
+			$args = array
+			(
+				"postid" => $servicesetpostid,
+				"widgetmetadata" => array
+				(
+					"type" => "service",
+					"filter_postid" => $destinationpostid,	// 
+					"enabled" => "true",
+				),
+			);
+			$r = nxs_add_widget_to_post($args);
+		}
 	}
 	else
 	{
@@ -2905,12 +2944,15 @@ function nxs_site_createcontent($args)
 	return $result;
 }
 
-function nxs_site_newlandingpage_getoptions($args)
+function nxs_site_newtemplate_getoptions($args)
 {
 	$lp_step = $args["clientshortscopedata"]["lp_step"];
 	if ($lp_step == "1" || $lp_step == "")
 	{
 		// first step; select the template from a set
+		
+		$thememeta = nxs_theme_getmeta();
+		$themeid = $thememeta["id"];
 		
 		ob_start();
 		?>
@@ -2961,11 +3003,11 @@ function nxs_site_newlandingpage_getoptions($args)
 		require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
 		$licensekey = nxs_license_getlicensekey();
 		
-		$indexjsonurl = "https://turnkeypagesprovider.websitesexamples.com/?contentprovider=getindex&licensekey={$licensekey}";
+		$indexjsonurl = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/index/?nxs=contentprovider-api&licensekey={$licensekey}&themeid={$themeid}";
 		$indexjson = file_get_contents($indexjsonurl);
 		$json = json_decode($indexjson, true);
 		
-		$landingpages = $json["items"];
+		$items = $json["items"];
 		$tags = $json["tags"];
 		
 		$tagfilterhtml = "";
@@ -2982,8 +3024,8 @@ function nxs_site_newlandingpage_getoptions($args)
 		
 		$label = $tagfilterhtml;
 		
-		$newlandingpageselecttype = "";
-		foreach ($landingpages as $i => $meta)
+		$newtemplateselecttype = "";
+		foreach ($items as $i => $meta)
 		{
 			$id = $meta["id"];
 			$content = $meta["content"];
@@ -3002,12 +3044,12 @@ function nxs_site_newlandingpage_getoptions($args)
 			<?php
 			$itemhtml = nxs_ob_get_contents();
 			nxs_ob_end_clean();
-			$newlandingpageselecttype .= $itemhtml;
+			$newtemplateselecttype .= $itemhtml;
 		}
-		$newlandingpageselecttype .= "<div style='clear:both;'></div>";	
+		$newtemplateselecttype .= "<div style='clear:both;'></div>";	
 		
 		// add styles and scripts
-		$newlandingpageselecttype .= $scaffolding;
+		$newtemplateselecttype .= $scaffolding;
 		
 		$categorieshtml = "";
 		$categorieshtml .= "Categories<br /><br />";
@@ -3019,22 +3061,30 @@ function nxs_site_newlandingpage_getoptions($args)
 		
 		$result = array
 		(
-			"sheettitle" => nxs_l18n__("New Landing Page", "nxs_td"),
+			"sheettitle" => nxs_l18n__("New Template", "nxs_td"),
 			"fields" => array
 			(
 				array(
 					"id" 			=> "custom",
 					"label"			=> $label,
 					"type" 				=> "custom",
-					"customcontent" => $newlandingpageselecttype,
+					"customcontent" => $newtemplateselecttype,
 				),
 			)
 		);
 	}
 	else if ($lp_step == "2")
 	{
-		// second step; set name for the new landingpage
+		// second step; set name for the new template
 		$lp_id = $args["clientshortscopedata"]["lp_id"];
+		
+		// grab name based on the lp_id
+		require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
+		$licensekey = nxs_license_getlicensekey();
+		$jsonurl = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/article/?nxs=contentprovider-api&licensekey={$licensekey}&themeid={$themeid}&articleid={$lp_id}";
+		$json = file_get_contents($jsonurl);
+		$meta = json_decode($json, true);
+		$suggestedtitle = $meta["content"]["post_title"];
 		
 		ob_start();
 		?>
@@ -3045,7 +3095,8 @@ function nxs_site_newlandingpage_getoptions($args)
 			}			
 		</style>
 		<script>
-			
+			jQuery("#lp_name").val("<?php echo $suggestedtitle; ?>");
+			nxs_js_log("did it :)");
 			
 			// keep shortscope data for upcoming refresh
 			// nxs_js_popup_setshortscopedata("lp_id", <?php echo $lp_id; ?>");
@@ -3122,7 +3173,7 @@ function nxs_site_newlandingpage_getoptions($args)
 		// third step; create the page
 		$lp_id = $args["clientshortscopedata"]["lp_id"];
 		$lp_name = $args["clientshortscopedata"]["lp_name"];
-		$contenturl = "http://landingpages.optimizepress.c1.us-e1.nexusthemes.com/?contentprovider=getcontent&postid={$lp_id}&licensekey={$licensekey}";
+		$contenturl = "https://turnkeypagesprovider.websitesexamples.com/?contentprovider=getcontent&postid={$lp_id}&licensekey={$licensekey}";
 		
 		$contentjson = file_get_contents($contenturl);
 		$content = json_decode($contentjson, true);
@@ -3146,7 +3197,7 @@ function nxs_site_newlandingpage_getoptions($args)
 		// redirect to the newly created page
 		$result = array
 		(
-			"sheettitle" => nxs_l18n__("Landing Page was created :)", "nxs_td"),
+			"sheettitle" => nxs_l18n__("Template Installed", "nxs_td"),
 			"fields" => array
 			(
 				array(

@@ -1141,10 +1141,10 @@ function nxs_addnewarticle($args)
   (
 		'post_title' => $titel,
 		'post_name' => $slug,	// url
-		'post_content' => '',
+		'post_content' => $post_content,
 		'post_status' => $poststatus,
 		'post_author' => wp_get_current_user()->ID,
-		'post_excerpt' => '',
+		'post_excerpt' => $post_excerpt,
 		'post_type' => $posttype,
 	);
 	$postid = wp_insert_post($my_post, $wp_error);
@@ -11784,4 +11784,79 @@ function nxs_warranty_break()
 	update_option('nxs_warrantystate', "broken");
 }
 
-?>
+// appends a new "one" row, with the specified widget properties to an existing post
+function nxs_add_widget_to_post($args) 
+{	
+	extract($args);
+	
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); }
+	if ($widgetmetadata == "") { nxs_webmethod_return_nack("widgetmetadata not set"); }
+	if ($widgetmetadata["type"] == "") { nxs_webmethod_return_nack("typeof widgetmetadata not set"); }
+	if ($widgetmetadata["postid"] != "") { nxs_webmethod_return_nack("postid of widgetmetadata should be empty"); }
+	if ($widgetmetadata["placeholderid"] != "") { nxs_webmethod_return_nack("placeholderid of widgetmetadata should be empty"); }
+	
+	$pagerowtemplate = "one";
+	
+	$wpposttype = nxs_getwpposttype($postid);
+	$nxsposttype = nxs_getnxsposttype_by_postid($postid);
+	$pagetemplate = nxs_getpagetemplateforpostid($postid);
+	
+	$prtargs = array();
+	$prtargs["invoker"] = "code";
+	$prtargs["wpposttype"] = $wpposttype;
+	$prtargs["nxsposttype"] = $nxsposttype;
+	$prtargs["pagetemplate"] = $pagetemplate;		
+	$postrowtemplates = nxs_getpostrowtemplates($prtargs);
+
+	// verify the pagerowtemplate is allowed to be placed
+	if (!in_array($pagerowtemplate, $postrowtemplates)) { nxs_webmethod_return_nack("unsupport pagerowtemplate?"); }
+	
+	// get poststructure (list of rowindex, pagerowtemplate, pagerowattributes, content)
+	$poststructure = nxs_parsepoststructure($postid);
+	
+	$pagerowid = nxs_allocatenewpagerowid($postid);
+
+	// create new row
+	$newrow = array();
+	$newrow["rowindex"] = "new";
+	$newrow["pagerowtemplate"] = $pagerowtemplate;
+	$newrow["pagerowid"] = $pagerowid;
+	$newrow["pagerowattributes"] = "pagerowtemplate='" . $pagerowtemplate . "' pagerowid='" . $pagerowid . "'";
+	$newrow["content"] = nxs_getpagerowtemplatecontent($pagerowtemplate);
+
+	$tailindex = count($poststructure);	// to be inserted AFTER the last item
+	
+	// insert row into structure
+	$updatedpoststructure = nxs_insertarrayindex($poststructure, $newrow, $tailindex);
+	
+	// persist structure
+	$updateresult = nxs_storebinarypoststructure($postid, $updatedpoststructure);
+	
+	// apply placeholdertemplates for the placeholders just created...
+	$placeholderid = nxs_parsepagerow($newrow["content"]);
+
+	$clientpopupsessioncontext = array();
+	$clientpopupsessioncontext["postid"] = $postid;
+	$clientpopupsessioncontext["placeholderid"] = $placeholderid;
+	$clientpopupsessioncontext["contextprocessor"] = "widgets";
+	$clientpopupsessioncontext["sheet"] = "home";
+
+	$args = $widgetmetadata;
+	$args["clientpopupsessioncontext"] = $clientpopupsessioncontext;
+	$args["placeholdertemplate"] = $widgetmetadata["type"];
+	
+	// for downwards compatibility we replicate the postid and placeholderid to the 'root'
+	$args["postid"] = $postid;
+	$args["placeholderid"] = $placeholderid;
+	
+	nxs_initializewidget($args);
+	// 
+	nxs_widgets_mergeunenrichedmetadata($widgetmetadata["type"], $args);
+	
+	// update items that are derived (based upon the structure and contents of the page, such as menu's)
+	nxs_after_postcontents_updated($postid);
+	
+	//
+	
+	return $result;
+}
