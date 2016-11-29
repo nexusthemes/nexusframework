@@ -1141,12 +1141,20 @@ function nxs_addnewarticle($args)
   (
 		'post_title' => $titel,
 		'post_name' => $slug,	// url
-		'post_content' => $post_content,
 		'post_status' => $poststatus,
 		'post_author' => wp_get_current_user()->ID,
-		'post_excerpt' => $post_excerpt,
 		'post_type' => $posttype,
 	);
+	
+	if ($post_content != "")
+	{
+		$my_post['post_content'] = $post_content;
+	}
+	if ($post_excerpt != "")
+	{
+		$my_post['post_excerpt'] = $post_excerpt;
+	}
+	
 	$postid = wp_insert_post($my_post, $wp_error);
 	
 	if ($postid == 0)
@@ -11859,4 +11867,85 @@ function nxs_add_widget_to_post($args)
 	//
 	
 	return $result;
+}
+
+function nxs_connectivity_invoke_api_get($args)
+{
+	global $nxs_connectivity_errors;
+	
+	extract($args);
+	if ($hostname == "") { echo "nxs_connectivity_invoke_api_get; hostname not set?";		die(); }
+	if ($apiurl == "") { echo "nxs_connectivity_invoke_api_get; apiurl not set?";		die(); }
+	
+	if (!nxs_stringendswith($apiurl, "/"))
+	{
+		$apiurl .= "/";
+	}
+	
+	$environment = "prod";	// $this->settings["api_environment"];
+	$timeout = 3;
+	$version = 1;
+	
+	//$fingerprint = $this->settings["api_fingerprint"];
+	//$language = $this->settings["api_lang"];
+	//$hostname = "nexusthemes.com";
+	$apiurl = "https://{$hostname}/api/{$version}/{$environment}{$apiurl}";
+	
+	// add custom parameters
+	$queryparameters = $args["queryparameters"];
+	if (isset($queryparameters))
+	{
+		foreach ($queryparameters as $key => $val)
+		{
+			$apiurl = nxs_addqueryparametertourl_v2($apiurl, $key, $val, true, true);
+		}
+	}
+	
+	$referer = nxs_geturlcurrentpage();
+	
+	if ($nxs_connectivity_errors > 0)
+	{
+		return false;
+	}
+	
+	$opts = array
+	(
+  	'http'=>array
+  	(
+    	'header'=>array
+    	(
+    		"Referer: $referer\r\n",
+    	),
+    	'timeout' => $timeout,
+   	),
+	);
+	$context = stream_context_create($opts);
+	$json = @file_get_contents($apiurl, false, $context);
+	
+	error_log("invoking apiurl;" . $apiurl);
+	
+	if ($json == "")
+	{
+		$nxs_connectivity_errors++;
+
+		if (is_user_logged_in())
+		{
+			// mark as error
+			echo "<div style='padding: 10px; margin: 10px; background-color: red; color: white;'>";
+			echo "Error; unable to connect to the server; {$hostname}<br /><br />";
+			echo "Most likely reasons:<br />";
+			echo "* An outbound firewall; contact your hosting provider and ask if they block outbound network activity from the webserver. If they do, ask them to whitelist the following hostname: {$hostname} (without it, the discounter plugin wont be able to work)<br />";
+			echo "* A temporary network issue; retry in 5 mins<br />";
+			echo "</div>";
+		}
+		else
+		{
+			echo "<div>Error, login to see details (#91350)</div>";
+		}
+	}
+	
+	$response = json_decode($json, true);
+	// $nxs_pp_invokes[] = "size result:" . count($response);
+	
+	return $response;
 }

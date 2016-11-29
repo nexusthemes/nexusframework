@@ -432,8 +432,10 @@ add_action( 'admin_init', 'plugin_admin_init' );
 
 function nxs_license_getlicensekey()
 {
-	$licensekey = esc_attr(get_option('nxs_licensekey'));
-	return $licensekey;
+	$result = esc_attr(get_option('nxs_licensekey'));
+	$result = apply_filters("nxs_f_licensekey", $result);
+	
+	return $result;
 }
 
 function nxs_section_license_callback()

@@ -177,29 +177,96 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	/*
-	$contentproviderurl = "https://turnkeypagesprovider.websitesexamples.com/?contentprovider=getsemantic&widget=services&nxs_siteid={$nxs_siteid}&itemsstyle={$itemsstyle}";
-	$contentmetajson = file_get_contents($contentproviderurl);
-	$contentmeta = json_decode($contentmetajson, true);
-	$html = $contentmeta["html"];
-	*/
-	
 	// the html can contain placeholders
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
 	$taxonomy = "services";
 	
-	$html = "";
-	$html .= "<style>";
-	$html .= ".taxonomy-instances > div { min-height: 400px; width: 400px; float:left; margin:5px; padding: 5px; border-color: black; border-style: solid; border-width: 1px; }";
-	$html .= "</style>";
-	$html .= "<div><h1>{$taxonomy}</h1>";
-	$html .= "<div class='taxonomy-instances'>";	
-
+	?>
+	<script>
+		(
+			function($) 
+			{
+				$html = $('html');
+		
+			function nxs_js_portfolio_resize_actual() 
+			{
+			if ($("#nxsgrid-container").width() < 721) 
+			{
+			  return $html.addClass('nxsgrid-mobile-720');
+			}
+			else	        	
+			{
+				$html.removeClass('nxsgrid-mobile-720');
+			}
+			}
+			
+				// invoke (throttled) if user resizes	      
+				var nxs_js_portfolio_resize_doit;
+				window.onresize = function()
+				{
+					// do a "throttled" invocation, 
+					// to prevent stressing the CPU while resizing the screen
+				  clearTimeout(nxs_js_portfolio_resize_doit);
+				  nxs_js_portfolio_resize_doit = setTimeout(nxs_js_portfolio_resize_actual, 100);
+				};	   
+				
+				// invoke once at the moment the page is loaded for the first time
+				// (proper initialization of the responsive aspects)
+				$(window).load
+		  (
+			function()
+			{
+				$(window).trigger('resize');
+			}
+		  );
+	
+			}
+		)
+		(jQuery);
+	</script>
+	<?php
+	$html .= "<div id='nxsgrid-container'>";
+	
+	//
+	$count = $contentmodel[$taxonomy]["countenabled"];
+	
+	$numberofcolumns = 4;
+	if ($count % 3 == 0)
+	{
+		$numberofcolumns = 3;
+	}
+	else if ($count % 4 == 0)
+	{
+		$numberofcolumns = 4;
+	}
+	else if ($count % 2 == 0)
+	{
+		$numberofcolumns = 2;
+	}
+	else
+	{
+		if ($count == 1)
+		{
+			$numberofcolumns = 1;
+		}
+		else if ($count == 5)
+		{
+			$numberofcolumns = 3;
+		}
+		else
+		{
+			$numberofcolumns = 4;
+		}
+	}
+	
+	$index = -1;
 	foreach ($contentmodel[$taxonomy]["instances"] as $instance)
 	{
-		$semantic = $instance["semantic"];
+		$enabled = $instance["enabled"];
+		if ($enabled == "") { continue; }
+		$index++;
 		$post_title = $instance["content"]["post_title"];		
 		$post_excerpt = $instance["content"]["post_excerpt"];
 		$url = $instance["content"]["url"];
@@ -207,12 +274,8 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 		//
 		
 		$image_src = "";
-		/*
-		if ($nxs_semantic_media != "")
-		{
-			$image_src = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&scope=semantic&requestedwidth=400&requestedheight=200&debug=false&semantic={$semantic}&url={$nxs_semantic_media}";
-		}
-		*/
+		
+		
 		$args = array
 		(
 			"render_behaviour" => "code",
@@ -221,16 +284,42 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 			"image_src" => $image_src,
 			"destination_url" => $url,
 		);
-		//$itemsstyle = "text";
+		
 		nxs_requirewidget($itemsstyle);
 		$functionnametoinvoke = "nxs_widgets_{$itemsstyle}_render_webpart_render_htmlvisualization";
-		if (function_exists($functionnametoinvoke))
+
+		$subresult = call_user_func($functionnametoinvoke, $args);
+		$subhtml = $subresult["html"];
+				
+		$remainder = $index % $numberofcolumns;
+		
+		$issecondelementinrow = ($remainder == 1);
+		
+		$isnewrow = $remainder == 0;
+		$isfirst = $index == 0;
+		$islastinrow = $remainder % $numberofcolumns == ($numberofcolumns - 1);
+
+		$csslastcolumn = "";
+		if ($islastinrow)
 		{
-			$subresult = call_user_func($functionnametoinvoke, $args);
-			$subhtml = $subresult["html"];
-			$html .= "<div>{$subhtml}</div>";
+			$csslastcolumn = "nxsgrid-lastcolumn";
+		}
+		$csssecondcolumn = "";
+		if ($issecondelementinrow && $numberofcolumns == 4)
+		{
+			$csssecondcolumn = "nxsgrid-secondcolumn";
+		}
+		
+		$html .= "<div class='index{$index} {$csssecondcolumn} remainder{$remainder} nxsgrid-item nxsgrid-margin-bottom20 nxsgrid-column-{$numberofcolumns} nxsgrid-float-left {$csslastcolumn}'>";
+		$html .= $subhtml;
+		$html .= "</div>";
+		
+		if ($islastinrow)
+		{
+			$html .= "<div class='nxsgrid-clear-both clear'></div>";	
 		}
 	}
+	
 	$html .= "</div>";	
 	
 	echo $html;

@@ -3193,6 +3193,18 @@ function nxs_site_newtemplate_getoptions($args)
 		nxs_site_createcontent($args);
 		
 		$url = nxs_geturl_for_globalid($nxs_site_content["semanticglobalidmapping"]["ROOTSOURCE"]);
+
+		nxs_ob_start();
+		?>
+		<a class='nxsbutton' href='{$url}'>Open template</a>
+		<a class='nxsbutton' href='#' onclick='nxs_js_refreshcurrentpage(); return false;'>OK</a>
+		<script>
+			nxs_js_popup_sessiondata_clear_dirty();
+			jQuery(".popup-footer-container").remove();
+		</script>
+		<?php
+		$customcontent = nxs_ob_get_contents();
+		nxs_ob_end_clean();		
 		
 		// redirect to the newly created page
 		$result = array
@@ -3204,7 +3216,7 @@ function nxs_site_newtemplate_getoptions($args)
 					"id" 			=> "custom",
 					"label"			=> "",
 					"type" 				=> "custom",
-					"customcontent" => "<a href='{$url}'>$url</a>",
+					"customcontent" => $customcontent,
 				),
 			)
 		);

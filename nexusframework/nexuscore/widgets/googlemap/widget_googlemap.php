@@ -2,13 +2,13 @@
 
 function nxs_widgets_googlemap_geticonid()
 {
-	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-" . $widget_name;
+	//$widget_name = basename(dirname(__FILE__));
+	return "nxs-icon-googlemap";
 }
 
 function nxs_widgets_googlemap_gettitle()
 {
-	return nxs_l18n__("Google Map[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Google Map", "nxs_td");
 }
 
 // Unistyle
@@ -141,31 +141,27 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				"visibility" 		=> "hidden",
 				"unistylablefield"	=> true
 			),
-
-			array(
-				"id" 				=> "lat",
-				"type" 				=> "input",
-				"visibility" 		=> "hidden",
-				"unicontentablefield" => true,
-				"localizablefield"	=> true
-			),
-
-			array(
-				"id" 				=> "lng",
-				"type" 				=> "input",
-				"visibility" 		=> "hidden",
-				"unicontentablefield" => true,
-				"localizablefield"	=> true
-			),
 		
+			array(
+				"id" 				=> "deltalat",
+				"type" 				=> "input",
+				"visibility" 		=> "hidden",
+			),
+			
+			array(
+				"id" 				=> "deltalng",
+				"type" 				=> "input",
+				"visibility" 		=> "hidden",
+			),
+			
 			array(
 				"id" 				=> "googlemap_visualization",
 				"altid" 			=> array(
 					"address" => "address",
 					"maptypeid" => "maptypeid",
 					"zoom" => "zoom",
-					"lat" => "lat",
-					"lng" => "lng",
+					"deltalat" => "deltalat",
+					"deltalng" => "deltalng",
 				),
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_googlemap_map_popupcontent",
@@ -173,7 +169,6 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				"layouttype"		=> "custom",
 				"localizablefield"	=> "true"
 			),
-						
 		
 			array(
 				"id" 				=> "minheight",
@@ -186,8 +181,6 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				"id" 				=> "wrapper_googlemap_end",
 				"type" 				=> "wrapperend"
 			),		
-
-
 			
 			// TEXT
 			
@@ -339,7 +332,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				"initial_toggle_state"	=> "closed",
 				"label" 			=> nxs_l18n__("Shortcode", "nxs_td"),
 			),
-
+			/*
 			array
 			(
 				"type" 	=> "custom",
@@ -348,7 +341,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				"layouttype" => "custom",
 				"localizablefield"	=> "true"
 			),			
-			
+			*/
 			array
 			( 
 				"id" 				=> "wrapper_shortcode_end",
@@ -361,6 +354,60 @@ function nxs_widgets_googlemap_home_getoptions($args)
 	nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
 	
 	return $options;
+}
+
+function nxs_widget_googlemap_getlatlng($address)
+{
+	if ($address != "")
+	{
+		// get cached lat/lng
+		$licensekey = nxs_license_getlicensekey();
+		if ($licensekey != "")
+		{
+			$key = "maplatlng_" . md5($address . $licensekey);
+			$latlng = get_transient($key);
+			if ($latlng == false)
+			{
+				// refetch
+				$thememeta = nxs_theme_getmeta();
+				$args = array
+				(
+					"hostname" => "nexusthemes.com",
+					"apiurl" => "/latlng",
+					"queryparameters" => array
+					(
+						"address" => $address,
+						"licensekey" => $licensekey,
+						"themeid" => $thememeta["id"],
+						"nxs" => "googlemaps-api",
+					),
+				);
+				$latlng = nxs_connectivity_invoke_api_get($args);
+				if ($latlng["licensestatus"] == "NACK")
+				{
+					//
+					nxs_licenseresetkey();
+				}
+				else
+				{
+					set_transient($key, $latlng, 60 * 60 * 24 * 30);	// keep the cache for a month
+				}
+			}
+		
+			$result = $latlng;
+		}
+		else
+		{
+			//$result = 
+			// echo "enter a valid license first";
+		}
+	}
+	else
+	{
+		// echo "no address entered";
+	}
+	
+	return $result;
 }
 
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
@@ -406,14 +453,22 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 
 	$mixedattributes = nxs_localization_localize($mixedattributes);
 
-	if ($lat == "")
+		// Lookup atts
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("address"));
+
+	$address = $mixedattributes["address"];
+
+	$latlng = nxs_widget_googlemap_getlatlng($address);
+	
+	$ismapsavailable = false; 
+	if ($latlng["licensestatus"] == "OK" && $latlng["found"] == "true")
 	{
-		$lat = "40.8";
+		$ismapsavailable = true;
 	}
-	if ($lng == "")
-	{
-		$lng = "-74";
-	}
+	
+	$lat = $latlng["lat"] - $deltalat;
+	$lng = $latlng["lng"] - $deltalng;
+
 	if ($zoom == "")
 	{
 		$zoom = "14";
@@ -682,179 +737,213 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 			echo $htmlfiller; 
 		}
 		?>
-		<div id="map_canvas_<?php echo $placeholderid;?>" class="<?php echo $applycssclasses; ?>" style="<?php echo $applycssstyles; ?>"></div>
-		<div id="alt_map_canvas_<?php echo $placeholderid;?>" style="display:none; padding: 5px; margin: 5px;" class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
-			<?php
-			if (is_user_logged_in())
-			{
-				if ($apikey == "")
-				{
-					// its not set; explain its mandatory 
-					?>
-					Google Maps temporary placeholder<br />
-					<br />
-					Problem; Google Maps API key not yet configured<br />
-					<br />
-					<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Click here to learn how to configure the Google Maps API key</a><br />
-					<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession("integrationshome"); return false;'>Click here to configure your Google Maps API Key</a>
-					<?php
-				}
-				else
-				{
-					// its set; explain its not (yet) valid
-					?>
-					Google Maps temporary placeholder<br />
-					<br />
-					Problem; Google Maps API key not (yet?) valid<br />
-					<br />
-					Please check <a target='_blank' href='http://oopssomethingwentwrong.com/'>oopssomethingwentwrong.com</a> on how to resolve this.
-					<?php
-				}
-			}
-			else
-			{
-				?>
-				Google Maps temporary placeholder<br />
-				(login to see how to fix this)
-				<?php
-			}
-			?>
-		</div>
-		<script type='text/javascript'>
-			// if the browser is resized, then also re-center the map
-			jQ_nxs(document).bind('nxs_event_resizeend', function() 
-	    {
-	    	nxs_js_log("detected resize of browser window...");
-	    	var map = nxs_js_maps["map_<?php echo $placeholderid; ?>"];
-	      map.setCenter({lat:<?php echo $lat;?>, lng:<?php echo $lng; ?>});
-	    });
-			
-			jQuery(window).bind 
-			(
-				"nxs_js_trigger_googlemapsapikeyinvalid", 
-				function(e) 
-				{
-					// if the google maps api key is invalid, show a tip on how to fix it,
-					// instead of the default "oops" from Google
-					//var hinthtml = "<div>Google Maps API not yet configured</div>";
-					jQuery("#map_canvas_<?php echo $placeholderid;?>").hide();
-					jQuery("#alt_map_canvas_<?php echo $placeholderid;?>").show();
-					// remove the front end options to configure this widget
-					jQuery("#alt_map_canvas_<?php echo $placeholderid;?>").closest(".nxs-placeholder").find(".nxs-hover-menu").remove();
-				}
-			);
-			
-			function nxs_ext_widget_googlemap_init_<?php echo $placeholderid; ?>()
-			{
-				var myOptions = 
-				{
-				  	scrollwheel: false,
-	          		center: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
-	          		zoom: <?php echo $zoom; ?>,
-	          		mapTypeId: google.maps.MapTypeId.<?php echo strtoupper($maptypeid); ?>
-        		};
-        
-        		nxs_js_maps["map_<?php echo $placeholderid; ?>"] = new google.maps.Map(document.getElementById("map_canvas_<?php echo $placeholderid; ?>"), myOptions);
-        
-		        // add marker
-		        var marker = new google.maps.Marker
-		        ({
-	      			position: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
-	      			map: nxs_js_maps["map_<?php echo $placeholderid; ?>"],
-	    		});
-			}
-			
-			function nxs_ext_widget_googlemap_init_<?php echo $placeholderid; ?>_initmapscript()
-			{
-				if (!nxs_js_mapslazyloaded && !nxs_js_mapslazyloading)
-				{
-					// intercept error messages being logged to the console,
-					// interpret the fact if the google maps key is not valid,
-					// and if so, broadcast an event
-					(
-						function () 
-						{
-						  var err = console.error;
-						  console.error = function () 
-						  {
-						  	if (arguments[0] != null)
-						  	{
-						  		msg = arguments[0];
-						  		if (msg.indexOf("Google Maps API error: MissingKeyMapError") > -1)
-						  		{
-						  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
-						  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
-						  			//return;
-						  		}
-						  		else if (msg.indexOf("Google Maps API error: InvalidKeyMapError") > -1)
-						  		{
-						  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
-						  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
-						  			//return;
-						  		}
-						  		else if (msg.indexOf("Google Maps API error: RefererNotAllowedMapError") > -1)
-						  		{
-						  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
-						  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
-						  			//return;
-						  		}
-						  	}
-						  	
-						    err.apply(this, Array.prototype.slice.call(arguments));
-						  };
-						}()
-					);
-					
-					//nxs_js_log('loading...');
-					
-					nxs_js_mapslazyloading = true;
-					
-					var w = window;
-					var d = w.document;
-					var script = d.createElement('script');
-					script.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?v=3&key=<?php echo $apikey; ?>&sensor=true&callback=mapOnLoad');
-					d.documentElement.firstChild.appendChild(script);
-					w.mapOnLoad = function () 
-					{
-						// redraw this specific widget
-						nxs_ext_widget_googlemap_init_<?php echo $placeholderid; ?>();
-
-						//nxs_js_log('maps script is now loaded!');
-
-						// prevent other maps from listening to the event
-						nxs_js_mapslazyloaded = true;
-						nxs_js_mapslazyloading = false;
-
-						// trigger event (redraw possible other widgets), see http://weblog.bocoup.com/publishsubscribe-with-jquery-custom-events/
-						jQuery(document).trigger("nxs_ext_googlemap_scriptloaded");
-					};
-				}
-				else if (nxs_js_mapslazyloading)
-				{
-					jQuery(document).bind
-					(
-						"nxs_ext_googlemap_scriptloaded", 
-						function() 
-						{ 
-							nxs_ext_widget_googlemap_init_<?php echo $placeholderid; ?>();
-						}
-					);
-				}
-				else
-				{
-					nxs_ext_widget_googlemap_init_<?php echo $placeholderid; ?>();
-				}
-			}
-			
-			jQuery(document).ready
-			(
-				function() 
-				{
-					nxs_ext_widget_googlemap_init_<?php echo $placeholderid; ?>_initmapscript();
-				}
-			);
-		</script>
 		<?php 
+		if ($ismapsavailable) 
+		{ 
+			?>
+			<div id="map_canvas_<?php echo $placeholderid;?>" class="<?php echo $applycssclasses; ?>" style="<?php echo $applycssstyles; ?>"></div>
+			<div id="alt_map_canvas_<?php echo $placeholderid;?>" style="display:none; padding: 5px; margin: 5px;" class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+				<?php
+				if (is_user_logged_in())
+				{
+					if ($apikey == "")
+					{
+						// its not set; explain its mandatory 
+						?>
+						Google Maps temporary placeholder<br />
+						<br />
+						Problem; Google Maps API key not yet configured<br />
+						<br />
+						<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Click here to learn how to configure the Google Maps API key</a><br />
+						<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession("integrationshome"); return false;'>Click here to configure your Google Maps API Key</a>
+						<?php
+					}
+					else
+					{
+						// its set; explain its not (yet) valid
+						?>
+						Google Maps temporary placeholder<br />
+						<br />
+						Problem; Google Maps API key not (yet?) valid<br />
+						<br />
+						Please check <a target='_blank' href='http://oopssomethingwentwrong.com/'>oopssomethingwentwrong.com</a> on how to resolve this.
+						<?php
+					}
+				}
+				else
+				{
+					?>
+					Google Maps temporary placeholder<br />
+					(login to see how to fix this)
+					<?php
+				}
+				?>
+			</div>
+			<script type='text/javascript'>
+				// if the browser is resized, then also re-center the map
+				jQ_nxs(document).bind('nxs_event_resizeend', function() 
+		    {
+		    	nxs_js_log("detected resize of browser window...");
+		    	var map = nxs_js_maps["map_<?php echo $placeholderid; ?>"];
+		      map.setCenter({lat:<?php echo $lat;?>, lng:<?php echo $lng; ?>});
+		    });
+				
+				jQuery(window).bind 
+				(
+					"nxs_js_trigger_googlemapsapikeyinvalid", 
+					function(e) 
+					{
+						// if the google maps api key is invalid, show a tip on how to fix it,
+						// instead of the default "oops" from Google
+						//var hinthtml = "<div>Google Maps API not yet configured</div>";
+						jQuery("#map_canvas_<?php echo $placeholderid;?>").hide();
+						jQuery("#alt_map_canvas_<?php echo $placeholderid;?>").show();
+						// remove the front end options to configure this widget
+						jQuery("#alt_map_canvas_<?php echo $placeholderid;?>").closest(".nxs-placeholder").find(".nxs-hover-menu").remove();
+					}
+				);
+				
+				function nxs_js_ext_widget_googlemap_init_<?php echo $placeholderid; ?>()
+				{
+					var myOptions = 
+					{
+					  	scrollwheel: false,
+		          		center: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
+		          		zoom: <?php echo $zoom; ?>,
+		          		mapTypeId: google.maps.MapTypeId.<?php echo strtoupper($maptypeid); ?>
+	        		};
+	        
+	        		nxs_js_maps["map_<?php echo $placeholderid; ?>"] = new google.maps.Map(document.getElementById("map_canvas_<?php echo $placeholderid; ?>"), myOptions);
+	        
+			        // add marker
+			        var marker = new google.maps.Marker
+			        ({
+		      			position: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
+		      			map: nxs_js_maps["map_<?php echo $placeholderid; ?>"],
+		    		});
+				}
+				
+				function nxs_js_ext_widget_googlemap_init_<?php echo $placeholderid; ?>_initmapscript()
+				{
+					if (!nxs_js_mapslazyloaded && !nxs_js_mapslazyloading)
+					{
+						// intercept error messages being logged to the console,
+						// interpret the fact if the google maps key is not valid,
+						// and if so, broadcast an event
+						(
+							function () 
+							{
+							  var err = console.error;
+							  console.error = function () 
+							  {
+							  	if (arguments[0] != null)
+							  	{
+							  		msg = arguments[0];
+							  		if (msg.indexOf("Google Maps API error: MissingKeyMapError") > -1)
+							  		{
+							  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
+							  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
+							  			//return;
+							  		}
+							  		else if (msg.indexOf("Google Maps API error: InvalidKeyMapError") > -1)
+							  		{
+							  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
+							  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
+							  			//return;
+							  		}
+							  		else if (msg.indexOf("Google Maps API error: RefererNotAllowedMapError") > -1)
+							  		{
+							  			nxs_js_log("broadcasting nxs_js_trigger_googlemapsapikeyinvalid");
+							  			jQuery(window).trigger('nxs_js_trigger_googlemapsapikeyinvalid');
+							  			//return;
+							  		}
+							  	}
+							  	
+							    err.apply(this, Array.prototype.slice.call(arguments));
+							  };
+							}()
+						);
+						
+						//nxs_js_log('loading...');
+						
+						nxs_js_mapslazyloading = true;
+						
+						var w = window;
+						var d = w.document;
+						var script = d.createElement('script');
+						script.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?v=3&key=<?php echo $apikey; ?>&sensor=true&callback=mapOnLoad');
+						d.documentElement.firstChild.appendChild(script);
+						w.mapOnLoad = function () 
+						{
+							// redraw this specific widget
+							nxs_js_ext_widget_googlemap_init_<?php echo $placeholderid; ?>();
+	
+							//nxs_js_log('maps script is now loaded!');
+	
+							// prevent other maps from listening to the event
+							nxs_js_mapslazyloaded = true;
+							nxs_js_mapslazyloading = false;
+	
+							// trigger event (redraw possible other widgets), see http://weblog.bocoup.com/publishsubscribe-with-jquery-custom-events/
+							jQuery(document).trigger("nxs_ext_googlemap_scriptloaded");
+						};
+					}
+					else if (nxs_js_mapslazyloading)
+					{
+						jQuery(document).bind
+						(
+							"nxs_ext_googlemap_scriptloaded", 
+							function() 
+							{ 
+								nxs_js_ext_widget_googlemap_init_<?php echo $placeholderid; ?>();
+							}
+						);
+					}
+					else
+					{
+						nxs_js_ext_widget_googlemap_init_<?php echo $placeholderid; ?>();
+					}
+				}
+				
+				jQuery(document).ready
+				(
+					function() 
+					{
+						nxs_js_ext_widget_googlemap_init_<?php echo $placeholderid; ?>_initmapscript();
+					}
+				);
+			</script>
+			<?php 
+		} 
+		else if (!is_user_logged_in())
+		{
+			?>
+			<div>
+				Unable to render the map. Login to see whats wrong.
+			</div>
+			<?php
+		}
+		else if ($address == "")
+		{
+			?>
+			<div>
+				Address is not set
+			</div>
+			<?php
+		}
+		else if ($latlng["licensestatus"] == "NACK")
+		{
+			?>
+			<div>
+				License not set
+				<?php var_dump($latlng); ?>
+			</div>
+			<?php
+		}
+			else { ?>
+			<div>Maps placeholder :(</div>
+		<?php } ?>
+		<?php
 		
 		// TEXT
 		
@@ -889,8 +978,19 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	$address = $$altid["address"];
 	$maptypeid = $$altid["maptypeid"];
 	$zoom = $$altid["zoom"];
-	$lat = $$altid["lat"];
-	$lng = $$altid["lng"];
+	$deltalat = $$altid["deltalat"];
+	$deltalng = $$altid["deltalng"];
+	
+	$translated = array("address" => $address);
+	$translated = nxs_filter_translatelookup($translated, array("address"));
+	$translatedaddress = $translated["address"];
+
+	$latlng = nxs_widget_googlemap_getlatlng($translatedaddress);
+	$latlngavailable = ($latlng["licensestatus"] == "OK" && $latlng["found"] == "true");
+	$olat = $latlng["lat"];
+	$olng = $latlng["lng"];
+	$lat = $olat - $deltalat;
+	$lng = $olng - $deltalng;
 
 	if ($maptypeid == "")
 	{
@@ -900,132 +1000,125 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	{
 		$zoom = "14";
 	}
-	if ($lat == "")
-	{
-		$lat = "40.8";
-	}
-	if ($lng == "")
-	{
-		$lng = "-74";
-	}
+	
+	$licenseurl = admin_url('admin.php?page=nxs_admin_license');
 	
 	nxs_ob_start();
 	?>
-
 	<div class="content2">
-        <div class="box">
-            <div class="box-title">
-                <h4><?php echo $label; ?></h4>
+		<div class="box">
+    	<div class="box-title">
+				<h4><?php echo $label; ?></h4>
 				<?php if ($tooltip != ""){ ?>
 					<span class="info">?
-						<div class="info-description"><?php echo $tooltip; ?></div>
-					</span>;
+					<div class="info-description"><?php echo $tooltip; ?></div>
+					</span>
 				<?php } ?>
-             </div>
-            <div class="box-content">
-            	<a href='#' onclick='nxs_js_ext_widget_googlemap_search_map(); return false;' class='nxsbutton1 nxs-float-right'><?php nxs_l18n_e('Update map','nxs_td'); ?></a>
-            	<input id="<?php echo $id; ?>" class='nxs-float-left nxs-width70' placeholder='<?php nxs_l18n_e('Address sample placeholder','nxs_td'); ?>' name="address" type='text' value='<?php echo $address; ?>' />
-            </div>
-        </div>
-        <?php
-				$sitemeta = nxs_getsitemeta_internal(false);
-				$apikey = trim($sitemeta["googlemapsapikey"]);
-        if ($apikey == "")
-        {
-        	?>
-	        <div class="nxs-clear"></div>
-	       	<div style='margin-top: 10px;'>
-	       		Note; to use the search function a (free) <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Google Maps API key is required (learn more)</a><br />
-	       	</div>
-	      	<?php
-	    	}
-	      ?>  
-        <div class="nxs-clear"></div>
+      </div>
+      <div class="box-content">
+      	<a href='#' onclick="nxs_js_ext_widget_googlemap_search_map(); return false;" class='nxsbutton1 nxs-float-right'><?php nxs_l18n_e('Update map','nxs_td'); ?></a>
+      	<input id="<?php echo $id; ?>" class='nxs-float-left nxs-width70' placeholder='<?php nxs_l18n_e('Address sample placeholder','nxs_td'); ?>' name="address" type='text' value='<?php echo $address; ?>' />
+      	<?php
+      	if ($address != $translatedaddress)
+      	{
+      		//error_log("($address) vs address ($translatedaddress)");
+      		echo "<div class='nxs-clear'></div>";
+      		echo "<span style='font-style: italic; font-size: 75%;'>'{address}' translates to '{$translatedaddress}'</span>";
+      	}
+      	?>
+      	<script>
+      		
+      		var sel = '#<?php echo $id; ?>';
+      		
+      		// console.log("installing script for " + sel);
+      		$(sel).change(function(e) 
+      		{
+						nxs_js_ext_widget_googlemap_update_hidden_fields();
+						// console.log("nice uppdate");
+					});
+      	</script>
+      </div>
+    </div>
+    <div class="nxs-clear"></div>
+    <?php
+		$sitemeta = nxs_getsitemeta_internal(false);
+		$apikey = trim($sitemeta["googlemapsapikey"]);
+    if ($apikey == "")
+    {
+    	?>
+     	<div style='margin-top: 10px;'>
+     		Note; to use the search function a (free) <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Google Maps API key is required (learn more)</a><br />
+     	</div>
+      <div class="nxs-clear"></div>
+    	<?php
+  	}
+    ?>
 	</div> <!--END content-->
+	<script>
+		
+		function nxs_js_ext_widget_googlemap_update_hidden_fields()
+		{
+			address = jQuery('#<?php echo $id; ?>').val();
+    	//console.log("address is set to:" + address);
+			jQuery('#<?php echo $altid["address"]; ?>').val(address);
+			
+			<?php if ($latlngavailable) { ?>
+			maptypeid = map_popup_<?php echo $placeholderid; ?>.getMapTypeId();			
+    	jQuery('#<?php echo $altid["maptypeid"]; ?>').val(maptypeid);
 
+			zoom = map_popup_<?php echo $placeholderid; ?>.getZoom();
+    	jQuery('#<?php echo $altid["zoom"]; ?>').val(zoom);
+    	
+			deltalat = <?php echo $olat; ?> - map_popup_<?php echo $placeholderid; ?>.getCenter().lat();
+    	jQuery('#<?php echo $altid["deltalat"]; ?>').val(deltalat);
+
+			deltalng = <?php echo $olng; ?> - map_popup_<?php echo $placeholderid; ?>.getCenter().lng();    	
+    	jQuery('#<?php echo $altid["deltalng"]; ?>').val(deltalng);
+    	<?php } ?>
+    	
+    	//var content = "[nxsgooglemap height=200 lat=" + lat + " lng=" + lng + " maptypeid=" + maptypeid + " zoom=" + zoom + "]";
+    	//jQuery('.shortcodeholder').text(content);
+		}
+		
+		function nxs_js_ext_widget_googlemap_search_map()
+		{
+			nxs_js_ext_widget_googlemap_update_hidden_fields();
+			// reset the delta lat and lng as this is a new search attempt			
+			var address = jQuery('#<?php echo $altid["address"]; ?>').val();
+			nxs_js_popup_setshortscopedata('address', address); // reset the delta
+			nxs_js_popup_setshortscopedata('deltalat', 0); // reset the delta
+			nxs_js_popup_setshortscopedata('deltalng', 0); // reset the delta
+			nxs_js_popup_refresh_v2(true); 
+			return false;
+		}
+	</script>
+	
+	<?php
+	if ($latlngavailable)
+	{
+		?>
     <div id="map_canvas_popup_<?php echo $placeholderid;?>" style="width:100%; height: 300px; minheight: 300px;"></div>
-
     <script type="text/javascript">
     	var address = jQuery('#<?php echo $altid["address"]; ?>').val();
     	var maptypeid = jQuery('#<?php echo $altid["maptypeid"]; ?>').val();
     	var zoom = jQuery('#<?php echo $altid["zoom"]; ?>').val();
-    	var lat = jQuery('#<?php echo $altid["lat"]; ?>').val();
-    	var lng = jQuery('#<?php echo $altid["lng"]; ?>').val();
+    	var deltalat = jQuery('#<?php echo $altid["deltalat"]; ?>').val();
+    	var deltalng = jQuery('#<?php echo $altid["deltalng"]; ?>').val();
 
-    	function nxs_js_ext_widget_googlemap_update_hidden_fields()
-			{
-				address = jQuery('#<?php echo $id; ?>').val();
-				maptypeid = map_popup_<?php echo $placeholderid; ?>.getMapTypeId();			
-				zoom = map_popup_<?php echo $placeholderid; ?>.getZoom();
-				lat = map_popup_<?php echo $placeholderid; ?>.getCenter().lat();
-				lng = map_popup_<?php echo $placeholderid; ?>.getCenter().lng();
-	
-				jQuery('#<?php echo $altid["address"]; ?>').val(address);
-	    	jQuery('#<?php echo $altid["maptypeid"]; ?>').val(maptypeid);
-	    	jQuery('#<?php echo $altid["zoom"]; ?>').val(zoom);
-	    	jQuery('#<?php echo $altid["lat"]; ?>').val(lat);
-	    	jQuery('#<?php echo $altid["lng"]; ?>').val(lng);
-	    	
-	    	var content = "[nxsgooglemap height=200 lat=" + lat + " lng=" + lng + " maptypeid=" + maptypeid + " zoom=" + zoom + "]";
-	    	jQuery('.shortcodeholder').text(content);
-			}
+    	
 
-	    function nxs_js_ext_widget_googlemap_search_map()
-			{
-				var adres;
-				adres = jQuery('#<?php echo $id; ?>').val();
-				
-				if (adres == '')
-				{			
-	     		nxs_js_alert("<?php nxs_l18n_e('Please enter an address first','nxs_td'); ?>");
-	     		jQ_nxs("#googlemap_visualization").focus();
-	     		return;
-	     	}
-				
-				
-				var geocoder = new google.maps.Geocoder();
-				geocoder.geocode
-				(
-					{
-						'address': adres
-					}, 
-					function(results, status) 
-					{
-			      if (status == google.maps.GeocoderStatus.OK) 
-			      {
-			      	//nxs_js_log(results);
-	
-			        map_popup_<?php echo $placeholderid; ?>.setCenter(results[0].geometry.location);
-			        map_popup_<?php echo $placeholderid; ?>.setZoom(17);
-			        
-			        nxs_js_alert("<?php nxs_l18n_e('Address was found; map is updated','nxs_td'); ?>");
-			      } 
-			      else if (status == google.maps.GeocoderStatus.ZERO_RESULTS)
-		      	{
-		      		var searchedfor = jQuery('#<?php echo $id; ?>').val();
-		      		nxs_js_alert("<?php nxs_l18n_e('No results found for','nxs_td'); ?>" + " '" + searchedfor + "'");
-		      	}
-			      else if (status == google.maps.GeocoderStatus.REQUEST_DENIED)
-		      	{
-		      		var fix = "<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession(\"integrationshome\"); return false;'>Click here to configure your Google Maps API Key</a>";
-		      		nxs_js_alert_sticky("Request denied; configure the Google Maps API key first.<br /><br />" + fix);
-		      	}
-			      else 
-			      {
-			        nxs_js_alert("<?php nxs_l18n_e('Location was not found','nxs_td'); ?> " + status);
-			      }
-			    }
-				);
-			}
+	    
 	
 			var map_popup_<?php echo $placeholderid; ?>;
 			
 			function nxs_js_initializegooglemapwidget_trigger_<?php echo $placeholderid; ?>()
 			{
-				google.maps.event.trigger(map_popup_<?php echo $placeholderid; ?>, "resize");
-				
-				var location = new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>);
-				map_popup_<?php echo $placeholderid; ?>.setCenter(location);
+				<?php if ($latlngavailable) { ?>
+					google.maps.event.trigger(map_popup_<?php echo $placeholderid; ?>, "resize");
+					
+					var location = new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>);
+					map_popup_<?php echo $placeholderid; ?>.setCenter(location);
+				<?php } ?>
 			}
 		
 			//var initialmarker = null;
@@ -1035,81 +1128,93 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 			{
 				// sometimes the map initializes, but fails to resize properly, in that case we need to 
 				// repeat after 1 secs
-			  	setTimeout(nxs_js_initializegooglemapwidget_trigger_<?php echo $placeholderid; ?>, 500);
-			  	// repeat after 5 sec
-			  	setTimeout(nxs_js_initializegooglemapwidget_trigger_<?php echo $placeholderid; ?>, 1000);
+		  	setTimeout(nxs_js_initializegooglemapwidget_trigger_<?php echo $placeholderid; ?>, 500);
+		  	// repeat after 5 sec
+		  	setTimeout(nxs_js_initializegooglemapwidget_trigger_<?php echo $placeholderid; ?>, 1000);
 				
 				if (nxs_js_mapslazyloaded)
 				{
-					//nxs_js_log('Reeds ingeladen');
+					<?php if ($latlngavailable) { ?>
 					
-					var myOptions =  {
-				  		streetViewControl: false,
-				  		scrollwheel: false,
-		        		center: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
-		        		zoom: <?php echo $zoom; ?>,
-		        		mapTypeId: google.maps.MapTypeId.<?php echo strtoupper($maptypeid); ?>
-		      		};
-		      		map_popup_<?php echo $placeholderid; ?> = new google.maps.Map(document.getElementById("map_canvas_popup_<?php echo $placeholderid; ?>"), myOptions);
+					var myOptions =  
+					{
+						draggable: true,
+    				panControl: true,
+    				streetViewControl: false,
+		  			scrollwheel: false,
+        		center: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
+        		zoom: <?php echo $zoom; ?>,
+        		mapTypeId: google.maps.MapTypeId.<?php echo strtoupper($maptypeid); ?>
+		      };
 		      
-		      		google.maps.event.addListener
-		      		(
-			      		map_popup_<?php echo $placeholderid; ?>, 'zoom_changed', function() 
-			      		{
-			      			//nxs_js_log('zoom changed');
-			   		 		nxs_js_popup_sessiondata_make_dirty();
-			   		 		nxs_js_ext_widget_googlemap_update_hidden_fields();
+		      map_popup_<?php echo $placeholderid; ?> = new google.maps.Map(document.getElementById("map_canvas_popup_<?php echo $placeholderid; ?>"), myOptions);
+		      
+      		google.maps.event.addListener
+      		(
+	      		map_popup_<?php echo $placeholderid; ?>, 'zoom_changed', function() 
+	      		{
+	      			//nxs_js_log('zoom changed');
+	   		 			nxs_js_popup_sessiondata_make_dirty();
+	   		 			nxs_js_ext_widget_googlemap_update_hidden_fields();
 						}
 					);
 					
 					google.maps.event.addListener
-		      		(
-			      		map_popup_<?php echo $placeholderid; ?>, 'center_changed', function() 
-			      		{
-	 						// update the marker
-				    		// add marker
-				      		var position = map_popup_<?php echo $placeholderid; ?>.getCenter();
-				      		if (position.lat() != null)
-				      		{
-				      			if (latestmarker == null)
-				      			{
-					      			latestmarker = new google.maps.Marker
+      		(
+	      		map_popup_<?php echo $placeholderid; ?>, 'center_changed', function() 
+	      		{
+							// update the marker
+		    			// add marker
+		      		var position = map_popup_<?php echo $placeholderid; ?>.getCenter();
+		      		if (position.lat() != null)
+		      		{
+		      			if (latestmarker == null)
+		      			{
+			      			latestmarker = new google.maps.Marker
 									(
-							      		{
-								    		position: position,
-							    			map: map_popup_<?php echo $placeholderid; ?>,
-							  			}
-						  			);
-							  	}
-							  	else
-						  		{
-						  			latestmarker.setPosition(position);
-						  		}
-				  			}
-				      		//nxs_js_log('map location changed');
-				   		 	nxs_js_popup_sessiondata_make_dirty();
-				   		 	nxs_js_ext_widget_googlemap_update_hidden_fields();
+					      		{
+						    			position: position,
+					    				map: map_popup_<?php echo $placeholderid; ?>,
+					  				}
+				  				);
+						  	}
+						  	else
+					  		{
+					  			latestmarker.setPosition(position);
+					  		}
+		  				}
+		      		//nxs_js_log('map location changed');
+			   		 	nxs_js_popup_sessiondata_make_dirty();
+			   		 	nxs_js_ext_widget_googlemap_update_hidden_fields();
 						}
 					);
 		      
-		      		google.maps.event.addListener
-		      		(
-		     			map_popup_<?php echo $placeholderid; ?>, 'maptypeid_changed', function() 
-			      		{
-			      			//nxs_js_log('map type changed');
-			   		 		nxs_js_popup_sessiondata_make_dirty();
-			   		 		nxs_js_ext_widget_googlemap_update_hidden_fields();
+      		google.maps.event.addListener
+      		(
+     				map_popup_<?php echo $placeholderid; ?>, 
+     				'maptypeid_changed', 
+     				function() 
+	      		{
+	      			//nxs_js_log('map type changed');
+	   		 			nxs_js_popup_sessiondata_make_dirty();
+	   		 			nxs_js_ext_widget_googlemap_update_hidden_fields();
 						}
-		      		)
+      		);
+      		
+      		<?php } ?>
 		      
-		  			jQuery("#<?php echo $id; ?>").bind("keyup.defaultenter", function(e)
-					{
-						if (e.keyCode == 13)
+	  			jQuery("#<?php echo $id; ?>").bind
+	  			(
+	  				"keyup.defaultenter", 
+		  			function(e)
 						{
-							nxs_js_ext_widget_googlemap_search_map();
+							if (e.keyCode == 13)
+							{
+								nxs_js_ext_widget_googlemap_search_map();
+							}
 						}
-					});
-					
+					);
+				
 					jQuery("#<?php echo $id; ?>").focus();
 				}
 				else
@@ -1119,11 +1224,46 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 					setTimeout(nxs_js_execute_after_popup_shows,500);
 				}
 			}
-
-    </script>
-
-	<?php
-
+    </script>	
+		<?php 
+	} 
+	else 
+	{ 
+		// something is not ok
+		
+		if ($latlng["licensestatus"] == "NACK")
+		{ 
+			?>
+			<div class="content2">
+				This feature requires a valid and active license. Perhaps you haven't
+				yet configured your license, or perhaps your license has expired.<br />
+				<a class='nxsbutton' href='<?php echo $licenseurl; ?>'>Open license settings</a>
+			</div>
+			<?php 
+		} 
+		else if ($latlng["found"] == "false")
+		{ 
+			?>
+			<div class="content2">
+				<span style='background-color: red; color: white;'>We were unable to locate this address on the map.<br />Try using a different address instead.</span>
+				<script>jQuery('#<?php echo $id; ?>').focus();</script>
+			</div>
+			<?php 
+		} 
+		else
+		{
+			?>
+			<div class="content2">
+				Unable to render the map
+				<?php
+				var_dump($latlng);
+				?>
+			</div>
+			<?php 
+		}
+	}
+	
+	// ----
 	$result = nxs_ob_get_contents();
 	nxs_ob_end_clean();
 	return $result;
@@ -1136,8 +1276,6 @@ function nxs_widgets_googlemap_initplaceholderdata($args)
 	$args['minheight'] = "200-0";
 	$args['maptypeid'] = "ROADMAP";
 	$args['zoom'] = "14";
-	$args['lat'] = "40.8";
-	$args['lng'] = "-74";
 	$args['button_color'] = "base2";
 	$args['title_heading'] = "2";
 	$args['button_scale'] = "1-0";
@@ -1145,6 +1283,7 @@ function nxs_widgets_googlemap_initplaceholderdata($args)
 	$args['image_size'] = "c@1-0";
 	$args['title_heightiq'] = "true";
 	$args['text_heightiq'] = "true";
+	$args['address'] = "{{address}}";
 	
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_googlemap_getunifiedstylinggroup();

@@ -56,7 +56,7 @@
 	$sitemeta = nxs_getsitemeta();
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
-	$editorurl = $contentmodel["model"]["editorurl"];
+	$editorurl = $contentmodel["services"]["url"];
 	$servicesurl = $contentmodel["services"]["url"];
 ?>
 <!-- loading all fonts -->

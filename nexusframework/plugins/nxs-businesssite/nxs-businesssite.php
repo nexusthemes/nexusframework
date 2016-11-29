@@ -74,39 +74,86 @@ class businesssite_instance
 		return $content;
 	}
 	
+	function getservicescontainerid()
+	{
+		$servicescontainerid = $this->getservicescontainerid_internal();
+		if ($servicescontainerid === false) 
+		{ 
+			$result = $this->createnewservicescontainer_internal();
+			if ($result["RESULT"] != "OK") { echo "unexpected;"; var_dump($result); die(); }
+			$servicescontainerid = $result["postid"];
+		}
+		return $servicescontainerid;
+	}
+	
+	function getservicescontainerid_internal()
+	{
+		// published pagedecorators
+		$publishedargs = array();
+		$publishedargs["post_status"] = "publish";
+		$publishedargs["post_type"] = "nxs_genericlist";
+		$publishedargs["nxs_tax_subposttype"] = "serviceset";
+		
+		$publishedargs["orderby"] = "post_date";//$order_by;
+		$publishedargs["order"] = "DESC"; //$order;
+		$publishedargs["numberposts"] = -1;	// allemaal!
+	  $pages = get_posts($publishedargs);
+	  
+	  $result = false;
+	  if (count($pages) >= 1) 
+	  {
+	  	$result = $pages[0]->ID;
+	  }
+	  
+	  return $result;
+	}
+	
+	function createnewservicescontainer_internal()
+	{
+		//$postid = getservicescontainerid();
+		//if ($postid !== false) { echo "servicescontainer already exists! ($postid)"; die(); } 
+	
+		$subargs = array();
+		$subargs["nxsposttype"] = "genericlist";
+		$subargs["nxssubposttype"] = "serviceset";	// NOTE!
+		$subargs["poststatus"] = "publish";
+		$subargs["titel"] = nxs_l18n__("Service Set", "nxs_td") . " " . nxs_generaterandomstring(6);
+		$subargs["slug"] = $subargs["titel"];
+		$subargs["postwizard"] = "defaultgenericlist";
+		
+		$response = nxs_addnewarticle($subargs);
+		if ($response["result"] != "OK")
+		{
+			echo "failed to create servicescontainer?!";
+			die();
+		}
+		
+		// todo: perhaps initialize with some defaults using the server?
+		
+		return $response;
+	}
+	
 	function getcontentmodel()
 	{
 		$result = array();
 		
-		// new implementation;
-		// post with name "model" contains widgets
-		$modelid = nxs_getpostidbyslug("model");
-		$result["model"]["postid"] = $modelid;
-		$result["model"]["editorurl"] = nxs_geturl_for_postid($modelid);
+		// this invocation will make it, if its empty
+		$servicescontainerid = $this->getservicescontainerid();
 		
-		// find "serviceset" widgets on this page
+	  $result["services"]["postid"] = $servicescontainerid;
+	  $result["services"]["url"] = nxs_geturl_for_postid($servicescontainerid);
+	  
+	  //echo "servicescontainerid: $servicescontainerid <br />";
+	  
+	  // find "services" in the post with id servicescontainerid
 		$filter = array
 		(
-			"postid" => $modelid,
-			"widgettype" => "serviceset",
-		);
-		$servicesetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
-		$servicesetmetadata = current($servicesetsmetadata);	// get value of first element
-
-	  $servicespostid = $servicesetmetadata["items_genericlistid"];
-	  $result["services"]["postid"] = $servicespostid;
-	  $result["services"]["url"] = nxs_geturl_for_postid($servicespostid);
-	  
-	  //echo "servicespostid: $servicespostid <br />";
-	  
-	  // find "services" in the post with id servicespostid
-		$filter = array
-		(
-			"postid" => $servicespostid,
+			"postid" => $servicescontainerid,
 			//"widgettype" => "service", // all types!
 		);
 		$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
 		
+		$countservicesenabled = 0;
 		$items = nxs_getwidgetsmetadatainpost_v2($filter);
 		foreach ($items as $placeholderid => $widgetmeta)
 		{
@@ -125,9 +172,13 @@ class businesssite_instance
 						"post_excerpt" => $post->post_excerpt,
 						"post_content" => $post->post_content,
 						"url" => nxs_geturl_for_postid($post->ID),
-						
 					),
 				);
+				
+				if ($widgetmeta["enabled"] != "")
+				{
+					$countservicesenabled++;
+				}
 			}
 			else 
 			{
@@ -136,33 +187,9 @@ class businesssite_instance
 				die();
 			}
 		}
-	  
-		/*
-		// get the model
-		$semantic_fqn = "contentmodel";
-		// echo "locating semantic_fqn {$semantic_fqn} for getcontentmodel<br />";
-		$the_query = new WP_Query( array( 'post_type' => array('post', 'page'), 'meta_key' => "nxs_semantic", 'meta_value' => $semantic_fqn ) );
-		if ( $the_query->have_posts() )
-		{
-			$the_query->the_post();
-			
-			global $post;
-			$postid = $post->ID;
-			$jsonmodel = get_post_meta($postid, "nxs_contentmodeljson", true);
-			$model = json_decode($jsonmodel, true);
-			return $model;			
-		}
-		else
-		{
-			error_log("contentmodel not yet set? (resync to fix)");
-			$model = array();
-			return $model;
-			//
-			echo "contentmodel not found";
-			die();
-		}
-		*/
 		
+		$result["services"]["countenabled"] = $countservicesenabled;
+	  
 		return $result;
 	}
 	
