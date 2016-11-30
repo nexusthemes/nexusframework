@@ -308,7 +308,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"pie",
 										"stats",
 										"bars",
-										"googleanalytic",
+										"googleanalytic", 
+
 									);
 										
 									foreach($icontypes as $currenticontype)
@@ -595,7 +596,6 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"cpr",
 										"ekg2",
 										"angieslist",
-										"test",
 									);
 									
 										
@@ -651,7 +651,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"yelp",
 										"snapchat",
 										"angieslist",
-										
+										"nexus",
 									);
 										
 									foreach($icontypes as $currenticontype)
