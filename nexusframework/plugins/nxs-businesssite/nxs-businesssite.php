@@ -197,6 +197,7 @@ class businesssite_instance
 						"post_title" => $post->post_title,
 						"post_excerpt" => $post->post_excerpt,
 						"post_content" => $post->post_content,
+						"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
 						"url" => nxs_geturl_for_postid($post->ID),
 					),
 				);
@@ -223,6 +224,7 @@ class businesssite_instance
 	
 	function getwidgets($result, $widgetargs)
 	{
+		$nxsposttype = $widgetargs["nxsposttype"];
 		if ($nxsposttype == "post") 
 		{
 			$result[] = array("widgetid" => "semantic");

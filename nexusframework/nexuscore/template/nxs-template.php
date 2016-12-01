@@ -220,6 +220,14 @@ function nxs_site_createcontent_internal($args)
 					error_log("importing using themeid $themeid");
 					$filepath = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth=300&requestedheight=150&scope=themeid&themeid={$themeid}&debug=tru&url={$nxs_semantic_media}";
 				}
+				
+				$fraction = str_replace("nxsmedia://", "", $nxs_semantic_media);
+				// p.e. "123rf|15302771"
+				$pieces = explode("|", $fraction);
+				// 
+				$photo_license = $pieces[0];
+				$photo_id = $pieces[1];
+				
 				// import image
 				$importmeta = array
 				(
@@ -228,6 +236,8 @@ function nxs_site_createcontent_internal($args)
 					"postmetas" => array
 					(
 						"nxs_semantic_media" => $nxs_semantic_media,
+						"stockphoto_id" => $photo_id,
+						"stockphoto_license" => $photo_license,
 					),
 				);
 				$r = nxs_import_file_to_media_v2($importmeta);

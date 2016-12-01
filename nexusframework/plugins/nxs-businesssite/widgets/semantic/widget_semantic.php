@@ -279,18 +279,14 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 		$post_title = $instance["content"]["post_title"];		
 		$post_excerpt = $instance["content"]["post_excerpt"];
 		$url = $instance["content"]["url"];
-		
-		//
-		
-		$image_src = "";
-		
+		$image_imageid = $instance["content"]["post_thumbnail_id"];
 		
 		$args = array
 		(
 			"render_behaviour" => "code",
 			"title" => $post_title,
 			"text" => $post_excerpt,
-			"image_src" => $image_src,
+			"image_imageid" => $image_imageid,
 			"destination_url" => $url,
 		);
 		

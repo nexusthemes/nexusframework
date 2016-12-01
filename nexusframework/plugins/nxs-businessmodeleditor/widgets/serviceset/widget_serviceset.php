@@ -204,6 +204,22 @@ function nxs_widgets_serviceset_render_webpart_render_htmlvisualization($args)
 				
 			} 
 		}
+		
+		if (count($structure) == 0)
+		{
+			if (!is_user_logged_in())
+			{
+				?>
+				<!-- no services added yet -->
+				<?php
+			}
+			else
+			{
+				?>
+				<div>Service set placeholder (no services found yet ...)</div>
+				<?php
+			}
+		}
 
 		$html = nxs_ob_get_contents();
 		nxs_ob_end_clean();

@@ -62,7 +62,7 @@ function nxs_widgets_menuitemsemantictaxonomy_home_getoptions($args) {
                 "type" 				=> "input",
                 "label" 			=> nxs_l18n__("Title", "nxs_td"),
                 "placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
-                "localizablefield"	=> true
+                "unicontentablefield" => true,
             ),
             array(
                 "id" 				=> "wrapper_title_end",
