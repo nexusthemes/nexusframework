@@ -2451,7 +2451,7 @@ function nxs_create_post_types_and_taxonomies()
 	
 	$hadadmin = nxs_has_adminpermissions();
 	nxs_registernexustype_withtaxonomies("templatepart", array("nxs_tax_subposttype"), $hadadmin);	// holds content that is positioned in between subheader and subfooter
-	nxs_registernexustype_withtaxonomies("busrulesset", array("nxs_tax_subposttype"), $hadadmin);		// holds a set of business rules
+	nxs_registernexustype_withtaxonomies("busrulesset", array("nxs_tax_subposttype"), $hadadmin);		// holds a set of business rules	
 }
 
 

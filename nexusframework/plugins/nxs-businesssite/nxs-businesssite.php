@@ -79,8 +79,9 @@ class businesssite_instance
 		$servicescontainerid = $this->getservicescontainerid_internal();
 		if ($servicescontainerid === false) 
 		{ 
+			//echo "servicescontainerid not yet found, creating...";
 			$result = $this->createnewservicescontainer_internal();
-			if ($result["RESULT"] != "OK") { echo "unexpected;"; var_dump($result); die(); }
+			if ($result["result"] != "OK") { echo "unexpected;"; var_dump($result); die(); }
 			$servicescontainerid = $result["postid"];
 		}
 		return $servicescontainerid;
@@ -92,17 +93,40 @@ class businesssite_instance
 		$publishedargs = array();
 		$publishedargs["post_status"] = "publish";
 		$publishedargs["post_type"] = "nxs_genericlist";
-		$publishedargs["nxs_tax_subposttype"] = "serviceset";
-		
+		$publishedargs['tax_query'] = array
+		(
+			array
+			(
+				'taxonomy' => 'nxs_tax_subposttype',
+				'field' => 'slug',
+				'terms' => 'serviceset'
+			)
+		);
 		$publishedargs["orderby"] = "post_date";//$order_by;
 		$publishedargs["order"] = "DESC"; //$order;
-		$publishedargs["numberposts"] = -1;	// allemaal!
+		$publishedargs["showposts"] = -1;	// allemaal!
 	  $pages = get_posts($publishedargs);
+	  
+	  if ($_REQUEST["debug"] == "serviceset") 
+	  {
+	  	//$st = debug_backtrace();
+	  	//print_r($st);
+	  	echo "<br /><br />"; 
+	  	echo "debug;"; var_dump($pages); 
+	  }
 	  
 	  $result = false;
 	  if (count($pages) >= 1) 
 	  {
 	  	$result = $pages[0]->ID;
+	  	if ($_REQUEST["debug"] == "serviceset") 
+		  {
+		  	//$st = debug_backtrace();
+		  	//print_r($st);
+		  	$taxsubposttype = nxs_get_nxssubposttype($result);
+		  	echo "taxsubtype:". $taxsubposttype;
+		  	die(); 
+	  	}
 	  }
 	  
 	  return $result;
@@ -110,9 +134,6 @@ class businesssite_instance
 	
 	function createnewservicescontainer_internal()
 	{
-		//$postid = getservicescontainerid();
-		//if ($postid !== false) { echo "servicescontainer already exists! ($postid)"; die(); } 
-	
 		$subargs = array();
 		$subargs["nxsposttype"] = "genericlist";
 		$subargs["nxssubposttype"] = "serviceset";	// NOTE!
@@ -127,8 +148,12 @@ class businesssite_instance
 			echo "failed to create servicescontainer?!";
 			die();
 		}
+		else
+		{
+			//echo "servicescontainerid created";
+			//var_dump($response);
+		}
 		
-		// todo: perhaps initialize with some defaults using the server?
 		
 		return $response;
 	}
@@ -157,7 +182,8 @@ class businesssite_instance
 		$items = nxs_getwidgetsmetadatainpost_v2($filter);
 		foreach ($items as $placeholderid => $widgetmeta)
 		{
-			if ($widgetmeta["type"] == "service")
+			$widgettype = $widgetmeta["type"];
+			if ($widgettype == "service")
 			{
 				$postid = $widgetmeta["filter_postid"];
 				$post = get_post($postid);
@@ -183,8 +209,10 @@ class businesssite_instance
 			else 
 			{
 				// 
-				echo "huhh?!";
-				die();
+				echo "unexpected widgettype; <br />";
+				echo "postid: " . $servicescontainerid . "<br />";
+				echo "huhh?! widgettype: {$widgettype}";
+				// die();
 			}
 		}
 		
@@ -335,6 +363,10 @@ class businesssite_instance
 		// debugging handling
 		if ($_REQUEST["dumpcontentmodel"] == "true")
 		{
+			// this invocation will make it, if its empty
+			$servicescontainerid = $this->getservicescontainerid();
+			echo "servicescontainerid: $servicescontainerid <br />";
+			
 			echo "model:<br />";
 			$contentmodel = $this->getcontentmodel();
 			var_dump($contentmodel);

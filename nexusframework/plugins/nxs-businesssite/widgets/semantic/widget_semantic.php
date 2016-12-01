@@ -192,14 +192,23 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 		
 			function nxs_js_portfolio_resize_actual() 
 			{
-			if ($("#nxsgrid-container").width() < 721) 
-			{
-			  return $html.addClass('nxsgrid-mobile-720');
-			}
-			else	        	
-			{
-				$html.removeClass('nxsgrid-mobile-720');
-			}
+				if ($("#nxsgrid-container").width() < 481) 
+				{
+				  return $html.addClass('nxsgrid-mobile-480');
+				}
+				else	        	
+				{
+					$html.removeClass('nxsgrid-mobile-480');
+				}
+				
+				if ($("#nxsgrid-container").width() < 721) 
+				{
+				  return $html.addClass('nxsgrid-mobile-720');
+				}
+				else	        	
+				{
+					$html.removeClass('nxsgrid-mobile-720');
+				}
 			}
 			
 				// invoke (throttled) if user resizes	      

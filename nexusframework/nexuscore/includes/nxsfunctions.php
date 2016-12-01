@@ -1155,6 +1155,8 @@ function nxs_addnewarticle($args)
 		$my_post['post_excerpt'] = $post_excerpt;
 	}
 	
+	
+	
 	$postid = wp_insert_post($my_post, $wp_error);
 	
 	if ($postid == 0)
@@ -1251,6 +1253,12 @@ function nxs_addnewarticle($args)
 	else
 	{
 		update_post_meta($postid, '_wp_page_template', nxs_get_backslashescaped($wppagetemplate));
+	}
+	
+	// set featured image if applicable
+	if ($featuredimageid != "" && $featuredimageid > 0)
+	{
+		update_post_meta($postid, '_thumbnail_id', $featuredimageid);
 	}
 	
 	//
