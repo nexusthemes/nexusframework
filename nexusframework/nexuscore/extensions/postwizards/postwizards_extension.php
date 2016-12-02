@@ -111,6 +111,7 @@ function nxs_ext_getpostwizards($result, $args)
 			$result[] = array("postwizard" => "template");
 		}
 		*/
+		$result[] = array("postwizard" => "template");
 	}
 	
 	return $result;

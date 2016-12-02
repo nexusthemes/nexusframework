@@ -2630,11 +2630,13 @@ function nxs_site_newtemplate_getoptions($args)
 	$lp_step = $args["clientshortscopedata"]["lp_step"];
 	if ($lp_step == "1" || $lp_step == "")
 	{
-		// first step; select the template from a set
-		
-		$thememeta = nxs_theme_getmeta();
-		$themeid = $thememeta["id"];
-		
+		$lookuptable = nxs_lookuptable_getlookup();
+		$themeid = $lookuptable["templatewizardthemeid"];
+		if ($themeid == "")
+		{
+			$thememeta = nxs_theme_getmeta();
+			$themeid = $thememeta["id"];
+		}	
 		ob_start();
 		?>
 		<style>
@@ -2684,9 +2686,18 @@ function nxs_site_newtemplate_getoptions($args)
 		require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
 		$licensekey = nxs_license_getlicensekey();
 		
-		$indexjsonurl = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/index/?nxs=contentprovider-api&licensekey={$licensekey}&themeid={$themeid}";
-		$indexjson = file_get_contents($indexjsonurl);
-		$json = json_decode($indexjson, true);
+		$args = array
+		(
+			"hostname" => "turnkeypagesprovider.websitesexamples.com",
+			"apiurl" => "/index",
+			"queryparameters" => array
+			(
+				"nxs" => "contentprovider-api",
+				"licensekey" => $licensekey,
+				"themeid" => $themeid,
+			),
+		);
+		$json = nxs_connectivity_invoke_api_get($args);
 		
 		$items = $json["items"];
 		$tags = $json["tags"];

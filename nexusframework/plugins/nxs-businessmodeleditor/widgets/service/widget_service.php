@@ -31,7 +31,7 @@ function nxs_widgets_service_home_getoptions()
 {
 	$options = array
 	(
-		"sheettitle" 		=> "Custom Service",
+		"sheettitle" 		=> "Service",
 		"sheeticonid" 		=> nxs_widgets_service_geticonid(),
 		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_service_getunifiedstylinggroup(),),
@@ -47,7 +47,8 @@ function nxs_widgets_service_home_getoptions()
 				"previewlink_enable"=> "false",
 				"label" 						=> nxs_l18n__("Post or page", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("Select the post or page that represents this service", "nxs_td"),
-				"post_type" 				=> array("post","page")
+				// we still enable posts and pages too, as some people might be using the "old" implementation
+				"post_type" 				=> array("post","page","nxs_service"),
 			),
 			array
 			(
@@ -159,9 +160,16 @@ function nxs_widgets_service_render_webpart_render_htmlvisualization($args)
 		$color = "red";
 	}
 	
-	$title = nxs_gettitle_for_postid($filter_postid);
-	if ($title == "") { $title = "not set ($filter_postid)"; }
-	echo "<div style='background-color: {$color}; color: white; margin: 10px; padding: 10px;'>semantic:" . $title . "</div>";
+	if ($filter_postid != "")
+	{
+		$title = nxs_gettitle_for_postid($filter_postid);
+		if ($title == "") { $title = "not set ($filter_postid)"; }
+		echo "<div style='background-color: {$color}; color: white; margin: 10px; padding: 10px;'>semantic:" . $title . "</div>";
+	}
+	else
+	{
+		echo "<div style='background-color: yellow; color: black; margin: 10px; padding: 10px;'>not set</div>";
+	}
 	
 	/* ------------------------------------------------------------------------------------------------- */
 	 

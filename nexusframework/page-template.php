@@ -35,7 +35,17 @@ if (is_singular())
 		}
 		else
 		{
-			nxs_webmethod_return_nack("No hook found, using default framework implementation. No file found in framework to handle this nxsposttype;" . $filetobeincluded);
+			$nxsposttype = "post";
+			$filetobeincluded = NXS_FRAMEWORKPATH . "/page-template-{$nxsposttype}.php";
+			if (file_exists($filetobeincluded))
+			{
+				// rendering continues by the included file...
+				require_once($filetobeincluded);
+			}
+			else
+			{
+				nxs_webmethod_return_nack("No hook found, using default framework implementation. No file found in framework to handle this nxsposttype;" . $filetobeincluded);
+			}
 		}
 	}
 }

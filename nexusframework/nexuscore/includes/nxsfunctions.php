@@ -1625,7 +1625,9 @@ function nxs_getpostrowtemplates($args)
 		$nxsposttype == "subheader" || 
 		$nxsposttype == "template" || 
 		$nxsposttype == "subfooter" || 
-		$nxsposttype == "pagelet"
+		$nxsposttype == "pagelet" ||
+		$nxsposttype == "service" || 
+		false
 	)
 	{
 		$result[] = "one";
@@ -1674,7 +1676,8 @@ function nxs_getpostrowtemplates($args)
 	{
 		if (!has_filter("nxs_getpagerowtemplates"))
 		{
-			nxs_webmethod_return_nack("please add filter nxs_getpagerowtemplates filter for nxsposttype {$nxsposttype}");
+			$result[] = "one";
+			// nxs_webmethod_return_nack("please add filter nxs_getpagerowtemplates filter for nxsposttype {$nxsposttype}");
 		}
 		else
 		{
@@ -11632,10 +11635,17 @@ function nxs_registernexustype_v2($args)
 	$query_var = $hasadmin;
 	$ispublic = false;
 	$show_ui = false;
+	$rewrite = false;
 	if ($_REQUEST["shownexustypesinbackend"] == "true")
 	{
 		$show_ui = true;
 	}
+
+	$supports = array
+	(
+		'title', 
+		'custom-fields',
+	);
 
 	// allow invoker to override defaults
 	extract($args);
@@ -11661,17 +11671,11 @@ function nxs_registernexustype_v2($args)
 			'show_ui' => $show_ui, 	// True, if you want this type to show in in WP backend's menu (see show_in_menu too!)
 			'show_in_menu' => true,	// True, if you want this type to show in in WP backend's menu (see show_ui too!)
 			'show_in_admin_bar' => false,
-			
-			'supports' => array
-			(
-				'title', 
-				'custom-fields',
-			),
-			
+			'supports' => $supports,
 			'taxonomies' => $taxonomies,
 			'hierarchical' => false,
 			'query_var' => $query_var,	// only admin/authenticated users should be able to query
-			'rewrite' => false,
+			'rewrite' => $rewrite,
 		)
 	);
 }
@@ -11949,7 +11953,7 @@ function nxs_connectivity_invoke_api_get($args)
 	$context = stream_context_create($opts);
 	$json = @file_get_contents($apiurl, false, $context);
 
-	//error_log("nxs_connectivity_invoke_api_get;" . $apiurl);
+	error_log("nxs_connectivity_invoke_api_get;" . $apiurl);
 	
 	if ($json == "")
 	{

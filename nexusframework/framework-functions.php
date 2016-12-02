@@ -399,6 +399,7 @@ if (is_admin())
 	
 	function nxs_add_meta_boxes()
 	{
+		add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', 'nxs_service', 'side', 'default');
 		add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', 'post', 'side', 'default');
 		add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', 'page', 'side', 'default');
 	}
@@ -2455,6 +2456,8 @@ function nxs_create_post_types_and_taxonomies()
 	
 	// add custom posttypes for semantic entities;
 
+	// "special" custom post types
+
 	// "service"
 	$args = array
 	(
@@ -2462,8 +2465,69 @@ function nxs_create_post_types_and_taxonomies()
 		"taxonomies" => array("nxs_tax_subposttype"),
 		"ispublic" => true,
 		"show_ui" => true,
+		'rewrite' => array
+		(
+			'slug' => '', 
+			'with_front' => FALSE
+		),
+		"supports" => array
+		(
+			'title',
+			'editor',
+			'author',
+			'slug',
+			'custom-fields',
+			'thumbnail',
+		),
 	);
 	nxs_registernexustype_v2($args);
+	
+	// by default custom post types in WP get a "slug" in their
+	// url, to be able to identify them. Our semantic entities
+	// like "service", etc. should not get such a slug, as it
+	// would make the URLs ugly (like site.com/service/my-service),
+	// to resolve this we use the workaround as documented here
+	// http://wordpress.stackexchange.com/questions/203951/remove-slug-from-custom-post-type-post-urls
+	function nxs_cpt_getcptswithoutslug()
+	{
+		// the list of custom post types that should not get a slug in the
+		// url in the permalinks (i.e. which should behave like pages/posts)
+		return array("nxs_service");
+	}
+	
+	// by default the cpt put their slug in front of the address, we dont want that
+	// kudos to http://wordpress.stackexchange.com/questions/203951/remove-slug-from-custom-post-type-post-urls
+	function na_remove_slug( $post_link, $post, $leavename ) 
+	{
+		$cpt = nxs_cpt_getcptswithoutslug();
+		
+    if (!in_array($post->post_type, $cpt) || 'publish' != $post->post_status ) 
+    {
+      return $post_link;
+    }
+
+    $post_link = str_replace( '/' . $post->post_type . '/', '/', $post_link );
+
+    return $post_link;
+	}
+	add_filter( 'post_type_link', 'na_remove_slug', 10, 3 );
+	
+	function na_parse_request( $query ) 
+	{
+    if ( ! $query->is_main_query() || 2 != count( $query->query ) || ! isset( $query->query['page'] ) ) 
+    {
+      return;
+    }
+
+    if ( ! empty( $query->query['name'] ) ) 
+    {
+    	$cpt = nxs_cpt_getcptswithoutslug();
+			$new = array('post', 'page');
+    	$merged = array_merge($new, $cpt);
+      $query->set( 'post_type', $merged);
+    }
+	}
+	add_action( 'pre_get_posts', 'na_parse_request' );
 }
 
 //
