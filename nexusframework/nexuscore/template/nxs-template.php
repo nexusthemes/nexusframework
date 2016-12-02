@@ -187,7 +187,7 @@ function nxs_site_createcontent_internal($args)
 		$title = $contentcurrentpost["title"];
 		nxs_site_importattachment_url($url, $title, $currentpostglobalid);
 	}
-	else if (in_array($posttype, array("nxs_templatepart", "nxs_genericlist", "page")))
+	else if (in_array($posttype, array("nxs_templatepart", "nxs_genericlist", "page", "nxs_service")))
 	{
 		$postmetas = array();
 		if ($contentcurrentpost["nxs_semanticlayout"] != "")

@@ -2565,6 +2565,10 @@ function nxs_getnxsposttype_by_wpposttype($posttype)
 	{
 		$result = "busrulesset";
 	}
+	else if ($posttype == "nxs_service")
+	{
+		$result = "service";
+	}
 	else if ($posttype == "")
 	{
 		// dit is het geval bij de search form
@@ -11608,21 +11612,36 @@ function nxs_function_invokefunction($functionnametoinvoke, $args)
 	return $result;
 }
 
-// custom post type cpt
 function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 {
-	if ($title == "")
-	{
-		nxs_webmethod_return_nack("title not set");
-	}
+	$args = array
+	(
+		"title" => $title,
+		"taxonomies" => $taxonomies,
+		"ispublic" => $ispublic,
+	);
+	return nxs_registernexustype_v2($args);
+}
 
+// custom post type cpt
+function nxs_registernexustype_v2($args)
+{
+	$hasadmin = nxs_has_adminpermissions();
+	
+	// defaults
+	$query_var = $hasadmin;
+	$ispublic = false;
 	$show_ui = false;
 	if ($_REQUEST["shownexustypesinbackend"] == "true")
 	{
 		$show_ui = true;
 	}
+
+	// allow invoker to override defaults
+	extract($args);
 	
-	$hasadmin = nxs_has_adminpermissions();
+	// verify valid input
+	if ($title == "") { nxs_webmethod_return_nack("title not set"); }
 	
 	register_post_type
 	( 
@@ -11651,7 +11670,7 @@ function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 			
 			'taxonomies' => $taxonomies,
 			'hierarchical' => false,
-			'query_var' => $hasadmin,	// only admin/authenticated users should be able to query
+			'query_var' => $query_var,	// only admin/authenticated users should be able to query
 			'rewrite' => false,
 		)
 	);

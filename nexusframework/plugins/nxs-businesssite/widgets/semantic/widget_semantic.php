@@ -182,61 +182,7 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
 	$taxonomy = "services";
-	
-	?>
-	<script>
-		(
-			function($) 
-			{
-				$html = $('html');
-		
-			function nxs_js_portfolio_resize_actual() 
-			{
-				if ($("#nxsgrid-container").width() < 481) 
-				{
-				  return $html.addClass('nxsgrid-mobile-480');
-				}
-				else	        	
-				{
-					$html.removeClass('nxsgrid-mobile-480');
-				}
-				
-				if ($("#nxsgrid-container").width() < 721) 
-				{
-				  return $html.addClass('nxsgrid-mobile-720');
-				}
-				else	        	
-				{
-					$html.removeClass('nxsgrid-mobile-720');
-				}
-			}
-			
-				// invoke (throttled) if user resizes	      
-				var nxs_js_portfolio_resize_doit;
-				window.onresize = function()
-				{
-					// do a "throttled" invocation, 
-					// to prevent stressing the CPU while resizing the screen
-				  clearTimeout(nxs_js_portfolio_resize_doit);
-				  nxs_js_portfolio_resize_doit = setTimeout(nxs_js_portfolio_resize_actual, 100);
-				};	   
-				
-				// invoke once at the moment the page is loaded for the first time
-				// (proper initialization of the responsive aspects)
-				$(window).load
-		  (
-			function()
-			{
-				$(window).trigger('resize');
-			}
-		  );
-	
-			}
-		)
-		(jQuery);
-	</script>
-	<?php
-	$html .= "<div id='nxsgrid-container'>";
+	$html .= "<div class='nxsgrid-container'>";
 	
 	//
 	$count = $contentmodel[$taxonomy]["countenabled"];
