@@ -11893,7 +11893,7 @@ function nxs_connectivity_invoke_api_get($args)
 	$environment = "prod";	// $this->settings["api_environment"];
 	$timeout = 3;
 	$version = 1;
-	
+		
 	//$fingerprint = $this->settings["api_fingerprint"];
 	//$language = $this->settings["api_lang"];
 	//$hostname = "nexusthemes.com";
@@ -11929,8 +11929,7 @@ function nxs_connectivity_invoke_api_get($args)
 	);
 	$context = stream_context_create($opts);
 	$json = @file_get_contents($apiurl, false, $context);
-	
-	error_log("invoking apiurl;" . $apiurl);
+
 	
 	if ($json == "")
 	{
@@ -11940,7 +11939,8 @@ function nxs_connectivity_invoke_api_get($args)
 		{
 			// mark as error
 			echo "<div style='padding: 10px; margin: 10px; background-color: red; color: white;'>";
-			echo "Error; unable to connect to the server; {$hostname}<br /><br />";
+			echo "Error; unable to connect to the server; {$hostname} (more details in html source)<br /><br />";
+			echo "<!-- " . $apiurl . " -->";
 			echo "Most likely reasons:<br />";
 			echo "* An outbound firewall; contact your hosting provider and ask if they block outbound network activity from the webserver. If they do, ask them to whitelist the following hostname: {$hostname} (without it, the discounter plugin wont be able to work)<br />";
 			echo "* A temporary network issue; retry in 5 mins<br />";

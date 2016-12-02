@@ -236,8 +236,11 @@ function nxs_site_createcontent_internal($args)
 					"postmetas" => array
 					(
 						"nxs_semantic_media" => $nxs_semantic_media,
-						"stockphoto_id" => $photo_id,
-						"stockphoto_license" => $photo_license,
+						"nxs_core" => array
+						(
+							"stockphoto_id" => $photo_id,
+							"stockphoto_license" => $photo_license,
+						),
 					),
 				);
 				$r = nxs_import_file_to_media_v2($importmeta);

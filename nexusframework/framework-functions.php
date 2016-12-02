@@ -2791,6 +2791,12 @@ function nxs_load_plugins()
 	{
 		require_once($path);
 	}
+	//
+	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-catalog/nxs-catalog.php';
+	if (file_exists($path))
+	{
+		require_once($path);
+	}
 }
 
 //

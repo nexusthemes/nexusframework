@@ -38,9 +38,18 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 	{
 		if (nxs_stringcontains($value, nxs_lookuptable_getprefixtoken()) && (nxs_stringcontains($value, nxs_lookuptable_getpostfixtoken())))
 		{
+			$orig = $value;
+			$translateme = array
+			(
+				"value" => $value,
+			);
+			// Lookup atts
+			$translations = nxs_filter_translatelookup($translateme, array("value"));
+			$translatesto = $translations["value"];
+			
 			$lookuphelphtml = "";
 			$lookuphelphtml .= "<a href='#' onclick='nxs_js_popup_site_neweditsession(\"lookuptablemanagementhome\"); return false;' class='nxsbutton1 nxs-float-right'>Manage</a>";
-			$lookuphelphtml .= nxs_l18n__("Contains at least one lookup value {{x}}") . " ";
+			$lookuphelphtml .= nxs_l18n__("'{$orig}' translates to '{$translatesto}'") . " ";
 			$lookuphelphtml .= "<a href='http://nexusthemes.com/support/content-lookup-tables/' target='_blank'>" . nxs_l18n__("Learn more") . "</a>";
 			$lookuphelphtml = '<div class="content" style="font-size: smaller; font-style: italic;">' . $lookuphelphtml . '</div>';
 		}
