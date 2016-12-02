@@ -11893,12 +11893,12 @@ function nxs_connectivity_invoke_api_get($args)
 	$environment = "prod";	// $this->settings["api_environment"];
 	$timeout = 3;
 	$version = 1;
-		
+	
 	//$fingerprint = $this->settings["api_fingerprint"];
 	//$language = $this->settings["api_lang"];
 	//$hostname = "nexusthemes.com";
 	$apiurl = "https://{$hostname}/api/{$version}/{$environment}{$apiurl}";
-	
+		
 	// add custom parameters
 	$queryparameters = $args["queryparameters"];
 	if (isset($queryparameters))
@@ -11930,6 +11930,7 @@ function nxs_connectivity_invoke_api_get($args)
 	$context = stream_context_create($opts);
 	$json = @file_get_contents($apiurl, false, $context);
 
+	//error_log("nxs_connectivity_invoke_api_get;" . $apiurl);
 	
 	if ($json == "")
 	{
