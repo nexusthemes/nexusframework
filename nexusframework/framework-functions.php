@@ -2465,6 +2465,8 @@ function nxs_create_post_types_and_taxonomies()
 		"taxonomies" => array("nxs_tax_subposttype"),
 		"ispublic" => true,
 		"show_ui" => true,
+		// "query_var" => "serviceqv",	// anonymous access is ok too
+		"exclude_from_search" => false,
 		'rewrite' => array
 		(
 			'slug' => '', 

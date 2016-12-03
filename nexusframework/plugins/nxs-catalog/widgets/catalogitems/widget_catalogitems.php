@@ -134,7 +134,7 @@ function nxs_widgets_catalogitems_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	$html .= "<div id='nxsgrid-container'>";
+	$html .= "<div class='nxsgrid-container'>";
 	
 	// grab instances from the cache
 	$key = "cat_instances_" . md5($businesstype);

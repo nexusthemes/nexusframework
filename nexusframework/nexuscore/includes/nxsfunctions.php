@@ -2568,10 +2568,14 @@ function nxs_getnxsposttype_by_wpposttype($posttype)
 	{
 		$result = "busrulesset";
 	}
+	/*
+	// LET OP, BIJ TERUGPLAATSEN VAN DE VOLGENDE REGELS,
+	// WORDEN ANONIEME REQUESTEN OP DE SERVICE GEREDIRECT NAAR wp-login!
 	else if ($posttype == "nxs_service")
 	{
 		$result = "service";
 	}
+	*/
 	else if ($posttype == "")
 	{
 		// dit is het geval bij de search form
@@ -11630,6 +11634,7 @@ function nxs_registernexustype_withtaxonomies($title, $taxonomies, $ispublic)
 function nxs_registernexustype_v2($args)
 {
 	$hasadmin = nxs_has_adminpermissions();
+	$exclude_from_search = true;
 	
 	// defaults
 	$query_var = $hasadmin;
@@ -11658,6 +11663,7 @@ function nxs_registernexustype_v2($args)
 		'nxs_' . $title,
 		array
 		(
+			'capability_type' => 'post',
 			'labels' => array
 			(
 				'name' => __('Nxs ' . $title),
@@ -11665,7 +11671,7 @@ function nxs_registernexustype_v2($args)
 			),
 			'public' => $ispublic,
 			'has_archive' => false,
-			'exclude_from_search' => true,
+			'exclude_from_search' => $exclude_from_search,
 			'publicly_queryable' => true,	// Whether queries can be performed on the front end as part of parse_request(). MOET OP TRUE !
 			'show_in_nav_menus' => false, 	// Whether post_type is available for selection in navigation menus.
 			'show_ui' => $show_ui, 	// True, if you want this type to show in in WP backend's menu (see show_in_menu too!)
@@ -11678,6 +11684,8 @@ function nxs_registernexustype_v2($args)
 			'rewrite' => $rewrite,
 		)
 	);
+	
+	
 }
 
 if(!function_exists('mb_list_encodings')) 

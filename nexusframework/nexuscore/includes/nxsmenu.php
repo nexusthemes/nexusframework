@@ -1110,7 +1110,7 @@ li.score {
 		  
 		  <?php 
 		  
-		  if ($nxsposttype == "post" && is_singular())
+		  if (in_array($nxsposttype, array("post", "service")) && is_singular())
 		  {
 				$wordpressbackendurl = get_edit_post_link($postid, array());	
 		  } 
@@ -1140,6 +1140,7 @@ li.score {
 		  {
 		  	// fall back
 		  	$wordpressbackendurl = get_admin_url();
+		  	$wordpressbackendurl = nxs_addqueryparametertourl_v2($wordpressbackendurl, "nxsposttype", $nxsposttype, true, true);
 		  }
 		  
 		  do_action('nxs_ext_injectmenuitem');
