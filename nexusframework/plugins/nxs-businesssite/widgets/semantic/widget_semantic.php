@@ -30,7 +30,9 @@ function nxs_widgets_semantic_home_getoptions($args)
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
-	$servicesediturl = nxs_geturl_for_postid($contentmodel["services"]["postid"]);
+	$datasource = $args["datasource"];
+	
+	$orderediturl = nxs_geturl_for_postid($contentmodel[$datasource]["postid"]);
 	
 	// CORE WIDGET OPTIONS
 	
@@ -50,14 +52,28 @@ function nxs_widgets_semantic_home_getoptions($args)
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("Items", "nxs_td"),
       ),
+ 			array
+      (
+				"id" 					=> "datasource",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
+				"dropdown" 		=> array
+				(
+					"services" => "Services",
+					"testimonials" => "Testimonials",
+				),
+			),
+			/*
 			array
 			(
 				"id" 				=> "editorlink",
 				"type" 				=> "custom",
-				"custom"	=> "<div><a class='nxsbutton' href='{$servicesediturl}'>Edit</a></div>",
-				"label" 			=> nxs_l18n__("Services", "nxs_td"),
+				"custom"	=> "<div><a class='nxsbutton' href='{$orderediturl}'>Change Order</a></div>",
+				"label" 			=> nxs_l18n__("Order", "nxs_td"),
 			),
-			 array(
+			*/
+			array
+			(
           "id" 				=> "wrapper_items_end",
           "type" 				=> "wrapperend",
       ),
@@ -68,6 +84,7 @@ function nxs_widgets_semantic_home_getoptions($args)
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("Visualization", "nxs_td"),
       ),
+     
       array
       (
 				"id" 					=> "itemsstyle",
@@ -75,6 +92,7 @@ function nxs_widgets_semantic_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Style", "nxs_td"),
 				"dropdown" 		=> array
 				(
+					"title" => "Title",
 					"text" => "Text",
 					"target" => "Target",
 				),
@@ -174,6 +192,20 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 	// Turn on output buffering
 	nxs_ob_start();
 	
+	//global $nxs_global_current_containerpostid_being_rendered;
+	//$posttype = get_post_type($nxs_global_current_containerpostid_being_rendered);
+	
+	global $nxs_global_current_postid_being_rendered;
+	$posttype2 = get_post_type($nxs_global_current_postid_being_rendered);
+	
+	/*
+	echo "<div>";
+	echo "containerpostid; $nxs_global_current_containerpostid_being_rendered <br />";
+	echo "posttype of container: $posttype <br />";
+	echo "posttype of post: $posttype2 <br />";
+	echo "</div>";
+	*/
+	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
@@ -181,7 +213,16 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
-	$taxonomy = "services";
+	if ($datasource == "")
+	{
+		$taxonomy = "services";
+	}
+	else
+	{
+		$taxonomy = $datasource;
+	}
+	
+	//
 	$html .= "<div class='nxsgrid-container'>";
 	
 	//
@@ -216,6 +257,11 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
+	if ($posttype2 == "nxs_sidebar")
+	{
+		$numberofcolumns = 1;
+	}
+	
 	$index = -1;
 	foreach ($contentmodel[$taxonomy]["instances"] as $instance)
 	{
@@ -236,8 +282,23 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 			"destination_url" => $url,
 		);
 		
-		nxs_requirewidget($itemsstyle);
-		$functionnametoinvoke = "nxs_widgets_{$itemsstyle}_render_webpart_render_htmlvisualization";
+		if ($itemsstyle == "title")
+		{
+			unset($args["text"]);
+			unset($args["image_imageid"]);
+		}
+		
+		if ($itemsstyle == "target")
+		{
+			$widgettype = "target";
+		}
+		else
+		{
+			$widgettype = "text";
+		}
+		
+		nxs_requirewidget($widgettype);
+		$functionnametoinvoke = "nxs_widgets_{$widgettype}_render_webpart_render_htmlvisualization";
 
 		$subresult = call_user_func($functionnametoinvoke, $args);
 		$subhtml = $subresult["html"];

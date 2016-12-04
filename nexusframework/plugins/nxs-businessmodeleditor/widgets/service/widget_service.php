@@ -29,6 +29,22 @@ function nxs_widgets_service_getunifiedcontentgroup() {
 // Define the properties of this widget
 function nxs_widgets_service_home_getoptions() 
 {
+	$cpts = array();
+		
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+	{
+	 	if ($taxonomymeta["arity"] == "n")
+	 	{
+		 	$singular = $taxonomymeta["singular"];
+		 	$cpts[] = "nxs_" . $singular;
+		}
+	}
+	
+	$posttypes = array_merge(array("post","page"), $cpts);
+	
+	//error_log("service: " . json_encode($posttypes));
+	
 	$options = array
 	(
 		"sheettitle" 		=> "Service",
@@ -48,7 +64,7 @@ function nxs_widgets_service_home_getoptions()
 				"label" 						=> nxs_l18n__("Post or page", "nxs_td"),
 				"tooltip" 					=> nxs_l18n__("Select the post or page that represents this service", "nxs_td"),
 				// we still enable posts and pages too, as some people might be using the "old" implementation
-				"post_type" 				=> array("post","page","nxs_service"),
+				"post_type" 				=> $posttypes,
 			),
 			array
 			(

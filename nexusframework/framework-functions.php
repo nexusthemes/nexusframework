@@ -399,7 +399,11 @@ if (is_admin())
 	
 	function nxs_add_meta_boxes()
 	{
-		add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', 'nxs_service', 'side', 'default');
+		$cpts = nxs_cpt_getcptswithoutslug();
+		foreach ($cpts as $cpt)
+		{
+			add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', $cpt, 'side', 'default');
+		}
 		add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', 'post', 'side', 'default');
 		add_meta_box('nxs_semanticlayout', 'Layout', 'nxs_semanticlayout_callback', 'page', 'side', 'default');
 	}
@@ -2393,6 +2397,1053 @@ function nxs_pre_get_posts_categorypageextension($query)
   return $query;
 }
 
+function nxs_business_gettaxonomiesmeta()
+{
+	// arity explanation;
+	// * n means 0,1 or more
+	// * 1 means exactly 1
+	
+	$result = array
+	(
+		"meta" => array
+		(
+			"singular" => "meta",
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				"internal_notes" => array
+				(
+					"type" => "textarea",
+					"scope" => "searchphrase",
+				),		
+			
+				/* 
+				this section is removed => from 20160803 they are stored in their own config (translatable unit)
+				
+				"businessowners" => array
+				(
+					"type" => "text",
+					"comment" => "how do you call people (or businesses) that are in this business? used in marketing promotions<br />p.e. 'account professionals' for the businesstype accounting<br /> or 'taxi drivers' for businesstype taxi",
+				),
+				*/
+				"searchvolume" => array
+				(
+					"type" => "text",
+					"scope" => "searchphrase",
+				),		
+			),
+			"wpcreateinstructions" => array(),
+			"label" => "Meta",
+		),
+		"logo" => array
+		(
+			"singular" => "logo",
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				"image" => array
+				(
+					"type" => "media",
+					"scope" => "searchphrase",
+				),		
+			),
+			"wpcreateinstructions" => array(),
+			"label" => "Logo",
+		),
+	
+		"brands" => array
+		(
+			"singular" => "brand",
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array(),
+			"label" => "Brands",
+		),	
+	
+		"businesshours" => array
+		(
+			"singular" => "businesshour",		
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"value" => array
+				(
+					"label" => "Time table",
+					"type" => "textarea",
+					"comment" => "like a CSV",
+				),
+			),
+			"wpcreateinstructions" => array(),
+			"label" => "Business Hours",
+		),
+	
+		"category" => array
+		(
+			"singular" => "category",		
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				/*
+				"title" => array
+				(
+					"label" => "title",				
+					"type" => "text",
+				),
+				*/
+				"icon" => array
+				(
+					"type" => "icon",
+				),				
+			),
+			"wpcreateinstructions" => array(),
+			"label" => "Category",
+		),
+		
+		"stansmeta" => array
+		(
+			"singular" => "stansmeta",		
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				"stansid" => array
+				(
+					"label" => "Stans identifier",				
+					"type" => "text",
+					"scope" => "searchphrase",
+					"comment" => "(the identifier of the last known stans that was used to build this theme)",
+					// "readonly" => "true",
+				),
+			),
+			"wpcreateinstructions" => array(),
+			"label" => "Stans meta",
+		),		
+
+		/*
+		"tagline" => array
+		(
+			"singular" => "tagline",		
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				"text" => array
+				(
+					"label" => "_blank",
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array(),
+			"label" => "Tagline",
+		),
+		*/
+		
+		"lookuptable" => array
+		(
+			"singular" => "lookuptable",		
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				"value" => array
+				(
+					"label" => "_blank",
+					"type" => "textarea",
+					"comment" => "each line should have format key==value",
+				),
+			),
+			"wpcreateinstructions" => array(),
+			"label" => "Lookup",
+			// "comment" => "Format: each line should have a key value, seperated with == for example name==John Doe",
+		),
+			
+		"colors" => array
+		(
+			"singular" => "color",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 3,
+			"taxonomyfields" => array(),
+			"wpcreateinstructions" => array(),
+			"instanceexistencecheckfield" => "color",
+			"instancefields" => array
+			(
+				"color" => array
+				(
+					"type" => "farbtastic",	// color
+					"scope" => "searchphrase",
+				),
+			),
+			"label" => "Colors (hex)",
+		),
+		/*
+		"fonts" => array
+		(
+			"singular" => "font",		
+			"arity" => "n",
+			"taxonomyfields" => array(),
+			"wpcreateinstructions" => array(),
+			"instancefields" => array
+			(
+				"font" => array
+				(
+					"type" => "font",
+					"scope" => "searchphrase",
+				),
+			),
+			"label" => "Fonts",
+		),
+		*/
+		// ----		
+		"services" => array
+		(
+			"singular" => "service",		
+			"arity" => "n",	
+			"aritymaxinstancecount" => 8,
+			"instanceexistencecheckfield" => "title",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				"instances" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"icon" => array
+				(
+					"type" => "icon",
+				),
+				"excerpt" => array
+				(
+					"type" => "textarea",
+				),
+				"genericimage" => array
+				(
+					"type" => "media",
+					"scope" => "businesstype",
+				),				
+				"image" => array
+				(
+					"type" => "media",
+					"scope" => "searchphrase",
+				),
+				/*
+				"pricingtable" => array
+				(
+					"type" => "textarea",
+				),
+				*/
+				"problem" => array
+				(
+					"type" => "text",
+				),
+				"solution" => array
+				(
+					"type" => "text",
+				),
+				"imageset" => array
+				(
+					"type" => "mediaset",
+					"scope" => "businesstype",
+				),				
+			),
+			"label" => "Services",
+		),
+		"products" => array
+		(
+			"singular" => "product",		
+			"arity" => "n",	
+			"aritymaxinstancecount" => 8,
+			"instanceexistencecheckfield" => "title",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),
+				/*
+				"options" =>  array
+				(
+					"type" => "text",
+					"comment" => "p.e. googlemap|some other value|...<br />use in combination with:<br />etchrowcondition=notcontains:products:options:googlemap",
+				),
+				*/
+			),
+			"wpcreateinstructions" => array
+			(
+				"instances" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"icon" => array
+				(
+					"type" => "icon",
+				),
+				"genericimage" => array
+				(
+					"type" => "media",
+					"scope" => "businesstype",
+				),				
+				"image" => array
+				(
+					"type" => "media",
+					"scope" => "searchphrase",
+				),
+				"imageset" => array
+				(
+					"type" => "mediaset",
+					"scope" => "businesstype",
+				),
+				"specifications" => array
+				(
+					"type" => "textarea",
+					"comment" => "Insert like a CSV<br />Description,Value<br />Color,Blue",
+				),
+			),
+			"label" => "Products",
+		),		
+		"calltoactions" => array
+		(
+			"singular" => "calltoaction",		
+			"arity" => "n",	
+			"aritymaxinstancecount" => 3,
+			"filters" => array
+			(
+				"hatchwidget_widgetmeta_filters" => array
+				(
+					"nxs_stanser_cta_getwidgetmeta",
+				),
+			),
+			"taxonomyfields" => array
+			(
+
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			"instanceexistencecheckfield" => "imperative_s",
+			"instancefields" => array
+			(
+				"destination" => array	// # 73456873456834276
+				(
+					"type" => "ctadestination",
+				),
+				"imperative_s" => array
+				(
+					"type" => "text",
+				),
+				"imperative_m" => array
+				(
+					"type" => "text",
+				),
+				"imperative_l" => array
+				(
+					"type" => "text",
+				),				
+				"icon" => array
+				(
+					"type" => "icon",
+				),
+				"image" => array
+				(
+					"type" => "media",
+					"scope" => "businesstype",
+				),
+				"description" => array
+				(
+					"type" => "textarea",
+				)
+			),
+			"label" => "Call to actions",
+		),		
+		"blogs" => array
+		(
+			"singular" => "blog",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 5,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				
+				"instances" => array
+				(
+					"type" => "post",
+				),
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+				
+			),
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "hidden",	// set at runtime with lorem ipsum text, while stanser is working (see stanser.php)
+				),
+				"image" => array
+				(
+					"type" => "media",
+				),
+			),
+			"label" => "Blogs / News",
+		),
+		
+		// Prices / Fees
+		"prices" => array
+		(
+			"singular" => "pricingtable",		
+			"arity" => "n",	
+			"aritymaxinstancecount" => 8,
+			"label" => "Prices",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"pricingtable" => array
+				(
+					"type" => "textarea",
+				),
+			),
+		),
+		
+		"forms" => array
+		(
+			"singular" => "form",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 2,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				"instances" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"form" => array
+				(
+					"type" => "textarea",
+				),
+			),
+			"label" => "Forms",
+		),
+		"testimonials" => array
+		(
+			"singular" => "testimonial",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 5,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instanceexistencecheckfield" => "source",
+			"instancefields" => array
+			(
+				"source" => array
+				(
+					"type" => "text",
+				),
+				"text" => array
+				(
+					"type" => "textarea",
+				),
+			),
+			"label" => "Testimonials",
+		),
+		"resources" => array
+		(
+			"singular" => "resource",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 5,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				
+				"instances" => array
+				(
+					"type" => "post",
+				),
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+				
+			),
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "hidden",
+				),
+				"image" => array
+				(
+					"type" => "media",
+				),
+			),
+			"label" => "Resources / Tips",
+		),
+		/*
+		"events" => array
+		(
+			"singular" => "event",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 3,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array(),
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"text" => array
+				(
+					"type" => "text",
+				),
+				"eventdate" => array
+				(
+					"type" => "text",
+				),
+			),
+			"label" => "Events",
+		),
+		*/
+		"photogalleries" => array
+		(
+			"singular" => "photogallery",		
+			"arity" => "1",
+			"aritymaxinstancecount" => 0,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"imageset" => array
+				(
+					"type" => "mediaset",
+				),				
+			),
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			/*
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"imageset" => array
+				(
+					"type" => "mediaset",
+				),
+			),
+			*/
+			"label" => "Photo Galleries",
+		),
+		"videogalleries" => array
+		(
+			"singular" => "videogallery",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 4,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array(),
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"text" => array
+				(
+					"type" => "text",
+				),
+				"video" => array
+				(
+					"type" => "text",
+				),
+			),
+			"label" => "Video Gallery",
+		),
+		"trusticons" => array
+		(
+			"singular" => "trusticon",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 5,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),			
+			),
+			"wpcreateinstructions" => array(),
+			"instanceexistencecheckfield" => "image",
+			"instancefields" => array
+			(
+				"image" => array
+				(
+					"type" => "media",
+				),
+			),
+			"label" => "Trust icon",
+		),
+		/*
+		"paymentmethods" => array
+		(
+			"singular" => "paymentmethod",		
+			"arity" => "1",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array(),
+			"instanceexistencecheckfield" => "n/a",
+			"instancefields" => array
+			(
+			),
+			"label" => "Payment methods",
+		),
+		*/
+		"homepage" => array
+		(
+			"singular" => "homepage",		
+			"label" => "Homepage",
+			"arity" => "1",	
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			/*
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"text" => array
+				(
+					"type" => "text",
+				),
+			),
+			*/
+		),
+		"contact" => array
+		(
+			"singular" => "contact",		
+			"label" => "Contact",
+			"arity" => "1",	
+			//"subtype" => "call to action",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"form" => array
+				(
+					"type" => "textarea",
+					"comment" => "type=form|title=Form title|button_text=Send<br /><br />type=text|title=naam<br />type=replyto|title=email<br />type=select|title=keuze|selectables=a^b^c<br />type=date|title=some date<br /><br />type=datetime|title=some datetime<br />",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+		),
+		"about" => array
+		(
+			"singular" => "about",		
+			"arity" => "1",	
+			"label" => "About",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),
+				"image" => array
+				(
+					"type" => "media"	
+				),
+				"excerpt" => array
+				(
+					"type" => "textarea",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			/*
+			"instanceexistencecheckfield" => "title",
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			*/
+		),
+		/*
+		"phone" => array
+		(
+			"singular" => "phone",		
+			"arity" => "1",	
+			"label" => "Phone",
+			"wpcreateinstructions" => array(),
+
+			"taxonomyfields" => array
+			(
+				"primary_imperative_s" => array
+				(
+					"type" => "text",
+				),
+				"primary_imperative_m" => array
+				(
+					"type" => "text",
+				),
+				"secondary_imperative_s" => array
+				(
+					"type" => "text",
+				),
+				"secondary_imperative_m" => array
+				(
+					"type" => "text",
+				),
+			),
+
+			"wpcreateinstructions" => array(),
+		),
+		*/
+		/*
+		"register" => array
+		(
+			"arity" => "1",	
+			"subtype" => "call to action",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+		),
+		*/
+		"employees" => array
+		(
+			"singular" => "employee",		
+			"arity" => "n",
+			"aritymaxinstancecount" => 8,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),			
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instanceexistencecheckfield" => "name",
+			"instancefields" => array
+			(
+				"name" => array
+				(
+					"type" => "text",
+				),
+				"role" => array
+				(
+					"type" => "text",
+				),
+				"image" => array
+				(
+					"type" => "media",
+				),
+			),
+			"label" => "Employees",
+		),
+		"faq" => array
+		(
+			"singular" => "faq",		
+			"label" => "FAQ",
+			"arity" => "n",
+			"aritymaxinstancecount" => 10,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),	
+			"wpcreateinstructions" => array
+			(
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instanceexistencecheckfield" => "title",			
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"text" => array
+				(
+					"type" => "hidden",
+				),
+			),
+		),
+		"vacancies" => array
+		(
+			"singular" => "vacancy",		
+			"label" => "Vacancies",
+			"arity" => "n",
+			"aritymaxinstancecount" => 5,
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"text" => array
+				(
+					"type" => "text",
+				),
+			),	
+			"instanceexistencecheckfield" => "title",			
+			"wpcreateinstructions" => array
+			(
+				"instances" => array
+				(
+					"type" => "post",
+				),
+				"taxonomy" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+			),
+		),
+		// 
+		"uniquesellingpropositions" => array
+		(
+			"singular" => "uniquesellingproposition",		
+			"arity" => "n",	
+			"aritymaxinstancecount" => 8,
+			"instanceexistencecheckfield" => "title",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),
+				"description" => array
+				(
+					"type" => "textarea",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"icon" => array
+				(
+					"type" => "icon",
+				),				
+				"description" => array
+				(
+					"type" => "textarea",					
+				),
+			),
+			"label" => "Unique Selling Propositions",
+		),	
+	);
+		
+	return $result;
+}
+
+
 // custom post types cpt
 function nxs_create_post_types_and_taxonomies() 
 {
@@ -2457,32 +3508,82 @@ function nxs_create_post_types_and_taxonomies()
 	// add custom posttypes for semantic entities;
 
 	// "special" custom post types
-
-	// "service"
-	$args = array
-	(
-		"title" => "service",
-		"taxonomies" => array("nxs_tax_subposttype"),
-		"ispublic" => true,
-		"show_ui" => true,
-		// "query_var" => "serviceqv",	// anonymous access is ok too
-		"exclude_from_search" => false,
-		'rewrite' => array
-		(
-			'slug' => '', 
-			'with_front' => FALSE
-		),
-		"supports" => array
-		(
-			'title',
-			'editor',
-			'author',
-			'slug',
-			'custom-fields',
-			'thumbnail',
-		),
-	);
-	nxs_registernexustype_v2($args);
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+	{
+	 	if ($taxonomymeta["arity"] == "n")
+	 	{
+			if ($taxonomymeta["wpcreateinstructions"] != "")
+			{
+				$instances = $taxonomymeta["wpcreateinstructions"]["instances"];
+				if ($instances != "")
+				{
+					//
+			 		$type = $instances["type"];
+			 		if (in_array($type, array("post", "page")))
+			 		{
+			 			$singular = $taxonomymeta["singular"];
+			 			
+						// "service"
+						$args = array
+						(
+							"title" => $singular,
+							"taxonomies" => array("nxs_tax_subposttype"),
+							"ispublic" => true,
+							"show_ui" => true,
+							"exclude_from_search" => false,
+							'rewrite' => array
+							(
+								'slug' => '', 
+								'with_front' => FALSE
+							),
+							"supports" => array
+							(
+								'title',
+								'editor',
+								'author',
+								'slug',
+								'custom-fields',
+								'thumbnail',
+							),
+						);
+						nxs_registernexustype_v2($args);
+					}
+				}
+				else
+				{
+					//
+					$singular = $taxonomymeta["singular"];
+			 			
+					// p.e. "testimonial"
+					$args = array
+					(
+						"title" => $singular,
+						"taxonomies" => array("nxs_tax_subposttype"),
+						"ispublic" => false,
+						"show_ui" => true,
+						"exclude_from_search" => false,
+						'rewrite' => array
+						(
+							'slug' => '', 
+							'with_front' => FALSE
+						),
+						"supports" => array
+						(
+							'title',
+							'editor',
+							'author',
+							'slug',
+							'custom-fields',
+							'thumbnail',
+						),
+					);
+					nxs_registernexustype_v2($args);
+				}
+			}
+		}
+	}
+	
 	
 	// by default custom post types in WP get a "slug" in their
 	// url, to be able to identify them. Our semantic entities
@@ -2494,7 +3595,26 @@ function nxs_create_post_types_and_taxonomies()
 	{
 		// the list of custom post types that should not get a slug in the
 		// url in the permalinks (i.e. which should behave like pages/posts)
-		return array("nxs_service");
+		$result = array();
+		
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		{
+		 	if ($taxonomymeta["arity"] == "n")
+		 	{
+				if ($taxonomymeta["wpcreateinstructions"] != "")
+				{
+			 		$instances = $taxonomymeta["wpcreateinstructions"]["instances"]["type"];
+			 		if (in_array($instances, array("post", "page")))
+			 		{
+			 			$singular = $taxonomymeta["singular"];
+			 			$result[] = "nxs_" . $singular;
+			 		}
+			 	}
+		 	}
+		}
+		
+		return $result;
 	}
 	
 	// by default the cpt put their slug in front of the address, we dont want that

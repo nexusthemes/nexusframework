@@ -63,15 +63,24 @@ function nxs_businessmodeleditor_getwidgets($result, $widgetargs)
 	{
 		$nxssubposttype = $widgetargs["nxssubposttype"];
 		
-		// SERVICESET
-		if ($nxssubposttype == "serviceset") 
-		{	
-			$result[] = array("widgetid" => "service", "tags" => array("businessmodeleditor"));
+		// bijv. service_set
+		
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		{
+		 	if ($taxonomymeta["arity"] == "n")
+		 	{
+		 		$singular = $taxonomymeta["singular"];
+		 		
+		 		if ($nxssubposttype == "{$singular}_set") 
+		 		{
+					$result[] = array("widgetid" => "service", "tags" => array("businessmodeleditor"));
+		 		}
+		 	}
 		}
 	}
 	
 	
-	//$result[] = array("widgetid" => "service", "tags" => array("businessmodeleditor"));
 
 	//		
 	return $result;

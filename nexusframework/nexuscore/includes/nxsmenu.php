@@ -57,7 +57,7 @@
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	$editorurl = $contentmodel["services"]["url"];
-	$servicesurl = $contentmodel["services"]["url"];
+	
 ?>
 <!-- loading all fonts -->
 <script type="text/javascript" data-cfasync="false"  src="//www.google.com/jsapi"></script>
@@ -1002,12 +1002,25 @@ li.score {
 		  	<a href="<?php echo $editorurl; ?>" title="<?php nxs_l18n_e("Business Model", "nxs_td"); ?>" class="site">
 		  		<span class='nxs-icon-tree'></span>
 		  	</a>
-		  	<ul> 	
-		    	<li>
-		      	<a href="<?php echo $servicesurl; ?>" title="<?php nxs_l18n_e("Services", "nxs_td"); ?>" class="site">
-		      		<span class='nxs-icon-publicrelations'></span>		
-		      	</a>
-		      </li>
+		  	<ul>
+		  		<?php
+					$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+					foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+					{
+					 	if ($taxonomymeta["arity"] == "n")
+					 	{
+							$url = $contentmodel[$taxonomy]["url"];
+							$icon = "publicrelations";
+				  		?>
+				    	<li>
+				      	<a href="<?php echo $url; ?>" title="<?php echo $taxonomy; ?>" class="site">
+				      		<span class='nxs-icon-<?php echo $icon; ?>'></span>		
+				      	</a>
+				      </li>
+				      <?php
+						}
+			    }
+			    ?>
 		    </ul>
 		  </li>
 		  <!-- -->

@@ -74,86 +74,69 @@ class businesssite_instance
 		return $content;
 	}
 	
-	function getservicescontainerid()
+	function getcontainerid($cpt)
 	{
-		$servicescontainerid = $this->getservicescontainerid_internal();
+		$servicescontainerid = $this->getcontainerid_internal($cpt);
 		if ($servicescontainerid === false) 
 		{ 
 			//echo "servicescontainerid not yet found, creating...";
-			$result = $this->createnewservicescontainer_internal();
+			$result = $this->createnewcontainer_internal($cpt);
 			if ($result["result"] != "OK") { echo "unexpected;"; var_dump($result); die(); }
 			$servicescontainerid = $result["postid"];
 		}
 		return $servicescontainerid;
 	}
 	
-	function getservicescontainerid_internal()
+	function getcontainerid_internal($cpt)
 	{
 		// published pagedecorators
 		$publishedargs = array();
 		$publishedargs["post_status"] = "publish";
 		$publishedargs["post_type"] = "nxs_genericlist";
+		
 		$publishedargs['tax_query'] = array
 		(
 			array
 			(
 				'taxonomy' => 'nxs_tax_subposttype',
 				'field' => 'slug',
-				'terms' => 'serviceset'
+				'terms' => "{$cpt}_set",
 			)
 		);
+		
 		$publishedargs["orderby"] = "post_date";//$order_by;
 		$publishedargs["order"] = "DESC"; //$order;
 		$publishedargs["showposts"] = -1;	// allemaal!
 	  $pages = get_posts($publishedargs);
-	  
-	  if ($_REQUEST["debug"] == "serviceset") 
-	  {
-	  	//$st = debug_backtrace();
-	  	//print_r($st);
-	  	echo "<br /><br />"; 
-	  	echo "debug;"; var_dump($pages); 
-	  }
-	  
 	  $result = false;
 	  if (count($pages) >= 1) 
 	  {
 	  	$result = $pages[0]->ID;
-	  	if ($_REQUEST["debug"] == "serviceset") 
-		  {
-		  	//$st = debug_backtrace();
-		  	//print_r($st);
-		  	$taxsubposttype = nxs_get_nxssubposttype($result);
-		  	echo "taxsubtype:". $taxsubposttype;
-		  	die(); 
-	  	}
 	  }
 	  
 	  return $result;
 	}
 	
-	function createnewservicescontainer_internal()
+	function createnewcontainer_internal($cpt)
 	{
 		$subargs = array();
 		$subargs["nxsposttype"] = "genericlist";
-		$subargs["nxssubposttype"] = "serviceset";	// NOTE!
+		$subargs["nxssubposttype"] = "{$cpt}_set";	// NOTE!
 		$subargs["poststatus"] = "publish";
-		$subargs["titel"] = nxs_l18n__("Service Set", "nxs_td") . " " . nxs_generaterandomstring(6);
+		$subargs["titel"] = nxs_l18n__("Set Order", "nxs_td") . " {$cpt} " . nxs_generaterandomstring(6);
 		$subargs["slug"] = $subargs["titel"];
 		$subargs["postwizard"] = "defaultgenericlist";
 		
 		$response = nxs_addnewarticle($subargs);
 		if ($response["result"] != "OK")
 		{
-			echo "failed to create servicescontainer?!";
+			echo "failed to create container?!";
 			die();
 		}
 		else
 		{
-			//echo "servicescontainerid created";
-			//var_dump($response);
+			//
 		}
-		
 		
 		return $response;
 	}
@@ -162,63 +145,71 @@ class businesssite_instance
 	{
 		$result = array();
 		
-		// this invocation will make it, if its empty
-		$servicescontainerid = $this->getservicescontainerid();
-		
-	  $result["services"]["postid"] = $servicescontainerid;
-	  $result["services"]["url"] = nxs_geturl_for_postid($servicescontainerid);
-	  
-	  //echo "servicescontainerid: $servicescontainerid <br />";
-	  
-	  // find "services" in the post with id servicescontainerid
-		$filter = array
-		(
-			"postid" => $servicescontainerid,
-			//"widgettype" => "service", // all types!
-		);
-		$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
-		
-		$countservicesenabled = 0;
-		$items = nxs_getwidgetsmetadatainpost_v2($filter);
-		foreach ($items as $placeholderid => $widgetmeta)
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
-			$widgettype = $widgetmeta["type"];
-			if ($widgettype == "service")
-			{
-				$postid = $widgetmeta["filter_postid"];
-				$post = get_post($postid);
-				
-				$result["services"]["instances"][] = array
+		 	if ($taxonomymeta["arity"] == "n")
+		 	{
+		 		$singular = $taxonomymeta["singular"];
+		 		
+		 		// this invocation will create a new container when needed
+				$containerid = $this->getcontainerid($singular);
+			
+	  		$result[$taxonomy]["postid"] = $containerid;
+	  		$result[$taxonomy]["url"] = nxs_geturl_for_postid($containerid);
+	  
+			  // find "items" in the post with id containerid
+				$filter = array
 				(
-					"type" => $widgetmeta["type"],
-					"enabled" => $widgetmeta["enabled"],
-					"content" => array
-					(
-						"post_title" => $post->post_title,
-						"post_excerpt" => $post->post_excerpt,
-						"post_content" => $post->post_content,
-						"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
-						"url" => nxs_geturl_for_postid($post->ID),
-					),
+					"postid" => $containerid,
 				);
+				$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
 				
-				if ($widgetmeta["enabled"] != "")
+				$countinstancesenabled = 0;
+				$items = nxs_getwidgetsmetadatainpost_v2($filter);
+				foreach ($items as $placeholderid => $widgetmeta)
 				{
-					$countservicesenabled++;
+					$widgettype = $widgetmeta["type"];
+					if (true) // $widgettype == "service")
+					{
+						$postid = $widgetmeta["filter_postid"];
+						$post = get_post($postid);
+						
+						$result[$taxonomy]["instances"][] = array
+						(
+							"type" => $widgetmeta["type"],
+							"enabled" => $widgetmeta["enabled"],
+							"content" => array
+							(
+								"post_title" => $post->post_title,
+								"post_excerpt" => $post->post_excerpt,
+								"post_content" => $post->post_content,
+								"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
+								"url" => nxs_geturl_for_postid($post->ID),
+							),
+						);
+						
+						if ($widgetmeta["enabled"] != "")
+						{
+							$countinstancesenabled++;
+						}
+					}
+					else 
+					{
+						// 
+						echo "unexpected widgettype; <br />";
+						echo "postid: " . $servicescontainerid . "<br />";
+						echo "huhh?! widgettype: {$widgettype}";
+						// die();
+					}
 				}
-			}
-			else 
-			{
-				// 
-				echo "unexpected widgettype; <br />";
-				echo "postid: " . $servicescontainerid . "<br />";
-				echo "huhh?! widgettype: {$widgettype}";
-				// die();
+				
+				//wp_delete_post($containerid, true);
+				
+				$result[$taxonomy]["countenabled"] = $countinstancesenabled;
 			}
 		}
-		
-		$result["services"]["countenabled"] = $countservicesenabled;
-	  
+			  
 		return $result;
 	}
 	
@@ -226,6 +217,10 @@ class businesssite_instance
 	{
 		$nxsposttype = $widgetargs["nxsposttype"];
 		if ($nxsposttype == "post") 
+		{
+			$result[] = array("widgetid" => "semantic");
+		}
+		else if ($nxsposttype == "sidebar") 
 		{
 			$result[] = array("widgetid" => "semantic");
 		}
@@ -359,21 +354,6 @@ class businesssite_instance
 	{
 		// 
 		nxs_lazyload_plugin_widget(__FILE__, "semantic");
-		
-		
-		
-		// debugging handling
-		if ($_REQUEST["dumpcontentmodel"] == "true")
-		{
-			// this invocation will make it, if its empty
-			$servicescontainerid = $this->getservicescontainerid();
-			echo "servicescontainerid: $servicescontainerid <br />";
-			
-			echo "model:<br />";
-			$contentmodel = $this->getcontentmodel();
-			var_dump($contentmodel);
-			die();
-		}
 	}
 	
 	function __construct()
