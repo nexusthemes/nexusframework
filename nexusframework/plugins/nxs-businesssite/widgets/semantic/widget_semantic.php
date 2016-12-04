@@ -30,6 +30,13 @@ function nxs_widgets_semantic_home_getoptions($args)
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
+	$taxonomies = array
+	(
+		"services" => "Services",
+		"testimonials" => "Testimonials",
+		"employees" => "Employees",
+	);
+
 	$datasource = $args["datasource"];
 	
 	$orderediturl = nxs_geturl_for_postid($contentmodel[$datasource]["postid"]);
@@ -57,11 +64,7 @@ function nxs_widgets_semantic_home_getoptions($args)
 				"id" 					=> "datasource",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
-				"dropdown" 		=> array
-				(
-					"services" => "Services",
-					"testimonials" => "Testimonials",
-				),
+				"dropdown" 		=> $taxonomies,
 			),
 			/*
 			array
@@ -95,6 +98,7 @@ function nxs_widgets_semantic_home_getoptions($args)
 					"title" => "Title",
 					"text" => "Text",
 					"target" => "Target",
+					"bio" => "Bio",
 				),
 				"unistylablefield" => true,
 			),
@@ -291,6 +295,10 @@ function nxs_widgets_semantic_render_webpart_render_htmlvisualization($args)
 		if ($itemsstyle == "target")
 		{
 			$widgettype = "target";
+		}
+		else if ($itemsstyle == "bio")
+		{
+			$widgettype = "text";
 		}
 		else
 		{

@@ -11961,7 +11961,7 @@ function nxs_connectivity_invoke_api_get($args)
 	$context = stream_context_create($opts);
 	$json = @file_get_contents($apiurl, false, $context);
 
-	error_log("nxs_connectivity_invoke_api_get;" . $apiurl);
+	// error_log("nxs_connectivity_invoke_api_get;" . $apiurl);
 	
 	if ($json == "")
 	{
