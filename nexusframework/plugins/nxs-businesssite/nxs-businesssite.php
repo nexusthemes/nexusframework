@@ -170,7 +170,7 @@ class businesssite_instance
 				foreach ($items as $placeholderid => $widgetmeta)
 				{
 					$widgettype = $widgetmeta["type"];
-					if (true) // $widgettype == "service")
+					if (true) // $widgettype == "entity")
 					{
 						$postid = $widgetmeta["filter_postid"];
 						$post = get_post($postid);
@@ -218,11 +218,11 @@ class businesssite_instance
 		$nxsposttype = $widgetargs["nxsposttype"];
 		if ($nxsposttype == "post") 
 		{
-			$result[] = array("widgetid" => "semantic");
+			$result[] = array("widgetid" => "entities");
 		}
 		else if ($nxsposttype == "sidebar") 
 		{
-			$result[] = array("widgetid" => "semantic");
+			$result[] = array("widgetid" => "entities");
 		}
 		
 		return $result;
@@ -353,7 +353,7 @@ class businesssite_instance
 	function instance_init()
 	{
 		// 
-		nxs_lazyload_plugin_widget(__FILE__, "semantic");
+		nxs_lazyload_plugin_widget(__FILE__, "entities");
 	}
 	
 	function __construct()

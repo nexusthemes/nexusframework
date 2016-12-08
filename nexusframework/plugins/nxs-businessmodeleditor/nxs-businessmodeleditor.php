@@ -24,8 +24,7 @@ function nxs_businessmodeleditor_init()
 	}
   
 	// widgets
-	nxs_lazyload_plugin_widget(__FILE__, "serviceset");
-	nxs_lazyload_plugin_widget(__FILE__, "service");
+	nxs_lazyload_plugin_widget(__FILE__, "entity");
 	
 	// if this is an API call, delegate it
 	if 
@@ -46,15 +45,6 @@ function nxs_businessmodeleditor_getwidgets($result, $widgetargs)
 {
 	$nxsposttype = $widgetargs["nxsposttype"];
 	$pagetemplate = $widgetargs["pagetemplate"];
-	
-	if 
-	(
-		$nxsposttype == "post" || 
-		false
-	)
-	{
-		$result[] = array("widgetid" => "serviceset", "tags" => array("businessmodeleditor"));
-	}
 
 	/* GENERIC LISTS POSTTYPE
 	---------------------------------------------------------------------------------------------------- */
@@ -63,8 +53,20 @@ function nxs_businessmodeleditor_getwidgets($result, $widgetargs)
 	{
 		$nxssubposttype = $widgetargs["nxssubposttype"];
 		
-		// bijv. service_set
 		
+
+		error_log("nxs_businessmodeleditor_getwidgets now; $nxsposttype sub: $nxssubposttype");
+	
+		$shouldadd = false;
+		
+		if ($nxssubposttype == "")
+		{
+			// exceptional case; if the widget was deleted, and the undefined widget
+			// is used, someway the nxssubposttype is not set
+			$shouldadd = true;
+		}
+		
+		// bijv. service_set
 		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
@@ -74,9 +76,18 @@ function nxs_businessmodeleditor_getwidgets($result, $widgetargs)
 		 		
 		 		if ($nxssubposttype == "{$singular}_set") 
 		 		{
-					$result[] = array("widgetid" => "service", "tags" => array("businessmodeleditor"));
+		 			$shouldadd = true;
+		 			break;
+		 		}
+		 		else
+		 		{
 		 		}
 		 	}
+		}
+
+		if ($shouldadd)
+		{		
+			$result[] = array("widgetid" => "entity", "tags" => array("businessmodeleditor"));
 		}
 	}
 	

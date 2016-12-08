@@ -180,6 +180,7 @@ function nxs_site_createcontent_internal($args)
 	$nxssubposttype = $contentcurrentpost["nxssubposttype"];
 	$destinationpostid = "";
 	$destinationglobalid = "";
+	$semantictaxonomies = nxs_cpt_getcptswithoutslug();
 	
 	if ($posttype == "attachment")
 	{
@@ -187,7 +188,7 @@ function nxs_site_createcontent_internal($args)
 		$title = $contentcurrentpost["title"];
 		nxs_site_importattachment_url($url, $title, $currentpostglobalid);
 	}
-	else if (in_array($posttype, array("nxs_templatepart", "nxs_genericlist", "page", "nxs_service")))
+	else if (in_array($posttype, array("nxs_templatepart", "nxs_genericlist", "page")) || in_array($posttype, $semantictaxonomies))
 	{
 		$postmetas = array();
 		if ($contentcurrentpost["nxs_semanticlayout"] != "")
@@ -376,7 +377,7 @@ function nxs_site_createcontent_internal($args)
 		{
 			$taxonomy = $contentcurrentpost["nxs_semantic_taxonomy"];
 			
-			// this post represents a taxonomy like for exapmle a service; 
+			// this post represents a taxonomy like for example a service; 
 			// we automatically add the newly created post to the list of 
 			// services
 			global $businesssite_instance;
@@ -390,7 +391,7 @@ function nxs_site_createcontent_internal($args)
 				"postid" => $servicesetpostid,
 				"widgetmetadata" => array
 				(
-					"type" => "service",
+					"type" => "entity",
 					"filter_postid" => $destinationpostid,	// 
 					"enabled" => "true",
 				),

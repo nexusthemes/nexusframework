@@ -436,7 +436,14 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	}
 	
 	// blend unistyle properties
 	$unistyle = $temp_array["unistyle"];
@@ -469,34 +476,39 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	if ($postid != "" && $placeholderid != "")
+	{
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 	
 	// Turn on output buffering
 	nxs_ob_start();
 	
 	global $nxs_global_placeholder_render_statebag;
-	if ($shouldrenderalternative == true) {
+	if ($shouldrenderalternative != "")
+	{
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
-	} else {
+	} 
+	else 
+	{
 		// Appending custom widget class
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
 	}
 	
-	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	// Check if specific variables are empty
-	// If so > $shouldrenderalternative = true, which triggers the error message
-	$shouldrenderalternative = false;
+	$shouldrenderalternative = "";
 	if (
 	$person == "" &&
-	nxs_has_adminpermissions()) {
-		$shouldrenderalternative = true;
+	nxs_has_adminpermissions()) 
+	{
+		$shouldrenderalternative = "Missing input: person not set";
 	}
 	
 	// Link color
@@ -838,9 +850,9 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	if ($shouldrenderalternative) {
-		
-		nxs_renderplaceholderwarning(nxs_l18n__("Missing input", "nxs_td")); 
+	if ($shouldrenderalternative != "") 
+	{	
+		nxs_renderplaceholderwarning($shouldrenderalternative); 
 		
 	} else {	
 		

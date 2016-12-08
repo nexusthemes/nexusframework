@@ -11684,8 +11684,6 @@ function nxs_registernexustype_v2($args)
 			'rewrite' => $rewrite,
 		)
 	);
-	
-	
 }
 
 if(!function_exists('mb_list_encodings')) 

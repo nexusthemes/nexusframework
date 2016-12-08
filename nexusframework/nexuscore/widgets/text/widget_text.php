@@ -41,12 +41,12 @@ function nxs_widgets_text_home_getoptions($args)
 		(
 			// TITLE
 			
-			array( 
+			array
+			( 
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 			),
-			
 			array(
 				"id" 				=> "title",
 				"type" 				=> "input",

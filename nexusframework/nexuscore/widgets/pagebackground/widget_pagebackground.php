@@ -163,12 +163,11 @@ function nxs_widgets_pagebackground_beforeend_head()
 	}
 	?>
 	<script type='text/javascript'>
-
+		// background page decorator
 		jQuery(window).load
 		(
 			function()
 			{
-				// background page decorator
 				<?php
 				echo $backgroundcolorhtml;
 				echo $backgroundimagehtml;

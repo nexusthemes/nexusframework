@@ -1010,7 +1010,7 @@ li.score {
 					 	if ($taxonomymeta["arity"] == "n")
 					 	{
 							$url = $contentmodel[$taxonomy]["url"];
-							$icon = "publicrelations";
+							$icon = $taxonomymeta["icon"];
 				  		?>
 				    	<li>
 				      	<a href="<?php echo $url; ?>" title="<?php echo $taxonomy; ?>" class="site">

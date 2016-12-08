@@ -14,7 +14,17 @@ function nxs_widgets_contactboxitem_getformitemsubmitresult($widget, $args)
 	}
 	else
 	{
-		nxs_webmethod_return_nack("function not found; " . $functionnametoinvoke);	
+		if ($widget == "undefined" || $widget == "")
+		{
+			$result = array
+			(
+				"result" => "OK";
+			);
+		}
+		else
+		{
+			nxs_webmethod_return_nack("function not found; " . $functionnametoinvoke);	
+		}
 	}
 	
 	return $result;
