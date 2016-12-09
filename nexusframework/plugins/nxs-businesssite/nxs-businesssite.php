@@ -186,6 +186,7 @@ class businesssite_instance
 								"post_content" => $post->post_content,
 								"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
 								"url" => nxs_geturl_for_postid($post->ID),
+								"post_icon" => get_post_meta($post->ID, "nxs_entity_icon", true),
 							),
 						);
 						

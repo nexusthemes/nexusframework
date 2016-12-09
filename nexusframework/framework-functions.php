@@ -309,7 +309,10 @@ if (is_admin())
 				jQuery('#nxs-entity-icon-preview').removeClass();
 				// re-decorate
 				jQuery('#nxs-entity-icon-preview').addClass("nxs-icon");
-				jQuery('#nxs-entity-icon-preview').addClass("nxs-icon-" + value);
+				jQuery('#nxs-entity-icon-preview').addClass(value);
+				
+				// update hidden field
+				jQuery("#nxs_entity_icon_input").val(value);
 			}
 			
 			function nxs_js_handlegeticonsresult(data)
@@ -332,8 +335,8 @@ if (is_admin())
 						jQuery("#iconpickeritemlist").append("<li>---" + section + "---</li>");
 						
 						var items = value.items;
-						console.log("items for " + section);
-						console.log(items);
+						//console.log("items for " + section);
+						//console.log(items);
 						
 						var itemshtml = "";
 						
@@ -342,13 +345,13 @@ if (is_admin())
 							items, 
 							function(index, item) 
 							{
-								console.log("item " + index + " " + item);
+								//console.log("item " + index + " " + item);
 								
-								var id = item.id;
+								var id = "nxs-icon-" + item.id;
 								// the item itself
-								var itemhtml = "<span class='nxs-icon nxs-icon-" + id + "'></span>";
+								var itemhtml = "<span class='nxs-icon " + id + "'></span>";
 								// wrap in a clickable unit					
-								var itemhtml = "<a href='#' onclick='nxs_js_iconselected(this); return false;' data-destinationdomselector='#nxs_entity_icon' data-id='" + id + "'>" + itemhtml + "</a>";
+								var itemhtml = "<a href='#' onclick='nxs_js_iconselected(this); return false;' data-destinationdomselector='#nxs_entity_icon_input' data-id='" + id + "'>" + itemhtml + "</a>";
 								itemshtml += itemhtml;
 							}
 						);
@@ -391,7 +394,7 @@ if (is_admin())
 			?>
 			<p>
 				The icon connected:<br />
-				<span id='nxs-entity-icon-preview' class='nxs-icon nxs-icon-<?php echo $nxs_entity_icon; ?>' style='font-size:64px;' ></span>
+				<span id='nxs-entity-icon-preview' class='nxs-icon <?php echo $nxs_entity_icon; ?>' style='font-size:64px;' ></span>
 				
 				<br />
 				<a id='nxs_semantic_media_button' class='button mediaopen thickbox' href="#TB_inline?width=600&height=550&inlineId=modal-window-id">
@@ -412,7 +415,7 @@ if (is_admin())
 					);
 				</script>
 			</p>
-	    <input type='hidden' name='nxs_entity_icon' id='nxs_entity_icon_input' value='<?php echo $nxs_entity_icon; ?>' />
+	    <input type='hidden' name='nxs_entity_icon_input' id='nxs_entity_icon_input' value='<?php echo $nxs_entity_icon; ?>' />
 	    <?php
 	  }
 	}
@@ -428,7 +431,7 @@ if (is_admin())
 		// OK, we're authenticated: we need to find and save the data
 		// We'll put it into an array to make it easier to loop though.
 		
-		$nxs_entity_icon = $_POST['nxs_entity_icon'];
+		$nxs_entity_icon = $_POST['nxs_entity_icon_input'];
 		$meta['nxs_entity_icon'] = $nxs_entity_icon;
 		
 		foreach ($meta as $key => $value) 

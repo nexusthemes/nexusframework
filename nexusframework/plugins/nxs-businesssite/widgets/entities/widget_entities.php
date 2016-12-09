@@ -502,6 +502,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$post_excerpt = $instance["content"]["post_excerpt"];
 		$url = $instance["content"]["url"];
 		$image_imageid = $instance["content"]["post_thumbnail_id"];
+		$post_icon = $instance["content"]["post_icon"];
 		
 		$childargs = array
 		(
@@ -510,6 +511,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			"text" => $post_excerpt,
 			"image_imageid" => $image_imageid,
 			"destination_url" => $url,
+			"icon" => $post_icon,
 		);
 		
 		// replicate styleable fields
