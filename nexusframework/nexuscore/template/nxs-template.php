@@ -195,10 +195,7 @@ function nxs_site_createcontent_internal($args)
 		{
 			$postmetas["nxs_semanticlayout"] = $contentcurrentpost["nxs_semanticlayout"];
 		}
-		if ($contentcurrentpost["nxs_semantic_taxonomy"] != "")
-		{
-			$postmetas["nxs_semantic_taxonomy"] = $contentcurrentpost["nxs_semantic_taxonomy"];
-		}
+
 		$nxs_semantic_media_postid = false;
 		$nxs_semantic_media = $contentcurrentpost["nxs_semantic_media"];
 		if ($nxs_semantic_media != "")
@@ -370,33 +367,6 @@ function nxs_site_createcontent_internal($args)
 				// store destination metadata
 				nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $widgetmetadata);
 			}
-		}
-		
-		// post processing
-		if ($contentcurrentpost["nxs_semantic_taxonomy"] != "")
-		{
-			$taxonomy = $contentcurrentpost["nxs_semantic_taxonomy"];
-			
-			// this post represents a taxonomy like for example a service; 
-			// we automatically add the newly created post to the list of 
-			// services
-			global $businesssite_instance;
-			$contentmodel = $businesssite_instance->getcontentmodel();
-			$servicesetpostid = $contentmodel[$taxonomy]["postid"];
-			// add an additional row to that post
-			// appends a new "one" row, with the specified widget properties to an existing post
-
-			$args = array
-			(
-				"postid" => $servicesetpostid,
-				"widgetmetadata" => array
-				(
-					"type" => "entity",
-					"filter_postid" => $destinationpostid,	// 
-					"enabled" => "true",
-				),
-			);
-			$r = nxs_add_widget_to_post($args);
 		}
 	}
 	else

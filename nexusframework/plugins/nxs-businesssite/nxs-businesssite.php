@@ -174,6 +174,11 @@ class businesssite_instance
 					{
 						$postid = $widgetmeta["filter_postid"];
 						$post = get_post($postid);
+						$url = "";
+						if ($taxonomymeta["caninstancesbereferenced"])
+						{
+							$url = nxs_geturl_for_postid($post->ID);
+						}
 						
 						$result[$taxonomy]["instances"][] = array
 						(
@@ -185,8 +190,12 @@ class businesssite_instance
 								"post_excerpt" => $post->post_excerpt,
 								"post_content" => $post->post_content,
 								"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
-								"url" => nxs_geturl_for_postid($post->ID),
+								"url" => $url,
 								"post_icon" => get_post_meta($post->ID, "nxs_entity_icon", true),
+								"post_source" => "post_source:" . get_post_meta($post->ID, "nxs_entity_source", true),
+								"post_rating_text" => "post_rating_text:" . get_post_meta($post->ID, "nxs_entity_rating_text", true),
+								"post_quote" => "post_quote:" . get_post_meta($post->ID, "nxs_entity_quote", true),
+								"post_stars" => "5",
 							),
 						);
 						
@@ -351,6 +360,60 @@ class businesssite_instance
 		}
 	}
 	
+	function wp_insert_post( $post_id, $post, $update ) 
+	{
+		// If this is a revision, ignore
+		if ( wp_is_post_revision( $post_id ) )
+		{
+			return;
+		}
+		if ($update === true)
+		{
+			// ignore update
+			return;
+		}
+		
+		$post_type = $post->post_type;
+		$isbusinessmodeltaxonomy = false;
+		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
+		foreach ($businessmodeltaxonomies as $taxonomy => $taxmeta)
+		{
+			$singular = $taxmeta["singular"];
+			$cpt = "nxs_{$singular}";
+			if ($cpt == $post_type)
+			{
+				$isbusinessmodeltaxonomy = true;
+				break;
+			}
+		}
+		
+		if (!$isbusinessmodeltaxonomy)
+		{
+			// ignore entities outside the business taxonomies
+			return;
+		}
+		
+		// we automatically add the newly created post to the list of 
+		// services
+		global $businesssite_instance;
+		$contentmodel = $businesssite_instance->getcontentmodel();
+		$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
+		// add an additional row to that post
+		// appends a new "one" row, with the specified widget properties to an existing post
+
+		$args = array
+		(
+			"postid" => $taxonomyorderedsetpostid,
+			"widgetmetadata" => array
+			(
+				"type" => "entity",
+				"filter_postid" => $post_id,	// 
+				"enabled" => "true",
+			),
+		);
+		$r = nxs_add_widget_to_post($args);
+	}
+	
 	function instance_init()
 	{
 		// 
@@ -364,6 +427,9 @@ class businesssite_instance
 		add_shortcode( 'nxscomment', array($this, "sc_nxscomment"), 20, 2);
 		add_filter("nxs_f_shouldrenderaddnewrowoption", array($this, "f_shouldrenderaddnewrowoption"), 1, 1);
 		add_action('admin_head', array($this, "instance_admin_head"), 30, 1);
+		
+		add_action( 'wp_insert_post', array($this, "wp_insert_post"), 10, 3 );
+		
   }
   
 	/* ---------- */

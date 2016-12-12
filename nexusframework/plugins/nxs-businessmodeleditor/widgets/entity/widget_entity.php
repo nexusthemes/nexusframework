@@ -26,6 +26,32 @@ function nxs_widgets_entity_getunifiedcontentgroup() {
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
 
+function nxs_entitycustom_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	extract($optionvalues);
+	extract($args);
+	extract($runtimeblendeddata);
+	
+	nxs_ob_start();
+
+	if ($filter_postid != "")
+	{
+		?>
+		<div>
+			<?php
+			// 
+				$url = get_edit_post_link($filter_postid);
+				echo "<a class='nxsbutton' href='{$url}'>Edit item</a>";
+			?>
+		</div>
+		<?php
+	}
+
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
+}
+
 // Define the properties of this widget
 function nxs_widgets_entity_home_getoptions() 
 {
@@ -64,6 +90,14 @@ function nxs_widgets_entity_home_getoptions()
 				// we still enable posts and pages too, as some people might be using the "old" implementation
 				"post_type" 				=> $posttypes,
 			),
+			
+			array
+      (
+				"id" 					=> "entity_custom",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_entitycustom_popupcontent",
+			),
+			
 			array
 			(
 				"id" 				=> "enabled",

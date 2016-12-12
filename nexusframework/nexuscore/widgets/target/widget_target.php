@@ -338,13 +338,23 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	
 	// Setting the widget name variable to the folder name
 	$widget_name = basename(dirname(__FILE__));
-		
-	global $nxs_global_placeholder_render_statebag;
-	if ($shouldrenderalternative == true) {
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
-	} else {
-		// Appending custom widget class
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
+	
+	if ($render_behaviour == "code")
+	{
+		// 
+	}
+	else
+	{
+		global $nxs_global_placeholder_render_statebag;
+		if ($shouldrenderalternative == true) 
+		{
+			$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
+		} 
+		else 
+		{
+			// Appending custom widget class
+			$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
+		}
 	}
 	
 	/* EXPRESSIONS

@@ -18,6 +18,7 @@ function nxs_business_gettaxonomiesmeta()
 			"icon" => "publicrelations",
 			"singular" => "service",		
 			"arity" => "n",	
+			"caninstancesbereferenced" => true,	// false if virtual
 			"aritymaxinstancecount" => 8,
 			"instanceexistencecheckfield" => "title",
 			"taxonomyfields" => array
@@ -86,6 +87,7 @@ function nxs_business_gettaxonomiesmeta()
 		),
 		"products" => array
 		(
+			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Products",
 			"icon" => "gift",
 			"singular" => "product",		
@@ -149,9 +151,77 @@ function nxs_business_gettaxonomiesmeta()
 				),
 			),
 			"label" => "Products",
+		),
+		"portfolioitems" => array
+		(
+			"caninstancesbereferenced" => true,	// false if virtual
+			"title" => "Portfolio",
+			"icon" => "eye",
+			"singular" => "portfolioitem",		
+			"arity" => "n",	
+			"aritymaxinstancecount" => 8,
+			"instanceexistencecheckfield" => "title",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),
+				/*
+				"options" =>  array
+				(
+					"type" => "text",
+					"comment" => "p.e. googlemap|some other value|...<br />use in combination with:<br />etchrowcondition=notcontains:products:options:googlemap",
+				),
+				*/
+			),
+			"wpcreateinstructions" => array
+			(
+				"instances" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"icon" => array
+				(
+					"type" => "icon",
+				),
+				"genericimage" => array
+				(
+					"type" => "media",
+					"scope" => "businesstype",
+				),				
+				"image" => array
+				(
+					"type" => "media",
+					"scope" => "searchphrase",
+				),
+				"imageset" => array
+				(
+					"type" => "mediaset",
+					"scope" => "businesstype",
+				),
+				"specifications" => array
+				(
+					"type" => "textarea",
+					"comment" => "Insert like a CSV<br />Description,Value<br />Color,Blue",
+				),
+			),
+			"label" => "Portfolio Items",
 		),		
 		"calltoactions" => array
 		(
+			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Call to actions",
 			"icon" => "callout",
 			"singular" => "calltoaction",		
@@ -208,6 +278,7 @@ function nxs_business_gettaxonomiesmeta()
 		),		
 		"blogs" => array
 		(
+			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Blogs",
 			"icon" => "article-overview",
 			"singular" => "blog",		
@@ -255,6 +326,7 @@ function nxs_business_gettaxonomiesmeta()
 		// Prices / Fees
 		"prices" => array
 		(
+			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Prices",
 			"icon" => "dollar",
 			"singular" => "pricingtable",		
@@ -291,6 +363,7 @@ function nxs_business_gettaxonomiesmeta()
 		
 		"forms" => array
 		(
+			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Forms",
 			"icon" => "contact",		
 			"singular" => "form",		
@@ -326,8 +399,9 @@ function nxs_business_gettaxonomiesmeta()
 		),
 		"testimonials" => array
 		(
+			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Testimonials",
-			"icon" => "quote",		
+			"icon" => "thumbs-up",		
 			"singular" => "testimonial",		
 			"arity" => "n",
 			"aritymaxinstancecount" => 5,
@@ -365,6 +439,7 @@ function nxs_business_gettaxonomiesmeta()
 		),
 		"resources" => array
 		(
+			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Resources",
 			"icon" => "usb1",
 			"singular" => "resource",		
@@ -406,6 +481,7 @@ function nxs_business_gettaxonomiesmeta()
 		),
 		"trusticons" => array
 		(
+			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Trust icons",
 			"icon" => "shield",
 			"singular" => "trusticon",		
@@ -435,6 +511,7 @@ function nxs_business_gettaxonomiesmeta()
 		),
 		"employees" => array
 		(
+			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Employees",
 			"icon" => "users",		
 			"singular" => "employee",		
@@ -474,6 +551,7 @@ function nxs_business_gettaxonomiesmeta()
 		),
 		"faq" => array
 		(
+			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "FAQ",
 			"icon" => "question",		
 			"singular" => "faq",		
@@ -510,6 +588,7 @@ function nxs_business_gettaxonomiesmeta()
 		
 		"vacancies" => array
 		(
+			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Vacancies",
 			"icon" => "resume",		
 			"singular" => "vacancy",		
@@ -550,6 +629,7 @@ function nxs_business_gettaxonomiesmeta()
 		
 		"uniquesellingpropositions" => array
 		(
+			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Unique Selling Propositions",
 			"icon" => "brightness-medium",				
 			"singular" => "usp",		

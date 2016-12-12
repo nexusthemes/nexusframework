@@ -219,7 +219,6 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
-				"unistylablefield"	=> true
 			),
 			
 			// COLORS & TEXT

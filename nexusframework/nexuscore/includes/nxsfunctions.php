@@ -11635,6 +11635,7 @@ function nxs_registernexustype_v2($args)
 {
 	$hasadmin = nxs_has_adminpermissions();
 	$exclude_from_search = true;
+	$publicly_queryable = true;
 	
 	// defaults
 	$query_var = $hasadmin;
@@ -11658,6 +11659,10 @@ function nxs_registernexustype_v2($args)
 	// verify valid input
 	if ($title == "") { nxs_webmethod_return_nack("title not set"); }
 	
+	//echo "<h1>$title</h1>";
+	//var_dump($args);
+	//die();
+	
 	register_post_type
 	( 
 		'nxs_' . $title,
@@ -11672,7 +11677,7 @@ function nxs_registernexustype_v2($args)
 			'public' => $ispublic,
 			'has_archive' => false,
 			'exclude_from_search' => $exclude_from_search,
-			'publicly_queryable' => true,	// Whether queries can be performed on the front end as part of parse_request(). MOET OP TRUE !
+			'publicly_queryable' => $publicly_queryable,	// Whether queries can be performed on the front end as part of parse_request(). MOET OP TRUE !
 			'show_in_nav_menus' => false, 	// Whether post_type is available for selection in navigation menus.
 			'show_ui' => $show_ui, 	// True, if you want this type to show in in WP backend's menu (see show_in_menu too!)
 			'show_in_menu' => true,	// True, if you want this type to show in in WP backend's menu (see show_ui too!)

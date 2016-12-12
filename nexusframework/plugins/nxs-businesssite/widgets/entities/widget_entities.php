@@ -19,6 +19,30 @@ function nxs_widgets_entities_getunifiedcontentgroup() {
 	return "entitieswidget";
 }
 
+function nxs_entities_datasourcecustom_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	extract($optionvalues);
+	extract($args);
+	extract($runtimeblendeddata);
+	
+	nxs_ob_start();
+	?>
+	<div>
+		<?php
+		// 
+		global $businesssite_instance;
+		$contentmodel = $businesssite_instance->getcontentmodel();
+		$url = $contentmodel[$datasource]["url"];
+		echo "<a class='nxsbutton' href='{$url}'>Edit / Re-Order {$datasource}</a>";
+		?>
+	</div>
+	<?php
+
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
+}
+
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -78,6 +102,12 @@ function nxs_widgets_entities_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
 				"dropdown" 		=> $taxonomies,
 			),
+			array
+      (
+				"id" 					=> "datasource_custom",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_entities_datasourcecustom_popupcontent",
+			),
 			/*
 			array
 			(
@@ -107,10 +137,10 @@ function nxs_widgets_entities_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Style", "nxs_td"),
 				"dropdown" 		=> array
 				(
-					"title" => "Title",
 					"text" => "Text",
 					"target" => "Target",
 					"bio" => "Bio",
+					"quote" => "Quote",
 				),
 				"unistylablefield" => true,
 			),
@@ -120,8 +150,10 @@ function nxs_widgets_entities_home_getoptions($args)
       ),
       
       //
-      // styling;
+      // WIDGET SPECIFIC STYLING
       //
+
+			// TEXT WIDGET SPECIFIC STYLING
       
       array(
           "id" 				=> "wrapper_title_begin",
@@ -184,6 +216,17 @@ function nxs_widgets_entities_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			//
+			array(
+				"id" 				=> "text_text_truncatelength",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Text max length", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@" => "No truncation",
+					"none" => "Truncate all",
+				),
+				"unistylablefield"	=> true
+			),
 			array
 			(
 				"id" 				=> "text_text_alignment",
@@ -328,8 +371,159 @@ function nxs_widgets_entities_home_getoptions($args)
           "id" 				=> "wrapper_title_end",
           "type" 				=> "wrapperend",
       ),
+      
+      // QUOTE WIDGET SPECIFIC STYLING
+      
+      array(
+          "id" 				=> "wrapper_title_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Quote widget styling", "nxs_td"),
+      ),
+      
+      array(
+				"id" 				=> "quote_quote_textsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Text textsize", "nxs_td"),
+				"dropdown" 			=> array
+				(
+          "14"	=>"1.4x",
+          "12"	=>"1.3x",
+          "11"	=>"1.1x",
+          "10"	=>"1x",
+          "09"	=>"0.9x",
+          "08"	=>"0.8x",
+        ),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "quote_source_textsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Source textsize", "nxs_td"),
+				"dropdown" 			=> array
+				(
+          "14"	=>"1.4x",
+          "12"	=>"1.3x",
+          "11"	=>"1.1x",
+          "10"	=>"1x",
+          "09"	=>"0.9x",
+          "08"	=>"0.8x",
+        ),
+				"unistylablefield"	=> true
+			),
+      
+      array(
+				"id" 				=> "quote_quote_width",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Quote width", "nxs_td"),
+				"dropdown" 			=> array(""=>"","90%"=>"90%","80%"=>"80%","70%"=>"70%","60%"=>"60%","50%"=>"50%","40%"=>"40%","30%"=>"30%","20%"=>"20%"),
+				"unistylablefield"	=> true				
+			),
+			
+			array(
+				"id" 				=> "quote_show_quote_icon",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Show quote icon", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+      
+      array
+			(
+          "id" 				=> "wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),
+      
+      
+      // ----
+      
+      array
+      (
+          "id" 				=> "wrapper_title_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("background & alignment (any type)", "nxs_td"),
+      ),
+      
+      array(
+				"id" 				=> "any_ph_padding",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Background spacing", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("padding"),
+				"unistylablefield"	=> true
+			),
+			
+			
+			array(
+				"id" 				=> "any_ph_border_radius",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Background border radius", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("border_radius"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "any_ph_border_width",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Border width", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("border_radius"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "any_ph_margin_bottom",
+				"type" 				=> "select",
+				"label" 			=> "Margin bottom",
+				"dropdown" 			=> nxs_style_getdropdownitems("margin"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "any_ph_valign",
+				"type" 				=> "radiobuttons",
+				"subtype"			=> "valign",
+				"label" 			=> nxs_l18n__("Vertical alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+			),
       			
-			//
+			// --- ANY WIDGET SPECIFIC STYLING; COLORS & TEXT
+			
+      array
+      (
+          "id" 				=> "wrapper_title_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("colors & text (any type)", "nxs_td"),
+      ),
+      
+      array( 
+				"id"				=> "any_ph_colorzen",
+				"type" 				=> "colorzen",
+				"focus"				=> "true",
+				"label" 			=> nxs_l18n__("Color", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("The background color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "any_ph_linkcolorvar",
+				"type" 				=> "colorvariation",
+				"scope" 			=> "link",
+				"label" 			=> nxs_l18n__("Link color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id"				=> "any_ph_text_fontsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Text fontsize", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+				"unistylablefield"	=> true
+			),
+			
 		)
 	);
 	
@@ -503,6 +697,12 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$url = $instance["content"]["url"];
 		$image_imageid = $instance["content"]["post_thumbnail_id"];
 		$post_icon = $instance["content"]["post_icon"];
+		$post_source = $instance["content"]["post_source"];
+		$post_rating_text = $instance["content"]["post_rating_text"];
+		$post_stars = $instance["content"]["post_stars"];
+		$post_quote = $instance["content"]["post_quote"];
+		
+		//
 		
 		$childargs = array
 		(
@@ -512,13 +712,17 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			"image_imageid" => $image_imageid,
 			"destination_url" => $url,
 			"icon" => $post_icon,
+			"source" => $post_source,
+			"rating_text" => $post_rating_text,
+			"stars" => $post_stars,
+			"quote" => "testgj;".$post_quote,
 		);
 		
-		// replicate styleable fields
+		// replicate styleable fields specific for "TEXT" widgets
 		$fieldstoreplicate = array
 		(
 			"title_heading", "title_fontzen", "title_alignment", "title_fontsize", "top_info_color", "top_info_padding", 
-			"icon_scale", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
+			"icon_scale", "text_truncatelength", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
 			"button_scale", "button_color", "button_fontzen", "button_alignment",
 			"destination_target", "title_heightiq", "text_heightiq", "text_showliftnote", "text_showdropcap", "text_fontzen", "enlarge", "grayscale",
 		);
@@ -527,30 +731,89 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			$childargs[$fieldtoreplicate] = $args["text_{$fieldtoreplicate}"];
 		}
 		
+		// replicate styleable fields specific for "QUOTE" widgets
+		$fieldstoreplicate = array
+		(
+			"quote_textsize", "source_textsize", "quote_width", "show_quote_icon",
+		);
+		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		{
+			$childargs[$fieldtoreplicate] = $args["quote_{$fieldtoreplicate}"];
+		}
+		
+		//
+		// replicate styleable fields specific for "ANY" type of widgets
+		//
+		$fieldstoreplicate = array
+		(
+			"ph_padding", "ph_border_radius", "ph_border_width", 
+			"ph_margin_bottom", "ph_valign", "ph_colorzen",
+			"ph_linkcolorvar", "ph_text_fontsize",
+		);
+		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		{
+			$childargs[$fieldtoreplicate] = $args["any_{$fieldtoreplicate}"];
+		}
+		
+		// get rid of unistyles
+		unset($childargs["unistyle"]);
+		unset($childargs["postid"]);
+		unset($childargs["placeholderid"]);
+		
 		if ($itemsstyle == "title")
 		{
-			unset($child["text"]);
-			unset($child["image_imageid"]);
+			unset($childargs["text"]);
+			unset($childargs["image_imageid"]);
 		}
 		
 		if ($itemsstyle == "target")
 		{
-			$widgettype = "target";
+			$childwidgettype = "target";
+			$childargs["ph_cssclass"] .= " nxs-target";
 		}
 		else if ($itemsstyle == "bio")
 		{
-			$widgettype = "bio";
+			$childwidgettype = "bio";
+		}
+		else if ($itemsstyle == "quote")
+		{
+			$childwidgettype = "quote";
+			$childargs["ph_cssclass"] .= " nxs-quote";
 		}
 		else
 		{
-			$widgettype = "text";
+			$childwidgettype = "text";
 		}
 		
-		nxs_requirewidget($widgettype);
-		$functionnametoinvoke = "nxs_widgets_{$widgettype}_render_webpart_render_htmlvisualization";
+		$childargs["aap"] = "noot";
+		
+		//
+		// render wrap
+		//
+		
+		$ph_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $childargs["ph_colorzen"]);
+		$ph_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $childargs["ph_linkcolorvar"]);
+		$ph_border_radius = nxs_getcssclassesforlookup("nxs-border-radius-", $childargs["ph_border_radius"]);
+		$ph_borderwidth = nxs_getcssclassesforlookup("nxs-border-width-", $childargs["ph_border_width"]);
+		$ph_cssclass = $childargs["ph_cssclass"];		
+		$ph_padding = nxs_getcssclassesforlookup("nxs-padding-", $childargs["ph_padding"]);
+		$ph_valign = $childargs["ph_valign"];
 
+		$abc_concatenated_css = nxs_concatenateargswithspaces($ph_colorzen, $ph_linkcolorvar, $ph_border_radius, $ph_borderwidth);
+		$xyz_concatenated_css = nxs_concatenateargswithspaces($ph_padding, $ph_valign);
+		
+		nxs_requirewidget($childwidgettype);
+		$functionnametoinvoke = "nxs_widgets_{$childwidgettype}_render_webpart_render_htmlvisualization";
 		$subresult = call_user_func($functionnametoinvoke, $childargs);
-		$subhtml = $subresult["html"];
+
+		$subhtml = "";
+		$subhtml .= "<div class='{$ph_cssclass}'>";
+		$subhtml .= "<div class='ABC {$heightclass} {$abc_concatenated_css}'>";
+		$subhtml .= "<div class='XYZ {$xyz_concatenated_css}'>";
+		$subhtml .= $subresult["html"];
+		$subhtml .= "</div>";
+		$subhtml .= "</div>";
+		$subhtml .= "</div>";
 				
 		$remainder = $index % $numberofcolumns;
 		
@@ -629,5 +892,3 @@ function nxs_widgets_entities_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

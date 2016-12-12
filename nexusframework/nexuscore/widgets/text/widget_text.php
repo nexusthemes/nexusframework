@@ -131,6 +131,17 @@ function nxs_widgets_text_home_getoptions($args)
 				"localizablefield"	=> true
 			),
 			array(
+				"id" 				=> "text_truncatelength",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Text max length", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@" => "No truncation",
+					"none" => "Truncate all",
+				),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "text_alignment",
 				"type" 				=> "radiobuttons",
 				"subtype" 			=> "halign",
@@ -443,6 +454,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	if ($render_behaviour == "code")
 	{
 		//
+		$temp_array = array();
 	}
 	else
 	{
@@ -481,6 +493,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	// Widget specific variables
 	extract($mixedattributes);
+	
+	
 	
 	// Overruling of parameters
 	if ($image_imageid == "featuredimg")
@@ -619,6 +633,11 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 
 	// get html for each part	
 	$htmltext = nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_showdropcap, $wrappingelement, $text_heightiq, $text_fontzen);
+	
+	if ($text_truncatelength === "none") 
+	{
+		$htmltext = "";
+	}
 	
 	$button_heightiq = "";
 	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $button_heightiq, $button_fontzen, $destination_relation);

@@ -2626,7 +2626,7 @@ function nxs_create_post_types_and_taxonomies()
 	
 	// add custom posttypes for semantic entities;
 
-	// "special" custom post types
+	// custom post types to hold instances of businessmodel taxonomies
 	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
@@ -2664,6 +2664,7 @@ function nxs_create_post_types_and_taxonomies()
 								'slug',
 								'custom-fields',
 								'thumbnail',
+								'excerpt',
 							),
 						);
 						nxs_registernexustype_v2($args);
@@ -2682,6 +2683,7 @@ function nxs_create_post_types_and_taxonomies()
 						"title" => $singular,
 						"taxonomies" => array("nxs_tax_subposttype"),
 						"ispublic" => false,
+						"publicly_queryable" => false,
 						"show_ui" => true,
 						"exclude_from_search" => false,
 						'rewrite' => array
@@ -2697,6 +2699,7 @@ function nxs_create_post_types_and_taxonomies()
 							'slug',
 							'custom-fields',
 							'thumbnail',
+							'excerpt',
 						),
 					);
 					nxs_registernexustype_v2($args);
