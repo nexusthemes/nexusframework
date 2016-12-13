@@ -602,6 +602,26 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-top													{ top: 0px; }
 .nxs-right													{ right: 0px; }
 
+/* FLEX BOX */
+.nxs-flex-box40												{ min-height: 40vh; }
+.nxs-flex-box50												{ min-height: 50vh; }
+.nxs-flex-box60												{ min-height: 60vh; }
+.nxs-flex-box70												{ min-height: 70vh; }
+.nxs-flex-box80												{ min-height: 80vh; }
+.nxs-flex-box90												{ min-height: 90vh; }
+.nxs-flex-box100											{ min-height: 100vh; }
+
+.nxs-flex													{ display: flex; }
+/* main (horizontal) axis */
+.nxs-justify-content-center									{ justify-content: center; }
+.nxs-justify-content-flex-end								{ justify-content: flex-end; }
+
+/* cross (vertical) axis */
+.nxs-align-items-center										{ align-items: center; }
+.nxs-align-items-stretch									{ align-items: stretch; }
+.nxs-align-items-flex-start									{ align-items: flex-start; }
+.nxs-align-items-flex-end									{ align-items: flex-end; }
+
 /* KITCHEN SINK */
 .nxs-clear 													{ clear: both; }
 .nxs-font-80												{ font-size: 80%; }
@@ -1358,6 +1378,41 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 .nxs-callout a.nxs-button									{ display: inline-block; font-weight: normal !important; }
 .nxs-callout .nxs-filler									{ padding: 10px 0; }
 .nxs-callout a:hover .nxs-title								{ opacity: 1; }
+
+/* DEFAULT LINEAR GRADIENTS */
+.nxs-linear-leftright-light { 
+background-image: -webkit-gradient( 
+	linear, 
+	left top, 
+	right top, 
+	from(rgba(255,255,255,.8)), 
+	to(rgba(255,255,255,0))
+);}
+.nxs-linear-leftright-dark { 
+background-image: -webkit-gradient( 
+	linear, 
+	left top, 
+	right top, 
+	from(rgba(0,0,0,.8)), 
+	to(rgba(0,0,0,0))
+);}
+.nxs-linear-rightleft-light { 
+background-image: -webkit-gradient( 
+	linear, 
+	right top, 
+	left top, 
+	from(rgba(255,255,255,.8)), 
+	to(rgba(255,255,255,0))
+);}
+.nxs-linear-rightleft-dark { 
+background-image: -webkit-gradient( 
+	linear, 
+	right top, 
+	left top, 
+	from(rgba(0,0,0,.8)), 
+	to(rgba(0,0,0,0))
+);}
+
 
 /* LOGO 
 ------------------------------------------------------------------------------------------ */
@@ -3160,6 +3215,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-golfclub:before	 			{ content: "\e409"; }
 .nxs-icon-spider:before 				{ content: "\e410"; }
 .nxs-icon-worm:before 					{ content: "\e411"; }
+.nxs-icon-towing:before,
 .nxs-icon-towtruck:before 				{ content: "\e412"; }
 .nxs-icon-cartruck:before 				{ content: "\e413"; }
 .nxs-icon-fuel:before, 
@@ -3256,6 +3312,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-liquor:before					{ content: "\e489";	}
 .nxs-icon-animalshelter:before			{ content: "\e490";	}
 .nxs-icon-cabin:before					{ content: "\e491";	}
+.nxs-icon-tanning:before,
 .nxs-icon-tanningsalon:before			{ content: "\e492";	}
 .nxs-icon-sauna:before					{ content: "\e493";	}
 .nxs-icon-pizzeria:before				{ content: "\e494";	}
@@ -3309,6 +3366,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-nanny:before					{ content: "\e542";	}
 .nxs-icon-renovation:before				{ content: "\e543";	}
 .nxs-icon-fleamarket:before				{ content: "\e544";	}
+.nxs-icon-hairsalon:before,
 .nxs-icon-hairdresser:before			{ content: "\e545";	}
 .nxs-icon-limousine:before				{ content: "\e546";	}
 .nxs-icon-roofing:before				{ content: "\e547";	}
@@ -3340,6 +3398,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-hometheater:before			{ content: "\e573";	}
 .nxs-icon-badminton:before				{ content: "\e574";	}
 .nxs-icon-beautysalon:before			{ content: "\e575";	}
+.nxs-icon-cosmetics:before,
 .nxs-icon-beautyshop:before				{ content: "\e576";	}
 .nxs-icon-wrestling:before				{ content: "\e577";	}
 .nxs-icon-carpenter:before				{ content: "\e578";	}
@@ -3434,7 +3493,9 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-aquarius:before 				{ content: "\2652"; }
 .nxs-icon-pisces:before 				{ content: "\2653"; }
 
-/* Primary Business Types */
+/* PRIMARY BUSINESS TYPE ICONS
+---------------------------------------------------------------------------------------------------- */
+.nxs-icon-agriculture:before			 { content: "\e101";}
 .nxs-icon-art:before					 { content: "\e500";}
 .nxs-icon-automotive:before				 { content: "\e497";}
 .nxs-icon-baby:before					 { content: "\e585";}
@@ -3452,7 +3513,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-electronics:before			 { content: "\e643";} /* nexus icon */
 .nxs-icon-energy:before					 { content: "\e116";}
 .nxs-icon-entertainment:before			 { content: "\e477";}
-.nxs-icon-environmental:before			 { content: "\e101";}
+.nxs-icon-environmental:before			 { content: "\e128";}
 .nxs-icon-event_planning:before			 { content: "\e051";}
 .nxs-icon-fashion:before				 { content: "\e511";}
 .nxs-icon-finance:before				 { content: "\e315";}
@@ -3463,7 +3524,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-government:before				 { content: "\e025";}
 .nxs-icon-health:before					 { content: "\e113";}
 .nxs-icon-holiday:before				 { content: "\e469";}
-.nxs-icon-hotel:before					 { content: "\e643";} /* nexus icon */
+.nxs-icon-hotel:before					 { content: "\e572";}
 .nxs-icon-industrial:before				 { content: "\e643";} /* nexus icon */
 .nxs-icon-interior_design:before		 { content: "\e532";}
 .nxs-icon-internet:before				 { content: "\e022";}
@@ -3492,6 +3553,275 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-transportation:before			 { content: "\e352";}
 .nxs-icon-travel:before					 { content: "\e110";}
 .nxs-icon-wedding:before				 { content: "\e537";}
+
+/* BUSINESS TYPE ICONS
+---------------------------------------------------------------------------------------------------- */
+/* agriculture */
+.nxs-icon-winery:before					{ content: "\e519";	}
+/* art */
+.nxs-icon-art_gallery:before			{ content: "\e500";	}
+.nxs-icon-stained_glass:before			{ content: "\e643";	} /* nexus icon */
+/* automotive */
+.nxs-icon-car_repair:before				{ content: "\e497";	}
+.nxs-icon-car_wash:before				{ content: "\e554";	}
+.nxs-icon-towing:before					{ content: "\e412";	}
+/* beauty */
+.nxs-icon-barber_shop:before			{ content: "\e506";	}
+.nxs-icon-beauty_salon:before			{ content: "\e575";	}
+.nxs-icon-cosmetics:before				{ content: "\e576";	}
+.nxs-icon-hair_salon:before				{ content: "\e545";	}
+.nxs-icon-holistic:before				{ content: "\e612";	}
+.nxs-icon-makeup_artist:before			{ content: "\e611";	}
+.nxs-icon-massage:before				{ content: "\e465";	}
+.nxs-icon-nail_salon:before				{ content: "\e522";	}
+.nxs-icon-sauna:before					{ content: "\e493";	}
+.nxs-icon-skin_care:before				{ content: "\e599";	}
+.nxs-icon-spa_salon:before				{ content: "\e583";	}
+.nxs-icon-tanning:before				{ content: "\e492";	}
+.nxs-icon-tattoo:before					{ content: "\e584";	}
+.nxs-icon-tanning_salon:before			{ content: "\e492";	}
+/* books */
+.nxs-icon-book_author:before			{ content: "\e023";	}
+/* business services */
+.nxs-icon-lawyer:before					{ content: "\e104";	}
+.nxs-icon-consultant:before				{ content: "\e073";	}
+.nxs-icon-personal_assistant:before		{ content: "\e075";	}
+.nxs-icon-virtual_assistant:before		{ content: "\e381";	}
+.nxs-icon-florist						{ content: "\e603";	}
+/* cleaning */
+.nxs-icon-carpet_cleaning:before		{ content: "\e435";	}
+.nxs-icon-cleaning:before				{ content: "\e343";	}
+.nxs-icon-laundry:before				{ content: "\e508";	}
+.nxs-icon-window_cleaning:before		{ content: "\e512";	}
+.nxs-icon-dry_cleaning:before			{ content: "\e541";	}
+/* computer */
+.nxs-icon-computer_repair:before		{ content: "\e530";	}
+.nxs-icon-computer_shop:before			{ content: "\e055";	}
+/* construction */
+.nxs-icon-construction:before			{ content: "\e305";	}
+.nxs-icon-carpenter:before				{ content: "\e578";	}
+.nxs-icon-electrician:before			{ content: "\e116";	}
+.nxs-icon-fencing:before				{ content: "\e434";	}
+.nxs-icon-flooring:before				{ content: "\e580";	}
+.nxs-icon-masonry:before				{ content: "\e331";	}
+.nxs-icon-architect:before				{ content: "\e531";	}
+.nxs-icon-sliding_door:before			{ content: "\e643";	} /* nexus icon */
+/* design */
+.nxs-icon-design_agency:before			{ content: "\e004";	}
+.nxs-icon-web_design:before				{ content: "\e400";	}
+.nxs-icon-graphic_design:before			{ content: "\e467";	}
+/* education */
+.nxs-icon-driving_school:before			{ content: "\e395";	}
+.nxs-icon-high_school:before			{ content: "\e378";	}
+.nxs-icon-kindergarten:before			{ content: "\e396";	}
+.nxs-icon-music_school:before			{ content: "\e478";	}
+.nxs-icon-music_teacher:before			{ content: "\e013";	}
+.nxs-icon-training_center:before		{ content: "\e624";	}
+.nxs-icon-tutoring:before				{ content: "\e448";	}
+/* electronics */
+.nxs-icon-phone_repair:before			{ content: "\e495";	}
+/* entertainment */
+.nxs-icon-fireworks:before				{ content: "\e390";	}
+.nxs-icon-astrology:before				{ content: "\e487";	}
+.nxs-icon-clown:before					{ content: "\e484";	}
+.nxs-icon-magician:before				{ content: "\e092";	}
+.nxs-icon-paintball:before				{ content: "\e621";	}
+.nxs-icon-petting_zoo:before			{ content: "\e643";	} /* nexus icon */
+.nxs-icon-pool:before					{ content: "\e525";	}
+.nxs-icon-bouncy_castle:before			{ content: "\e634";	}
+/* environmental */
+.nxs-icon-solar_energy:before			{ content: "\e133";	}
+/* event planning */
+.nxs-icon-catering:before				{ content: "\e582";	}
+.nxs-icon-conference:before				{ content: "\e566";	}
+.nxs-icon-event_management:before		{ content: "\e051";	}
+.nxs-icon-festival:before				{ content: "\e479";	}
+.nxs-icon-speaker:before				{ content: "\e548";	}
+/* fashion */
+.nxs-icon-model:before					{ content: "\e550";	}
+.nxs-icon-model_agency:before			{ content: "\e027";	}
+.nxs-icon-model_portfolio:before		{ content: "\e549";	}
+.nxs-icon-lingerie:before				{ content: "\e608";	}
+.nxs-icon-tailor:before					{ content: "\e534";	}
+.nxs-icon-jewelry:before				{ content: "\e401";	}
+/* finance */
+.nxs-icon-accounting:before				{ content: "\e562";	}
+.nxs-icon-credit_repair:before			{ content: "\e036";	}
+.nxs-icon-insurance_company:before		{ content: "\e514";	}
+.nxs-icon-notary:before					{ content: "\e006";	}
+/* food */
+.nxs-icon-bakery:before					{ content: "\e553";	}
+.nxs-icon-butcher:before				{ content: "\e476";	}
+.nxs-icon-pizza:before					{ content: "\e628";	}
+.nxs-icon-water_purifier:before			{ content: "\e535";	}
+.nxs-icon-food_truck:before				{ content: "\e613";	}
+.nxs-icon-personal_chef:before			{ content: "\e582";	}
+.nxs-icon-cake_shop:before				{ content: "\e486";	}
+.nxs-icon-recipes:before				{ content: "\e643";	} /* nexus icon */
+.nxs-icon-chef:before					{ content: "\e582";	}
+/* gambling */
+.nxs-icon-casino:before					{ content: "\e488";	}
+/* games */
+.nxs-icon-game_developer:before			{ content: "\e536";	}
+/* garden */
+.nxs-icon-landscaping:before			{ content: "\e434";	}
+.nxs-icon-lawn_care:before				{ content: "\e612";	} /* nexus icon */
+.nxs-icon-tree_service:before			{ content: "\e643";	} /* nexus icon */
+/* government */
+.nxs-icon-fire_department:before		{ content: "\e105";	}
+/* health */	
+.nxs-icon-acupuncture:before			{ content: "\e643";	} /* nexus icon */
+.nxs-icon-health_center:before			{ content: "\e333";	}
+.nxs-icon-meditation:before				{ content: "\e347";	}
+.nxs-icon-nutrition:before				{ content: "\e515";	}
+.nxs-icon-psychology:before				{ content: "\e505";	}
+.nxs-icon-reiki:before					{ content: "\e384";	}
+.nxs-icon-weight_loss:before			{ content: "\e643";	} /* nexus icon */
+.nxs-icon-life_coach:before				{ content: "\e075";	}
+/* hotel */
+.nxs-icon-beach_resort:before			{ content: "\e622";	}
+.nxs-icon-resort:before					{ content: "\e469";	}
+/* industrial */
+.nxs-icon-concrete:before				{ content: "\e331";	}
+/* interior design */
+.nxs-icon-interior_design:before		{ content: "\e532";	}
+/* kids */
+.nxs-icon-babysitter:before				{ content: "\e542";	}
+.nxs-icon-day_care:before				{ content: "\e585";	}
+.nxs-icon-child_care:before				{ content: "\e587";	}
+/* local business */
+.nxs-icon-funeral_home:before			{ content: "\e526";	}
+.nxs-icon-self_storage:before			{ content: "\e439";	}
+/* maintenance */
+.nxs-icon-handyman:before				{ content: "\e578";	}
+.nxs-icon-hvac:before					{ content: "\e350";	}
+.nxs-icon-painter:before				{ content: "\e009";	}
+.nxs-icon-pest_control:before			{ content: "\e418";	}
+.nxs-icon-plumber:before				{ content: "\e339";	}
+.nxs-icon-renovation:before				{ content: "\e543";	}
+.nxs-icon-roofing:before				{ content: "\e547";	}
+/* marketing */
+.nxs-icon-internet_marketing:before		{ content: "\e397";	}
+.nxs-icon-public_relations:before		{ content: "\e399";	}
+.nxs-icon-seo_company:before			{ content: "\e079";	}
+.nxs-icon-social_media_agency:before	{ content: "\e230";	}
+.nxs-icon-marketing_agency:before		{ content: "\e095";	}
+/* media */
+.nxs-icon-ngo:before					{ content: "\e579";	}
+.nxs-icon-magazine:before				{ content: "\e643";	} /* nexus icon */
+.nxs-icon-video_production:before		{ content: "\e556";	}
+.nxs-icon-videographer:before			{ content: "\e558";	}
+.nxs-icon-actor:before					{ content: "\e403";	}
+.nxs-icon-blogger:before				{ content: "\e007";	}
+.nxs-icon-talent_agency:before			{ content: "\e137";	}
+/* medical */
+.nxs-icon-chiropractor:before			{ content: "\e388";	}
+.nxs-icon-dentist:before				{ content: "\e358";	}
+.nxs-icon-optometrist:before			{ content: "\e503";	}
+.nxs-icon-pharmacy:before				{ content: "\e463";	}
+.nxs-icon-physiotherapy:before			{ content: "\e385";	}
+.nxs-icon-plastic_surgery:before		{ content: "\e464";	}
+/* music */
+.nxs-icon-musician:before				{ content: "\e481";	}
+.nxs-icon-dj:before						{ content: "\e559";	}
+.nxs-icon-music_band:before				{ content: "\e620";	}
+.nxs-icon-music_venue:before			{ content: "\e477";	}
+.nxs-icon-singer:before					{ content: "\e643";	} /* nexus icon */
+.nxs-icon-recording_studio:before		{ content: "\e475";	}
+.nxs-icon-record_label:before			{ content: "\e474";	}
+.nxs-icon-music_festival:before			{ content: "\e539";	}
+/* nightlife */
+.nxs-icon-nightclub:before				{ content: "\e099";	}
+.nxs-icon-pub:before					{ content: "\e451";	}
+/* pet */
+.nxs-icon-animal_care:before			{ content: "\e590";	}
+.nxs-icon-animal_shelter:before			{ content: "\e490";	}
+.nxs-icon-dog_grooming:before			{ content: "\e635";	}
+.nxs-icon-dog_training:before			{ content: "\e602";	}
+.nxs-icon-dog_walking:before			{ content: "\e600";	}
+.nxs-icon-pet_sitting:before			{ content: "\e490";	}
+.nxs-icon-veterinarian:before			{ content: "\e590";	}
+.nxs-icon-aquarium:before				{ content: "\e524";	}
+/* real estate */
+.nxs-icon-homeowners_association:before	{ content: "\e360";	}
+.nxs-icon-mortgage_broker:before		{ content: "\e470";	}
+.nxs-icon-property_management:before	{ content: "\e529";	}
+/* religious */
+.nxs-icon-mosque:before					{ content: "\e594";	}
+.nxs-icon-synagogue:before				{ content: "\e631";	}
+/* restaurant */
+.nxs-icon-coffee_shop:before			{ content: "\e498";	}
+.nxs-icon-brewery:before				{ content: "\e451";	}
+.nxs-icon-chinese_restaurant:before		{ content: "\e518";	}
+.nxs-icon-food_delivery:before			{ content: "\e572";	}
+.nxs-icon-french_restaurant:before		{ content: "\e643";	} /* nexus icon */
+.nxs-icon-greek_restaurant:before		{ content: "\e485";	}
+.nxs-icon-italian_restaurant:before		{ content: "\e639";	}
+.nxs-icon-pizzeria:before				{ content: "\e494";	}
+.nxs-icon-restaurant:before				{ content: "\e100";	}
+.nxs-icon-spanish_restaurant:before		{ content: "\e643";	} /* nexus icon */
+.nxs-icon-sushi_bar:before				{ content: "\e517";	}
+/* security */
+.nxs-icon-locksmith:before				{ content: "\e087";	}
+.nxs-icon-security_company:before		{ content: "\e115";	}
+.nxs-icon-private_investigator:before	{ content: "\e507";	}
+/* shipping */
+.nxs-icon-shipping_company:before		{ content: "\e439";	}
+.nxs-icon-logistics:before				{ content: "\e352";	}
+/* shopping */
+.nxs-icon-antiques:before				{ content: "\e472";	}
+.nxs-icon-appliance:before				{ content: "\e091";	}
+.nxs-icon-hardware_store:before			{ content: "\e581";	}
+/* social network */
+.nxs-icon-social_club:before			{ content: "\e643";	} /* nexus icon */
+/* software */
+.nxs-icon-it_company:before				{ content: "\e405";	}
+.nxs-icon-developer:before				{ content: "\e643";	} /* nexus icon */
+/* sports */
+.nxs-icon-ballet:before					{ content: "\e523";	}
+.nxs-icon-bowling:before				{ content: "\e454";	}
+.nxs-icon-go_kart:before				{ content: "\e571";	}
+.nxs-icon-badminton:before				{ content: "\e574";	}
+.nxs-icon-bodybuilding:before			{ content: "\e597";	}
+.nxs-icon-boxing:before					{ content: "\e482";	}
+.nxs-icon-country_club:before			{ content: "\e643";	} /* nexus icon */
+.nxs-icon-cycling_club:before			{ content: "\e643";	} /* nexus icon */
+.nxs-icon-dance_studio:before			{ content: "\e406";	}
+.nxs-icon-diving:before					{ content: "\e442";	}
+.nxs-icon-equestrian:before				{ content: "\e332";	}
+.nxs-icon-fitness_gym:before			{ content: "\e561";	}
+.nxs-icon-golf:before					{ content: "\e409";	}
+.nxs-icon-golf_club:before				{ content: "\e409";	}
+.nxs-icon-hiking:before					{ content: "\e563";	}
+.nxs-icon-hunting:before				{ content: "\e592";	}
+.nxs-icon-hunting_outfitters:before		{ content: "\e609";	}
+.nxs-icon-martial_arts:before			{ content: "\e347";	}
+.nxs-icon-personal_trainer:before		{ content: "\e588";	}
+.nxs-icon-pilates:before				{ content: "\e113";	}
+.nxs-icon-scuba_diving:before			{ content: "\e443";	}
+.nxs-icon-surfing:before				{ content: "\e442";	}
+.nxs-icon-swimming_pool:before			{ content: "\e567";	}
+.nxs-icon-water_sports:before			{ content: "\e442";	}
+.nxs-icon-yoga:before					{ content: "\e346";	}
+.nxs-icon-cricket:before				{ content: "\e643";	} /* nexus icon */
+.nxs-icon-crossfit:before				{ content: "\616";	}
+/* transportation */
+.nxs-icon-bike_rental:before			{ content: "\e449";	}
+.nxs-icon-moving:before					{ content: "\e552";	}
+.nxs-icon-limousine:before				{ content: "\e546";	}
+.nxs-icon-taxi:before					{ content: "\e407";	}
+/* travel */
+.nxs-icon-tour_operator:before			{ content: "\e130";	}
+.nxs-icon-travel_agency:before			{ content: "\e109";	}
+.nxs-icon-travel_guide:before			{ content: "\e045";	}
+.nxs-icon-summer_camp:before			{ content: "\e618";	}
+/* wedding */
+.nxs-icon-wedding_agency:before			{ content: "\e538";	}
+.nxs-icon-wedding_photographer:before	{ content: "\e537";	}
+.nxs-icon-wedding_planner:before		{ content: "\e401";	}
+.nxs-icon-wedding_planning:before		{ content: "\e401";	}
+.nxs-icon-wedding_venue:before			{ content: "\e539";	}
+.nxs-icon-bridal:before					{ content: "\e483";	}
 
 
 /* NT PRODUCT IMAGES
@@ -3647,13 +3977,33 @@ span.reviewer 															{ margin-left: 5px; }
 /* Grid item */
 #nxsgrid-container 				{ font-size: 16px;}
 .nxsgrid-item { 
+	/*
 	min-height: 50px;
-	/*background: blue;
+	background: blue;
 	box-sizing: border-box;
-	border: 1px solid red;*/
-	
+	border: 1px solid red;
+	*/
 }
+.nxsgrid-subcontainer { 
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+	z-index: 101;
+	left: 0;
+    width: 100%;
+	background: white;
+	border-radius: 8px;
+	border: 1px solid #E4E4E4;
+}
+.nxsgrid-item:hover .nxsgrid-subcontainer { 
+	display: block; 
+	visibility: visible;
+	opacity: 1; 
+	transition: opacity 0.2s linear; 
+}
+/* Grid item */
 
+.nxsgrid-subitem-container,
 .nxsgrid-item-container {
 	margin: 10px;
 	box-sizing: border-box;
@@ -3662,7 +4012,7 @@ span.reviewer 															{ margin-left: 5px; }
     background-color: #F7F7F7;
 }
 .nxsgrid-item-container:hover {
-	background-color: #FFF;
+	opacity: 0.8;
 }
 
 /* Default Layout */
@@ -3706,7 +4056,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxssolidgrid-column-3 						{ width: 100%; } 
 .nxssolidgrid-column-4 						{ width: 50%; } 
 .nxssolidgrid-column-6 						{ width: 100%; }
-.nxssolidgrid-column-8 						{ width: 50%%; } 
+.nxssolidgrid-column-8 						{ width: 50%; } 
 }
 
 @media only screen and ( max-width: 479px ) {
