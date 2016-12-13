@@ -117,8 +117,55 @@ function nxs_widgets_callout_home_getoptions($args)
 			array(
 				"id" 				=> "callout_text_width",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Callout text width", "nxs_td"),
+				"label" 			=> nxs_l18n__("Text wrapper width", "nxs_td"),
 				"dropdown" 			=> array(""=>"","90%"=>"90%","80%"=>"80%","70%"=>"70%","60%"=>"60%","50%"=>"50%","40%"=>"40%","30%"=>"30%","20%"=>"20%"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id"     			=> "text_padding",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Text wrapper padding", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id"     			=> "text_margin",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Text wrapper margin", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("margin"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "bgcolor",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Text wrapper background", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "overlay",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Overlay", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "linear_gradient",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Horizontal Gradient", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" 				=> nxs_l18n__("Select an Option", "nxs_td"),
+					"light" => nxs_l18n__("light", "nxs_td"),
+					"dark" 	=> nxs_l18n__("dark", "nxs_td"),
+				),
+				//"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "border_radius",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Text wrapper border radius", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("border_radius"),
 				"unistylablefield"	=> true
 			),	
 			array(
@@ -127,6 +174,17 @@ function nxs_widgets_callout_home_getoptions($args)
 				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Horizontal alignment", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "valign", 
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Vertical alignment", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" 	=> nxs_l18n__("Select an Option", "nxs_td"),
+					"center"			=>nxs_l18n__("Center", "nxs_td"),
+				),
 				"unistylablefield"	=> true
 			),
 
@@ -216,9 +274,9 @@ function nxs_widgets_callout_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Target", "nxs_td"),
 				"dropdown" 			=> array
 				(
-					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
-					"_blank"=>nxs_l18n__("New window", "nxs_td"),
-					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+					"@@@nxsempty@@@" 	=> nxs_l18n__("Select an Option", "nxs_td"),
+					"_blank"			=>nxs_l18n__("New window", "nxs_td"),
+					"_self"				=>nxs_l18n__("Current window", "nxs_td"),
 				),
 				"unistylablefield"	=> true
 			),	
@@ -276,6 +334,8 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
+			/* Replaced with flex box
+			
 			array( 
 				"id" 				=> "min_height",
 				"type" 				=> "input",
@@ -283,34 +343,22 @@ function nxs_widgets_callout_home_getoptions($args)
 				"placeholder" 		=> nxs_l18n__("300px", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("You can set the minimum height of your callout widget. Make sure to end with 'px'.", "nxs_td"),
 				"unistylablefield"	=> true
-			),
-			array(
-				"id"     			=> "text_padding",
-				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Text padding", "nxs_td"),
-				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
-				"unistylablefield"	=> true
-			),
-			array(
-				"id"     			=> "text_margin",
-				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Text margin", "nxs_td"),
-				"dropdown"   		=> nxs_style_getdropdownitems("margin"),
-				"unistylablefield"	=> true
-			),
+			),*/
+			
 			array( 
-				"id" 				=> "bgcolor",
-				"type" 				=> "colorzen",
-				"label" 			=> nxs_l18n__("Text wrapper background", "nxs_td"),
-				"unistylablefield"	=> true
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
 			),
-			array(
-				"id" 				=> "border_radius",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Border radius example", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("border_radius"),
-				"unistylablefield"	=> true
-			),
+			
+			// MOBILE CONFIGURATION
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Mobile configuration", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),			
+			
 			array(
 				"id" 				=> "fixed_font",
 				"type" 				=> "checkbox",
@@ -330,6 +378,24 @@ function nxs_widgets_callout_home_getoptions($args)
 					"callout720" 	=> nxs_l18n__("720", "nxs_td"),
 					"callout960" 	=> nxs_l18n__("960", "nxs_td"),
 					"callout1200" 	=> nxs_l18n__("1200", "nxs_td"),
+				),
+				"tooltip" 			=> nxs_l18n__("This option forces the layout to best suit mobile devices", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "flex_box",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Height", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Select an Option", "nxs_td"),
+					"nxs-flex-box40" 	=> nxs_l18n__("40%", "nxs_td"),
+					"nxs-flex-box50" 	=> nxs_l18n__("50%", "nxs_td"),
+					"nxs-flex-box60" 	=> nxs_l18n__("60%", "nxs_td"),
+					"nxs-flex-box70" 	=> nxs_l18n__("70%", "nxs_td"),
+					"nxs-flex-box80" 	=> nxs_l18n__("80%", "nxs_td"),
+					"nxs-flex-box90" 	=> nxs_l18n__("90%", "nxs_td"),
+					"nxs-flex-box100" 	=> nxs_l18n__("100%", "nxs_td"),
 				),
 				"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
 				"unistylablefield"	=> true
@@ -415,7 +481,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		// Appending custom widget class
 		// Responsive display
 		if ($responsive_display == "") { $responsive_display = 'callout720'; }
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display;
+		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display . " " . $flex_box;
 	}
 	
 	
@@ -452,7 +518,6 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("Button: button is set, but no reference is set (no URL)", "nxs_td");
 	}
 	
-	
 	// fixed font size
 	if ($fixed_font != "") { $fixed_font = 'fixed-font'; }
 	
@@ -460,17 +525,28 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	if 		($halign == "left") {  
 	} 
 	else if ($halign == "center") { 
-		$hclass = "nxs-align-center";	
-		$center = "margin-left: auto; margin-right: auto;"; 
+		$hclass = "nxs-justify-content-center";
+		$text_align = "nxs-align-center"; 
 	} 
 	else if ($halign == "right") { 
-		$float = "nxs-float-right";
+		$hclass = "nxs-justify-content-flex-end";
+		$text_align = "nxs-align-right"; 
 	}
 	
+	// vertical alignment
+	if ($valign == "center") { $vclass = "nxs-align-items-center"; }	
+	
 	// Text width
-	if ($callout_text_width != ""){
-		$callout_text_width = 'width: '.$callout_text_width.';';
-	}
+	
+	if 		( $callout_text_width == "" )  { $callout_text_width = "nxs-width100"; }
+	else if ( $callout_text_width == "90%" )  { $callout_text_width = "nxs-width90"; }
+	else if ( $callout_text_width == "80%" )  { $callout_text_width = "nxs-width80"; }
+	else if ( $callout_text_width == "70%" )  { $callout_text_width = "nxs-width70"; }
+	else if ( $callout_text_width == "60%" )  { $callout_text_width = "nxs-width60"; }
+	else if ( $callout_text_width == "50%" )  { $callout_text_width = "nxs-width50"; }
+	else if ( $callout_text_width == "40%" )  { $callout_text_width = "nxs-width40"; }
+	else if ( $callout_text_width == "30%" )  { $callout_text_width = "nxs-width30"; }
+	else if ( $callout_text_width == "20%" )  { $callout_text_width = "nxs-width20"; }	
 	
 	if ($text_margin != ""){
 		// the "overflow: auto; property is necessary to prevent parent div's to move when a margin is set on the child div
@@ -490,7 +566,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
 	$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $title_fontzen);
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass/*, "nxs-heightiq", "nxs-heightiq-".$heightiqprio."-".$title_heightiqgroup*/);
 	
 	// Title
 	$htmltitle = '<'.$title_heading.' class="'.$cssclasses.'">'.$title.'</'.$title_heading.'>';
@@ -507,7 +583,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	$subtitle_heightiqgroup = "callout-subtitle";
 	$subtitle_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $subtitle_fontsize);
 	$subtitle_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $subtitle_fontzen);
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", "nxs-subtitle", $subtitle_fontsize_cssclass, $subtitle_fontzen_cssclass, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$subtitle_heightiqgroup}");
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", "nxs-subtitle", $subtitle_fontsize_cssclass, $subtitle_fontzen_cssclass/*, "nxs-heightiq", "nxs-heightiq-".$heightiqprio."-".$title_heightiqgroup*/);
 	
 	// Subitle
 	$htmlsubtitle = '<'.$subtitle_heading.' class="' . $cssclasses .'">'.$subtitle.'</'.$subtitle_heading.'>';	
@@ -568,11 +644,22 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	//if ($bgcolor == "") { $bgcolor = 'base2-a0-6'; }
 	$bgcolor_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $bgcolor);
 	
+	// Overlay
+	$overlay_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $overlay);
+	
 	// Min-height
 	if ($min_height != "") { $min_height = "min-height: " . $min_height . ";"; }
 	
 	// Filler
 	$htmlfiller = '<div class="nxs-clear nxs-filler"></div>';
+	
+	// Linear Gradient
+	if 		( $linear_gradient == "light" && $halign == "left" )  { $linear_gradient_cssclass = "nxs-linear-leftright-light"; }
+	else if ( $linear_gradient == "dark" && $halign == "left" )   { $linear_gradient_cssclass = "nxs-linear-leftright-dark"; }
+	else if ( $linear_gradient == "light" && $halign == "right" ) { $linear_gradient_cssclass = "nxs-linear-rightleft-light"; }
+	else if ( $linear_gradient == "dark" && $halign == "right" )  { $linear_gradient_cssclass = "nxs-linear-rightleft-dark"; }
+	  
+	
 	
 	/* LINK
 	---------------------------------------------------------------------------------------------------- */
@@ -666,25 +753,29 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		}
 		
 			echo '
-			<div class="'.$hclass.' '.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
-				<div class="text-wrapper '.$bgcolor_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.' '.$border_radius_cssclass.' '.$float.'" style="'.$callout_text_width.' '.$center.'">';
-					
-					if ($title != "") 		{echo $htmltitle;}
-					
-					if ($title != "" && $subtitle != "") {
-						echo '<div class="nxs-clear nxs-filler"></div>';
-					}
-					
-					if ($subtitle != "")	{echo $htmlsubtitle;}
-					
-					if (($title != "" && $htmlbutton != "") || ($subtitle != "" && $htmlbutton != "")) {
-						echo '<div class="nxs-clear nxs-filler"></div>';
-					}
-					
-					if ($url != "")		{echo $htmlbutton;}
-					
-					echo '
-					<div class="nxs-clear"></div>
+			<div class="'.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
+				<div class="nxs-flex '.$hclass.' '.$flex_box.' '.$overlay_cssclass.'">
+					<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">
+						<div class="text-wrapper '.$bgcolor_cssclass.' '.$border_radius_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.'">';
+						
+							if ($title != "") 		{echo $htmltitle;}
+							
+							if ($title != "" && $subtitle != "") {
+								echo '<div class="nxs-clear nxs-filler"></div>';
+							}
+							
+							if ($subtitle != "")	{echo $htmlsubtitle;}
+							
+							if (($title != "" && $htmlbutton != "") || ($subtitle != "" && $htmlbutton != "")) {
+								echo '<div class="nxs-clear nxs-filler"></div>';
+							}
+							
+							if ($url != "")		{echo $htmlbutton;}
+						
+						echo '
+						<div class="nxs-clear"></div>
+						</div>
+					</div>
 				</div>
 				<div class="nxs-clear"></div>
 			</div>';
