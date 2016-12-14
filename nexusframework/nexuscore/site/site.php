@@ -2699,23 +2699,30 @@ function nxs_site_newtemplate_getoptions($args)
 			),
 		);
 		$json = nxs_connectivity_invoke_api_get($args);
-		
 		$items = $json["items"];
-
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-		foreach ($items as $taxonomy => $taxonomyindexmeta)
+		if (count($items) > 0)
 		{
-			$taxonomymeta = $taxonomiesmeta[$taxonomy];
-			$title = $taxonomymeta["title"];
-			$icon = $taxonomymeta["icon"];
-			$count = $taxonomyindexmeta["count"];
+			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+			foreach ($items as $taxonomy => $taxonomyindexmeta)
+			{
+				$taxonomymeta = $taxonomiesmeta[$taxonomy];
+				$title = $taxonomymeta["title"];
+				$icon = $taxonomymeta["icon"];
+				$count = $taxonomyindexmeta["count"];
+				?>
+				<div class="lp-item" data-taxonomy="<?php echo $taxonomy; ?>">
+					<a href='#' class="select">
+						<span class="nxs-icon nxs-icon-<?php echo $icon; ?>"></span>
+						<?php echo $title; ?> (<?php echo $count; ?>)
+					</a>
+				</div>
+				<?php
+			}
+		}
+		else
+		{
 			?>
-			<div class="lp-item" data-taxonomy="<?php echo $taxonomy; ?>">
-				<a href='#' class="select">
-					<span class="nxs-icon nxs-icon-<?php echo $icon; ?>"></span>
-					<?php echo $title; ?> (<?php echo $count; ?>)
-				</a>
-			</div>
+			<div>No templates available<br />Themeid: <?php echo $themeid; ?></div>
 			<?php
 		}
 		?>
@@ -2729,6 +2736,8 @@ function nxs_site_newtemplate_getoptions($args)
 		
 		// add styles and scripts
 		$customcontent .= $scaffolding;
+		
+		// $customcontent .= "<div>".json_encode($json).json_encode($items)."</div>";
 		
 		//
 		// -----
@@ -2841,32 +2850,47 @@ function nxs_site_newtemplate_getoptions($args)
 		
 		$label = $tagfilterhtml;
 		
-		$newtemplateselecttype = "";
-		foreach ($items as $i => $meta)
+		if (count($items) == 0)
 		{
-			$id = $meta["id"];
-			$content = $meta["content"];
-			$tags = $meta["tags"];
-			$tagslist = "";
-			foreach ($tags as $tag)
-			{
-				$tagslist .= "tag_{$tag} ";
-			}
-			
 			ob_start();
+			var_dump($items);
 			?>
-			<div class='lp-item <?php echo $tagslist; ?>' data-id='<?php echo $id; ?>'>
-				<?php echo $content; ?>
-			</div>
+			<div>There's no templates available for this theme (themeid: <?php echo $themeid; ?>)</div>
 			<?php
-			$itemhtml = nxs_ob_get_contents();
+			$scaffolding .= nxs_ob_get_contents();
 			nxs_ob_end_clean();
-			$newtemplateselecttype .= $itemhtml;
 		}
-		$newtemplateselecttype .= "<div style='clear:both;'></div>";	
+		else
+		{	
+			foreach ($items as $i => $meta)
+			{
+				$id = $meta["id"];
+				$content = $meta["content"];
+				$tags = $meta["tags"];
+				$tagslist = "";
+				foreach ($tags as $tag)
+				{
+					$tagslist .= "tag_{$tag} ";
+				}
+				
+				ob_start();
+				?>
+				<div class='lp-item <?php echo $tagslist; ?>' data-id='<?php echo $id; ?>'>
+					<?php echo $content; ?>
+				</div>
+				<?php
+				$itemhtml = nxs_ob_get_contents();
+				nxs_ob_end_clean();
+				$scaffolding .= $itemhtml;
+			}
+			$scaffolding .= "<div style='clear:both;'></div>";	
+		}
 		
 		// add styles and scripts
-		$newtemplateselecttype .= $scaffolding;
+		$customcontent .= $scaffolding;
+		
+		
+
 		
 		//
 		// -----
@@ -2881,7 +2905,7 @@ function nxs_site_newtemplate_getoptions($args)
 					"id" 			=> "custom",
 					"label"			=> $label,
 					"type" 				=> "custom",
-					"customcontent" => $newtemplateselecttype,
+					"customcontent" => $customcontent,
 				),
 			)
 		);

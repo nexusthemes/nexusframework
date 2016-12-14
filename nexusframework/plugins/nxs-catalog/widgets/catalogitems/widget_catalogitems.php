@@ -160,7 +160,35 @@ function nxs_widgets_catalogitems_render_webpart_render_htmlvisualization($args)
 	{
 		if (is_user_logged_in())
 		{
-			echo "0 catalog items found...";
+			// echo "No catalog items found<br />Businesstype: {$businesstype}";
+			// lets insert some dummy items
+			$rawdata["themes"] = array
+			(
+				"sample1" => array
+				(
+					"name" => "Sample 1",
+					"previewurl" => "sample url",
+					"thumburl" => "https://d2ue5m8i6umntv.cloudfront.net/herbal_medicine_wordpress_theme/herbal_medicine_wordpress_theme_1280x1024_macbook.png",
+				),
+				"sample2" => array
+				(
+					"name" => "Sample 2",
+					"previewurl" => "sample url",
+					"thumburl" => "https://d2ue5m8i6umntv.cloudfront.net/herbal_medicine_wordpress_theme/herbal_medicine_wordpress_theme_1280x1024_macbook.png",
+				),
+				"sample3" => array
+				(
+					"name" => "Sample 3",
+					"previewurl" => "sample url",
+					"thumburl" => "https://d2ue5m8i6umntv.cloudfront.net/herbal_medicine_wordpress_theme/herbal_medicine_wordpress_theme_1280x1024_macbook.png",
+				),
+				"sample4" => array
+				(
+					"name" => "Sample 4",
+					"previewurl" => "sample url",
+					"thumburl" => "https://d2ue5m8i6umntv.cloudfront.net/herbal_medicine_wordpress_theme/herbal_medicine_wordpress_theme_1280x1024_macbook.png",
+				),
+			);
 		}
 	}
 	

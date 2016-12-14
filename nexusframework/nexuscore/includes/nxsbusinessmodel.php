@@ -156,7 +156,7 @@ function nxs_business_gettaxonomiesmeta()
 		"portfolioitems" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
-			"title" => "Portfolio",
+			"title" => "Portfolio items",
 			"icon" => "eye",
 			"singular" => "portfolioitem",		
 			"arity" => "n",	

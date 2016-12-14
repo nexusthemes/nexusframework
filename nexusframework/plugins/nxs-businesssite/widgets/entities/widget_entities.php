@@ -1113,7 +1113,13 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		//
 		if (is_user_logged_in())
 		{
-			echo "0 entities found...";
+			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+			$taxonomymeta = $taxonomiesmeta[$taxonomy];
+			$title = $taxonomymeta["title"];
+			global $businesssite_instance;
+			$contentmodel = $businesssite_instance->getcontentmodel();
+			$url = $contentmodel[$taxonomy]["url"];
+			echo "No {$title} found. <a class='nxsbutton' href='{$url}'>Manage {$title}</a><br />";
 		}
 	}
 	
