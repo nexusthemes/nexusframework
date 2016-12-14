@@ -451,7 +451,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
   	$extendedmemstructure[] = $attributes;
   	
   	$type = $attributes["type"];
-  	if ($type == "menuitemsemantictaxonomy")
+  	if ($type == "menuitementities")
   	{
   		$taxonomy = $attributes["taxonomy"];
   		
@@ -579,7 +579,10 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
       if (!function_exists($functionnametoinvoke)) 
       {
-          nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
+      	if (is_user_logged_in())
+      	{
+      		echo "<div>warning; functionnametoinvoke not found; {$functionnametoinvoke}</div>";
+      	}
       }
 
       $attributes["menuitem_color"] = $menuitem_color_cssclass;
@@ -695,7 +698,10 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
       if (!function_exists($functionnametoinvoke)) 
       {
-        nxs_webmethod_return_nack("functionnametoinvoke not found; " . $functionnametoinvoke);
+				if (is_user_logged_in())
+      	{
+      		echo "<div>warning; functionnametoinvoke not found; {$functionnametoinvoke}</div>";
+      	}
       }
 
       $attributes["font_variant"] =  $font_variant;
@@ -894,7 +900,7 @@ function nxs_page_render_popup_getrenderedmenuitems($postid) {
 
             $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
         }
-        else if ($placeholdertype == "menuitemsemantictaxonomy") {
+        else if ($placeholdertype == "menuitementities") {
             //
             $title = $placeholdermetadata["title"];
             $depthindex = $placeholdermetadata["depthindex"];
@@ -914,8 +920,9 @@ function nxs_page_render_popup_getrenderedmenuitems($postid) {
         else if ($placeholdertype == "") {
             // undefined items are ignored
         }
-        else {
-            nxs_webmethod_return_nack("unexpected placeholdertype;" . $placeholdertype);
+        else 
+        {
+          nxs_webmethod_return_nack("unexpected placeholdertype;" . $placeholdertype);
         }
     }
 

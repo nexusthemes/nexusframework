@@ -1011,9 +1011,10 @@ li.score {
 					 	{
 							$url = $contentmodel[$taxonomy]["url"];
 							$icon = $taxonomymeta["icon"];
+							$title = $taxonomymeta["title"];
 				  		?>
 				    	<li>
-				      	<a href="<?php echo $url; ?>" title="<?php echo $taxonomy; ?>" class="site">
+				      	<a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="site">
 				      		<span class='nxs-icon-<?php echo $icon; ?>'></span>		
 				      	</a>
 				      </li>

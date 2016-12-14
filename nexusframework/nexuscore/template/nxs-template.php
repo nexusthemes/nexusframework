@@ -77,9 +77,7 @@ function nxs_site_createcontent($args)
 		$subargs["overridetitle"] = $overridetitle;
 	}
 	
-	nxs_site_createcontent_internal($subargs);
-	
-	// 
+	return nxs_site_createcontent_internal($subargs);
 }
 
 function nxs_site_createcontent_internal($args)
@@ -180,7 +178,14 @@ function nxs_site_createcontent_internal($args)
 	$nxssubposttype = $contentcurrentpost["nxssubposttype"];
 	$destinationpostid = "";
 	$destinationglobalid = "";
-	$semantictaxonomies = nxs_cpt_getcptswithoutslug();
+	
+	$semantictaxonomies = array();
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+	{
+		$singular = $taxonomymeta["singular"];
+		$semantictaxonomies[] = "nxs_{$singular}";
+	}
 	
 	if ($posttype == "attachment")
 	{
@@ -191,10 +196,21 @@ function nxs_site_createcontent_internal($args)
 	else if (in_array($posttype, array("nxs_templatepart", "nxs_genericlist", "page")) || in_array($posttype, $semantictaxonomies))
 	{
 		$postmetas = array();
+
+		// merge postmeta as specified in the source, for example 
+		,
+		// nxs_entity_stars etc.
+		if ($contentcurrentpost["postmeta"] != "")
+		{
+			$postmetas = array_merge($postmetas, $contentcurrentpost["postmeta"]);
+		}
+
 		if ($contentcurrentpost["nxs_semanticlayout"] != "")
 		{
 			$postmetas["nxs_semanticlayout"] = $contentcurrentpost["nxs_semanticlayout"];
 		}
+		
+		
 
 		$nxs_semantic_media_postid = false;
 		$nxs_semantic_media = $contentcurrentpost["nxs_semantic_media"];

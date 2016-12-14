@@ -192,10 +192,16 @@ class businesssite_instance
 								"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
 								"url" => $url,
 								"post_icon" => get_post_meta($post->ID, "nxs_entity_icon", true),
-								"post_source" => "post_source:" . get_post_meta($post->ID, "nxs_entity_source", true),
-								"post_rating_text" => "post_rating_text:" . get_post_meta($post->ID, "nxs_entity_rating_text", true),
-								"post_quote" => "post_quote:" . get_post_meta($post->ID, "nxs_entity_quote", true),
-								"post_stars" => "5",
+								"post_source" => get_post_meta($post->ID, "nxs_entity_source", true),
+								"post_rating_text" => get_post_meta($post->ID, "nxs_entity_rating_text", true),
+								"post_quote" => get_post_meta($post->ID, "nxs_entity_quote", true),
+								"post_stars" => get_post_meta($post->ID, "nxs_entity_stars", true),
+								"post_role" => get_post_meta($post->ID, "nxs_entity_role", true),
+								//
+								
+								// "post_imperative_m" => get_post_meta($post->ID, "nxs_entity_imperative_m", true),
+								// "post_imperative_l" => get_post_meta($post->ID, "nxs_entity_imperative_l", true),
+								// "post_destination_cta" => get_post_meta($post->ID, "nxs_entity_destination_cta", true),
 							),
 						);
 						

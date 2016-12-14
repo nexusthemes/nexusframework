@@ -85,6 +85,7 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Services",
 		),
+		/*
 		"products" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
@@ -104,13 +105,12 @@ function nxs_business_gettaxonomiesmeta()
 				(
 					"type" => "text",
 				),
-				/*
-				"options" =>  array
-				(
-					"type" => "text",
-					"comment" => "p.e. googlemap|some other value|...<br />use in combination with:<br />etchrowcondition=notcontains:products:options:googlemap",
-				),
-				*/
+				//
+				//"options" =>  array
+				//(
+				//	"type" => "text",
+				//	"comment" => "p.e. googlemap|some other value|...<br />use in combination with:<br />etchrowcondition=notcontains:products:options:googlemap",
+				//),
 			),
 			"wpcreateinstructions" => array
 			(
@@ -152,6 +152,7 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Products",
 		),
+		*/
 		"portfolioitems" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
@@ -218,7 +219,8 @@ function nxs_business_gettaxonomiesmeta()
 				),
 			),
 			"label" => "Portfolio Items",
-		),		
+		),
+		/*		
 		"calltoactions" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -275,7 +277,9 @@ function nxs_business_gettaxonomiesmeta()
 				)
 			),
 			"label" => "Call to actions",
-		),		
+		),	
+		*/
+		/*	
 		"blogs" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
@@ -322,7 +326,8 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Blogs / News",
 		),
-		
+		*/
+		/*
 		// Prices / Fees
 		"prices" => array
 		(
@@ -360,7 +365,8 @@ function nxs_business_gettaxonomiesmeta()
 				),
 			),
 		),
-		
+		*/
+		/*
 		"forms" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
@@ -397,6 +403,7 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Forms",
 		),
+		*/
 		"testimonials" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -437,6 +444,7 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Testimonials",
 		),
+		/*
 		"resources" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
@@ -479,6 +487,8 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Resources / Tips",
 		),
+		*/
+		/*
 		"trusticons" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -509,6 +519,7 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Trust icon",
 		),
+		*/
 		"employees" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -549,6 +560,7 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Employees",
 		),
+		/*
 		"faq" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -585,7 +597,8 @@ function nxs_business_gettaxonomiesmeta()
 				),
 			),
 		),
-		
+		*/
+		/*
 		"vacancies" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
@@ -626,7 +639,7 @@ function nxs_business_gettaxonomiesmeta()
 				),
 			),
 		),
-		
+		*/
 		"uniquesellingpropositions" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual

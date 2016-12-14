@@ -1,100 +1,144 @@
 <?php
-
 nxs_requirewidget("menuitemgeneric");
 
 /**
  * Widget icon in menu selection
  * @return string
  */
-function nxs_widgets_menuitemsemantictaxonomy_geticonid() {
-	return "nxs-icon-books";
+function nxs_widgets_menuitementities_geticonid() {
+	return "nxs-icon-moving";
 }
 
 /**
  * Widget title in widget setup screen
  * @return string|void
  */
-function nxs_widgets_menuitemsemantictaxonomy_gettitle() {
-	return nxs_l18n__("Semantic Taxonomy", "nxs_td");
+function nxs_widgets_menuitementities_gettitle() {
+	return nxs_l18n__("Entities", "nxs_td");
 }
 
 /*** WIDGET STRUCTURE ***/
+
+function nxs_menuitementities_taxonomycustom_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	extract($optionvalues);
+	extract($args);
+	extract($runtimeblendeddata);
+	
+	nxs_ob_start();
+	?>
+	<div>
+		<?php
+		// 
+		global $businesssite_instance;
+		$contentmodel = $businesssite_instance->getcontentmodel();
+		$url = $contentmodel[$taxonomy]["url"];
+		if ($url != "")
+		{
+			echo "<a class='nxsbutton' href='{$url}'>Edit / Re-Order {$taxonomy}</a>";
+		}
+		?>
+	</div>
+	<?php
+
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
+}
 
 /**
  * Define the properties of this widget
  * @param $args
  * @return array
  */
-function nxs_widgets_menuitemsemantictaxonomy_home_getoptions($args) {
-    // CORE WIDGET OPTIONS
+function nxs_widgets_menuitementities_home_getoptions($args) 
+{
+	global $businesssite_instance;
+	$contentmodel = $businesssite_instance->getcontentmodel();
+	
+	$taxonomies = array();
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+	{
+	 	if ($taxonomymeta["arity"] == "n")
+	 	{
+	 		$taxonomies[$taxonomy] = $taxonomymeta["title"];
+	 	}
+	}
+	
+  // CORE WIDGET OPTIONS
 
-    $options = array(
-        "sheettitle" => nxs_widgets_menuitemsemantictaxonomy_gettitle(),
-        "sheeticonid" => nxs_widgets_menuitemsemantictaxonomy_geticonid(),
-        "fields" => array(
+  $options = array
+  (
+    "sheettitle" => nxs_widgets_menuitementities_gettitle(),
+    "sheeticonid" => nxs_widgets_menuitementities_geticonid(),
+    "footerfiller" => true,	// add some space at the bottom
+    "fields" => array
+    (
+      // ICON
+      array(
+          "id" 				=> "wrapper_title_begin",
+          "type" 				=> "wrapperbegin",
+          "initial_toggle_state" => "closed",
+          "label" 			=> nxs_l18n__("Icon", "nxs_td"),
+      ),
+      array(
+          "id" 				=> "icon",
+          "type" 				=> "icon",
+          "label" 			=> nxs_l18n__("Icon", "nxs_td"),
+          "unicontentablefield" => false,
+      ),
+      array(
+          "id" 				=> "wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),
 
-            // ICON
-            array(
-                "id" 				=> "wrapper_title_begin",
-                "type" 				=> "wrapperbegin",
-                "initial_toggle_state" => "closed",
-                "label" 			=> nxs_l18n__("Icon", "nxs_td"),
-            ),
-            array(
-                "id" 				=> "icon",
-                "type" 				=> "icon",
-                "label" 			=> nxs_l18n__("Icon", "nxs_td"),
-                "unicontentablefield" => false,
-            ),
-            array(
-                "id" 				=> "wrapper_title_end",
-                "type" 				=> "wrapperend",
-            ),
+      // TITLE
+      array(
+          "id" 				=> "wrapper_title_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Title", "nxs_td"),
+      ),
+      array(
+          "id" 				=> "title",
+          "type" 				=> "input",
+          "label" 			=> nxs_l18n__("Title", "nxs_td"),
+          "placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
+          "unicontentablefield" => true,
+      ),
+      array(
+          "id" 				=> "wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),
+      
+      // ITEMS
+      array(
+          "id" 				=> "wrapper_title_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Items", "nxs_td"),
+      ),
+      array
+      (
+				"id" 				=> "taxonomy",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Taxonomy", "nxs_td"),
+				"dropdown" 		=> $taxonomies,
+				"unicontentablefield" => true,
+			),
+			array
+      (
+				"id" 					=> "taxonomy_custom",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_menuitementities_taxonomycustom_popupcontent",
+			),
+      array(
+          "id" 				=> "wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),
+    )
+  );
 
-            // TITLE
-            array(
-                "id" 				=> "wrapper_title_begin",
-                "type" 				=> "wrapperbegin",
-                "label" 			=> nxs_l18n__("Title", "nxs_td"),
-            ),
-            array(
-                "id" 				=> "title",
-                "type" 				=> "input",
-                "label" 			=> nxs_l18n__("Title", "nxs_td"),
-                "placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
-                "unicontentablefield" => true,
-            ),
-            array(
-                "id" 				=> "wrapper_title_end",
-                "type" 				=> "wrapperend",
-            ),
-            
-            // ITEMS
-            array(
-                "id" 				=> "wrapper_title_begin",
-                "type" 				=> "wrapperbegin",
-                "label" 			=> nxs_l18n__("Items", "nxs_td"),
-            ),
-            array
-            (
-							"id" 				=> "taxonomy",
-							"type" 				=> "select",
-							"label" 			=> nxs_l18n__("Taxonomy", "nxs_td"),
-							"dropdown" 			=> array
-							(
-								"services" => "Services",
-								"news" => "News",
-							),
-							"unicontentablefield" => true,
-						),
-            array(
-                "id" 				=> "wrapper_title_end",
-                "type" 				=> "wrapperend",
-            ),
-        )
-    );
-
-    return $options;
+  return $options;
 }
 
 /**
@@ -104,7 +148,7 @@ function nxs_widgets_menuitemsemantictaxonomy_home_getoptions($args) {
  * @param $args
  * @return array
  */
-function nxs_widgets_menuitemsemantictaxonomy_render_webpart_render_htmlvisualization($args) {
+function nxs_widgets_menuitementities_render_webpart_render_htmlvisualization($args) {
 
 	extract($args);
 	
@@ -187,15 +231,17 @@ function nxs_widgets_menuitemsemantictaxonomy_render_webpart_render_htmlvisualiz
         $positionerclass = "nxs-margin-left120";
     }
 
-    if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> '; } ?>
-	<div class="nxs-padding-menu-item">
+  if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span> '; } 
+  ?><div class="nxs-padding-menu-item nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder" id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
+		<div class="nxs-drag-helper" style='display: none;'>
+			<div class='placeholder'>
+			</div>
+		</div>
 		<div class="content2 border <?php echo $positionerclass;?>">
 	    <div class="box-content nxs-float-left"><p><?php echo $icon; ?><?php echo $title; ?></p></div>
 	    <div class="nxs-clear"></div>
 	  </div> <!--END content-->
-	</div>
-	
-	<?php
+	</div><?php
 	$html = nxs_ob_get_contents();
 	nxs_ob_end_clean();
 
@@ -210,7 +256,7 @@ function nxs_widgets_menuitemsemantictaxonomy_render_webpart_render_htmlvisualiz
  * @param $args
  * @return string
  */
-function nxs_widgets_menuitemsemantictaxonomy_desktop_render($args) {
+function nxs_widgets_menuitementities_desktop_render($args) {
 
     $placeholdermetadata = $args["placeholdermetadata"];
     $currentdepth = $placeholdermetadata["depthindex"];
@@ -299,7 +345,7 @@ function nxs_widgets_menuitemsemantictaxonomy_desktop_render($args) {
  * @param $args
  * @return string $cache
  */
-function nxs_widgets_menuitemsemantictaxonomy_mobile_render($args) {
+function nxs_widgets_menuitementities_mobile_render($args) {
 
     global $nxs_global_current_containerpostid_being_rendered;
     global $nxs_global_current_postid_being_rendered;
@@ -357,9 +403,9 @@ function nxs_widgets_menuitemsemantictaxonomy_mobile_render($args) {
  * @param $args
  * @return array
  */
-function nxs_widgets_menuitemsemantictaxonomy_initplaceholderdata($args) {
-
-    extract($args);
+function nxs_widgets_menuitementities_initplaceholderdata($args) 
+{
+  extract($args);
 
 	$args["title"] = "Item";
 	$args["depthindex"] = 1;
@@ -367,6 +413,8 @@ function nxs_widgets_menuitemsemantictaxonomy_initplaceholderdata($args) {
 	$args["destination_relation"] = "nofollow";	
 	$args['destination_url'] = nxs_geturl_home();
 	$args['ph_margin_bottom'] = "0-0";
+	
+	$args["taxonomy"] = "services";
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 

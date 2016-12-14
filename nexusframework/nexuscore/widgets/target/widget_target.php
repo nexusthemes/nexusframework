@@ -174,6 +174,19 @@ function nxs_widgets_target_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
 				"unicontentablefield" => true,
 			),
+			
+			
+			array
+			( 
+				"id" 				=> "icon_imageid",
+				"type" 				=> "image",
+				"allow_featuredimage" => true,
+				"label" 			=> nxs_l18n__("Choose image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to use a custom SVG file, select it here.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "bgcolor",
 				"type" 				=> "colorzen",
@@ -418,7 +431,19 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
 		
 	// Icon
-	if ($icon != "") {$icon = '<span class="icon nxs-border-width-1-0 '.$icon.' '.$color_cssclass.' '.$icon_color.' '.$border_radius_cssclass.'"></span>';}
+	if ($icon != "") 
+	{
+		$icon = '<span class="icon nxs-border-width-1-0 '.$icon.' '.$color_cssclass.' '.$icon_color.' '.$border_radius_cssclass.'"></span>';
+	}
+	
+	if ($icon_imageid != "")
+	{
+		$imagemetadata= wp_get_attachment_image_src($icon_imageid, $wpsize, true);
+		$derived_imageurl = $imagemetadata[0];
+		$derived_imageurl = nxs_img_getimageurlthemeversion($derived_imageurl);
+		
+		$icon = "<img src='{$derived_imageurl}' class='nxs-border-width-1-0 {$color_cssclass} {$border_radius_cssclass}' style='padding: 16px; width: 32px; position: absolute;' /></span>";
+	}
 		
 	
 	/* TITLE

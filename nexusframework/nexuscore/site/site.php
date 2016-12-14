@@ -2627,8 +2627,10 @@ function nxs_site_marketingmanagementhome_getoptions($args)
 
 function nxs_site_newtemplate_getoptions($args)
 {
+	$lp_taxonomy = $args["clientshortscopedata"]["lp_taxonomy"];
 	$lp_step = $args["clientshortscopedata"]["lp_step"];
-	if ($lp_step == "1" || $lp_step == "")
+	
+	if ($lp_step == "1" || $lp_step == "")	// select taxonomy
 	{
 		$lookuptable = nxs_lookuptable_getlookup();
 		$themeid = $lookuptable["templatewizardthemeid"];
@@ -2642,7 +2644,125 @@ function nxs_site_newtemplate_getoptions($args)
 		<style>
 			.lp-item 
 			{ 
-				float:left; 
+				xfloat:left; 
+				padding: 10px; 
+				background-color: #DDD; 
+				margin: 2px; 
+			} 
+			.lp-item img
+			{
+				width: 200px !important;
+				max-width: inherit !important;
+				height: auto !important;
+				max-height: inherit !important;
+			}
+			.popup-footer-container
+			{
+				display: none;
+			}
+		</style>
+		<script>
+			function nxs_js_lp_filtertags(tag)
+			{
+				// hide all
+				jQ_nxs(".tag_all").hide();
+				// show the ones we want
+				jQ_nxs(".tag_" + tag).show();
+			}
+			function nxs_js_lp_click(e)
+			{
+				var lp_taxonomy = jQ_nxs(e).closest(".lp-item").data("taxonomy");
+				nxs_js_popup_setshortscopedata("lp_taxonomy", lp_taxonomy);
+				nxs_js_popup_setshortscopedata("lp_step", "2");
+				//console.log("hoi" + lp_taxonomy);
+				
+				nxs_js_popup_refresh();
+			}
+			jQ_nxs(".lp-item .select").click(function(){nxs_js_lp_click(this);});
+		</script>
+		<?php
+		
+		// https://turnkeypagesprovider.websitesexamples.com/api/1/prod/taxonomiesindex/?nxs=contentprovider-api&licensekey={$licensekey}&businesstype=web_agency&nxs_json_output_format=prettyprint
+		require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
+		$licensekey = nxs_license_getlicensekey();
+		
+		// for example https://turnkeypagesprovider.websitesexamples.com/api/1/prod/index/?nxs=contentprovider-api&nxs_json_output_format=prettyprint&themeid=plumber
+		$args = array
+		(
+			"hostname" => "turnkeypagesprovider.websitesexamples.com",
+			"apiurl" => "/taxonomiesindex",
+			"queryparameters" => array
+			(
+				"nxs" => "contentprovider-api",
+				"licensekey" => $licensekey,
+				"themeid" => $themeid,
+			),
+		);
+		$json = nxs_connectivity_invoke_api_get($args);
+		
+		$items = $json["items"];
+
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($items as $taxonomy => $taxonomyindexmeta)
+		{
+			$taxonomymeta = $taxonomiesmeta[$taxonomy];
+			$title = $taxonomymeta["title"];
+			$icon = $taxonomymeta["icon"];
+			$count = $taxonomyindexmeta["count"];
+			?>
+			<div class="lp-item" data-taxonomy="<?php echo $taxonomy; ?>">
+				<a href='#' class="select">
+					<span class="nxs-icon nxs-icon-<?php echo $icon; ?>"></span>
+					<?php echo $title; ?> (<?php echo $count; ?>)
+				</a>
+			</div>
+			<?php
+		}
+		?>
+		<?php
+		$scaffolding = nxs_ob_get_contents();
+		nxs_ob_end_clean();
+		
+		//
+		// ---
+		//
+		
+		// add styles and scripts
+		$customcontent .= $scaffolding;
+		
+		//
+		// -----
+		//
+		
+		$result = array
+		(
+			"sheettitle" => nxs_l18n__("New Template - Select Taxonomy", "nxs_td"),
+			"fields" => array
+			(
+				array(
+					"id" 			=> "custom",
+					"label"			=> $label,
+					"type" 				=> "custom",
+					"customcontent" => $customcontent,
+				),
+			)
+		);
+	}	
+	else if ($lp_step == "2")
+	{
+		$lookuptable = nxs_lookuptable_getlookup();
+		$themeid = $lookuptable["templatewizardthemeid"];
+		if ($themeid == "")
+		{
+			$thememeta = nxs_theme_getmeta();
+			$themeid = $thememeta["id"];
+		}	
+		ob_start();
+		?>
+		<style>
+			.lp-item 
+			{ 
+				xfloat:left; 
 				padding: 10px; 
 				background-color: #DDD; 
 				margin: 2px; 
@@ -2670,8 +2790,11 @@ function nxs_site_newtemplate_getoptions($args)
 			function nxs_js_lp_click(e)
 			{
 				var id = jQ_nxs(e).closest(".lp-item").data("id");
-				nxs_js_popup_setshortscopedata("lp_step", "2");
+				nxs_js_popup_setshortscopedata("lp_step", "3");
 				nxs_js_popup_setshortscopedata("lp_id", id);
+				var taxonomy = jQ_nxs(e).closest(".lp-item").data("taxonomy");
+				nxs_js_popup_setshortscopedata("lp_taxonomy", taxonomy);
+				
 				nxs_js_popup_refresh();
 			}
 			jQ_nxs(".lp-item .select").click(function(){nxs_js_lp_click(this);});
@@ -2686,15 +2809,17 @@ function nxs_site_newtemplate_getoptions($args)
 		require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
 		$licensekey = nxs_license_getlicensekey();
 		
+		// for example https://turnkeypagesprovider.websitesexamples.com/api/1/prod/taxonomyindex/?nxs=contentprovider-api&nxs_json_output_format=prettyprint&themeid=plumber
 		$args = array
 		(
 			"hostname" => "turnkeypagesprovider.websitesexamples.com",
-			"apiurl" => "/index",
+			"apiurl" => "/taxonomyindex",
 			"queryparameters" => array
 			(
 				"nxs" => "contentprovider-api",
 				"licensekey" => $licensekey,
 				"themeid" => $themeid,
+				"taxonomy" => $lp_taxonomy,
 			),
 		);
 		$json = nxs_connectivity_invoke_api_get($args);
@@ -2743,17 +2868,13 @@ function nxs_site_newtemplate_getoptions($args)
 		// add styles and scripts
 		$newtemplateselecttype .= $scaffolding;
 		
-		$categorieshtml = "";
-		$categorieshtml .= "Categories<br /><br />";
-		
-		
 		//
 		// -----
 		//
 		
 		$result = array
 		(
-			"sheettitle" => nxs_l18n__("New Template", "nxs_td"),
+			"sheettitle" => nxs_l18n__("New Template - Select your Template", "nxs_td"),
 			"fields" => array
 			(
 				array(
@@ -2765,7 +2886,7 @@ function nxs_site_newtemplate_getoptions($args)
 			)
 		);
 	}
-	else if ($lp_step == "2")
+	else if ($lp_step == "3")
 	{
 		// second step; set name for the new template
 		$lp_id = $args["clientshortscopedata"]["lp_id"];
@@ -2807,7 +2928,7 @@ function nxs_site_newtemplate_getoptions($args)
 					}
 				);
 
-				nxs_js_popup_setshortscopedata("lp_step","3");
+				nxs_js_popup_setshortscopedata("lp_step","4");
 
 				nxs_js_popup_refresh();
 				
@@ -2857,7 +2978,7 @@ function nxs_site_newtemplate_getoptions($args)
 			)
 		);
 	}
-	else if ($lp_step == "3")
+	else if ($lp_step == "4")
 	{
 		// third step; create the page
 		$lp_id = $args["clientshortscopedata"]["lp_id"];
@@ -2875,7 +2996,6 @@ function nxs_site_newtemplate_getoptions($args)
 
 		nxs_ob_start();
 		?>
-		<a class='nxsbutton' href='<?php echo $url; ?>'>Open template</a>
 		<a class='nxsbutton' href='#' onclick='nxs_js_refreshcurrentpage(); return false;'>OK</a>
 		<script>
 			nxs_js_popup_sessiondata_clear_dirty();
@@ -2912,7 +3032,7 @@ function nxs_site_newtemplate_getoptions($args)
 					"id" 			=> "custom",
 					"label"			=> "",
 					"type" 				=> "custom",
-					"customcontent" => "step not supported",
+					"customcontent" => "step not supported ({$lp_step})",
 				),
 			)
 		);

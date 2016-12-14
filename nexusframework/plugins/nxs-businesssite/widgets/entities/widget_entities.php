@@ -33,7 +33,10 @@ function nxs_entities_datasourcecustom_popupcontent($optionvalues, $args, $runti
 		global $businesssite_instance;
 		$contentmodel = $businesssite_instance->getcontentmodel();
 		$url = $contentmodel[$datasource]["url"];
-		echo "<a class='nxsbutton' href='{$url}'>Edit / Re-Order {$datasource}</a>";
+		if ($url != "")
+		{
+			echo "<a class='nxsbutton' href='{$url}'>Edit / Re-Order {$datasource}</a>";
+		}
 		?>
 	</div>
 	<?php
@@ -64,15 +67,6 @@ function nxs_widgets_entities_home_getoptions($args)
 	 	}
 	}
 	
-	/*
-	$taxonomies = array
-	(
-		"services" => "Services",
-		"testimonials" => "Testimonials",
-		"employees" => "Employees",
-	);
-	*/
-
 	$datasource = $args["datasource"];
 	
 	$orderediturl = nxs_geturl_for_postid($contentmodel[$datasource]["postid"]);
@@ -372,10 +366,211 @@ function nxs_widgets_entities_home_getoptions($args)
           "type" 				=> "wrapperend",
       ),
       
+      // TARGET WIDGET SPECIFIC STYLING
+      
+      array(
+          "id" 				=> "target_wrapper_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Target widget styling", "nxs_td"),
+      ),
+      
+      array(
+				"id" 				=> "target_title_heading",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title heading", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "target_title_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype"  			=> "halign",
+				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "target_title_fontsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "target_text_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Text alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "target_button_scale",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button scale", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_scale"),
+				"unistylablefield"	=> true,
+			),
+			array( 
+				"id" 				=> "target_button_color",
+				"type" 				=> "colorzen", 
+				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "target_button_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
+				"unistylablefield"	=> true,
+			),
+			
+			array( 
+				"id" 				=> "target_bgcolor",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Icon background color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "target_border_radius",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Icon background border radius", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("border_radius"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "target_icon_size",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Icon size", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"	=>nxs_l18n__("Auto", "nxs_td"),
+					"1-0"			=>nxs_l18n__("1x", "nxs_td"),
+					"2-0"			=>nxs_l18n__("2x", "nxs_td"),
+					"3-0"			=>nxs_l18n__("3x", "nxs_td"),
+					"4-0"			=>nxs_l18n__("4x", "nxs_td"),
+					"5-0"			=>nxs_l18n__("5x", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "target_layout",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Layout", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"		=>nxs_l18n__("Auto", "nxs_td"),
+					"default"			=>nxs_l18n__("default", "nxs_td"),
+					"icon-top-left"		=>nxs_l18n__("icon top left", "nxs_td"),
+					"icon-top-center"	=>nxs_l18n__("icon top center", "nxs_td"),
+					"icon-top"			=>nxs_l18n__("icon top fullwidth", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "target_transition",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Remove transition effect", "nxs_td"),
+				"unistylablefield"	=> true,
+			),
+			
+      array
+			(
+          "id" 				=> "wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),
+      
+      // -----
+      
+      // BIO WIDGET SPECIFIC STYLING
+      
+      array(
+          "id" 				=> "wrapper_bio_title_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Bio widget styling", "nxs_td"),
+      ),
+      
+      array(
+				"id" 				=> "bio_title_heading",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "bio_title_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "bio_image_shadow",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Image shadow", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "bio_image_size",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Image size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("image_size"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "bio_image_border_width",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Border size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("border_width"),
+				"unistylablefield"	=> true
+			),	
+			
+			array(
+				"id" 				=> "bio_subtitle_heading",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Subtitle headings", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "bio_use_icon",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Use simple icons", "nxs_td"),
+				"unistylablefield"	=> true
+			),	
+			
+			array(
+				"id" 				=> "bio_text_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Text alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "bio_title_heightiq",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+      array
+			(
+          "id" 				=> "wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),
+      
       // QUOTE WIDGET SPECIFIC STYLING
       
       array(
-          "id" 				=> "wrapper_title_begin",
+          "id" 				=> "wrapper_quote_title_begin",
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("Quote widget styling", "nxs_td"),
       ),
@@ -434,11 +629,11 @@ function nxs_widgets_entities_home_getoptions($args)
       ),
       
       
-      // ----
+      // ---- ANY WIDGET - BACKGROUND & ALIGNMENT
       
       array
       (
-          "id" 				=> "wrapper_title_begin",
+          "id" 				=> "wrapper_any_background_title_begin",
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("background & alignment (any type)", "nxs_td"),
       ),
@@ -490,7 +685,7 @@ function nxs_widgets_entities_home_getoptions($args)
 			
       array
       (
-          "id" 				=> "wrapper_title_begin",
+          "id" 				=> "any_wrapper_colorstext_begin",
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("colors & text (any type)", "nxs_td"),
       ),
@@ -693,17 +888,25 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		if ($enabled == "") { continue; }
 		$index++;
 		$post_title = $instance["content"]["post_title"];		
-		$post_excerpt = $instance["content"]["post_excerpt"];
+		$post_excerpt = $instance["content"]["post_excerpt"];		
+		$post_content = $instance["content"]["post_content"];		
 		$url = $instance["content"]["url"];
 		$image_imageid = $instance["content"]["post_thumbnail_id"];
 		$post_icon = $instance["content"]["post_icon"];
 		$post_source = $instance["content"]["post_source"];
 		$post_rating_text = $instance["content"]["post_rating_text"];
 		$post_stars = $instance["content"]["post_stars"];
-		$post_quote = $instance["content"]["post_quote"];
-		
+		$post_role = $instance["content"]["post_role"];
 		//
+		//$post_imperative_m = $instance["content"]["post_imperative_m"];
+		//$post_imperative_l = $instance["content"]["post_imperative_l"];
+		//$post_destination_cta = $instance["content"]["post_destination_cta"];
 		
+		
+		// obsolete?
+		// $post_quote = $instance["content"]["post_quote"];
+		
+		// generic mapping
 		$childargs = array
 		(
 			"render_behaviour" => "code",
@@ -715,8 +918,44 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			"source" => $post_source,
 			"rating_text" => $post_rating_text,
 			"stars" => $post_stars,
-			"quote" => "testgj;".$post_quote,
+
 		);
+		
+		// taxonomy specific mapping
+		if ($taxonomy == "testimonials")
+		{
+			$childargs["source"] = $post_title;
+			$childargs["text"] = $post_content;
+		}
+		if ($taxonomy == "employees")
+		{
+			$childargs["title"] = "";
+			$childargs["person"] = $post_title;
+			$childargs["line1"] = $post_role;
+			$childargs["text"] = $post_content;
+		}
+		/*
+		if ($taxonomy == "calltoactions")
+		{
+			if ($post_destination_cta == "tel")
+			{
+				$childargs["destination_url"] = "tel://{{tel}}";
+			}
+			else if ($post_destination_cta == "contact")
+			{
+				$childargs["destination_url"] = "contactpage";
+			}
+			else if ($post_destination_cta == "forms.instances.0")
+			{
+				$childargs["destination_url"] = "firstform";
+			}
+			else if ($post_destination_cta == "forms.instances.1")
+			{
+				$childargs["destination_url"] = "secondform";
+			}
+			// todo: do something smart with the fields "post_imperative_m" and "post_imperative_l"
+		}
+		*/
 		
 		// replicate styleable fields specific for "TEXT" widgets
 		$fieldstoreplicate = array
@@ -729,6 +968,31 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		foreach ($fieldstoreplicate as $fieldtoreplicate)
 		{
 			$childargs[$fieldtoreplicate] = $args["text_{$fieldtoreplicate}"];
+		}
+		
+		// replicate styleable fields specific for "TARGET" widgets
+		$fieldstoreplicate = array
+		(
+			"title_heading", "title_alignment", "title_fontsize", 
+			"text_alignment", "button_scale", "button_color", 
+			"button_alignment", "bgcolor", "border_radius", 
+			"icon_size", "layout", "transition",
+		);
+		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		{
+			$childargs[$fieldtoreplicate] = $args["target_{$fieldtoreplicate}"];
+		}
+		
+		// replicate styleable fields specific for "BIO" widgets
+		$fieldstoreplicate = array
+		(
+			"title_heading", "title_alignment", "image_shadow",
+			"image_size", "image_border_width", "subtitle_heading",
+			"use_icon", "text_alignment", "title_heightiq",
+		);
+		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		{
+			$childargs[$fieldtoreplicate] = $args["bio_{$fieldtoreplicate}"];
 		}
 		
 		// replicate styleable fields specific for "QUOTE" widgets
@@ -785,7 +1049,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			$childwidgettype = "text";
 		}
 		
-		$childargs["aap"] = "noot";
+		// $childargs["aap"] = "noot";
 		
 		//
 		// render wrap

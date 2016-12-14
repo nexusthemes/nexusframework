@@ -11812,6 +11812,28 @@ function nxs_wp_getpostidsbymeta($key, $value)
 	return $result;
 }
 
+function nxs_wp_getpostidsbymetahavingposttype($key, $value, $posttype)
+{
+	$result = array();
+	
+	// find post that has nxs_themeid as metadata
+	global $wpdb;
+	$r = $wpdb->get_results("SELECT p.ID
+	  FROM $wpdb->posts as p
+	  LEFT JOIN 
+	      $wpdb->postmeta as m on (p.ID = m.post_id and 
+	                                        m.meta_key = '{$key}')
+	                                        where m.meta_value = '{$value}' AND p.post_type = '{$posttype}'
+	                                        ");
+	
+	foreach ($r as $post)
+	{
+		$result[] = $post->ID;
+	}
+	
+	return $result;
+}
+
 function nxs_reseller_getreseller()
 {
 	$result = esc_attr(get_option('nxs_reseller'));
@@ -11964,8 +11986,6 @@ function nxs_connectivity_invoke_api_get($args)
 	$context = stream_context_create($opts);
 	$json = @file_get_contents($apiurl, false, $context);
 
-	// error_log("nxs_connectivity_invoke_api_get;" . $apiurl);
-	
 	if ($json == "")
 	{
 		$nxs_connectivity_errors++;
@@ -11989,6 +12009,9 @@ function nxs_connectivity_invoke_api_get($args)
 	
 	$response = json_decode($json, true);
 	// $nxs_pp_invokes[] = "size result:" . count($response);
+	
+	//
+	$response["debug"]["nxs_connectivity_invoke_api_get"]["apiurl"] = $apiurl;
 	
 	return $response;
 }

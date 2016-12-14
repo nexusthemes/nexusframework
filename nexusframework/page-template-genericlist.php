@@ -78,8 +78,8 @@
 		    <div class="content2">
 		    	<div class="box">
 						<?php nxs_render_backbutton(); ?>
-						<a class="nxsbutton1 nxs-float-left clear" href="<?php echo $addnewbackendurl; ?>">New (WP backend)</a>
-						<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_site_neweditsession('newposthome'); return false;">New (Wizard)</a>
+						<a class="nxsbutton1 nxs-float-left clear" href="<?php echo $addnewbackendurl; ?>">Add New (WP backend)</a>
+						<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_site_neweditsession('newposthome'); return false;">Add New (Wizard)</a>
 						<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'dialogappendgenericlistitem'); return false;">Add Existing</a>
 					</div>
 					<div class="nxs-clear margin"></div>

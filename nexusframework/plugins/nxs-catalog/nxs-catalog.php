@@ -14,6 +14,7 @@ class nxs_catalog
 	{
 		// 
 		nxs_lazyload_plugin_widget(__FILE__, "catalogitems");
+		nxs_lazyload_plugin_widget(__FILE__, "bustypes");
 	}
 	
 	function getwidgets($result, $widgetargs)
@@ -21,8 +22,19 @@ class nxs_catalog
 		$nxsposttype = $widgetargs["nxsposttype"];
 		if ($nxsposttype == "post") 
 		{
-			$result[] = array("widgetid" => "catalogitems");
+			$result[] = array
+			(
+				"widgetid" => "catalogitems",
+				"tags" => array("catalog"),
+			);
 		}
+		
+		
+		$result[] = array
+		(
+			"widgetid" => "bustypes",
+			"tags" => array("catalog")
+		);
 		
 		return $result;
 	}
