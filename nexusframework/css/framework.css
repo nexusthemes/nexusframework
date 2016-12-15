@@ -37,10 +37,7 @@ body														{ height: 100%; }
     margin-top: -1px;
 }
 
-a { 
-	/* overriding default browser colorization */
-	color: inherit; 
-}
+a { color: inherit; } /* overriding default browser colorization */
 
 blockquote {
 	display: inline-block;
