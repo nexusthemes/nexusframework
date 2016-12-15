@@ -1,10 +1,5 @@
 <?php 
 
-if ($_REQUEST["hoekandatnou"] == "true")
-{
-	
-}
-
 if (defined('NXS_FRAMEWORKLOADED'))
 {
 	echo "NXS_FRAMEWORKLOADED was already loaded?!";
@@ -2772,12 +2767,14 @@ function nxs_load_plugins()
 	{
 		require_once($path);
 	}
+	
 	//
 	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-businessmodeleditor/nxs-businessmodeleditor.php';
 	if (file_exists($path))
 	{
 		require_once($path);
 	}
+
 	//
 	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-catalog/nxs-catalog.php';
 	if (file_exists($path))

@@ -6260,7 +6260,7 @@ function nxs_getplaceholdertitle($placeholdertemplate)
  	// inject widget if not already loaded, implements *dsfvjhgsdfkjh*
  	$rwr = nxs_requirewidget($placeholdertemplate);
 	
-	$functionnametoinvoke = 'nxs_widgets_' . $placeholdertemplate . '_gettitle';
+	$functionnametoinvoke = "nxs_widgets_{$placeholdertemplate}_gettitle";
 	if (function_exists($functionnametoinvoke))
 	{
 		$args = array();
@@ -6711,7 +6711,7 @@ function nxs_webmethod_return_nack($message)
 			echo "<!-- hint; in case code breaks after this comment, add querystring parameter pp with value false (pp=false) to output in non-pretty format -->";
 			echo nxs_prettyprint_array($output);
 		}
-		echo "<br />raw print:<br />";
+		echo "<br />(raw printed)<br />";
 		echo "</div>";
 	}
 	die();

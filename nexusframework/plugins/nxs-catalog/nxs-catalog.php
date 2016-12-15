@@ -41,7 +41,7 @@ class nxs_catalog
 	
 	function __construct()
   {
-  	add_filter( 'init', array($this, "instance_init"), 31, 1);
+  	add_filter( 'init', array($this, "instance_init"), 5, 1);
 		add_action( 'nxs_getwidgets',array( $this, "getwidgets"), 20, 2);
   }
   

@@ -451,7 +451,7 @@ class businesssite_instance
 	
 	function __construct()
   {
-  	add_filter( 'init', array($this, "instance_init"), 31, 1);
+  	add_filter( 'init', array($this, "instance_init"), 5, 1);
 		add_action( 'nxs_getwidgets',array( $this, "getwidgets"), 20, 2);
 		add_shortcode( 'nxscomment', array($this, "sc_nxscomment"), 20, 2);
 		add_filter("nxs_f_shouldrenderaddnewrowoption", array($this, "f_shouldrenderaddnewrowoption"), 1, 1);
