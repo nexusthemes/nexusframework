@@ -1058,13 +1058,13 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$xyz_concatenated_css = nxs_concatenateargswithspaces($ph_padding, $ph_valign);
 		
 		// allow plugins to extend the child args (fill custom fields, or override fields, whatever)
-		$args = array
+		$filterargs = array
 		(
 			"instance" => $instance,
 			"taxonomy" => $taxonomy,
 			"childwidgettype" => $childwidgettype,
 		);
-		$childargs = apply_filters('nxs_f_entity_getchildargs', $childargs, $args);
+		$childargs = apply_filters('nxs_f_entity_getchildargs', $childargs, $filterargs);
 		
 		nxs_requirewidget($childwidgettype);
 		$functionnametoinvoke = "nxs_widgets_{$childwidgettype}_render_webpart_render_htmlvisualization";
