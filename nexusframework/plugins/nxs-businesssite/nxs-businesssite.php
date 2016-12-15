@@ -141,7 +141,25 @@ class businesssite_instance
 		return $response;
 	}
 	
+	function getcontentmodeltaxonomyinstances($arg)
+	{
+		$taxonomy = $arg["taxonomy"];
+		$contentmodel = $this->getcontentmodel();
+		$result = $contentmodel[$taxonomy]["instances"];
+		return $result;
+	}
+	
 	function getcontentmodel()
+	{
+		global $nxs_g_contentmodel;
+		if (!isset($nxs_g_contentmodel))
+		{
+			$nxs_g_contentmodel = $this->getcontentmodel_actual();
+		}
+		return $nxs_g_contentmodel;
+	}
+	
+	function getcontentmodel_actual()
 	{
 		$result = array();
 		
@@ -186,6 +204,7 @@ class businesssite_instance
 							"enabled" => $widgetmeta["enabled"],
 							"content" => array
 							(
+								"post_id" => $post->ID,
 								"post_title" => $post->post_title,
 								"post_excerpt" => $post->post_excerpt,
 								"post_content" => $post->post_content,
@@ -418,6 +437,10 @@ class businesssite_instance
 			),
 		);
 		$r = nxs_add_widget_to_post($args);
+		
+		$check = get_post_type($taxonomyorderedsetpostid);
+		
+		error_log("nxs-businessite-wp_insert_post; $post_id finished |0: $taxonomy |1: $taxonomyorderedsetpostid |2: $check |3: " . json_encode($r));
 	}
 	
 	function instance_init()

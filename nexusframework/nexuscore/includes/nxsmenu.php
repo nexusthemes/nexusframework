@@ -999,30 +999,9 @@ li.score {
 		  </li>
 		  <!-- -->
 		  <li class="nxs-sub-menu nxs-hidewheneditorinactive">
-		  	<a href="<?php echo $editorurl; ?>" title="<?php nxs_l18n_e("Business Model", "nxs_td"); ?>" class="site">
+		  	<a href="#" onclick="nxs_js_popup_site_neweditsession('taxonomiesoverview'); return false; return false;" title="<?php nxs_l18n_e("Taxonomies", "nxs_td"); ?>" class="site">
 		  		<span class='nxs-icon-tree'></span>
 		  	</a>
-		  	<ul>
-		  		<?php
-					$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-					foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
-					{
-					 	if ($taxonomymeta["arity"] == "n")
-					 	{
-							$url = $contentmodel[$taxonomy]["url"];
-							$icon = $taxonomymeta["icon"];
-							$title = $taxonomymeta["title"];
-				  		?>
-				    	<li>
-				      	<a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="site">
-				      		<span class='nxs-icon-<?php echo $icon; ?>'></span>		
-				      	</a>
-				      </li>
-				      <?php
-						}
-			    }
-			    ?>
-		    </ul>
 		  </li>
 		  <!-- -->
 		  <li class="nxs-sub-menu nxs-hidewheneditorinactive">

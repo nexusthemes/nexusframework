@@ -260,7 +260,7 @@ if (is_admin())
 		  }
 		}
 		
-		$fields = nxs_businessmodelmetabox_getfieldsmeta();
+		$fields = nxs_businessmodelmetabox_getfieldsmeta($post);
 		foreach ($fields as $field => $fieldmeta)
 		{
 			$type = $fieldmeta["type"];
@@ -291,8 +291,33 @@ if (is_admin())
 		
 	}
 	
-	function nxs_businessmodelmetabox_getfieldsmeta()
+	function nxs_businessmodelmetabox_getfieldsmeta($post)
 	{
+		$result = array();
+		
+		// get posttype bijv. nxs_reseller
+		$posttype = $post->post_type;
+		// get taxonomy for posttype
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		{
+			$singular = $taxonomymeta["singular"];
+			$cpt = "nxs_{$singular}";
+			if ($posttype == $cpt)
+			{
+				$additionalfields = $taxonomymeta["instanceextendedproperties"];
+				break;
+			}
+		}
+		
+		if ($additionalfields == "")
+		{
+			$additionalfields = array();
+		}
+		
+		$result = array_merge($result, $additionalfields);
+		
+		/*
 		$fields = array
 		(
 			"icon" => array("type" => "iconpicker"),
@@ -301,11 +326,16 @@ if (is_admin())
 			"source" => array(),					// used by taxonomies: testimonials
 			"destination_url" => array(),	// used by taxonomies: testimonials
 			"role" => array(),						// used by taxonomies: employees
-			"imperative_m" => array(),		// used by taxonomies: calltoactions
-			"imperative_l" => array(),		// used by taxonomies: calltoactions
-			"destination_cta" => array(/*"type" => "ctadestinationpicker" MOET UITEINDELIJK EEN DDL WORDEN */),		// used by taxonomies: calltoactions
+			//"imperative_m" => array(),		// used by taxonomies: calltoactions
+			//"imperative_l" => array(),		// used by taxonomies: calltoactions
+			//"destination_cta" => array(
+			//"type" => "ctadestinationpicker"
+			//  MOET UITEINDELIJK EEN DDL WORDEN
+			//),		// used by taxonomies: calltoactions
 		);
-		return $fields;
+		*/
+		
+		return $result;
 	}
 	
 	function nxs_businessmodelmetabox_save_callback($post_id, $post) 
@@ -319,7 +349,7 @@ if (is_admin())
 		// OK, we're authenticated: we need to find and save the data
 		// We'll put it into an array to make it easier to loop though.
 		
-		$fields = nxs_businessmodelmetabox_getfieldsmeta();
+		$fields = nxs_businessmodelmetabox_getfieldsmeta($post);
 		
 		foreach ($fields as $field => $fieldmeta)
 		{

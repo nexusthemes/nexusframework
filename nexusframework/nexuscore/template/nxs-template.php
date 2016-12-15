@@ -197,8 +197,7 @@ function nxs_site_createcontent_internal($args)
 	{
 		$postmetas = array();
 
-		// merge postmeta as specified in the source, for example 
-		,
+		// merge postmeta as specified in the source, for example
 		// nxs_entity_stars etc.
 		if ($contentcurrentpost["postmeta"] != "")
 		{
@@ -210,8 +209,6 @@ function nxs_site_createcontent_internal($args)
 			$postmetas["nxs_semanticlayout"] = $contentcurrentpost["nxs_semanticlayout"];
 		}
 		
-		
-
 		$nxs_semantic_media_postid = false;
 		$nxs_semantic_media = $contentcurrentpost["nxs_semantic_media"];
 		if ($nxs_semantic_media != "")

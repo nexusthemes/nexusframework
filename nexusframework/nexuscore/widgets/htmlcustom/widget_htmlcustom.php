@@ -24,7 +24,17 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	if ($render_behaviour == "code")
+	{
+		//
+		$temp_array = array();
+	}
+	else
+	{
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	}
+	
+	//
 	
 	$mixedattributes = array_merge($temp_array, $args);
 	
@@ -38,13 +48,19 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 
 	global $nxs_global_placeholder_render_statebag;
 
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
-		
+	if ($render_behaviour == "code")
+	{
+	}
+	else
+	{
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
+	}
+			
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["widgetcropping"] = "no";		// de custom html kent geen cropping (praktisch voor bijv. absolute/fixed positionering van elementen)
 	
@@ -54,7 +70,15 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 	
 	nxs_ob_start();
 	
-	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-custom-html nxs-applylinkvarcolor";
+	if ($render_behaviour == "code")
+	{
+		//
+		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-applylinkvarcolor";
+	}
+	else
+	{
+		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-custom-html nxs-applylinkvarcolor";
+	}
 	
 	?>
 
@@ -169,5 +193,3 @@ function nxs_widgets_htmlcustom_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

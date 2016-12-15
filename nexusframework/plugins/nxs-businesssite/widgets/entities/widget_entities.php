@@ -135,6 +135,7 @@ function nxs_widgets_entities_home_getoptions($args)
 					"target" => "Target",
 					"bio" => "Bio",
 					"quote" => "Quote",
+					"htmlcustom" => "Html Custom",
 				),
 				"unistylablefield" => true,
 			),
@@ -1024,32 +1025,22 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		unset($childargs["postid"]);
 		unset($childargs["placeholderid"]);
 		
-		if ($itemsstyle == "title")
-		{
-			unset($childargs["text"]);
-			unset($childargs["image_imageid"]);
-		}
+		$childwidgettype = $itemsstyle;
 		
-		if ($itemsstyle == "target")
-		{
-			$childwidgettype = "target";
-			$childargs["ph_cssclass"] .= " nxs-target";
-		}
-		else if ($itemsstyle == "bio")
-		{
-			$childwidgettype = "bio";
-		}
-		else if ($itemsstyle == "quote")
-		{
-			$childwidgettype = "quote";
-			$childargs["ph_cssclass"] .= " nxs-quote";
-		}
-		else
+		if ($itemsstyle == "")
 		{
 			$childwidgettype = "text";
 		}
+		else if ($itemsstyle == "target")
+		{
+			$childargs["ph_cssclass"] .= " nxs-target";
+		}
+		else if ($itemsstyle == "quote")
+		{
+			$childargs["ph_cssclass"] .= " nxs-quote";
+		}
 		
-		// $childargs["aap"] = "noot";
+		$childargs["type"] = $childwidgettype;
 		
 		//
 		// render wrap
@@ -1065,6 +1056,15 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 
 		$abc_concatenated_css = nxs_concatenateargswithspaces($ph_colorzen, $ph_linkcolorvar, $ph_border_radius, $ph_borderwidth);
 		$xyz_concatenated_css = nxs_concatenateargswithspaces($ph_padding, $ph_valign);
+		
+		// allow plugins to extend the child args (fill custom fields, or override fields, whatever)
+		$args = array
+		(
+			"instance" => $instance,
+			"taxonomy" => $taxonomy,
+			"childwidgettype" => $childwidgettype,
+		);
+		$childargs = apply_filters('nxs_f_entity_getchildargs', $childargs, $args);
 		
 		nxs_requirewidget($childwidgettype);
 		$functionnametoinvoke = "nxs_widgets_{$childwidgettype}_render_webpart_render_htmlvisualization";

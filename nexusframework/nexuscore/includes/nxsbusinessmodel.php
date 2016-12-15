@@ -430,7 +430,17 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "page",
 				),
 			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+				"stars" => array
+				(
+					"type" => "text",
+				),
+			),
+			//
 			"instanceexistencecheckfield" => "source",
+			
 			"instancefields" => array
 			(
 				"source" => array
@@ -542,6 +552,14 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "page",
 				),
 			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+				"role" => array
+				(
+					"type" => "text",
+				),			
+			),			
 			"instanceexistencecheckfield" => "name",
 			"instancefields" => array
 			(
@@ -685,6 +703,9 @@ function nxs_business_gettaxonomiesmeta()
 			"label" => "Unique Selling Propositions",
 		),	
 	);
+	
+	// allow plugins to extend the result
+	$result = apply_filters('nxs_f_business_gettaxonomiesmeta', $result);
 		
 	return $result;
 }

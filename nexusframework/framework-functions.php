@@ -1,5 +1,10 @@
 <?php 
 
+if ($_REQUEST["hoekandatnou"] == "true")
+{
+	
+}
+
 if (defined('NXS_FRAMEWORKLOADED'))
 {
 	echo "NXS_FRAMEWORKLOADED was already loaded?!";
@@ -1183,6 +1188,10 @@ function nxs_init()
 					$link = get_permalink($postid);
 					echo "post exists (open <a target='_blank' href='$link'>$link</a>)<br />";
 					
+					//
+					echo "<br />--------------<br />";
+					echo "<br />CPT: {$posttype}<br />";
+					
 					if (function_exists("nxs_qa_ispostidreferenced"))
 					{
 						echo "<br />--------------<br />";
@@ -1224,6 +1233,13 @@ function nxs_init()
 				}
 				
 				
+				die();
+			}
+			else if ($_REQUEST["nxs"] == "dumpmodel")
+			{
+				global $businesssite_instance;
+				$contentmodel = $businesssite_instance->getcontentmodel();
+				echo nxs_prettyprint_array($contentmodel);
 				die();
 			}
 			else if ($_REQUEST["nxs"] == "parsepost")
@@ -2285,7 +2301,7 @@ function nxs_create_post_types_and_taxonomies()
 			if ($taxonomymeta["wpcreateinstructions"] != "")
 			{
 				$instances = $taxonomymeta["wpcreateinstructions"]["instances"];
-				if ($instances != "")
+				if ($instances != "" && $taxonomymeta["caninstancesbereferenced"])
 				{
 					//
 			 		$type = $instances["type"];

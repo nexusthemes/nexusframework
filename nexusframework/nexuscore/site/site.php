@@ -575,6 +575,88 @@ function nxs_site_nieuwsubfooterhome_rendersheet($args)
 	nxs_webmethod_return_ok($result);
 }
 
+function nxs_site_taxonomiesoverview_rendersheet($args)
+{
+	//
+	extract($args);
+	
+	extract($clientpopupsessiondata);
+	extract($clientshortscopedata);
+		
+	$result = array();
+	
+	nxs_ob_start();
+	?>
+	<div class="nxs-admin-wrap">
+		<div class="block">	
+      
+     	<?php nxs_render_popup_header(nxs_l18n__("Taxonomies", "nxs_td")); ?>
+
+			<div class="nxs-popup-content-canvas-cropper">
+				<div class="nxs-popup-content-canvas">
+
+					<div class="content2">
+		        <div class="box">
+		        	<!--
+		          <div class="box-title">
+		            <h4><?php nxs_l18n_e("Title[nxs:popup,label]", "nxs_td"); ?></h4>
+		          </div>
+		          -->
+		          <div class="box-content">
+		          	<ul>
+			          	<?php
+									global $businesssite_instance;
+									$contentmodel = $businesssite_instance->getcontentmodel();
+									$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+									foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+									{
+									 	if ($taxonomymeta["arity"] == "n")
+									 	{
+											$url = $contentmodel[$taxonomy]["url"];
+											$icon = $taxonomymeta["icon"];
+											$title = $taxonomymeta["title"];
+								  		?>
+								    	<li>
+								      	<a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="site">
+								      		<span style='font-size:32px; padding: 5px;' class='nxs-icon-<?php echo $icon; ?>'></span>
+								      		<span style='padding: 10px;'><?php echo $title; ?></span>
+								      	</a>
+								      	
+								      </li>
+								      <?php
+										}
+							    }
+							    ?>
+							  </ul>
+						  </div>
+						</div>
+						<div class="nxs-clear"></div>
+					</div>
+				
+	
+		      <div class="content2">
+		        <div class="box">
+		          <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savepopupdata(); return false;'><?php nxs_l18n_e("Add[nxs:popup,button]", "nxs_td"); ?></a>
+		        	<a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>            
+		          <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:popup,button]", "nxs_td"); ?></a>
+		       	</div>
+		        <div class="nxs-clear"></div>
+		      </div> <!--END content-->
+      		<div class="nxs-clear"></div>
+				</div>
+				<div class="nxs-clear"></div>
+			</div>
+		</div>
+	</div>
+	
+	<?php
+	
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	
+	$result["html"] = $html;
+	nxs_webmethod_return_ok($result);
+}
 function nxs_site_newcontentparthome_rendersheet($args)
 {
 	//
