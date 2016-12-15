@@ -1155,8 +1155,23 @@ function nxs_addnewarticle($args)
 		$my_post['post_excerpt'] = $post_excerpt;
 	}
 	
+	// 2016 12 15; important new step; the globalid meta key
+	// has to be set before the wp_insert_post method 
+	// is invoked, otherwise the wp_insert_post trigger
+	// would reset the globalid, and the code following this
+	// could again reset the globalid, causing data inconsistencies
+	if (!isset($globalid))
+	{
+		$globalid = nxs_create_guid();
+	}
+	$my_post["meta_input"] = array
+	(
+		"nxs_globalid" => $globalid,
+	);
 	
-	
+	// create the post in the DB; NOTE; this will also trigger the
+	// "wp_insert_post" action which could be intercepted by plugins
+	// see *4534537354345*
 	$postid = wp_insert_post($my_post, $wp_error);
 	
 	if ($postid == 0)
@@ -1164,9 +1179,11 @@ function nxs_addnewarticle($args)
 		nxs_webmethod_return_nack("unable to insert post; $titel; $slug; $posttype; " . $postid);
 	}
 	
-	if ($globalid != "")
+	// if we reach this point, the globalid should be known, else issues will occur
+	$existingglobalid = nxs_get_globalid($post_id, false);
+	if ($existingglobalid == "")
 	{
-		nxs_reset_globalidtovalue($postid, $globalid);
+		nxs_webmethod_return_nack("unexpected; globalid should have been set by now?");
 	}
 	
 	// if specified, store the subposttype,
@@ -1241,9 +1258,6 @@ function nxs_addnewarticle($args)
 	}
 	
 	//
-	//
-	
-	//
 	// add 'wppagetemplate', if supplied
 	//
 	if ($wppagetemplate == "")
@@ -1291,7 +1305,7 @@ function nxs_addnewarticle($args)
 		}
 	}
 	
-	
+	// 
 	
 	//
 	// create response
@@ -7231,6 +7245,56 @@ function nxs_overridepagerowmetadata($postid, $pagerowid, $metadata)
 	if ($pagerowid== "") { nxs_webmethod_return_nack("pagerowid not set (owmd)"); };
 	$metadatakey = 'nxs_pr_' . $pagerowid;
 	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($metadata));
+}
+
+function nxs_struct_purgerow($postid, $rowid)
+{
+	if ($postid == "") { nxs_webmethod_return_nack("postid not specified /nxs_webmethod_removerow/"); }
+	if ($rowid == "") { nxs_webmethod_return_nack("rowid not specified"); }
+
+	$result = array();
+
+  global $nxs_global_current_postid_being_rendered;
+  global $nxs_global_current_postmeta_being_rendered;
+
+  $nxs_global_current_postid_being_rendered = $postid;
+  $nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
+
+	$poststructure = nxs_parsepoststructure($postid);
+	foreach ($poststructure as $rowindex => $currentrow)
+	{
+		$rowidaccordingtoindex = nxs_parserowidfrompagerow($currentrow);
+		if ($rowidaccordingtoindex == $rowid)
+		{
+			// this is the one, delete it!
+			$content = $currentrow["content"];
+		
+			// delete metadata of placeholders in row	
+			$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+			foreach ($placeholderids as $placeholderid)
+			{
+				nxs_purgeplaceholdermetadata($postid, $placeholderid);
+		  }
+		
+			// delete row
+			unset($poststructure[$rowindex]);
+			$poststructure = array_values($poststructure);
+			nxs_storebinarypoststructure($postid, $poststructure);
+			
+			// update items that are derived (based upon the structure and contents of the page, such as menu's)
+			$updateresult = nxs_after_postcontents_updated($postid);
+			if ($updateresult["pagedirty"] == "true") 
+			{
+				$result["pagedirty"] = "true";
+			}
+		}
+		else
+		{
+			// this row should be kept; skip it
+		}
+	}
+	//
+	return $result;
 }
 
 //

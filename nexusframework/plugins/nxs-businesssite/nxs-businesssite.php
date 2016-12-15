@@ -76,15 +76,15 @@ class businesssite_instance
 	
 	function getcontainerid($cpt)
 	{
-		$servicescontainerid = $this->getcontainerid_internal($cpt);
-		if ($servicescontainerid === false) 
+		$containerid = $this->getcontainerid_internal($cpt);
+		if ($containerid === false) 
 		{ 
-			//echo "servicescontainerid not yet found, creating...";
+			//echo "containerid not yet found, creating...";
 			$result = $this->createnewcontainer_internal($cpt);
 			if ($result["result"] != "OK") { echo "unexpected;"; var_dump($result); die(); }
-			$servicescontainerid = $result["postid"];
+			$containerid = $result["postid"];
 		}
-		return $servicescontainerid;
+		return $containerid;
 	}
 	
 	function getcontainerid_internal($cpt)
@@ -233,7 +233,7 @@ class businesssite_instance
 					{
 						// 
 						echo "unexpected widgettype; <br />";
-						echo "postid: " . $servicescontainerid . "<br />";
+						echo "postid: " . $containerid . "<br />";
 						echo "huhh?! widgettype: {$widgettype}";
 						// die();
 					}
@@ -398,6 +398,9 @@ class businesssite_instance
 			return;
 		}
 		
+		// if the globalid is not yet set, create it
+		$ensuredglobalid = nxs_get_globalid($post_id, true);
+		
 		$post_type = $post->post_type;
 		$isbusinessmodeltaxonomy = false;
 		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
@@ -418,10 +421,51 @@ class businesssite_instance
 			return;
 		}
 		
-		// we automatically add the newly created post to the list of 
-		// services
-		global $businesssite_instance;
-		$contentmodel = $businesssite_instance->getcontentmodel();
+		// we automatically add the newly created post to the list
+		$contentmodel = $this->getcontentmodel();
+		$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
+		// add an additional row to that post
+		// appends a new "one" row, with the specified widget properties to an existing post
+
+		$args = array
+		(
+			"postid" => $taxonomyorderedsetpostid,
+			"widgetmetadata" => array
+			(
+				"type" => "entity",
+				"filter_postid" => $post_id,
+				"enabled" => "true",
+			),
+		);
+		$r = nxs_add_widget_to_post($args);
+	}
+	
+	function untrashed_post($post_id)
+	{
+		error_log("untrashed_post; $post_id");
+		$post = get_post($post_id);
+		$post_type = $post->post_type;
+		$isbusinessmodeltaxonomy = false;
+		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
+		foreach ($businessmodeltaxonomies as $taxonomy => $taxmeta)
+		{
+			$singular = $taxmeta["singular"];
+			$cpt = "nxs_{$singular}";
+			if ($cpt == $post_type)
+			{
+				$isbusinessmodeltaxonomy = true;
+				break;
+			}
+		}
+		
+		if (!$isbusinessmodeltaxonomy)
+		{
+			// ignore entities outside the business taxonomies
+			return;
+		}
+		
+		// we automatically add the newly created post to the list 
+		$contentmodel = $this->getcontentmodel();
 		$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
 		// add an additional row to that post
 		// appends a new "one" row, with the specified widget properties to an existing post
@@ -437,10 +481,68 @@ class businesssite_instance
 			),
 		);
 		$r = nxs_add_widget_to_post($args);
+	}
+	
+	function wp_delete_post($post_id)
+	{
+		//error_log("debug; detect wp_delete_post $post_id");
 		
-		$check = get_post_type($taxonomyorderedsetpostid);
+		$post_type = get_post_type($post_id);
+		$isbusinessmodeltaxonomy = false;
 		
-		error_log("nxs-businessite-wp_insert_post; $post_id finished |0: $taxonomy |1: $taxonomyorderedsetpostid |2: $check |3: " . json_encode($r));
+		// only act when this is a taxonomy
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		{
+		 	if ($taxonomymeta["arity"] == "n")
+		 	{
+		 		$singular = $taxonomymeta["singular"];
+		 		$taxonomycpt = "nxs_{$singular}";
+		 		if ($post_type == $taxonomycpt)
+		 		{
+		 			$isbusinessmodeltaxonomy = true;
+		 			break;
+		 		}
+			}
+		}
+		
+		if (!$isbusinessmodeltaxonomy)
+		{
+			// ignore entities outside the business taxonomies
+			return;
+		}
+		
+		//error_log("debug; wp_delete_post for taxonomy; cpt $taxonomycpt");
+		
+		// here we should also delete the item from the ordered list (if its on it)
+		$contentmodel = $this->getcontentmodel();
+		$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
+
+		$filter = array
+		(
+			"postid" => $taxonomyorderedsetpostid,
+			"widgettype" => "entity",
+		);
+		$entities = nxs_getwidgetsmetadatainpost_v2($filter);
+		
+		foreach ($entities as $placeholderid => $placeholdermeta)
+		{
+			// grab the filter_postid value
+			$filter_postid = $placeholdermeta["filter_postid"];
+			if ($filter_postid == $post_id)
+			{
+				// get the row identifier that contains the placeholder
+				$pagerowid = nxs_getpagerowid_forpostidplaceholderid($taxonomyorderedsetpostid, $placeholderid);
+
+				//error_log("debug; wp_delete_post; deleting pagerowid; $pagerowid in postid $taxonomyorderedsetpostid");
+				
+				// delete that row!
+				nxs_struct_purgerow($taxonomyorderedsetpostid, $pagerowid);
+				
+				// note; we will not break the loop; in theory the element could be referenced
+				// multiple times in the set (not likely, but possible)
+			}
+		}
 	}
 	
 	function instance_init()
@@ -457,8 +559,13 @@ class businesssite_instance
 		add_filter("nxs_f_shouldrenderaddnewrowoption", array($this, "f_shouldrenderaddnewrowoption"), 1, 1);
 		add_action('admin_head', array($this, "instance_admin_head"), 30, 1);
 		
+		//
 		add_action( 'wp_insert_post', array($this, "wp_insert_post"), 10, 3 );
+		add_action( 'untrashed_post', array($this, "untrashed_post"), 10, 3 );
 		
+		//
+		add_action( 'delete_post', array($this, "wp_delete_post"), 10, 3 );
+		add_action( 'wp_trash_post', array($this, "wp_delete_post"), 10, 3 );
   }
   
 	/* ---------- */
