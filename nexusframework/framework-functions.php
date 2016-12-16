@@ -2173,6 +2173,7 @@ function nxs_addsupportforadditionalimageformats()
 	add_image_size('nxs_cropped_320x512', 320, 512, TRUE );	// used by the gallerybox
 }
 
+// note; "Post Duplicator" is not compatible; use "duplicate post"; a different plugin
 // tell the duplicate_post plugin to not clone the nxs_globalid custom meta field
 add_filter('pre_option_duplicate_post_blacklist', 'nxs_pre_option_duplicate_post_blacklist');
 function nxs_pre_option_duplicate_post_blacklist($result)
