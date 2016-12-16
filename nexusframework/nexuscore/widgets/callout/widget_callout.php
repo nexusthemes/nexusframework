@@ -345,6 +345,26 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unistylablefield"	=> true
 			),*/
 			
+			array(
+				"id" 				=> "flex_box_height",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Height", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@nxsempty@@@" => nxs_l18n__("Select an Option", "nxs_td"),
+					"nxs-flex-box40" 	=> nxs_l18n__("40%", "nxs_td"),
+					"nxs-flex-box50" 	=> nxs_l18n__("50%", "nxs_td"),
+					"nxs-flex-box60" 	=> nxs_l18n__("60%", "nxs_td"),
+					"nxs-flex-box70" 	=> nxs_l18n__("70%", "nxs_td"),
+					"nxs-flex-box80" 	=> nxs_l18n__("80%", "nxs_td"),
+					"nxs-flex-box90" 	=> nxs_l18n__("90%", "nxs_td"),
+					"nxs-flex-box100" 	=> nxs_l18n__("100%", "nxs_td"),
+				),
+				"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
@@ -380,24 +400,6 @@ function nxs_widgets_callout_home_getoptions($args)
 					"callout1200" 	=> nxs_l18n__("1200", "nxs_td"),
 				),
 				"tooltip" 			=> nxs_l18n__("This option forces the layout to best suit mobile devices", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array(
-				"id" 				=> "flex_box",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Height", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@nxsempty@@@" => nxs_l18n__("Select an Option", "nxs_td"),
-					"nxs-flex-box40" 	=> nxs_l18n__("40%", "nxs_td"),
-					"nxs-flex-box50" 	=> nxs_l18n__("50%", "nxs_td"),
-					"nxs-flex-box60" 	=> nxs_l18n__("60%", "nxs_td"),
-					"nxs-flex-box70" 	=> nxs_l18n__("70%", "nxs_td"),
-					"nxs-flex-box80" 	=> nxs_l18n__("80%", "nxs_td"),
-					"nxs-flex-box90" 	=> nxs_l18n__("90%", "nxs_td"),
-					"nxs-flex-box100" 	=> nxs_l18n__("100%", "nxs_td"),
-				),
-				"tooltip" 			=> nxs_l18n__("This option let's you set the sliders display at a certain viewport and up", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			
@@ -481,7 +483,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		// Appending custom widget class
 		// Responsive display
 		if ($responsive_display == "") { $responsive_display = 'callout720'; }
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display . " " . $flex_box;
+		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display . " " . $flex_box_height;
 	}
 	
 	
@@ -754,8 +756,8 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		
 			echo '
 			<div class="'.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
-				<div class="nxs-flex '.$hclass.' '.$flex_box.' '.$overlay_cssclass.'">
-					<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">
+				<div class="nxs-flex '.$hclass.' '.$flex_box_height.' '.$overlay_cssclass.'">
+					<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box_height.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">
 						<div class="text-wrapper '.$bgcolor_cssclass.' '.$border_radius_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.'">';
 						
 							if ($title != "") 		{echo $htmltitle;}
