@@ -36,8 +36,12 @@ body														{ height: 100%; }
 	padding-top: 1px;
     margin-top: -1px;
 }
+/*#nxs-header-container { overflow: auto; }   */
 
-a { color: inherit; } /* overriding default browser colorization */
+a { 
+	/* overriding default browser colorization */
+	color: inherit; 
+}
 
 blockquote {
 	display: inline-block;
