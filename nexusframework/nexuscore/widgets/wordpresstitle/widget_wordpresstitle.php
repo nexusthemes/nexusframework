@@ -146,6 +146,28 @@ function nxs_widgets_wordpresstitle_home_getoptions($args)
 				"type" 				=> "wrapperend",
 				"unistylablefield"	=> true
 			),
+			
+			// FEATURED IMG
+
+			array( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Featured img", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
+			array(
+				"id" 				=> "image_size",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Image size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("image_size"),
+				"unistylablefield"	=> true
+			),		
+			
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),			
 		),
 	);
 	
@@ -216,6 +238,8 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		$title = get_the_title(); // nxs_gettitle_for_postid($nxs_global_current_containerpostid_being_rendered);
 		$currentpostdate = $currentpost->post_date;
 	}
+	
+	
 	
 	$hovermenuargs = array();
 	$hovermenuargs["postid"] = $postid;
@@ -408,6 +432,49 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		}
 		
 		echo '<div class="nxs-clear"></div>';
+	}
+	
+	
+	if ($image_size != "" && $image_size != "-")
+	{
+		echo "<!-- zeker lalala $image_size -->";
+		
+		global $nxs_global_current_containerpostid_being_rendered;
+		$containerpostid = $nxs_global_current_containerpostid_being_rendered;
+		$image_imageid = get_post_thumbnail_id($containerpostid);
+		if ($image_imageid != "")
+		{
+			$derived_imageurl = "";	// none
+	
+			// Determines which image size, full or thumbnail, should be used    
+			$wpsize = nxs_getwpimagesize($image_size);
+			$imagemetadata= wp_get_attachment_image_src($image_imageid, $wpsize, true);
+			// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
+			$derived_imageurl = $imagemetadata[0];
+			$derived_imageurl = nxs_img_getimageurlthemeversion($derived_imageurl);
+			
+			// Image with border functionality
+			$image = '
+				<div class="nxs-image-wrapper '.$image_shadow.' '.$image_size_cssclass.' '.$image_alignment_cssclass.' '.'">
+					<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="'.$image_border_width.' nxs-overflow">
+						<img src="'.$derived_imageurl.'" alt="'.$image_alt.'" title="'.$image_title.'" class="'.$enlarge.' '.$grayscale.'" />
+					</div>
+				</div>';
+					
+			echo $image;
+		}
+		else
+		{
+			if (is_user_logged_in())
+			{
+				$url = get_edit_post_link($containerpostid);
+				?>
+				<div class="nxs-hidewheneditorinactive">
+					<div style='padding-top: 10px;'><span>Featured image not (yet) set</span><a class='nxsbutton' href='<?php echo $url; ?>'>Configure</a></div>
+				</div>
+				<?php
+			}
+		}
 	}
 	
 	/* ------------------------------------------------------------------------------------------------- */

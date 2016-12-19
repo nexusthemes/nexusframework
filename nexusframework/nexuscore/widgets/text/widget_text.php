@@ -839,6 +839,12 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$image = $default_image; 
 	}
 	
+	if ($image_size == "-")
+	{
+		// indicates "none"
+		$image = "";
+	}
+	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
@@ -914,9 +920,18 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		
 		if (
 			($image_imageid != "" || $image_src != "") && $htmltext != "" && $image_size == "auto-fit" ||
-			($image_imageid != "" || $image_src != "") && $htmltext == "" && $htmlforbutton != "") { 
-			echo $htmlfiller; 
+			($image_imageid != "" || $image_src != "") && $htmltext == "" && $htmlforbutton != "") 
+		{
+			if ($image_size != "-")
+			{ 
+				echo $htmlfiller; 
+			}
+			else
+			{
+				// indicates "no" image, so also "no" filler
+			}
 		}
+		
 		
 		/* Text and filler
 		----------------------------------------------------------------------------------------------------*/

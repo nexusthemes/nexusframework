@@ -110,7 +110,7 @@ function nxs_widgets_busrulehome_render_webpart_render_htmlvisualization($args)
 	else 
 	{
 		$url = nxs_geturl_home();
-		$filteritemshtml = "<a href='{$url}' target='_blank'>homepage</a>";
+		$filteritemshtml = "<a href='{$url}' target='_blank'>Homepage</a>";
 		nxs_widgets_busrule_pagetemplate_renderrow(nxs_widgets_busrulehome_geticonid(), $filteritemshtml, $mixedattributes);
 	} 
 	

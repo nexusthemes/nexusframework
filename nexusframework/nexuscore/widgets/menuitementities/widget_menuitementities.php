@@ -411,7 +411,6 @@ function nxs_widgets_menuitementities_initplaceholderdata($args)
 	$args["depthindex"] = 1;
 	$args["destination_target"] = "_self";
 	$args["destination_relation"] = "nofollow";	
-	$args['destination_url'] = nxs_geturl_home();
 	$args['ph_margin_bottom'] = "0-0";
 	
 	$args["taxonomy"] = "services";

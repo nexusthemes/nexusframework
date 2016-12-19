@@ -959,51 +959,63 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		*/
 		
 		// replicate styleable fields specific for "TEXT" widgets
-		$fieldstoreplicate = array
-		(
-			"title_heading", "title_fontzen", "title_alignment", "title_fontsize", "top_info_color", "top_info_padding", 
-			"icon_scale", "text_truncatelength", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
-			"button_scale", "button_color", "button_fontzen", "button_alignment",
-			"destination_target", "title_heightiq", "text_heightiq", "text_showliftnote", "text_showdropcap", "text_fontzen", "enlarge", "grayscale",
-		);
-		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		if ($childwidgettype == "text" || $childwidgettype == "")
 		{
-			$childargs[$fieldtoreplicate] = $args["text_{$fieldtoreplicate}"];
+			$fieldstoreplicate = array
+			(
+				"title_heading", "title_fontzen", "title_alignment", "title_fontsize", "top_info_color", "top_info_padding", 
+				"icon_scale", "text_truncatelength", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
+				"button_scale", "button_color", "button_fontzen", "button_alignment",
+				"destination_target", "title_heightiq", "text_heightiq", "text_showliftnote", "text_showdropcap", "text_fontzen", "enlarge", "grayscale",
+			);
+			foreach ($fieldstoreplicate as $fieldtoreplicate)
+			{
+				$childargs[$fieldtoreplicate] = $args["text_{$fieldtoreplicate}"];
+			}
 		}
 		
 		// replicate styleable fields specific for "TARGET" widgets
-		$fieldstoreplicate = array
-		(
-			"title_heading", "title_alignment", "title_fontsize", 
-			"text_alignment", "button_scale", "button_color", 
-			"button_alignment", "bgcolor", "border_radius", 
-			"icon_size", "layout", "transition",
-		);
-		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		if ($childwidgettype == "target")
 		{
-			$childargs[$fieldtoreplicate] = $args["target_{$fieldtoreplicate}"];
+			$fieldstoreplicate = array
+			(
+				"title_heading", "title_alignment", "title_fontsize", 
+				"text_alignment", "button_scale", "button_color", 
+				"button_alignment", "bgcolor", "border_radius", 
+				"icon_size", "layout", "transition",
+			);
+			foreach ($fieldstoreplicate as $fieldtoreplicate)
+			{
+				$childargs[$fieldtoreplicate] = $args["target_{$fieldtoreplicate}"];
+			}
 		}
 		
 		// replicate styleable fields specific for "BIO" widgets
-		$fieldstoreplicate = array
-		(
-			"title_heading", "title_alignment", "image_shadow",
-			"image_size", "image_border_width", "subtitle_heading",
-			"use_icon", "text_alignment", "title_heightiq",
-		);
-		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		if ($childwidgettype == "bio")
 		{
-			$childargs[$fieldtoreplicate] = $args["bio_{$fieldtoreplicate}"];
+			$fieldstoreplicate = array
+			(
+				"title_heading", "title_alignment", "image_shadow",
+				"image_size", "image_border_width", "subtitle_heading",
+				"use_icon", "text_alignment", "title_heightiq",
+			);
+			foreach ($fieldstoreplicate as $fieldtoreplicate)
+			{
+				$childargs[$fieldtoreplicate] = $args["bio_{$fieldtoreplicate}"];
+			}
 		}
 		
 		// replicate styleable fields specific for "QUOTE" widgets
-		$fieldstoreplicate = array
-		(
-			"quote_textsize", "source_textsize", "quote_width", "show_quote_icon",
-		);
-		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		if ($childwidgettype == "quote")
 		{
-			$childargs[$fieldtoreplicate] = $args["quote_{$fieldtoreplicate}"];
+			$fieldstoreplicate = array
+			(
+				"quote_textsize", "source_textsize", "quote_width", "show_quote_icon",
+			);
+			foreach ($fieldstoreplicate as $fieldtoreplicate)
+			{
+				$childargs[$fieldtoreplicate] = $args["quote_{$fieldtoreplicate}"];
+			}
 		}
 		
 		//

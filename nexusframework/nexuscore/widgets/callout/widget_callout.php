@@ -432,7 +432,17 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	if ($render_behaviour == "code")
+	{
+		//
+		$temp_array = array();
+	}
+	else
+	{
+		// Every widget needs it's own unique id for all sorts of purposes
+		// The $postid and $placeholderid are used when building the HTML later on
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	}
 	
 	// blend unistyle properties
 	$unistyle = $temp_array["unistyle"];
@@ -466,26 +476,40 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
-	
+	if ($postid != "" && $placeholderid != "")
+	{
+		//
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
+		
 	// Turn on output buffering
 	nxs_ob_start();
 	
-	global $nxs_global_placeholder_render_statebag;
-	if ($shouldrenderalternative == true) {
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
-	} else {
-		// Appending custom widget class
-		// Responsive display
-		if ($responsive_display == "") { $responsive_display = 'callout720'; }
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display . " " . $flex_box_height;
+	if ($render_behaviour == "code")
+	{
+		//
 	}
-	
+	else
+	{
+		global $nxs_global_placeholder_render_statebag;
+		
+		if ($shouldrenderalternative == true) 
+		{
+			$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
+		}
+		else 
+		{
+			// Appending custom widget class
+			// Responsive display
+			if ($responsive_display == "") { $responsive_display = 'callout720'; }
+			$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $responsive_display . " " . $flex_box_height;
+		}
+	}
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */

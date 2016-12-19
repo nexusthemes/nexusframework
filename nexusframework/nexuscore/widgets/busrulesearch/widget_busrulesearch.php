@@ -110,7 +110,7 @@ function nxs_widgets_busrulesearch_render_webpart_render_htmlvisualization($args
 	else 
 	{
 		$url = nxs_geturl_home();
-		$filteritemshtml = "searchresults";
+		$filteritemshtml = "Search results";
 		nxs_widgets_busrule_pagetemplate_renderrow(nxs_widgets_busrulesearch_geticonid(), $filteritemshtml, $mixedattributes);
 	} 
 	

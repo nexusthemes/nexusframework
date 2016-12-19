@@ -2,7 +2,7 @@
 
 function nxs_widgets_busruleposttype_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-file-2";
+	return "nxs-icon-tree";
 }
 
 // Setting the widget title

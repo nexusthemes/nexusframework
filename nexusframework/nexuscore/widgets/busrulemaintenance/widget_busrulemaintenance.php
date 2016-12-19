@@ -109,7 +109,7 @@ function nxs_widgets_busrulemaintenance_render_webpart_render_htmlvisualization(
 	else 
 	{
 		$url = nxs_geturl_home();
-		$filteritemshtml = "maintenance";
+		$filteritemshtml = "Maintenance mode";
 		nxs_widgets_busrule_pagetemplate_renderrow(nxs_widgets_busrulemaintenance_geticonid(), $filteritemshtml, $mixedattributes);
 	} 
 	
