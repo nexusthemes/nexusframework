@@ -19,7 +19,7 @@ function nxs_popup_optiontype_wrapperbegin_renderhtmlinpopup($optionvalues, $arg
 	}
 	
 	?>
-	<div class="nxs-option-toggler <?php echo $nxs_toggled_cssclass; ?>"> <!-- closed by wrapperend -->
+	<div id="<?php echo $id;?>" class="nxs-option-toggler <?php echo $nxs_toggled_cssclass; ?> <?php echo $cssclasses; ?>"> <!-- closed by wrapperend -->
 		<a href="#" onclick="nxs_js_popuptogglewrapper(this, 'nxs-wrapperbegin-<?php echo $id; ?>'); return false;">
 			<div class="content2 nxs-popup-heading <?php echo $heading_cssclass;?>">
 			  <div class="box">

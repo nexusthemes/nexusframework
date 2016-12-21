@@ -123,6 +123,7 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	extract($nxs_global_row_render_statebag, EXTR_PREFIX_ALL, "grs_");
 	
 	$pagerowtemplate = $rowattributes["pagerowtemplate"];
+	$hidewheneditorinactive = $nxs_global_row_render_statebag["hidewheneditorinactive"];
 
 	$additionalrowclasses = "";
 	
@@ -207,6 +208,11 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	}
 	
 	$cssclassrowtemplate = "nxs-rowtemplate-" . $nxs_global_row_render_statebag["pagerowtemplate"];
+	
+	if ($hidewheneditorinactive === true)
+	{
+		$cssclass .= " nxs-hidewheneditorinactive ";
+	}
 	
 	if (isset($grs_upgradetofullwidth) && $grs_upgradetofullwidth) 
 	{
@@ -313,7 +319,6 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	}
 	
 	$output .= "<ul class='nxs-placeholder-list'>";
-	
 	$output .= $content;
 	$output .= "</ul>";
 	$output .= "<div class='nxs-clear'></div>";
@@ -330,6 +335,13 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		$output .= "</div>";
 	}
 
+	// widgets have the capability to tell the row to etch itself
+	// (for example entities widgets)
+	if ($nxs_global_row_render_statebag["etchrow"] === true)
+	{
+		$output = ""; // "<!-- and its gone -->";
+	}
+
 	// global variable no longer needed
 	$nxs_global_row_render_statebag = null;
 	
@@ -338,6 +350,8 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		//
 		$output = "";
 	}
+	
+	
 	
 	return $output;
 }

@@ -352,6 +352,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("When checked, the widget's text will participate in the text alignment of other partipating widgets in this row", "nxs_td"),
 				"unistylablefield"	=> true
 			),			
+			
 			array( 
 				"id" 				=> "text_showliftnote",
 				"type" 				=> "checkbox",
@@ -678,7 +679,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// This function does not fare well with CSS3 transitions targeting "all"
 	$heightiqprio = "p1";
 	$title_heightiqgroup = "title";
-  	$titlecssclasses = $title_fontsize_cssclass;
+  $titlecssclasses = $title_fontsize_cssclass;
 	$titlecssclasses = nxs_concatenateargswithspaces($titlecssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
 	
 	// Top info padding and color
@@ -887,10 +888,22 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		
 		}
 		
-		if (
-			($title != "" || $icon != "") && ($image_imageid != "" || $image_src != "") ||
-			($title != "" || $icon != "") && $htmltext != "" ||
-			($title != "" || $icon != "") && $htmlforbutton != "") { 
+		$shouldrenderfiller = false;
+		if (($title != "" || $icon != "") && ($image_imageid != "" || $image_src != "") && $image_size != "-")
+		{
+			$shouldrenderfiller = true;
+		}
+		else if (($title != "" || $icon != "") && $htmltext != "")
+		{
+			$shouldrenderfiller = true;
+		}
+		else if (($title != "" || $icon != "") && $htmlforbutton != "")
+		{
+			$shouldrenderfiller = true;
+		}
+		
+		if ($shouldrenderfiller)
+		{ 
 			echo $htmlfiller; 
 		}
 		

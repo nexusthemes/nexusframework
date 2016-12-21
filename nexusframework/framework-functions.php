@@ -2762,26 +2762,60 @@ function nxs_init_handledebug()
 
 function nxs_load_plugins()
 {
-	//
-	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-businesssite/nxs-businesssite.php';
-	if (file_exists($path))
-	{
-		require_once($path);
-	}
+	// always load these
+	$plugins = array
+	(
+		"nxs-businesssite",
+		"nxs-businessmodeleditor",
+	);
 	
-	//
-	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-businessmodeleditor/nxs-businessmodeleditor.php';
-	if (file_exists($path))
+	// dynamically inject additional plugins 
+	// based upon the configuration of the site
+	$includeruntimeitems = false;
+	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+	
+	$nxs_plugins = $lookup["nxs_plugins"];
+	$nxs_plugins = str_replace(";", ",", $nxs_plugins);
+	$nxs_plugins = str_replace(".", ",", $nxs_plugins);
+	$nxs_plugins = str_replace("|", ",", $nxs_plugins);
+	// 
+	$moreplugins = explode(",", $nxs_plugins);
+	
+	
+	$plugins = array_merge($plugins, $moreplugins);
+	
+	$loaded = array();
+	foreach ($plugins as $plugin)
 	{
-		require_once($path);
+		// get rid of spaces before and after
+		$plugin = trim($plugin);
+		if ($plugin != "")
+		{
+			if (!in_array($plugin, $loaded))
+			{
+				//
+				$path = NXS_FRAMEWORKPATH . "/plugins/{$plugin}/{$plugin}.php";
+				if (file_exists($path))
+				{
+					require_once($path);
+					$loaded[] = $path;
+				}
+				else
+				{
+					//echo "not found; $path";
+					//die();
+				}
+			}
+			else
+			{
+				// already had this one
+				//echo "duplicate; $path";
+				//die();
+			}
+		}
+
 	}
 
-	//
-	$path = NXS_FRAMEWORKPATH . '/plugins/nxs-catalog/nxs-catalog.php';
-	if (file_exists($path))
-	{
-		require_once($path);
-	}
 }
 
 //

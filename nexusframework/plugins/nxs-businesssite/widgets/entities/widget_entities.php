@@ -83,7 +83,111 @@ function nxs_widgets_entities_home_getoptions($args)
 		"footerfiller" => true,	// add some space at the bottom
 		"fields" => array
 		(
-			// link to the business editor
+			// SECTION
+			
+			array( 
+				"id" 				=> "wrapper_input_begin",
+				"type" 				=> "wrapperbegin",
+				"initial_toggle_state" => "closed",
+				"label" 			=> nxs_l18n__("Section", "nxs_td"),
+			),
+
+			array(
+				"id" 				=> "section_icon",
+				"type" 				=> "icon",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+			),
+			
+			array(
+				"id" 				=> "section_title",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Title", "nxs_td"),
+			),
+			
+			array( 
+				"id" 				=> "wrapper_input_end",
+				"type" 				=> "wrapperend"
+			),
+		
+			// TITLE
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"initial_toggle_state" => "closed",
+				"label" 			=> nxs_l18n__("Title", "nxs_td"),
+			),
+			array(
+				"id" 				=> "title",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Title", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			array(
+				"id" 				=> "title_heading",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "title_alignment",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+						
+			array(
+				"id" 				=> "title_fontsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "top_info_color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Top info color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id"     			=> "top_info_padding",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Top info padding", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "icon",
+				"type" 				=> "icon",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array(
+				"id"     			=> "icon_scale",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),
+			
+			// ITEMS
+		
 			array(
           "id" 				=> "wrapper_items_begin",
           "type" 				=> "wrapperbegin",
@@ -93,6 +197,7 @@ function nxs_widgets_entities_home_getoptions($args)
       (
 				"id" 					=> "datasource",
 				"type" 				=> "select",
+				"popuprefreshonchange" => "true",
 				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
 				"dropdown" 		=> $taxonomies,
 			),
@@ -121,18 +226,20 @@ function nxs_widgets_entities_home_getoptions($args)
       array(
           "id" 				=> "wrapper_title_begin",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("Visualization", "nxs_td"),
+          "label" 			=> nxs_l18n__("Child Visualization", "nxs_td"),
       ),
      
       array
       (
 				"id" 					=> "itemsstyle",
 				"type" 				=> "select",
+				"popuprefreshonchange" => "true",
 				"label" 			=> nxs_l18n__("Style", "nxs_td"),
 				"dropdown" 		=> array
 				(
 					"text" => "Text",
 					"target" => "Target",
+					"signpost" => "Signpost",
 					"bio" => "Bio",
 					"quote" => "Quote",
 					"htmlcustom" => "Html Custom",
@@ -150,10 +257,12 @@ function nxs_widgets_entities_home_getoptions($args)
 
 			// TEXT WIDGET SPECIFIC STYLING
       
-      array(
-          "id" 				=> "wrapper_title_begin",
+      array
+      (
+          "id" 				=> "wrapper_itemsstyle_text_begin",
+          "cssclasses" => "custom-filter custom-filter-text",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("Text widget styling", "nxs_td"),
+          "label" 			=> nxs_l18n__("Child text widget styling", "nxs_td"),
       ),
       
       array
@@ -370,9 +479,10 @@ function nxs_widgets_entities_home_getoptions($args)
       // TARGET WIDGET SPECIFIC STYLING
       
       array(
-          "id" 				=> "target_wrapper_begin",
+          "id" 				=> "wrapper_itemsstyle_target_begin",
+          "cssclasses" => "custom-filter custom-filter-target",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("Target widget styling", "nxs_td"),
+          "label" 			=> nxs_l18n__("Child target widget styling", "nxs_td"),
       ),
       
       array(
@@ -489,9 +599,10 @@ function nxs_widgets_entities_home_getoptions($args)
       // BIO WIDGET SPECIFIC STYLING
       
       array(
-          "id" 				=> "wrapper_bio_title_begin",
+          "id" 				=> "wrapper_itemsstyle_bio_begin",
+          "cssclasses" => "custom-filter custom-filter-bio",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("Bio widget styling", "nxs_td"),
+          "label" 			=> nxs_l18n__("Child bio widget styling", "nxs_td"),
       ),
       
       array(
@@ -568,12 +679,113 @@ function nxs_widgets_entities_home_getoptions($args)
           "type" 				=> "wrapperend",
       ),
       
+      // SIGNPOST SPECIFIC STYLING
+      
+      array
+      (
+          "id" 				=> "wrapper_itemsstyle_signpost_begin",
+          "cssclasses" => "custom-filter custom-filter-signpost",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Child signpost widget styling", "nxs_td"),
+      ),
+      
+      array(
+				"id" 				=> "signpost_title_heading",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title heading", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "signpost_title_bg",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Title background color", "nxs_td"),
+				"sampletext"		=> nxs_l18n__("Sample", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "signpost_image_border_width",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Border size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("border_width"),
+				"unistylablefield"	=> true
+			),	
+			array(
+				"id" 				=> "signpost_container_height",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Container height", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"100" => nxs_l18n__("100px", "nxs_td"),
+					"150" => nxs_l18n__("150px", "nxs_td"),
+					"200" => nxs_l18n__("200px", "nxs_td"),
+					"250" => nxs_l18n__("250px", "nxs_td"),
+					"300" => nxs_l18n__("300px", "nxs_td"),
+					"400" => nxs_l18n__("400px", "nxs_td"),
+					"500" => nxs_l18n__("500px", "nxs_td"),
+					"600" => nxs_l18n__("600px", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),	
+			array( 
+				"id" 				=> "signpost_mask_color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Mask color", "nxs_td"),
+				"sampletext"		=> nxs_l18n__("Sample", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Set's the color of the transparent sheet that transitions over the background image when hovered", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "signpost_button_scale",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("button_scale"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "signpost_button_color",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
+				"sampletext"		=> nxs_l18n__("Sample<br />text", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "signpost_destination_target",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
+			array( 
+				"id" 				=> "signpost_remove_shadow",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Remove shadow", "nxs_td"),
+				"unistylablefield"	=> true
+			),	
+      
+      array
+			(
+          "id" 				=> "signpost_wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),
+      
       // QUOTE WIDGET SPECIFIC STYLING
       
       array(
-          "id" 				=> "wrapper_quote_title_begin",
+          "id" 				=> "wrapper_itemsstyle_quote_begin",
+          "cssclasses" => "custom-filter custom-filter-quote",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("Quote widget styling", "nxs_td"),
+          "label" 			=> nxs_l18n__("Child quote widget styling", "nxs_td"),
       ),
       
       array(
@@ -636,7 +848,7 @@ function nxs_widgets_entities_home_getoptions($args)
       (
           "id" 				=> "wrapper_any_background_title_begin",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("background & alignment (any type)", "nxs_td"),
+          "label" 			=> nxs_l18n__("Child background & alignment", "nxs_td"),
       ),
       
       array(
@@ -688,7 +900,7 @@ function nxs_widgets_entities_home_getoptions($args)
       (
           "id" 				=> "any_wrapper_colorstext_begin",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("colors & text (any type)", "nxs_td"),
+          "label" 			=> nxs_l18n__("Child colors & text", "nxs_td"),
       ),
       
       array( 
@@ -720,12 +932,43 @@ function nxs_widgets_entities_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
+			array(
+				"id" 				=> "custom",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_entities_custom_popupcontent",
+				"label" 			=> nxs_l18n__("...", "nxs_td"),
+				"layouttype"		=> "custom",
+			),
+			
 		)
 	);
 	
 	nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
 	
 	return $options;
+}
+
+function nxs_entities_custom_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	extract($optionvalues);
+	extract($args);
+	extract($runtimeblendeddata);
+
+	nxs_ob_start();
+	?>
+	<script>
+		var style = '<?php echo $itemsstyle; ?>';
+		nxs_js_alert("enabling styles for '"+style+"' :)");
+		//
+		jQuery(".custom-filter").hide();
+		jQuery(".custom-filter-<?php echo $itemsstyle; ?>").show();
+	</script>
+	<?php
+	
+	// ----
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
 }
 
 
@@ -735,7 +978,7 @@ function nxs_widgets_entities_home_getoptions($args)
 ---------------------------------------------------------------------------------------------------- */
 
 function nxs_widgets_entities_render_webpart_render_htmlvisualization($args) 
-{	
+{
 	// Importing variables
 	extract($args);
 	
@@ -839,6 +1082,165 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	{
 		$taxonomy = $datasource;
 	}
+	
+	/* SECTION
+	---------------------------------------------------------------------------------------------------- */
+	
+	// Icon
+	if ($section_icon != "") {
+		$section_icon = '<span class="icon ' . $section_icon . '"></span>';
+	}
+
+	$hash = str_replace(' ', '-', $section_title);
+	
+	ob_start();
+
+	$container_class = 'hide';
+	if (nxs_has_adminpermissions()) {
+		$container_class = 'nxs-hidewheneditorinactive';
+	} 
+
+	if ($section_title != "" || $section_icon != "")
+	{
+		?>
+		<div class="section"></div>
+		<div id="<?php echo $hash; ?>" class="nxs-section">
+			<div class="nxs-section-container <?php echo $container_class; ?>">
+				<h5>
+					<div class="seperator-before"></div>
+					<?php echo $section_icon; ?>
+					<span class="nxs-section-title"><?php echo $section_title; ?></span>
+					<div class="seperator-after"></div>
+				</h5>
+				<div class="nxs-section-icon">
+					<?php echo $section_icon; ?>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+	
+	//	
+	
+	$section_html = ob_get_contents();
+	ob_end_clean();
+	
+	$html .= $section_html;
+	
+	/* TITLE
+	---------------------------------------------------------------------------------------------------- */
+	
+	// Title heading
+	if ($title_heading != "") {
+		$title_heading = "h" . $title_heading;	
+	} else {
+		$title_heading = "h1";
+	}
+
+	// Title alignment
+	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
+	
+	if ($title_alignment == "center") { $top_info_title_alignment = "margin: 0 auto;"; } else
+	if ($title_alignment == "right")  { $top_info_title_alignment = "margin-left: auto;"; } 
+	
+	// Title fontsize
+	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
+
+	// Title height (across titles in the same row)
+	// This function does not fare well with CSS3 transitions targeting "all"
+	$heightiqprio = "p1";
+	$title_heightiqgroup = "title";
+  $titlecssclasses = $title_fontsize_cssclass;
+	$titlecssclasses = nxs_concatenateargswithspaces($titlecssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
+	
+	// Top info padding and color
+	$top_info_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $top_info_color);
+	$top_info_padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $top_info_padding);
+	
+	// Icon scale
+	$icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+		
+	// Icon
+	if ($icon != "") {$icon = '<span class="'.$icon.' '.$icon_scale_cssclass.'"></span>';}
+	
+	if ($title_schemaorgitemprop != "") {
+		// bijv itemprop="name"
+		$title_schemaorg_attribute = "itemprop='{$title_schemaorgitempro}'";
+	} else {
+		$title_schemaorg_attribute = "";	
+	}
+	
+	if ($title_fontzen != "")
+	{
+		$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $title_fontzen);
+	}
+	
+	$concatenatedcssclasses = nxs_concatenateargswithspaces("nxs-title", $title_alignment_cssclass, $title_fontsize_cssclass, $titlecssclasses, $title_fontzen_cssclass);
+	
+	
+	// Title
+	
+	ob_start();
+	
+	$titlehtml = "<{$title_heading} {$title_schemaorg_attribute} class='{$concatenatedcssclasses}'>{$title}</{$title_heading}>";
+	
+	/* Title and filler
+	----------------------------------------------------------------------------------------------------*/
+	if ($icon == "" && $title == "") 
+	{
+		// nothing to show
+	} 
+	else if (($top_info_padding_cssclass != "") || ($icon != "") || ($top_info_color_cssclass != "")) {
+		 
+		// Icon title
+		echo '
+		<div class="top-wrapper nxs-border-width-1-0 '.$top_info_color_cssclass.' '.$top_info_padding_cssclass.'">
+			<div class="nxs-table" style="'.$top_info_title_alignment.'">';
+			
+				// Icon
+				echo $icon;
+				
+				// Title
+				if ($title != "")
+				{
+					echo $titlehtml;
+				}
+				echo '
+			</div>
+		</div>';
+	
+	} 
+	else 
+	{
+	
+		// Default title
+		if ($title != "") 
+		{
+			echo $titlehtml;
+			
+		}
+	}
+	
+	$shouldrenderfiller = false;
+	if ($title != "" || $icon != "")
+	{
+		$shouldrenderfiller = true;
+	}
+	
+	if ($shouldrenderfiller)
+	{
+		$htmlfiller = nxs_gethtmlforfiller();
+		echo $htmlfiller; 
+	}
+	
+	$titlehtml = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	
+	$html .= $titlehtml;
+	
+	
+	//
+	
 	
 	//
 	$html .= "<div class='nxsgrid-container'>";
@@ -990,6 +1392,27 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			}
 		}
 		
+		// replicate styleable fields specific for "SIGNPOST" widgets
+		if ($childwidgettype == "signpost")
+		{
+			$fieldstoreplicate = array
+			(
+				"title_heading",
+				"title_bg",
+				"image_border_width",
+				"container_height",
+				"mask_color",
+				"button_scale",
+				"button_color",
+				"destination_target",
+				"remove_shadow",
+			);
+			foreach ($fieldstoreplicate as $fieldtoreplicate)
+			{
+				$childargs[$fieldtoreplicate] = $args["signpost_{$fieldtoreplicate}"];
+			}
+		}
+		
 		// replicate styleable fields specific for "BIO" widgets
 		if ($childwidgettype == "bio")
 		{
@@ -1051,6 +1474,10 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		{
 			$childargs["ph_cssclass"] .= " nxs-quote";
 		}
+		else if ($itemsstyle == "signpost")
+		{
+			$childargs["ph_cssclass"] .= " nxs-signpost";
+		}
 		
 		$childargs["type"] = $childwidgettype;
 		
@@ -1062,7 +1489,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$ph_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $childargs["ph_linkcolorvar"]);
 		$ph_border_radius = nxs_getcssclassesforlookup("nxs-border-radius-", $childargs["ph_border_radius"]);
 		$ph_borderwidth = nxs_getcssclassesforlookup("nxs-border-width-", $childargs["ph_border_width"]);
-		$ph_cssclass = $childargs["ph_cssclass"];		
+		$child_ph_cssclass = $childargs["ph_cssclass"];		
+		$child_ph_margin_bottom = nxs_getcssclassesforlookup("nxs-margin-bottom-", $childargs["ph_margin_bottom"]);
+		
 		$ph_padding = nxs_getcssclassesforlookup("nxs-padding-", $childargs["ph_padding"]);
 		$ph_valign = $childargs["ph_valign"];
 
@@ -1082,8 +1511,10 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$functionnametoinvoke = "nxs_widgets_{$childwidgettype}_render_webpart_render_htmlvisualization";
 		$subresult = call_user_func($functionnametoinvoke, $childargs);
 
+		
+
 		$subhtml = "";
-		$subhtml .= "<div class='{$ph_cssclass}'>";
+		$subhtml .= "<div class='{$child_ph_cssclass} {$child_ph_margin_bottom}'>";
 		$subhtml .= "<div class='ABC {$heightclass} {$abc_concatenated_css}'>";
 		$subhtml .= "<div class='XYZ {$xyz_concatenated_css}'>";
 		$subhtml .= $subresult["html"];
@@ -1110,7 +1541,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			$csssecondcolumn = "nxsgrid-secondcolumn";
 		}
 		
-		$html .= "<div class='index{$index} {$csssecondcolumn} remainder{$remainder} nxsgrid-item nxsgrid-margin-bottom20 nxsgrid-column-{$numberofcolumns} nxsgrid-float-left {$csslastcolumn}'>";
+		$html .= "<div class='index{$index} {$csssecondcolumn} remainder{$remainder} nxsgrid-item nxsgrid-column-{$numberofcolumns} nxsgrid-float-left {$csslastcolumn}'>";
 		$html .= $subhtml;
 		$html .= "</div>";
 		
@@ -1119,6 +1550,10 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			$html .= "<div class='nxsgrid-clear-both clear'></div>";	
 		}
 	}
+	
+	
+	
+	$html .= "</div>";
 	
 	if ($count == 0)
 	{
@@ -1131,13 +1566,19 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			global $businesssite_instance;
 			$contentmodel = $businesssite_instance->getcontentmodel();
 			$url = $contentmodel[$taxonomy]["url"];
-			echo "No {$title} found. <a class='nxsbutton' href='{$url}'>Manage {$title}</a><br />";
+			$html .= "<div>No {$title} found <a class='nxsbutton' href='{$url}'>Manage {$title}</a></div>";
+			$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+		}
+		else
+		{
+			global $nxs_global_row_render_statebag;
+			$nxs_global_row_render_statebag["etchrow"] = true;
+			// $html = "";
 		}
 	}
 	
-	$html .= "</div>";	
-	
 	echo $html;
+	
 	// 
 	
 	/* ------------------------------------------------------------------------------------------------- */
@@ -1157,7 +1598,8 @@ function nxs_widgets_entities_initplaceholderdata($args)
 {
 	extract($args);
 
-	//$args['entities_heightiq'] = "true";
+	// 
+	$args['any_ph_margin_bottom'] = "1-0";
 	
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_entities_getunifiedstylinggroup();

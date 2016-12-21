@@ -27,14 +27,12 @@ class nxs_catalog
 				"widgetid" => "catalogitems",
 				"tags" => array("catalog"),
 			);
+			$result[] = array
+			(
+				"widgetid" => "bustypes",
+				"tags" => array("catalog")
+			);
 		}
-		
-		
-		$result[] = array
-		(
-			"widgetid" => "bustypes",
-			"tags" => array("catalog")
-		);
 		
 		return $result;
 	}

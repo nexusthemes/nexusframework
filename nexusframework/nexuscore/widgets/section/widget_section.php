@@ -68,23 +68,20 @@ function nxs_widgets_section_render_webpart_render_htmlvisualization($args)
 	} 
 
 	?>
-
 	<div class="section"></div>
 	<div id="<?php echo $hash; ?>" class="nxs-section">
 		<div class="nxs-section-container <?php echo $container_class; ?>">
 			<h5>
-				<div class="serperator-before"></div>
+				<div class="seperator-before"></div>
 				<?php echo $icon; ?>
 				<span class="nxs-section-title"><?php echo $section ?></span>
-				<div class="serperator-after"></div>
+				<div class="seperator-after"></div>
 			</h5>
 			<div class="nxs-section-icon">
 				<?php echo $icon; ?>
 			</div>
 		</div>
 	</div>
-
-
 	<?php
 	
 	$shouldrenderalternative = false;
@@ -95,13 +92,8 @@ function nxs_widgets_section_render_webpart_render_htmlvisualization($args)
 	{
 		$shouldrenderalternative = true;
 	}
-	
-	?>
-	
-	<!-- -->
-	
-	
-	<?php 
+
+	//	
 	
 	$html = ob_get_contents();
 	ob_end_clean();

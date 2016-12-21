@@ -7,7 +7,7 @@ function nxs_widgets_bustypes_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_bustypes_gettitle() {
-	return nxs_l18n__("Johan", "nxs_td");
+	return nxs_l18n__("Business Types", "nxs_td");
 }
 
 // obsolete

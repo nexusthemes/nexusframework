@@ -1391,8 +1391,8 @@ div.nxs-section h5 span.nxs-section-title 			{ padding-right: 10px; }
 div.nxs-section-container 							{ text-align: center; }
 div.nxs-section .nxs-section-icon 					{ display: none; }
 
-div.nxs-section h5 div.serperator-before,
-div.nxs-section h5 div.serperator-after {
+div.nxs-section h5 div.seperator-before,
+div.nxs-section h5 div.seperator-after {
 	position: relative;
 	display: inline-block;
 	top: -3px;

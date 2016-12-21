@@ -193,7 +193,7 @@ function nxs_site_createcontent_internal($args)
 		$title = $contentcurrentpost["title"];
 		nxs_site_importattachment_url($url, $title, $currentpostglobalid);
 	}
-	else if (in_array($posttype, array("nxs_templatepart", "nxs_genericlist", "page")) || in_array($posttype, $semantictaxonomies))
+	else if (in_array($posttype, array("nxs_templatepart", "nxs_genericlist", "page", "post")) || in_array($posttype, $semantictaxonomies))
 	{
 		$postmetas = array();
 
@@ -224,11 +224,11 @@ function nxs_site_createcontent_internal($args)
 				if ($businesstype != "")
 				{
 					$filepath = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth=300&requestedheight=150&scope=businesstype&businesstype={$businesstype}&debug=tru&url={$nxs_semantic_media}";
-					error_log("importing using businesstype $businesstype $filepath");
+					//error_log("importing using businesstype $businesstype $filepath");
 				}
 				else
 				{
-					error_log("importing using themeid $themeid");
+					//error_log("importing using themeid $themeid");
 					$filepath = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth=300&requestedheight=150&scope=themeid&themeid={$themeid}&debug=tru&url={$nxs_semantic_media}";
 				}
 				
@@ -256,8 +256,8 @@ function nxs_site_createcontent_internal($args)
 				);
 				$r = nxs_import_file_to_media_v2($importmeta);
 				$nxs_semantic_media_postid = $r["postid"];
-
-				error_log("importing media results in " . json_encode($r));
+				
+				//error_log("importing media results in " . json_encode($r));
 				
 				//echo "imported?";
 				//var_dump($r);
@@ -271,15 +271,37 @@ function nxs_site_createcontent_internal($args)
 				
 				// nothing to do here
 			}
-			
-			// 
 		}
+		
+		$categories = $contentcurrentpost["categories"];
+		$selectedcategoryids = "";
+		if ($categories != "")
+		{
+			foreach ($categories as $category)
+			{
+				//error_log("import; found category $category");
+				
+				$catid = nxs_getcategoryidbyname($category);
+				if ($catid == "" || $catid == -1 || $catid == 0)
+				{
+					// doesn't exist yet
+					$catid = wp_create_category($category);
+				}
+				$selectedcategoryids .= "[{$catid}]";
+			}
+			
+			//error_log("import; selectedcategoryids $selectedcategoryids");			
+		}
+		
+		//
 		
 		$newpost_args = array();
 		$newpost_args["slug"] = $contentcurrentpost["slug"];
 		$newpost_args["titel"] = $contentcurrentpost["title"];
-		
 		$newpost_args["featuredimageid"] = $nxs_semantic_media_postid;
+		$newpost_args["selectedcategoryids"] = $selectedcategoryids;
+		
+		
 		
 		if (isset($overridetitle))
 		{
@@ -306,7 +328,8 @@ function nxs_site_createcontent_internal($args)
 		$response = nxs_addnewarticle($newpost_args);
 		$destinationpostid = $response["postid"];
 		
-		error_log("just inserted destinationpostid: $destinationpostid");
+		$existingglobalid = nxs_get_globalid($post_id, false);
+		//error_log("just inserted destinationpostid: $destinationpostid (global: {$currentpostglobalid} vs {$existingglobalid})");
 		
 		$destinationglobalid = $response["globalid"];
 		

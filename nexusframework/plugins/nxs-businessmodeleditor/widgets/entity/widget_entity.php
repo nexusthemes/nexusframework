@@ -56,23 +56,50 @@ function nxs_entitycustom_popupcontent($optionvalues, $args, $runtimeblendeddata
 function nxs_widgets_entity_home_getoptions() 
 {
 	$cpts = array();
-		
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+	
+	$icon = nxs_widgets_entity_geticonid();
+	$title = "Entity";
+	if (is_singular())
 	{
-	 	if ($taxonomymeta["arity"] == "n")
-	 	{
-		 	$singular = $taxonomymeta["singular"];
-		 	$cpts[] = "nxs_" . $singular;
+		global $post;
+		$postid = $post->ID;
+		$meta = nxs_get_postmeta($postid);
+		$nxssubposttype = nxs_get_nxssubposttype($postid);
+	
+		// nxssubposttype could be for example "uniquesellingproposition_set"
+		$possiblesingular = str_replace("_set", "", $nxssubposttype);
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($taxonomiesmeta as $taxonomy => $meta)
+		{
+			$singular = $meta["singular"];
+			if ($possiblesingular == $singular)
+			{
+				$cpts[] = "nxs_" . $singular;
+				$title = ucwords($singular);
+				$icon = "nxs-icon-" . $meta["icon"];
+				break;
+			}
+		}
+	}
+	else
+	{
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		{
+		 	if ($taxonomymeta["arity"] == "n")
+		 	{
+			 	$singular = $taxonomymeta["singular"];
+			 	$cpts[] = "nxs_" . $singular;
+			}
 		}
 	}
 	
-	$posttypes = array_merge(array("post","page"), $cpts);
+	$posttypes = $cpts;
 	
 	$options = array
 	(
-		"sheettitle" 		=> "Entity",
-		"sheeticonid" 		=> nxs_widgets_entity_geticonid(),
+		"sheettitle" 		=> $title,
+		"sheeticonid" 		=> $icon,
 		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_entity_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_entity_getunifiedcontentgroup(),),
@@ -85,8 +112,8 @@ function nxs_widgets_entity_home_getoptions()
 				"type" 							=> "selectpost",
 				"post_status"				=> array("publish", "future"),
 				"previewlink_enable"=> "false",
-				"label" 						=> nxs_l18n__("Post or page", "nxs_td"),
-				"tooltip" 					=> nxs_l18n__("Select the post or page that represents this entity", "nxs_td"),
+				"label" 						=> nxs_l18n__("Entity", "nxs_td"),
+				"tooltip" 					=> nxs_l18n__("Select the post that represents this entity", "nxs_td"),
 				// we still enable posts and pages too, as some people might be using the "old" implementation
 				"post_type" 				=> $posttypes,
 			),

@@ -448,8 +448,6 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
   $isdirty = false;
   foreach ($memstructure as $attributes)
   {
-  	$extendedmemstructure[] = $attributes;
-  	
   	$type = $attributes["type"];
   	if ($type == "menuitementities")
   	{
@@ -460,25 +458,48 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
   		$model = $businesssite_instance->getcontentmodel();
   		$serviceinstances = $model[$taxonomy]["instances"];
   		
+  		$foundatleastone = false;
   		foreach ($serviceinstances as $index => $instance)
   		{	
   			if ($instance["enabled"] != "")
   			{
-  				$content = $instance["content"];
-  				
-		  		$newelement = array
-		  		(
-		  			"type" => "menuitemcustom",
-		  			"postid" => $attributes["postid"],
-		  			"placeholderid" => $attributes["placeholderid"],
-		  			"title" => $content["post_title"],	// "runtime element",
-		  			"destination_url" => $content["url"],
-		  			"depthindex" => $attributes["depthindex"] + 1,	// nest inside "this" element
-		  		);
-		  		$extendedmemstructure[] = $newelement;
-		  		$isdirty = true;
+  				$foundatleastone = true;
+  				break;
+  			}
+  		}
+  		
+  		if ($foundatleastone)
+  		{
+  			$extendedmemstructure[] = $attributes;
+  		
+	  		foreach ($serviceinstances as $index => $instance)
+	  		{	
+	  			if ($instance["enabled"] != "")
+	  			{
+	  				$content = $instance["content"];
+	  				
+			  		$newelement = array
+			  		(
+			  			"type" => "menuitemcustom",
+			  			"postid" => $attributes["postid"],
+			  			"placeholderid" => $attributes["placeholderid"],
+			  			"title" => $content["post_title"],	// "runtime element",
+			  			"destination_url" => $content["url"],
+			  			"depthindex" => $attributes["depthindex"] + 1,	// nest inside "this" element
+			  		);
+			  		$extendedmemstructure[] = $newelement;
+			  		$isdirty = true;
+			  	}
 		  	}
-	  	}
+		  }
+		  else
+		  {
+		  	// 
+		  }
+  	}
+  	else
+  	{
+  		$extendedmemstructure[] = $attributes;
   	}
   }
   
