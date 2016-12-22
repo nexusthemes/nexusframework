@@ -223,6 +223,7 @@ function nxs_widgets_entities_home_getoptions($args)
       ),
 			
 			// VISUALIZATION
+     	/*
       array(
           "id" 				=> "wrapper_title_begin",
           "type" 				=> "wrapperbegin",
@@ -246,10 +247,12 @@ function nxs_widgets_entities_home_getoptions($args)
 				),
 				"unistylablefield" => true,
 			),
+			
       array(
           "id" 				=> "wrapper_title_end",
           "type" 				=> "wrapperend",
       ),
+      */
       
       //
       // WIDGET SPECIFIC STYLING
@@ -948,17 +951,38 @@ function nxs_widgets_entities_home_getoptions($args)
 	return $options;
 }
 
+function nxs_entities_getdefaultitemsstyle($datasource)
+{
+	$result = "htmlcustom";
+	
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	foreach ($taxonomiesmeta as $taxonomy => $meta)
+	{
+		if ($taxonomy == $datasource)
+		{
+			if (isset($meta["instance"]["defaultrendertype"]))
+			{
+				$result = $meta["instance"]["defaultrendertype"];
+			}
+		}
+	}
+	
+	return $result;
+}
+
 function nxs_entities_custom_popupcontent($optionvalues, $args, $runtimeblendeddata) 
 {
 	extract($optionvalues);
 	extract($args);
 	extract($runtimeblendeddata);
 
+	$itemsstyle = nxs_entities_getdefaultitemsstyle($datasource);
+
 	nxs_ob_start();
 	?>
 	<script>
-		var style = '<?php echo $itemsstyle; ?>';
-		nxs_js_alert("enabling styles for '"+style+"' :)");
+		//var style = '<?php echo $itemsstyle; ?>';
+		//nxs_js_alert("enabling styles for '"+style+"' :)");
 		//
 		jQuery(".custom-filter").hide();
 		jQuery(".custom-filter-<?php echo $itemsstyle; ?>").show();
@@ -1025,6 +1049,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	// Widget specific variables
 	extract($mixedattributes);
+
+	$itemsstyle = nxs_entities_getdefaultitemsstyle($datasource);
+	$childwidgettype = $itemsstyle;	
 	
 	// Overruling of parameters
 	if ($image_imageid == "featuredimg")
@@ -1238,14 +1265,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	$html .= $titlehtml;
 	
-	
-	//
-	
-	
 	//
 	$html .= "<div class='nxsgrid-container'>";
-	
-	
 	
 	//
 	$count = $contentmodel[$taxonomy]["countenabled"];
@@ -1290,6 +1311,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$enabled = $instance["enabled"];
 		if ($enabled == "") { continue; }
 		$index++;
+		$post_id = $instance["content"]["post_id"];
 		$post_title = $instance["content"]["post_title"];		
 		$post_excerpt = $instance["content"]["post_excerpt"];		
 		$post_content = $instance["content"]["post_content"];		
@@ -1337,28 +1359,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			$childargs["line1"] = $post_role;
 			$childargs["text"] = $post_content;
 		}
-		/*
-		if ($taxonomy == "calltoactions")
-		{
-			if ($post_destination_cta == "tel")
-			{
-				$childargs["destination_url"] = "tel://{{tel}}";
-			}
-			else if ($post_destination_cta == "contact")
-			{
-				$childargs["destination_url"] = "contactpage";
-			}
-			else if ($post_destination_cta == "forms.instances.0")
-			{
-				$childargs["destination_url"] = "firstform";
-			}
-			else if ($post_destination_cta == "forms.instances.1")
-			{
-				$childargs["destination_url"] = "secondform";
-			}
-			// todo: do something smart with the fields "post_imperative_m" and "post_imperative_l"
-		}
-		*/
 		
 		// replicate styleable fields specific for "TEXT" widgets
 		if ($childwidgettype == "text" || $childwidgettype == "")
@@ -1444,23 +1444,24 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		//
 		// replicate styleable fields specific for "ANY" type of widgets
 		//
-		$fieldstoreplicate = array
-		(
-			"ph_padding", "ph_border_radius", "ph_border_width", 
-			"ph_margin_bottom", "ph_valign", "ph_colorzen",
-			"ph_linkcolorvar", "ph_text_fontsize",
-		);
-		foreach ($fieldstoreplicate as $fieldtoreplicate)
+		if (true)
 		{
-			$childargs[$fieldtoreplicate] = $args["any_{$fieldtoreplicate}"];
+			$fieldstoreplicate = array
+			(
+				"ph_padding", "ph_border_radius", "ph_border_width", 
+				"ph_margin_bottom", "ph_valign", "ph_colorzen",
+				"ph_linkcolorvar", "ph_text_fontsize",
+			);
+			foreach ($fieldstoreplicate as $fieldtoreplicate)
+			{
+				$childargs[$fieldtoreplicate] = $args["any_{$fieldtoreplicate}"];
+			}
 		}
 		
-		// get rid of unistyles
+		// get rid of things we don't want
 		unset($childargs["unistyle"]);
 		unset($childargs["postid"]);
 		unset($childargs["placeholderid"]);
-		
-		$childwidgettype = $itemsstyle;
 		
 		if ($itemsstyle == "")
 		{
@@ -1485,18 +1486,18 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		// render wrap
 		//
 		
-		$ph_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $childargs["ph_colorzen"]);
-		$ph_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $childargs["ph_linkcolorvar"]);
-		$ph_border_radius = nxs_getcssclassesforlookup("nxs-border-radius-", $childargs["ph_border_radius"]);
-		$ph_borderwidth = nxs_getcssclassesforlookup("nxs-border-width-", $childargs["ph_border_width"]);
+		$child_ph_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $childargs["ph_colorzen"]);
+		$child_ph_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $childargs["ph_linkcolorvar"]);
+		$child_ph_border_radius = nxs_getcssclassesforlookup("nxs-border-radius-", $childargs["ph_border_radius"]);
+		$child_ph_borderwidth = nxs_getcssclassesforlookup("nxs-border-width-", $childargs["ph_border_width"]);
 		$child_ph_cssclass = $childargs["ph_cssclass"];		
 		$child_ph_margin_bottom = nxs_getcssclassesforlookup("nxs-margin-bottom-", $childargs["ph_margin_bottom"]);
 		
-		$ph_padding = nxs_getcssclassesforlookup("nxs-padding-", $childargs["ph_padding"]);
-		$ph_valign = $childargs["ph_valign"];
+		$child_ph_padding = nxs_getcssclassesforlookup("nxs-padding-", $childargs["ph_padding"]);
+		$child_ph_valign = $childargs["ph_valign"];
 
-		$abc_concatenated_css = nxs_concatenateargswithspaces($ph_colorzen, $ph_linkcolorvar, $ph_border_radius, $ph_borderwidth);
-		$xyz_concatenated_css = nxs_concatenateargswithspaces($ph_padding, $ph_valign);
+		$abc_concatenated_css = nxs_concatenateargswithspaces($child_ph_colorzen, $child_ph_linkcolorvar, $child_ph_border_radius, $child_ph_borderwidth);
+		$xyz_concatenated_css = nxs_concatenateargswithspaces($child_ph_padding, $child_ph_valign);
 		
 		// allow plugins to extend the child args (fill custom fields, or override fields, whatever)
 		$filterargs = array
@@ -1511,15 +1512,52 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$functionnametoinvoke = "nxs_widgets_{$childwidgettype}_render_webpart_render_htmlvisualization";
 		$subresult = call_user_func($functionnametoinvoke, $childargs);
 
-		
-
 		$subhtml = "";
 		$subhtml .= "<div class='{$child_ph_cssclass} {$child_ph_margin_bottom}'>";
+				
 		$subhtml .= "<div class='ABC {$heightclass} {$abc_concatenated_css}'>";
+		
+		// 
+		$shouldrendereditor = (is_user_logged_in());
+		
+		if ($shouldrendereditor)
+		{
+			nxs_ob_start();
+			?>
+			<div class="nxs-hover-menu-positioner">
+				<div class="nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-left-top" style="pointer-events:auto;">
+				  <ul class="">
+				    <li title="Edit" class="nxs-hovermenu-button">
+				  		<a href="#" title="Edit" onclick="event.stopPropagation(); nxs_js_edit_entity(this); return false;">
+				      	<span class="nxs-icon-moving"></span>
+				      </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<?php
+			$popup = nxs_ob_get_contents();
+			nxs_ob_end_clean();
+	
+			$subhtml .= "<style>";
+			$subhtml .= ".nxsgrid-item .ABC { position: relative;}";
+			$subhtml .= ".overlay { display: none; background-color: rgba(100,100,100,0.5); position: absolute; pointer-events:none; left:0; right:0;top:0;bottom:0; }";
+			$subhtml .= ".nxsgrid-item:hover .overlay { display: block; }";
+			$subhtml .= "</style>";
+			$subhtml .= "<div class='nxs-hidewheneditorinactive'>";
+			$subhtml .= "<div class='overlay'>";		
+			$subhtml .= $popup;
+			$subhtml .= "</div>";
+			$subhtml .= "</div>";
+		}
+		
 		$subhtml .= "<div class='XYZ {$xyz_concatenated_css}'>";
 		$subhtml .= $subresult["html"];
 		$subhtml .= "</div>";
 		$subhtml .= "</div>";
+		
+		//
+		
 		$subhtml .= "</div>";
 				
 		$remainder = $index % $numberofcolumns;
@@ -1541,7 +1579,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			$csssecondcolumn = "nxsgrid-secondcolumn";
 		}
 		
-		$html .= "<div class='index{$index} {$csssecondcolumn} remainder{$remainder} nxsgrid-item nxsgrid-column-{$numberofcolumns} nxsgrid-float-left {$csslastcolumn}'>";
+		$html .= "<div class='index{$index} {$csssecondcolumn} remainder{$remainder} nxsgrid-item nxsgrid-column-{$numberofcolumns} nxsgrid-float-left {$csslastcolumn} nxs-entity' data-id='{$post_id}'>";
 		$html .= $subhtml;
 		$html .= "</div>";
 		

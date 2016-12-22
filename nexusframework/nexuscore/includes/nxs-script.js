@@ -4165,6 +4165,58 @@ function nxs_js_redirect_top(url)
 			}
 			return result;
 		}
+
+		function nxs_js_edit_entity(domelementinwidget)
+		{
+			nxs_js_alert('one moment...');
+			var entitydom = jQ_nxs(domelementinwidget).closest(".nxs-entity");
+			var postid = jQ_nxs(entitydom).data("id");
+			
+			// invoke ajax call
+			var ajaxurl = nxs_js_get_adminurladminajax();
+			jQ_nxs.ajax
+			(
+				{
+					type: 'POST',
+					data: 
+					{
+						"action": "nxs_ajax_webmethods",
+						"webmethod": "getpostmetadatabyid",
+						"postid": postid,
+					},
+					async: false,
+					cache: false,
+					dataType: 'JSON',
+					url: ajaxurl, 
+					success: function(response) 
+					{
+						nxs_js_log(response);
+						if (response.result == "OK")
+						{
+							// ok
+							var url =  response.editurl;
+							url = url.replace(/&amp;/g, '&');
+							
+							nxs_js_alert(url);
+							//nxs_js_log(url);
+							nxs_js_redirect(url);
+						}
+						else
+						{
+							invokewhenfailed();
+							nxs_js_popup_notifyservererror();
+							nxs_js_log(response);
+						}
+					},
+					error: function(response)
+					{
+						invokewhenfailed();
+						nxs_js_popup_notifyservererror();
+						nxs_js_log(response);
+					}										
+				}
+			);
+		}
 		
 		function nxs_js_edit_widget(domelementinwidget)
 		{

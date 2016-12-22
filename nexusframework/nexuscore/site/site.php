@@ -2791,6 +2791,12 @@ function nxs_site_newtemplate_getoptions($args)
 				$title = $taxonomymeta["title"];
 				$icon = $taxonomymeta["icon"];
 				$count = $taxonomyindexmeta["count"];
+
+				if ($taxonomy == "post")
+				{
+					$title = "Posts";
+					$icon = "book";
+				}
 				?>
 				<div class="lp-item" data-taxonomy="<?php echo $taxonomy; ?>">
 					<a href='#' class="select">

@@ -16,7 +16,11 @@ function nxs_business_gettaxonomiesmeta()
 		(
 			"title" => "Services",
 			"icon" => "publicrelations",
-			"singular" => "service",		
+			"instance" => array
+			(
+				"defaultrendertype" => "text",
+			),
+			"singular" => "service",
 			"arity" => "n",	
 			"caninstancesbereferenced" => true,	// false if virtual
 			"aritymaxinstancecount" => 8,
@@ -85,12 +89,15 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Services",
 		),
-		/*
 		"products" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Products",
 			"icon" => "gift",
+			"instance" => array
+			(
+				"defaultrendertype" => "text",
+			),
 			"singular" => "product",		
 			"arity" => "n",	
 			"aritymaxinstancecount" => 8,
@@ -152,12 +159,15 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Products",
 		),
-		*/
 		"portfolioitems" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Portfolio items",
 			"icon" => "eye",
+			"instance" => array
+			(
+				"defaultrendertype" => "text",
+			),
 			"singular" => "portfolioitem",		
 			"arity" => "n",	
 			"aritymaxinstancecount" => 8,
@@ -279,54 +289,6 @@ function nxs_business_gettaxonomiesmeta()
 			"label" => "Call to actions",
 		),	
 		*/
-		/*	
-		"blogs" => array
-		(
-			"caninstancesbereferenced" => true,	// false if virtual
-			"title" => "Blogs",
-			"icon" => "article-overview",
-			"singular" => "blog",		
-			"arity" => "n",
-			"aritymaxinstancecount" => 5,
-			"taxonomyfields" => array
-			(
-				"title" => array
-				(
-					"type" => "text",
-				),
-				"accompaniment_title" => array
-				(
-					"type" => "text",
-				),
-			),
-			"wpcreateinstructions" => array
-			(
-				
-				"instances" => array
-				(
-					"type" => "post",
-				),
-				"taxonomy" => array
-				(
-					"type" => "page",
-				),
-				
-			),
-			"instanceexistencecheckfield" => "title",
-			"instancefields" => array
-			(
-				"title" => array
-				(
-					"type" => "hidden",	// set at runtime with lorem ipsum text, while stanser is working (see stanser.php)
-				),
-				"image" => array
-				(
-					"type" => "media",
-				),
-			),
-			"label" => "Blogs / News",
-		),
-		*/
 		/*
 		// Prices / Fees
 		"prices" => array
@@ -410,6 +372,10 @@ function nxs_business_gettaxonomiesmeta()
 			"title" => "Testimonials",
 			"icon" => "thumbs-up",		
 			"singular" => "testimonial",		
+			"instance" => array
+			(
+				"defaultrendertype" => "quote",
+			),			
 			"arity" => "n",
 			"aritymaxinstancecount" => 5,
 			"taxonomyfields" => array
@@ -535,6 +501,10 @@ function nxs_business_gettaxonomiesmeta()
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Employees",
 			"icon" => "users",		
+			"instance" => array
+			(
+				"defaultrendertype" => "bio",
+			),
 			"singular" => "employee",		
 			"arity" => "n",
 			"aritymaxinstancecount" => 8,
@@ -663,6 +633,10 @@ function nxs_business_gettaxonomiesmeta()
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Unique Selling Propositions",
 			"icon" => "brightness-medium",				
+			"instance" => array
+			(
+				"defaultrendertype" => "target",
+			),			
 			"singular" => "usp",		
 			"arity" => "n",	
 			"aritymaxinstancecount" => 8,
