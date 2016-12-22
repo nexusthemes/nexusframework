@@ -970,6 +970,22 @@ function nxs_entities_getdefaultitemsstyle($datasource)
 	return $result;
 }
 
+function nxs_entities_geticon($datasource)
+{
+	$result = "moving";
+	
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	foreach ($taxonomiesmeta as $taxonomy => $meta)
+	{
+		if ($taxonomy == $datasource)
+		{
+			$result = $meta["icon"];
+		}
+	}
+	
+	return $result;
+}
+
 function nxs_entities_custom_popupcontent($optionvalues, $args, $runtimeblendeddata) 
 {
 	extract($optionvalues);
@@ -995,7 +1011,6 @@ function nxs_entities_custom_popupcontent($optionvalues, $args, $runtimeblendedd
 	return $result;
 }
 
-
 /* WIDGET HTML
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -1019,7 +1034,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	// Blend unistyle properties
 	$unistyle = $temp_array["unistyle"];
-	if (isset($unistyle) && $unistyle != "") {
+	if (isset($unistyle) && $unistyle != "") 
+	{
 		// blend unistyle properties
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_entities_getunifiedstylinggroup(), $unistyle);
 		$temp_array = array_merge($temp_array, $unistyleproperties);
@@ -1027,7 +1043,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	// Blend unicontent properties
 	$unicontent = $temp_array["unicontent"];
-	if (isset($unicontent) && $unicontent != "") {
+	if (isset($unicontent) && $unicontent != "") 
+	{
 		// blend unistyle properties
 		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_entities_getunifiedcontentgroup(), $unicontent);
 		$temp_array = array_merge($temp_array, $unicontentproperties);
@@ -1523,13 +1540,15 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		if ($shouldrendereditor)
 		{
 			nxs_ob_start();
+			
+			$icon = nxs_entities_geticon($datasource);
 			?>
 			<div class="nxs-hover-menu-positioner">
 				<div class="nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-left-top" style="pointer-events:auto;">
 				  <ul class="">
 				    <li title="Edit" class="nxs-hovermenu-button">
 				  		<a href="#" title="Edit" onclick="event.stopPropagation(); nxs_js_edit_entity(this); return false;">
-				      	<span class="nxs-icon-moving"></span>
+				      	<span class="nxs-icon-<?php echo $icon; ?>"></span>
 				      </a>
 						</li>
 					</ul>
