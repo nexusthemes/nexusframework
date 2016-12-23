@@ -3468,6 +3468,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-angieslist:before				{ content: "\e641";	}
 .nxs-icon-snapchat:before				{ content: "\e642";	}
 .nxs-icon-nexus:before					{ content: "\e643";	}
+.nxs-icon-marketingmadness:before		{ content: "\e644";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 				{ content: "\e900"; }
@@ -3976,13 +3977,13 @@ span.reviewer 															{ margin-left: 5px; }
 .nxspp-button:hover { opacity: 0.7; }
 
 /* Grid item */
-#nxsgrid-container 				{ font-size: 16px;}
+#nxsgrid-container { 
+	font-size: 16px;	
+}
 .nxsgrid-item { 
 	/*
 	min-height: 50px;
 	background: blue;
-	box-sizing: border-box;
-	border: 1px solid red;
 	*/
 }
 .nxsgrid-subcontainer { 
@@ -4018,12 +4019,11 @@ span.reviewer 															{ margin-left: 5px; }
 
 /* Default Layout */
 .nxsgrid-column-1  							{ width: 100%; } 
-.nxsgrid-column-2  							{ width: 48%; 		margin-right: 4%; } 
-.nxsgrid-column-3 							{ width: 30.66%; 	margin-right: 4%; } 
-.nxsgrid-column-4 							{ width: 22%; 		margin-right: 4%; } 
-.nxsgrid-column-6 							{ width: 13.33%; 	margin-right: 4%; }
-.nxsgrid-column-8 							{ width: 9%; 		margin-right: 4%; } 
-.nxsgrid-lastcolumn 						{ margin-right: 0 !important; }
+.nxsgrid-column-2  							{ width: 48%; }
+.nxsgrid-column-3 							{ width: 30.66%; } 
+.nxsgrid-column-4 							{ width: 22%; } 
+.nxsgrid-column-6 							{ width: 13.33%; }
+.nxsgrid-column-8 							{ width: 9%; } 
 
 /* Solid Grid */
 .nxssolidgrid-column-1  					{ width: 100%; } 
@@ -4033,42 +4033,53 @@ span.reviewer 															{ margin-left: 5px; }
 .nxssolidgrid-column-6 						{ width: 16.66%; }
 .nxssolidgrid-column-8 						{ width: 12.5%; } 
 
-/* Mobile Layout */
-@media only screen and ( max-width: 959px ) {
-.nxsgrid-column-6							{ width: 30.66%; }
-.nxsgrid-column-6.nxsgrid-beforehalfcolumn	{ margin-right: 0; }
-.nxsgrid-column-8							{ width: 22%; }
-.nxsgrid-column-8.nxsgrid-beforehalfcolumn	{ margin-right: 0; }
+/* Mobile Layout Default */
+.nxs-viewport-lte-1199 .nxsgrid-column-6	{ width: 30.66%; }
+.nxs-viewport-lte-1199 .nxsgrid-column-8	{ width: 22%; }
 
-.nxssolidgrid-column-6 						{ width: 33.33%; } 
-.nxssolidgrid-column-8 						{ width: 25%; }
+
+.nxs-viewport-lte-959 .nxsgrid-column-3		{ width: 100%; }
+.nxs-viewport-lte-959 .nxsgrid-column-4		{ width: 48%; }
+.nxs-viewport-lte-959 .nxsgrid-column-6		{ width: 100%; }
+.nxs-viewport-lte-959 .nxsgrid-column-8 	{ width: 48%; } 
+
+
+.nxs-viewport-lte-719 .nxsgrid-column-2,
+.nxs-viewport-lte-719 .nxsgrid-column-4,
+.nxs-viewport-lte-719 .nxsgrid-column-8		{ width: 100%; }
+
+/* Mobile Layout Solid */
+
+.nxs-viewport-lte-1199 .nxssolidgrid-column-6 	{ width: 33.33%; } 
+.nxs-viewport-lte-1199 .nxssolidgrid-column-8 	{ width: 25%; }
+.nxs-viewport-lte-959 .nxssolidgrid-column-3 	{ width: 100%; } 
+.nxs-viewport-lte-959 .nxssolidgrid-column-4 	{ width: 50%; } 
+.nxs-viewport-lte-959 .nxssolidgrid-column-6 	{ width: 100%; }
+.nxs-viewport-lte-959 .nxssolidgrid-column-8 	{ width: 50%; } 
+.nxs-viewport-lte-719 .nxssolidgrid-column-2,
+.nxs-viewport-lte-719 .nxssolidgrid-column-4,
+.nxs-viewport-lte-719 .nxssolidgrid-column-8 	{ width: 50%%; }
+
+.nxsgrid-container {
+	display: flex;
+	display: -webkit-flex; /* NEW */
+	-webkit-display: flex;
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap; /* NEW */
+	justify-content: space-between;	
+	width: 100%;
+
+}
+.nxsgrid-item {
+	-website-flex: 0 0 auto;
+	flex: 0 0 auto;
+	order: 1; 
+	-webkit-order: 1;
 }
 
-@media only screen and ( max-width: 719px ) {
-.nxsgrid-column-3							{ width: 100%; margin-right: 0px; }
-.nxsgrid-column-4	 						{ width: 48%; }
-.nxsgrid-column-4.nxsgrid-beforehalfcolumn,
-.nxsgrid-column-4.nxsgrid-lastcolumn 		{ margin-right: 0; }
-.nxsgrid-column-6							{ width: 100%; margin-right: 0px; }
-.nxsgrid-column-8 							{ width: 48%; } 
-.nxsgrid-column-8.nxsgrid-beforequartercolumn,
-.nxsgrid-column-8.nxsgrid-lastcolumn 		{ margin-right: 0; }
- 
-.nxssolidgrid-column-3 						{ width: 100%; } 
-.nxssolidgrid-column-4 						{ width: 50%; } 
-.nxssolidgrid-column-6 						{ width: 100%; }
-.nxssolidgrid-column-8 						{ width: 50%; } 
-}
 
-@media only screen and ( max-width: 479px ) {
-.nxsgrid-column-2,
-.nxsgrid-column-4,
-.nxsgrid-column-8							{ width: 100%; margin-right: 0px; }
 
-.nxssolidgrid-column-2,
-.nxssolidgrid-column-4,
-.nxssolidgrid-column-8 						{ width: 50%%; } 
-}
+
 
 /* MOBILE FRIENDLY TEST
 ---------------------------------------------------------------------------------------------------- */
