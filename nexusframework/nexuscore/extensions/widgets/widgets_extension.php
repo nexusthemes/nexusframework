@@ -256,10 +256,11 @@ function nxs_getwidgets_functions_AF($result, $args)
 		{
 			$result[] = array("widgetid" => "wpmenu", "tags" => array("nexus"));
       $result[] = array("widgetid" => "pagination", "tags" => array("nexus"));
+      $result[] = array("widgetid" => "template2", "tags" => array("johan"));
 		}
 		
 		// $result[] = array("widgetid" => "fbcomments");
-		// $result[] = array("widgetid" => "template2");
+		// 
 		// $result[] = array("widgetid" => "stack");
 		// $result[] = array("widgetid" => "searchresults");	// deprecated in favor of archive widget
 		// $result[] = array("widgetid" => "contact"); 			// deprecated in favor of contact box widget

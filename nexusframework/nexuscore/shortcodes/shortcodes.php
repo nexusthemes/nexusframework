@@ -381,10 +381,18 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	
 	// perform actual render of the placeholder (delegates to widget)
 	$content = nxs_applyshortcodes($content);
-
+	
 	extract($nxs_global_placeholder_render_statebag, EXTR_PREFIX_ALL, "gphs");	// underscore is added automatically
 	
 	$widgetmetadata = $nxs_global_placeholder_render_statebag["widgetmetadata"];
+	
+	$phdataattributeshtml = "";
+	$data_atts = $nxs_global_placeholder_render_statebag["data_atts"];
+	foreach ($data_atts as $key => $val)
+	{
+		$phdataattributeshtml .= "data-{$key}='{$val}' ";
+	}
+	
 	
 	// hover menu's
 	$menutopleft = "";
@@ -608,7 +616,7 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		
 		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgettype_cssclass, $ph_runtimecssclass);
 		
-		$output .= "<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "'>";
+		$output .= "<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "' {$phdataattributeshtml}>";
 		$output .= $menutopleft;	// will be empty if not allowed, or not needed
 		$output .= $menutopright;	// will be empty if not allowed, or not needed
 		$output .= $placeholdercursors;	// will be empty if not allowed, or not needed

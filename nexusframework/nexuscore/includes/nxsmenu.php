@@ -1494,9 +1494,7 @@ li.score {
 				
 				jQ_nxs(".tabs").on('tabsactivate', function(event, ui)
 				{
-					nxs_js_log("tabsactivate!");
 					var index = ui.newTab.index();
-					nxs_js_log(index);
 					nxs_js_refreshtopmenufillerheight();
 					
 					if (index == 3)

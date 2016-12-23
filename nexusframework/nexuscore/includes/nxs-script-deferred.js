@@ -893,6 +893,7 @@ function nxs_js_popup_site_neweditsession_v2(sheet, initialcontext)
 		
   	var initialcontextvalue = initialcontext[initialcontextkey];
   	nxs_js_popup_setsessioncontext(initialcontextkey, initialcontextvalue);
+  	nxs_js_popup_setshortscopedata(initialcontextkey, initialcontextvalue);
   }
 
 	// show the popup

@@ -412,7 +412,7 @@ function nxs_js_gui_add_drop_scaffolding()
 		// note! its not allowed to drop a pagerowtemplate on an existing placeholder ...
 		// nxs_js_log("nxs_js_gui_add_virtual_droppable_pagerows()");	
 		nxs_js_gui_add_virtual_droppable_pagerows();
-	}							
+	}
 	else
 	{
 		nxs_js_log("sourcedragtype not (yet?) supported;" + sourcedragtype);
@@ -804,7 +804,8 @@ function nxs_js_swapplaceholders(sourcecontainerpostid, sourcepostid, sourceplac
 			data: 
 			{
 				"action": "nxs_ajax_webmethods",
-				"webmethod": "swapplaceholders",
+				"webmethod": "swap",
+				"context": "placeholders",
 				"sourcecontainerpostid": sourcecontainerpostid,
 				"sourcepostid": sourcepostid,
 				"sourceplaceholderid": sourceplaceholderid,
@@ -1245,13 +1246,10 @@ function nxs_js_gui_setup_drag_listeners()
 				jQ_nxs('#nxs-drag-container-helper').data('sourcedragmeta', sourcedragmeta);
 				jQ_nxs('#nxs-drag-container-helper').data('sourcedragelement', this);
 				
-
-				// hier
 				nxs_js_gui_add_drop_scaffolding();
 				nxs_js_gui_setup_drop_listeners();
 				
 				nxs_js_ui_popscrollrevert(scrollrevertid);
-				//nxs_js_log("drag finishes	!");
 				
 				if (jQ_nxs("body").hasClass("single-nxs_menu"))
 				{

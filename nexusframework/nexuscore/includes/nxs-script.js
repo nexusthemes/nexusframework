@@ -2667,7 +2667,7 @@ function nxs_js_redirect_top(url)
 			var postid = nxs_js_findclosestpostid_for_dom(widget);
 			var placeholderid = nxs_js_getplaceholderidofwidgetdom(widget);
 
-			// verwijdert de placeholder
+			// delete the placeholder
 			var answer = confirm(nxs_js_gettrans('Are you sure you want to remove this widget?'));
 			if (answer)
 			{
@@ -2682,7 +2682,8 @@ function nxs_js_redirect_top(url)
 						data: 
 						{
 							"action": "nxs_ajax_webmethods",
-							"webmethod": "wipeplaceholder",
+							"webmethod": "wipe",
+							"context": "placeholder",
 							"postid": postid,
 							"placeholderid": placeholderid
 						},
@@ -4166,10 +4167,10 @@ function nxs_js_redirect_top(url)
 			return result;
 		}
 
-		function nxs_js_edit_entity(domelementinwidget)
+		function nxs_js_edit_entity(domelementinentity)
 		{
 			nxs_js_alert('one moment...');
-			var entitydom = jQ_nxs(domelementinwidget).closest(".nxs-entity");
+			var entitydom = jQ_nxs(domelementinentity).closest(".nxs-entity");
 			var postid = jQ_nxs(entitydom).data("id");
 			
 			// invoke ajax call
@@ -4216,6 +4217,95 @@ function nxs_js_redirect_top(url)
 					}										
 				}
 			);
+		}
+		
+		function nxs_js_wipe_entity(domelementinentity)
+		{
+			nxs_js_alert('one moment...');
+			var entitydom = jQ_nxs(domelementinentity).closest(".nxs-entity");
+			var widgetdom = jQ_nxs(domelementinentity).closest(".nxs-widget");
+			var postid = jQ_nxs(entitydom).data("id");
+			
+			// delete the entity
+			var answer = confirm(nxs_js_gettrans('Are you sure you want to remove this entity?'));
+			if (answer)
+			{
+				var waitgrowltoken = nxs_js_alert_wait_start(nxs_js_gettrans('Trashing entity'));
+				
+				// invoke ajax call
+				var ajaxurl = nxs_js_get_adminurladminajax();
+				jQ_nxs.ajax
+				(
+					{
+						type: 'POST',
+						data: 
+						{
+							"action": "nxs_ajax_webmethods",
+							"webmethod": "wipe",
+							"context": "entity",
+							"postid": postid,
+						},
+						cache: false,
+						dataType: 'JSON',
+						url: ajaxurl, 
+						success: function(response) 
+						{
+							nxs_js_alert_wait_finish(waitgrowltoken);
+							
+							//nxs_js_log(response);
+							if (response.result == "OK")
+							{
+								nxs_js_alert(nxs_js_gettrans('Entity is trashed'));
+								
+								// update screen
+								var postid = nxs_js_findclosestpostid_for_dom(widgetdom);
+								var placeholderid = nxs_js_getplaceholderidofwidgetdom(widgetdom);
+								nxs_js_rerender_row_for_placeholder(postid, placeholderid);
+								
+								// note; 
+								// in the current implementation we only update the specific
+								// row in which the entity exists. This is not optimal,
+								// as in theory we also need to update other parts of the screen
+								// that could also be using this entity (for example the entity
+								// could be shows in both a menu, sidebar, content, etc. at the same
+								// page). for now we accept this less optimal solution
+							}
+							else
+							{
+								nxs_js_popup_notifyservererror();
+								nxs_js_log(response);
+							}
+						},
+						error: function(response)
+						{
+							nxs_js_alert_wait_finish(waitgrowltoken);
+							
+							nxs_js_popup_notifyservererror();
+							nxs_js_log(response);
+						}										
+					}
+				);			
+			}
+			else
+			{
+				// nop
+			}
+		}
+		
+		function nxs_js_add_entity(domelementinwidget)
+		{
+			var placeholderdom = jQ_nxs(domelementinwidget).closest(".nxs-placeholder");
+			var datasource = jQ_nxs(placeholderdom).data("nxs-datasource");
+			
+			nxs_js_log("nxs_js_add_entity; datasource: " + datasource);
+			
+			// 
+			var initialcontext = 
+			{
+				"lp_taxonomy" : datasource,
+				"lp_step" : 2
+			};
+			nxs_js_popup_site_neweditsession_v2("newtemplate", initialcontext);								
 		}
 		
 		function nxs_js_edit_widget(domelementinwidget)

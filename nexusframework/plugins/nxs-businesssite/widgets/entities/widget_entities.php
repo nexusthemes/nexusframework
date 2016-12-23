@@ -1067,6 +1067,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 
+	global $nxs_global_placeholder_render_statebag;
+	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = $datasource;
+
 	$itemsstyle = nxs_entities_getdefaultitemsstyle($datasource);
 	$childwidgettype = $itemsstyle;	
 	
@@ -1091,6 +1094,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$hovermenuargs["placeholderid"] = $placeholderid;
 		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
 		$hovermenuargs["metadata"] = $mixedattributes;
+		$hovermenuargs["enable_addentity"] = true;
 		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	}
 
@@ -1102,14 +1106,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	global $nxs_global_current_postid_being_rendered;
 	$posttype2 = get_post_type($nxs_global_current_postid_being_rendered);
-	
-	/*
-	echo "<div>";
-	echo "containerpostid; $nxs_global_current_containerpostid_being_rendered <br />";
-	echo "posttype of container: $posttype <br />";
-	echo "posttype of post: $posttype2 <br />";
-	echo "</div>";
-	*/
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -1282,8 +1278,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	$html .= $titlehtml;
 	
-	//
-	$html .= "<div class='nxsgrid-container'>";
 	
 	//
 	$count = $contentmodel[$taxonomy]["countenabled"];
@@ -1321,6 +1315,10 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	{
 		$numberofcolumns = 1;
 	}
+	
+	//
+	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
+	
 	
 	$index = -1;
 	foreach ($contentmodel[$taxonomy]["instances"] as $instance)
@@ -1550,7 +1548,19 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				  		<a href="#" title="Edit" onclick="event.stopPropagation(); nxs_js_edit_entity(this); return false;">
 				      	<span class="nxs-icon-<?php echo $icon; ?>"></span>
 				      </a>
+							<ul>								
+								<li title='<?php nxs_l18n_e("Move", "nxs_td"); ?>' class='nxs-draggable-v2'>
+				        	<span class='nxs-icon-move'></span>				
+				        </li>
+								
+			        	<a class='nxs-no-event-bubbling' href='#' onclick='nxs_js_wipe_entity(this); return false;'>
+			           	<li title='<?php nxs_l18n_e("Delete", "nxs_td"); ?>'>
+			           		<span class='nxs-icon-trash'></span>
+			           	</li>
+			        	</a>
+			        </ul>		
 						</li>
+						
 					</ul>
 				</div>
 			</div>
@@ -1608,8 +1618,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
-	
-	
 	$html .= "</div>";
 	
 	if ($count == 0)
@@ -1633,8 +1641,112 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			// $html = "";
 		}
 	}
-	
+
 	echo $html;
+	
+	//
+	if ($shouldrendereditor)
+	{
+		?>
+		<script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
+		<script>
+			// see documentation; https://github.com/RubaXa/Sortable
+			var container = document.getElementById('nxsgrid-c-<?php echo $placeholderid; ?>');
+			var sortable = Sortable.create
+			(
+				container,
+				{
+		  		handle: '.nxs-draggable-v2',
+		  		animation: 150,
+		  		onStart: function()
+		  		{
+		  			/*
+		  			jQ_nxs("#<?php echo "nxsgrid-c-{$placeholderid}"; ?> .nxsgrid-item").each
+		  			(
+		  				function(index, domitem)
+		  				{
+		  					jQ_nxs(domitem).addClass("nxsgrid-lastcolumn");
+		  				}
+		  			);
+		  			jQ_nxs("#<?php echo "nxsgrid-c-{$placeholderid}"; ?> .nxsgrid-clear-both").each
+		  			(
+		  				function(index, domitem)
+		  				{
+		  					jQ_nxs(domitem).remove();
+		  				}
+		  			);
+		  			*/
+		  		},
+		  		onEnd: function (/**Event*/evt) 
+		  		{
+		  			//evt.oldIndex;  // element's old index within parent
+        		//evt.newIndex;  // element's new index within parent
+
+						nxs_js_alert("onEnd: entities moved:" + evt.oldIndex + " to: " + evt.newIndex);
+						
+		  			if (evt.oldIndex != evt.newIndex)
+		  			{
+		  				// 
+		  				var taxonomy = '<?php echo $datasource; ?>';
+		  				
+		  				// it changed
+
+		  				// invoke ajax call
+							var ajaxurl = nxs_js_get_adminurladminajax();
+							jQ_nxs.ajax
+							(
+								{
+									async: true,
+									type: 'POST',
+									data: 
+									{
+										"action": "nxs_ajax_webmethods",
+										"webmethod": "swap",
+										"context": "entities",
+										"taxonomy": taxonomy,
+										"oldindex": evt.oldIndex,
+										"newindex": evt.newIndex
+									},
+									cache: false,
+									dataType: 'JSON',
+									url: ajaxurl, 
+									success: function(response) 
+									{
+										nxs_js_alert("todo :)");
+									},
+									error: function(response)
+									{
+										nxs_js_popup_notifyservererror();
+										nxs_js_log(response);
+									}										
+								}
+							);
+		  			}
+		  			
+		  			// todo: update the flipping of these indexes in the DB
+		  			
+		  			// update the GUI
+		  			jQ_nxs("#<?php echo "nxsgrid-c-{$placeholderid}"; ?> .nxsgrid-item").each
+		  			(
+		  				function(index, domitem)
+		  				{
+		  					jQ_nxs(domitem).removeClass("nxsgrid-lastcolumn");
+		  					if (index % <?php echo $numberofcolumns; ?> == (<?php echo $numberofcolumns; ?> - 1))
+		  					{
+		  						jQ_nxs(domitem).addClass("nxsgrid-lastcolumn");
+		  					}
+		  				}
+		  			);
+		  			
+		  			// todo: rebuild nxsgrid-clear-both divs, or probably easier and better;
+		  			// todo: redraw the row?
+		  			
+			    },
+				}
+			);
+		</script>
+		<?php
+	}
 	
 	// 
 	
