@@ -118,6 +118,7 @@ function nxs_widgets_entities_home_getoptions($args)
 				"initial_toggle_state" => "closed",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 			),
+			/*
 			array(
 				"id" 				=> "title",
 				"type" 				=> "input",
@@ -126,6 +127,7 @@ function nxs_widgets_entities_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			*/
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
@@ -1060,12 +1062,19 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","entities","button_entities", "destination_url"));
 	
+	
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
 	
 	// Widget specific variables
 	extract($mixedattributes);
+
+	global $businesssite_instance;
+	$contentmodel = $businesssite_instance->getcontentmodel();
+	$title = $contentmodel[$datasource]["taxonomy"]["post_title"];
+
 
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = $datasource;
@@ -1584,38 +1593,11 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$subhtml .= $subresult["html"];
 		$subhtml .= "</div>";
 		$subhtml .= "</div>";
-		
-		//
-		
 		$subhtml .= "</div>";
-				
-		$remainder = $index % $numberofcolumns;
 		
-		$issecondelementinrow = ($remainder == 1);
-		
-		$isnewrow = $remainder == 0;
-		$isfirst = $index == 0;
-		$islastinrow = $remainder % $numberofcolumns == ($numberofcolumns - 1);
-
-		$csslastcolumn = "";
-		if ($islastinrow)
-		{
-			$csslastcolumn = "nxsgrid-lastcolumn";
-		}
-		$csssecondcolumn = "";
-		if ($issecondelementinrow && $numberofcolumns == 4)
-		{
-			$csssecondcolumn = "nxsgrid-secondcolumn";
-		}
-		
-		$html .= "<div class='index{$index} {$csssecondcolumn} remainder{$remainder} nxsgrid-item nxsgrid-column-{$numberofcolumns} nxsgrid-float-left {$csslastcolumn} nxs-entity' data-id='{$post_id}'>";
+		$html .= "<div class='nxsgrid-item nxsgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}'>";
 		$html .= $subhtml;
 		$html .= "</div>";
-		
-		if ($islastinrow)
-		{
-			$html .= "<div class='nxsgrid-clear-both clear'></div>";	
-		}
 	}
 	
 	$html .= "</div>";
@@ -1660,29 +1642,14 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		  		animation: 150,
 		  		onStart: function()
 		  		{
-		  			/*
-		  			jQ_nxs("#<?php echo "nxsgrid-c-{$placeholderid}"; ?> .nxsgrid-item").each
-		  			(
-		  				function(index, domitem)
-		  				{
-		  					jQ_nxs(domitem).addClass("nxsgrid-lastcolumn");
-		  				}
-		  			);
-		  			jQ_nxs("#<?php echo "nxsgrid-c-{$placeholderid}"; ?> .nxsgrid-clear-both").each
-		  			(
-		  				function(index, domitem)
-		  				{
-		  					jQ_nxs(domitem).remove();
-		  				}
-		  			);
-		  			*/
+		  			
 		  		},
 		  		onEnd: function (/**Event*/evt) 
 		  		{
 		  			//evt.oldIndex;  // element's old index within parent
         		//evt.newIndex;  // element's new index within parent
 
-						nxs_js_alert("onEnd: entities moved:" + evt.oldIndex + " to: " + evt.newIndex);
+						//nxs_js_alert("onEnd: entities moved:" + evt.oldIndex + " to: " + evt.newIndex);
 						
 		  			if (evt.oldIndex != evt.newIndex)
 		  			{
@@ -1712,7 +1679,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 									url: ajaxurl, 
 									success: function(response) 
 									{
-										nxs_js_alert("todo :)");
+										// nxs_js_alert("todo :)");
 									},
 									error: function(response)
 									{
@@ -1722,25 +1689,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 								}
 							);
 		  			}
-		  			
-		  			// todo: update the flipping of these indexes in the DB
-		  			
-		  			// update the GUI
-		  			jQ_nxs("#<?php echo "nxsgrid-c-{$placeholderid}"; ?> .nxsgrid-item").each
-		  			(
-		  				function(index, domitem)
-		  				{
-		  					jQ_nxs(domitem).removeClass("nxsgrid-lastcolumn");
-		  					if (index % <?php echo $numberofcolumns; ?> == (<?php echo $numberofcolumns; ?> - 1))
-		  					{
-		  						jQ_nxs(domitem).addClass("nxsgrid-lastcolumn");
-		  					}
-		  				}
-		  			);
-		  			
-		  			// todo: rebuild nxsgrid-clear-both divs, or probably easier and better;
-		  			// todo: redraw the row?
-		  			
 			    },
 				}
 			);

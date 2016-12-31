@@ -74,6 +74,7 @@ class businesssite_instance
 		return $content;
 	}
 	
+	// container order sets functionality
 	function getcontainerid($cpt)
 	{
 		$containerid = $this->getcontainerid_internal($cpt);
@@ -140,6 +141,69 @@ class businesssite_instance
 		
 		return $response;
 	}
+
+	
+		// abstract taxonomy instance functionality
+		function getabstracttaxonomyinstanceid($taxonomy)
+		{
+			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+			$taxonomymeta = $taxonomiesmeta[$taxonomy];
+			
+			$singular = $taxonomymeta["singular"];
+			$cpt = "nxs_{$singular}";
+
+			$postids = nxs_wp_getpostidsbymetahavingposttype("nxs_abstracttaxinstance", $taxonomy, "nxs_taxonomy");
+			
+			$found = count($postids) > 0;
+			if ($found)
+			{
+				$result = $postids[0];
+			}
+			else
+			{
+				// if its not yet there, create it
+				$r = $this->createnewabstracttaxonomyinstance_internal($taxonomy);
+				if ($r["result"] != "OK") { echo "unexpected;"; var_dump($r); die(); }
+				$result = $r["postid"];
+			}
+			
+			return $result;
+		}
+		
+		function createnewabstracttaxonomyinstance_internal($taxonomy)
+		{
+			
+			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+			$taxonomymeta = $taxonomiesmeta[$taxonomy];
+			$title = $taxonomymeta["title"];			
+
+			$subargs = array();
+			$subargs["nxsposttype"] = "taxonomy";
+			$subargs["wpposttype"] = "nxs_taxonomy";
+			
+			$subargs["poststatus"] = "publish";
+			$subargs["titel"] = $title;
+			$subargs["slug"] = $title . " " . nxs_generaterandomstring(6);
+			$subargs["postwizard"] = "skip";
+			$subargs["postmetas"] = array
+			(
+				"nxs_abstracttaxinstance" => $taxonomy,
+			);
+			
+			$response = nxs_addnewarticle($subargs);
+			if ($response["result"] != "OK")
+			{
+				echo "failed to create container?!";
+				die();
+			}
+			else
+			{
+				//
+			}
+			
+			return $response;
+		}
+	
 	
 	function getcontentmodeltaxonomyinstances($arg)
 	{
@@ -164,6 +228,27 @@ class businesssite_instance
 		$result = array();
 		
 		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		
+		// grab (and create if it doesn't yet exist) the singleton
+		// instance of each abstract taxonomy entity, for example
+		// the abstract singeton "services" entity which has a title,
+		// and accompaniment title.
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		{
+			$ati = $this->getabstracttaxonomyinstanceid($taxonomy);
+			if ($ati != "")
+			{
+	  		$result[$taxonomy]["taxonomy"]["postid"] = $ati;
+	  		$result[$taxonomy]["taxonomy"]["url"] = nxs_geturl_for_postid($ati);
+	  		$post = get_post($ati);
+	  		// grab meta data
+	  		$result[$taxonomy]["taxonomy"]["post_title"] = $post->post_title;
+				$result[$taxonomy]["taxonomy"]["post_excerpt"] = $post->post_excerpt;
+				$result[$taxonomy]["taxonomy"]["post_content"] = $post->post_content;
+			}
+		}
+		
+		// grab instances of taxanomies
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
 		 	if ($taxonomymeta["arity"] == "n")
@@ -239,11 +324,10 @@ class businesssite_instance
 					}
 				}
 				
-				//wp_delete_post($containerid, true);
-				
 				$result[$taxonomy]["countenabled"] = $countinstancesenabled;
 			}
 		}
+		
 			  
 		return $result;
 	}
@@ -410,6 +494,12 @@ class businesssite_instance
 			$cpt = "nxs_{$singular}";
 			if ($cpt == $post_type)
 			{
+				if ($taxonomy == "taxonomies")
+				{
+					// ignore; taxonies are not ordered
+					break;
+				}				
+				
 				$isbusinessmodeltaxonomy = true;
 				break;
 			}
@@ -442,7 +532,7 @@ class businesssite_instance
 	
 	function untrashed_post($post_id)
 	{
-		error_log("untrashed_post; $post_id");
+		// error_log("untrashed_post; $post_id");
 		$post = get_post($post_id);
 		$post_type = $post->post_type;
 		$isbusinessmodeltaxonomy = false;
@@ -453,6 +543,12 @@ class businesssite_instance
 			$cpt = "nxs_{$singular}";
 			if ($cpt == $post_type)
 			{
+				if ($taxonomy == "taxonomies")
+				{
+					// ignore; taxonies are not ordered
+					break;
+				}
+				
 				$isbusinessmodeltaxonomy = true;
 				break;
 			}
@@ -500,6 +596,12 @@ class businesssite_instance
 		 		$taxonomycpt = "nxs_{$singular}";
 		 		if ($post_type == $taxonomycpt)
 		 		{
+		 			if ($taxonomy == "taxonomies")
+					{
+						// ignore; taxonies are not ordered
+						break;
+					}
+					
 		 			$isbusinessmodeltaxonomy = true;
 		 			break;
 		 		}
@@ -566,6 +668,7 @@ class businesssite_instance
 		//
 		add_action( 'delete_post', array($this, "wp_delete_post"), 10, 3 );
 		add_action( 'wp_trash_post', array($this, "wp_delete_post"), 10, 3 );
+		
   }
   
 	/* ---------- */

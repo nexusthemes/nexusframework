@@ -8,6 +8,43 @@ function nxs_business_gettaxonomiesmeta()
 	
 	$result = array
 	(
+		// the entities representing the taxonomies themselves
+		// (the singleton instance of each abstract taxonomy),
+		// for example the abstract "services" taxonomy
+		// which holds attributes like the "title", and "accompaniment_title"
+		// of that taxonomy
+		"taxonomies" => array
+		(
+			"title" => "Taxonomies",
+			"icon" => "tree",
+			"instance" => array
+			(
+				"defaultrendertype" => "text",
+			),
+			"show_ui" => true,	// false = hide from users in the backend
+			"singular" => "taxonomy",
+			"arity" => "n",	
+			"caninstancesbereferenced" => false,	// false if virtual
+			"aritymaxinstancecount" => 999,
+			"instanceexistencecheckfield" => "title",
+			"taxonomyfields" => array
+			(
+				//
+			),
+			"wpcreateinstructions" => array
+			(
+				"instances" => array
+				(
+					"type" => "page",
+				),
+			),
+			"instancefields" => array
+			(
+				// determined @runtime			
+			),
+			"label" => "Taxonomies",
+		),
+	
 		// todo: add "corestory" taxonomies
 		// "brands" => array
 		// "businesshours" => array
@@ -19,6 +56,14 @@ function nxs_business_gettaxonomiesmeta()
 			"instance" => array
 			(
 				"defaultrendertype" => "text",
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+				"icon" => array
+				(
+					"type" => "iconpicker",
+				),
 			),
 			"singular" => "service",
 			"arity" => "n",	

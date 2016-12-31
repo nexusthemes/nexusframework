@@ -833,6 +833,11 @@ function nxs_init()
 		  	phpinfo();
 		  	die();
 		  }
+		  else if ($_REQUEST["nxs"] == "wpversion")
+			{
+				echo "wpversion:" . get_bloginfo('version');
+				die();
+			}
 		  else if ($_REQUEST["nxs"] == "dumppostidswithmeta")
 		  {
 		  	$key = $_REQUEST["key"];
@@ -2336,6 +2341,11 @@ function nxs_create_post_types_and_taxonomies()
 				{
 					//
 					$singular = $taxonomymeta["singular"];
+					$show_ui = true;
+					if (isset($taxonomymeta["show_ui"]))
+					{
+						$show_ui = $taxonomymeta["show_ui"];
+					}
 					
 					//error_log("lalalalala else for $singular");
 			 			
@@ -2346,7 +2356,7 @@ function nxs_create_post_types_and_taxonomies()
 						"taxonomies" => array("nxs_tax_subposttype"),
 						"ispublic" => false,
 						"publicly_queryable" => false,
-						"show_ui" => true,
+						"show_ui" => $show_ui,
 						"exclude_from_search" => false,
 						'rewrite' => array
 						(
@@ -2762,60 +2772,63 @@ function nxs_init_handledebug()
 
 function nxs_load_plugins()
 {
-	// always load these
-	$plugins = array
-	(
-		"nxs-businesssite",
-		"nxs-businessmodeleditor",
-	);
-	
-	// dynamically inject additional plugins 
-	// based upon the configuration of the site
-	$includeruntimeitems = false;
-	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
-	
-	$nxs_plugins = $lookup["nxs_plugins"];
-	$nxs_plugins = str_replace(";", ",", $nxs_plugins);
-	$nxs_plugins = str_replace(".", ",", $nxs_plugins);
-	$nxs_plugins = str_replace("|", ",", $nxs_plugins);
-	// 
-	$moreplugins = explode(",", $nxs_plugins);
-	
-	
-	$plugins = array_merge($plugins, $moreplugins);
-	
-	$loaded = array();
-	foreach ($plugins as $plugin)
+	if (nxs_hassitemeta())
 	{
-		// get rid of spaces before and after
-		$plugin = trim($plugin);
-		if ($plugin != "")
+		// always load these
+		$plugins = array
+		(
+			"nxs-businesssite",
+			"nxs-businessmodeleditor",
+		);
+		
+		// dynamically inject additional plugins 
+		// based upon the configuration of the site
+		$includeruntimeitems = false;
+		
+		$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+		
+		$nxs_plugins = $lookup["nxs_plugins"];
+		$nxs_plugins = str_replace(";", ",", $nxs_plugins);
+		$nxs_plugins = str_replace(".", ",", $nxs_plugins);
+		$nxs_plugins = str_replace("|", ",", $nxs_plugins);
+		// 
+		$moreplugins = explode(",", $nxs_plugins);
+		
+		
+		$plugins = array_merge($plugins, $moreplugins);
+		
+		$loaded = array();
+		foreach ($plugins as $plugin)
 		{
-			if (!in_array($plugin, $loaded))
+			// get rid of spaces before and after
+			$plugin = trim($plugin);
+			if ($plugin != "")
 			{
-				//
-				$path = NXS_FRAMEWORKPATH . "/plugins/{$plugin}/{$plugin}.php";
-				if (file_exists($path))
+				if (!in_array($plugin, $loaded))
 				{
-					require_once($path);
-					$loaded[] = $path;
+					//
+					$path = NXS_FRAMEWORKPATH . "/plugins/{$plugin}/{$plugin}.php";
+					if (file_exists($path))
+					{
+						require_once($path);
+						$loaded[] = $path;
+					}
+					else
+					{
+						//echo "not found; $path";
+						//die();
+					}
 				}
 				else
 				{
-					//echo "not found; $path";
+					// already had this one
+					//echo "duplicate; $path";
 					//die();
 				}
 			}
-			else
-			{
-				// already had this one
-				//echo "duplicate; $path";
-				//die();
-			}
+	
 		}
-
 	}
-
 }
 
 //

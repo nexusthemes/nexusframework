@@ -1086,6 +1086,14 @@ function nxs_gettemplateproperties_internal()
 // add_new_article
 function nxs_addnewarticle($args)
 {	
+	global $wp_version;
+	if ( $wp_version < 4.4 ) 
+	{
+		// from 4.4 on the meta_input is supported
+		echo "nxs_addnewarticle; this feature requires at least wp 4.4 or higher";
+    die();
+	}
+	
 	extract($args);
 	
 	if ($slug == "")
@@ -1164,10 +1172,18 @@ function nxs_addnewarticle($args)
 	{
 		$globalid = nxs_create_guid();
 	}
-	$my_post["meta_input"] = array
-	(
-		"nxs_globalid" => $globalid,
-	);
+	
+	
+	$my_post["meta_input"] = array();
+	$my_post["meta_input"]["nxs_globalid"] = $globalid;
+	
+	if ($postmetas != "")
+	{
+		foreach ($postmetas as $postmetakey => $postmetavalue)
+		{
+			$my_post["meta_input"][$postmetakey] = $postmetavalue;
+		}
+	}
 	
 	// create the post in the DB; NOTE; this will also trigger the
 	// "wp_insert_post" action which could be intercepted by plugins
@@ -1176,7 +1192,8 @@ function nxs_addnewarticle($args)
 	
 	if ($postid == 0)
 	{
-		nxs_webmethod_return_nack("unable to insert post; $titel; $slug; $posttype; " . $postid);
+		$msg = json_encode($wp_error);
+		nxs_webmethod_return_nack("unable to insert post; $titel; $slug; $posttype; {$postid}; $msg");
 	}
 	
 	// if we reach this point, the globalid should be known, else issues will occur
@@ -1297,13 +1314,7 @@ function nxs_addnewarticle($args)
 		wp_publish_post($postid);
 	}
 	
-	if ($postmetas != "")
-	{
-		foreach ($postmetas as $postmetakey => $postmetavalue)
-		{
-			$r = add_post_meta($postid, $postmetakey, $postmetavalue);
-		}
-	}
+	
 	
 	// 
 	
@@ -9957,18 +9968,6 @@ function nxs_import_file_to_media_v2($importmeta)
   	//echo "updatemeta:";
 		$updatemetaresult = wp_update_attachment_metadata($postid, $generatemetaresult);
 		//var_dump($updatemetaresult);
-		
-		//
-		//
-		//
-		$postmetas = $importmeta["postmetas"];
-		if ($postmetas != "")
-		{
-			foreach ($postmetas as $postmetakey => $postmetavalue)
-			{
-				$r = add_post_meta($postid, $postmetakey, $postmetavalue);
-			}
-		}
 	}
 	else
 	{
@@ -11647,6 +11646,10 @@ function nxs_registernexustype_v2($args)
 	$ispublic = false;
 	$show_ui = false;
 	$rewrite = false;
+	$show_in_nav_menus = false;
+	$show_in_menu = true;
+	$show_in_admin_bar = false;
+	
 	if ($_REQUEST["shownexustypesinbackend"] == "true")
 	{
 		$show_ui = true;
@@ -11683,10 +11686,10 @@ function nxs_registernexustype_v2($args)
 			'has_archive' => false,
 			'exclude_from_search' => $exclude_from_search,
 			'publicly_queryable' => $publicly_queryable,	// Whether queries can be performed on the front end as part of parse_request(). MOET OP TRUE !
-			'show_in_nav_menus' => false, 	// Whether post_type is available for selection in navigation menus.
+			'show_in_nav_menus' => $show_in_nav_menus, 	// Whether post_type is available for selection in navigation menus.
 			'show_ui' => $show_ui, 	// True, if you want this type to show in in WP backend's menu (see show_in_menu too!)
-			'show_in_menu' => true,	// True, if you want this type to show in in WP backend's menu (see show_ui too!)
-			'show_in_admin_bar' => false,
+			'show_in_menu' => $show_in_menu,	// True, if you want this type to show in in WP backend's menu (see show_ui too!)
+			'show_in_admin_bar' => $show_in_admin_bar,
 			'supports' => $supports,
 			'taxonomies' => $taxonomies,
 			'hierarchical' => false,

@@ -99,6 +99,7 @@ function nxs_widgets_menuitementities_home_getoptions($args)
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("Title", "nxs_td"),
       ),
+      /*
       array(
           "id" 				=> "title",
           "type" 				=> "input",
@@ -106,6 +107,7 @@ function nxs_widgets_menuitementities_home_getoptions($args)
           "placeholder" => nxs_l18n__("Title goes here", "nxs_td"),
           "unicontentablefield" => true,
       ),
+      */
       array(
           "id" 				=> "wrapper_title_end",
           "type" 				=> "wrapperend",
@@ -162,7 +164,12 @@ function nxs_widgets_menuitementities_render_webpart_render_htmlvisualization($a
 	
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	$title = $mixedattributes['title'];
+	$datasource = $mixedattributes["taxonomy"];
+	global $businesssite_instance;
+	$contentmodel = $businesssite_instance->getcontentmodel();
+	$title = $contentmodel[$datasource]["taxonomy"]["post_title"];
+	
+
     
     $icon = $mixedattributes['icon'];
 	$icon_scale = "0-5";
@@ -270,8 +277,11 @@ function nxs_widgets_menuitementities_desktop_render($args) {
         $issubitem = true;
     }
     
-    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
-
+    $datasource = $placeholdermetadata["taxonomy"];
+		global $businesssite_instance;
+		$contentmodel = $businesssite_instance->getcontentmodel();
+		$title = $contentmodel[$datasource]["taxonomy"]["post_title"];
+		
     $icon = $placeholdermetadata["icon"];
     $icon_scale = "0-5";
     $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
@@ -356,7 +366,13 @@ function nxs_widgets_menuitementities_mobile_render($args) {
 
     $currentdepth = $placeholdermetadata["depthindex"];
 
-    $title = $placeholdermetadata["title"]; //  . "(" . $currentdepth . ")";
+    $datasource = $placeholdermetadata["taxonomy"];
+		global $businesssite_instance;
+		$contentmodel = $businesssite_instance->getcontentmodel();
+		$title = $contentmodel[$datasource]["taxonomy"]["post_title"];
+		
+    
+    
     $title = nxs_menu_enrichtitle($title, $currentdepth);
 
     $icon = $placeholdermetadata["icon"];
