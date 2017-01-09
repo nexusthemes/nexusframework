@@ -4303,7 +4303,7 @@ function nxs_js_redirect_top(url)
 			var initialcontext = 
 			{
 				"lp_taxonomy" : datasource,
-				"lp_step" : 2
+				"lp_step" : 2 
 			};
 			nxs_js_popup_site_neweditsession_v2("newtemplate", initialcontext);								
 		}

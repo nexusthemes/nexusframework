@@ -610,21 +610,33 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 									$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 									foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 									{
-									 	if ($taxonomymeta["arity"] == "n")
-									 	{
-											$url = $contentmodel[$taxonomy]["url"];
-											$icon = $taxonomymeta["icon"];
-											$title = $taxonomymeta["title"];
-								  		?>
-								    	<li>
-								      	<a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="site">
-								      		<span style='font-size:32px; padding: 5px;' class='nxs-icon-<?php echo $icon; ?>'></span>
-								      		<span style='padding: 10px;'><?php echo $title; ?></span>
-								      	</a>
-								      	
-								      </li>
-								      <?php
+										if ($taxonomy == "taxonomies")
+										{
+											// skip this one
+											continue;
 										}
+										
+										$icon = $taxonomymeta["icon"];
+										$title = $taxonomymeta["title"];
+								 		$url = $contentmodel[$taxonomy]["url"];
+										$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
+										$abstracturl = get_edit_post_link($abstractpostid);
+							  		?>
+							    	<li>
+							      	<a href="<?php echo $abstracturl; ?>" title="<?php echo $title; ?>" class="site">
+							      		<span style='font-size:32px; padding: 5px;' class='nxs-icon-<?php echo $icon; ?>'></span>
+							      		<span style='padding: 10px;'><?php echo $title; ?></span>
+							      	</a>
+							      	<?php
+							      	if ($taxonomymeta["arity"] == "n")
+							      	{
+							      		?>
+							      		<a href='<?php echo $url; ?>'>Instances</a>
+							      		<?php
+						      		}
+						      		?>
+							      </li>
+							      <?php
 							    }
 							    ?>
 							  </ul>
@@ -2787,6 +2799,17 @@ function nxs_site_newtemplate_getoptions($args)
 			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 			foreach ($items as $taxonomy => $taxonomyindexmeta)
 			{
+				if (!isset($taxonomiesmeta[$taxonomy]))
+				{
+					// if the taxonomy is not known at the client,
+					// skip it
+					// this either indicates a version difference between the
+					// content server and the theme, or it could be that the
+					// content server also returned a "virtual" taxonomy for the
+					// "abstract taxonomy instances" (singleton variations)
+					continue;
+				}
+				
 				$taxonomymeta = $taxonomiesmeta[$taxonomy];
 				$title = $taxonomymeta["title"];
 				$icon = $taxonomymeta["icon"];
@@ -2817,6 +2840,8 @@ function nxs_site_newtemplate_getoptions($args)
 		<?php
 		$scaffolding = nxs_ob_get_contents();
 		nxs_ob_end_clean();
+
+		$scaffolding .= "<div>(sitekey templatewizardthemeid $themeid)</div>";
 		
 		//
 		// ---
@@ -2943,13 +2968,14 @@ function nxs_site_newtemplate_getoptions($args)
 			ob_start();
 			var_dump($items);
 			?>
-			<div>There's no templates available for this theme (themeid: <?php echo $themeid; ?>)</div>
+			<div>There's no templates available for this theme (themeid: <?php echo $themeid; ?> (sitekey templatewizardthemeid)</div>
 			<?php
 			$scaffolding .= nxs_ob_get_contents();
 			nxs_ob_end_clean();
 		}
 		else
 		{	
+			$scaffolding .= "<div>(sitekey templatewizardthemeid)</div>";
 			foreach ($items as $i => $meta)
 			{
 				$id = $meta["id"];

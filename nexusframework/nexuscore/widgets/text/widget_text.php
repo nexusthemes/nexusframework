@@ -55,7 +55,20 @@ function nxs_widgets_text_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
-			array(
+			array
+			(
+				"id" 				=> "title_truncatelength",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title max length", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@" => "No truncation",
+					"none" => "Truncate all",
+				),
+			"unistylablefield"	=> true
+			),
+			array
+			(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
@@ -495,7 +508,10 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	
+	if ($title_truncatelength === "none") 
+	{
+		$title = "";
+	}
 	
 	// Overruling of parameters
 	if ($image_imageid == "featuredimg")

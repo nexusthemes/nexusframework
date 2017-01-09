@@ -104,22 +104,25 @@ if (is_admin())
 {
 	function nxs_businessmodelmetabox_callback($post)
 	{
-		
-		
 		$fields = nxs_businessmodelmetabox_getfieldsmeta($post);
 		foreach ($fields as $field => $fieldmeta)
 		{			
 			$type = $fieldmeta["type"];
 
-			echo "field: $type<br />";
+			// echo "field: $type<br />";
 			
 			if ($type == "text" || $type == "")
 			{
+				$label = $field;
+				if (isset($fieldmeta["label"]))
+				{
+					$label = $fieldmeta["label"];
+				}
 				$id = "nxs_entity_{$field}";
 				$inputid = "nxs_entity_{$field}_input";
 				$value = get_post_meta($post->ID, $id, true);
 				?>
-				<?php echo $field ;?>: 
+				<?php echo $label ;?>: 
 				<input type='text' name='<?php echo $inputid; ?>' id='<?php echo $inputid; ?>' value='<?php echo $value; ?>' />
 				<hr />
 				<?php
@@ -298,16 +301,37 @@ if (is_admin())
 		
 		// get posttype bijv. nxs_reseller
 		$posttype = $post->post_type;
-		// get taxonomy for posttype
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		
+		if ($posttype == "nxs_taxonomy")
 		{
-			$singular = $taxonomymeta["singular"];
-			$cpt = "nxs_{$singular}";
-			if ($posttype == $cpt)
+			// singleton taxonomy props
+			
+			$nxs_abstracttaxinstance = get_post_meta($post->ID, "nxs_abstracttaxinstance", true);
+
+			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 			{
-				$additionalfields = $taxonomymeta["instanceextendedproperties"];
-				break;
+				$singular = $taxonomymeta["singular"];
+				if ($singular == $nxs_abstracttaxinstance)
+				{
+					$additionalfields = $taxonomymeta["taxonomyextendedproperties"];
+					break;
+				}
+			}
+		}
+		else
+		{
+			// get taxonomy for posttype
+			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+			{
+				$singular = $taxonomymeta["singular"];
+				$cpt = "nxs_{$singular}";
+				if ($posttype == $cpt)
+				{
+					$additionalfields = $taxonomymeta["instanceextendedproperties"];
+					break;
+				}
 			}
 		}
 		
@@ -317,24 +341,6 @@ if (is_admin())
 		}
 		
 		$result = array_merge($result, $additionalfields);
-		
-		/*
-		$fields = array
-		(
-			"icon" => array("type" => "iconpicker"),
-			"stars" => array(),						// used by taxonomies: testimonials
-			"rating_text" => array(),			// used by taxonomies: testimonials
-			"source" => array(),					// used by taxonomies: testimonials
-			"destination_url" => array(),	// used by taxonomies: testimonials
-			"role" => array(),						// used by taxonomies: employees
-			//"imperative_m" => array(),		// used by taxonomies: calltoactions
-			//"imperative_l" => array(),		// used by taxonomies: calltoactions
-			//"destination_cta" => array(
-			//"type" => "ctadestinationpicker"
-			//  MOET UITEINDELIJK EEN DDL WORDEN
-			//),		// used by taxonomies: calltoactions
-		);
-		*/
 		
 		return $result;
 	}

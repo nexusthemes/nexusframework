@@ -11671,6 +11671,8 @@ function nxs_registernexustype_v2($args)
 	//var_dump($args);
 	//die();
 	
+	
+	
 	register_post_type
 	( 
 		'nxs_' . $title,

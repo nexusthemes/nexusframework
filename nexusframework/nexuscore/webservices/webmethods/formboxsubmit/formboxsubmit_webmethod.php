@@ -18,7 +18,7 @@ function nxs_widgets_formboxitem_getformitemsubmitresult($widget, $args)
 		{
 			$result = array
 			(
-				"result" => "OK";
+				"result" => "OK",
 			);
 		}
 		else

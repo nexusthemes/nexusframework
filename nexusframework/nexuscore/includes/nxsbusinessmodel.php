@@ -44,6 +44,93 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Taxonomies",
 		),
+		
+		"socialaccounts" => array
+		(
+			"title" => "Social Accounts",
+			"icon" => "share",
+			"instance" => array
+			(
+				"defaultrendertype" => "text",
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+				"icon" => array
+				(
+					"type" => "iconpicker",
+				),
+				"url" => array
+				(
+					"type" => "text",
+				),
+			),
+			"singular" => "socialaccount",
+			"arity" => "n",	
+			"caninstancesbereferenced" => false,	// false if virtual
+			"aritymaxinstancecount" => 8,
+			"instanceexistencecheckfield" => "title",
+			"taxonomyfields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"accompaniment_title" => array
+				(
+					"type" => "text",
+				),
+			),
+			"wpcreateinstructions" => array
+			(
+
+			),
+			"instancefields" => array
+			(
+				"title" => array
+				(
+					"type" => "text",
+				),
+				"icon" => array
+				(
+					"type" => "icon",
+				),
+				"excerpt" => array
+				(
+					"type" => "textarea",
+				),
+				"genericimage" => array
+				(
+					"type" => "media",
+					"scope" => "businesstype",
+				),				
+				"image" => array
+				(
+					"type" => "media",
+					"scope" => "searchphrase",
+				),
+				/*
+				"pricingtable" => array
+				(
+					"type" => "textarea",
+				),
+				*/
+				"problem" => array
+				(
+					"type" => "text",
+				),
+				"solution" => array
+				(
+					"type" => "text",
+				),
+				"imageset" => array
+				(
+					"type" => "mediaset",
+					"scope" => "businesstype",
+				),				
+			),
+			"label" => "Services",
+		),		
 	
 		// todo: add "corestory" taxonomies
 		// "brands" => array
@@ -275,7 +362,98 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Portfolio Items",
 		),
-		/*		
+		"companyname" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Company name",
+			"label" => "Company name",
+			"icon" => "apartment",
+			"singular" => "companyname",
+			"arity" => "1",	
+			"aritymaxinstancecount" => 1,
+			"taxonomyfields" => array
+			(
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			"instancefields" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"name" => array
+				(
+					"label" => "Company name",
+					"type" => "text",
+				),
+			),
+		),
+		"slogan" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Slogan",
+			"icon" => "quote",
+			"singular" => "slogan",
+			"arity" => "1",	
+			"aritymaxinstancecount" => 1,
+			"taxonomyfields" => array
+			(
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			"instancefields" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"slogan" => array
+				(
+					"type" => "text",
+				),
+			),
+			"label" => "Slogan",
+		),
+		"phone" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Phone",
+			"icon" => "phone",
+			"singular" => "phone",
+			"arity" => "1",	
+			"aritymaxinstancecount" => 1,
+			"taxonomyfields" => array
+			(
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			"instancefields" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"phonenumber" => array
+				(
+					"type" => "text",
+				),
+			),
+			"label" => "Phone",
+		),
+		/*
 		"calltoactions" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -329,7 +507,7 @@ function nxs_business_gettaxonomiesmeta()
 				"description" => array
 				(
 					"type" => "textarea",
-				)
+				),
 			),
 			"label" => "Call to actions",
 		),	

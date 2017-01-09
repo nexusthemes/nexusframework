@@ -2297,6 +2297,12 @@ function nxs_create_post_types_and_taxonomies()
 	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
+		$show_in_nav_menus = false;
+		if ($taxonomy == "taxonomies")
+		{
+			$show_in_nav_menus = true;
+		}
+		
 	 	if ($taxonomymeta["arity"] == "n")
 	 	{
 			if ($taxonomymeta["wpcreateinstructions"] != "")
@@ -2333,6 +2339,7 @@ function nxs_create_post_types_and_taxonomies()
 								'thumbnail',
 								'excerpt',
 							),
+							"show_in_nav_menus" => $show_in_nav_menus,
 						);
 						nxs_registernexustype_v2($args);
 					}
@@ -2373,6 +2380,7 @@ function nxs_create_post_types_and_taxonomies()
 							'thumbnail',
 							'excerpt',
 						),
+						"show_in_nav_menus" => $show_in_nav_menus,
 					);
 					nxs_registernexustype_v2($args);
 				}

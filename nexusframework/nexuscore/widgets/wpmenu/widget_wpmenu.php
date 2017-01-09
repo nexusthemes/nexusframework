@@ -2,12 +2,12 @@
 
 function nxs_widgets_wpmenu_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-" . $widget_name;
+	return "nxs-icon-menucontainer";
 }
 
 // Setting the widget title
 function nxs_widgets_wpmenu_gettitle() {
-	return nxs_l18n__("Native WP menu", "nxs_td");
+	return nxs_l18n__("Menu", "nxs_td");
 }
 
 // Unistyle
@@ -23,6 +23,9 @@ function nxs_widgets_wpmenu_getunifiedstylinggroup() {
 // Define the properties of this widget
 function nxs_widgets_wpmenu_home_getoptions($args) 
 {
+	$menu_id = nxs_widgets_wpmenu_getmenuid();
+	$editurl = get_admin_url(get_current_blog_id(), 'nav-menus.php') . "?action=edit&menu={$menu_id}";
+	
 	// CORE WIDGET OPTIONS
 	
 	$options = array
@@ -46,6 +49,7 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Configuration", "nxs_td"),
 			),
 			
+			/*
 			array(
 				"id" 				=> "wpsidebarid",
 				"type" 				=> "select",
@@ -68,6 +72,8 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 					The last step is choosing the specific area in the front-end and configuring the overall design.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			*/
+			
 			array(
 				"id" 				=> "halign",
 				"type" 				=> "radiobuttons",
@@ -146,6 +152,14 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
+			array
+			(
+				"id" 				=> "editsection",
+				"type" 				=> "custom",
+				"custom"	=> "<div><a class='nxsbutton' href='{$editurl}'>Edit Items</a></div>",
+				"label" 			=> nxs_l18n__("Items", "nxs_td"),
+			),
+			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
@@ -215,6 +229,14 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
+
+function nxs_widgets_wpmenu_getmenuid()
+{
+	$locations = get_nav_menu_locations();
+	$menu_name = 'nxs-menu-generic';
+	$menu_id = $locations[$menu_name];
+	return $menu_id;
+}
 
 function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args) 
 {	
@@ -306,8 +328,24 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	else if ($submenu_fontsize == '0.8x') 	{ $submenu_fontsize = "08"; }
 	
 	nxs_ob_start();
-	dynamic_sidebar(intval($wpsidebarid));
-	$sidebarcontent = nxs_ob_get_contents();
+
+	$menu_id = nxs_widgets_wpmenu_getmenuid();
+	$nav_menu = wp_get_nav_menu_object($menu_id);
+	
+	if ($nav_menu == "")
+	{
+		// fallback; use the menu called "main menu"
+		$nav_menu = wp_get_nav_menu_object("main menu");
+	}
+	
+	$nav_menu_args = array
+	(
+		'fallback_cb' => '',
+		'menu'        => $nav_menu
+	);
+	wp_nav_menu( apply_filters( 'widget_nav_menu_args', $nav_menu_args, $nav_menu, $args, $instance ) );
+
+	$menuhtml = nxs_ob_get_contents();
 	nxs_ob_end_clean();
 	
 	// Colorization script
@@ -354,7 +392,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	if ($sidebarcontent == "") {
+	if ($menuhtml == "") {
 			nxs_renderplaceholderwarning(nxs_l18n__("No widgets found in widget area[nxs:warning]", "nxs_td"));
 		} else {
 			
@@ -362,7 +400,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 			echo '
 			<div class="' . $halign . '">		
 				<div class="nxs-menu nxs-native-menu ' . $responsive_display . '" >
-					<ul>' . $sidebarcontent . '</ul>
+					<ul>' . $menuhtml . '</ul>
 				</div>
 			</div>';
 			
@@ -383,7 +421,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
                 <div class="nxs-menu-mini-nav-expander-' . $placeholderid . '" style="display: none;">
 
 					<div class="nxs-native-menu ' . $responsive . '" >
-						<ul>' . $sidebarcontent . '</ul>
+						<ul>' . $menuhtml . '</ul>
 					</div>';
 					
 				echo '
@@ -452,5 +490,3 @@ function nxs_widgets_wpmenu_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

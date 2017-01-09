@@ -231,7 +231,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "target", "tags" => array("nexus"));
 		
 		// Miscellaneous
-		$result[] = array("widgetid" => "menucontainer", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "logo", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "callout", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "csv", "tags" => array("nexus"));
@@ -251,10 +250,13 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "googlebusinessphoto", "tags" => array("nexus"));		
 		$result[] = array("widgetid" => "rssfeed", "tags" => array("nexus"));	
 		$result[] = array("widgetid" => "breadcrumb", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "wpmenu", "tags" => array("nexus"));
 		
 		if ($enableconceptualwidgets)
 		{
-			$result[] = array("widgetid" => "wpmenu", "tags" => array("nexus"));
+			// menucontainer is obsolete as of jan 2017
+			$result[] = array("widgetid" => "menucontainer", "tags" => array("nexus"));
+			
       $result[] = array("widgetid" => "pagination", "tags" => array("nexus"));
       $result[] = array("widgetid" => "template2", "tags" => array("johan"));
 		}
@@ -566,10 +568,10 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("section");
 	nxs_ext_lazyload_widget("pagination");
 	nxs_ext_lazyload_widget("vectorart");
+	nxs_ext_lazyload_widget("wpmenu");
     
 	if ($enableconceptualwidgets)
 	{
-		nxs_ext_lazyload_widget("wpmenu");
 	}
 	
 	nxs_ext_lazyload_widget("target");

@@ -338,10 +338,20 @@ class businesssite_instance
 		if ($nxsposttype == "post") 
 		{
 			$result[] = array("widgetid" => "entities");
+			$result[] = array("widgetid" => "phone");
+			$result[] = array("widgetid" => "socialaccounts");
 		}
 		else if ($nxsposttype == "sidebar") 
 		{
 			$result[] = array("widgetid" => "entities");
+			$result[] = array("widgetid" => "phone");
+			$result[] = array("widgetid" => "socialaccounts");
+		}
+		else if ($nxsposttype == "header") 
+		{
+			$result[] = array("widgetid" => "phone");
+			$result[] = array("widgetid" => "buslogo");
+			$result[] = array("widgetid" => "socialaccounts");
 		}
 		
 		return $result;
@@ -651,6 +661,169 @@ class businesssite_instance
 	{
 		// 
 		nxs_lazyload_plugin_widget(__FILE__, "entities");
+		nxs_lazyload_plugin_widget(__FILE__, "phone");
+		nxs_lazyload_plugin_widget(__FILE__, "buslogo");
+		nxs_lazyload_plugin_widget(__FILE__, "socialaccounts");
+	}
+	
+	function wp_nav_menu_items($result, $args ) 
+	{
+    if ($_REQUEST["nxs"] == "debugmenu")
+    {
+    	var_dump($result);
+    	var_dump($args);
+    	die();
+    }
+
+    return $result;
+	}
+	
+	
+	function walker_nav_menu_start_el($result, $item, $depth, $args ) 
+	{
+  	if ($_REQUEST["nxs"] == "debugmenu")
+    {
+    	//var_dump($result);
+    	//var_dump($args);
+    	//die();
+    }
+    
+    // $result = "[" . $result . "]";
+    
+  	return $result;
+	}
+	
+	// kudos to https://teleogistic.net/2013/02/11/dynamically-add-items-to-a-wp_nav_menu-list/
+	function wp_nav_menu_objects($result, $menu, $args)
+	{
+		if (true) //$_REQUEST["nxs"] == "debugmenu2")
+    {
+    	$newresult = array();
+    	
+    	$contentmodel = $this->getcontentmodel();
+			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+    	
+    	// process taxonomy menu items (adds custom child items,
+    	// and etches items that are empty)
+    	
+    	foreach ($result as $post)
+    	{
+    		if ($post->object == "nxs_taxonomy")
+    		{
+    			$found = false;
+    			$singleton_instanceid = $post->object_id;
+    			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+					{
+						if ($contentmodel[$taxonomy]["taxonomy"]["postid"] == $singleton_instanceid)
+						{
+							// this is the taxonomy we were looking for
+							$found = true;		
+							
+							if ($taxonomymeta["caninstancesbereferenced"] == true)
+							{
+								$instances = $contentmodel[$taxonomy]["instances"];
+								if (count($instances) > 0)
+								{
+									// update this item (the "parent")
+									$post->title = $contentmodel[$taxonomy]["taxonomy"]["post_title"]; //"item voor $taxonomy";
+									// make it not clickable
+									$post->url = "#";
+									$post->classes[] = "nxs-menuitemempty";
+									$newresult[] = $post;
+									
+									// add instances as child elements to the list
+									$childindex = -1;
+									foreach ($instances as $instance)
+									{
+										$childindex++;
+	
+										$childpost = array
+										(
+							        'title'            => $instance["content"]["post_title"],
+							        'menu_item_parent' => $post->ID,
+							        'ID'               => '',
+							        'db_id'            => '',
+							        'url'              => $instance["content"]["url"],
+							      );
+							      $newresult[] = (object) $childpost;
+									}
+								}
+								else
+								{
+									// if there's "no" instances we remove/etch the item from the 
+									// menu by simply not adding it to the newresult list
+								}
+							}
+							else
+							{
+								// the instances cannot be referenced, thus we skip them
+								// (item is 
+							}
+						}
+						else
+						{
+							// some other taxonomy; ignore
+						}
+					}
+					if (!$found)
+					{
+						/*
+						$post->title = "not found; " . $singleton_instanceid;
+						$newresult[] = $post;
+						var_dump($contentmodel);
+						die();
+						*/
+					}
+				}
+				else
+				{
+					// clone as-is
+					//$post->title = $post->object . ";" . $singleton_instanceid;
+					$newresult[] = $post;		
+				}
+			}
+			
+			// swap
+			$result = $newresult;
+			
+			/*    	
+    	$result = array();
+    	
+    	$new_item = new stdClass;
+    	$id_a = "a";
+    	$new_item->ID = $id_a;
+			$new_item->db_id = $id_a;
+			$new_item->menu_item_parent = 0;
+			$new_item->url = "http://nexusthemes.com";
+			$new_item->title = "a";
+			$new_item->menu_order = 1;	// $menu_order;
+			$result[] = $new_item;
+			
+			$new_item = new stdClass;
+    	$id_b = "b";
+    	$new_item->ID = $id_b;
+			$new_item->db_id = $id_b;
+			$new_item->menu_item_parent = 0;
+			$new_item->url = "http://nexusthemes.com";
+			$new_item->title = "b";
+			$new_item->menu_order = 1;	// $menu_order;
+			$result[] = $new_item;
+			
+			// https://isabelcastillo.com/dynamically-sub-menu-item-wp_nav_menu
+			// http://wordpress.stackexchange.com/questions/100484/how-to-add-a-child-item-to-a-menu-element-using-wp-nav-menu-objects
+			$link = array
+			(
+        'title'            => 'Cats',
+        'menu_item_parent' => $id_a,
+        'ID'               => '',
+        'db_id'            => '',
+        'url'              => 'www.google.com'
+      );
+      $result[] = (object) $link;
+			*/
+    }
+    
+		return $result;
 	}
 	
 	function __construct()
@@ -668,6 +841,11 @@ class businesssite_instance
 		//
 		add_action( 'delete_post', array($this, "wp_delete_post"), 10, 3 );
 		add_action( 'wp_trash_post', array($this, "wp_delete_post"), 10, 3 );
+		
+		//add_filter('wp_nav_menu_items','wp_nav_menu_items', 10, 2);
+		add_filter('walker_nav_menu_start_el', array($this, 'walker_nav_menu_start_el'), 10, 4);
+		
+		add_filter('wp_nav_menu_objects', array($this, 'wp_nav_menu_objects'), 10, 3);
 		
   }
   
