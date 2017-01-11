@@ -605,7 +605,9 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 		          <div class="box-content">
 		          	<table>
 		          		<tr>
-		          			<td>Topic</td><td>Items</td>
+		          			<td width="40%">Topic</td>
+		          			<td width="60%">Actions</td>
+		          			<td><!-- filler --></td>
 		          		</tr>
 			          	<?php
 									global $businesssite_instance;
@@ -624,28 +626,29 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 								 		$url = $contentmodel[$taxonomy]["url"];
 										$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 										$abstracturl = get_edit_post_link($abstractpostid);
-										$urlinstancesbackend = get_admin_url('edit.php') . "?post_type=nxs_{$singular}";
+										$urlinstancesbackend = admin_url('/edit.php') . "?post_type=nxs_{$singular}";
 							  		?>
 							    	<tr>
-							    		<td>
-								      	<a href="<?php echo $abstracturl; ?>" title="<?php echo $title; ?>" class="site">
-								      		<span style='font-size:32px; padding: 5px;' class='nxs-icon-<?php echo $icon; ?>'></span>
-								      		<span style='padding: 10px;'><?php echo $title; ?></span>
-								      	</a>
+							    		<td style='vertical-align: middle; text-align: right !important;'>
+							      		<span style='padding: 10px;'><?php echo $title; ?></span>
 							      	</td>
 							      	<td>
+								      	<a href="<?php echo $abstracturl; ?>" title="<?php echo $title; ?>" class="site">
+								      		<span style='font-size:32px; padding: 5px;' class='nxs-icon-<?php echo $icon; ?>'></span>
+								      	</a>
+							      		
 							      		<?php
 								      	if ($taxonomymeta["arity"] == "n")
 								      	{
 								      		?>
-								      		<a href='<?php echo $urlinstancesbackend; ?>'>
-								      			<span style='font-size:32px; padding: 5px;' class='nxs-icon-wordpress'></span>
+								      		<a href='<?php echo $urlinstancesbackend; ?>' title='List <?php echo $title; ?> in backend'>
+								      			<span style='font-size:32px; padding: 5px;' class='nxs-icon-list'></span>
 								      		</a>
 								      		<?php
 								      		if ($taxonomymeta["features"]["orderedinstances"]["enabled"] == true)
 								      		{
 									      		?>
-									      		<a href='<?php echo $url; ?>'>
+									      		<a href='<?php echo $url; ?>' title='Re-order <?php echo $title; ?>'>
 									      			<span style='font-size:32px; padding: 5px;' class='nxs-icon-shuffle'></span>
 									      		</a>
 									      		<?php
