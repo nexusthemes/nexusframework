@@ -52,12 +52,7 @@
 	$prtargs["nxsposttype"] = $nxsposttype;
 	$prtargs["pagetemplate"] = $pagetemplate;
 	$postrowtemplates = nxs_getpostrowtemplates($prtargs);
-	
 	$sitemeta = nxs_getsitemeta();
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
-	$editorurl = $contentmodel["services"]["url"];
-	
 ?>
 <!-- loading all fonts -->
 <script type="text/javascript" data-cfasync="false"  src="//www.google.com/jsapi"></script>

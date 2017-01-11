@@ -103,11 +103,11 @@ function nxs_widgets_buslogo_home_getoptions($args)
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 
-	$taxonomy = "companyname";
+	$taxonomy = "nxs_companyname";
 	$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];	
 	$companynameediturl = get_edit_post_link($abstractpostid);
 	
-	$taxonomy = "slogan";
+	$taxonomy = "nxs_slogan";
 	$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];	
 	$sloganediturl = get_edit_post_link($abstractpostid);
 	
@@ -259,7 +259,7 @@ function nxs_widgets_buslogo_render_webpart_render_htmlvisualization($args)
 		// 
 		global $businesssite_instance;
 		$contentmodel = $businesssite_instance->getcontentmodel();
-		$taxonomy = "companyname";
+		$taxonomy = "nxs_companyname";
 		$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 		$name = get_post_meta($abstractpostid, "nxs_entity_name", true);
 		if ($name == "")
@@ -267,7 +267,7 @@ function nxs_widgets_buslogo_render_webpart_render_htmlvisualization($args)
 			$name = "company name";
 		}
 		
-		$taxonomy = "slogan";
+		$taxonomy = "nxs_slogan";
 		$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 		$slogan = get_post_meta($abstractpostid, "nxs_entity_slogan", true);
 		if ($slogan == "")

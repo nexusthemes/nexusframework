@@ -457,7 +457,7 @@ function nxs_widgets_commercialmsgs_render_webpart_render_htmlvisualization($arg
 		// grab all commercial messages
 		global $businesssite_instance;
 		$contentmodel = $businesssite_instance->getcontentmodel();
-		$datasource = "commercialmsgs";
+		$datasource = "nxs_commercialmsg";
 		
 		$slidesdataset = array();
 		foreach ($contentmodel[$datasource]["instances"] as $instance)

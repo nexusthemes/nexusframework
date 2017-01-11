@@ -7,13 +7,12 @@
 	$nxssubposttype = nxs_get_nxssubposttype($postid);
 
 	// nxssubposttype could be for example "uniquesellingproposition_set"
-	$possiblesingular = str_replace("_set", "", $nxssubposttype);
+	$possibletaxonomy = str_replace("_set", "", $nxssubposttype);
 	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 	$istaxonomies_set = false;
 	foreach ($taxonomiesmeta as $taxonomy => $meta)
 	{
-		$singular = $meta["singular"];
-		if ($possiblesingular == $singular)
+		if ($possibletaxonomy == $taxonomy)
 		{
 			$istaxonomies_set = true;
 			break;
@@ -73,7 +72,7 @@
 			{
 				// yes, its a taxonomy set, render for this scenario an "Add" button
 				// that will go to the wp backend
-				$addnewbackendurl = admin_url("post-new.php?post_type=nxs_{$singular}");
+				$addnewbackendurl = admin_url("post-new.php?post_type={$taxonomy}");
 				?>
 		    <div class="content2">
 		    	<div class="box">

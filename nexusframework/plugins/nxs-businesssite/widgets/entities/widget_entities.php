@@ -1125,7 +1125,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	if ($datasource == "")
 	{
-		$taxonomy = "services";
+		$taxonomy = "nxs_service";
 	}
 	else
 	{
@@ -1327,10 +1327,17 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
+
+	$instances = $contentmodel[$taxonomy]["instances"];
 	
-	
+	if ($_REQUEST["rrr"] == "true")
+	{
+		var_dump($contentmodel);
+		die();
+	}
+
 	$index = -1;
-	foreach ($contentmodel[$taxonomy]["instances"] as $instance)
+	foreach ($instances as $instance)
 	{
 		$enabled = $instance["enabled"];
 		if ($enabled == "") { continue; }
@@ -1371,12 +1378,12 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		);
 		
 		// taxonomy specific mapping
-		if ($taxonomy == "testimonials")
+		if ($taxonomy == "nxs_testimonial")
 		{
 			$childargs["source"] = $post_title;
 			$childargs["text"] = $post_content;
 		}
-		if ($taxonomy == "employees")
+		if ($taxonomy == "nxs_employee")
 		{
 			$childargs["title"] = "";
 			$childargs["person"] = $post_title;

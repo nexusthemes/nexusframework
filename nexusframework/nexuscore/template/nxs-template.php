@@ -183,8 +183,8 @@ function nxs_site_createcontent_internal($args)
 	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
-		$singular = $taxonomymeta["singular"];
-		$semantictaxonomies[] = "nxs_{$singular}";
+		// $singular = $taxonomymeta["singular"];
+		$semantictaxonomies[] = $taxonomy; // "nxs_{$singular}";
 	}
 	
 	if ($posttype == "attachment")

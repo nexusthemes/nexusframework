@@ -429,7 +429,7 @@ function nxs_widgets_menuitementities_initplaceholderdata($args)
 	$args["destination_relation"] = "nofollow";	
 	$args['ph_margin_bottom'] = "0-0";
 	
-	$args["taxonomy"] = "services";
+	$args["taxonomy"] = "nxs_service";
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 

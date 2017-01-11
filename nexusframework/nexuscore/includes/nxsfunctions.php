@@ -11671,17 +11671,20 @@ function nxs_registernexustype_v2($args)
 	//var_dump($args);
 	//die();
 	
-	
+	$pt = $title;
+	$pt = str_replace("nxs_", "", $pt);
+	$pt = "nxs_{$pt}";
+	$name = $pt;
 	
 	register_post_type
 	( 
-		'nxs_' . $title,
+		$pt,
 		array
 		(
 			'capability_type' => 'post',
 			'labels' => array
 			(
-				'name' => __('Nxs ' . $title),
+				'name' => $name,
 				'singular_name' => __('Nexus Struct ' . $title)
 			),
 			'public' => $ispublic,
@@ -12025,3 +12028,4 @@ function nxs_connectivity_invoke_api_get($args)
 	
 	return $response;
 }
+

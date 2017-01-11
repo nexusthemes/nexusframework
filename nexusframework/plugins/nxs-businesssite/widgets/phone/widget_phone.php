@@ -108,7 +108,7 @@ function nxs_widgets_phone_home_getoptions($args)
 	
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
-	$taxonomy = "phone";
+	$taxonomy = "nxs_phone";
 	$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 	
 	$editurl = get_edit_post_link($abstractpostid);
@@ -263,7 +263,7 @@ function nxs_widgets_phone_render_webpart_render_htmlvisualization($args)
 		// 
 		global $businesssite_instance;
 		$contentmodel = $businesssite_instance->getcontentmodel();
-		$taxonomy = "phone";
+		$taxonomy = "nxs_phone";
 		$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 		
 		$phonenumber = get_post_meta($abstractpostid, "nxs_entity_phonenumber", true);

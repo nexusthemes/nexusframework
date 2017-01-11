@@ -67,15 +67,18 @@ function nxs_widgets_entity_home_getoptions()
 		$nxssubposttype = nxs_get_nxssubposttype($postid);
 	
 		// nxssubposttype could be for example "uniquesellingproposition_set"
-		$possiblesingular = str_replace("_set", "", $nxssubposttype);
+		$possibletaxonomy = str_replace("_set", "", $nxssubposttype);
 		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 		foreach ($taxonomiesmeta as $taxonomy => $meta)
 		{
-			$singular = $meta["singular"];
-			if ($possiblesingular == $singular)
+			//$singular = $meta["singular"];
+			if ($possibletaxonomy == $taxonomy)
 			{
-				$cpts[] = "nxs_" . $singular;
-				$title = ucwords($singular);
+				$cpts[] = $taxonomy;	// "nxs_" . $singular;
+				$title = $meta["title"];//$taxonomy;
+				//$title = str_replace("nxs_", "", $title);
+				//$title = str_replace("_", " ", $title);
+				//$title = ucwords($title);
 				$icon = "nxs-icon-" . $meta["icon"];
 				break;
 			}
@@ -88,8 +91,8 @@ function nxs_widgets_entity_home_getoptions()
 		{
 		 	if ($taxonomymeta["arity"] == "n")
 		 	{
-			 	$singular = $taxonomymeta["singular"];
-			 	$cpts[] = "nxs_" . $singular;
+			 	// $singular = $taxonomymeta["singular"];
+			 	$cpts[] = $taxonomy; // "nxs_" . $singular;
 			}
 		}
 	}

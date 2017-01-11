@@ -10,10 +10,10 @@ function nxs_business_gettaxonomiesmeta()
 	(
 		// the entities representing the taxonomies themselves
 		// (the singleton instance of each abstract taxonomy),
-		// for example the abstract "services" taxonomy
+		// for example the abstract "nxs_service" taxonomy
 		// which holds attributes like the "title", and "accompaniment_title"
 		// of that taxonomy
-		"taxonomies" => array
+		"nxs_taxonomy" => array
 		(
 			"title" => "Taxonomies",
 			"icon" => "tree",
@@ -22,7 +22,6 @@ function nxs_business_gettaxonomiesmeta()
 				"defaultrendertype" => "text",
 			),
 			"show_ui" => true,	// false = hide from users in the backend
-			"singular" => "taxonomy",
 			"arity" => "n",
 			"features" => array
 			(
@@ -52,9 +51,10 @@ function nxs_business_gettaxonomiesmeta()
 			"label" => "Taxonomies",
 		),
 		
-		"socialaccounts" => array
+		"nxs_socialaccount" => array
 		(
 			"title" => "Social Accounts",
+			"label" => "Social Accounts",
 			"icon" => "share",
 			"instance" => array
 			(
@@ -72,7 +72,6 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "text",
 				),
 			),
-			"singular" => "socialaccount",
 			"arity" => "n",	
 			"features" => array
 			(
@@ -143,16 +142,16 @@ function nxs_business_gettaxonomiesmeta()
 					"scope" => "businesstype",
 				),				
 			),
-			"label" => "Services",
 		),		
 	
 		// todo: add "corestory" taxonomies
 		// "brands" => array
 		// "businesshours" => array
 		// ----		
-		"services" => array
+		"nxs_service" => array
 		(
 			"title" => "Services",
+			"label" => "Services",
 			"icon" => "publicrelations",
 			"instance" => array
 			(
@@ -166,7 +165,6 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "iconpicker",
 				),
 			),
-			"singular" => "service",
 			"arity" => "n",	
 			"features" => array
 			(
@@ -184,9 +182,8 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "page",
 				),
 			),
-			"label" => "Services",
 		),
-		"products" => array
+		"nxs_product" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Products",
@@ -195,7 +192,6 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"defaultrendertype" => "text",
 			),
-			"singular" => "product",		
 			"arity" => "n",	
 			"aritymaxinstancecount" => 8,
 			"instanceexistencecheckfield" => "title",
@@ -215,7 +211,7 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Products",
 		),
-		"portfolioitems" => array
+		"nxs_portfolioitem" => array
 		(
 			"caninstancesbereferenced" => true,	// false if virtual
 			"title" => "Portfolio items",
@@ -224,7 +220,6 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"defaultrendertype" => "text",
 			),
-			"singular" => "portfolioitem",		
 			"arity" => "n",	
 			"features" => array
 			(
@@ -244,13 +239,12 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Portfolio Items",
 		),
-		"companyname" => array
+		"nxs_companyname" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Company name",
 			"label" => "Company name",
 			"icon" => "apartment",
-			"singular" => "companyname",
 			"arity" => "1",	
 			"features" => array
 			(
@@ -272,12 +266,11 @@ function nxs_business_gettaxonomiesmeta()
 				),
 			),
 		),
-		"slogan" => array
+		"nxs_slogan" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Slogan",
 			"icon" => "quote",
-			"singular" => "slogan",
 			"arity" => "1",	
 			"features" => array
 			(
@@ -299,13 +292,12 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Slogan",
 		),
-		"logo" => array
+		"nxs_logo" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Logo",
 			"label" => "Logo",
 			"icon" => "logo",
-			"singular" => "logo",
 			"arity" => "1",	
 			"aritymaxinstancecount" => 1,
 			"features" => array
@@ -331,12 +323,11 @@ function nxs_business_gettaxonomiesmeta()
 				*/
 			),
 		),
-		"phone" => array
+		"nxs_phone" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Phone",
 			"icon" => "phone",
-			"singular" => "phone",
 			"arity" => "1",	
 			"features" => array
 			(
@@ -364,12 +355,11 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Phone",
 		),
-		"testimonials" => array
+		"nxs_testimonial" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Testimonials",
 			"icon" => "thumbs-up",		
-			"singular" => "testimonial",		
 			"instance" => array
 			(
 				"defaultrendertype" => "quote",
@@ -402,7 +392,7 @@ function nxs_business_gettaxonomiesmeta()
 			"instanceexistencecheckfield" => "source",
 			"label" => "Testimonials",
 		),
-		"employees" => array
+		"nxs_employee" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Employees",
@@ -411,7 +401,6 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"defaultrendertype" => "bio",
 			),
-			"singular" => "employee",		
 			"arity" => "n",
 			"features" => array
 			(
@@ -439,7 +428,7 @@ function nxs_business_gettaxonomiesmeta()
 			"instanceexistencecheckfield" => "name",
 			"label" => "Employees",
 		),
-		"uniquesellingpropositions" => array
+		"nxs_usp" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Unique Selling Propositions",
@@ -448,7 +437,6 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"defaultrendertype" => "target",
 			),			
-			"singular" => "usp",		
 			"arity" => "n",	
 			"features" => array
 			(
@@ -469,13 +457,12 @@ function nxs_business_gettaxonomiesmeta()
 			),
 		),
 		//
-		"commercialmsgs" => array
+		"nxs_commercialmsg" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
 			"title" => "Commercial Messages",
 			"label" => "Commercial Messages",
 			"icon" => "bubble",					
-			"singular" => "commercialmsg",		
 			"arity" => "n",	
 			"features" => array
 			(

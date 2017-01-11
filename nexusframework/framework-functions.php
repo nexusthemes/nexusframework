@@ -2298,11 +2298,14 @@ function nxs_create_post_types_and_taxonomies()
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
 		$show_in_nav_menus = false;
-		if ($taxonomy == "taxonomies")
+		if ($taxonomy == "nxs_taxonomy")
 		{
 			$show_in_nav_menus = true;
 		}
 		
+		// strip the "nxs_" prefix, as the register function will add it itself
+		$title = $taxonomy;
+				
 	 	if ($taxonomymeta["arity"] == "n")
 	 	{
 			if ($taxonomymeta["wpcreateinstructions"] != "")
@@ -2314,12 +2317,14 @@ function nxs_create_post_types_and_taxonomies()
 			 		$type = $instances["type"];
 			 		if (in_array($type, array("post", "page")))
 			 		{
-			 			$singular = $taxonomymeta["singular"];
+			 			//$singular = $taxonomymeta["singular"];
+			 			
+			 			
 			 			
 						// "service"
 						$args = array
 						(
-							"title" => $singular,
+							"title" => $title,
 							"taxonomies" => array("nxs_tax_subposttype"),
 							"ispublic" => true,
 							"show_ui" => true,
@@ -2342,12 +2347,23 @@ function nxs_create_post_types_and_taxonomies()
 							"show_in_nav_menus" => $show_in_nav_menus,
 						);
 						nxs_registernexustype_v2($args);
+						
+						if ($_REQUEST["tax"] == "debug")
+						{
+							if ($taxonomy == "nxs_service")
+							{
+								//echo $taxonomy;
+								var_dump($args);
+								die();
+							}
+						}
+
 					}
 				}
 				else
 				{
 					//
-					$singular = $taxonomymeta["singular"];
+					//$singular = $taxonomymeta["singular"];
 					$show_ui = true;
 					if (isset($taxonomymeta["show_ui"]))
 					{
@@ -2359,7 +2375,7 @@ function nxs_create_post_types_and_taxonomies()
 					// p.e. "testimonial"
 					$args = array
 					(
-						"title" => $singular,
+						"title" => $title,
 						"taxonomies" => array("nxs_tax_subposttype"),
 						"ispublic" => false,
 						"publicly_queryable" => false,
@@ -2411,8 +2427,8 @@ function nxs_create_post_types_and_taxonomies()
 			 		$instances = $taxonomymeta["wpcreateinstructions"]["instances"]["type"];
 			 		if (in_array($instances, array("post", "page")))
 			 		{
-			 			$singular = $taxonomymeta["singular"];
-			 			$result[] = "nxs_" . $singular;
+			 			// $singular = $taxonomymeta["singular"];
+			 			$result[] = $taxonomy; // "nxs_" . $singular;
 			 		}
 			 	}
 		 	}

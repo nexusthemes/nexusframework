@@ -121,7 +121,7 @@ function nxs_webmethod_swap()
 		//
 		$source = $poststructure[$oldindex];
 		
-		error_log("swap; step 2.5; source row:" . json_encode($source));
+		//error_log("swap; step 1.5; source row:" . json_encode($source));
 		
 		// remove source row
 		unset($poststructure[$oldindex]);
@@ -129,12 +129,12 @@ function nxs_webmethod_swap()
 		// re-index
 		$poststructure = array_values($poststructure);
 		
-		error_log("swap; step 2; struct re-index after remove oldindex $oldindex:" . json_encode($poststructure));
+		//error_log("swap; step 2; struct re-index after remove oldindex $oldindex:" . json_encode($poststructure));
 		
 		// insert at new index
 		$poststructure = nxs_insertarrayindex($poststructure, $source, $newindex);
 		
-		error_log("swap; step 3; struct after adding newindex $newindex:" . json_encode($poststructure));
+		//error_log("swap; step 3; struct after adding newindex $newindex:" . json_encode($poststructure));
 		
 		// persist structure
 		$updateresult = nxs_storebinarypoststructure($ordersetid, $poststructure);

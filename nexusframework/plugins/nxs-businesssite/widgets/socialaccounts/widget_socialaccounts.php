@@ -35,7 +35,7 @@ function nxs_widgets_socialaccounts_home_getoptions($args)
 {
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
-	$taxonomy = "socialaccounts";
+	$taxonomy = "nxs_socialaccount";
 	$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 	
 	$editurl = get_edit_post_link($abstractpostid);
@@ -211,7 +211,7 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 	extract($mixedattributes);
 	
 	global $nxs_global_placeholder_render_statebag;
-	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = "socialaccounts";
+	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = "nxs_socialaccount";
 	
 
 	// in some configurations the mixedattributes contain faulty
@@ -264,7 +264,7 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
-	$taxonomy = "socialaccounts";
+	$taxonomy = "nxs_socialaccount";
 	$index = -1;
 	foreach ($contentmodel[$taxonomy]["instances"] as $instance)
 	{
@@ -294,7 +294,7 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 			global $businesssite_instance;
 			global $nxs_global_row_render_statebag;
 			$contentmodel = $businesssite_instance->getcontentmodel();
-			$url = $contentmodel["socialaccounts"]["url"];
+			$url = $contentmodel["nxs_socialaccount"]["url"];
 			$icon_font_list .= "<div>No social accounts configured <a class='nxsbutton' href='{$url}'>Manage</a></div>";
 			$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
 		}

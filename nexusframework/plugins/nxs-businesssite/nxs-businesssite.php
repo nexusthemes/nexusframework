@@ -75,20 +75,23 @@ class businesssite_instance
 	}
 	
 	// container order sets functionality
-	function getcontainerid($cpt)
+	function getcontainerid($taxonomy)
 	{
-		$containerid = $this->getcontainerid_internal($cpt);
+		$containerid = $this->getcontainerid_internal($taxonomy);
 		if ($containerid === false) 
 		{
+			error_log("getcontainerid; creating container for $taxonomy");	
+
 			//echo "containerid not yet found, creating...";
-			$result = $this->createnewcontainer_internal($cpt);
+			$result = $this->createnewcontainer_internal($taxonomy);
 			if ($result["result"] != "OK") { echo "unexpected;"; var_dump($result); die(); }
 			$containerid = $result["postid"];
 		}
+		
 		return $containerid;
 	}
 	
-	function getcontainerid_internal($cpt)
+	function getcontainerid_internal($taxonomy)
 	{
 		// published pagedecorators
 		$publishedargs = array();
@@ -101,7 +104,7 @@ class businesssite_instance
 			(
 				'taxonomy' => 'nxs_tax_subposttype',
 				'field' => 'slug',
-				'terms' => "{$cpt}_set",
+				'terms' => "{$taxonomy}_set",
 			)
 		);
 		
@@ -118,13 +121,13 @@ class businesssite_instance
 	  return $result;
 	}
 	
-	function createnewcontainer_internal($cpt)
+	function createnewcontainer_internal($taxonomy)
 	{
 		$subargs = array();
 		$subargs["nxsposttype"] = "genericlist";
-		$subargs["nxssubposttype"] = "{$cpt}_set";	// NOTE!
+		$subargs["nxssubposttype"] = "{$taxonomy}_set";	// NOTE!
 		$subargs["poststatus"] = "publish";
-		$subargs["titel"] = nxs_l18n__("Set Order", "nxs_td") . " {$cpt} " . nxs_generaterandomstring(6);
+		$subargs["titel"] = nxs_l18n__("Set Order", "nxs_td") . " {$taxonomy} " . nxs_generaterandomstring(6);
 		$subargs["slug"] = $subargs["titel"];
 		$subargs["postwizard"] = "defaultgenericlist";
 		
@@ -156,9 +159,6 @@ class businesssite_instance
 			}
 			else
 			{
-				$singular = $taxonomymeta["singular"];
-				$cpt = "nxs_{$singular}";
-	
 				$postids = nxs_wp_getpostidsbymetahavingposttype("nxs_abstracttaxinstance", $taxonomy, "nxs_taxonomy");
 				
 				$found = count($postids) > 0;
@@ -239,7 +239,7 @@ class businesssite_instance
 		
 		// grab (and create if it doesn't yet exist) the singleton
 		// instance of each abstract taxonomy entity, for example
-		// the abstract singeton "services" entity which has a title,
+		// the abstract singeton "nxs_service" entity which has a title,
 		// and accompaniment title.
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
@@ -263,10 +263,8 @@ class businesssite_instance
 		 	{
 		 		if ($taxonomymeta["features"]["orderedinstances"]["enabled"] == true)
 		 		{
-			 		$singular = $taxonomymeta["singular"];
-			 		
 			 		// this invocation will create a new container when needed
-					$containerid = $this->getcontainerid($singular);
+					$containerid = $this->getcontainerid($taxonomy);
 				
 		  		$result[$taxonomy]["postid"] = $containerid;
 		  		$result[$taxonomy]["url"] = nxs_geturl_for_postid($containerid);
@@ -280,6 +278,14 @@ class businesssite_instance
 					
 					$countinstancesenabled = 0;
 					$items = nxs_getwidgetsmetadatainpost_v2($filter);
+					
+					if ($_REQUEST["rrr"] == "true" && $taxonomy != "nxs_socialaccount")
+					{
+						echo "ja voor $taxonomy $containerid";
+						var_dump($items);
+						die();
+					}
+					
 					foreach ($items as $placeholderid => $widgetmeta)
 					{
 						$widgettype = $widgetmeta["type"];
@@ -516,15 +522,13 @@ class businesssite_instance
 		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
 		foreach ($businessmodeltaxonomies as $taxonomy => $taxmeta)
 		{
-			$singular = $taxmeta["singular"];
-			$cpt = "nxs_{$singular}";
-			if ($cpt == $post_type)
+			if ($taxonomy == $post_type)
 			{
-				if ($taxonomy == "taxonomies")
+				if ($taxonomy == "nxs_taxonomy")
 				{
 					// ignore; taxonies are not ordered
 					break;
-				}				
+				}
 				
 				$isbusinessmodeltaxonomy = true;
 				break;
@@ -565,11 +569,10 @@ class businesssite_instance
 		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
 		foreach ($businessmodeltaxonomies as $taxonomy => $taxmeta)
 		{
-			$singular = $taxmeta["singular"];
-			$cpt = "nxs_{$singular}";
-			if ($cpt == $post_type)
+			// $singular = $taxmeta["singular"];
+			if ($taxonomy == $post_type)
 			{
-				if ($taxonomy == "taxonomies")
+				if ($taxonomy == "nxs_taxonomy")
 				{
 					// ignore; taxonies are not ordered
 					break;
@@ -618,11 +621,9 @@ class businesssite_instance
 		{
 		 	if ($taxonomymeta["arity"] == "n")
 		 	{
-		 		$singular = $taxonomymeta["singular"];
-		 		$taxonomycpt = "nxs_{$singular}";
-		 		if ($post_type == $taxonomycpt)
+		 		if ($post_type == $taxonomy)
 		 		{
-		 			if ($taxonomy == "taxonomies")
+		 			if ($taxonomy == "nxs_taxonomy")
 					{
 						// ignore; taxonies are not ordered
 						break;
@@ -639,8 +640,6 @@ class businesssite_instance
 			// ignore entities outside the business taxonomies
 			return;
 		}
-		
-		//error_log("debug; wp_delete_post for taxonomy; cpt $taxonomycpt");
 		
 		// here we should also delete the item from the ordered list (if its on it)
 		$contentmodel = $this->getcontentmodel();

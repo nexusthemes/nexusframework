@@ -72,9 +72,9 @@ function nxs_businessmodeleditor_getwidgets($result, $widgetargs)
 		{
 		 	if ($taxonomymeta["arity"] == "n")
 		 	{
-		 		$singular = $taxonomymeta["singular"];
+		 		// $singular = $taxonomymeta["singular"];
 		 		
-		 		if ($nxssubposttype == "{$singular}_set") 
+		 		if ($nxssubposttype == "{$taxonomy}_set") 
 		 		{
 		 			$shouldadd = true;
 		 			break;
@@ -311,8 +311,8 @@ if (is_admin())
 			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 			{
-				$singular = $taxonomymeta["singular"];
-				if ($singular == $nxs_abstracttaxinstance)
+				//$singular = $taxonomymeta["singular"];
+				if ($taxonomy == $nxs_abstracttaxinstance)
 				{
 					$additionalfields = $taxonomymeta["taxonomyextendedproperties"];
 					break;
@@ -325,9 +325,9 @@ if (is_admin())
 			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 			{
-				$singular = $taxonomymeta["singular"];
-				$cpt = "nxs_{$singular}";
-				if ($posttype == $cpt)
+				//$singular = $taxonomymeta["singular"];
+				//$cpt = "nxs_{$singular}";
+				if ($posttype == $taxonomy)
 				{
 					$additionalfields = $taxonomymeta["instanceextendedproperties"];
 					break;
@@ -529,9 +529,9 @@ if (is_admin())
 		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
-			$singular = $taxonomymeta["singular"];
-			$cpt = "nxs_{$singular}";
-			add_meta_box('nxs_businessmodelmetabox', 'Nxs Extended Properties', 'nxs_businessmodelmetabox_callback', $cpt, 'side', 'default');
+			//$singular = $taxonomymeta["singular"];
+			//$cpt = "nxs_{$singular}";
+			add_meta_box('nxs_businessmodelmetabox', 'Nxs Extended Properties', 'nxs_businessmodelmetabox_callback', $taxonomy, 'side', 'default');
 		}
 		
 		//

@@ -615,18 +615,18 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 									$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 									foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 									{
-										if ($taxonomy == "taxonomies")
+										if ($taxonomy == "nxs_taxonomy")
 										{
 											// skip this one
 											continue;
 										}
-										$singular = $taxonomymeta["singular"];
+										//$singular = $taxonomymeta["singular"];
 										$icon = $taxonomymeta["icon"];
 										$title = $taxonomymeta["title"];
 								 		$url = $contentmodel[$taxonomy]["url"];
 										$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 										$abstracturl = get_edit_post_link($abstractpostid);
-										$urlinstancesbackend = admin_url('/edit.php') . "?post_type=nxs_{$singular}";
+										$urlinstancesbackend = admin_url('/edit.php') . "?post_type={$taxonomy}";
 							  		?>
 							    	<tr>
 							    		<td style='vertical-align: middle; text-align: right !important;'>
