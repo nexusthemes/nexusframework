@@ -11874,7 +11874,7 @@ function nxs_add_widget_to_post($args)
 {	
 	extract($args);
 	
-	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); }
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_add_widget_to_post)"); }
 	if ($widgetmetadata == "") { nxs_webmethod_return_nack("widgetmetadata not set"); }
 	if ($widgetmetadata["type"] == "") { nxs_webmethod_return_nack("typeof widgetmetadata not set"); }
 	if ($widgetmetadata["postid"] != "") { nxs_webmethod_return_nack("postid of widgetmetadata should be empty"); }

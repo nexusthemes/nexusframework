@@ -604,8 +604,8 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 		          -->
 		          <div class="box-content">
 		          	<table>
-		          		<tr>
-		          			<td width="40%">Topic</td>
+		          		<tr style='background-color: #EEE;'>
+		          			<td width="40%" style='text-align: right !important;'>Topic</td>
 		          			<td width="60%">Actions</td>
 		          			<td><!-- filler --></td>
 		          		</tr>
@@ -633,7 +633,7 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 							      		<span style='padding: 10px;'><?php echo $title; ?></span>
 							      	</td>
 							      	<td>
-								      	<a href="<?php echo $abstracturl; ?>" title="<?php echo $title; ?>" class="site">
+								      	<a href="<?php echo $abstracturl; ?>" title="<?php echo $title; ?> properties" class="site">
 								      		<span style='font-size:32px; padding: 5px;' class='nxs-icon-<?php echo $icon; ?>'></span>
 								      	</a>
 							      		
@@ -641,7 +641,7 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 								      	if ($taxonomymeta["arity"] == "n")
 								      	{
 								      		?>
-								      		<a href='<?php echo $urlinstancesbackend; ?>' title='List <?php echo $title; ?> in backend'>
+								      		<a href='<?php echo $urlinstancesbackend; ?>' title='List <?php echo $title; ?>'>
 								      			<span style='font-size:32px; padding: 5px;' class='nxs-icon-list'></span>
 								      		</a>
 								      		<?php

@@ -541,23 +541,33 @@ class businesssite_instance
 			return;
 		}
 		
-		// we automatically add the newly created post to the list
+		// we automatically add the newly created post to the (ordered) list,
+		// if the meta data says we should
 		$contentmodel = $this->getcontentmodel();
-		$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
-		// add an additional row to that post
-		// appends a new "one" row, with the specified widget properties to an existing post
-
-		$args = array
-		(
-			"postid" => $taxonomyorderedsetpostid,
-			"widgetmetadata" => array
+		
+		if ($contentmodel[$taxonomy]["features"]["orderedinstances"]["enabled"] == true)
+		{
+			$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
+			// add an additional row to that post
+			// appends a new "one" row, with the specified widget properties to an existing post
+	
+			$args = array
 			(
-				"type" => "entity",
-				"filter_postid" => $post_id,
-				"enabled" => "true",
-			),
-		);
-		$r = nxs_add_widget_to_post($args);
+				"postid" => $taxonomyorderedsetpostid,
+				"widgetmetadata" => array
+				(
+					"type" => "entity",
+					"filter_postid" => $post_id,
+					"enabled" => "true",
+				),
+			);
+			$r = nxs_add_widget_to_post($args);
+		}
+		else
+		{
+			// feature is turned off (for example the case in the contentprovider),
+			// and/or specific types of taxonomies that don't need ordered lists
+		}
 	}
 	
 	function untrashed_post($post_id)

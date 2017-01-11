@@ -50,7 +50,124 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Taxonomies",
 		),
-		
+
+		"nxs_companyname" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Company name",
+			"label" => "Company name",
+			"icon" => "apartment",
+			"arity" => "1",	
+			"features" => array
+			(
+			),			
+			"aritymaxinstancecount" => 1,
+			"wpcreateinstructions" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"name" => array
+				(
+					"label" => "Company name",
+					"type" => "text",
+				),
+			),
+		),
+		"nxs_slogan" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Slogan",
+			"icon" => "quote",
+			"arity" => "1",	
+			"features" => array
+			(
+			),			
+			"aritymaxinstancecount" => 1,
+			"wpcreateinstructions" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"slogan" => array
+				(
+					"type" => "text",
+				),
+			),
+			"label" => "Slogan",
+		),
+		"nxs_logo" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Logo",
+			"label" => "Logo",
+			"icon" => "logo",
+			"arity" => "1",	
+			"aritymaxinstancecount" => 1,
+			"features" => array
+			(
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				// uses the feature image
+				
+				/*
+				"name" => array
+				(
+					"label" => "Logo",
+					"type" => "text",
+				),
+				*/
+			),
+		),
+		"nxs_phone" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Phone",
+			"icon" => "phone",
+			"arity" => "1",	
+			"features" => array
+			(
+			),
+			"aritymaxinstancecount" => 1,
+			"taxonomyfields" => array
+			(
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			"instancefields" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"phonenumber" => array
+				(
+					"type" => "text",
+				),
+			),
+			"label" => "Phone",
+		),
+				
 		"nxs_socialaccount" => array
 		(
 			"title" => "Social Accounts",
@@ -239,122 +356,7 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Portfolio Items",
 		),
-		"nxs_companyname" => array
-		(
-			"caninstancesbereferenced" => false,	// false if virtual
-			"title" => "Company name",
-			"label" => "Company name",
-			"icon" => "apartment",
-			"arity" => "1",	
-			"features" => array
-			(
-			),			
-			"aritymaxinstancecount" => 1,
-			"wpcreateinstructions" => array
-			(
-			),
-			// fields displayed in the WP backend of this post
-			"instanceextendedproperties" => array
-			(
-			),
-			"taxonomyextendedproperties" => array
-			(
-				"name" => array
-				(
-					"label" => "Company name",
-					"type" => "text",
-				),
-			),
-		),
-		"nxs_slogan" => array
-		(
-			"caninstancesbereferenced" => false,	// false if virtual
-			"title" => "Slogan",
-			"icon" => "quote",
-			"arity" => "1",	
-			"features" => array
-			(
-			),			
-			"aritymaxinstancecount" => 1,
-			"wpcreateinstructions" => array
-			(
-			),
-			// fields displayed in the WP backend of this post
-			"instanceextendedproperties" => array
-			(
-			),
-			"taxonomyextendedproperties" => array
-			(
-				"slogan" => array
-				(
-					"type" => "text",
-				),
-			),
-			"label" => "Slogan",
-		),
-		"nxs_logo" => array
-		(
-			"caninstancesbereferenced" => false,	// false if virtual
-			"title" => "Logo",
-			"label" => "Logo",
-			"icon" => "logo",
-			"arity" => "1",	
-			"aritymaxinstancecount" => 1,
-			"features" => array
-			(
-			),
-			"wpcreateinstructions" => array
-			(
-			),
-			// fields displayed in the WP backend of this post
-			"instanceextendedproperties" => array
-			(
-			),
-			"taxonomyextendedproperties" => array
-			(
-				// uses the feature image
-				
-				/*
-				"name" => array
-				(
-					"label" => "Logo",
-					"type" => "text",
-				),
-				*/
-			),
-		),
-		"nxs_phone" => array
-		(
-			"caninstancesbereferenced" => false,	// false if virtual
-			"title" => "Phone",
-			"icon" => "phone",
-			"arity" => "1",	
-			"features" => array
-			(
-			),
-			"aritymaxinstancecount" => 1,
-			"taxonomyfields" => array
-			(
-			),
-			"wpcreateinstructions" => array
-			(
-			),
-			"instancefields" => array
-			(
-			),
-			// fields displayed in the WP backend of this post
-			"instanceextendedproperties" => array
-			(
-			),
-			"taxonomyextendedproperties" => array
-			(
-				"phonenumber" => array
-				(
-					"type" => "text",
-				),
-			),
-			"label" => "Phone",
-		),
+
 		"nxs_testimonial" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
