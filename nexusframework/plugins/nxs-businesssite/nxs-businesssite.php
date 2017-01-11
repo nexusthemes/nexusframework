@@ -526,7 +526,7 @@ class businesssite_instance
 			{
 				if ($taxonomy == "nxs_taxonomy")
 				{
-					// ignore; taxonies are not ordered
+					// ignore; taxonomies are not ordered
 					break;
 				}
 				
@@ -544,8 +544,8 @@ class businesssite_instance
 		// we automatically add the newly created post to the (ordered) list,
 		// if the meta data says we should
 		$contentmodel = $this->getcontentmodel();
-		
-		if ($contentmodel[$taxonomy]["features"]["orderedinstances"]["enabled"] == true)
+		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
+		if ($businessmodeltaxonomies[$taxonomy]["features"]["orderedinstances"]["enabled"] == true)
 		{
 			$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
 			// add an additional row to that post
@@ -567,6 +567,7 @@ class businesssite_instance
 		{
 			// feature is turned off (for example the case in the contentprovider),
 			// and/or specific types of taxonomies that don't need ordered lists
+			// error_log("business site; concluded; $taxonomy has no ordered instances to track (1)");
 		}
 	}
 	
@@ -599,23 +600,33 @@ class businesssite_instance
 			return;
 		}
 		
-		// we automatically add the newly created post to the list 
 		$contentmodel = $this->getcontentmodel();
-		$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
-		// add an additional row to that post
-		// appends a new "one" row, with the specified widget properties to an existing post
-
-		$args = array
-		(
-			"postid" => $taxonomyorderedsetpostid,
-			"widgetmetadata" => array
+		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
+		if ($businessmodeltaxonomies[$taxonomy]["features"]["orderedinstances"]["enabled"] == true)
+		{
+			// we automatically add the newly created post to the list 
+			$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
+			// add an additional row to that post
+			// appends a new "one" row, with the specified widget properties to an existing post
+	
+			$args = array
 			(
-				"type" => "entity",
-				"filter_postid" => $post_id,	// 
-				"enabled" => "true",
-			),
-		);
-		$r = nxs_add_widget_to_post($args);
+				"postid" => $taxonomyorderedsetpostid,
+				"widgetmetadata" => array
+				(
+					"type" => "entity",
+					"filter_postid" => $post_id,	// 
+					"enabled" => "true",
+				),
+			);
+			$r = nxs_add_widget_to_post($args);
+		}
+		else
+		{
+			// feature is turned off (for example the case in the contentprovider),
+			// and/or specific types of taxonomies that don't need ordered lists
+			// error_log("business site; concluded; $taxonomy has no ordered instances to track (2)");
+		}
 	}
 	
 	function wp_delete_post($post_id)
@@ -653,32 +664,40 @@ class businesssite_instance
 		
 		// here we should also delete the item from the ordered list (if its on it)
 		$contentmodel = $this->getcontentmodel();
-		$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
-
-		$filter = array
-		(
-			"postid" => $taxonomyorderedsetpostid,
-			"widgettype" => "entity",
-		);
-		$entities = nxs_getwidgetsmetadatainpost_v2($filter);
-		
-		foreach ($entities as $placeholderid => $placeholdermeta)
+		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
+		// only do so when the ordered instances are being tracked for this taxonomy
+		if ($businessmodeltaxonomies[$taxonomy]["features"]["orderedinstances"]["enabled"] == true)
 		{
-			// grab the filter_postid value
-			$filter_postid = $placeholdermeta["filter_postid"];
-			if ($filter_postid == $post_id)
+			$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
+			$filter = array
+			(
+				"postid" => $taxonomyorderedsetpostid,
+				"widgettype" => "entity",
+			);
+			$entities = nxs_getwidgetsmetadatainpost_v2($filter);
+			
+			foreach ($entities as $placeholderid => $placeholdermeta)
 			{
-				// get the row identifier that contains the placeholder
-				$pagerowid = nxs_getpagerowid_forpostidplaceholderid($taxonomyorderedsetpostid, $placeholderid);
-
-				//error_log("debug; wp_delete_post; deleting pagerowid; $pagerowid in postid $taxonomyorderedsetpostid");
-				
-				// delete that row!
-				nxs_struct_purgerow($taxonomyorderedsetpostid, $pagerowid);
-				
-				// note; we will not break the loop; in theory the element could be referenced
-				// multiple times in the set (not likely, but possible)
+				// grab the filter_postid value
+				$filter_postid = $placeholdermeta["filter_postid"];
+				if ($filter_postid == $post_id)
+				{
+					// get the row identifier that contains the placeholder
+					$pagerowid = nxs_getpagerowid_forpostidplaceholderid($taxonomyorderedsetpostid, $placeholderid);
+	
+					//error_log("debug; wp_delete_post; deleting pagerowid; $pagerowid in postid $taxonomyorderedsetpostid");
+					
+					// delete that row!
+					nxs_struct_purgerow($taxonomyorderedsetpostid, $pagerowid);
+					
+					// note; we will not break the loop; in theory the element could be referenced
+					// multiple times in the set (not likely, but possible)
+				}
 			}
+		}
+		else
+		{
+			// nothing to do here :)
 		}
 	}
 	

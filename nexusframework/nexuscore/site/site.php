@@ -627,6 +627,7 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 										$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 										$abstracturl = get_edit_post_link($abstractpostid);
 										$urlinstancesbackend = admin_url('/edit.php') . "?post_type={$taxonomy}";
+										$urladdinstancesbackend = admin_url('/post-new.php') . "?post_type={$taxonomy}";
 							  		?>
 							    	<tr>
 							    		<td style='vertical-align: middle; text-align: right !important;'>
@@ -644,6 +645,11 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 								      		<a href='<?php echo $urlinstancesbackend; ?>' title='List <?php echo $title; ?>'>
 								      			<span style='font-size:32px; padding: 5px;' class='nxs-icon-list'></span>
 								      		</a>
+								      		
+									      	<a href='<?php echo $urladdinstancesbackend; ?>' title='New <?php echo $title; ?>'>
+								      			<span style='font-size:32px; padding: 5px;' class='nxs-icon-plus'></span>
+								      		</a>
+								      		
 								      		<?php
 								      		if ($taxonomymeta["features"]["orderedinstances"]["enabled"] == true)
 								      		{
@@ -653,6 +659,8 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 									      		</a>
 									      		<?php
 									      	}
+									      	?>
+								      		<?php
 							      		}
 							      		?>
 							      	</td>
@@ -3100,7 +3108,7 @@ function nxs_site_newtemplate_getoptions($args)
 		
 		$result = array
 		(
-			"sheettitle" => nxs_l18n__("Set name", "nxs_td"),
+			"sheettitle" => nxs_l18n__("Set title", "nxs_td"),
 			"fields" => array
 			(
 				array
@@ -3114,7 +3122,7 @@ function nxs_site_newtemplate_getoptions($args)
 				array
 				(
 					"id" => "lp_name",
-					"label" => "Name your page",
+					"label" => "Title",
 					"type" => "input",
 					"persistmode" => "shortscope",
 					"autofocus" => "true",
@@ -3155,7 +3163,7 @@ function nxs_site_newtemplate_getoptions($args)
 
 		nxs_ob_start();
 		?>
-		<a class='nxsbutton' href='#' onclick='nxs_js_refreshcurrentpage(); return false;'>OK</a>
+		<a class='nxsbutton' href='#' onclick='nxs_js_refreshcurrentpage(); return false;'>Refresh page</a>
 		<script>
 			nxs_js_popup_sessiondata_clear_dirty();
 			jQuery(".popup-footer-container").remove();
@@ -3167,7 +3175,7 @@ function nxs_site_newtemplate_getoptions($args)
 		// redirect to the newly created page
 		$result = array
 		(
-			"sheettitle" => nxs_l18n__("Template Installed", "nxs_td"),
+			"sheettitle" => nxs_l18n__("Wizard Finished", "nxs_td"),
 			"fields" => array
 			(
 				array(
