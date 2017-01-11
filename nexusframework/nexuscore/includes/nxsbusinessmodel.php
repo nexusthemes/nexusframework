@@ -289,6 +289,10 @@ function nxs_business_gettaxonomiesmeta()
 				(
 					"enabled" => true,
 				),
+				"contentattribution" => array
+				(
+					"enabled" => true,
+				),
 			),
 			"caninstancesbereferenced" => true,	// false if virtual
 			"aritymaxinstancecount" => 8,

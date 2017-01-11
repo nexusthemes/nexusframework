@@ -875,10 +875,11 @@ class businesssite_instance
 	{
   	global $post;
   	$posttype = $post->post_type;
-  	$shouldprocess = true;	// for now we will process it "always"
-  	// todo: only process the item if the businessmodel has a
-  	// metafield telling us to process it
-  	// to speed things up
+  	$taxonomy = $posttype;
+  	$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
+  	
+		// only do so when the attribution is a feature of this taxonomy
+		$shouldprocess = $businessmodeltaxonomies[$taxonomy]["features"]["contentattribution"]["enabled"] == true;
   	if ($shouldprocess)
   	{
 	  	$postid = $post->ID;
