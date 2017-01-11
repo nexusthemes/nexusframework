@@ -590,7 +590,7 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 	<div class="nxs-admin-wrap">
 		<div class="block">	
       
-     	<?php nxs_render_popup_header(nxs_l18n__("Taxonomies", "nxs_td")); ?>
+     	<?php nxs_render_popup_header(nxs_l18n__("Business Model", "nxs_td")); ?>
 
 			<div class="nxs-popup-content-canvas-cropper">
 				<div class="nxs-popup-content-canvas">
@@ -603,7 +603,10 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 		          </div>
 		          -->
 		          <div class="box-content">
-		          	<ul>
+		          	<table>
+		          		<tr>
+		          			<td>Topic</td><td>Items</td>
+		          		</tr>
 			          	<?php
 									global $businesssite_instance;
 									$contentmodel = $businesssite_instance->getcontentmodel();
@@ -615,31 +618,46 @@ function nxs_site_taxonomiesoverview_rendersheet($args)
 											// skip this one
 											continue;
 										}
-										
+										$singular = $taxonomymeta["singular"];
 										$icon = $taxonomymeta["icon"];
 										$title = $taxonomymeta["title"];
 								 		$url = $contentmodel[$taxonomy]["url"];
 										$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 										$abstracturl = get_edit_post_link($abstractpostid);
+										$urlinstancesbackend = get_admin_url('edit.php') . "?post_type=nxs_{$singular}";
 							  		?>
-							    	<li>
-							      	<a href="<?php echo $abstracturl; ?>" title="<?php echo $title; ?>" class="site">
-							      		<span style='font-size:32px; padding: 5px;' class='nxs-icon-<?php echo $icon; ?>'></span>
-							      		<span style='padding: 10px;'><?php echo $title; ?></span>
-							      	</a>
-							      	<?php
-							      	if ($taxonomymeta["arity"] == "n")
-							      	{
-							      		?>
-							      		<a href='<?php echo $url; ?>'>Instances</a>
+							    	<tr>
+							    		<td>
+								      	<a href="<?php echo $abstracturl; ?>" title="<?php echo $title; ?>" class="site">
+								      		<span style='font-size:32px; padding: 5px;' class='nxs-icon-<?php echo $icon; ?>'></span>
+								      		<span style='padding: 10px;'><?php echo $title; ?></span>
+								      	</a>
+							      	</td>
+							      	<td>
 							      		<?php
-						      		}
-						      		?>
-							      </li>
+								      	if ($taxonomymeta["arity"] == "n")
+								      	{
+								      		?>
+								      		<a href='<?php echo $urlinstancesbackend; ?>'>
+								      			<span style='font-size:32px; padding: 5px;' class='nxs-icon-wordpress'></span>
+								      		</a>
+								      		<?php
+								      		if ($taxonomymeta["features"]["orderedinstances"]["enabled"] == true)
+								      		{
+									      		?>
+									      		<a href='<?php echo $url; ?>'>
+									      			<span style='font-size:32px; padding: 5px;' class='nxs-icon-shuffle'></span>
+									      		</a>
+									      		<?php
+									      	}
+							      		}
+							      		?>
+							      	</td>
+							      </tr>
 							      <?php
 							    }
 							    ?>
-							  </ul>
+							  </table>
 						  </div>
 						</div>
 						<div class="nxs-clear"></div>

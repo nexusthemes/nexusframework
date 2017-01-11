@@ -301,8 +301,6 @@ function nxs_site_createcontent_internal($args)
 		$newpost_args["featuredimageid"] = $nxs_semantic_media_postid;
 		$newpost_args["selectedcategoryids"] = $selectedcategoryids;
 		
-		
-		
 		if (isset($overridetitle))
 		{
 			$newpost_args["titel"] = $overridetitle;
@@ -403,6 +401,35 @@ function nxs_site_createcontent_internal($args)
 				// store destination metadata
 				nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $widgetmetadata);
 			}
+		}
+		
+		// if the post that we imported represents a "singleton" of a taxonomy
+		// we should delete the old version (as by definition there may only 
+		// be one singleton at a time)
+		if ($posttype == "nxs_taxonomy")
+		{
+			//error_log("template; importing a taxonomy instance");
+			$nxs_abstracttaxinstance = $postmetas["nxs_abstracttaxinstance"];	// for example "phone"
+			$variationpostids = nxs_wp_getpostidsbymetahavingposttype("nxs_abstracttaxinstance", $nxs_abstracttaxinstance, "nxs_taxonomy");
+			//error_log("template; ($nxs_abstracttaxinstance) found variations; " . json_encode($variationpostids));
+			foreach ($variationpostids as $variationpostid)
+			{
+				if ($variationpostid == $destinationpostid)
+				{
+					// its the one we just created, keep it :)
+					//error_log("template; this is the one we just created; $variationpostid");
+				}
+				else
+				{
+					// its an old one; remove it!
+					wp_delete_post($variationpostid, true);
+					//error_log("template; deleting this old variation; $variationpostid");
+				}
+			}
+				
+			// todo: update the in-mem contentmodel too?
+			// or don't, as it will be reloaded on the next page refresh which is
+			// likely to happen...
 		}
 	}
 	else

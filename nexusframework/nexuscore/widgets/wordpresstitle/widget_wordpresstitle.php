@@ -461,6 +461,8 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 					</div>
 				</div>';
 					
+			$htmlfiller = nxs_gethtmlforfiller();
+			echo $htmlfiller;
 			echo $image;
 		}
 		else

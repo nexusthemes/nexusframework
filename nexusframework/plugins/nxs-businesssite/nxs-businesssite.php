@@ -79,7 +79,7 @@ class businesssite_instance
 	{
 		$containerid = $this->getcontainerid_internal($cpt);
 		if ($containerid === false) 
-		{ 
+		{
 			//echo "containerid not yet found, creating...";
 			$result = $this->createnewcontainer_internal($cpt);
 			if ($result["result"] != "OK") { echo "unexpected;"; var_dump($result); die(); }
@@ -149,22 +149,30 @@ class businesssite_instance
 			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 			$taxonomymeta = $taxonomiesmeta[$taxonomy];
 			
-			$singular = $taxonomymeta["singular"];
-			$cpt = "nxs_{$singular}";
-
-			$postids = nxs_wp_getpostidsbymetahavingposttype("nxs_abstracttaxinstance", $taxonomy, "nxs_taxonomy");
-			
-			$found = count($postids) > 0;
-			if ($found)
+			if ($taxonomiesmeta[$taxonomy]["singletontaxonomyinstance"] == true)
 			{
-				$result = $postids[0];
+				// 
+				$result = false;
 			}
 			else
 			{
-				// if its not yet there, create it
-				$r = $this->createnewabstracttaxonomyinstance_internal($taxonomy);
-				if ($r["result"] != "OK") { echo "unexpected;"; var_dump($r); die(); }
-				$result = $r["postid"];
+				$singular = $taxonomymeta["singular"];
+				$cpt = "nxs_{$singular}";
+	
+				$postids = nxs_wp_getpostidsbymetahavingposttype("nxs_abstracttaxinstance", $taxonomy, "nxs_taxonomy");
+				
+				$found = count($postids) > 0;
+				if ($found)
+				{
+					$result = $postids[0];
+				}
+				else
+				{
+					// if its not yet there, create it
+					$r = $this->createnewabstracttaxonomyinstance_internal($taxonomy);
+					if ($r["result"] != "OK") { echo "unexpected;"; var_dump($r); die(); }
+					$result = $r["postid"];
+				}
 			}
 			
 			return $result;
@@ -253,82 +261,88 @@ class businesssite_instance
 		{
 		 	if ($taxonomymeta["arity"] == "n")
 		 	{
-		 		$singular = $taxonomymeta["singular"];
-		 		
-		 		// this invocation will create a new container when needed
-				$containerid = $this->getcontainerid($singular);
-			
-	  		$result[$taxonomy]["postid"] = $containerid;
-	  		$result[$taxonomy]["url"] = nxs_geturl_for_postid($containerid);
-	  
-			  // find "items" in the post with id containerid
-				$filter = array
-				(
-					"postid" => $containerid,
-				);
-				$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
+		 		if ($taxonomymeta["features"]["orderedinstances"]["enabled"] == true)
+		 		{
+			 		$singular = $taxonomymeta["singular"];
+			 		
+			 		// this invocation will create a new container when needed
+					$containerid = $this->getcontainerid($singular);
 				
-				$countinstancesenabled = 0;
-				$items = nxs_getwidgetsmetadatainpost_v2($filter);
-				foreach ($items as $placeholderid => $widgetmeta)
-				{
-					$widgettype = $widgetmeta["type"];
-					if (true) // $widgettype == "entity")
+		  		$result[$taxonomy]["postid"] = $containerid;
+		  		$result[$taxonomy]["url"] = nxs_geturl_for_postid($containerid);
+		  
+				  // find "items" in the post with id containerid
+					$filter = array
+					(
+						"postid" => $containerid,
+					);
+					$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
+					
+					$countinstancesenabled = 0;
+					$items = nxs_getwidgetsmetadatainpost_v2($filter);
+					foreach ($items as $placeholderid => $widgetmeta)
 					{
-						$postid = $widgetmeta["filter_postid"];
-						$post = get_post($postid);
-						$url = "";
-						if ($taxonomymeta["caninstancesbereferenced"])
+						$widgettype = $widgetmeta["type"];
+						if (true) // $widgettype == "entity")
 						{
-							$url = nxs_geturl_for_postid($post->ID);
-						}
-						
-						$result[$taxonomy]["instances"][] = array
-						(
-							"type" => $widgetmeta["type"],
-							"enabled" => $widgetmeta["enabled"],
-							"content" => array
+							$postid = $widgetmeta["filter_postid"];
+							$post = get_post($postid);
+							$url = "";
+							if ($taxonomymeta["caninstancesbereferenced"])
+							{
+								$url = nxs_geturl_for_postid($post->ID);
+							}
+							
+							$result[$taxonomy]["instances"][] = array
 							(
-								"post_id" => $post->ID,
-								"post_title" => $post->post_title,
-								"post_excerpt" => $post->post_excerpt,
-								"post_content" => $post->post_content,
-								"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
-								"url" => $url,
-								"post_icon" => get_post_meta($post->ID, "nxs_entity_icon", true),
-								"post_source" => get_post_meta($post->ID, "nxs_entity_source", true),
-								"post_rating_text" => get_post_meta($post->ID, "nxs_entity_rating_text", true),
-								"post_quote" => get_post_meta($post->ID, "nxs_entity_quote", true),
-								"post_stars" => get_post_meta($post->ID, "nxs_entity_stars", true),
-								"post_role" => get_post_meta($post->ID, "nxs_entity_role", true),
-								//
-								
-								// "post_imperative_m" => get_post_meta($post->ID, "nxs_entity_imperative_m", true),
-								// "post_imperative_l" => get_post_meta($post->ID, "nxs_entity_imperative_l", true),
-								// "post_destination_cta" => get_post_meta($post->ID, "nxs_entity_destination_cta", true),
-							),
-						);
-						
-						if ($widgetmeta["enabled"] != "")
+								"type" => $widgetmeta["type"],
+								"enabled" => $widgetmeta["enabled"],
+								"content" => array
+								(
+									"post_id" => $post->ID,
+									"post_title" => $post->post_title,
+									"post_excerpt" => $post->post_excerpt,
+									"post_content" => $post->post_content,
+									"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
+									"url" => $url,
+									"post_icon" => get_post_meta($post->ID, "nxs_entity_icon", true),
+									"post_source" => get_post_meta($post->ID, "nxs_entity_source", true),
+									"post_rating_text" => get_post_meta($post->ID, "nxs_entity_rating_text", true),
+									"post_quote" => get_post_meta($post->ID, "nxs_entity_quote", true),
+									"post_stars" => get_post_meta($post->ID, "nxs_entity_stars", true),
+									"post_role" => get_post_meta($post->ID, "nxs_entity_role", true),
+									//
+									
+									// "post_imperative_m" => get_post_meta($post->ID, "nxs_entity_imperative_m", true),
+									// "post_imperative_l" => get_post_meta($post->ID, "nxs_entity_imperative_l", true),
+									// "post_destination_cta" => get_post_meta($post->ID, "nxs_entity_destination_cta", true),
+								),
+							);
+							
+							if ($widgetmeta["enabled"] != "")
+							{
+								$countinstancesenabled++;
+							}
+						}
+						else 
 						{
-							$countinstancesenabled++;
+							// 
+							echo "unexpected widgettype; <br />";
+							echo "postid: " . $containerid . "<br />";
+							echo "huhh?! widgettype: {$widgettype}";
+							// die();
 						}
 					}
-					else 
-					{
-						// 
-						echo "unexpected widgettype; <br />";
-						echo "postid: " . $containerid . "<br />";
-						echo "huhh?! widgettype: {$widgettype}";
-						// die();
-					}
+					
+					$result[$taxonomy]["countenabled"] = $countinstancesenabled;
 				}
-				
-				$result[$taxonomy]["countenabled"] = $countinstancesenabled;
+				else
+				{
+					// 			
+				}
 			}
 		}
-		
-			  
+		 
 		return $result;
 	}
 	
@@ -340,6 +354,7 @@ class businesssite_instance
 			$result[] = array("widgetid" => "entities");
 			$result[] = array("widgetid" => "phone");
 			$result[] = array("widgetid" => "socialaccounts");
+			$result[] = array("widgetid" => "commercialmsgs");
 		}
 		else if ($nxsposttype == "sidebar") 
 		{
@@ -352,6 +367,7 @@ class businesssite_instance
 			$result[] = array("widgetid" => "phone");
 			$result[] = array("widgetid" => "buslogo");
 			$result[] = array("widgetid" => "socialaccounts");
+			$result[] = array("widgetid" => "commercialmsgs");
 		}
 		
 		return $result;
@@ -664,6 +680,7 @@ class businesssite_instance
 		nxs_lazyload_plugin_widget(__FILE__, "phone");
 		nxs_lazyload_plugin_widget(__FILE__, "buslogo");
 		nxs_lazyload_plugin_widget(__FILE__, "socialaccounts");
+		nxs_lazyload_plugin_widget(__FILE__, "commercialmsgs");
 	}
 	
 	function wp_nav_menu_items($result, $args ) 
@@ -826,6 +843,35 @@ class businesssite_instance
 		return $result;
 	}
 	
+	function the_content($content) 
+	{
+  	global $post;
+  	$posttype = $post->post_type;
+  	$shouldprocess = true;	// for now we will process it "always"
+  	// todo: only process the item if the businessmodel has a
+  	// metafield telling us to process it
+  	// to speed things up
+  	if ($shouldprocess)
+  	{
+	  	$postid = $post->ID;
+	  	$nxs_attribution = get_post_meta($postid, 'nxs_content_attribution', $single = true);
+	  	if ($nxs_attribution != "")
+	  	{
+	  		$data = json_decode($nxs_attribution, true);
+	  		// for now this is hardcoded
+	  		if ($data["author"] == "benin")
+	  		{
+	    		$content .= "<p style='font-size:small'>Benin Brown is a web copywriter who specializes in providing high quality website content for digital marketing professionals. As a white label content provider he is well-versed in writing for all industries. To learn more you can visit <a target='_blank' href='http://www.brownwebcopy.com'>www.brownwebcopy.com</p>";
+	    	}
+	    	else
+	    	{
+	    		$content .= $nxs_attribution;
+	    	}
+	    }
+	  }
+	  return $content;
+	}
+	
 	function __construct()
   {
   	add_filter( 'init', array($this, "instance_init"), 5, 1);
@@ -847,6 +893,7 @@ class businesssite_instance
 		
 		add_filter('wp_nav_menu_objects', array($this, 'wp_nav_menu_objects'), 10, 3);
 		
+		add_filter( 'the_content', array($this, 'the_content'), 10, 1);
   }
   
 	/* ---------- */
