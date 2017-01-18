@@ -532,9 +532,6 @@ function nxs_widgets_twittertweets_initplaceholderdata($args)
 {
 	extract($args);
 
-	global $current_user;
-  get_currentuserinfo();
-  
   $meta = nxs_getsitemeta();
 	$twitteraccount = $meta["twitteraccount"];
 	
@@ -581,5 +578,3 @@ function nxs_widgets_twittertweets_updateplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

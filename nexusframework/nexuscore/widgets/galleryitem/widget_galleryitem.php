@@ -181,6 +181,9 @@ function nxs_widgets_galleryitem_renderingallery($args)
 	$item_title = $placeholdermetadata["title"];
 	$item_text = $placeholdermetadata["text"];
 	
+	// apply shortcodes to the item_text
+	$item_text = do_shortcode($item_text);
+	
 	// Default modulo to separate lines of items when content height is variable
 	if ($index % $numofcolumns == 0 && $index != 0) {
 	   echo '<div class="nxs-clear"></div>';

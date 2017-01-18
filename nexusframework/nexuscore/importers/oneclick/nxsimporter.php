@@ -114,7 +114,7 @@ class NXS_importer extends WP_Importer {
 	var $url_remap = array();
 	var $featured_images = array();
 
-	function NXS_importer() { /* nothing */ }
+	function __construct() { /* nothing */ }
 
 	/**
 	 * Registered callback function for the WordPress Importer

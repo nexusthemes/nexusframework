@@ -1637,7 +1637,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	if ($shouldrendereditor)
 	{
 		?>
-		<script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
+		<script src="<?php echo nxs_getframeworkurl(); ?>/plugins/sortable/sortable.js"></script>
 		<script>
 			// see documentation; https://github.com/RubaXa/Sortable
 			var container = document.getElementById('nxsgrid-c-<?php echo $placeholderid; ?>');
@@ -1686,7 +1686,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 									url: ajaxurl, 
 									success: function(response) 
 									{
-										// nxs_js_alert("todo :)");
+										nxs_js_alert_veryshort("Items swapped");
 									},
 									error: function(response)
 									{

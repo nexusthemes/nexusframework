@@ -450,9 +450,6 @@ function nxs_widgets_socialsharing_initplaceholderdata($args)
 {
 	extract($args);
 
-	global $current_user;
-  get_currentuserinfo();
-  
 	$args['items'] = "[twitter][fblike][fbshare][googleplus][linkedin][pinterest]";	// all are turned on
 	
 	nxs_widgets_socialsharing_updateplaceholderdata($args);
@@ -485,4 +482,3 @@ function nxs_widgets_socialsharing_updateplaceholderdata($args)
 	
 	return $result;
 }
-?>

@@ -301,9 +301,6 @@ function nxs_widgets_contact_initplaceholderdata($args)
 {
 	extract($args);
 	
-	global $current_user;
-	get_currentuserinfo();
-	
 	$args['internal_email'] = $current_user->user_email;
 	$args['button_text'] = nxs_l18n__("Send", "nxs_td");
 
@@ -314,5 +311,3 @@ function nxs_widgets_contact_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

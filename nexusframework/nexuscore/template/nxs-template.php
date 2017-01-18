@@ -183,8 +183,7 @@ function nxs_site_createcontent_internal($args)
 	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
-		// $singular = $taxonomymeta["singular"];
-		$semantictaxonomies[] = $taxonomy; // "nxs_{$singular}";
+		$semantictaxonomies[] = $taxonomy;
 	}
 	
 	if ($posttype == "attachment")
@@ -209,13 +208,31 @@ function nxs_site_createcontent_internal($args)
 			$postmetas["nxs_semanticlayout"] = $contentcurrentpost["nxs_semanticlayout"];
 		}
 		
-		$nxs_semantic_media_postid = false;
+		$nxs_extended_semantic_media_postid = false;
 		$nxs_semantic_media = $contentcurrentpost["nxs_semantic_media"];
 		if ($nxs_semantic_media != "")
 		{
+			// extend the semantic media with the dimension info
+			if ($posttype == "nxs_service")
+			{
+				$requestedwidth = 900;
+				$requestedheight = 450;
+			}
+			else if ($posttype == "nxs_commercialmsg")
+			{
+				$requestedwidth = 1440;
+				$requestedheight = 400;
+			}
+			else
+			{
+				$requestedwidth = 900;
+				$requestedheight = 450;
+			}
+			$nxs_extended_semantic_media = "{$nxs_semantic_media}_{$requestedwidth}x{$requestedheight}";
+			
 			// check if there's already an image in the media manager with this "tag"
-			$nxs_semantic_media_postid = nxs_wp_getpostidbymeta("nxs_semantic_media", $nxs_semantic_media);
-			$imagealreadyexists = ($nxs_semantic_media_postid != "" && $nxs_semantic_media_postid > 0);
+			$nxs_extended_semantic_media_postid = nxs_wp_getpostidbymeta("nxs_extended_semantic_media", $nxs_extended_semantic_media);
+			$imagealreadyexists = ($nxs_extended_semantic_media_postid != "" && $nxs_extended_semantic_media_postid > 0);
 			if (!$imagealreadyexists)
 			{
 				$optionkey = "stansmeta";
@@ -223,13 +240,13 @@ function nxs_site_createcontent_internal($args)
 				$businesstype = $stansmeta["businesstype"];
 				if ($businesstype != "")
 				{
-					$filepath = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth=300&requestedheight=150&scope=businesstype&businesstype={$businesstype}&debug=tru&url={$nxs_semantic_media}";
+					$filepath = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth={$requestedwidth}&requestedheight={$requestedheight}&scope=businesstype&businesstype={$businesstype}&debug=tru&url={$nxs_semantic_media}";
 					//error_log("importing using businesstype $businesstype $filepath");
 				}
 				else
 				{
 					//error_log("importing using themeid $themeid");
-					$filepath = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth=300&requestedheight=150&scope=themeid&themeid={$themeid}&debug=tru&url={$nxs_semantic_media}";
+					$filepath = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth={$requestedwidth}&requestedheight={$requestedheight}&scope=themeid&themeid={$themeid}&debug=tru&url={$nxs_semantic_media}";
 				}
 				
 				$fraction = str_replace("nxsmedia://", "", $nxs_semantic_media);
@@ -247,6 +264,7 @@ function nxs_site_createcontent_internal($args)
 					"postmetas" => array
 					(
 						"nxs_semantic_media" => $nxs_semantic_media,
+						"nxs_extended_semantic_media" => $nxs_extended_semantic_media,
 						"nxs_core" => array
 						(
 							"stockphoto_id" => $photo_id,
@@ -255,13 +273,7 @@ function nxs_site_createcontent_internal($args)
 					),
 				);
 				$r = nxs_import_file_to_media_v2($importmeta);
-				$nxs_semantic_media_postid = $r["postid"];
-				
-				//error_log("importing media results in " . json_encode($r));
-				
-				//echo "imported?";
-				//var_dump($r);
-				//die();
+				$nxs_extended_semantic_media_postid = $r["postid"];
 			}
 			else
 			{
@@ -298,7 +310,7 @@ function nxs_site_createcontent_internal($args)
 		$newpost_args = array();
 		$newpost_args["slug"] = $contentcurrentpost["slug"];
 		$newpost_args["titel"] = $contentcurrentpost["title"];
-		$newpost_args["featuredimageid"] = $nxs_semantic_media_postid;
+		$newpost_args["featuredimageid"] = $nxs_extended_semantic_media_postid;
 		$newpost_args["selectedcategoryids"] = $selectedcategoryids;
 		
 		if (isset($overridetitle))

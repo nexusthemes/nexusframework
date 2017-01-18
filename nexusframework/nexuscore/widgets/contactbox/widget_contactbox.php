@@ -597,9 +597,6 @@ function nxs_widgets_contactbox_initplaceholderdata($args)
 		nxs_webmethod_return_nack("unexpected result");
 	}
 	
-	global $current_user;
-	get_currentuserinfo();
-	
 	$args["internal_email"] = $current_user->user_email;
 	
 	$args["title_heading"] = "2";	
@@ -619,5 +616,3 @@ function nxs_widgets_contactbox_initplaceholderdata($args)
 	$result = nxs_widgets_initplaceholderdatageneric($args, $widgetname);
 	return $result;
 }
-
-?>

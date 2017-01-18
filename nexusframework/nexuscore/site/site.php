@@ -11,8 +11,8 @@ function nxs_ws_site_updatesitedata($args)
 	{
 		require_once( ABSPATH . WPINC . '/registration.php');
 		
-		global $current_user;
-    get_currentuserinfo();
+		$current_user = wp_get_current_user();
+    
     
 		$user_id = $current_user->ID;
 		$user_email_old = $current_user->user_email;
@@ -1192,9 +1192,7 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 	//
 	extract($args);
 	
-	global $current_user;
-	global $user_ID;
-  get_currentuserinfo();
+	$current_user = wp_get_current_user();
   $nxs_user_email = $current_user->user_email;
 	
 	extract($clientpopupsessiondata);
@@ -2207,11 +2205,8 @@ function nxs_site_dashboardhome_rendersheet($args)
 		$faviconurl = nxs_img_getimageurlthemeversion($faviconurl);
 	}
 		
-	global $current_user;
-	global $user_ID;
-  	get_currentuserinfo();
-  
-  	$nxs_user_email = $current_user->user_email;
+	$current_user = wp_get_current_user();
+  $nxs_user_email = $current_user->user_email;
   	
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);

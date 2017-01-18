@@ -265,7 +265,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	}
 	
 	// Title
-	$microdata = apply_filters("nxs_wptitle_microdata");
+	$microdata = apply_filters("nxs_wptitle_microdata", $microdata);
 	$htmltitle = nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "", $microdata);
 
 	// Date

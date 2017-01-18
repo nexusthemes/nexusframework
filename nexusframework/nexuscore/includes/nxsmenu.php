@@ -5,8 +5,8 @@
 		return;
 	}
 	
- 	global $current_user;
- 	get_currentuserinfo();
+ 	$current_user = wp_get_current_user();
+ 	
 
 	if (!nxs_has_adminpermissions())
 	{

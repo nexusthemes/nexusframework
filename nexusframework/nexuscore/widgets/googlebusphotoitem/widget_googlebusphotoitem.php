@@ -432,9 +432,6 @@ function nxs_widgets_googlebusphotoitem_render_webpart_render_htmlvisualization(
 function nxs_widgets_googlebusphotoitem_initplaceholderdata($args)
 {
 	extract($args);
-	
-	global $current_user;
-	get_currentuserinfo();
 
 	$args["panorama_id"] = "pYGutNr-2zUaido2eaJX8g";
 	$args["durationinmsecs"] = "5000";
@@ -451,5 +448,3 @@ function nxs_widgets_googlebusphotoitem_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

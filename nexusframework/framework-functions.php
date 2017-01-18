@@ -13,7 +13,7 @@ function nxs_die()
 	die();
 }
 
-function nxs_ob_start($output_callback)
+function nxs_ob_start($output_callback = "")
 {
 	$shouldbufferoutput = true;
 	
@@ -27,7 +27,7 @@ function nxs_ob_start($output_callback)
 	
 	if ($shouldbufferoutput)
 	{
-		$result = ob_start($output_callback);
+		if ($output_callback  != "") { $result = ob_start($output_callback); } else { $result = ob_start(); }
 	}
 	else
 	{

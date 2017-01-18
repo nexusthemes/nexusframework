@@ -4,12 +4,12 @@
 // wrapping traditional __ and _e, as POIEDIT does not (yet)
 // allow us to exclude folders or filter domains when 
 // scanning folders, see 
-function nxs_l18n__($key, $domain)
+function nxs_l18n__($key, $domain = "")
 {
 	return __($key, $domain);
 }
 
-function nxs_l18n_e($key, $domain)
+function nxs_l18n_e($key, $domain = "")
 {
 	return _e($key, $domain);
 }
@@ -1473,7 +1473,7 @@ function nxs_addqueryparametertourl($url, $parameter, $value)
 }
 
 // return the url after setting/updating the parameter (other occurences of the same parameter are removed)
-function nxs_addqueryparametertourl_v2($url, $parameter, $value, $shouldurlencode, $shouldremoveparameterfirst)
+function nxs_addqueryparametertourl_v2($url, $parameter, $value, $shouldurlencode, $shouldremoveparameterfirst = true)
 {
 	if (!isset($shouldremoveparameterfirst))
 	{
@@ -4269,6 +4269,11 @@ function nxs_wpseo_pre_analysis_post_content($content)
 	return $content;
 }
 
+function nxs_yoast_backend_enqueuescript()
+{	
+	wp_enqueue_script( 'yoastbackendbridge', nxs_getframeworkurl() . '/js/seo/yoastbackendbridge.js', array(), nxs_getthemeversion(), TRUE );	
+}
+
 function nxs_addyoastseosupport()
 {
 	// for the page analysis, note that for the video content, a different patch is applied,
@@ -4278,11 +4283,7 @@ function nxs_addyoastseosupport()
 	//add_filter("wpseo_pre_analysis_post_content", "nxs_wpseo_pre_analysis_post_content");
 	//add_filter("wpseo_video_index_content", "nxs_wpseo_video_index_content", 10, 2 );
 
-	if (is_admin())
-	{	
-		wp_enqueue_script( 'yoastbackendbridge', nxs_getframeworkurl() . '/js/seo/yoastbackendbridge.js', array(), nxs_getthemeversion(), TRUE );	
-	}
-	
+	add_action("admin_enqueue_scripts", "nxs_yoast_backend_enqueuescript");
 	add_action( 'admin_head', 'nxs_admin_addyoastv3support' );
 	
 	function nxs_admin_addyoastv3support() 
@@ -7939,7 +7940,7 @@ function nxs_colorization_getpalettenames($addnonefirstelement)
 	}
 	
 	// sort
-	ksort($result);
+	if ($result != null) { ksort($result); }
 	
 	return $result;
 }
@@ -8813,7 +8814,7 @@ function nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup
 
 // -------------
 
-function nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip, $title)
+function nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label = "label", $tooltip = "tooltip", $title = "title")
 {
 	extract($optionvalues);
 	extract($args);
@@ -10153,7 +10154,7 @@ function nxs_gethtmlforfiller()
 	return '<div class="nxs-clear nxs-filler"></div>';
 }
 
-function nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_showdropcap, $wrappingelement, $text_heightiq, $text_fontzen)
+function nxs_gethtmlfortext($text = "", $text_alignment = "", $text_showliftnote = "", $text_showdropcap = "", $wrappingelement = "", $text_heightiq = "", $text_fontzen = "")
 {
 	if ( $text == "")
 	{
@@ -10280,7 +10281,7 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 	return $result;
 }
 
-function nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $text_heightiq, $button_fontzen, $destination_relation = false)
+function nxs_gethtmlforbutton($button_text = "", $button_scale = "", $button_color = "", $destination_articleid = "", $destination_url = "", $destination_target = "", $button_alignment = "", $destination_js = "", $text_heightiq = "", $button_fontzen = "", $destination_relation = false)
 {
 	if ($button_text == "")
 	{
@@ -10404,13 +10405,13 @@ function nxs_gethtmlforbutton_mailchimp($button_text, $button_scale, $button_col
 	return $result;
 }
 
-function nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title, $grayscale, $enlarge)
-{
+function nxs_gethtmlforimage($image_imageid = "", $image_border_width = "", $image_size = "", $image_alignment = "", $image_shadow = "", $image_alt = "", $destination_articleid = "", $destination_url = "", $image_title = "", $grayscale = "", $enlarge = "")
+{	
 	$image_src = "";
 	return nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title, $grayscale, $enlarge);
 }
 
-function nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title, $grayscale, $enlarge)
+function nxs_gethtmlforimage_v2($image_imageid = "", $image_src = "", $image_border_width = "", $image_size = "", $image_alignment = "", $image_shadow = "", $image_alt = "", $destination_articleid = "", $destination_url = "", $image_title = "", $grayscale = "", $enlarge = "")
 {
 	$image_alt = trim($image_alt);
 	$image_title = trim($image_title);

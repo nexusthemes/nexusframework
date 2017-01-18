@@ -814,9 +814,6 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 		nxs_webmethod_return_nack("unsupported result");
 	}
 	
-	global $current_user;
-	get_currentuserinfo();
-	
 	// Title
 	$args["title_heading"] = "2";			
 	
@@ -857,5 +854,3 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	$result = nxs_widgets_initplaceholderdatageneric($args, $widgetname);
 	return $result;
 }
-
-?>

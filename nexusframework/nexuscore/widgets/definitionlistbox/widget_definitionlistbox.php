@@ -313,11 +313,6 @@ function nxs_widgets_definitionlistbox_initplaceholderdata($args)
 		nxs_webmethod_return_nack("unexpected result");
 	}
 	
-	global $current_user;
-	get_currentuserinfo();
-	
 	$result = nxs_widgets_initplaceholderdatageneric($args, $widgetname);
 	return $result;
 }
-
-?>
