@@ -540,9 +540,6 @@ function nxs_widgets_image_initplaceholderdata($args)
 {
 	extract($args);
 	
-	global $current_user;
-	get_currentuserinfo();
-
 	$args["title_heading"] = 2;
 	$args['title_heightiq'] = "true";
 		
