@@ -326,25 +326,6 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 						
 						<div class="nxs-clear padding"></div>
 						
-						<?php
-						nxs_ext_inject_popup_optiontype("image");
-						if (nxs_popup_optiontype_image_shouldrenderphotopackpromo())
-						{
-					  	?>
-							<div class="content2">
-								<div class="box">
-									<div class="xbox-content">
-										Tip: Can't find suitable image for your theme? You can buy all the photos you saw in the theme demo here: 
-										<br />
-										<a class="nxsbutton2" href='http://nexusthemes.com/cart/?add-to-cart=6399&trigger=iopphotopack2&themeid=<?php echo nxs_getthemeid(); ?>' target='_blank'>PURCHASE PHOTOPACK</a>
-									</div>
-									<div class="nxs-clear"></div>				
-								</div>
-							</div>
-					  	<?php
-					  }						
-						?>
-						
 						<table>
 							
 							<thead>

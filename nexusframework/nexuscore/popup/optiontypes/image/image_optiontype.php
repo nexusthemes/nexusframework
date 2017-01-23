@@ -1,45 +1,5 @@
 <?php
 
-function nxs_popup_optiontype_image_shouldrenderphotopackpromo()
-{
-	$result = true;
-	
-	if (defined('NXS_WHITELABEL'))
-	{
-		$result = false;
-	}
-	
-	if (function_exists("nxs_sm_processstate_photopack"))
-	{
-		// photopack is installed and active
-		$result = false;
-	}
-	else
-	{
-		// photopack is not installed
-		$meta = nxs_theme_getmeta();
-		$themeid = $thememeta["id"];
-		
-		$listofexcludedthemeids = array
-		(
-			"homebuilder", "homeimprovement", "homeremodeling", "horseranche", "naturephotographer",
-			"photoartist", "photographyportfolio", "photographystudio", "professionalphotographer",
-			"homerepair", "hairstylist", "resort", "interiordesign", "golfclub", "makeupartist",
-			"flooring", "illustrator", "beautyspa", "modelportfolio", "homedecor", "graphicdesign", 
-			"constructionbusiness", "musicstudio", "recordlabel", "beautician", "weddingphotographer",
-			"dancestudio", "eventcompany", "videoproduction", "logistics", "transportation"
-		);
-		
-		if (in_array($themeid, $listofexcludedthemeids))
-		{
-			$result = false;
-		}
-	}
-	
-	$result = apply_filters("nxs_shouldrenderphotopackpromo", $result);
-	return $result;
-}
-
 function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $runtimeblendeddata) 
 {
 	$allow_featuredimage = false;
@@ -201,34 +161,12 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
                     <a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;'>
                     	<span class='title'><?php echo nxs_l18n__("Suppressed", "nxs_td"); ?></span>
                     </a>
-                
                 </div>
-        
             </div>
-        
             <div class="nxs-clear"></div>
-        
-        </div>
-        
+        </div>     
         <?php 
   }
-  
-  if (nxs_popup_optiontype_image_shouldrenderphotopackpromo())
-	{
-  	?>
-		<div class="content2">
-			<div class="box">
-				<div class="xbox-content">
-					Tip: Can't find suitable image for your theme? You can buy all the photos you saw in the theme demo here: 
-					<br />
-					<a class="nxsbutton2" href='http://nexusthemes.com/cart/?add-to-cart=6399&trigger=iopphotopack2&themeid=<?php echo nxs_getthemeid(); ?>' target='_blank'>PURCHASE PHOTOPACK</a>
-				</div>
-				<div class="nxs-clear"></div>				
-			</div>
-		</div>
-  	<?php
-  }
-	
 	?>
 	<script type='text/javascript'>
    	nxs_js_popup_setsessioncontext("allow_featuredimage", "<?php echo $allow_featuredimage; ?>");
