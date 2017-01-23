@@ -58,7 +58,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							{
 								nxs_js_log("Received nxs_jstrigger_afterpopupshows");
 								// nxs_js_log("detected: nxs_jstrigger_afterpopupshows for <?php echo $internaltextareaid; ?>");
-								var scripturl = '//tinymce.cachefly.net/4.0/tinymce.min.js';
+								var scripturl = '//cdn.tinymce.com/4/tinymce.min.js';
 								var functiontoinvoke = 'nxs_loadplugins_tinymce_editor()';
 								nxs_js_lazyexecute(scripturl, false, functiontoinvoke);
 								nxs_js_log("lazyexecuted " + scripturl);
