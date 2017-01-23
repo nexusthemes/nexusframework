@@ -177,7 +177,7 @@
     		$licensekey = esc_attr(get_option('nxs_licensekey'));
 				if ($licensekey == "") {
 					$url = admin_url('admin.php?page=nxs_admin_license');
-					$button_text = nxs_l18n__("Enable automatic updates", "nxs_td");
+					$button_text = nxs_l18n__("Enable update notifications", "nxs_td");
 				}
 				else 
 				{
