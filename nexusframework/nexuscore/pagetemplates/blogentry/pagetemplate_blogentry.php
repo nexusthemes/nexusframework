@@ -625,7 +625,6 @@ function nxs_pagetemplate_handleheader()
 	<!-- Nexus Framework | http://nexusthemes.com -->	
 	<!-- Nexus Meta | <?php echo $headmeta; ?> -->
 	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemename(); ?> | <?php echo $version; ?>" />
-	<title><?php wp_title(''); ?></title>
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 
 	nxs_hideadminbar();	

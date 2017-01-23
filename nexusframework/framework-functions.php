@@ -265,7 +265,7 @@ define('DONOTCACHEPAGE', 'true');
 // FEATURES IMAGES
 //
 add_theme_support("post-thumbnails");	// if sites use feature images we support them, the size of the thumbnails is set in the 'aftertheme'
-add_action('after_setup_theme', 'nxs_addsupportforadditionalimageformats');
+add_action('after_setup_theme', 'nxs_after_setup_theme');
 
 // whenever the current blog is switched, we clear the sitemeta
 add_action("switch_blog", "nxs_sitemeta_clearcache");
@@ -2171,8 +2171,11 @@ function nxs_clearunwantedscripts()
 }
 
 
-function nxs_addsupportforadditionalimageformats()
+function nxs_after_setup_theme()
 {
+	add_theme_support( 'title-tag' );
+	
+	// support for additional image sizes
 	add_image_size('nxs_cropped_200x200', 200, 200, TRUE );
 	add_image_size('nxs_cropped_320x200', 320, 200, TRUE );	// used by the gallerybox
 	add_image_size('nxs_cropped_320x512', 320, 512, TRUE );	// used by the gallerybox
