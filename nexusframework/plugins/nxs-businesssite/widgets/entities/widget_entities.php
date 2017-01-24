@@ -1330,12 +1330,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 
 	$instances = $contentmodel[$taxonomy]["instances"];
 	
-	if ($_REQUEST["rrr"] == "true")
-	{
-		var_dump($contentmodel);
-		die();
-	}
-
 	$index = -1;
 	foreach ($instances as $instance)
 	{

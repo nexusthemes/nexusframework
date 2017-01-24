@@ -111,11 +111,11 @@ class businesssite_instance
 		$publishedargs["orderby"] = "post_date";//$order_by;
 		$publishedargs["order"] = "DESC"; //$order;
 		$publishedargs["showposts"] = -1;	// allemaal!
-	  $pages = get_posts($publishedargs);
+	  $posts = get_posts($publishedargs);
 	  $result = false;
-	  if (count($pages) >= 1) 
+	  if (count($posts) >= 1) 
 	  {
-	  	$result = $pages[0]->ID;
+	  	$result = $posts[0]->ID;
 	  }
 	  
 	  return $result;
@@ -278,13 +278,15 @@ class businesssite_instance
 					
 					$countinstancesenabled = 0;
 					$items = nxs_getwidgetsmetadatainpost_v2($filter);
-					
-					if ($_REQUEST["rrr"] == "true" && $taxonomy != "nxs_socialaccount")
+
+					/*					
+					if ($_REQUEST["rrr"] == "true" && $taxonomy == "nxs_service")
 					{
 						echo "ja voor $taxonomy $containerid";
 						var_dump($items);
 						die();
 					}
+					*/
 					
 					foreach ($items as $placeholderid => $widgetmeta)
 					{
