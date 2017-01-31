@@ -728,7 +728,7 @@ html.nxs-pageslider p#nxs-copyright												{ padding-bottom: 60px; }
 /* GENERAL IMAGE STYLING 
 ---------------------------------------------------------------------------------------------------- */
 .nxs-icon-left 												{ float: left; margin: 0 20px 10px 0; }
-.nxs-icon-right												{ float: right; margin-left: 20px; }
+.nxs-icon-right												{ float: right; margin-left: 20px; margin-bottom: 10px; }
 
 /* HORIZONTAL NAVIGATION 
 ---------------------------------------------------------------------------------------------------- */

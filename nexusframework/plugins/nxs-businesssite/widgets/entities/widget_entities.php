@@ -108,6 +108,25 @@ function nxs_widgets_entities_home_getoptions($args)
 				"id" 				=> "wrapper_input_end",
 				"type" 				=> "wrapperend"
 			),
+			
+			// MEDIA META
+			
+			array( 
+				"id" 				=> "wrapper_input_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Media meta", "nxs_td"),
+			),
+
+			array(
+				"id" 				=> "media_meta",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Media meta", "nxs_td"),
+			),
+			
+			array( 
+				"id" 				=> "wrapper_input_end",
+				"type" 				=> "wrapperend"
+			),
 		
 			// TITLE
 			
@@ -1083,10 +1102,12 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	$childwidgettype = $itemsstyle;	
 	
 	// Overruling of parameters
+	/*
 	if ($image_imageid == "featuredimg")
 	{
 		$image_imageid = get_post_thumbnail_id($containerpostid);
 	}
+	*/
 	
 	global $nxs_global_row_render_statebag;
 	$pagerowtemplate = $nxs_global_row_render_statebag["pagerowtemplate"];
@@ -1339,9 +1360,12 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$post_id = $instance["content"]["post_id"];
 		$post_title = $instance["content"]["post_title"];		
 		$post_excerpt = $instance["content"]["post_excerpt"];		
-		$post_content = $instance["content"]["post_content"];		
-		$url = $instance["content"]["url"];
-		$image_imageid = $instance["content"]["post_thumbnail_id"];
+		$post_content = $instance["content"]["post_content"];
+		$post_slug = $instance["content"]["post_slug"];
+		$url = "/{$post_slug}/"; // $instance["content"]["url"];
+		//$image_imageid = $instance["content"]["post_thumbnail_id"];
+		$media = $instance["content"]["media"];
+		// $media_meta = "w:300;h:100";
 		$post_icon = $instance["content"]["post_icon"];
 		$post_source = $instance["content"]["post_source"];
 		$post_rating_text = $instance["content"]["post_rating_text"];
@@ -1362,7 +1386,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			"render_behaviour" => "code",
 			"title" => $post_title,
 			"text" => $post_excerpt,
-			"image_imageid" => $image_imageid,
+			// "image_imageid" => $image_imageid,
+			"media" => $media,
+			"media_meta" => $media_meta,
 			"destination_url" => $url,
 			"icon" => $post_icon,
 			"source" => $post_source,

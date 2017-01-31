@@ -108,186 +108,206 @@ if (is_admin())
 		foreach ($fields as $field => $fieldmeta)
 		{			
 			$type = $fieldmeta["type"];
-
-			// echo "field: $type<br />";
+			$persisttype = $fieldmeta["persisttype"];
 			
-			if ($type == "text" || $type == "")
+			if ($persisttype == "wp_title")
 			{
-				$label = $field;
-				if (isset($fieldmeta["label"]))
-				{
-					$label = $fieldmeta["label"];
-				}
-				$id = "nxs_entity_{$field}";
-				$inputid = "nxs_entity_{$field}_input";
-				$value = get_post_meta($post->ID, $id, true);
-				?>
-				<?php echo $label ;?>: 
-				<input type='text' name='<?php echo $inputid; ?>' id='<?php echo $inputid; ?>' value='<?php echo $value; ?>' />
-				<hr />
-				<?php
+				// ignore; this field is edited by the default WP backend editor
 			}
-			else if ($type == "iconpicker")
+			else if ($persisttype == "wp_excerpt")
 			{
-				// icon property				
-				// load the icon font
-				$nxs_entityicon = get_post_meta($post->ID, 'nxs_entityicon', true);
-				require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
-				$licensekey = nxs_license_getlicensekey();
-				add_thickbox();
-				?>
-				<script>
-					function nxs_js_filliconcontainer()
+				// ignore; this field is edited by the default WP backend editor
+			}
+			else if ($persisttype == "wp_content")
+			{
+				// ignore; this field is edited by the default WP backend editor
+			}
+			else if ($persisttype == "" || $persisttype == "wp_meta")
+			{
+				// echo "field: $type<br />";
+				
+				if ($type == "text" || $type == "")
+				{
+					$label = $field;
+					if (isset($fieldmeta["label"]))
 					{
-						var licensekey = '<?php echo $licensekey; ?>';
-						var url = 'https://mediamanager.websitesexamples.com/api/1/prod/icons/?callback=?';
-						
-						jQuery.getJSON
-						(
-							url,
-							{
-								nxs : "icons-api",
-								licensekey: licensekey,
-							},
-							nxs_js_handlegeticonsresult
-						);
+						$label = $fieldmeta["label"];
 					}
-					
-					function nxs_js_iconselected(anchor)
-					{
-						var value = jQuery(anchor).data("id");
-						nxs_js_iconsetpreview(value);
-						
-						// close popup
-						jQuery("#TB_closeWindowButton").click();
-					}
-					
-					function nxs_js_iconsetpreview(value)
-					{
-						// remove all classes
-						jQuery('#nxs-entity-icon-preview').removeClass();
-						// re-decorate
-						jQuery('#nxs-entity-icon-preview').addClass("nxs-icon");
-						jQuery('#nxs-entity-icon-preview').addClass(value);
-						
-						// update hidden field
-						jQuery("#nxs_entity_icon_input").val(value);
-					}
-					
-					function nxs_js_handlegeticonsresult(data)
-					{
-						console.log("finished retrieving icon data :)");
-						console.log(data);
-						
-						jQuery("#iconpicker").show();
-						jQuery("#iconpickeritemlist").empty();
-						var slug = data.slug;
-						jQuery("#iconpicker").data("slug", slug);
-						
-						jQuery.each
-						(
-							data.sections, 
-							function(index, value) 
-							{
-								var section = value.section;
-								
-								jQuery("#iconpickeritemlist").append("<li>---" + section + "---</li>");
-								
-								var items = value.items;
-								//console.log("items for " + section);
-								//console.log(items);
-								
-								var itemshtml = "";
-								
-								jQuery.each
-								(
-									items, 
-									function(index, item) 
-									{
-										//console.log("item " + index + " " + item);
-										
-										var id = "nxs-icon-" + item.id;
-										// the item itself
-										var itemhtml = "<span class='nxs-icon " + id + "'></span>";
-										// wrap in a clickable unit					
-										var itemhtml = "<a href='#' onclick='nxs_js_iconselected(this); return false;' data-destinationdomselector='#nxs_entity_icon_input' data-id='" + id + "'>" + itemhtml + "</a>";
-										itemshtml += itemhtml;
-									}
-								);
-								
-								jQuery("#iconpickeritemlist").append("<li>" + itemshtml + "</li>");
-							}
-						);
-					}
-					
-				</script>
-		
-				<div id="modal-window-id" style="display:none;">
-					<div id="iconpicker" style="xdisplay: none;">
-						<div>
-							<a href='#' onclick='nxs_js_closeiconpicker(); return false;'>Close</a>
-						</div>
-						<div>
-							<style>
-								#iconpickeritemlist li a
+					$id = "nxs_entity_{$field}";
+					$inputid = "nxs_entity_{$field}_input";
+					$value = get_post_meta($post->ID, $id, true);
+					?>
+					<?php echo $label ;?>: 
+					<input type='text' name='<?php echo $inputid; ?>' id='<?php echo $inputid; ?>' value='<?php echo $value; ?>' />
+					<hr />
+					<?php
+				}
+				else if ($type == "iconpicker")
+				{
+					// icon property				
+					// load the icon font
+					$nxs_entityicon = get_post_meta($post->ID, "nxs_entity_icon", true);
+					require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
+					$licensekey = nxs_license_getlicensekey();
+					add_thickbox();
+					?>
+					<script>
+						function nxs_js_filliconcontainer()
+						{
+							var licensekey = '<?php echo $licensekey; ?>';
+							var url = 'https://mediamanager.websitesexamples.com/api/1/prod/icons/?callback=?';
+							
+							jQuery.getJSON
+							(
+								url,
 								{
-									font-size: 32px; margin: 5px;
-									line-height: 40px;
+									nxs : "icons-api",
+									licensekey: licensekey,
+								},
+								nxs_js_handlegeticonsresult
+							);
+						}
+						
+						function nxs_js_iconselected(anchor)
+						{
+							var value = jQuery(anchor).data("id");
+							nxs_js_iconsetpreview(value);
+							
+							// close popup
+							jQuery("#TB_closeWindowButton").click();
+						}
+						
+						function nxs_js_iconsetpreview(value)
+						{
+							// remove all classes
+							jQuery('#nxs-entity-icon-preview').removeClass();
+							// re-decorate
+							jQuery('#nxs-entity-icon-preview').addClass("nxs-icon");
+							jQuery('#nxs-entity-icon-preview').addClass(value);
+							
+							// update hidden field
+							jQuery("#nxs_entity_icon_input").val(value);
+						}
+						
+						function nxs_js_handlegeticonsresult(data)
+						{
+							console.log("finished retrieving icon data :)");
+							console.log(data);
+							
+							jQuery("#iconpicker").show();
+							jQuery("#iconpickeritemlist").empty();
+							var slug = data.slug;
+							jQuery("#iconpicker").data("slug", slug);
+							
+							jQuery.each
+							(
+								data.sections, 
+								function(index, value) 
+								{
+									var section = value.section;
+									
+									jQuery("#iconpickeritemlist").append("<li>---" + section + "---</li>");
+									
+									var items = value.items;
+									//console.log("items for " + section);
+									//console.log(items);
+									
+									var itemshtml = "";
+									
+									jQuery.each
+									(
+										items, 
+										function(index, item) 
+										{
+											//console.log("item " + index + " " + item);
+											
+											var id = "nxs-icon-" + item.id;
+											// the item itself
+											var itemhtml = "<span class='nxs-icon " + id + "'></span>";
+											// wrap in a clickable unit					
+											var itemhtml = "<a href='#' onclick='nxs_js_iconselected(this); return false;' data-destinationdomselector='#nxs_entity_icon_input' data-id='" + id + "'>" + itemhtml + "</a>";
+											itemshtml += itemhtml;
+										}
+									);
+									
+									jQuery("#iconpickeritemlist").append("<li>" + itemshtml + "</li>");
 								}
-							</style>
-							Pick one of the icons from the list below:<br />
-							<hr /><br />
-							<ul id="iconpickeritemlist">
-							</ul>
-							<br />
-							<hr />
+							);
+						}
+						
+					</script>
+			
+					<div id="modal-window-id" style="display:none;">
+						<div id="iconpicker" style="xdisplay: none;">
+							<div>
+								<a href='#' onclick='nxs_js_closeiconpicker(); return false;'>Close</a>
+							</div>
+							<div>
+								<style>
+									#iconpickeritemlist li a
+									{
+										font-size: 32px; margin: 5px;
+										line-height: 40px;
+									}
+								</style>
+								Pick one of the icons from the list below:<br />
+								<hr /><br />
+								<ul id="iconpickeritemlist">
+								</ul>
+								<br />
+								<hr />
+							</div>
 						</div>
 					</div>
-				</div>
-				<?php
-				
-				// Noncename needed to verify where the data originated
-				// echo '<input type="hidden" name="nxs_semantic_media_noncename" id="nxs_semantic_media_noncename" value="' . wp_create_nonce( __FILE__ ) . '" />';
-				
-				// Get the location data if its already been entered
-				$nxs_entity_icon = get_post_meta($post->ID, 'nxs_entity_icon', true);
-		
-				if (true)
-				{
-					?>
-					<p>
-						The icon connected:<br />
-						<span id='nxs-entity-icon-preview' class='nxs-icon <?php echo $nxs_entity_icon; ?>' style='font-size:64px;' ></span>
-						
-						<br />
-						<a id='nxs_semantic_media_button' class='button openiconpicker thickbox' href="#TB_inline?width=600&height=550&inlineId=modal-window-id">
-							Configure
-						</a>
-						
-						<!-- -->
-						
-						<script>
-							$(".openiconpicker").on
-							(
-								"click", function()
-								{
-									//jQuery(".secret").show();
-									console.log("you opened the dialog :)");
-									nxs_js_filliconcontainer();
-								} 
-							);
-						</script>
-					</p>
-			    <input type='hidden' name='nxs_entity_icon_input' id='nxs_entity_icon_input' value='<?php echo $nxs_entity_icon; ?>' />
-			    <?php
-			  }
-				
-				//
-			}
+					<?php
+					
+					// Noncename needed to verify where the data originated
+					// echo '<input type="hidden" name="nxs_semantic_media_noncename" id="nxs_semantic_media_noncename" value="' . wp_create_nonce( __FILE__ ) . '" />';
+					
+					// Get the location data if its already been entered
+					$nxs_entity_icon = get_post_meta($post->ID, "nxs_entity_icon", true);
 			
+					if (true)
+					{
+						?>
+						<p>
+							The icon connected:<br />
+							<span id='nxs-entity-icon-preview' class='nxs-icon <?php echo $nxs_entity_icon; ?>' style='font-size:64px;' ></span>
+							
+							<br />
+							<a id='nxs_semantic_media_button' class='button openiconpicker thickbox' href="#TB_inline?width=600&height=550&inlineId=modal-window-id">
+								Configure
+							</a>
+							
+							<!-- -->
+							
+							<script>
+								$(".openiconpicker").on
+								(
+									"click", function()
+									{
+										//jQuery(".secret").show();
+										console.log("you opened the dialog :)");
+										nxs_js_filliconcontainer();
+									} 
+								);
+							</script>
+						</p>
+				    <input type='hidden' name='nxs_entity_icon_input' id='nxs_entity_icon_input' value='<?php echo $nxs_entity_icon; ?>' />
+				    <?php
+				  }
+					
+					//
+				}
+				
+				else
+				{
+					echo "skipped: $field type $type (45897)<hr />";
+				}
+			}
 			else
 			{
-				echo "skipped: $field type $type <hr />";
+				echo "skipped: $field type $type (5468345)<hr />";
 			}
 		}
 		

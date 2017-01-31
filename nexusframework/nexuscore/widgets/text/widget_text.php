@@ -515,6 +515,33 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$image_imageid = get_post_thumbnail_id($containerpostid);
 	}
 	
+	if ($media != "")
+	{
+		$width = "300";
+		$height = "300";
+		
+		// media_meta = "w:300;h:100";
+		$metapieces = explode(";", $media_meta);
+		foreach ($metapieces as $metapiece)
+		{
+			// metapiece = "w:300";
+			$subpieces = explode(":", $metapiece);
+			if ($subpieces[0] == "w")
+			{
+				$width = $subpieces[1];
+			}
+			else if ($subpieces[0] == "h")
+			{
+				$height = $subpieces[1];
+			}
+		}
+		
+		//$image_src = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth={$width}&requestedheight={$height}&debug=tru&url={$media}&scope=lazydetect";
+		//error_log("text img; $image_src");
+		
+		$image_src = "https://d3mwusvabcs8z9.cloudfront.net/?nxs_imagecropper=true&requestedwidth={$width}&requestedheight={$height}&debug=tru&url={$media}&scope=lazydetect";
+	}
+	
 	global $nxs_global_row_render_statebag;
 	$pagerowtemplate = $nxs_global_row_render_statebag["pagerowtemplate"];
 	if ($pagerowtemplate == "one")

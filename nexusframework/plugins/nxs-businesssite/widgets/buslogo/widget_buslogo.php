@@ -260,16 +260,19 @@ function nxs_widgets_buslogo_render_webpart_render_htmlvisualization($args)
 		global $businesssite_instance;
 		$contentmodel = $businesssite_instance->getcontentmodel();
 		$taxonomy = "nxs_companyname";
-		$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
-		$name = get_post_meta($abstractpostid, "nxs_entity_name", true);
+		//$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
+		//$name = get_post_meta($abstractpostid, "nxs_entity_name", true);
+		$name = $contentmodel[$taxonomy]["taxonomy"]["name"];
+		
 		if ($name == "")
 		{
 			$name = "company name";
 		}
 		
 		$taxonomy = "nxs_slogan";
-		$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
-		$slogan = get_post_meta($abstractpostid, "nxs_entity_slogan", true);
+		//$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
+		//$slogan = get_post_meta($abstractpostid, "nxs_entity_slogan", true);
+		$slogan = $contentmodel[$taxonomy]["taxonomy"]["slogan"];
 		if ($slogan == "")
 		{
 			$slogan = "slogan";

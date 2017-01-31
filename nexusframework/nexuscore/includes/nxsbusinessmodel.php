@@ -73,6 +73,7 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"name" => array
 				(
+					"persisttype" => "wp_title",
 					"label" => "Company name",
 					"type" => "text",
 				),
@@ -99,11 +100,13 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"slogan" => array
 				(
+					"persisttype" => "wp_title",
 					"type" => "text",
 				),
 			),
 			"label" => "Slogan",
 		),
+		/*
 		"nxs_logo" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -126,15 +129,14 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				// uses the feature image
 				
-				/*
-				"name" => array
-				(
-					"label" => "Logo",
-					"type" => "text",
-				),
-				*/
+				//"name" => array
+				//(
+				//	"label" => "Logo",
+				//	"type" => "text",
+				//),
 			),
 		),
+		*/
 		"nxs_phone" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -182,10 +184,12 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"icon" => array
 				(
+					"persisttype" => "wp_meta",
 					"type" => "iconpicker",
 				),
 				"url" => array
 				(
+					"persisttype" => "wp_meta",
 					"type" => "text",
 				),
 			),
@@ -277,9 +281,38 @@ function nxs_business_gettaxonomiesmeta()
 			// fields displayed in the WP backend of this post
 			"instanceextendedproperties" => array
 			(
+				"title" => array
+				(
+					"persisttype" => "wp_title",
+					"type" => "text",
+					"edittype" => "text",	// "html"
+				),
 				"icon" => array
 				(
+					"persisttype" => "wp_meta",
 					"type" => "iconpicker",
+				),
+				"excerpt" => array
+				(
+					"persisttype" => "wp_excerpt",
+					"type" => "text",
+					"edittype" => "html",	// "html"
+				),
+				"content" => array
+				(
+					"persisttype" => "wp_content",
+					"type" => "text",
+					"edittype" => "html",	// "html"
+				),
+				"image" => array
+				(
+					"persisttype" => "wp_featimg",
+					"type" => "img",
+					"edittype" => "image",
+				),
+				"media" => array
+				(
+					"persisttype" => "wp_meta",
 				),
 			),
 			"arity" => "n",	
@@ -391,6 +424,7 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"stars" => array
 				(
+					"persisttype" => "wp_meta",
 					"type" => "text",
 				),
 			),
@@ -428,6 +462,7 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"role" => array
 				(
+					"persisttype" => "wp_meta",
 					"type" => "text",
 				),			
 			),			
@@ -481,6 +516,16 @@ function nxs_business_gettaxonomiesmeta()
 			"instanceexistencecheckfield" => "title",
 			"instanceextendedproperties" => array
 			(
+				"title" => array
+				(
+					"persisttype" => "wp_title",
+					"type" => "text",
+				),
+				"excerpt" => array
+				(
+					"persisttype" => "wp_excerpt",
+					"type" => "text",
+				),
 			),			
 			"wpcreateinstructions" => array
 			(

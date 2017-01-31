@@ -145,79 +145,172 @@ class businesssite_instance
 		return $response;
 	}
 
-	
-		// abstract taxonomy instance functionality
-		function getabstracttaxonomyinstanceid($taxonomy)
+
+	// abstract taxonomy instance functionality
+	function getabstracttaxonomyinstanceid($taxonomy)
+	{
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		$taxonomymeta = $taxonomiesmeta[$taxonomy];
+		
+		if ($taxonomiesmeta[$taxonomy]["singletontaxonomyinstance"] == true)
 		{
-			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-			$taxonomymeta = $taxonomiesmeta[$taxonomy];
+			// 
+			$result = false;
+		}
+		else
+		{
+			$postids = nxs_wp_getpostidsbymetahavingposttype("nxs_abstracttaxinstance", $taxonomy, "nxs_taxonomy");
 			
-			if ($taxonomiesmeta[$taxonomy]["singletontaxonomyinstance"] == true)
+			$found = count($postids) > 0;
+			if ($found)
 			{
-				// 
-				$result = false;
+				$result = $postids[0];
 			}
 			else
 			{
-				$postids = nxs_wp_getpostidsbymetahavingposttype("nxs_abstracttaxinstance", $taxonomy, "nxs_taxonomy");
-				
-				$found = count($postids) > 0;
-				if ($found)
-				{
-					$result = $postids[0];
-				}
-				else
-				{
-					// if its not yet there, create it
-					$r = $this->createnewabstracttaxonomyinstance_internal($taxonomy);
-					if ($r["result"] != "OK") { echo "unexpected;"; var_dump($r); die(); }
-					$result = $r["postid"];
-				}
+				// if its not yet there, create it
+				$r = $this->createnewabstracttaxonomyinstance_internal($taxonomy);
+				if ($r["result"] != "OK") { echo "unexpected;"; var_dump($r); die(); }
+				$result = $r["postid"];
 			}
-			
-			return $result;
 		}
 		
-		function createnewabstracttaxonomyinstance_internal($taxonomy)
-		{
-			
-			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-			$taxonomymeta = $taxonomiesmeta[$taxonomy];
-			$title = $taxonomymeta["title"];			
+		return $result;
+	}
+		
+	function createnewabstracttaxonomyinstance_internal($taxonomy)
+	{
+		
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		$taxonomymeta = $taxonomiesmeta[$taxonomy];
+		$title = $taxonomymeta["title"];			
 
-			$subargs = array();
-			$subargs["nxsposttype"] = "taxonomy";
-			$subargs["wpposttype"] = "nxs_taxonomy";
-			
-			$subargs["poststatus"] = "publish";
-			$subargs["titel"] = $title;
-			$subargs["slug"] = $title . " " . nxs_generaterandomstring(6);
-			$subargs["postwizard"] = "skip";
-			$subargs["postmetas"] = array
-			(
-				"nxs_abstracttaxinstance" => $taxonomy,
-			);
-			
-			$response = nxs_addnewarticle($subargs);
-			if ($response["result"] != "OK")
-			{
-				echo "failed to create container?!";
-				die();
-			}
-			else
-			{
-				//
-			}
-			
-			return $response;
+		$subargs = array();
+		$subargs["nxsposttype"] = "taxonomy";
+		$subargs["wpposttype"] = "nxs_taxonomy";
+		
+		$subargs["poststatus"] = "publish";
+		$subargs["titel"] = $title;
+		$subargs["slug"] = $title . " " . nxs_generaterandomstring(6);
+		$subargs["postwizard"] = "skip";
+		$subargs["postmetas"] = array
+		(
+			"nxs_abstracttaxinstance" => $taxonomy,
+		);
+		
+		$response = nxs_addnewarticle($subargs);
+		if ($response["result"] != "OK")
+		{
+			echo "failed to create container?!";
+			die();
 		}
-	
+		else
+		{
+			//
+		}
+		
+		return $response;
+	}
 	
 	function getcontentmodeltaxonomyinstances($arg)
 	{
 		$taxonomy = $arg["taxonomy"];
 		$contentmodel = $this->getcontentmodel();
 		$result = $contentmodel[$taxonomy]["instances"];
+		return $result;
+	}
+	
+	// virtual posts
+	function businesssite_the_posts($result, $args)
+	{
+		global $wp,$wp_query;
+		
+		if (!is_main_query()) { return $result; }
+		if (is_admin()) { return $result; }
+		
+		$countmatches = count($result);
+		$is404 = ($countmatches == 0);
+		
+		if (!$is404) { return $result; }
+		
+		// it would become a 404, unless we intercept the request
+		// and inject some virtual values :)
+		
+		$uri = nxs_geturicurrentpage();
+		$uripieces = explode("?", $uri);
+		$requestedslug = $uripieces[0];
+		$requestedslug = trim($requestedslug, "/");
+		
+		// loop over the contentmodel,
+		// and verify if the requestedslug matches any of the components
+		// of the contentmodel
+		$contentmodel = $this->getcontentmodel();
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+
+		$foundmatch = false;
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		{
+			$instances = $contentmodel[$taxonomy]["instances"];
+			foreach ($instances as $instance)
+			{
+				$post_slug = $instance["content"]["post_slug"];
+				if ($post_slug == $requestedslug)
+				{
+					// there's a match! inject the content of the model to the post
+
+					$foundmatch = true;
+		
+					//$wp_query->is_nxs_portfolio = true;
+					$wp_query->is_singular = true;
+					$wp_query->is_page = true;
+					$wp_query->is_404 = false;
+					$wp_query->is_attachment = false;
+					$wp_query->is_archive = false;
+					unset($wp_query->query_vars["error"]);
+					if ($wp_query->queried_object != NULL)
+					{
+						$wp_query->queried_object->term_id = -1;
+						$wp_query->queried_object->name = $taxonomy;	//$id;
+					}
+					
+					$post = new stdClass;
+					$post->ID = -1;	//"virtual" . $id;
+					$post->post_author = 1;
+					$post->post_name = $instance["content"]["post_slug"];
+					$post->guid = "test guid";
+					$post->post_title = $instance["content"]["post_title"];
+					$post->post_excerpt = $instance["content"]["post_excerpt"];
+					$post->to_ping = "";
+					$post->pinged = "";
+					$post->post_content = $instance["content"]["post_content"];
+					$post->post_status = "publish";
+					$post->comment_status = "closed";
+					$post->ping_status = "closed";
+					$post->post_password = "";
+					$post->comment_count = 0;
+					$post->post_date = current_time('mysql');	
+					$post->filter = "raw";
+					$post->post_date_gmt = current_time('mysql',1);
+					$post->post_modified = current_time('mysql',1);
+					$post->post_modified_gmt = current_time('mysql',1);
+					$post->post_parent = 0;
+					$post->post_type = $taxonomy;
+					// $post->nxs_primary_businesstypemeta = $primary_businesstype;
+					$wp_query->posts[0] = $post;
+					$wp_query->found_posts = 1;	 
+					$wp_query->max_num_pages = 1;
+						
+					$result[]= $post;
+				}
+				else
+				{
+					//echo "mismatch: ($post_slug) vs ($requestedslug)<br />";
+					//var_dump($instance);
+				}
+				// echo "<br />";
+			}
+		}
+		
 		return $result;
 	}
 	
@@ -232,6 +325,38 @@ class businesssite_instance
 	}
 	
 	function getcontentmodel_actual()
+	{
+		$ismaster = true;
+		$homeurl = nxs_geturl_home();
+		if ($homeurl == "http://slave.testgj.c1.us-e1.nexusthemes.com/")
+		{
+			$ismaster = false;	
+		}
+		
+		if ($ismaster)
+		{
+			 $result = $this->getcontentmodel_actual_local();
+		}
+		else
+		{
+			$result = $this->getcontentmodel_actual_slave();
+		}
+		return $result;
+	}
+	
+	function getcontentmodel_actual_slave()
+	{
+		// 
+		$homeurl = nxs_geturl_home();
+		
+		$url = "http://master.testgj.c1.us-e1.nexusthemes.com/api/1/prod/businessmodel/?nxs=site-api&nxs_json_output_format=prettyprint&homeurl={$homeurl}";
+		$content = file_get_contents($url);
+		$json = json_decode($content, true);
+		$result = $json["contentmodel"];
+		return $result;
+	}
+	
+	function getcontentmodel_actual_local()
 	{
 		$result = array();
 		
@@ -250,9 +375,34 @@ class businesssite_instance
 	  		$result[$taxonomy]["taxonomy"]["url"] = nxs_geturl_for_postid($ati);
 	  		$post = get_post($ati);
 	  		// grab meta data
+	  		$result[$taxonomy]["taxonomy"]["post_slug"] = $post->post_name;
 	  		$result[$taxonomy]["taxonomy"]["post_title"] = $post->post_title;
 				$result[$taxonomy]["taxonomy"]["post_excerpt"] = $post->post_excerpt;
 				$result[$taxonomy]["taxonomy"]["post_content"] = $post->post_content;
+				
+				// enrich the taxonomy instances with "their" fields, as specified in the metadata
+				$taxonomyextendedproperties = $taxonomymeta["taxonomyextendedproperties"];
+				foreach ($taxonomyextendedproperties as $field => $fieldmeta)
+				{
+					$persisttype = $fieldmeta["persisttype"];
+					if ($persisttype == "wp_title")
+					{
+						$result[$taxonomy]["taxonomy"][$field] = $post->post_title;
+					}
+					else if ($persisttype == "wp_excerpt")
+					{
+						$result[$taxonomy]["taxonomy"][$field] = $post->post_excerpt;
+					}
+					else if ($persisttype == "wp_content")
+					{
+						$result[$taxonomy]["taxonomy"][$field] = $post->post_content;
+					}
+					else if ($persisttype == "wp_meta")
+					{
+						$value = get_post_meta($post->ID, "nxs_entity_{$field}", true);
+						$result[$taxonomy]["taxonomy"][$field] = $value;
+					}
+				}
 			}
 		}
 		
@@ -301,30 +451,81 @@ class businesssite_instance
 								$url = nxs_geturl_for_postid($post->ID);
 							}
 							
+							
+							
+							$content = array
+							(
+								
+								"post_id" => $post->ID,
+								"post_slug" => $post->post_name,
+								"post_title" => $post->post_title,
+								"post_excerpt" => $post->post_excerpt,
+								"post_content" => $post->post_content,
+								"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
+								"url" => $url,
+								/*
+								"post_icon" => get_post_meta($post->ID, "nxs_entity_icon", true),
+								"post_source" => get_post_meta($post->ID, "nxs_entity_source", true),
+								"post_rating_text" => get_post_meta($post->ID, "nxs_entity_rating_text", true),
+								"post_quote" => get_post_meta($post->ID, "nxs_entity_quote", true),
+								"post_stars" => get_post_meta($post->ID, "nxs_entity_stars", true),
+								"post_role" => get_post_meta($post->ID, "nxs_entity_role", true),
+								*/
+								
+								//
+								
+								// "post_imperative_m" => get_post_meta($post->ID, "nxs_entity_imperative_m", true),
+								// "post_imperative_l" => get_post_meta($post->ID, "nxs_entity_imperative_l", true),
+								// "post_destination_cta" => get_post_meta($post->ID, "nxs_entity_destination_cta", true),
+							);
+							
+							$instanceextendedproperties = $taxonomymeta["instanceextendedproperties"];
+							foreach ($instanceextendedproperties as $field => $fieldmeta)
+							{
+								$persisttype = $fieldmeta["persisttype"];
+								if ($persisttype == "wp_title")
+								{
+									$content[$field] = $post->post_title;
+								}
+								else if ($persisttype == "wp_excerpt")
+								{
+									$content[$field] = $post->post_excerpt;
+								}
+								else if ($persisttype == "wp_content")
+								{
+									$content[$field] = $post->post_content;
+								}
+								else if ($persisttype == "wp_meta")
+								{
+									$value = get_post_meta($post->ID, "nxs_entity_{$field}", true);
+									$content[$field] = $value;
+									
+									if ($field == "media")
+									{
+										// hardcoded for now ...
+										$value = "nxsmedia://pixabay|warrior-pose-241611";
+										$content[$field] = $value;
+									}
+								}
+								else if ($persisttype == "wp_featimg")
+								{
+									$value = get_post_thumbnail_id($post->ID);
+									$content[$field] = $value;
+								}
+								else 
+								{
+									echo "unsupported persisttype $persisttype for taxonomy $taxonomy";
+									die();
+									//$value = get_post_thumbnail_id($post->ID);
+									//$content[$field] = $value;
+								}						
+							}
+							
 							$result[$taxonomy]["instances"][] = array
 							(
 								"type" => $widgetmeta["type"],
 								"enabled" => $widgetmeta["enabled"],
-								"content" => array
-								(
-									"post_id" => $post->ID,
-									"post_title" => $post->post_title,
-									"post_excerpt" => $post->post_excerpt,
-									"post_content" => $post->post_content,
-									"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
-									"url" => $url,
-									"post_icon" => get_post_meta($post->ID, "nxs_entity_icon", true),
-									"post_source" => get_post_meta($post->ID, "nxs_entity_source", true),
-									"post_rating_text" => get_post_meta($post->ID, "nxs_entity_rating_text", true),
-									"post_quote" => get_post_meta($post->ID, "nxs_entity_quote", true),
-									"post_stars" => get_post_meta($post->ID, "nxs_entity_stars", true),
-									"post_role" => get_post_meta($post->ID, "nxs_entity_role", true),
-									//
-									
-									// "post_imperative_m" => get_post_meta($post->ID, "nxs_entity_imperative_m", true),
-									// "post_imperative_l" => get_post_meta($post->ID, "nxs_entity_imperative_l", true),
-									// "post_destination_cta" => get_post_meta($post->ID, "nxs_entity_destination_cta", true),
-								),
+								"content" => $content,
 							);
 							
 							if ($widgetmeta["enabled"] != "")
@@ -925,6 +1126,8 @@ class businesssite_instance
 		add_filter('wp_nav_menu_objects', array($this, 'wp_nav_menu_objects'), 10, 3);
 		
 		add_filter( 'the_content', array($this, 'the_content'), 10, 1);
+		
+		add_filter("the_posts", array($this, "businesssite_the_posts"), 1000, 2);
   }
   
 	/* ---------- */
