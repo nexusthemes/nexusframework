@@ -167,7 +167,27 @@ function nxs_widgets_wordpresstitle_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
-			),			
+			),		
+			
+			// MEDIA META
+			
+			array( 
+				"id" 				=> "wrapper_input_begin",
+				"type" 				=> "wrapperbegin",
+				"initial_toggle_state"	=> "closed",
+				"label" 			=> nxs_l18n__("Media meta", "nxs_td"),
+			),
+
+			array(
+				"id" 				=> "media_meta",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Media meta", "nxs_td"),
+			),
+			
+			array( 
+				"id" 				=> "wrapper_input_end",
+				"type" 				=> "wrapperend"
+			),	
 		),
 	);
 	
@@ -441,6 +461,34 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		
 		global $nxs_global_current_containerpostid_being_rendered;
 		$containerpostid = $nxs_global_current_containerpostid_being_rendered;
+		
+		global $post;
+		if ($post->media != "")
+		{
+			$media = $post->media;
+			
+			$width = "300";
+			$height = "100";
+			
+			// media_meta = "w:300;h:100";
+			$metapieces = explode(";", $media_meta);
+			foreach ($metapieces as $metapiece)
+			{
+				// metapiece = "w:300";
+				$subpieces = explode(":", $metapiece);
+				if ($subpieces[0] == "w")
+				{
+					$width = $subpieces[1];
+				}
+				else if ($subpieces[0] == "h")
+				{
+					$height = $subpieces[1];
+				}
+			}
+			
+			$derived_imageurl = "https://d3mwusvabcs8z9.cloudfront.net/?nxs_imagecropper=true&scope=lazydetect&requestedwidth={$width}&requestedheight={$height}&url={$media}";
+		}
+		
 		$image_imageid = get_post_thumbnail_id($containerpostid);
 		if ($image_imageid != "")
 		{
@@ -452,7 +500,10 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 			// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 			$derived_imageurl = $imagemetadata[0];
 			$derived_imageurl = nxs_img_getimageurlthemeversion($derived_imageurl);
-			
+		}
+		
+		if ($derived_imageurl != "")
+		{
 			// Image with border functionality
 			$image = '
 				<div class="nxs-image-wrapper '.$image_shadow.' '.$image_size_cssclass.' '.$image_alignment_cssclass.' '.'">

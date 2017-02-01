@@ -1445,6 +1445,13 @@ function nxs_add_metaboxes()
 add_action('nxs_action_postfooterlink', 'nxs_render_postfooterlink');
 function nxs_render_postfooterlink()
 {
+	global $businesssite_instance;
+	if ($businesssite_instance->ismaster() === false)
+	{
+		// only masters can do something here :)
+		return;
+	}
+	
 	$url = nxs_geturlcurrentpage();
 	$homeurl = nxs_geturl_home();
 	
@@ -2086,6 +2093,8 @@ function nxs_render_postfooterlink()
 		}
 		else
 		{
+			// user is not logged in
+			
 			if (has_action("login_form"))
 			{
 				$currenturl = get_permalink();

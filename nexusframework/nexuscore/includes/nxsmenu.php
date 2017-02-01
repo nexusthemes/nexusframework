@@ -14,6 +14,18 @@
 		return;
 	}
 	
+	global $businesssite_instance;
+	if ($businesssite_instance->ismaster() === false)
+	{
+		// alleen als je in master mode zit,
+		// moet de editor aanstaan
+		return;
+	}
+	else
+	{
+		
+	}
+	
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	
 	if (nxs_shouldshowadminbar())

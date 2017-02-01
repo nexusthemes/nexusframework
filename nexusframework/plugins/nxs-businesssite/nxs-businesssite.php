@@ -274,7 +274,7 @@ class businesssite_instance
 					}
 					
 					$post = new stdClass;
-					$post->ID = -1;	//"virtual" . $id;
+					$post->ID = -999001;	// "hi"; // 0-$instance["content"]["post_id"]; // -1;	//"virtual" . $id;
 					$post->post_author = 1;
 					$post->post_name = $instance["content"]["post_slug"];
 					$post->guid = "test guid";
@@ -296,9 +296,18 @@ class businesssite_instance
 					$post->post_parent = 0;
 					$post->post_type = $taxonomy;
 					// $post->nxs_primary_businesstypemeta = $primary_businesstype;
+					
+					// replicate all fields from the model
+					foreach ($instance["content"] as $key => $val)
+					{
+						$post->$key = $val;
+					}
+					
 					$wp_query->posts[0] = $post;
 					$wp_query->found_posts = 1;	 
 					$wp_query->max_num_pages = 1;
+					
+					
 						
 					$result[]= $post;
 				}
@@ -324,15 +333,24 @@ class businesssite_instance
 		return $nxs_g_contentmodel;
 	}
 	
+	function ismaster()
+	{
+		$result = true;
+		$homeurl = nxs_geturl_home();
+		if ($homeurl == "http://theme1.testgj.c1.us-e1.nexusthemes.com/")
+		{
+			$result = false;	
+		}
+		else if ($homeurl == "http://theme2.testgj.c1.us-e1.nexusthemes.com/")
+		{
+			$result = false;	
+		}
+		return $result;
+	}
+	
 	function getcontentmodel_actual()
 	{
-		$ismaster = true;
-		$homeurl = nxs_geturl_home();
-		if ($homeurl == "http://slave.testgj.c1.us-e1.nexusthemes.com/")
-		{
-			$ismaster = false;	
-		}
-		
+		$ismaster = $this->ismaster();
 		if ($ismaster)
 		{
 			 $result = $this->getcontentmodel_actual_local();
@@ -349,7 +367,16 @@ class businesssite_instance
 		// 
 		$homeurl = nxs_geturl_home();
 		
-		$url = "http://master.testgj.c1.us-e1.nexusthemes.com/api/1/prod/businessmodel/?nxs=site-api&nxs_json_output_format=prettyprint&homeurl={$homeurl}";
+		$businesstype = $_REQUEST["businesstype"];
+		if ($businesstype != "")
+		{
+			$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/initialbusinessmodelcontent/?nxs=contentprovider-api&licensekey=TODO&businesstype={$businesstype}&nxs_json_output_format=prettyprint";
+		}
+		else
+		{
+			// fallback		
+			$url = "http://master.testgj.c1.us-e1.nexusthemes.com/api/1/prod/businessmodel/?nxs=site-api&nxs_json_output_format=prettyprint&homeurl={$homeurl}";
+		}
 		$content = file_get_contents($url);
 		$json = json_decode($content, true);
 		$result = $json["contentmodel"];
@@ -500,9 +527,9 @@ class businesssite_instance
 									$value = get_post_meta($post->ID, "nxs_entity_{$field}", true);
 									$content[$field] = $value;
 									
-									if ($field == "media")
+									if ($field == "media" && $value == "")
 									{
-										// hardcoded for now ...
+										// hardcoded fallback for now ...
 										$value = "nxsmedia://pixabay|warrior-pose-241611";
 										$content[$field] = $value;
 									}
@@ -960,9 +987,21 @@ class businesssite_instance
     		{
     			$found = false;
     			$singleton_instanceid = $post->object_id;
+    			$posttype = $post->title;
+    			
     			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 					{
-						if ($contentmodel[$taxonomy]["taxonomy"]["postid"] == $singleton_instanceid)
+						$shouldrender = false;
+						if ($posttype == $taxonomy)
+						{
+							$shouldrender = true;
+						}
+						else if ($contentmodel[$taxonomy]["taxonomy"]["postid"] == $singleton_instanceid)
+						{
+							$shouldrender = true;
+						}
+						
+						if ($shouldrender)
 						{
 							// this is the taxonomy we were looking for
 							$found = true;		
@@ -991,7 +1030,7 @@ class businesssite_instance
 							        'menu_item_parent' => $post->ID,
 							        'ID'               => '',
 							        'db_id'            => '',
-							        'url'              => $instance["content"]["url"],
+							        'url'              => '/' . $instance["content"]["post_slug"] . '/',
 							      );
 							      $newresult[] = (object) $childpost;
 									}

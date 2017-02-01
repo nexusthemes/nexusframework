@@ -278,6 +278,15 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"defaultrendertype" => "text",
 			),
+			"taxonomyextendedproperties" => array
+			(
+				"name" => array
+				(
+					"persisttype" => "wp_title",
+					"label" => "Services",
+					"type" => "text",
+				),
+			),
 			// fields displayed in the WP backend of this post
 			"instanceextendedproperties" => array
 			(
@@ -313,6 +322,7 @@ function nxs_business_gettaxonomiesmeta()
 				"media" => array
 				(
 					"persisttype" => "wp_meta",
+					"edittype" => "media",
 				),
 			),
 			"arity" => "n",	
@@ -526,7 +536,12 @@ function nxs_business_gettaxonomiesmeta()
 					"persisttype" => "wp_excerpt",
 					"type" => "text",
 				),
-			),			
+				"media" => array
+				(
+					"persisttype" => "wp_meta",
+					"edittype" => "media",
+				),
+			),
 			"wpcreateinstructions" => array
 			(
 			),

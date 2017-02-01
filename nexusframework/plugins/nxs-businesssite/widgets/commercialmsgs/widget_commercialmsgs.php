@@ -126,6 +126,25 @@ function nxs_widgets_commercialmsgs_home_getoptions($args)
 				"type" 				=> "wrapperend"
 			),
 			
+			// MEDIA META
+			
+			array( 
+				"id" 				=> "wrapper_input_begin",
+				"type" 				=> "wrapperbegin",
+				"initial_toggle_state"	=> "closed",
+				"label" 			=> nxs_l18n__("Media meta", "nxs_td"),
+			),
+
+			array(
+				"id" 				=> "media_meta",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Media meta", "nxs_td"),
+			),
+			
+			array( 
+				"id" 				=> "wrapper_input_end",
+				"type" 				=> "wrapperend"
+			),			
 			// NAVIGATION AND METADATA
 			
 			array( 
@@ -465,16 +484,38 @@ function nxs_widgets_commercialmsgs_render_webpart_render_htmlvisualization($arg
 			$enabled = $instance["enabled"];
 			if ($enabled == "") { continue; }
 			$index++;
+			$media = $instance["content"]["media"];
 			$post_id = $instance["content"]["post_id"];
 			$post_title = $instance["content"]["post_title"];		
 			$post_excerpt = $instance["content"]["post_excerpt"];		
-			$image_imageid = $instance["content"]["post_thumbnail_id"];
+			//$image_imageid = $instance["content"]["post_thumbnail_id"];
 			
-			$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
-			$imageurl = $lookup[0];
-			$imageurl = nxs_img_getimageurlthemeversion($imageurl);
-			$width = $lookup[1];
-			$height = $lookup[2];		
+			$width = 300;
+			$height = 100;
+			
+			// media_meta = "w:300;h:100";
+			$metapieces = explode(";", $media_meta);
+			foreach ($metapieces as $metapiece)
+			{
+				// metapiece = "w:300";
+				$subpieces = explode(":", $metapiece);
+				if ($subpieces[0] == "w")
+				{
+					$width = $subpieces[1];
+				}
+				else if ($subpieces[0] == "h")
+				{
+					$height = $subpieces[1];
+				}
+			}
+			
+			$imageurl = "https://d3mwusvabcs8z9.cloudfront.net/?nxs_imagecropper=true&requestedwidth={$width}&requestedheight={$height}&debug=tru&url={$media}&scope=lazydetect";
+			
+			//$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
+			//$imageurl = $lookup[0];
+			//$imageurl = nxs_img_getimageurlthemeversion($imageurl);
+			//$width = $lookup[1];
+			//$height = $lookup[2];		
 			
 			if ($height > $heighttallestslide) 
 			{

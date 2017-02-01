@@ -107,6 +107,7 @@ if (is_admin())
 		$fields = nxs_businessmodelmetabox_getfieldsmeta($post);
 		foreach ($fields as $field => $fieldmeta)
 		{			
+			$edittype = $fieldmeta["edittype"];
 			$type = $fieldmeta["type"];
 			$persisttype = $fieldmeta["persisttype"];
 			
@@ -122,11 +123,126 @@ if (is_admin())
 			{
 				// ignore; this field is edited by the default WP backend editor
 			}
+			else if ($persisttype == "wp_featimg")
+			{
+				// ignore; this field is edited by the default WP backend editor
+			}
 			else if ($persisttype == "" || $persisttype == "wp_meta")
 			{
 				// echo "field: $type<br />";
 				
-				if ($type == "text" || $type == "")
+				if ($edittype == "media")
+				{
+					$label = $field;
+					if (isset($fieldmeta["label"]))
+					{
+						$label = $fieldmeta["label"];
+					}
+					$id = "nxs_entity_{$field}";
+					$inputid = "nxs_entity_{$field}_input";
+					$value = get_post_meta($post->ID, $id, true);
+					
+					if ($field == "media")
+					{
+						if ($value == "")
+						{
+							$value = get_post_meta($post->ID, "nxs_semantic_media", true);
+						}
+					}
+					
+					$width = "200";
+					$height = "100";
+					$imgsrc = "https://d3mwusvabcs8z9.cloudfront.net/?nxs_imagecropper=true&scope=lazydetect&requestedwidth={$width}&requestedheight={$height}&url={$value}";
+					$focalurl = "https://mediamanager.websitesexamples.com/?nxs_setimagefocalarea=true&url={$value}&scope=lazydetect";
+					
+					if ($label == "media")
+					{
+						echo "The media item connected:<br />";
+					}
+					else
+					{
+						echo $label . ":<br />";
+					}
+					?>
+					<input type='text' name='<?php echo $inputid; ?>' id='<?php echo $inputid; ?>' value='<?php echo $value; ?>' /><br />
+					<?php if ($value != "") { ?>
+					
+						Preview:<br />
+						<a target='_blank' href='<?php echo $focalurl; ?>'>Edit Focal</a>
+						<a href="#TB_inline?width=600&height=550&inlineId=media-modal-window-id" class="thickbox openmediapicker">
+							<img src='<?php echo $imgsrc; ?>' /><br />
+						</a>
+						<br />
+						<a id='nxs_semantic_media_reset' href='#' onclick="nxs_js_setpreview(''); return false;">Reset</a>
+						<a id='nxs_semantic_media_button' class='button openmediapicker thickbox' href="#TB_inline?width=600&height=550&inlineId=media-modal-window-id">
+							Configure
+						</a>
+						
+						<script>
+							$(".openmediapicker").on
+							(
+								"click", function()
+								{
+									//console.log("you opened the media dialog :)");
+									nxs_js_fillmediacontainer();
+								} 
+							);
+							
+							function nxs_js_fillmediacontainer()
+							{
+								var slug = "test";
+								var businesstype = "copywriting"; // <?php echo $businesstype; ?>";
+								var url = 'https://mediamanager.websitesexamples.com/nxs_getmedia/?callback=?';
+								
+								jQuery.getJSON
+								(
+									url,
+									{
+										nxs_getmedia : "true",
+										scope : "businesstype",
+										businesstype : businesstype,
+										slug : slug,
+									},
+									nxs_js_handlegetmediaresult
+								);
+							}
+							
+							function nxs_js_handlegetmediaresult(data)
+							{
+								console.log("finished retrieving media data :)");
+								console.log(data);
+								
+								jQuery("#imagepicker").show();
+								jQuery("#imagepickeritemlist").empty();
+								var slug = data.slug;
+								jQuery("#imagepicker").data("slug", slug);
+								
+								jQuery.each
+								(
+									data.items, 
+									function(index, value) 
+									{
+										//console.log(value);
+										var id = value.id;
+										var width = 300;
+										var height = 150;
+										var businesstype = "<?php echo $businesstype; ?>";
+										var imagesrc = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth=" + width + "&requestedheight=" + height + "&scope=lazydetect&debug=tru&url=" + id;
+										var imagehtml = "<img src='" + imagesrc + "' width=300 height=150 />";
+										var itemhtml = imagehtml + "<br /><span>" + id + "</span>";
+										var itemhtml = "<a href='#' onclick='nxs_js_mediaselected(this); return false;' data-destinationdomselector='#nxs_semantic_media_input' data-id='" + id + "'>" + itemhtml + "</a>";
+										jQuery("#imagepickeritemlist").append("<li>" + itemhtml + "</li>");
+									}
+								);
+							}
+						</script>
+						
+					<?php } ?>
+					<hr />
+					<br />
+					<?php
+				}
+				else if ($type == "text" || $type == "")
 				{
 					$label = $field;
 					if (isset($fieldmeta["label"]))
@@ -140,6 +256,7 @@ if (is_admin())
 					<?php echo $label ;?>: 
 					<input type='text' name='<?php echo $inputid; ?>' id='<?php echo $inputid; ?>' value='<?php echo $value; ?>' />
 					<hr />
+					<br />
 					<?php
 				}
 				else if ($type == "iconpicker")
@@ -293,13 +410,14 @@ if (is_admin())
 								);
 							</script>
 						</p>
+						<hr />
 				    <input type='hidden' name='nxs_entity_icon_input' id='nxs_entity_icon_input' value='<?php echo $nxs_entity_icon; ?>' />
 				    <?php
 				  }
 					
 					//
 				}
-				
+
 				else
 				{
 					echo "skipped: $field type $type (45897)<hr />";
