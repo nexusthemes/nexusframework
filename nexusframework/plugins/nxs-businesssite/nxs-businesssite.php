@@ -368,9 +368,10 @@ class businesssite_instance
 		$homeurl = nxs_geturl_home();
 		
 		$businesstype = $_REQUEST["businesstype"];
-		if ($businesstype != "")
+		$businessid = $_REQUEST["businessid"];
+		if ($businessid != "")
 		{
-			$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/initialbusinessmodelcontent/?nxs=contentprovider-api&licensekey=TODO&businesstype={$businesstype}&nxs_json_output_format=prettyprint";
+			$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/businessmodel/{$businessid}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
 		}
 		else
 		{

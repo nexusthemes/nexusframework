@@ -1308,9 +1308,10 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	$html .= $titlehtml;
 	
+	$instances = $contentmodel[$taxonomy]["instances"];
 	
 	//
-	$count = $contentmodel[$taxonomy]["countenabled"];
+	$count = count($instances); // $contentmodel[$taxonomy]["countenabled"];
 	
 	$numberofcolumns = 4;
 	if ($count % 3 == 0)
@@ -1634,14 +1635,23 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		//
 		if (is_user_logged_in())
 		{
-			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-			$taxonomymeta = $taxonomiesmeta[$taxonomy];
-			$title = $taxonomymeta["title"];
 			global $businesssite_instance;
-			$contentmodel = $businesssite_instance->getcontentmodel();
-			$url = $contentmodel[$taxonomy]["url"];
-			$html .= "<div>No {$title} found <a class='nxsbutton' href='{$url}'>Manage {$title}</a></div>";
-			$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+			if ($businesssite_instance->ismaster() === true)
+			{
+				$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+				$taxonomymeta = $taxonomiesmeta[$taxonomy];
+				$title = $taxonomymeta["title"];
+				global $businesssite_instance;
+				$contentmodel = $businesssite_instance->getcontentmodel();
+				$url = $contentmodel[$taxonomy]["url"];
+				$html .= "<div>No {$title} found <a class='nxsbutton' href='{$url}'>Manage {$title}</a></div>";
+				$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+			}
+			else
+			{
+				global $nxs_global_row_render_statebag;
+				$nxs_global_row_render_statebag["etchrow"] = true;
+			}
 		}
 		else
 		{
