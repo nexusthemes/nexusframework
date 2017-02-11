@@ -255,11 +255,9 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	else
 	{
 		$currentpost = get_post($nxs_global_current_containerpostid_being_rendered);
-		$title = get_the_title(); // nxs_gettitle_for_postid($nxs_global_current_containerpostid_being_rendered);
+		$title = get_the_title();
 		$currentpostdate = $currentpost->post_date;
 	}
-	
-	
 	
 	$hovermenuargs = array();
 	$hovermenuargs["postid"] = $postid;
@@ -326,20 +324,6 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 			</span>';
 	}
 	
-	/*
-	// Comments count
-	if ($showcommentcount != "" && $commentsprovider != "") {
-		nxs_requirecommentsprovider($commentsprovider);
-		$postcommentcounthtml = nxs_commentsprovider_getpostcommentcounthtml($nxs_global_current_containerpostid_being_rendered);
-		$icon_font_list_comments ='	
-			<ul class="icon-font-list nxs-float-right nxs-relative comments">
-				<li>'
-					. $postcommentcounthtml
-					. '
-				</li>
-			</ul>';
-	}
-	*/
 	
 	// SHARING BUTTONS
 	
@@ -583,4 +567,3 @@ function nxs_widgets_wordpresstitle_updateplaceholderdata($args)
 	
 	return $result;
 }
-?>

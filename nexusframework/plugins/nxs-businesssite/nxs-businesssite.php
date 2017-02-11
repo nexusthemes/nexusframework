@@ -273,43 +273,46 @@ class businesssite_instance
 						$wp_query->queried_object->name = $taxonomy;	//$id;
 					}
 					
-					$post = new stdClass;
-					$post->ID = -999001;	// "hi"; // 0-$instance["content"]["post_id"]; // -1;	//"virtual" . $id;
-					$post->post_author = 1;
-					$post->post_name = $instance["content"]["post_slug"];
-					$post->guid = "test guid";
-					$post->post_title = $instance["content"]["post_title"];
-					$post->post_excerpt = $instance["content"]["post_excerpt"];
-					$post->to_ping = "";
-					$post->pinged = "";
-					$post->post_content = $instance["content"]["post_content"];
-					$post->post_status = "publish";
-					$post->comment_status = "closed";
-					$post->ping_status = "closed";
-					$post->post_password = "";
-					$post->comment_count = 0;
-					$post->post_date = current_time('mysql');	
-					$post->filter = "raw";
-					$post->post_date_gmt = current_time('mysql',1);
-					$post->post_modified = current_time('mysql',1);
-					$post->post_modified_gmt = current_time('mysql',1);
-					$post->post_parent = 0;
-					$post->post_type = $taxonomy;
-					// $post->nxs_primary_businesstypemeta = $primary_businesstype;
+					$newpost = new stdClass;
 					
 					// replicate all fields from the model
 					foreach ($instance["content"] as $key => $val)
 					{
-						$post->$key = $val;
+						$newpost->$key = $val;
 					}
 					
-					$wp_query->posts[0] = $post;
+					// 
+					
+					$newpost->ID = -999001;	// "hi"; // 0-$instance["content"]["post_id"]; // -1;	//"virtual" . $id;
+					$newpost->post_author = 1;
+					$newpost->post_name = $instance["content"]["post_slug"];
+					$newpost->guid = "test guid";
+					$newpost->post_title = $instance["content"]["title"];
+					$newpost->post_excerpt = $instance["content"]["excerpt"];
+					$newpost->to_ping = "";
+					$newpost->pinged = "";
+					$newpost->post_content = $instance["content"]["content"];
+					$newpost->post_status = "publish";
+					$newpost->comment_status = "closed";
+					$newpost->ping_status = "closed";
+					$newpost->post_password = "";
+					$newpost->comment_count = 0;
+					$newpost->post_date = current_time('mysql');	
+					$newpost->filter = "raw";
+					$newpost->post_date_gmt = current_time('mysql',1);
+					$newpost->post_modified = current_time('mysql',1);
+					$newpost->post_modified_gmt = current_time('mysql',1);
+					$newpost->post_parent = 0;
+					$newpost->post_type = $taxonomy;
+					
+					$wp_query->posts[0] = $newpost;
 					$wp_query->found_posts = 1;	 
 					$wp_query->max_num_pages = 1;
-					
-					
 						
-					$result[]= $post;
+					$result[]= $newpost;
+					
+					// there can/may be only one match
+					return $result;
 				}
 				else
 				{
@@ -369,9 +372,19 @@ class businesssite_instance
 		
 		$businesstype = $_REQUEST["businesstype"];
 		$businessid = $_REQUEST["businessid"];
+		if ($businessid == "")
+		{
+			if ($_COOKIE["businessid"] != "")
+			{
+				$businessid = $_COOKIE["businessid"];
+			}
+		}
+		
 		if ($businessid != "")
 		{
 			$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/businessmodel/{$businessid}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
+			// also store the businessid in the cookie
+			setcookie("businessid", $businessid);
 		}
 		else
 		{
@@ -987,8 +1000,8 @@ class businesssite_instance
     		if ($post->object == "nxs_taxonomy")
     		{
     			$found = false;
-    			$singleton_instanceid = $post->object_id;
     			$posttype = $post->title;
+    			
     			
     			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 					{
@@ -1013,7 +1026,14 @@ class businesssite_instance
 								if (count($instances) > 0)
 								{
 									// update this item (the "parent")
-									$post->title = $contentmodel[$taxonomy]["taxonomy"]["post_title"]; //"item voor $taxonomy";
+									$title = $contentmodel[$taxonomy]["taxonomy"]["title"];
+									if ($title == "")
+									{
+										$title = "(empty)";
+									}
+									$post->title = $title;
+									
+									
 									// make it not clickable
 									$post->url = "#";
 									$post->classes[] = "nxs-menuitemempty";
@@ -1027,7 +1047,7 @@ class businesssite_instance
 	
 										$childpost = array
 										(
-							        'title'            => $instance["content"]["post_title"],
+							        'title'            => $instance["content"]["title"],
 							        'menu_item_parent' => $post->ID,
 							        'ID'               => '',
 							        'db_id'            => '',
@@ -1053,14 +1073,11 @@ class businesssite_instance
 							// some other taxonomy; ignore
 						}
 					}
+					
 					if (!$found)
 					{
-						/*
-						$post->title = "not found; " . $singleton_instanceid;
-						$newresult[] = $post;
-						var_dump($contentmodel);
-						die();
-						*/
+						// absorb
+						
 					}
 				}
 				else
@@ -1073,42 +1090,6 @@ class businesssite_instance
 			
 			// swap
 			$result = $newresult;
-			
-			/*    	
-    	$result = array();
-    	
-    	$new_item = new stdClass;
-    	$id_a = "a";
-    	$new_item->ID = $id_a;
-			$new_item->db_id = $id_a;
-			$new_item->menu_item_parent = 0;
-			$new_item->url = "http://nexusthemes.com";
-			$new_item->title = "a";
-			$new_item->menu_order = 1;	// $menu_order;
-			$result[] = $new_item;
-			
-			$new_item = new stdClass;
-    	$id_b = "b";
-    	$new_item->ID = $id_b;
-			$new_item->db_id = $id_b;
-			$new_item->menu_item_parent = 0;
-			$new_item->url = "http://nexusthemes.com";
-			$new_item->title = "b";
-			$new_item->menu_order = 1;	// $menu_order;
-			$result[] = $new_item;
-			
-			// https://isabelcastillo.com/dynamically-sub-menu-item-wp_nav_menu
-			// http://wordpress.stackexchange.com/questions/100484/how-to-add-a-child-item-to-a-menu-element-using-wp-nav-menu-objects
-			$link = array
-			(
-        'title'            => 'Cats',
-        'menu_item_parent' => $id_a,
-        'ID'               => '',
-        'db_id'            => '',
-        'url'              => 'www.google.com'
-      );
-      $result[] = (object) $link;
-			*/
     }
     
 		return $result;

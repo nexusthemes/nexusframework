@@ -313,12 +313,6 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "text",
 					"edittype" => "html",	// "html"
 				),
-				"image" => array
-				(
-					"persisttype" => "wp_featimg",
-					"type" => "img",
-					"edittype" => "image",
-				),
 				"media" => array
 				(
 					"persisttype" => "wp_meta",

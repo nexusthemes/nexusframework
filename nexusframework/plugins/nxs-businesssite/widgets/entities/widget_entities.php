@@ -1092,7 +1092,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
-	$title = $contentmodel[$datasource]["taxonomy"]["post_title"];
+	$title = $contentmodel[$datasource]["taxonomy"]["title"];	// old: "post_title"
 
 
 	global $nxs_global_placeholder_render_statebag;
@@ -1359,9 +1359,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		if ($enabled == "") { continue; }
 		$index++;
 		$post_id = $instance["content"]["post_id"];
-		$post_title = $instance["content"]["post_title"];		
-		$post_excerpt = $instance["content"]["post_excerpt"];		
-		$post_content = $instance["content"]["post_content"];
+		$post_title = $instance["content"]["title"];			// old: "post_title"
+		$post_excerpt = $instance["content"]["excerpt"];		
+		$post_content = $instance["content"]["content"];
 		$post_slug = $instance["content"]["post_slug"];
 		$url = "/{$post_slug}/"; // $instance["content"]["url"];
 		//$image_imageid = $instance["content"]["post_thumbnail_id"];
