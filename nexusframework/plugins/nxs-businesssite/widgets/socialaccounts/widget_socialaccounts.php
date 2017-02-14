@@ -269,9 +269,8 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 	foreach ($contentmodel[$taxonomy]["instances"] as $instance)
 	{
 		// var_dump($instance);
-		$postid = $instance["content"]["post_id"];
-		$url = get_post_meta($postid, "nxs_entity_url", true);
-		$icon = get_post_meta($postid, "nxs_entity_icon", true);
+		$url = $instance["content"]["url"];
+		$icon = $instance["content"]["icon"];
 		
 		//
 		$icon_font_list .= "<li>";

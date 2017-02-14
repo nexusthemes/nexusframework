@@ -1362,7 +1362,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$post_title = $instance["content"]["title"];			// old: "post_title"
 		$post_excerpt = $instance["content"]["excerpt"];		
 		$post_content = $instance["content"]["content"];
-		$post_slug = $instance["content"]["post_slug"];
+		$post_slug = $instance["content"]["slug"];
 		$url = "/{$post_slug}/"; // $instance["content"]["url"];
 		//$image_imageid = $instance["content"]["post_thumbnail_id"];
 		$media = $instance["content"]["media"];
@@ -1391,6 +1391,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			"media" => $media,
 			"media_meta" => $media_meta,
 			"destination_url" => $url,
+			"destination_target" => "_self",
 			"icon" => $post_icon,
 			"source" => $post_source,
 			"rating_text" => $post_rating_text,
@@ -1424,7 +1425,10 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			);
 			foreach ($fieldstoreplicate as $fieldtoreplicate)
 			{
-				$childargs[$fieldtoreplicate] = $args["text_{$fieldtoreplicate}"];
+				if (!isset($childargs[$fieldtoreplicate]))
+				{
+					$childargs[$fieldtoreplicate] = $args["text_{$fieldtoreplicate}"];
+				}
 			}
 		}
 		

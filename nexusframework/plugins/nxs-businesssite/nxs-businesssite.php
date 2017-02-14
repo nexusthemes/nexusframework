@@ -380,6 +380,11 @@ class businesssite_instance
 			}
 		}
 		
+		if ($businessid == "x")
+		{
+			$businessid = "";
+		}
+		
 		if ($businessid != "")
 		{
 			$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/businessmodel/{$businessid}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
@@ -394,6 +399,48 @@ class businesssite_instance
 		$content = file_get_contents($url);
 		$json = json_decode($content, true);
 		$result = $json["contentmodel"];
+		
+		// enrich the model
+		// the slug is determined "at runtime"; its derived from the title
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+		{
+			//echo "tax: $taxonomy <br />";
+			
+			$titlefield = "";
+			$slugfield = "";
+			
+			$instanceextendedproperties = $taxonomymeta["instanceextendedproperties"];
+			foreach ($instanceextendedproperties as $field => $fieldmeta)
+			{
+				if ($fieldmeta["persisttype"] == "wp_title")
+				{
+					$titlefield = $field;
+				}
+				if ($fieldmeta["persisttype"] == "wp_slug")
+				{
+					$slugfield = $field;
+				}
+			}
+			
+			//echo "titlefield: $titlefield <br />";
+			//echo "slugfield: $slugfield <br />";
+			
+			$instances = $result[$taxonomy]["instances"];
+			foreach ($instances as $index => $instance)
+			{
+				$content = $instance["content"];
+				$title = $content[$titlefield];
+				$slug = $title;
+				$slug = strtolower($slug);
+				$slug = str_replace(" ", "-", $slug); // todo; also change any other weird chars
+				$result[$taxonomy]["instances"][$index]["content"][$slugfield] = $slug;
+			}
+		}
+
+		//echo "so far :)";
+		//die();
+		
 		return $result;
 	}
 	
@@ -997,11 +1044,19 @@ class businesssite_instance
     	
     	foreach ($result as $post)
     	{
-    		if ($post->object == "nxs_taxonomy")
+    		//echo "found menu item;" . $post->object . " <br />";
+    		
+    		$title = $post->title;
+    		$shouldbeprocessed = false;
+    		if (nxs_stringcontains($title, "nxs_"))
+    		{
+    			$shouldbeprocessed = true;
+    		}
+    		
+    		if ($shouldbeprocessed)
     		{
     			$found = false;
     			$posttype = $post->title;
-    			
     			
     			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 					{
@@ -1015,10 +1070,12 @@ class businesssite_instance
 							$shouldrender = true;
 						}
 						
+						
+						
 						if ($shouldrender)
 						{
 							// this is the taxonomy we were looking for
-							$found = true;		
+							$found = true;
 							
 							if ($taxonomymeta["caninstancesbereferenced"] == true)
 							{
@@ -1051,7 +1108,7 @@ class businesssite_instance
 							        'menu_item_parent' => $post->ID,
 							        'ID'               => '',
 							        'db_id'            => '',
-							        'url'              => '/' . $instance["content"]["post_slug"] . '/',
+							        'url'              => '/' . $instance["content"]["slug"] . '/',
 							      );
 							      $newresult[] = (object) $childpost;
 									}
@@ -1077,7 +1134,6 @@ class businesssite_instance
 					if (!$found)
 					{
 						// absorb
-						
 					}
 				}
 				else
@@ -1091,6 +1147,9 @@ class businesssite_instance
 			// swap
 			$result = $newresult;
     }
+    
+    //echo "sofar";
+    //die();
     
 		return $result;
 	}

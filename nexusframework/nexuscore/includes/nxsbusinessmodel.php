@@ -313,11 +313,19 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "text",
 					"edittype" => "html",	// "html"
 				),
+				"slug" => array
+				(
+					"type" => "text",
+					"persisttype" => "wp_slug",
+					"edittype" => "text",
+				),
 				"media" => array
 				(
 					"persisttype" => "wp_meta",
 					"edittype" => "media",
 				),
+				// the slug is automatically determined when the information is exposed
+				// by the content provider
 			),
 			"arity" => "n",	
 			"features" => array
