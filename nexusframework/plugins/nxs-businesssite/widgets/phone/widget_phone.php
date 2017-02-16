@@ -264,21 +264,17 @@ function nxs_widgets_phone_render_webpart_render_htmlvisualization($args)
 		global $businesssite_instance;
 		$contentmodel = $businesssite_instance->getcontentmodel();
 		$taxonomy = "nxs_phone";
-		$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
-		
-		$phonenumber = get_post_meta($abstractpostid, "nxs_entity_phonenumber", true);
+		$phonenumber = $contentmodel[$taxonomy]["taxonomy"]["phonenumber"];
 		
 		if ($phonenumber == "")
 		{
 			$phonenumber = "0800test";
 		}
 		
-		$args["title"] = nxs_gettitle_for_postid($abstractpostid);
-		$args["text"] = get_post_field('post_content', $abstractpostid);
+		$args["title"] = $contentmodel[$taxonomy]["taxonomy"]["title"];
+		$args["text"] = $contentmodel[$taxonomy]["taxonomy"]["content"];
 		$args["button_text"] = $phonenumber;
 		$args["destination_url"] = "tel://{$phonenumber}";
-		
-		
 		
 		// delegate rendering of this widget to the extended /parent/ widget
 		$renderresult = nxs_widgets_phone_getrenderresultofextendedwidget($args);		

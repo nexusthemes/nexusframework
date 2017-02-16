@@ -348,6 +348,10 @@ class businesssite_instance
 		{
 			$result = false;	
 		}
+		else if ($homeurl == "http://theme3.testgj.c1.us-e1.nexusthemes.com/")
+		{
+			$result = false;	
+		}
 		return $result;
 	}
 	
@@ -646,6 +650,8 @@ class businesssite_instance
 	function getwidgets($result, $widgetargs)
 	{
 		$nxsposttype = $widgetargs["nxsposttype"];
+		$pagetemplate = $widgetargs["pagetemplate"];
+		
 		if ($nxsposttype == "post") 
 		{
 			$result[] = array("widgetid" => "entities");
@@ -665,6 +671,11 @@ class businesssite_instance
 			$result[] = array("widgetid" => "buslogo");
 			$result[] = array("widgetid" => "socialaccounts");
 			$result[] = array("widgetid" => "commercialmsgs");
+		}
+		
+		if ($pagetemplate == "pagedecorator") 
+		{
+			$result[] = array("widgetid" => "taxpageslider", "tags" => array("nexus"));		
 		}
 		
 		return $result;
@@ -994,12 +1005,15 @@ class businesssite_instance
 	
 	function instance_init()
 	{
-		// 
+		// widgets
 		nxs_lazyload_plugin_widget(__FILE__, "entities");
 		nxs_lazyload_plugin_widget(__FILE__, "phone");
 		nxs_lazyload_plugin_widget(__FILE__, "buslogo");
 		nxs_lazyload_plugin_widget(__FILE__, "socialaccounts");
 		nxs_lazyload_plugin_widget(__FILE__, "commercialmsgs");
+
+		// page decorators
+		nxs_lazyload_plugin_widget(__FILE__, "taxpageslider");
 	}
 	
 	function wp_nav_menu_items($result, $args ) 

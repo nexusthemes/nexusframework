@@ -169,7 +169,92 @@ function nxs_business_gettaxonomiesmeta()
 			),
 			"label" => "Phone",
 		),
-				
+		
+		"nxs_email" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Email",
+			"icon" => "contact",
+			"arity" => "1",	
+			"features" => array
+			(
+			),
+			"aritymaxinstancecount" => 1,
+			"taxonomyfields" => array
+			(
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			"instancefields" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"email" => array
+				(
+					"type" => "text",
+				),
+			),
+			"label" => "Email",
+		),
+		
+		"nxs_address" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Address",
+			"icon" => "googlemap",
+			"arity" => "1",	
+			"features" => array
+			(
+			),
+			"aritymaxinstancecount" => 1,
+			"taxonomyfields" => array
+			(
+			),
+			"wpcreateinstructions" => array
+			(
+			),
+			"instancefields" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"addressline1" => array
+				(
+					"type" => "text",
+				),
+				"addressline2" => array
+				(
+					"type" => "text",
+				),
+				"postalcode" => array
+				(
+					"type" => "text",
+				),
+				"state" => array
+				(
+					"type" => "text",
+				),
+				"city" => array
+				(
+					"type" => "text",
+				),
+				"country" => array
+				(
+					"type" => "text",
+				),
+			),
+			"label" => "Address",
+		),			
 		"nxs_socialaccount" => array
 		(
 			"title" => "Social Accounts",
@@ -358,6 +443,46 @@ function nxs_business_gettaxonomiesmeta()
 			(
 				"defaultrendertype" => "text",
 			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+				"title" => array
+				(
+					"persisttype" => "wp_title",
+					"type" => "text",
+					"edittype" => "text",	// "html"
+				),
+				"icon" => array
+				(
+					"persisttype" => "wp_meta",
+					"type" => "iconpicker",
+				),
+				"excerpt" => array
+				(
+					"persisttype" => "wp_excerpt",
+					"type" => "text",
+					"edittype" => "html",	// "html"
+				),
+				"content" => array
+				(
+					"persisttype" => "wp_content",
+					"type" => "text",
+					"edittype" => "html",	// "html"
+				),
+				"slug" => array
+				(
+					"type" => "text",
+					"persisttype" => "wp_slug",
+					"edittype" => "text",
+				),
+				"media" => array
+				(
+					"persisttype" => "wp_meta",
+					"edittype" => "media",
+				),
+				// the slug is automatically determined when the information is exposed
+				// by the content provider
+			),
 			"arity" => "n",	
 			"aritymaxinstancecount" => 8,
 			"instanceexistencecheckfield" => "title",
@@ -434,6 +559,16 @@ function nxs_business_gettaxonomiesmeta()
 			// fields displayed in the WP backend of this post
 			"instanceextendedproperties" => array
 			(
+				"source" => array
+				(
+					"persisttype" => "wp_meta",
+					"type" => "text",
+				),
+				"text" => array
+				(
+					"persisttype" => "wp_meta",
+					"type" => "text",
+				),
 				"stars" => array
 				(
 					"persisttype" => "wp_meta",
@@ -472,11 +607,32 @@ function nxs_business_gettaxonomiesmeta()
 			// fields displayed in the WP backend of this post
 			"instanceextendedproperties" => array
 			(
-				"role" => array
+				"person" => array
 				(
 					"persisttype" => "wp_meta",
 					"type" => "text",
 				),			
+				"line1" => array
+				(
+					"persisttype" => "wp_meta",
+					"type" => "text",
+				),			
+				"text" => array
+				(
+					"persisttype" => "wp_meta",
+					"type" => "text",
+				),
+				"role" => array
+				(
+					"persisttype" => "wp_meta",
+					"type" => "text",
+				),
+				"media" => array
+				(
+					"persisttype" => "wp_meta",
+					"edittype" => "media",
+				),	
+				// todo: add social channels as parameters too			
 			),			
 			"instanceexistencecheckfield" => "name",
 			"label" => "Employees",
@@ -503,6 +659,16 @@ function nxs_business_gettaxonomiesmeta()
 			// fields displayed in the WP backend of this post
 			"instanceextendedproperties" => array
 			(
+				"title" => array
+				(
+					"persisttype" => "wp_title",
+					"type" => "text",
+				),
+				"text" => array
+				(
+					"persisttype" => "wp_meta",
+					"type" => "text",
+				),
 			),			
 			"label" => "Unique Selling Propositions",
 			"wpcreateinstructions" => array

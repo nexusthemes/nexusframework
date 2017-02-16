@@ -19,7 +19,7 @@
 	{
 		// alleen als je in master mode zit,
 		// moet de editor aanstaan
-		return;
+		// return;
 	}
 	else
 	{

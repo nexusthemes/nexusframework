@@ -469,12 +469,42 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","person", "line1","line2","text","line1_destination_url","line2_destination_url"));
 	
+	
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
 	
 	// Widget specific variables
 	extract($mixedattributes);
+	
+	//
+	if ($media != "")
+	{
+		$width = "300";
+		$height = "300";
+		
+		// media_meta = "w:200;h:100";
+		$metapieces = explode(";", $media_meta);
+		foreach ($metapieces as $metapiece)
+		{
+			// metapiece = "w:300";
+			$subpieces = explode(":", $metapiece);
+			if ($subpieces[0] == "w")
+			{
+				$width = $subpieces[1];
+			}
+			else if ($subpieces[0] == "h")
+			{
+				$height = $subpieces[1];
+			}
+		}
+		
+		//$image_src = "https://mediamanager.websitesexamples.com/?nxs_imagecropper=true&requestedwidth={$width}&requestedheight={$height}&debug=tru&url={$media}&scope=lazydetect";
+		//error_log("text img; $image_src");
+		
+		$image_src = "https://d3mwusvabcs8z9.cloudfront.net/?nxs_imagecropper=true&requestedwidth={$width}&requestedheight={$height}&debug=tru&url={$media}&scope=lazydetect";
+	}
 	
 	if ($postid != "" && $placeholderid != "")
 	{

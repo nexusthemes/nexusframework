@@ -451,13 +451,31 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 
 	$mixedattributes = array_merge($temp_array, $args);
 
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-
-		// Lookup atts
+	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("address"));
 
-	$address = $mixedattributes["address"];
-
+	global $businesssite_instance;
+	$contentmodel = $businesssite_instance->getcontentmodel();
+	$addressline1 = $contentmodel["nxs_address"]["taxonomy"]["addressline1"];
+	$city = $contentmodel["nxs_address"]["taxonomy"]["city"];
+	$country = $contentmodel["nxs_address"]["taxonomy"]["country"];
+	$preferedaddressloouppossible = ($addressline1 != "" && $city != "");
+	$alternateaddressloouppossible = ($mixedattributes["address"] != "");
+	
+	if ($preferedaddressloouppossible)
+	{
+		$address = "{$addressline1} {$city} {$country}";
+	}
+	else if ($alternateaddressloouppossible)
+	{
+		$address = $mixedattributes["address"];
+	}
+	else
+	{
+		$address = "";	// some fallback address to use instead
+	}
+	
+	// convert address to latlng
 	$latlng = nxs_widget_googlemap_getlatlng($address);
 	
 	$ismapsavailable = false; 

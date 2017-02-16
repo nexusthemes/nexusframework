@@ -8442,31 +8442,108 @@ function nxs_lookuptable_getlookup_v2($includeruntimeitems)
 	if ($includeruntimeitems)
 	{
 		$result["currentyear"] = date("Y");
+	
+		// values from the business model should and will override values
+		// from the lookup tables
+		global $businesssite_instance;
+		if ($businesssite_instance != null)
+		{
+			$contentmodel = $businesssite_instance->getcontentmodel();
+			
+			$items = array
+			(
+				array
+				(
+					"taxonomy" => "nxs_email",
+					"taxonomyfield" => "email",
+					"lookupkey" => "email",
+				),
+				array
+				(
+					"taxonomy" => "nxs_address",
+					"taxonomyfield" => "addressline1",
+					"lookupkey" => "addressline1",
+				),
+				array
+				(
+					"taxonomy" => "nxs_address",
+					"taxonomyfield" => "addressline2",
+					"lookupkey" => "addressline2",
+				),
+				array
+				(
+					"taxonomy" => "nxs_address",
+					"taxonomyfield" => "postalcode",
+					"lookupkey" => "postalcode",
+				),
+				array
+				(
+					"taxonomy" => "nxs_address",
+					"taxonomyfield" => "state",
+					"lookupkey" => "state",
+				),
+				array
+				(
+					"taxonomy" => "nxs_address",
+					"taxonomyfield" => "city",
+					"lookupkey" => "city",
+				),
+				array
+				(
+					"taxonomy" => "nxs_address",
+					"taxonomyfield" => "country",
+					"lookupkey" => "country",
+				),
+			);
+			
+			foreach ($items as $item)
+			{
+				$taxonomy = $item["taxonomy"];
+				$taxonomyfield = $item["taxonomyfield"];
+				$lookupkey = $item["lookupkey"];
+				$value = $contentmodel[$taxonomy]["taxonomy"][$taxonomyfield];
+				if ($value != "")
+				{
+					$result[$lookupkey]= $value;
+				}
+			}	
+		}
+		else
+		{
+			error_log("err; nxs_lookuptable_getlookup_v2 invoked with runtime items while businesssite_instance is not set");
+		}
 	}
+	
+	//
 	
 	return $result;
 }
 
 function nxs_lookuptable_setlookupvalueforkey($key, $value)
 {
-	$lookuptable = nxs_lookuptable_getlookup();
-	// set, or override
-	$lookuptable[$key] = $value;
+	$includeruntimeitems = false;
+	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
 	
-	nxs_lookuptable_persist($lookuptable);
+	// set, or override
+	$lookup[$key] = $value;
+	
+	nxs_lookuptable_persist($lookup);
 }
 
 function nxs_lookuptable_getlookupvalueforkey($key)
 {
-	$lookuptable = nxs_lookuptable_getlookup();
-	return $lookuptable[$key];
+	$includeruntimeitems = false;
+	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+	return $lookup[$key];
 }
 
 function nxs_lookuptable_deletekey($key)
 {
-	$lookuptable = nxs_lookuptable_getlookup();
-	unset($lookuptable[$key]);
-	nxs_lookuptable_persist($lookuptable);
+	$includeruntimeitems = false;
+	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+
+	unset($lookup[$key]);
+	nxs_lookuptable_persist($lookup);
 }
 
 // -------------

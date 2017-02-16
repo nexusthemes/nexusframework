@@ -1081,8 +1081,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","entities","button_entities", "destination_url"));
 	
-	
-	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
@@ -1093,7 +1091,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	$title = $contentmodel[$datasource]["taxonomy"]["title"];	// old: "post_title"
-
 
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = $datasource;
@@ -1359,12 +1356,11 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		if ($enabled == "") { continue; }
 		$index++;
 		$post_id = $instance["content"]["post_id"];
-		$post_title = $instance["content"]["title"];			// old: "post_title"
+		$post_title = $instance["content"]["title"];
 		$post_excerpt = $instance["content"]["excerpt"];		
 		$post_content = $instance["content"]["content"];
 		$post_slug = $instance["content"]["slug"];
-		$url = "/{$post_slug}/"; // $instance["content"]["url"];
-		//$image_imageid = $instance["content"]["post_thumbnail_id"];
+		$url = "/{$post_slug}/";
 		$media = $instance["content"]["media"];
 		// $media_meta = "w:300;h:100";
 		$post_icon = $instance["content"]["post_icon"];
@@ -1372,11 +1368,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$post_rating_text = $instance["content"]["post_rating_text"];
 		$post_stars = $instance["content"]["post_stars"];
 		$post_role = $instance["content"]["post_role"];
-		//
-		//$post_imperative_m = $instance["content"]["post_imperative_m"];
-		//$post_imperative_l = $instance["content"]["post_imperative_l"];
-		//$post_destination_cta = $instance["content"]["post_destination_cta"];
-		
 		
 		// obsolete?
 		// $post_quote = $instance["content"]["post_quote"];
@@ -1402,15 +1393,21 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		// taxonomy specific mapping
 		if ($taxonomy == "nxs_testimonial")
 		{
-			$childargs["source"] = $post_title;
-			$childargs["text"] = $post_content;
+			$childargs["source"] = $instance["content"]["source"];
+			$childargs["text"] = $instance["content"]["text"];
+			$childargs["stars"] = $instance["content"]["stars"];
 		}
 		if ($taxonomy == "nxs_employee")
 		{
 			$childargs["title"] = "";
-			$childargs["person"] = $post_title;
-			$childargs["line1"] = $post_role;
-			$childargs["text"] = $post_content;
+			$childargs["person"] = $instance["content"]["person"];
+			$childargs["line1"] = $instance["content"]["line1"];
+			$childargs["text"] = $instance["content"]["text"];
+		}
+		if ($taxonomy == "nxs_usp")
+		{
+			$childargs["title"] = $instance["content"]["title"];
+			$childargs["text"] = $instance["content"]["text"];
 		}
 		
 		// replicate styleable fields specific for "TEXT" widgets

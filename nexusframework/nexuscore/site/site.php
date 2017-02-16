@@ -1441,8 +1441,8 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
 			                      }		
 			                      
 			                      // wp_get_attachment_url($attachmentID);
-			                      $lookup = wp_get_attachment_image_src($currentimage->ID, 'thumbnail', true);
-			                      $url = $lookup[0];
+			                      $imglookup = wp_get_attachment_image_src($currentimage->ID, 'thumbnail', true);
+			                      $url = $imglookup[0];
 			                      $url = nxs_img_getimageurlthemeversion($url);
 			                      $rowclass = "";
 			                      if ($rownr % 2 == 0)
@@ -2750,8 +2750,10 @@ function nxs_site_newtemplate_getoptions($args)
 	
 	if ($lp_step == "1" || $lp_step == "")	// select taxonomy
 	{
-		$lookuptable = nxs_lookuptable_getlookup();
-		$themeid = $lookuptable["templatewizardthemeid"];
+		$includeruntimeitems = true;
+		$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+	
+		$themeid = $lookup["templatewizardthemeid"];
 		if ($themeid == "")
 		{
 			$thememeta = nxs_theme_getmeta();
@@ -2896,8 +2898,9 @@ function nxs_site_newtemplate_getoptions($args)
 	}	
 	else if ($lp_step == "2")
 	{
-		$lookuptable = nxs_lookuptable_getlookup();
-		$themeid = $lookuptable["templatewizardthemeid"];
+		$includeruntimeitems = true;
+		$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+		$themeid = $lookup["templatewizardthemeid"];
 		if ($themeid == "")
 		{
 			$thememeta = nxs_theme_getmeta();
@@ -3561,9 +3564,10 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
 		}
 	}
 	
-	$lookuptable = nxs_lookuptable_getlookup();
+	$includeruntimeitems = false;
+	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
 	
-	if (count($lookuptable) > 0) {
+	if (count($lookup) > 0) {
 		$foundatleastone = true;
 	}
 
@@ -3596,7 +3600,7 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
 			echo '
 			<tbody>';
 		
-			foreach ($lookuptable as $currentname => $currentvalue) {
+			foreach ($lookup as $currentname => $currentvalue) {
 				echo '
 				<tr>';
 				

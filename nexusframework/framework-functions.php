@@ -2820,7 +2820,6 @@ function nxs_load_plugins()
 		// dynamically inject additional plugins 
 		// based upon the configuration of the site
 		$includeruntimeitems = false;
-		
 		$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
 		
 		$nxs_plugins = $lookup["nxs_plugins"];
