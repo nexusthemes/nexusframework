@@ -79,6 +79,76 @@ function nxs_business_gettaxonomiesmeta()
 				),
 			),
 		),
+		
+		"nxs_about" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "About",
+			"label" => "About",
+			"icon" => "info",
+			"arity" => "1",	
+			"features" => array
+			(
+			),			
+			"aritymaxinstancecount" => 1,
+			"wpcreateinstructions" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"title" => array
+				(
+					"persisttype" => "wp_title",
+					"label" => "Title",
+					"type" => "text",
+				),
+				"content" => array
+				(
+					"persisttype" => "wp_content",
+					"type" => "text",
+					"edittype" => "textarea",
+				),
+			),
+		),	
+
+		"nxs_corporateidentity" => array
+		(
+			"caninstancesbereferenced" => false,	// false if virtual
+			"title" => "Corporate Identity",
+			"label" => "Corporate Identity",
+			"icon" => "resume",
+			"arity" => "1",	
+			"features" => array
+			(
+			),			
+			"aritymaxinstancecount" => 1,
+			"wpcreateinstructions" => array
+			(
+			),
+			// fields displayed in the WP backend of this post
+			"instanceextendedproperties" => array
+			(
+			),
+			"taxonomyextendedproperties" => array
+			(
+				"primarycolor" => array
+				(
+					"persisttype" => "wp_meta",
+					"label" => "Primary Color",
+					"type" => "color",
+				),
+				"contrastingcolor" => array
+				(
+					"persisttype" => "wp_meta",
+					"label" => "Contrasting Color",
+					"type" => "color",
+				),
+			),
+		),			
 		"nxs_slogan" => array
 		(
 			"caninstancesbereferenced" => false,	// false if virtual
@@ -316,7 +386,8 @@ function nxs_business_gettaxonomiesmeta()
 				),
 				"excerpt" => array
 				(
-					"type" => "textarea",
+					"type" => "text",
+					"edittype" => "textarea",
 				),
 				"genericimage" => array
 				(
@@ -379,7 +450,7 @@ function nxs_business_gettaxonomiesmeta()
 				(
 					"persisttype" => "wp_title",
 					"type" => "text",
-					"edittype" => "text",	// "html"
+					"edittype" => "text",
 				),
 				"icon" => array
 				(
@@ -390,20 +461,22 @@ function nxs_business_gettaxonomiesmeta()
 				(
 					"persisttype" => "wp_excerpt",
 					"type" => "text",
-					"edittype" => "html",	// "html"
+					"edittype" => "textarea",
 				),
 				"content" => array
 				(
 					"persisttype" => "wp_content",
 					"type" => "text",
-					"edittype" => "html",	// "html"
+					"edittype" => "textarea",
 				),
+				
 				"slug" => array
 				(
 					"type" => "text",
 					"persisttype" => "wp_slug",
-					"edittype" => "text",
+					"edittype" => "none",
 				),
+				
 				"media" => array
 				(
 					"persisttype" => "wp_meta",
@@ -450,7 +523,7 @@ function nxs_business_gettaxonomiesmeta()
 				(
 					"persisttype" => "wp_title",
 					"type" => "text",
-					"edittype" => "text",	// "html"
+					"edittype" => "text",
 				),
 				"icon" => array
 				(
@@ -461,20 +534,22 @@ function nxs_business_gettaxonomiesmeta()
 				(
 					"persisttype" => "wp_excerpt",
 					"type" => "text",
-					"edittype" => "html",	// "html"
+					"edittype" => "textarea",
 				),
 				"content" => array
 				(
 					"persisttype" => "wp_content",
 					"type" => "text",
-					"edittype" => "html",	// "html"
+					"edittype" => "textarea",
 				),
+				
 				"slug" => array
 				(
 					"type" => "text",
 					"persisttype" => "wp_slug",
-					"edittype" => "text",
+					"edittype" => "none",
 				),
+				
 				"media" => array
 				(
 					"persisttype" => "wp_meta",

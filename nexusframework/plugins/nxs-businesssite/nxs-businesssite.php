@@ -404,6 +404,8 @@ class businesssite_instance
 		$json = json_decode($content, true);
 		$result = $json["contentmodel"];
 		
+		$all_slugs = array();
+		
 		// enrich the model
 		// the slug is determined "at runtime"; its derived from the title
 		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
@@ -412,7 +414,7 @@ class businesssite_instance
 			//echo "tax: $taxonomy <br />";
 			
 			$titlefield = "";
-			$slugfield = "";
+			$slugfield = "post_slug";
 			
 			$instanceextendedproperties = $taxonomymeta["instanceextendedproperties"];
 			foreach ($instanceextendedproperties as $field => $fieldmeta)
@@ -430,6 +432,8 @@ class businesssite_instance
 			//echo "titlefield: $titlefield <br />";
 			//echo "slugfield: $slugfield <br />";
 			
+			//
+			
 			$instances = $result[$taxonomy]["instances"];
 			foreach ($instances as $index => $instance)
 			{
@@ -437,8 +441,23 @@ class businesssite_instance
 				$title = $content[$titlefield];
 				$slug = $title;
 				$slug = strtolower($slug);
-				$slug = str_replace(" ", "-", $slug); // todo; also change any other weird chars
+				$slug = preg_replace('/[^A-Za-z0-9.]/', '-', $slug); // Replaces any non alpha numeric with -
+				for ($cnt = 0; $cnt < 3; $cnt++)
+				{
+					$slug = str_replace("--", "-", $slug);
+				}
+				
+				if (in_array($slug, $all_slugs))
+				{
+					// this slug is already in use; make it unique
+					$count = count($all_slugs);
+					$slug .= "_{$count}";
+				}
+				
+				$all_slugs[]= $slug;
+				
 				$result[$taxonomy]["instances"][$index]["content"][$slugfield] = $slug;
+				$result[$taxonomy]["instances"][$index]["content"]["post_slug"] = $slug;
 			}
 		}
 

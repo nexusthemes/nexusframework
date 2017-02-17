@@ -39,8 +39,8 @@ function nxs_widgets_taxpageslider_registerhooksforpagewidget($args)
 			global $nxs_taxpageslider_pagedecoratorwidgetplaceholderid;
 			$nxs_taxpageslider_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
 			
-			global $nxs_taxpageslider_taxonomy;
-			$nxs_taxpageslider_taxonomy = $taxpagesliderid;
+			global $nxs_taxpageslider_metadata;
+			$nxs_taxpageslider_metadata = $widget_metadata;
 			
 			add_action('nxs_beforeend_head', 'nxs_widgets_taxpageslider_beforeend_head');
 			add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_taxpageslider_betweenheadandcontent');
@@ -95,7 +95,15 @@ function nxs_widgets_taxpageslider_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
 				"dropdown" 		=> $taxonomies,
 			),
-
+			
+			// MEDIA META
+			
+			array(
+				"id" 				=> "media_meta",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Media meta", "nxs_td"),
+			),
+			
 			array(
 				"id" 				=> "item_durationvisibility",	
 				"type" 				=> "select",
@@ -478,8 +486,10 @@ function nxs_widgets_taxpageslider_updateplaceholderdata($args)
 
 function nxs_widgets_taxpageslider_beforeend_head()
 {
-	// the global $nxs_taxpageslider_taxonomy is set in nxs_widgets_taxpageslider_registerhooksforpagewidget($args)
-	global $nxs_taxpageslider_taxonomy;
+	// the global $nxs_taxpageslider_metadata is set in nxs_widgets_taxpageslider_registerhooksforpagewidget($args)
+	global $nxs_taxpageslider_metadata;
+	$nxs_taxpageslider_taxonomy = $nxs_taxpageslider_metadata["datasource"];
+	$media_meta = $nxs_taxpageslider_metadata["media_meta"];
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	$structure = $contentmodel[$nxs_taxpageslider_taxonomy]["instances"];
@@ -580,7 +590,8 @@ function nxs_widgets_taxpageslider_beforeend_head()
 			// ---
 
 			// the global $nxs_taxpageslider_taxonomy is set in nxs_widgets_taxpageslider_registerhooksforpagewidget($args)
-			global $nxs_taxpageslider_taxonomy;
+			global $nxs_taxpageslider_metadata;
+			$nxs_taxpageslider_taxonomy = $nxs_taxpageslider_metadata["datasource"];
 			global $businesssite_instance;
 			$contentmodel = $businesssite_instance->getcontentmodel();
 			$structure = $contentmodel[$nxs_taxpageslider_taxonomy]["instances"];
@@ -856,7 +867,9 @@ function nxs_widgets_taxpageslider_beforeend_head()
 function nxs_widgets_taxpageslider_betweenheadandcontent()
 {
 	// the global $nxs_taxpageslider_taxonomy is set in nxs_widgets_taxpageslider_registerhooksforpagewidget($args)
-	global $nxs_taxpageslider_taxonomy;
+	global $nxs_taxpageslider_metadata;
+	$nxs_taxpageslider_taxonomy = $nxs_taxpageslider_metadata["datasource"];
+	
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	$structure = $contentmodel[$nxs_taxpageslider_taxonomy]["instances"];
