@@ -339,7 +339,8 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	// (for example entities widgets)
 	if ($nxs_global_row_render_statebag["etchrow"] === true)
 	{
-		$output = ""; // "<!-- and its gone -->";
+		// temporarily disabled
+		//$output = ""; // "<!-- and its gone -->";
 	}
 
 	// global variable no longer needed

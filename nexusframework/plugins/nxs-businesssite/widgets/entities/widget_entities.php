@@ -1634,10 +1634,10 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	if ($count == 0)
 	{
 		//
-		if (is_user_logged_in())
+		if (true) // is_user_logged_in())
 		{
 			global $businesssite_instance;
-			if ($businesssite_instance->ismaster() === true)
+			if (true) // $businesssite_instance->ismaster() === true)
 			{
 				$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
 				$taxonomymeta = $taxonomiesmeta[$taxonomy];
@@ -1650,15 +1650,16 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			}
 			else
 			{
-				global $nxs_global_row_render_statebag;
-				$nxs_global_row_render_statebag["etchrow"] = true;
+				// temporarily turned off
+				//global $nxs_global_row_render_statebag;
+				//$nxs_global_row_render_statebag["etchrow"] = true;
 			}
 		}
 		else
 		{
-			global $nxs_global_row_render_statebag;
-			$nxs_global_row_render_statebag["etchrow"] = true;
-			// $html = "";
+			// temporarily turned off
+			//global $nxs_global_row_render_statebag;
+			//$nxs_global_row_render_statebag["etchrow"] = true;
 		}
 	}
 

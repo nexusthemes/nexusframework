@@ -1047,7 +1047,6 @@ class businesssite_instance
     return $result;
 	}
 	
-	
 	function walker_nav_menu_start_el($result, $item, $depth, $args ) 
 	{
   	if ($_REQUEST["nxs"] == "debugmenu")

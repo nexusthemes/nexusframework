@@ -487,7 +487,7 @@ function nxs_widgets_commercialmsgs_render_webpart_render_htmlvisualization($arg
 			$media = $instance["content"]["media"];
 			$post_id = $instance["content"]["post_id"];
 			$post_title = $instance["content"]["title"];			// "post_title"
-			$post_excerpt = $instance["content"]["post_excerpt"];		
+			$post_excerpt = $instance["content"]["excerpt"];		
 			//$image_imageid = $instance["content"]["post_thumbnail_id"];
 			
 			$width = 300;
