@@ -6,19 +6,6 @@
 	$meta = nxs_get_postmeta($postid);
 	$nxssubposttype = nxs_get_nxssubposttype($postid);
 
-	// nxssubposttype could be for example "uniquesellingproposition_set"
-	$possibletaxonomy = str_replace("_set", "", $nxssubposttype);
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-	$istaxonomies_set = false;
-	foreach ($taxonomiesmeta as $taxonomy => $meta)
-	{
-		if ($possibletaxonomy == $taxonomy)
-		{
-			$istaxonomies_set = true;
-			break;
-		}
-	}
-
 	//
 	//
 	//
@@ -40,10 +27,7 @@
   </div>
 	<?php
 	
-	if ($istaxonomies_set)
-	{
-	}
-	else
+	if (true)
 	{
 	  ?>
 	  <div>
@@ -68,24 +52,7 @@
 			<?php
 			// the footer section 
 			
-			if ($istaxonomies_set)
-			{
-				// yes, its a taxonomy set, render for this scenario an "Add" button
-				// that will go to the wp backend
-				$addnewbackendurl = admin_url("post-new.php?post_type={$taxonomy}");
-				?>
-		    <div class="content2">
-		    	<div class="box">
-						<?php nxs_render_backbutton(); ?>
-						<a class="nxsbutton1 nxs-float-left clear" href="<?php echo $addnewbackendurl; ?>">Add New (WP backend)</a>
-						<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_site_neweditsession('newposthome'); return false;">Add New (Wizard)</a>
-						<a class="nxsbutton1 nxs-float-left clear" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'dialogappendgenericlistitem'); return false;">Add Existing</a>
-					</div>
-					<div class="nxs-clear margin"></div>
-				</div>
-				<?php				
-			}
-			else
+			if (true)
 			{
 				?>
 		    <div class="content2">

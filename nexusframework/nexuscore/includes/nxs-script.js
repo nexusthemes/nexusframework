@@ -4292,22 +4292,6 @@ function nxs_js_redirect_top(url)
 			}
 		}
 		
-		function nxs_js_add_entity(domelementinwidget)
-		{
-			var placeholderdom = jQ_nxs(domelementinwidget).closest(".nxs-placeholder");
-			var datasource = jQ_nxs(placeholderdom).data("nxs-datasource");
-			
-			nxs_js_log("nxs_js_add_entity; datasource: " + datasource);
-			
-			// 
-			var initialcontext = 
-			{
-				"lp_taxonomy" : datasource,
-				"lp_step" : 2 
-			};
-			nxs_js_popup_site_neweditsession_v2("newtemplate", initialcontext);								
-		}
-		
 		function nxs_js_edit_widget(domelementinwidget)
 		{
 			nxs_js_edit_widget_v2(domelementinwidget, "home");

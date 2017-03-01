@@ -60,13 +60,13 @@ function nxs_widgets_taxpageslider_home_getoptions($args)
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
-	$taxonomies = array();
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	$taxonomiesddl = array();
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
 	 	if ($taxonomymeta["arity"] == "n")
 	 	{
-	 		$taxonomies[$taxonomy] = $taxonomymeta["title"];
+	 		$taxonomiesddl[$taxonomy] = $taxonomymeta["title"];
 	 	}
 	}
 	
@@ -93,7 +93,7 @@ function nxs_widgets_taxpageslider_home_getoptions($args)
 				"type" 				=> "select",
 				"popuprefreshonchange" => "true",
 				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
-				"dropdown" 		=> $taxonomies,
+				"dropdown" 		=> $taxonomiesddl,
 			),
 			
 			// MEDIA META

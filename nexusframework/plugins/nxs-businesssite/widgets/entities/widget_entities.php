@@ -58,7 +58,7 @@ function nxs_widgets_entities_home_getoptions($args)
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	
 	$taxonomies = array();
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
 	 	if ($taxonomymeta["arity"] == "n")
@@ -137,16 +137,17 @@ function nxs_widgets_entities_home_getoptions($args)
 				"initial_toggle_state" => "closed",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 			),
-			/*
 			array(
-				"id" 				=> "title",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
-				"unicontentablefield" => true,
-				"localizablefield"	=> true
+				"id" 				=> "title_postprocessor",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title postprocessr", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@" => "None",
+					"truncateall" => "Truncate all",
+				),
+				"unistylablefield"	=> true
 			),
-			*/
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
@@ -221,6 +222,17 @@ function nxs_widgets_entities_home_getoptions($args)
 				"popuprefreshonchange" => "true",
 				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
 				"dropdown" 		=> $taxonomies,
+			),
+			array(
+				"id" 				=> "datasource_postprocessor",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Datasource postprocessr", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@" => "None",
+					"truncateall" => "Truncate all",
+				),
+				"unistylablefield"	=> true
 			),
 			array
       (
@@ -343,15 +355,26 @@ function nxs_widgets_entities_home_getoptions($args)
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
 				"unistylablefield"	=> true
 			),
-			//
 			array(
-				"id" 				=> "text_text_truncatelength",
+				"id" 				=> "text_title_postprocessor",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Text max length", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title postprocessr", "nxs_td"),
 				"dropdown" 			=> array
 				(
-					"@@@empty@@@" => "No truncation",
-					"none" => "Truncate all",
+					"@@@empty@@@" => "None",
+					"truncateall" => "Truncate all",
+				),
+				"unistylablefield"	=> true
+			),
+			//
+			array(
+				"id" 				=> "text_text_postprocessor",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Text postprocessr", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@" => "None",
+					"truncateall" => "Truncate all",
 				),
 				"unistylablefield"	=> true
 			),
@@ -976,7 +999,7 @@ function nxs_entities_getdefaultitemsstyle($datasource)
 {
 	$result = "htmlcustom";
 	
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 	foreach ($taxonomiesmeta as $taxonomy => $meta)
 	{
 		if ($taxonomy == $datasource)
@@ -995,7 +1018,7 @@ function nxs_entities_geticon($datasource)
 {
 	$result = "moving";
 	
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 	foreach ($taxonomiesmeta as $taxonomy => $meta)
 	{
 		if ($taxonomy == $datasource)
@@ -1091,6 +1114,11 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
 	$title = $contentmodel[$datasource]["taxonomy"]["title"];	// old: "post_title"
+	
+	if ($title_postprocessor === "truncateall") 
+	{
+		$title = "";
+	}
 
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = $datasource;
@@ -1307,6 +1335,11 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	$instances = $contentmodel[$taxonomy]["instances"];
 	
+	if ($datasource_postprocessor == "truncateall")
+	{
+		$instances = array();
+	}
+	
 	//
 	$count = count($instances); // $contentmodel[$taxonomy]["countenabled"];
 	
@@ -1347,8 +1380,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
 
-	$instances = $contentmodel[$taxonomy]["instances"];
-	
 	$index = -1;
 	foreach ($instances as $instance)
 	{
@@ -1360,7 +1391,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$post_excerpt = $instance["content"]["excerpt"];		
 		$post_content = $instance["content"]["content"];
 		$post_slug = $instance["content"]["slug"];
-		$url = "/{$post_slug}/";
+		// $url = "/{$post_slug}/";
 		$media = $instance["content"]["media"];
 		// $media_meta = "w:300;h:100";
 		$post_icon = $instance["content"]["post_icon"];
@@ -1381,7 +1412,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			// "image_imageid" => $image_imageid,
 			"media" => $media,
 			"media_meta" => $media_meta,
-			"destination_url" => $url,
+			// "destination_url" => $url,
 			"destination_target" => "_self",
 			"icon" => $post_icon,
 			"source" => $post_source,
@@ -1389,6 +1420,13 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			"stars" => $post_stars,
 
 		);
+		
+		// taxonomy specific mapping
+		if ($taxonomy == "nxs_service")
+		{
+			$childargs["destination_url"] = $instance["content"]["slug"];
+		}
+		
 		
 		// taxonomy specific mapping
 		if ($taxonomy == "nxs_testimonial")
@@ -1415,8 +1453,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		{
 			$fieldstoreplicate = array
 			(
-				"title_heading", "title_fontzen", "title_alignment", "title_fontsize", "top_info_color", "top_info_padding", 
-				"icon_scale", "text_truncatelength", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
+				"title_heading", "title_postprocessor", "title_fontzen", "title_alignment", "title_fontsize", 
+				"top_info_color", "top_info_padding", 
+				"icon_scale", "text_postprocessor", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
 				"button_scale", "button_color", "button_fontzen", "button_alignment",
 				"destination_target", "title_heightiq", "text_heightiq", "text_showliftnote", "text_showdropcap", "text_fontzen", "enlarge", "grayscale",
 			);
@@ -1633,20 +1672,33 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	if ($count == 0)
 	{
-		//
-		if (true) // is_user_logged_in())
+		if ($datasource_postprocessor == "truncateall")
 		{
-			global $businesssite_instance;
-			if (true) // $businesssite_instance->ismaster() === true)
+			// hidden
+		}
+		else
+		{
+			//
+			if (true) // is_user_logged_in())
 			{
-				$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-				$taxonomymeta = $taxonomiesmeta[$taxonomy];
-				$title = $taxonomymeta["title"];
 				global $businesssite_instance;
-				$contentmodel = $businesssite_instance->getcontentmodel();
-				$url = $contentmodel[$taxonomy]["url"];
-				$html .= "<div>No {$title} found <a class='nxsbutton' href='{$url}'>Manage {$title}</a></div>";
-				$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+				if (true) // $businesssite_instance->ismaster() === true)
+				{
+					$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
+					$taxonomymeta = $taxonomiesmeta[$taxonomy];
+					$title = $taxonomymeta["title"];
+					global $businesssite_instance;
+					$contentmodel = $businesssite_instance->getcontentmodel();
+					$url = $contentmodel[$taxonomy]["url"];
+					$html .= "<div>No {$title} found <a class='nxsbutton' href='{$url}'>Manage {$title}</a></div>";
+					$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+				}
+				else
+				{
+					// temporarily turned off
+					//global $nxs_global_row_render_statebag;
+					//$nxs_global_row_render_statebag["etchrow"] = true;
+				}
 			}
 			else
 			{
@@ -1654,12 +1706,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				//global $nxs_global_row_render_statebag;
 				//$nxs_global_row_render_statebag["etchrow"] = true;
 			}
-		}
-		else
-		{
-			// temporarily turned off
-			//global $nxs_global_row_render_statebag;
-			//$nxs_global_row_render_statebag["etchrow"] = true;
 		}
 	}
 

@@ -2306,14 +2306,10 @@ function nxs_create_post_types_and_taxonomies()
 	// add custom posttypes for semantic entities;
 
 	// custom post types to hold instances of businessmodel taxonomies
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
 		$show_in_nav_menus = false;
-		if ($taxonomy == "nxs_taxonomy")
-		{
-			$show_in_nav_menus = true;
-		}
 		
 		// strip the "nxs_" prefix, as the register function will add it itself
 		$title = $taxonomy;
@@ -2416,7 +2412,6 @@ function nxs_create_post_types_and_taxonomies()
 		}
 	}
 	
-	
 	// by default custom post types in WP get a "slug" in their
 	// url, to be able to identify them. Our semantic entities
 	// like "service", etc. should not get such a slug, as it
@@ -2429,7 +2424,7 @@ function nxs_create_post_types_and_taxonomies()
 		// url in the permalinks (i.e. which should behave like pages/posts)
 		$result = array();
 		
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
 		 	if ($taxonomymeta["arity"] == "n")
@@ -2814,7 +2809,6 @@ function nxs_load_plugins()
 		$plugins = array
 		(
 			"nxs-businesssite",
-			"nxs-businessmodeleditor",
 		);
 		
 		// dynamically inject additional plugins 

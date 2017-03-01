@@ -1,6 +1,23 @@
 <?php
 
-function nxs_business_gettaxonomiesmeta()
+function nxs_business_gettaxonomiesmeta($realm)
+{
+	if ($realm == "" || $realm == "nexusthemescompany")
+	{
+		$result = nxs_business_gettaxonomiesmeta_nexusthemescompany();
+	}
+	else 
+	{
+		// TODO: load taxonomiesmeta for the realm through a webservice
+		
+		error_log("unsupported realm; $realm");
+		die();
+	}
+	
+	return $result;
+}
+
+function nxs_business_gettaxonomiesmeta_nexusthemescompany()
 {
 	// arity explanation;
 	// * n means 0,1 or more
@@ -337,11 +354,13 @@ function nxs_business_gettaxonomiesmeta()
 			// fields displayed in the WP backend of this post
 			"instanceextendedproperties" => array
 			(
+				/*
 				"icon" => array
 				(
 					"persisttype" => "wp_meta",
 					"type" => "iconpicker",
 				),
+				*/
 				"url" => array
 				(
 					"persisttype" => "wp_meta",
@@ -452,11 +471,13 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "text",
 					"edittype" => "text",
 				),
+				/*
 				"icon" => array
 				(
 					"persisttype" => "wp_meta",
 					"type" => "iconpicker",
 				),
+				*/
 				"excerpt" => array
 				(
 					"persisttype" => "wp_excerpt",
@@ -525,11 +546,13 @@ function nxs_business_gettaxonomiesmeta()
 					"type" => "text",
 					"edittype" => "text",
 				),
+				/*
 				"icon" => array
 				(
 					"persisttype" => "wp_meta",
 					"type" => "iconpicker",
 				),
+				*/
 				"excerpt" => array
 				(
 					"persisttype" => "wp_excerpt",
@@ -654,6 +677,7 @@ function nxs_business_gettaxonomiesmeta()
 				(
 					"persisttype" => "wp_meta",
 					"type" => "text",
+					"edittype" => "textarea",
 				),
 				"stars" => array
 				(

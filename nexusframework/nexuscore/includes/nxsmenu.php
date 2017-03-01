@@ -668,12 +668,6 @@
 		  </li>
 		  <!-- -->
 		  <li class="nxs-sub-menu nxs-hidewheneditorinactive">
-		  	<a href="#" onclick="nxs_js_popup_site_neweditsession('taxonomiesoverview'); return false; return false;" title="<?php nxs_l18n_e("Taxonomies", "nxs_td"); ?>" class="site">
-		  		<span class='nxs-icon-tree'></span>
-		  	</a>
-		  </li>
-		  <!-- -->
-		  <li class="nxs-sub-menu nxs-hidewheneditorinactive">
 		  	<a href="<?php echo admin_url('edit.php?post_type=page&orderby=date&order=desc'); ?>" title="<?php nxs_l18n_e("Pages[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site">
 		  		<span class='nxs-icon-article-overview'></span>
 		  	</a>

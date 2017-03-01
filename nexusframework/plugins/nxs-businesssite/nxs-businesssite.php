@@ -145,73 +145,6 @@ class businesssite_instance
 		return $response;
 	}
 
-
-	// abstract taxonomy instance functionality
-	function getabstracttaxonomyinstanceid($taxonomy)
-	{
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-		$taxonomymeta = $taxonomiesmeta[$taxonomy];
-		
-		if ($taxonomiesmeta[$taxonomy]["singletontaxonomyinstance"] == true)
-		{
-			// 
-			$result = false;
-		}
-		else
-		{
-			$postids = nxs_wp_getpostidsbymetahavingposttype("nxs_abstracttaxinstance", $taxonomy, "nxs_taxonomy");
-			
-			$found = count($postids) > 0;
-			if ($found)
-			{
-				$result = $postids[0];
-			}
-			else
-			{
-				// if its not yet there, create it
-				$r = $this->createnewabstracttaxonomyinstance_internal($taxonomy);
-				if ($r["result"] != "OK") { echo "unexpected;"; var_dump($r); die(); }
-				$result = $r["postid"];
-			}
-		}
-		
-		return $result;
-	}
-		
-	function createnewabstracttaxonomyinstance_internal($taxonomy)
-	{
-		
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-		$taxonomymeta = $taxonomiesmeta[$taxonomy];
-		$title = $taxonomymeta["title"];			
-
-		$subargs = array();
-		$subargs["nxsposttype"] = "taxonomy";
-		$subargs["wpposttype"] = "nxs_taxonomy";
-		
-		$subargs["poststatus"] = "publish";
-		$subargs["titel"] = $title;
-		$subargs["slug"] = $title . " " . nxs_generaterandomstring(6);
-		$subargs["postwizard"] = "skip";
-		$subargs["postmetas"] = array
-		(
-			"nxs_abstracttaxinstance" => $taxonomy,
-		);
-		
-		$response = nxs_addnewarticle($subargs);
-		if ($response["result"] != "OK")
-		{
-			echo "failed to create container?!";
-			die();
-		}
-		else
-		{
-			//
-		}
-		
-		return $response;
-	}
-	
 	function getcontentmodeltaxonomyinstances($arg)
 	{
 		$taxonomy = $arg["taxonomy"];
@@ -245,8 +178,8 @@ class businesssite_instance
 		// and verify if the requestedslug matches any of the components
 		// of the contentmodel
 		$contentmodel = $this->getcontentmodel();
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
+		
 		$foundmatch = false;
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
@@ -304,6 +237,7 @@ class businesssite_instance
 					$newpost->post_modified_gmt = current_time('mysql',1);
 					$newpost->post_parent = 0;
 					$newpost->post_type = $taxonomy;
+					$newpost->nxs_content_license = json_encode(array("type" => "attribution", "author" => "benin"));
 					
 					$wp_query->posts[0] = $newpost;
 					$wp_query->found_posts = 1;	 
@@ -352,6 +286,10 @@ class businesssite_instance
 		{
 			$result = false;	
 		}
+		else if ($homeurl == "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/")
+		{
+			$result = false;	
+		}
 		return $result;
 	}
 	
@@ -360,7 +298,7 @@ class businesssite_instance
 		$ismaster = $this->ismaster();
 		if ($ismaster)
 		{
-			 $result = $this->getcontentmodel_actual_local();
+			 $result = "";// $this->getcontentmodel_actual_local();
 		}
 		else
 		{
@@ -408,7 +346,7 @@ class businesssite_instance
 		
 		// enrich the model
 		// the slug is determined "at runtime"; its derived from the title
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
 			//echo "tax: $taxonomy <br />";
@@ -460,209 +398,16 @@ class businesssite_instance
 				$result[$taxonomy]["instances"][$index]["content"]["post_slug"] = $slug;
 			}
 		}
-
-		//echo "so far :)";
-		//die();
 		
-		return $result;
-	}
-	
-	function getcontentmodel_actual_local()
-	{
-		$result = array();
+		// allow plugins to override/extend the behaviour
+		$result = apply_filters("nxs_f_getcontentmodel_actual_slave", $result, $args);
+		//error_log("returned from nxs_f_getcontentmodel_actual_slave");
 		
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+		// add the realm to the model
+		// todo: in the future, the realm should already be set by the slave
+		$realm = "nexusthemescompany";
+		$result["meta"]["realm"] = $realm;
 		
-		// grab (and create if it doesn't yet exist) the singleton
-		// instance of each abstract taxonomy entity, for example
-		// the abstract singeton "nxs_service" entity which has a title,
-		// and accompaniment title.
-		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
-		{
-			$ati = $this->getabstracttaxonomyinstanceid($taxonomy);
-			if ($ati != "")
-			{
-	  		$result[$taxonomy]["taxonomy"]["postid"] = $ati;
-	  		$result[$taxonomy]["taxonomy"]["url"] = nxs_geturl_for_postid($ati);
-	  		$post = get_post($ati);
-	  		// grab meta data
-	  		$result[$taxonomy]["taxonomy"]["post_slug"] = $post->post_name;
-	  		$result[$taxonomy]["taxonomy"]["post_title"] = $post->post_title;
-				$result[$taxonomy]["taxonomy"]["post_excerpt"] = $post->post_excerpt;
-				$result[$taxonomy]["taxonomy"]["post_content"] = $post->post_content;
-				
-				// enrich the taxonomy instances with "their" fields, as specified in the metadata
-				$taxonomyextendedproperties = $taxonomymeta["taxonomyextendedproperties"];
-				foreach ($taxonomyextendedproperties as $field => $fieldmeta)
-				{
-					$persisttype = $fieldmeta["persisttype"];
-					if ($persisttype == "wp_title")
-					{
-						$result[$taxonomy]["taxonomy"][$field] = $post->post_title;
-					}
-					else if ($persisttype == "wp_excerpt")
-					{
-						$result[$taxonomy]["taxonomy"][$field] = $post->post_excerpt;
-					}
-					else if ($persisttype == "wp_content")
-					{
-						$result[$taxonomy]["taxonomy"][$field] = $post->post_content;
-					}
-					else if ($persisttype == "wp_meta")
-					{
-						$value = get_post_meta($post->ID, "nxs_entity_{$field}", true);
-						$result[$taxonomy]["taxonomy"][$field] = $value;
-					}
-				}
-			}
-		}
-		
-		// grab instances of taxanomies
-		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
-		{
-		 	if ($taxonomymeta["arity"] == "n")
-		 	{
-		 		if ($taxonomymeta["features"]["orderedinstances"]["enabled"] == true)
-		 		{
-			 		// this invocation will create a new container when needed
-					$containerid = $this->getcontainerid($taxonomy);
-				
-		  		$result[$taxonomy]["postid"] = $containerid;
-		  		$result[$taxonomy]["url"] = nxs_geturl_for_postid($containerid);
-		  
-				  // find "items" in the post with id containerid
-					$filter = array
-					(
-						"postid" => $containerid,
-					);
-					$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
-					
-					$countinstancesenabled = 0;
-					$items = nxs_getwidgetsmetadatainpost_v2($filter);
-
-					/*					
-					if ($_REQUEST["rrr"] == "true" && $taxonomy == "nxs_service")
-					{
-						echo "ja voor $taxonomy $containerid";
-						var_dump($items);
-						die();
-					}
-					*/
-					
-					foreach ($items as $placeholderid => $widgetmeta)
-					{
-						$widgettype = $widgetmeta["type"];
-						if (true) // $widgettype == "entity")
-						{
-							$postid = $widgetmeta["filter_postid"];
-							$post = get_post($postid);
-							$url = "";
-							if ($taxonomymeta["caninstancesbereferenced"])
-							{
-								$url = nxs_geturl_for_postid($post->ID);
-							}
-							
-							
-							
-							$content = array
-							(
-								
-								"post_id" => $post->ID,
-								"post_slug" => $post->post_name,
-								"post_title" => $post->post_title,
-								"post_excerpt" => $post->post_excerpt,
-								"post_content" => $post->post_content,
-								"post_thumbnail_id" => get_post_thumbnail_id($post->ID),
-								"url" => $url,
-								/*
-								"post_icon" => get_post_meta($post->ID, "nxs_entity_icon", true),
-								"post_source" => get_post_meta($post->ID, "nxs_entity_source", true),
-								"post_rating_text" => get_post_meta($post->ID, "nxs_entity_rating_text", true),
-								"post_quote" => get_post_meta($post->ID, "nxs_entity_quote", true),
-								"post_stars" => get_post_meta($post->ID, "nxs_entity_stars", true),
-								"post_role" => get_post_meta($post->ID, "nxs_entity_role", true),
-								*/
-								
-								//
-								
-								// "post_imperative_m" => get_post_meta($post->ID, "nxs_entity_imperative_m", true),
-								// "post_imperative_l" => get_post_meta($post->ID, "nxs_entity_imperative_l", true),
-								// "post_destination_cta" => get_post_meta($post->ID, "nxs_entity_destination_cta", true),
-							);
-							
-							$instanceextendedproperties = $taxonomymeta["instanceextendedproperties"];
-							foreach ($instanceextendedproperties as $field => $fieldmeta)
-							{
-								$persisttype = $fieldmeta["persisttype"];
-								if ($persisttype == "wp_title")
-								{
-									$content[$field] = $post->post_title;
-								}
-								else if ($persisttype == "wp_excerpt")
-								{
-									$content[$field] = $post->post_excerpt;
-								}
-								else if ($persisttype == "wp_content")
-								{
-									$content[$field] = $post->post_content;
-								}
-								else if ($persisttype == "wp_meta")
-								{
-									$value = get_post_meta($post->ID, "nxs_entity_{$field}", true);
-									$content[$field] = $value;
-									
-									if ($field == "media" && $value == "")
-									{
-										// hardcoded fallback for now ...
-										$value = "nxsmedia://pixabay|warrior-pose-241611";
-										$content[$field] = $value;
-									}
-								}
-								else if ($persisttype == "wp_featimg")
-								{
-									$value = get_post_thumbnail_id($post->ID);
-									$content[$field] = $value;
-								}
-								else 
-								{
-									echo "unsupported persisttype $persisttype for taxonomy $taxonomy";
-									die();
-									//$value = get_post_thumbnail_id($post->ID);
-									//$content[$field] = $value;
-								}						
-							}
-							
-							$result[$taxonomy]["instances"][] = array
-							(
-								"type" => $widgetmeta["type"],
-								"enabled" => $widgetmeta["enabled"],
-								"content" => $content,
-							);
-							
-							if ($widgetmeta["enabled"] != "")
-							{
-								$countinstancesenabled++;
-							}
-						}
-						else 
-						{
-							// 
-							echo "unexpected widgettype; <br />";
-							echo "postid: " . $containerid . "<br />";
-							echo "huhh?! widgettype: {$widgettype}";
-							// die();
-						}
-					}
-					
-					$result[$taxonomy]["countenabled"] = $countinstancesenabled;
-				}
-				else
-				{
-					// 			
-				}
-			}
-		}
-		 
 		return $result;
 	}
 	
@@ -822,206 +567,6 @@ class businesssite_instance
 		}
 	}
 	
-	function wp_insert_post( $post_id, $post, $update ) 
-	{
-		// If this is a revision, ignore
-		if ( wp_is_post_revision( $post_id ) )
-		{
-			return;
-		}
-		if ($update === true)
-		{
-			// ignore update
-			return;
-		}
-		
-		// if the globalid is not yet set, create it
-		$ensuredglobalid = nxs_get_globalid($post_id, true);
-		
-		$post_type = $post->post_type;
-		$isbusinessmodeltaxonomy = false;
-		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
-		foreach ($businessmodeltaxonomies as $taxonomy => $taxmeta)
-		{
-			if ($taxonomy == $post_type)
-			{
-				if ($taxonomy == "nxs_taxonomy")
-				{
-					// ignore; taxonomies are not ordered
-					break;
-				}
-				
-				$isbusinessmodeltaxonomy = true;
-				break;
-			}
-		}
-		
-		if (!$isbusinessmodeltaxonomy)
-		{
-			// ignore entities outside the business taxonomies
-			return;
-		}
-		
-		// we automatically add the newly created post to the (ordered) list,
-		// if the meta data says we should
-		$contentmodel = $this->getcontentmodel();
-		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
-		if ($businessmodeltaxonomies[$taxonomy]["features"]["orderedinstances"]["enabled"] == true)
-		{
-			$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
-			// add an additional row to that post
-			// appends a new "one" row, with the specified widget properties to an existing post
-	
-			$args = array
-			(
-				"postid" => $taxonomyorderedsetpostid,
-				"widgetmetadata" => array
-				(
-					"type" => "entity",
-					"filter_postid" => $post_id,
-					"enabled" => "true",
-				),
-			);
-			$r = nxs_add_widget_to_post($args);
-		}
-		else
-		{
-			// feature is turned off (for example the case in the contentprovider),
-			// and/or specific types of taxonomies that don't need ordered lists
-			// error_log("business site; concluded; $taxonomy has no ordered instances to track (1)");
-		}
-	}
-	
-	function untrashed_post($post_id)
-	{
-		// error_log("untrashed_post; $post_id");
-		$post = get_post($post_id);
-		$post_type = $post->post_type;
-		$isbusinessmodeltaxonomy = false;
-		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
-		foreach ($businessmodeltaxonomies as $taxonomy => $taxmeta)
-		{
-			// $singular = $taxmeta["singular"];
-			if ($taxonomy == $post_type)
-			{
-				if ($taxonomy == "nxs_taxonomy")
-				{
-					// ignore; taxonies are not ordered
-					break;
-				}
-				
-				$isbusinessmodeltaxonomy = true;
-				break;
-			}
-		}
-		
-		if (!$isbusinessmodeltaxonomy)
-		{
-			// ignore entities outside the business taxonomies
-			return;
-		}
-		
-		$contentmodel = $this->getcontentmodel();
-		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
-		if ($businessmodeltaxonomies[$taxonomy]["features"]["orderedinstances"]["enabled"] == true)
-		{
-			// we automatically add the newly created post to the list 
-			$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
-			// add an additional row to that post
-			// appends a new "one" row, with the specified widget properties to an existing post
-	
-			$args = array
-			(
-				"postid" => $taxonomyorderedsetpostid,
-				"widgetmetadata" => array
-				(
-					"type" => "entity",
-					"filter_postid" => $post_id,	// 
-					"enabled" => "true",
-				),
-			);
-			$r = nxs_add_widget_to_post($args);
-		}
-		else
-		{
-			// feature is turned off (for example the case in the contentprovider),
-			// and/or specific types of taxonomies that don't need ordered lists
-			// error_log("business site; concluded; $taxonomy has no ordered instances to track (2)");
-		}
-	}
-	
-	function wp_delete_post($post_id)
-	{
-		//error_log("debug; detect wp_delete_post $post_id");
-		
-		$post_type = get_post_type($post_id);
-		$isbusinessmodeltaxonomy = false;
-		
-		// only act when this is a taxonomy
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
-		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
-		{
-		 	if ($taxonomymeta["arity"] == "n")
-		 	{
-		 		if ($post_type == $taxonomy)
-		 		{
-		 			if ($taxonomy == "nxs_taxonomy")
-					{
-						// ignore; taxonies are not ordered
-						break;
-					}
-					
-		 			$isbusinessmodeltaxonomy = true;
-		 			break;
-		 		}
-			}
-		}
-		
-		if (!$isbusinessmodeltaxonomy)
-		{
-			// ignore entities outside the business taxonomies
-			return;
-		}
-		
-		// here we should also delete the item from the ordered list (if its on it)
-		$contentmodel = $this->getcontentmodel();
-		$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
-		// only do so when the ordered instances are being tracked for this taxonomy
-		if ($businessmodeltaxonomies[$taxonomy]["features"]["orderedinstances"]["enabled"] == true)
-		{
-			$taxonomyorderedsetpostid = $contentmodel[$taxonomy]["postid"];
-			$filter = array
-			(
-				"postid" => $taxonomyorderedsetpostid,
-				"widgettype" => "entity",
-			);
-			$entities = nxs_getwidgetsmetadatainpost_v2($filter);
-			
-			foreach ($entities as $placeholderid => $placeholdermeta)
-			{
-				// grab the filter_postid value
-				$filter_postid = $placeholdermeta["filter_postid"];
-				if ($filter_postid == $post_id)
-				{
-					// get the row identifier that contains the placeholder
-					$pagerowid = nxs_getpagerowid_forpostidplaceholderid($taxonomyorderedsetpostid, $placeholderid);
-	
-					//error_log("debug; wp_delete_post; deleting pagerowid; $pagerowid in postid $taxonomyorderedsetpostid");
-					
-					// delete that row!
-					nxs_struct_purgerow($taxonomyorderedsetpostid, $pagerowid);
-					
-					// note; we will not break the loop; in theory the element could be referenced
-					// multiple times in the set (not likely, but possible)
-				}
-			}
-		}
-		else
-		{
-			// nothing to do here :)
-		}
-	}
-	
 	function instance_init()
 	{
 		// widgets
@@ -1069,7 +614,7 @@ class businesssite_instance
     	$newresult = array();
     	
     	$contentmodel = $this->getcontentmodel();
-			$taxonomiesmeta = nxs_business_gettaxonomiesmeta();
+			$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
     	
     	// process taxonomy menu items (adds custom child items,
     	// and etches items that are empty)
@@ -1191,26 +736,28 @@ class businesssite_instance
   	global $post;
   	$posttype = $post->post_type;
   	$taxonomy = $posttype;
-  	$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta();
+  	$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta("nexusthemescompany");
   	
 		// only do so when the attribution is a feature of this taxonomy
 		$shouldprocess = $businessmodeltaxonomies[$taxonomy]["features"]["contentattribution"]["enabled"] == true;
   	if ($shouldprocess)
   	{
-	  	$postid = $post->ID;
-	  	$nxs_attribution = get_post_meta($postid, 'nxs_content_attribution', $single = true);
-	  	if ($nxs_attribution != "")
+	  	$nxs_content_license = $post->nxs_content_license;
+	  	if ($nxs_content_license != "")
 	  	{
-	  		$data = json_decode($nxs_attribution, true);
-	  		// for now this is hardcoded
-	  		if ($data["author"] == "benin")
+	  		$data = json_decode($nxs_content_license, true);
+	  		if ($data["type"] == "attribution")
 	  		{
-	    		$content .= "<p style='font-size:small'>Benin Brown is a web copywriter who specializes in providing high quality website content for digital marketing professionals. As a white label content provider he is well-versed in writing for all industries. To learn more you can visit <a target='_blank' href='http://www.brownwebcopy.com'>www.brownwebcopy.com</p>";
-	    	}
-	    	else
-	    	{
-	    		$content .= $nxs_attribution;
-	    	}
+		  		// for now this is hardcoded
+		  		if ($data["author"] == "benin")
+		  		{
+		    		$content .= "<p style='font-size:small'>Benin Brown is a web copywriter who specializes in providing high quality website content for digital marketing professionals. As a white label content provider he is well-versed in writing for all industries. To learn more you can visit <a target='_blank' href='http://www.brownwebcopy.com'>www.brownwebcopy.com</p>";
+		    	}
+		    	else
+		    	{
+		    		$content .= $nxs_content_license;
+		    	}
+		    }
 	    }
 	  }
 	  return $content;
@@ -1223,14 +770,6 @@ class businesssite_instance
 		add_shortcode( 'nxscomment', array($this, "sc_nxscomment"), 20, 2);
 		add_filter("nxs_f_shouldrenderaddnewrowoption", array($this, "f_shouldrenderaddnewrowoption"), 1, 1);
 		add_action('admin_head', array($this, "instance_admin_head"), 30, 1);
-		
-		//
-		add_action( 'wp_insert_post', array($this, "wp_insert_post"), 10, 3 );
-		add_action( 'untrashed_post', array($this, "untrashed_post"), 10, 3 );
-		
-		//
-		add_action( 'delete_post', array($this, "wp_delete_post"), 10, 3 );
-		add_action( 'wp_trash_post', array($this, "wp_delete_post"), 10, 3 );
 		
 		//add_filter('wp_nav_menu_items','wp_nav_menu_items', 10, 2);
 		add_filter('walker_nav_menu_start_el', array($this, 'walker_nav_menu_start_el'), 10, 4);

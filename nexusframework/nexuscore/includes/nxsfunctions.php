@@ -9431,13 +9431,8 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
 	      	<?php
 	      	if ($enable_addentity === true)
 	      	{
-	      		?>
-	      		<li title='<?php nxs_l18n_e("Add", "nxs_td"); ?>' class='nxs-hovermenu-button'>
-				  		<a href='#' title='<?php nxs_l18n_e("Add", "nxs_td"); ?>' <?php if ($defaultwidgetclickhandler=='add') { echo 'class="nxs-defaultwidgetclickhandler"'; } ?> onclick="nxs_js_add_entity(this); return false;">
-				      	<span class='nxs-icon-plus'></span>
-				      </a>
-						</li>
-	      		<?php
+	      		// adding entities should be done in the modeleditor,
+	      		// not in wp
 	      	}
 	      	?>
 	      	<?php
