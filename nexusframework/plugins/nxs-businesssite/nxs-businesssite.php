@@ -74,77 +74,6 @@ class businesssite_instance
 		return $content;
 	}
 	
-	// container order sets functionality
-	function getcontainerid($taxonomy)
-	{
-		$containerid = $this->getcontainerid_internal($taxonomy);
-		if ($containerid === false) 
-		{
-			error_log("getcontainerid; creating container for $taxonomy");	
-
-			//echo "containerid not yet found, creating...";
-			$result = $this->createnewcontainer_internal($taxonomy);
-			if ($result["result"] != "OK") { echo "unexpected;"; var_dump($result); die(); }
-			$containerid = $result["postid"];
-		}
-		
-		return $containerid;
-	}
-	
-	function getcontainerid_internal($taxonomy)
-	{
-		// published pagedecorators
-		$publishedargs = array();
-		$publishedargs["post_status"] = "publish";
-		$publishedargs["post_type"] = "nxs_genericlist";
-		
-		$publishedargs['tax_query'] = array
-		(
-			array
-			(
-				'taxonomy' => 'nxs_tax_subposttype',
-				'field' => 'slug',
-				'terms' => "{$taxonomy}_set",
-			)
-		);
-		
-		$publishedargs["orderby"] = "post_date";//$order_by;
-		$publishedargs["order"] = "DESC"; //$order;
-		$publishedargs["showposts"] = -1;	// allemaal!
-	  $posts = get_posts($publishedargs);
-	  $result = false;
-	  if (count($posts) >= 1) 
-	  {
-	  	$result = $posts[0]->ID;
-	  }
-	  
-	  return $result;
-	}
-	
-	function createnewcontainer_internal($taxonomy)
-	{
-		$subargs = array();
-		$subargs["nxsposttype"] = "genericlist";
-		$subargs["nxssubposttype"] = "{$taxonomy}_set";	// NOTE!
-		$subargs["poststatus"] = "publish";
-		$subargs["titel"] = nxs_l18n__("Set Order", "nxs_td") . " {$taxonomy} " . nxs_generaterandomstring(6);
-		$subargs["slug"] = $subargs["titel"];
-		$subargs["postwizard"] = "defaultgenericlist";
-		
-		$response = nxs_addnewarticle($subargs);
-		if ($response["result"] != "OK")
-		{
-			echo "failed to create container?!";
-			die();
-		}
-		else
-		{
-			//
-		}
-		
-		return $response;
-	}
-
 	function getcontentmodeltaxonomyinstances($arg)
 	{
 		$taxonomy = $arg["taxonomy"];
@@ -157,15 +86,20 @@ class businesssite_instance
 	function businesssite_the_posts($result, $args)
 	{
 		global $wp,$wp_query;
+		global $nxs_g_businesssite_didoverride;
 		
 		if (!is_main_query()) { return $result; }
 		if (is_admin()) { return $result; }
 		
+		// only override 1x
+		if ($nxs_g_businesssite_didoverride === true) { return $result; }
+		$nxs_g_businesssite_didoverride = true;
+		
 		$countmatches = count($result);
-		$is404 = ($countmatches == 0);
 		
-		if (!$is404) { return $result; }
-		
+		//$is404 = ($countmatches == 0);
+		//if (!$is404) { return $result; }
+
 		// it would become a 404, unless we intercept the request
 		// and inject some virtual values :)
 		
@@ -174,12 +108,13 @@ class businesssite_instance
 		$requestedslug = $uripieces[0];
 		$requestedslug = trim($requestedslug, "/");
 		
-		// loop over the contentmodel,
-		// and verify if the requestedslug matches any of the components
-		// of the contentmodel
+		// loop over the contentmodel and verify if the requestedslug matches 
+		// any of the elements of the contentmodel
 		$contentmodel = $this->getcontentmodel();
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 		
+		global $businesssite_instance;
+		$taxonomiesmeta = $businesssite_instance->getcontentschema();
+	
 		$foundmatch = false;
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
@@ -189,8 +124,12 @@ class businesssite_instance
 				$post_slug = $instance["content"]["post_slug"];
 				if ($post_slug == $requestedslug)
 				{
+					// echo "@@@ postslug match ($post_slug) == ($requestedslug)";
+					
 					// there's a match! inject the content of the model to the post
 
+					$result = array();
+					
 					$foundmatch = true;
 		
 					//$wp_query->is_nxs_portfolio = true;
@@ -260,14 +199,26 @@ class businesssite_instance
 		return $result;
 	}
 	
+	function getmodel()
+	{
+		global $nxs_g_model;
+		if (!isset($nxs_g_model))
+		{
+			$nxs_g_model = $this->getmodel_actual();
+		}
+		return $nxs_g_model;
+	}
+	
 	function getcontentmodel()
 	{
-		global $nxs_g_contentmodel;
-		if (!isset($nxs_g_contentmodel))
-		{
-			$nxs_g_contentmodel = $this->getcontentmodel_actual();
-		}
-		return $nxs_g_contentmodel;
+		$model = $this->getmodel();
+		return $model["contentmodel"];
+	}
+	
+	function getcontentschema()
+	{
+		$model = $this->getmodel();
+		return $model["meta"]["schema"];
 	}
 	
 	function ismaster()
@@ -293,21 +244,21 @@ class businesssite_instance
 		return $result;
 	}
 	
-	function getcontentmodel_actual()
+	function getmodel_actual()
 	{
 		$ismaster = $this->ismaster();
 		if ($ismaster)
 		{
-			 $result = "";// $this->getcontentmodel_actual_local();
+			 $result = false;
 		}
 		else
 		{
-			$result = $this->getcontentmodel_actual_slave();
+			$result = $this->getmodel_actual_slave();
 		}
 		return $result;
 	}
 	
-	function getcontentmodel_actual_slave()
+	function getmodel_actual_slave()
 	{
 		// 
 		$homeurl = nxs_geturl_home();
@@ -332,81 +283,77 @@ class businesssite_instance
 			$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/businessmodel/{$businessid}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
 			// also store the businessid in the cookie
 			setcookie("businessid", $businessid);
+			
+			$content = file_get_contents($url);
+			$json = json_decode($content, true);
+			$result = $json;
+			
+			// enrich the model
+			// the slug is determined "at runtime"; its derived from the title
+			$all_slugs = array();
+			$schema = $json["meta"]["schema"];
+			$taxonomiesmeta = $schema;
+			foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+			{
+				//echo "tax: $taxonomy <br />";
+				
+				$titlefield = "";
+				$slugfield = "post_slug";
+				
+				$instanceextendedproperties = $taxonomymeta["instanceextendedproperties"];
+				foreach ($instanceextendedproperties as $field => $fieldmeta)
+				{
+					if ($fieldmeta["persisttype"] == "wp_title")
+					{
+						$titlefield = $field;
+					}
+					if ($fieldmeta["persisttype"] == "wp_slug")
+					{
+						$slugfield = $field;
+					}
+				}
+				
+				//echo "titlefield: $titlefield <br />";
+				//echo "slugfield: $slugfield <br />";
+				
+				//
+				
+				$instances = $result[$taxonomy]["instances"];
+				foreach ($instances as $index => $instance)
+				{
+					$content = $instance["content"];
+					$title = $content[$titlefield];
+					$slug = $title;
+					$slug = strtolower($slug);
+					$slug = preg_replace('/[^A-Za-z0-9.]/', '-', $slug); // Replaces any non alpha numeric with -
+					for ($cnt = 0; $cnt < 3; $cnt++)
+					{
+						$slug = str_replace("--", "-", $slug);
+					}
+					
+					if (in_array($slug, $all_slugs))
+					{
+						// this slug is already in use; make it unique
+						$count = count($all_slugs);
+						$slug .= "_{$count}";
+					}
+					
+					$all_slugs[]= $slug;
+					
+					$result[$taxonomy]["instances"][$index]["content"][$slugfield] = $slug;
+					$result[$taxonomy]["instances"][$index]["content"]["post_slug"] = $slug;
+				}
+			}
 		}
 		else
 		{
-			// fallback		
-			$url = "http://master.testgj.c1.us-e1.nexusthemes.com/api/1/prod/businessmodel/?nxs=site-api&nxs_json_output_format=prettyprint&homeurl={$homeurl}";
-		}
-		$content = file_get_contents($url);
-		$json = json_decode($content, true);
-		$result = $json["contentmodel"];
-		
-		$all_slugs = array();
-		
-		// enrich the model
-		// the slug is determined "at runtime"; its derived from the title
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
-		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
-		{
-			//echo "tax: $taxonomy <br />";
-			
-			$titlefield = "";
-			$slugfield = "post_slug";
-			
-			$instanceextendedproperties = $taxonomymeta["instanceextendedproperties"];
-			foreach ($instanceextendedproperties as $field => $fieldmeta)
-			{
-				if ($fieldmeta["persisttype"] == "wp_title")
-				{
-					$titlefield = $field;
-				}
-				if ($fieldmeta["persisttype"] == "wp_slug")
-				{
-					$slugfield = $field;
-				}
-			}
-			
-			//echo "titlefield: $titlefield <br />";
-			//echo "slugfield: $slugfield <br />";
-			
-			//
-			
-			$instances = $result[$taxonomy]["instances"];
-			foreach ($instances as $index => $instance)
-			{
-				$content = $instance["content"];
-				$title = $content[$titlefield];
-				$slug = $title;
-				$slug = strtolower($slug);
-				$slug = preg_replace('/[^A-Za-z0-9.]/', '-', $slug); // Replaces any non alpha numeric with -
-				for ($cnt = 0; $cnt < 3; $cnt++)
-				{
-					$slug = str_replace("--", "-", $slug);
-				}
-				
-				if (in_array($slug, $all_slugs))
-				{
-					// this slug is already in use; make it unique
-					$count = count($all_slugs);
-					$slug .= "_{$count}";
-				}
-				
-				$all_slugs[]= $slug;
-				
-				$result[$taxonomy]["instances"][$index]["content"][$slugfield] = $slug;
-				$result[$taxonomy]["instances"][$index]["content"]["post_slug"] = $slug;
-			}
+			// probably best to do here, is to redirect to a backend page or so,
+			// that allows the user to create a new model which is used from that
+			// moment on ...
 		}
 		
 		// allow plugins to override/extend the behaviour
-		$result = apply_filters("nxs_f_getcontentmodel_actual_slave", $result, $args);
-		//error_log("returned from nxs_f_getcontentmodel_actual_slave");
-		
-		// add the realm to the model
-		// todo: in the future, the realm should already be set by the slave
-		$realm = "nexusthemescompany";
-		$result["meta"]["realm"] = $realm;
+		$result = apply_filters("nxs_f_getmodel_actual_slave", $result, $args);
 		
 		return $result;
 	}
@@ -614,8 +561,8 @@ class businesssite_instance
     	$newresult = array();
     	
     	$contentmodel = $this->getcontentmodel();
-			$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
-    	
+			$taxonomiesmeta = $this->getcontentschema();
+			
     	// process taxonomy menu items (adds custom child items,
     	// and etches items that are empty)
     	
@@ -736,7 +683,9 @@ class businesssite_instance
   	global $post;
   	$posttype = $post->post_type;
   	$taxonomy = $posttype;
-  	$businessmodeltaxonomies = nxs_business_gettaxonomiesmeta("nexusthemescompany");
+
+		global $businesssite_instance;
+		$businessmodeltaxonomies = $businesssite_instance->getcontentschema();
   	
 		// only do so when the attribution is a feature of this taxonomy
 		$shouldprocess = $businessmodeltaxonomies[$taxonomy]["features"]["contentattribution"]["enabled"] == true;

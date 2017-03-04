@@ -54,11 +54,11 @@ function nxs_entities_datasourcecustom_popupcontent($optionvalues, $args, $runti
 // Define the properties of this widget
 function nxs_widgets_entities_home_getoptions($args) 
 {
+	$taxonomies = array();
+
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
-	
-	$taxonomies = array();
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
+	$taxonomiesmeta = $businesssite_instance->getcontentschema();
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
 	 	if ($taxonomymeta["arity"] == "n")
@@ -998,8 +998,10 @@ function nxs_widgets_entities_home_getoptions($args)
 function nxs_entities_getdefaultitemsstyle($datasource)
 {
 	$result = "htmlcustom";
-	
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
+
+	global $businesssite_instance;
+	$taxonomiesmeta = $businesssite_instance->getcontentschema();
+
 	foreach ($taxonomiesmeta as $taxonomy => $meta)
 	{
 		if ($taxonomy == $datasource)
@@ -1017,8 +1019,10 @@ function nxs_entities_getdefaultitemsstyle($datasource)
 function nxs_entities_geticon($datasource)
 {
 	$result = "moving";
+
+	global $businesssite_instance;
+	$taxonomiesmeta = $businesssite_instance->getcontentschema();
 	
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 	foreach ($taxonomiesmeta as $taxonomy => $meta)
 	{
 		if ($taxonomy == $datasource)
@@ -1684,7 +1688,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				global $businesssite_instance;
 				if (true) // $businesssite_instance->ismaster() === true)
 				{
-					$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
+					$taxonomiesmeta = $businesssite_instance->getcontentschema();
 					$taxonomymeta = $taxonomiesmeta[$taxonomy];
 					$title = $taxonomymeta["title"];
 					global $businesssite_instance;

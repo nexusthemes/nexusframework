@@ -377,7 +377,6 @@ define('NXS_DEFINE_MINIMALISTICDATACONSISTENCYOUTPUT', true);	// default to true
 // IMPORTS
 // 
 
-require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsbusinessmodel.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsfunctions.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/license/license.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/importers/nexusimporter/nexus-importer.php');
@@ -2304,9 +2303,10 @@ function nxs_create_post_types_and_taxonomies()
 	nxs_registernexustype_withtaxonomies("busrulesset", array("nxs_tax_subposttype"), $hadadmin);		// holds a set of business rules	
 	
 	// add custom posttypes for semantic entities;
-
-	// custom post types to hold instances of businessmodel taxonomies
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
+	/*
+	global $businesssite_instance;
+	$taxonomiesmeta = $businesssite_instance->getcontentschema();
+	
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
 		$show_in_nav_menus = false;
@@ -2411,6 +2411,7 @@ function nxs_create_post_types_and_taxonomies()
 			}
 		}
 	}
+	*/
 	
 	// by default custom post types in WP get a "slug" in their
 	// url, to be able to identify them. Our semantic entities
@@ -2424,7 +2425,9 @@ function nxs_create_post_types_and_taxonomies()
 		// url in the permalinks (i.e. which should behave like pages/posts)
 		$result = array();
 		
-		$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
+		global $businesssite_instance;
+		$taxonomiesmeta = $businesssite_instance->getcontentschema();
+		
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{
 		 	if ($taxonomymeta["arity"] == "n")

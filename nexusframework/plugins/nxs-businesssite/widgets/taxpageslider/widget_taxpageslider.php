@@ -59,9 +59,9 @@ function nxs_widgets_taxpageslider_home_getoptions($args)
 {
 	global $businesssite_instance;
 	$contentmodel = $businesssite_instance->getcontentmodel();
+	$taxonomiesmeta = $businesssite_instance->getcontentschema();
 	
 	$taxonomiesddl = array();
-	$taxonomiesmeta = nxs_business_gettaxonomiesmeta("nexusthemescompany");
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
 	 	if ($taxonomymeta["arity"] == "n")
