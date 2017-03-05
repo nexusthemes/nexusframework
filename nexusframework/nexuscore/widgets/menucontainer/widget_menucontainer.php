@@ -454,8 +454,8 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
   		$taxonomy = $attributes["taxonomy"];
   		
   		// grab the model
-  		global $businesssite_instance;
-  		$model = $businesssite_instance->getcontentmodel();
+  		global $nxs_g_modelmanager;
+  		$model = $nxs_g_modelmanager->getcontentmodel();
   		$serviceinstances = $model[$taxonomy]["instances"];
   		
   		$foundatleastone = false;

@@ -100,8 +100,8 @@ function nxs_widgets_buslogo_home_getoptions($args)
 	$optionsparentwidget = nxs_widgets_buslogo_getoptionsofextendedwidget($args);
 	$fieldsparentwidget = $optionsparentwidget["fields"];
 	
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 
 	$taxonomy = "nxs_companyname";
 	$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];	
@@ -257,8 +257,8 @@ function nxs_widgets_buslogo_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// 
-		global $businesssite_instance;
-		$contentmodel = $businesssite_instance->getcontentmodel();
+		global $nxs_g_modelmanager;
+		$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 		$taxonomy = "nxs_companyname";
 		//$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 		//$name = get_post_meta($abstractpostid, "nxs_entity_name", true);

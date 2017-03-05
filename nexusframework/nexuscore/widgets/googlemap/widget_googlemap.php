@@ -454,8 +454,8 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("address"));
 
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 	$addressline1 = $contentmodel["nxs_address"]["taxonomy"]["addressline1"];
 	$city = $contentmodel["nxs_address"]["taxonomy"]["city"];
 	$country = $contentmodel["nxs_address"]["taxonomy"]["country"];

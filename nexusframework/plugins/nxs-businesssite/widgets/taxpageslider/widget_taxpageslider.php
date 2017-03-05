@@ -57,9 +57,9 @@ function nxs_widgets_taxpageslider_registerhooksforpagewidget($args)
 // Define the properties of this widget
 function nxs_widgets_taxpageslider_home_getoptions($args) 
 {
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
-	$taxonomiesmeta = $businesssite_instance->getcontentschema();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
+	$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema();
 	
 	$taxonomiesddl = array();
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
@@ -490,8 +490,8 @@ function nxs_widgets_taxpageslider_beforeend_head()
 	global $nxs_taxpageslider_metadata;
 	$nxs_taxpageslider_taxonomy = $nxs_taxpageslider_metadata["datasource"];
 	$media_meta = $nxs_taxpageslider_metadata["media_meta"];
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 	$structure = $contentmodel[$nxs_taxpageslider_taxonomy]["instances"];
 	$aantalslides = count($structure);
 	
@@ -592,8 +592,8 @@ function nxs_widgets_taxpageslider_beforeend_head()
 			// the global $nxs_taxpageslider_taxonomy is set in nxs_widgets_taxpageslider_registerhooksforpagewidget($args)
 			global $nxs_taxpageslider_metadata;
 			$nxs_taxpageslider_taxonomy = $nxs_taxpageslider_metadata["datasource"];
-			global $businesssite_instance;
-			$contentmodel = $businesssite_instance->getcontentmodel();
+			global $nxs_g_modelmanager;
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 			$structure = $contentmodel[$nxs_taxpageslider_taxonomy]["instances"];
 			$firstslide = $structure[0]; // grab first entity /slide/
 			$media = $firstslide["content"]["media"];
@@ -870,8 +870,8 @@ function nxs_widgets_taxpageslider_betweenheadandcontent()
 	global $nxs_taxpageslider_metadata;
 	$nxs_taxpageslider_taxonomy = $nxs_taxpageslider_metadata["datasource"];
 	
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 	$structure = $contentmodel[$nxs_taxpageslider_taxonomy]["instances"];
 	$aantalslides = count($structure);
 	

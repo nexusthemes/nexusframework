@@ -1236,8 +1236,8 @@ function nxs_init()
 			}
 			else if ($_REQUEST["nxs"] == "dumpmodel")
 			{
-				global $businesssite_instance;
-				$contentmodel = $businesssite_instance->getcontentmodel();
+				global $nxs_g_modelmanager;
+				$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 				echo nxs_prettyprint_array($contentmodel);
 				die();
 			}
@@ -1444,8 +1444,8 @@ function nxs_add_metaboxes()
 add_action('nxs_action_postfooterlink', 'nxs_render_postfooterlink');
 function nxs_render_postfooterlink()
 {
-	global $businesssite_instance;
-	if ($businesssite_instance->ismaster() === false)
+	global $nxs_g_modelmanager;
+	if ($nxs_g_modelmanager->ismaster() === false)
 	{
 		// only masters can do something here :)
 		return;
@@ -2304,8 +2304,8 @@ function nxs_create_post_types_and_taxonomies()
 	
 	// add custom posttypes for semantic entities;
 	/*
-	global $businesssite_instance;
-	$taxonomiesmeta = $businesssite_instance->getcontentschema();
+	global $nxs_g_modelmanager;
+	$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema();
 	
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
@@ -2425,8 +2425,8 @@ function nxs_create_post_types_and_taxonomies()
 		// url in the permalinks (i.e. which should behave like pages/posts)
 		$result = array();
 		
-		global $businesssite_instance;
-		$taxonomiesmeta = $businesssite_instance->getcontentschema();
+		global $nxs_g_modelmanager;
+		$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema();
 		
 		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 		{

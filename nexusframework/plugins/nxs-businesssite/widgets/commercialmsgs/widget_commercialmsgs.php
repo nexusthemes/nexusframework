@@ -474,8 +474,8 @@ function nxs_widgets_commercialmsgs_render_webpart_render_htmlvisualization($arg
 		// do not crop the widget, the slider contains left/right buttons that exceed the regular widget boundaries
 		
 		// grab all commercial messages
-		global $businesssite_instance;
-		$contentmodel = $businesssite_instance->getcontentmodel();
+		global $nxs_g_modelmanager;
+		$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 		$datasource = "nxs_commercialmsg";
 		
 		$slidesdataset = array();

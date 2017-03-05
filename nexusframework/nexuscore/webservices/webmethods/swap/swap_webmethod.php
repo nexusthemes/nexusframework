@@ -105,8 +105,8 @@ function nxs_webmethod_swap()
 	}
 	else if ($context == "entities")
 	{
-		global $businesssite_instance;
-		$contentmodel = $businesssite_instance->getcontentmodel();
+		global $nxs_g_modelmanager;
+		$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 		
 		$ordersetid = $contentmodel[$taxonomy]["postid"];
 		if (!isset($ordersetid))

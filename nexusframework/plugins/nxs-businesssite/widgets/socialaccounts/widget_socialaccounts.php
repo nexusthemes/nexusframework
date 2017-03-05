@@ -33,8 +33,8 @@ function nxs_widgets_socialaccounts_getunifiedcontentgroup()
 // Define the properties of this widget
 function nxs_widgets_socialaccounts_home_getoptions($args) 
 {
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 	$taxonomy = "nxs_socialaccount";
 	$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 	
@@ -261,8 +261,8 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 	$icon_font_list .= "<div class='nxs-applylinkvarcolor {$alignment}'>";
 	$icon_font_list .= "<ul class='icon-font-list'>";
 	
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 	
 	$taxonomy = "nxs_socialaccount";
 	$index = -1;
@@ -290,12 +290,12 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 		//
 		if (is_user_logged_in())
 		{
-			global $businesssite_instance;
-			if ($businesssite_instance->ismaster() === true)
+			global $nxs_g_modelmanager;
+			if ($nxs_g_modelmanager->ismaster() === true)
 			{
-				global $businesssite_instance;
+				global $nxs_g_modelmanager;
 				global $nxs_global_row_render_statebag;
-				$contentmodel = $businesssite_instance->getcontentmodel();
+				$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 				$url = $contentmodel["nxs_socialaccount"]["url"];
 				$icon_font_list .= "<div>No social accounts configured <a class='nxsbutton' href='{$url}'>Manage</a></div>";
 				$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;

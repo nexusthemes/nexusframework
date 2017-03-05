@@ -106,8 +106,8 @@ function nxs_widgets_phone_home_getoptions($args)
 	$optionsparentwidget = nxs_widgets_phone_getoptionsofextendedwidget($args);
 	$fieldsparentwidget = $optionsparentwidget["fields"];
 	
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 	$taxonomy = "nxs_phone";
 	$abstractpostid = $contentmodel[$taxonomy]["taxonomy"]["postid"];
 	
@@ -261,8 +261,8 @@ function nxs_widgets_phone_render_webpart_render_htmlvisualization($args)
 		// set properties that should be overriden
 		
 		// 
-		global $businesssite_instance;
-		$contentmodel = $businesssite_instance->getcontentmodel();
+		global $nxs_g_modelmanager;
+		$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 		$taxonomy = "nxs_phone";
 		$phonenumber = $contentmodel[$taxonomy]["taxonomy"]["phonenumber"];
 		

@@ -25,17 +25,75 @@ function nxs_entities_datasourcecustom_popupcontent($optionvalues, $args, $runti
 	extract($args);
 	extract($runtimeblendeddata);
 	
+	$modeluri = $runtimeblendeddata["modeluri"];
+	$datasource = $runtimeblendeddata["datasource"];
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
+	$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema($modeluri);
+	
+	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
+	{
+	 	if ($taxonomymeta["arity"] == "n")
+	 	{
+	 		$taxonomies[$taxonomy] = $taxonomymeta["title"];
+	 	}
+	}	
+
 	nxs_ob_start();
 	?>
 	<div>
-		<?php
-		// 
-		global $businesssite_instance;
-		$contentmodel = $businesssite_instance->getcontentmodel();
-		$url = $contentmodel[$datasource]["url"];
-		if ($url != "")
+		<?php  
+		echo "<a href='#' onclick='jQuery(\"#datasource\").val(\"\"); nxs_js_popup_sessiondata_make_dirty(); return false;'>Reset</a>&nbsp;";
+		foreach ($taxonomies as $key => $val)
 		{
-			echo "<a class='nxsbutton' href='{$url}'>Edit / Re-Order {$datasource}</a>";
+			$display = $val;
+			echo " | ";
+			echo "<a href='#' onclick='jQuery(\"#datasource\").val(\"{$val}\"); nxs_js_popup_sessiondata_make_dirty(); return false;'>{$display}</a>&nbsp;";
+		}
+		?>
+	</div>
+	<?php
+
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
+}
+
+function nxs_entities_fieldoftaxonomycustom_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	extract($optionvalues);
+	extract($args);
+	extract($runtimeblendeddata);
+	
+	$targetid = $optionvalues["targetid"];
+	$modeluri = $runtimeblendeddata["modeluri"];
+	$datasource = $runtimeblendeddata["datasource"];
+	global $nxs_g_modelmanager;
+	$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema($modeluri);
+	$instanceextendedproperties = $taxonomiesmeta[$datasource]["instanceextendedproperties"];
+	
+	$options = array();
+	
+	foreach ($instanceextendedproperties as $fieldid => $fieldmeta)
+	{
+	 	$options[$fieldid] = $fieldmeta["label"];
+	}
+
+	nxs_ob_start();
+	?>
+	<div>
+		<?php  
+		$isfirst = true;
+		foreach ($options as $key => $val)
+		{
+			$display = $val;
+			$output = '{{' . $datasource . ".instance." . $key . '}}';
+			if (!$isfirst)
+			{
+				echo " | ";
+			}
+			echo "<a href='#' onclick='jQuery(\"#{$targetid}\").val(\"{$output}\"); nxs_js_popup_sessiondata_make_dirty(); return false;'>{$display}</a>&nbsp;";
+			$isfirst = false;
 		}
 		?>
 	</div>
@@ -55,10 +113,12 @@ function nxs_entities_datasourcecustom_popupcontent($optionvalues, $args, $runti
 function nxs_widgets_entities_home_getoptions($args) 
 {
 	$taxonomies = array();
-
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
-	$taxonomiesmeta = $businesssite_instance->getcontentschema();
+	
+	$modeluri = $args["modeluri"];
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
+	$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema($modeluri);
+	
 	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
 	{
 	 	if ($taxonomymeta["arity"] == "n")
@@ -68,8 +128,6 @@ function nxs_widgets_entities_home_getoptions($args)
 	}
 	
 	$datasource = $args["datasource"];
-	
-	$orderediturl = nxs_geturl_for_postid($contentmodel[$datasource]["postid"]);
 	
 	// CORE WIDGET OPTIONS
 	
@@ -140,7 +198,7 @@ function nxs_widgets_entities_home_getoptions($args)
 			array(
 				"id" 				=> "title_postprocessor",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title postprocessr", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title postprocessor", "nxs_td"),
 				"dropdown" 			=> array
 				(
 					"@@@empty@@@" => "None",
@@ -215,24 +273,20 @@ function nxs_widgets_entities_home_getoptions($args)
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("Items", "nxs_td"),
       ),
+      array
+      (
+				"id" 					=> "modeluri",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Model URI", "nxs_td"),
+				"placeholder" => "Blank or format 'name@schema'",
+			),
+			// filled by datasource_custom
  			array
       (
 				"id" 					=> "datasource",
-				"type" 				=> "select",
-				"popuprefreshonchange" => "true",
+				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
-				"dropdown" 		=> $taxonomies,
-			),
-			array(
-				"id" 				=> "datasource_postprocessor",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Datasource postprocessr", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@empty@@@" => "None",
-					"truncateall" => "Truncate all",
-				),
-				"unistylablefield"	=> true
+				"readonly" 	=> "true",
 			),
 			array
       (
@@ -240,15 +294,18 @@ function nxs_widgets_entities_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_entities_datasourcecustom_popupcontent",
 			),
-			/*
-			array
-			(
-				"id" 				=> "editorlink",
-				"type" 				=> "custom",
-				"custom"	=> "<div><a class='nxsbutton' href='{$orderediturl}'>Change Order</a></div>",
-				"label" 			=> nxs_l18n__("Order", "nxs_td"),
+			array(
+				"id" 				=> "datasource_postprocessor",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Datasource postprocessor", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@" => "None",
+					"truncateall" => "Truncate all",
+				),
+				"unistylablefield"	=> true
 			),
-			*/
+			
 			array
 			(
           "id" 				=> "wrapper_items_end",
@@ -355,10 +412,27 @@ function nxs_widgets_entities_home_getoptions($args)
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
 				"unistylablefield"	=> true
 			),
+		
+			array
+      (
+				"id" 					=> "text_title_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Title template", "nxs_td"),
+				"readonly" 	=> "true",
+			),
+			array
+      (
+				"id" 					=> "text_title_template_custom",
+				"type" 				=> "custom",
+				"targetid"	=> "text_title_template",
+				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
+			),		
+			
+			// postprocessor is kind of obsolete...
 			array(
 				"id" 				=> "text_title_postprocessor",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title postprocessr", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title postprocessor", "nxs_td"),
 				"dropdown" 			=> array
 				(
 					"@@@empty@@@" => "None",
@@ -370,7 +444,7 @@ function nxs_widgets_entities_home_getoptions($args)
 			array(
 				"id" 				=> "text_text_postprocessor",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Text postprocessr", "nxs_td"),
+				"label" 			=> nxs_l18n__("Text postprocessor", "nxs_td"),
 				"dropdown" 			=> array
 				(
 					"@@@empty@@@" => "None",
@@ -995,12 +1069,12 @@ function nxs_widgets_entities_home_getoptions($args)
 	return $options;
 }
 
-function nxs_entities_getdefaultitemsstyle($datasource)
+function nxs_entities_getdefaultitemsstyle($modeluri, $datasource)
 {
 	$result = "htmlcustom";
 
-	global $businesssite_instance;
-	$taxonomiesmeta = $businesssite_instance->getcontentschema();
+	global $nxs_g_modelmanager;
+	$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema($modeluri);
 
 	foreach ($taxonomiesmeta as $taxonomy => $meta)
 	{
@@ -1020,8 +1094,8 @@ function nxs_entities_geticon($datasource)
 {
 	$result = "moving";
 
-	global $businesssite_instance;
-	$taxonomiesmeta = $businesssite_instance->getcontentschema();
+	global $nxs_g_modelmanager;
+	$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema();
 	
 	foreach ($taxonomiesmeta as $taxonomy => $meta)
 	{
@@ -1040,7 +1114,7 @@ function nxs_entities_custom_popupcontent($optionvalues, $args, $runtimeblendedd
 	extract($args);
 	extract($runtimeblendeddata);
 
-	$itemsstyle = nxs_entities_getdefaultitemsstyle($datasource);
+	$itemsstyle = nxs_entities_getdefaultitemsstyle($modeluri, $datasource);
 
 	nxs_ob_start();
 	?>
@@ -1114,9 +1188,13 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	// Widget specific variables
 	extract($mixedattributes);
-
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	
+	$title = $title_template;	// for example {{entry.instance.title}}
+	
+	//
+	
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
 	$title = $contentmodel[$datasource]["taxonomy"]["title"];	// old: "post_title"
 	
 	if ($title_postprocessor === "truncateall") 
@@ -1127,7 +1205,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = $datasource;
 
-	$itemsstyle = nxs_entities_getdefaultitemsstyle($datasource);
+	$itemsstyle = nxs_entities_getdefaultitemsstyle($modeluri, $datasource);
 	$childwidgettype = $itemsstyle;	
 	
 	// Overruling of parameters
@@ -1170,8 +1248,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	---------------------------------------------------------------------------------------------------- */
 
 	// the html can contain placeholders
-	global $businesssite_instance;
-	$contentmodel = $businesssite_instance->getcontentmodel();
+	global $nxs_g_modelmanager;
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
 	
 	if ($datasource == "")
 	{
@@ -1457,7 +1535,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		{
 			$fieldstoreplicate = array
 			(
-				"title_heading", "title_postprocessor", "title_fontzen", "title_alignment", "title_fontsize", 
+				"title_heading", "text_title_template", "title_postprocessor", "title_fontzen", "title_alignment", "title_fontsize", 
 				"top_info_color", "top_info_padding", 
 				"icon_scale", "text_postprocessor", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
 				"button_scale", "button_color", "button_fontzen", "button_alignment",
@@ -1614,7 +1692,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$subhtml .= "<div class='ABC {$heightclass} {$abc_concatenated_css}'>";
 		
 		// 
-		$shouldrendereditor = (is_user_logged_in());
+		$shouldrendereditor = false; // (is_user_logged_in());
 		
 		if ($shouldrendereditor)
 		{
@@ -1685,14 +1763,14 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			//
 			if (true) // is_user_logged_in())
 			{
-				global $businesssite_instance;
-				if (true) // $businesssite_instance->ismaster() === true)
+				global $nxs_g_modelmanager;
+				if (true) // $nxs_g_modelmanager->ismaster() === true)
 				{
-					$taxonomiesmeta = $businesssite_instance->getcontentschema();
+					$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema($modeluri);
 					$taxonomymeta = $taxonomiesmeta[$taxonomy];
 					$title = $taxonomymeta["title"];
-					global $businesssite_instance;
-					$contentmodel = $businesssite_instance->getcontentmodel();
+					global $nxs_g_modelmanager;
+					$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
 					$html .= "<div>No {$title} found</div>";
 					$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
 				}

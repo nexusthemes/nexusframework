@@ -8465,10 +8465,10 @@ function nxs_lookuptable_getlookup_v2($includeruntimeitems)
 	
 		// values from the business model should and will override values
 		// from the lookup tables
-		global $businesssite_instance;
-		if ($businesssite_instance != null)
+		global $nxs_g_modelmanager;
+		if ($nxs_g_modelmanager != null)
 		{
-			$contentmodel = $businesssite_instance->getcontentmodel();
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel();
 			
 			$items = array
 			(
@@ -8530,7 +8530,7 @@ function nxs_lookuptable_getlookup_v2($includeruntimeitems)
 		}
 		else
 		{
-			error_log("err; nxs_lookuptable_getlookup_v2 invoked with runtime items while businesssite_instance is not set");
+			error_log("err; nxs_lookuptable_getlookup_v2 invoked with runtime items while nxs_g_modelmanager is not set");
 		}
 	}
 	
@@ -11449,13 +11449,57 @@ function nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixt
 // 
 function nxs_filter_translatelookup($metadata, $fields)
 {
-	$prefixtoken = nxs_lookuptable_getprefixtoken();
-	$postfixtoken = nxs_lookuptable_getpostfixtoken();
-
 	$includeruntimeitems = true;
 	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
+	$prefixtoken = nxs_lookuptable_getprefixtoken();
+	$postfixtoken = nxs_lookuptable_getpostfixtoken();
 	
-	$result = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
+	$args = array
+	(
+		"prefixtoken" => $prefixtoken,
+		"postfixtoken" => $postfixtoken,
+		"items" => $metadata,
+		"fields" => $fields,
+		"lookup" => $lookup,
+	);
+	$result = nxs_filter_translate_v2($args);
+	return $result;
+}
+
+function nxs_filter_translate_v2($args)
+{
+	$prefixtoken = $args["prefixtoken"];
+	$postfixtoken = $args["postfixtoken"];
+	$fields = $args["fields"];
+	$lookup = $args["lookup"];
+	
+	if ($prefixtoken == "") { nxs_webmethod_return_nack("error ; prefixtoken not set"); }
+	if ($postfixtoken == "") { nxs_webmethod_return_nack("error ; postfixtoken not set"); }
+	if ($fields == "") { nxs_webmethod_return_nack("error ; fields not set"); }
+	if ($lookup == "") { nxs_webmethod_return_nack("error ; lookup not set"); }
+	
+	if (isset($args["items"]))
+	{
+		// requesting to translate an array
+		$metadata = $args["items"];
+		$result = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
+	}
+	else if (isset($args["item"]))
+	{
+		// only one value is provided; wrap that item in an array
+		$metadata = array
+		(
+			"item" => $args["item"],
+		);
+		$tempresult = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
+		// unwrap the result
+		$result = $tempresult["item"];
+	}
+	else
+	{
+		nxs_webmethod_return_nack("error; either set the item, or items");
+	}
+	
 	return $result;
 }
 

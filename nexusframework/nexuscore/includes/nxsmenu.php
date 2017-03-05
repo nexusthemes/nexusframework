@@ -14,8 +14,8 @@
 		return;
 	}
 	
-	global $businesssite_instance;
-	if ($businesssite_instance->ismaster() === false)
+	global $nxs_g_modelmanager;
+	if ($nxs_g_modelmanager->ismaster() === false)
 	{
 		// alleen als je in master mode zit,
 		// moet de editor aanstaan
