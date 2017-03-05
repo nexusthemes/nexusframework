@@ -91,6 +91,9 @@ class businesssite_instance
 		if (!is_main_query()) { return $result; }
 		if (is_admin()) { return $result; }
 		
+		// 20170305; if its a webmethod, dont override it
+		if (nxs_iswebmethodinvocation()) { return $result; }
+		
 		// only override 1x
 		if ($nxs_g_businesssite_didoverride === true) { return $result; }
 		$nxs_g_businesssite_didoverride = true;
@@ -122,6 +125,10 @@ class businesssite_instance
 			foreach ($instances as $instance)
 			{
 				$post_slug = $instance["content"]["post_slug"];
+				if ($post_slug == "")
+				{
+					continue;
+				}
 				if ($post_slug == $requestedslug)
 				{
 					// echo "@@@ postslug match ($post_slug) == ($requestedslug)";

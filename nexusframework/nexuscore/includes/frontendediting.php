@@ -296,8 +296,7 @@
 		}
 		
 		$result .= "index.php?nxs-webmethod-queryparameter=true";
-		
-		
+		$result .= "&uricurrentpage=" . urlencode(nxs_geturicurrentpage());
 		
 		echo $result;
 		?>";

@@ -1693,8 +1693,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 					$title = $taxonomymeta["title"];
 					global $businesssite_instance;
 					$contentmodel = $businesssite_instance->getcontentmodel();
-					$url = $contentmodel[$taxonomy]["url"];
-					$html .= "<div>No {$title} found <a class='nxsbutton' href='{$url}'>Manage {$title}</a></div>";
+					$html .= "<div>No {$title} found</div>";
 					$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
 				}
 				else

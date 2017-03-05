@@ -4311,6 +4311,7 @@ function nxs_addyoastseosupport()
 							$result = $result . "/";
 						}
 						$result .= "index.php?nxs-webmethod-queryparameter=true";
+						$result .= "&uricurrentpage=" . urlencode(nxs_geturicurrentpage());
 						echo $result;
 						?>";
 					}
@@ -7120,8 +7121,27 @@ function nxs_ishttps()
 	return $result;
 }
 
-function nxs_geturicurrentpage()
+function nxs_iswebmethodinvocation()
 {
+	$result = false;
+	if ($_REQUEST["nxs-webmethod-queryparameter"] == "true")
+	{
+		$result = true;
+	}
+	return $result;
+}
+
+function nxs_geturicurrentpage($args = array())
+{
+	if ($args["rewritewebmethods"] == "true")
+	{
+		if (nxs_iswebmethodinvocation())
+		{
+			$result = $_REQUEST["uricurrentpage"];
+			return $result;
+		}
+	}
+	
 	// note; the "fragment" part (after "#"), is not available by definition;
 	// its something browsers use; its not send to the server (unless some clientside
 	// logic does so)
