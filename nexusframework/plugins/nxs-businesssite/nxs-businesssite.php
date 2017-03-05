@@ -276,12 +276,7 @@ class nxs_g_modelmanager
 						$content = $instance["content"];
 						$title = $content[$titlefield];
 						$slug = $title;
-						$slug = strtolower($slug);
-						$slug = preg_replace('/[^A-Za-z0-9.]/', '-', $slug); // Replaces any non alpha numeric with -
-						for ($cnt = 0; $cnt < 3; $cnt++)
-						{
-							$slug = str_replace("--", "-", $slug);
-						}
+						$slug = nxs_url_prettyfy($slug);
 						
 						if (in_array($slug, $all_slugs))
 						{

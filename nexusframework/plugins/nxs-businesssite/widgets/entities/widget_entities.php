@@ -412,13 +412,31 @@ function nxs_widgets_entities_home_getoptions($args)
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
 				"unistylablefield"	=> true
 			),
-		
+			// 
+
+			array
+      (
+				"id" 					=> "text_destination_url_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Destination url template", "nxs_td"),
+				// "readonly" 	=> "true",
+			),
+			array
+      (
+				"id" 					=> "text_destination_url_template_custom",
+				"type" 				=> "custom",
+				"targetid"	=> "text_destination_url_template",
+				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
+			),
+			//			
+			
+			//
 			array
       (
 				"id" 					=> "text_title_template",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title template", "nxs_td"),
-				"readonly" 	=> "true",
+				// "readonly" 	=> "true",
 			),
 			array
       (
@@ -426,7 +444,8 @@ function nxs_widgets_entities_home_getoptions($args)
 				"type" 				=> "custom",
 				"targetid"	=> "text_title_template",
 				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
-			),		
+			),
+			//
 			
 			// postprocessor is kind of obsolete...
 			array(
@@ -440,7 +459,25 @@ function nxs_widgets_entities_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+			
+			
+			
 			//
+			array
+      (
+				"id" 					=> "text_text_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Text template", "nxs_td"),
+				// "readonly" 		=> "true",
+			),
+			array
+      (
+				"id" 					=> "text_text_template_custom",
+				"type" 				=> "custom",
+				"targetid"	=> "text_text_template",
+				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
+			),
+			//			
 			array(
 				"id" 				=> "text_text_postprocessor",
 				"type" 				=> "select",
@@ -1189,13 +1226,11 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	$title = $title_template;	// for example {{entry.instance.title}}
-	
-	//
-	
+	/*
 	global $nxs_g_modelmanager;
 	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
 	$title = $contentmodel[$datasource]["taxonomy"]["title"];	// old: "post_title"
+	*/
 	
 	if ($title_postprocessor === "truncateall") 
 	{
@@ -1470,6 +1505,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$index++;
 		$post_id = $instance["content"]["post_id"];
 		$post_title = $instance["content"]["title"];
+		
 		$post_excerpt = $instance["content"]["excerpt"];		
 		$post_content = $instance["content"]["content"];
 		$post_slug = $instance["content"]["slug"];
@@ -1539,7 +1575,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				"top_info_color", "top_info_padding", 
 				"icon_scale", "text_postprocessor", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
 				"button_scale", "button_color", "button_fontzen", "button_alignment",
-				"destination_target", "title_heightiq", "text_heightiq", "text_showliftnote", "text_showdropcap", "text_fontzen", "enlarge", "grayscale",
+				"destination_target", "title_heightiq", 
+				"text_heightiq", "text_text_template", "text_showliftnote", "text_showdropcap", "text_fontzen", "enlarge", "grayscale",
+				"text_destination_url_template",
 			);
 			foreach ($fieldstoreplicate as $fieldtoreplicate)
 			{
@@ -1547,6 +1585,36 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				{
 					$childargs[$fieldtoreplicate] = $args["text_{$fieldtoreplicate}"];
 				}
+			}
+			
+			// tune contentable fields based on template configuration
+			
+			$lookup = array();
+			
+			foreach ($instance["content"] as $key => $val)
+			{
+				$lookup["{$datasource}.instance.{$key}"] = $val;
+			}
+			
+			$magicfields = array("title", "text", "destination_url");
+			foreach ($magicfields as $magicfield)
+			{
+				$childargs[$magicfield] = $args["text_{$magicfield}_template"];
+			}
+			
+			$translateargs = array
+			(
+				"lookup" => $lookup,
+				"items" => $childargs,
+				"fields" => $magicfields,
+			);
+			$childargs = nxs_filter_translate_v2($translateargs);
+			
+			// pretty-fy the destination_url
+			if (true)
+			{
+				// make lowercase
+				$childargs["destination_url"]	= nxs_url_prettyfy($childargs["destination_url"]);
 			}
 		}
 		
@@ -1672,6 +1740,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 
 		$abc_concatenated_css = nxs_concatenateargswithspaces($child_ph_colorzen, $child_ph_linkcolorvar, $child_ph_border_radius, $child_ph_borderwidth);
 		$xyz_concatenated_css = nxs_concatenateargswithspaces($child_ph_padding, $child_ph_valign);
+		
+		
 		
 		// allow plugins to extend the child args (fill custom fields, or override fields, whatever)
 		$filterargs = array

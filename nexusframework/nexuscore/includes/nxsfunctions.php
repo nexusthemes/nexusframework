@@ -11451,13 +11451,9 @@ function nxs_filter_translatelookup($metadata, $fields)
 {
 	$includeruntimeitems = true;
 	$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
-	$prefixtoken = nxs_lookuptable_getprefixtoken();
-	$postfixtoken = nxs_lookuptable_getpostfixtoken();
 	
 	$args = array
 	(
-		"prefixtoken" => $prefixtoken,
-		"postfixtoken" => $postfixtoken,
 		"items" => $metadata,
 		"fields" => $fields,
 		"lookup" => $lookup,
@@ -11469,23 +11465,47 @@ function nxs_filter_translatelookup($metadata, $fields)
 function nxs_filter_translate_v2($args)
 {
 	$prefixtoken = $args["prefixtoken"];
+	if ($prefixtoken == "")
+	{
+		$prefixtoken = nxs_lookuptable_getprefixtoken();
+	}
+	
 	$postfixtoken = $args["postfixtoken"];
-	$fields = $args["fields"];
+	if ($postfixtoken == "")
+	{
+		$postfixtoken = nxs_lookuptable_getpostfixtoken();
+	}
+	
 	$lookup = $args["lookup"];
 	
-	if ($prefixtoken == "") { nxs_webmethod_return_nack("error ; prefixtoken not set"); }
-	if ($postfixtoken == "") { nxs_webmethod_return_nack("error ; postfixtoken not set"); }
-	if ($fields == "") { nxs_webmethod_return_nack("error ; fields not set"); }
 	if ($lookup == "") { nxs_webmethod_return_nack("error ; lookup not set"); }
 	
 	if (isset($args["items"]))
 	{
 		// requesting to translate an array
 		$metadata = $args["items"];
+		
+		if (isset($args["fields"]))
+		{
+			// only translate the specified fields
+			$fields = $args["fields"];
+		}
+		else
+		{
+			// assumed all fields
+			$fields = array();
+			foreach ($metadata as $key => $val)
+			{
+				$fields[] = $key;
+			}
+		}
+		
 		$result = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
 	}
-	else if (isset($args["item"]))
+	else
 	{
+		$fields = array("item");
+		
 		// only one value is provided; wrap that item in an array
 		$metadata = array
 		(
@@ -11495,12 +11515,29 @@ function nxs_filter_translate_v2($args)
 		// unwrap the result
 		$result = $tempresult["item"];
 	}
-	else
-	{
-		nxs_webmethod_return_nack("error; either set the item, or items");
-	}
 	
 	return $result;
+}
+
+function nxs_url_prettyfy($slug)
+{
+	if ($slug != "")
+	{
+		$slug = strtolower($slug);
+		$slug = preg_replace('/[^A-Za-z0-9.\/]/', '-', $slug); // Replaces any non alpha numeric with -
+		for ($cnt = 0; $cnt < 3; $cnt++)
+		{
+			$slug = str_replace("--", "-", $slug);
+		}
+		// 
+		$slug = str_replace("//", nxs_geturl_home(), $slug);
+		
+		if (!nxs_stringendswith($slug, "/"))
+		{
+			$slug .= "/";
+		}	
+	}
+	return $slug;
 }
 
 // obsolete function
