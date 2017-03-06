@@ -18,6 +18,213 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	function getentries()
+	{
+		$entries = array
+		(
+			"free-willy" => array
+			(
+				"conditions" => array
+				(
+					"condition1" => array
+					(
+						"type" => "homeurl",
+						"operator" => "equals",
+						"value" => "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/",
+					),
+					"condition2" => array
+					(
+						"type" => "slugatindex",
+						"index" => 0,
+						"operator" => "equals",
+						"value" => "free-willy",
+					),
+					"condition3" => array
+					(
+						"type" => "slugatindex",
+						"index" => 1,
+						"operator" => "exactmatchhumanmodelforrealm",
+						"realm" => "freewebsiteproduct",
+					),
+				),
+			),
+		);
+		return $entries;
+	}
+	
+	function derivemodelfromurl()
+	{
+		$uri = nxs_geturicurrentpage();
+		$uripieces = explode("?", $uri);
+		$requestedslug = $uripieces[0];
+		$requestedslug = trim($requestedslug, "/");
+		
+		$slugcount = count($requestedslug);
+		$slugpieces = explode("/", $requestedslug);
+		
+		// find first condition that matches
+		$result = false;
+		$entries = $this->getentries();
+		foreach ($entries as $entryid => $entrymeta)
+		{
+			$currententryvalid = "sofar";
+			$currententryderivedparameters = array();
+			
+			$conditions = $entrymeta["conditions"];
+			foreach ($conditions as $conditionid => $conditionmeta)
+			{
+				$currentconditionvalid = false;
+				$conditiontype = $conditionmeta["type"];
+				if ($conditiontype == "homeurl")
+				{
+					// 
+					$operator = $conditionmeta["operator"];
+					$value = $conditionmeta["value"];
+					if ($operator == "equals" && $value == nxs_geturl_home())
+					{
+						// ok, proceed
+					}
+					else
+					{
+						//error_log("homeurl mismatch (".$value . ") vs (" . nxs_geturl_home() . ")");
+						$currententryvalid = false;
+						break;
+					}
+				}
+				else if ($conditiontype == "slugatindex")
+				{
+					$index = $conditionmeta["index"];
+					$operator = $conditionmeta["operator"];
+					$value = $conditionmeta["value"];
+					if ($operator == "equals" && $value == $slugpieces[$index])
+					{
+						// ok, proceed
+					}
+					else if ($operator == "exactmatchhumanmodelforrealm" && $slugpieces[$index] != "")
+					{
+						$humanid = $slugpieces[$index];
+						$realm = $conditionmeta["realm"];
+						$currententryderivedparameters["humanid"] = "{$humanid}";
+						$currententryderivedparameters["realm"] = "{$realm}";
+						// ok, proceed
+					}
+					else
+					{
+						error_log("nope; op:($operator) val:($value) index:($index) sp:(" . $slugpieces[$index] . ")");
+						
+						$currententryvalid = false;
+						break;
+					}
+				}
+				else
+				{
+					echo "unsupported conditiontype?";
+					die();
+				}
+			}
+			
+			if ($currententryvalid == "sofar")
+			{
+				// if we come this far, it means it valid
+				$result = array
+				(
+					"entryid" => $entryid,
+					"parameters" => $currententryderivedparameters,
+				);
+				break;
+			}
+			else
+			{
+				// error_log("condition failed at; $conditionid");
+				// perhaps next entry is valid, loop
+			}
+		}
+		
+		return $result;
+	}
+	
+	function deriveurlfrommodel($parameters)
+	{
+		$result = false;
+		
+		$realm = $parameters["realm"];
+		$humanid = $parameters["humanid"];
+		
+		$entries = $this->getentries();
+		foreach ($entries as $entryid => $entrymeta)
+		{
+			$resultsofar = array();
+			
+			$currententryvalid = "sofar";
+			$currententryderivedparameters = array();
+			
+			$conditions = $entrymeta["conditions"];
+			foreach ($conditions as $conditionid => $conditionmeta)
+			{
+				$currentconditionvalid = false;
+				$conditiontype = $conditionmeta["type"];
+				if ($conditiontype == "homeurl")
+				{
+					$resultsofar["homeurl"] = nxs_geturl_home();
+				}
+				else if ($conditiontype == "slugatindex")
+				{
+					$index = $conditionmeta["index"];
+					$operator = $conditionmeta["operator"];
+					$value = $conditionmeta["value"];
+					if ($operator == "equals")
+					{
+						$resultsofar["slugpieces"][$index] = $value;
+					}
+					else if ($operator == "exactmatchhumanmodelforrealm" && $conditionmeta["realm"] == $realm)
+					{
+						$resultsofar["slugpieces"][$index] = $humanid;
+					}
+					else
+					{
+						$currententryvalid = false;
+						break;
+					}
+				}
+				else
+				{
+					echo "unsupported conditiontype?";
+					die();
+				}
+			}
+			
+			if ($currententryvalid == "sofar")
+			{
+				// if we come this far, it means it valid
+				$result = $resultsofar;
+				
+				$url = $resultsofar["homeurl"];
+				$index = -1;
+				while (true)
+				{
+					$index++;
+					$part = $resultsofar["slugpieces"][$index];
+					// error_log("part: $part");
+					if ($part == "" || $index > 10)
+					{
+						break;
+					}
+					$url .= $part . "/";
+				}
+				$result["url"] = $url;
+				
+				break;
+			}
+			else
+			{
+				// error_log("condition failed at; $conditionid");
+				// perhaps next entry is valid, loop
+			}
+		}
+		
+		return $result;
+	}
+	
 	// virtual posts; allow entities from the model to 
 	// represent a virtual post/page according to WP
 	function businesssite_the_posts($result, $args)
@@ -47,6 +254,25 @@ class nxs_g_modelmanager
 		$uripieces = explode("?", $uri);
 		$requestedslug = $uripieces[0];
 		$requestedslug = trim($requestedslug, "/");
+		
+		$slugcount = count($requestedslug);
+		$slugpieces = explode("/", $requestedslug);
+		
+		$derivedcontext = $this->derivemodelfromurl();
+		if ($derivedcontext === false)
+		{
+			// 
+			//error_log("found validentry; $validentry");
+		}
+		else
+		{
+			// we have a winner
+			// error_log("context found for page; :" . json_encode($derivedcontext));
+			
+			$parameters = $derivedcontext["parameters"];
+			$urlresult = $this->deriveurlfrommodel($parameters);
+			error_log("urlresult: " . json_encode($urlresult));
+		}
 		
 		// loop over the contentmodel and verify if the requestedslug matches 
 		// any of the elements of the contentmodel
