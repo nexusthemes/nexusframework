@@ -26,6 +26,7 @@ function nxs_entities_datasourcecustom_popupcontent($optionvalues, $args, $runti
 	extract($runtimeblendeddata);
 	
 	$modeluri = $runtimeblendeddata["modeluri"];
+	
 	$datasource = $runtimeblendeddata["datasource"];
 	global $nxs_g_modelmanager;
 	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
@@ -286,7 +287,7 @@ function nxs_widgets_entities_home_getoptions($args)
 				"id" 					=> "datasource",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Datasource", "nxs_td"),
-				"readonly" 	=> "true",
+				// "readonly" 	=> "true",
 			),
 			array
       (
@@ -498,6 +499,23 @@ function nxs_widgets_entities_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			//
+			// text_image_src
+			array
+      (
+				"id" 					=> "text_image_src_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src template", "nxs_td"),
+				// "readonly" 	=> "true",
+			),
+			array
+      (
+				"id" 					=> "text_image_src_template_custom",
+				"type" 				=> "custom",
+				"targetid"	=> "text_image_src_template",
+				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
+			),
+			//
+			
 			array
 			(
 				"id" 				=> "text_image_alignment",
@@ -1573,7 +1591,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			(
 				"title_heading", "text_title_template", "title_postprocessor", "title_fontzen", "title_alignment", "title_fontsize", 
 				"top_info_color", "top_info_padding", 
-				"icon_scale", "text_postprocessor", "text_alignment", "image_alignment", "image_size", "image_shadow", "image_border_width", 
+				"icon_scale", "text_postprocessor", "text_alignment", 
+				"image_src_template", "image_alignment", "image_size", "image_shadow", "image_border_width", 
 				"button_scale", "button_color", "button_fontzen", "button_alignment",
 				"destination_target", "title_heightiq", 
 				"text_heightiq", "text_text_template", "text_showliftnote", "text_showdropcap", "text_fontzen", "enlarge", "grayscale",
@@ -1596,7 +1615,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				$lookup["{$datasource}.instance.{$key}"] = $val;
 			}
 			
-			$magicfields = array("title", "text", "destination_url");
+			$magicfields = array("title", "text", "destination_url", "image_src");
 			foreach ($magicfields as $magicfield)
 			{
 				$childargs[$magicfield] = $args["text_{$magicfield}_template"];
@@ -1613,7 +1632,25 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			// pretty-fy the destination_url
 			if (true)
 			{
+
+				/*
+				$humanid = $childargs["title"];
+				$humanid = nxs_url_prettyfy($humanid);
+
+				// generate url from model
+				$deriveargs = array
+				(
+					"humanid" => $humanid,
+					"realm" => "freewebsiteproduct",	// hoe weet hij dit?
+				);
+				global $nxs_g_modelmanager;
+				$derived = $nxs_g_modelmanager->deriveurlfrommodel($deriveargs);
+				$derivedurl = $derived["url"];
+				
 				// make lowercase
+				$childargs["destination_url"]	= $derivedurl; // nxs_url_prettyfy($childargs["destination_url"]);
+				*/
+				
 				$childargs["destination_url"]	= nxs_url_prettyfy($childargs["destination_url"]);
 			}
 		}

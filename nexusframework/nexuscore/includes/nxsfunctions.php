@@ -398,6 +398,41 @@ function nxs_storecacheoutput($buffer)
 	
 	if ($shouldstore)
 	{
+		$uri = nxs_geturicurrentpage();
+		if (
+			nxs_stringcontains($uri, "\"") || 
+			nxs_stringcontains($uri, "'") || 
+			nxs_stringcontains($uri, ":") || 
+			nxs_stringcontains($uri, "%") ||
+			false
+		)
+		{
+			// dont store urls with "weird" chars in them,
+			// most likely caused by incorrect links in e-mail or tel links
+			// that are followed by spiders, causing potential tremendous
+			// amount of data being stored on the cache
+			$shouldstore = false;
+			$nocacheexplanations[] = "is weirdchar";
+		}
+	}
+	
+	if ($shouldstore)
+	{
+		$uri = nxs_geturicurrentpage();
+		$length = strlen($uri);
+		if ($length > 256)
+		{
+			// dont store urls with "weird" chars in them,
+			// most likely caused by incorrect links in e-mail or tel links
+			// that are followed by spiders, causing potential tremendous
+			// amount of data being stored on the cache
+			$shouldstore = false;
+			$nocacheexplanations[] = "is urltoolong";
+		}
+	}
+	
+	if ($shouldstore)
+	{
 		if (is_404())
 		{
 			// dont store 404's
