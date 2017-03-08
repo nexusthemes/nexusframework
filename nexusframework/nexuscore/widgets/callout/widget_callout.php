@@ -1,5 +1,7 @@
 <?php
 
+nxs_requirewidget("generic");
+
 function nxs_widgets_callout_geticonid()
 {
 	$widget_name = basename(dirname(__FILE__));
@@ -47,6 +49,24 @@ function nxs_widgets_callout_home_getoptions($args)
 		),
 		"fields" => array
 		(
+			array
+			( 
+				"id" 				=> "wrapper_model_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Model", "nxs_td"),
+			),
+			array
+      (
+				"id" 					=> "modeluris",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
+				"placeholder" => "for example m1:foo@bar,m2:foo{{humanid}}@schema",
+			),
+			array
+			( 
+				"id" 					=> "wrapper_model_end",
+				"type" 				=> "wrapperend"
+			),		
 			// TITLES
 				
 			array( 
@@ -65,7 +85,12 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
-			array(
+			array
+      (
+				"id" 					=> "title_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Title heading", "nxs_td"),
@@ -94,6 +119,12 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			array
+      (
+				"id" 					=> "subtitle_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),			
 			array(
 				"id" 				=> "subtitle_heading",
 				"type" 				=> "select",
@@ -201,11 +232,10 @@ function nxs_widgets_callout_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Button", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 			),
-
 			array(
 				"id" 				=> "button_text",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Button title", "nxs_td"),
+				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Button text goes here", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Put a text on the call-to-action button.", "nxs_td"),
 				"unicontentablefield" => true,
@@ -259,6 +289,12 @@ function nxs_widgets_callout_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Link the callout button to any source.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
+			),
+			array
+      (
+				"id" 					=> "destination_url_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
 			),
 			array(
 				"id" 				=> "destination_js",
@@ -315,7 +351,12 @@ function nxs_widgets_callout_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
 				"unicontentablefield" => true,
 			),
-            
+			array
+      (
+				"id" 					=> "title_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),            
 			array
 			(
 				"id" 				=> "image_position",
@@ -468,6 +509,28 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","subtitle", "button_text","destination_url", "image_src"));	
+	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		// phase 1; replace the possible placeholder "humanid" in the modeluris with its value
+		$modeluris = $mixedattributes["modeluris"];
+		$humanid = $nxs_g_modelmanager->gethumanid("");
+		$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
+		
+		// phase 2; translate the magic fields using the (extended) models
+		$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+		$magicfields = array("title", "text", "destination_url", "image_src");
+		$translateargs = array
+		(
+			"lookup" => $lookup,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();

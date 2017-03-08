@@ -380,6 +380,11 @@ class nxs_g_modelmanager
 
 			// make a mapping for the taxonomy fields
 			$contentmodel = $this->getcontentmodel($modeluri);
+			if ($contentmodel == false)
+			{
+				// not found, ignore
+				return $result;
+			}
 			
 			$lookup = array();
 			foreach ($contentmodel as $taxonomy => $m)
@@ -411,7 +416,7 @@ class nxs_g_modelmanager
 			}
 			
 			$excerpt = "";	// not practical to fill this
-			$content = "TODO CONTENT :)";	// lets use the front end instead
+			$content = ""; // "TODO CONTENT :)";	// lets use the front end instead
 			$rightnow = current_time('mysql');
 			$post_date = $rightnow;
 			$post_date_gmt = $rightnow;
@@ -478,7 +483,8 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	function getmodel($modeluri = "")
+	// convert the modeluri to a runtime modeluri
+	function getruntimemodeluri($modeluri = "")
 	{
 		if ($modeluri == "")
 		{
@@ -497,6 +503,85 @@ class nxs_g_modelmanager
 				//die();
 			}
 		}
+		
+		return $modeluri;
+	}
+	
+	function gethumanid($modeluri = "")
+	{
+		$modeluri = $this->getruntimemodeluri($modeluri);
+		$pieces = explode("@", $modeluri);
+		$result = $pieces[0];
+		return $result;
+	}
+	
+	function getlookups($modeluris = "")
+	{
+		$result = array();
+		
+		$modeluris = str_replace(" ", "", $modeluris);
+		$modeluris = str_replace(";", ",", $modeluris);
+		$modeluris = str_replace("|", ",", $modeluris);
+		$modeluripieces = explode(",", $modeluris);
+		
+		// we also include the "empty" modeluri (which maps to the model of the page
+		// in the current scope
+		$modeluripieces = array_merge(array(""), $modeluripieces);
+		
+		$index = -1;
+		foreach ($modeluripieces as $modeluripiece)
+		{
+			$index++;
+			
+			$subpieces = explode(":", $modeluripiece);
+			
+			if (count($subpieces) == 1)
+			{
+				$prefix = "";
+				$modeluri = $subpieces[0];
+			}
+			else
+			{				
+				$prefix = $subpieces[0] . ":";
+				$modeluri = $subpieces[1];
+			}
+			
+			// format = prefix:foo@bar
+			
+			$lookup = $this->getlookup($modeluri, "{$prefix}");
+
+			$result = array_merge($result, $lookup);
+		}
+		
+		return $result;
+	}
+	
+	function getlookup($modeluri = "", $prefix = "")
+	{
+		$modeluri = $this->getruntimemodeluri($modeluri);
+		$schema = $this->getcontentschema($modeluri);
+		$contentmodel = $this->getcontentmodel($modeluri);
+		
+		foreach ($schema as $taxonomyid => $taxonomymeta)
+		{
+			$taxonomyextendedproperties = $taxonomymeta["taxonomyextendedproperties"];
+			foreach ($taxonomyextendedproperties as $fieldid => $fieldmeta)
+			{
+				$val = $contentmodel[$taxonomyid]["taxonomy"][$fieldid];
+				$lookup["{$prefix}{$taxonomyid}.{$fieldid}"] = $val;
+			}
+		}
+		
+		$lookup["this.humanid"] = $this->gethumanid($modeluri);
+		
+		return $lookup;
+	}
+	
+	function getmodel($modeluri = "")
+	{
+		// convert provided modeluri to the runtime one
+		// (empty modeluri will mean modeluri will be derived from the url being accessed)
+		$modeluri = $this->getruntimemodeluri($modeluri);
 		
 		$cachekey = $modeluri;
 		if ($cachekey == "")

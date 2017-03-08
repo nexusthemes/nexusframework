@@ -4,6 +4,55 @@
 // nxs_extend_widgetoptionfields(&$existingoptions, $extendoptions)
 // of nxsfunctions.php
 
+function nxs_generic_modeltaxfieldpicker_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	extract($optionvalues);
+	extract($args);
+	extract($runtimeblendeddata);
+
+	global $nxs_g_modelmanager;
+	
+	// phase 1; replace the possible placeholder "humanid" in the modeluris with its value
+	$modeluris = $runtimeblendeddata["modeluris"];
+	$humanid = $nxs_g_modelmanager->gethumanid("");
+	$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
+	
+	error_log("GENERIC POPUP; modeluris:$modeluris");
+	
+	$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+	
+	$options = array();
+	
+	foreach ($lookup as $key => $val)
+	{
+		$options[] = $key;
+	}
+
+	nxs_ob_start();
+	?>
+	<div>
+		<?php  
+		$isfirst = true;
+		foreach ($options as $option)
+		{
+			$output = '{{' . $option . '}}';
+			if (!$isfirst)
+			{
+				echo " | ";
+			}
+			$value = '{{' . $option . '}}';
+			echo "<a href='#' onclick='nxs_js_copytoclipboard_v2(\"{$value}\"); return false;'>{$option}</a>&nbsp;";
+			$isfirst = false;
+		}
+		?>
+	</div>
+	<?php
+
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
+}
+
 // extended options (injected by nxs_extend_widgetoptionfields)
 function nxs_widgets_generic_title_getoptions($args)
 {

@@ -1,5 +1,7 @@
 <?php
 
+nxs_requirewidget("generic");
+
 function nxs_widgets_text_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
 	return "nxs-icon-" . $widget_name;
@@ -39,6 +41,25 @@ function nxs_widgets_text_home_getoptions($args)
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_text_getunifiedcontentgroup(),),
 		"fields" => array
 		(
+			array
+			( 
+				"id" 				=> "wrapper_model_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Model", "nxs_td"),
+			),
+			array
+      (
+				"id" 					=> "modeluris",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
+				"placeholder" => "for example m1:foo@bar,m2:foo{{humanid}}@schema",
+			),
+			array
+			( 
+				"id" 					=> "wrapper_model_end",
+				"type" 				=> "wrapperend"
+			),
+			
 			// TITLE
 			
 			array
@@ -55,6 +76,13 @@ function nxs_widgets_text_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			array
+      (
+				"id" 					=> "title_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+			
 			array
 			(
 				"id" 				=> "title_postprocessor",
@@ -143,6 +171,12 @@ function nxs_widgets_text_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			array
+      (
+				"id" 					=> "text_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),			
 			array(
 				"id" 				=> "text_truncatelength",
 				"type" 				=> "select",
@@ -228,6 +262,12 @@ function nxs_widgets_text_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
 				"unicontentablefield" => true,
 			),				
+			array
+      (
+				"id" 					=> "image_src_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
 			array( 
 				"id" 				=> "wrapper_image_begin",
 				"type" 				=> "wrapperend"
@@ -305,6 +345,12 @@ function nxs_widgets_text_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
+			),
+			array
+      (
+				"id" 					=> "destination_url_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
 			),
 			
 			array(
@@ -496,6 +542,28 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text", "destination_url"));
+	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		// phase 1; replace the possible placeholder "humanid" in the modeluris with its value
+		$modeluris = $mixedattributes["modeluris"];
+		$humanid = $nxs_g_modelmanager->gethumanid("");
+		$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
+		
+		// phase 2; translate the magic fields using the (extended) models
+		$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+		$magicfields = array("title", "text", "destination_url", "image_src");
+		$translateargs = array
+		(
+			"lookup" => $lookup,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
