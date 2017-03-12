@@ -543,7 +543,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text", "destination_url"));
 	
-	// Translate model magical fields
+	// Translate model magical fields - STAGE 1
 	if (true)
 	{
 		global $nxs_g_modelmanager;
@@ -813,9 +813,12 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	$concatenatedcssclasses = nxs_concatenateargswithspaces("nxs-title", $title_alignment_cssclass, $title_fontsize_cssclass, $titlecssclasses, $title_fontzen_cssclass);
 	
+	// apply shortcode on the title
+	$title = do_shortcode($title);
 	
 	// Title
 	$titlehtml = "<{$title_heading} {$title_schemaorg_attribute} class='{$concatenatedcssclasses}'>{$title}</{$title_heading}>";
+	
 	
 	if ($destination_target == "_self") {
 		$destination_target_html = 'target="_self"';

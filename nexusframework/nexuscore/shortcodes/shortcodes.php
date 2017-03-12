@@ -1,6 +1,54 @@
 <?php 
 
+// spinner shortcodes
+function nxs_sc_spin($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	nxs_ob_start();
+	
+	// error_log("SC---ATTS:" . json_encode($attributes));
+	
+	if ($modeluri == "")
+	{
+		$modeluri = "{$humanid}@{$schema}";
+	}
+	
+	$modeluri = "spinner:{$modeluri}";
+	
+	global $nxs_g_modelmanager;
+	$lookups = $nxs_g_modelmanager->getlookups($modeluri);
+	
+	$text = $lookups["spinner:text.textvalue"];
+		
+	if (true)
+	{
+		$lookup = array();
+		foreach ($attributes as $key=>$val)
+		{
+			$lookup[$key] = "<b class='ph'>{$val}</b>";
+		}
+	
+		// use the attributes passed in to this shortcode as a lookup table
+		$translateargs = array
+		(
+			"lookup" => $lookup,
+			"item" => $text,
+		);
+		$text = nxs_filter_translate_v2($translateargs);
+	}
+	
+	echo $text;
+	
+	$output = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+		
+	return $output;
+}
+add_shortcode('nxsspin', 'nxs_sc_spin');
+
 // widget specific shortcodes
+
 function nxs_sc_googlemap($attributes, $content = null, $name='') 
 {
 	extract($attributes);
@@ -72,7 +120,6 @@ function nxs_sc_googlemap($attributes, $content = null, $name='')
 	return $output;
 }
 add_shortcode('nxsgooglemap', 'nxs_sc_googlemap');
-
 
 // layout specific shortcodes
 

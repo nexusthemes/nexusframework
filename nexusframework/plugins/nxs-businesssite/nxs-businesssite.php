@@ -519,6 +519,8 @@ class nxs_g_modelmanager
 	{
 		$result = array();
 		
+		// error_log("invoked; getlookups; $modeluris");
+		
 		$modeluris = str_replace(" ", "", $modeluris);
 		$modeluris = str_replace(";", ",", $modeluris);
 		$modeluris = str_replace("|", ",", $modeluris);
@@ -558,6 +560,8 @@ class nxs_g_modelmanager
 	
 	function getlookup($modeluri = "", $prefix = "")
 	{
+		// error_log("invoked; getlookup; $modeluri ($prefix)");
+		
 		$modeluri = $this->getruntimemodeluri($modeluri);
 		$schema = $this->getcontentschema($modeluri);
 		$contentmodel = $this->getcontentmodel($modeluri);
@@ -594,7 +598,7 @@ class nxs_g_modelmanager
 		{
 			if ($modeluri != "")
 			{
-				$nxs_g_model[$cachekey] = $this->getmodel_actual($modeluri);
+				$nxs_g_model[$cachekey] = $this->getmodel_dbcache($modeluri);
 			}
 			else
 			{
@@ -641,16 +645,33 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	function getmodel_dbcache($modeluri)
+	{
+		//
+		$transientkey = md5("modeldb_{$modeluri}");
+		$result = get_transient($transientkey);
+		if ($result == "" || $result == false || $_REQUEST["transients"] == "refresh")
+		{
+			$result = $this->getmodel_actual($modeluri);
+			// update cache
+			$cacheduration = 60 * 60 * 24; // 24 hours cache
+			set_transient($transientkey, $result, $cacheduration);
+		}
+		
+		return $result;
+	}
+	
 	function getmodel_actual($modeluri)
 	{
-		error_log("getmodel_actual for (($modeluri))");
+		// error_log("getmodel_actual for (($modeluri))");
 		
 		// if modeluri is specified retrieve the model through the modeluri
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/model-by-uri/{$modeluri}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
-		
-		// todo: add caching here...
 		$content = file_get_contents($url);
 		$json = json_decode($content, true);
+		error_log("getmodel_actual url; $url");
+		//error_log("getmodel_actual result; $content");
+		
 		$result = $json;
 		
 		return $result;

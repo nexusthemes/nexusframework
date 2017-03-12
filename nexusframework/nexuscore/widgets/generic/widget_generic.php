@@ -17,7 +17,7 @@ function nxs_generic_modeltaxfieldpicker_popupcontent($optionvalues, $args, $run
 	$humanid = $nxs_g_modelmanager->gethumanid("");
 	$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
 	
-	error_log("GENERIC POPUP; modeluris:$modeluris");
+	// error_log("GENERIC POPUP; modeluris; $modeluris");
 	
 	$lookup = $nxs_g_modelmanager->getlookups($modeluris);
 	
