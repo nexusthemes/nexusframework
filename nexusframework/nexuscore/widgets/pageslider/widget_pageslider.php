@@ -579,7 +579,11 @@ function nxs_widgets_pageslider_beforeend_head()
 			// the global $nxs_pageslider_pagesliderid is set in nxs_widgets_pageslider_registerhooksforpagewidget($args)
 			global $nxs_pageslider_pagesliderid;
 			$structure = nxs_parsepoststructure($nxs_pageslider_pagesliderid);
-			$pagerow = $structure[0];	// grab first slide
+			$max = count($structure);
+			$pagerow = $structure[$startslide % $max];	// grab first slide
+			
+			// $pagerow = $structure[0];	// grab first slide
+			
 			$content = $pagerow["content"];
 			$slideplaceholderid = nxs_parsepagerow($content);
 			
@@ -606,7 +610,7 @@ function nxs_widgets_pageslider_beforeend_head()
 						(
 							function() 
 							{
-								var html = "<div class='screenshothelper' style='position: absolute; opacity: 0;'><img src='<?php echo $imageurl; ?>' /></div>";
+								var html = "<div class='screenshothelper' style='position: absolute;'><img src='<?php echo $imageurl; ?>' style='min-width: 100vw; min-height: 100vh;' /></div>";
 								$('body').prepend(html);
 								console.log("screenshothelper installed");
 							}

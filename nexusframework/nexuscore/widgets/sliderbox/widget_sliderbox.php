@@ -776,6 +776,10 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					<?php
 				}
 				
+				if ($_REQUEST["screenshot"] == "true")
+				{
+					$item_durationvisibility = 600000;	// stay fixed
+				}
 				?>
 				
 				var cycleloaded_<?php echo $placeholderid; ?> = false;
@@ -850,8 +854,18 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 			<div id="slideset_'.$placeholderid.'" class="nxs-slideset '.$shadow.'" style="'.$slider_width.' '.$slideset_inlinestyle.'">';
 				
 			$slideindex = 0;
+			$max = count($slidesdataset);
 			
-			foreach ($slidesdataset as $slidedataset) {
+			foreach ($slidesdataset as $slidedatasetitem) 
+			{
+				$slideindextorender = $slideindex;
+				if ($_REQUEST["screenshot"] == "true")
+				{
+					$slideindextorender = intval($_REQUEST["slider_startslide"]) % $max;
+				}
+				
+				$slidedataset = $slidesdataset[$slideindextorender];
+				
 				// Resetting variables for next slide
 				$title = ''; 
 				$alt = '';

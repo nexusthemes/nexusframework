@@ -26,7 +26,6 @@ function nxs_entities_datasourcecustom_popupcontent($optionvalues, $args, $runti
 	extract($runtimeblendeddata);
 	
 	$modeluri = $runtimeblendeddata["modeluri"];
-	
 	$datasource = $runtimeblendeddata["datasource"];
 	global $nxs_g_modelmanager;
 	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
