@@ -563,6 +563,13 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 			"fields" => $magicfields,
 		);
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
+		
+		// phase 3; apply shortcodes to the magic fields
+		$magicfields = array("title", "text", "destination_url", "image_src");
+		foreach ($magicfields as $magicfield)
+		{
+			$mixedattributes[$magicfield] = do_shortcode($mixedattributes[$magicfield]);
+		}
 	}
 	
 	// Output the result array and setting the "result" position to "OK"

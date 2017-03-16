@@ -395,7 +395,8 @@ function nxs_widgets_pageslider_render_webpart_render_htmlvisualization($args)
 	// Setting the contents of the output buffer into a variable and cleaning up te buffer
 	$html = nxs_ob_get_contents();
 	nxs_ob_end_clean();
-
+	
+	
 	// Setting the contents of the variable to the appropriate array position
 	// The framework uses this array with its accompanying values to render the page
 	$result["html"] = $html;	
@@ -476,6 +477,7 @@ function nxs_widgets_pageslider_updateplaceholderdata($args)
 
 function nxs_widgets_pageslider_beforeend_head()
 {
+	
 	// the global $nxs_pageslider_pagesliderid is set in nxs_widgets_pageslider_registerhooksforpagewidget($args)
 	global $nxs_pageslider_pagesliderid;
 	
@@ -558,126 +560,13 @@ function nxs_widgets_pageslider_beforeend_head()
 		// the startslide and autoplay can be specified in the url
 		// this is for generating screenshots for the product image
 		$startslide = 0;
-		if ($_REQUEST['nxs_screenshot_format'] != "")
-		{
-			$startslide = $_REQUEST['slider_startslide'];
-
-			if (intval($startslide) > $aantalslides)
-			{
-				$startslide = 1;
-			}
-		}
-
+		
 		$autoplay = 1;
-		if ($_REQUEST['nxs_screenshot_format'] != "")
+		if ($_REQUEST['screenshot'] == "true")
 		{
 			$metadata_transition = "no-blink";
 			$autoplay = 0;
-
-			// ---
-
-			// the global $nxs_pageslider_pagesliderid is set in nxs_widgets_pageslider_registerhooksforpagewidget($args)
-			global $nxs_pageslider_pagesliderid;
-			$structure = nxs_parsepoststructure($nxs_pageslider_pagesliderid);
-			$max = count($structure);
-			$pagerow = $structure[$startslide % $max];	// grab first slide
-			
-			// $pagerow = $structure[0];	// grab first slide
-			
-			$content = $pagerow["content"];
-			$slideplaceholderid = nxs_parsepagerow($content);
-			
-			$placeholdermetadata = nxs_getwidgetmetadata($nxs_pageslider_pagesliderid, $slideplaceholderid);
-			$placeholdermetadata = nxs_filter_translatelookup($placeholdermetadata, array("title","text", "button_text","destination_url", "image_src"));	
-			
-			$imageid = $placeholdermetadata['image_imageid'];
-			$lookup = wp_get_attachment_image_src($imageid, 'full', true);
-			$imageurl = $lookup[0];
-			$imageurl = nxs_img_getimageurlthemeversion($imageurl);											
-			
-			if ($imageid == "")
-			{
-				$imageurl = $placeholdermetadata['image_src'];
-			}
-			
-			if ($_REQUEST["screenshot"] == "true")
-			{
-				if ($imageurl != "") 
-				{
-					?>
-					<script>
-						jQ_nxs(document).ready
-						(
-							function() 
-							{
-								var html = "<div class='screenshothelper' style='position: absolute;'><img src='<?php echo $imageurl; ?>' style='min-width: 100vw; min-height: 100vh;' /></div>";
-								$('body').prepend(html);
-								console.log("screenshothelper installed");
-							}
-						);
-					</script>
-					<?php
-				}
-			}
-
-			// ---
-			
-			
-
-
-			?>
-			<style>
-				.supersized {  }
-				#staticbg 
-				{ 
-					/* background-color: red; */
-					position: fixed;
-					width: 100%;
-				}
-				#staticbg img
-				{ 
-					<?php
-					if ($_REQUEST['nxs_screenshot_format'] == "macbook")
-					{
-						?>
-						height: 1100px;
-						<?php
-					}
-					else if ($_REQUEST['nxs_screenshot_format'] == "imac")
-					{
-						?>
-						height: 1200px;
-						<?php
-					}
-					else 
-					{
-						// best practise to hide the slider for any handheld
-						?>
-						height: 0px;
-						<?php
-					}
-					?>
-				}
-			</style>
-			<script>
-				jQuery(document).ready
-				(
-					function() 
-					{
-						//console.log("yippie");
-						jQuery("body").prepend(jQuery("<div id='staticbg'><img src='<?php echo $imageurl; ?>' /></div>"));
-						//jQuery("#staticbg").css("width", "700px");
-						//jQuery("#staticbg").css("height", jQuery(window).height() + "px");
-						//jQuery("#staticbg img").css("width", jQuery(window).width() + "px");
-						//jQuery("#staticbg img").css("height", jQuery(window).height() + "px");
-						//console.log("jajee");
-					}
-				);
-			</script>
-			<?php
-			return;
 		}
-
 		?>
 		<link rel="stylesheet" href="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/css/supersized.css" type="text/css" media="screen" />
 		<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/js/altsupersized.js"></script>
@@ -735,8 +624,16 @@ function nxs_widgets_pageslider_beforeend_head()
 								slides 					:  	[												// Slideshow Images
 								<?php
 									$isfirst = true;
+									$max = count($structure);
 									
-									foreach ($structure as $pagerow) {
+									foreach ($structure as $pagerow) 
+									{
+										if ($_REQUEST["screenshot"] == "true")
+										{
+											$slideindextorender = intval($_REQUEST["slider_startslide"]) % $max;
+											$pagerow = $structure[$slideindextorender];
+										}
+										
 										$content = $pagerow["content"];
 										$slideplaceholderid = nxs_parsepagerow($content);
 										$placeholdermetadata = nxs_getwidgetmetadata($nxs_pageslider_pagesliderid, $slideplaceholderid);
@@ -871,6 +768,7 @@ function nxs_widgets_pageslider_beforeend_head()
 	
 function nxs_widgets_pageslider_betweenheadandcontent()
 {
+	
 	// the global $nxs_pageslider_pagesliderid is set in nxs_widgets_pageslider_registerhooksforpagewidget($args)
 	global $nxs_pageslider_pagesliderid;
 	
@@ -1082,11 +980,7 @@ function nxs_widgets_pageslider_betweenheadandcontent()
                 <div id="slidecaption"></div>
                 
                 <?php
-                if ($_REQUEST['nxs_screenshot_format'] != "")
-                {
-                	// ignore for screenshot
-              	}
-              	else
+                if (true)
               	{
               		?>                
 	                <script type='text/javascript'>

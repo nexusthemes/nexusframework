@@ -47,6 +47,47 @@ function nxs_sc_spin($attributes, $content = null, $name='')
 }
 add_shortcode('nxsspin', 'nxs_sc_spin');
 
+// for example [nxsstring ops="lo;x_"]plumber_wordpress_theme[/nxsstring]
+function nxs_sc_string($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	nxs_ob_start();
+	
+	$input = $content;
+	
+	$ops = $attributes["ops"];
+	$ops = str_replace(",","|", $ops);
+	$ops = str_replace(";","|", $ops);
+	$opslist = explode("|", $ops);
+	foreach ($opslist as $op)
+	{
+		$op = trim($op);
+		if ($op == "lo")
+		{
+			$input = strtolower($input);
+		}
+		else if ($op == "xspace")
+		{
+			$input = str_replace(" ", "", $input);
+		}
+		else if ($op == "x_")
+		{
+			$input = str_replace("_", "", $input);
+		}
+	}
+	
+	echo $input;
+	
+	$output = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+		
+	return $output;
+}
+add_shortcode('nxsstring', 'nxs_sc_string');
+
+
+
 // widget specific shortcodes
 
 function nxs_sc_googlemap($attributes, $content = null, $name='') 

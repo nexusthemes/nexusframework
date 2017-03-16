@@ -1,5 +1,7 @@
 <?php
 
+nxs_requirewidget("generic");
+
 function nxs_widgets_entities_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
 	return "nxs-icon-moving";
@@ -353,6 +355,96 @@ function nxs_widgets_entities_home_getoptions($args)
       array
       (
           "id" 				=> "wrapper_itemsstyle_text_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Child text widget templating", "nxs_td"),
+      ),
+			array
+      (
+				"id" 					=> "text_modeluris_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Model URIs template", "nxs_td"),
+				// "readonly" 		=> "true",
+			),
+
+			array
+      (
+				"id" 					=> "text_modeluris_template_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+
+			array
+      (
+				"id" 					=> "text_destination_url_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Destination url template", "nxs_td"),
+				// "readonly" 	=> "true",
+			),
+			
+			array
+      (
+				"id" 					=> "text_destination_url_template_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+			
+			//			
+			
+			//
+			array
+      (
+				"id" 					=> "text_title_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Title template", "nxs_td"),
+				// "readonly" 	=> "true",
+			),
+			array
+      (
+				"id" 					=> "text_title_template_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+			
+			//
+			array
+      (
+				"id" 					=> "text_text_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Text template", "nxs_td"),
+				// "readonly" 		=> "true",
+			),
+			
+			array
+      (
+				"id" 					=> "text_text_template_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+			
+			// text_image_src
+			array
+      (
+				"id" 					=> "text_image_src_template",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src template", "nxs_td"),
+				// "readonly" 	=> "true",
+			),
+			array
+      (
+				"id" 					=> "text_image_src_template_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+			
+			//				
+			array
+			(
+          "id" 				=> "wrapper_title_end",
+          "type" 				=> "wrapperend",
+      ),			      
+      array
+      (
+          "id" 				=> "wrapper_itemsstyle_text_begin",
           "cssclasses" => "custom-filter custom-filter-text",
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("Child text widget styling", "nxs_td"),
@@ -414,37 +506,7 @@ function nxs_widgets_entities_home_getoptions($args)
 			),
 			// 
 
-			array
-      (
-				"id" 					=> "text_destination_url_template",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Destination url template", "nxs_td"),
-				// "readonly" 	=> "true",
-			),
-			array
-      (
-				"id" 					=> "text_destination_url_template_custom",
-				"type" 				=> "custom",
-				"targetid"	=> "text_destination_url_template",
-				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
-			),
-			//			
 			
-			//
-			array
-      (
-				"id" 					=> "text_title_template",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Title template", "nxs_td"),
-				// "readonly" 	=> "true",
-			),
-			array
-      (
-				"id" 					=> "text_title_template_custom",
-				"type" 				=> "custom",
-				"targetid"	=> "text_title_template",
-				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
-			),
 			//
 			
 			// postprocessor is kind of obsolete...
@@ -462,21 +524,7 @@ function nxs_widgets_entities_home_getoptions($args)
 			
 			
 			
-			//
-			array
-      (
-				"id" 					=> "text_text_template",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Text template", "nxs_td"),
-				// "readonly" 		=> "true",
-			),
-			array
-      (
-				"id" 					=> "text_text_template_custom",
-				"type" 				=> "custom",
-				"targetid"	=> "text_text_template",
-				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
-			),
+			
 			//			
 			array(
 				"id" 				=> "text_text_postprocessor",
@@ -498,22 +546,7 @@ function nxs_widgets_entities_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			//
-			// text_image_src
-			array
-      (
-				"id" 					=> "text_image_src_template",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Image src template", "nxs_td"),
-				// "readonly" 	=> "true",
-			),
-			array
-      (
-				"id" 					=> "text_image_src_template_custom",
-				"type" 				=> "custom",
-				"targetid"	=> "text_image_src_template",
-				"customcontenthandler"	=> "nxs_entities_fieldoftaxonomycustom_popupcontent",
-			),
-			//
+			
 			
 			array
 			(
@@ -1611,10 +1644,16 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			
 			foreach ($instance["content"] as $key => $val)
 			{
+				$lookup["@@iterator.{$key}"] = $val;
+				//error_log("@@iterator.{$key} = $val");
+			}
+			
+			foreach ($instance["content"] as $key => $val)
+			{
 				$lookup["{$datasource}.instance.{$key}"] = $val;
 			}
 			
-			$magicfields = array("title", "text", "destination_url", "image_src");
+			$magicfields = array("title", "text", "destination_url", "image_src", "modeluris");
 			foreach ($magicfields as $magicfield)
 			{
 				$childargs[$magicfield] = $args["text_{$magicfield}_template"];
@@ -1628,28 +1667,12 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			);
 			$childargs = nxs_filter_translate_v2($translateargs);
 			
+			error_log("childargs:");
+			error_log(json_encode($childargs));
+			
 			// pretty-fy the destination_url
 			if (true)
 			{
-
-				/*
-				$humanid = $childargs["title"];
-				$humanid = nxs_url_prettyfy($humanid);
-
-				// generate url from model
-				$deriveargs = array
-				(
-					"humanid" => $humanid,
-					"realm" => "freewebsiteproduct",	// hoe weet hij dit?
-				);
-				global $nxs_g_modelmanager;
-				$derived = $nxs_g_modelmanager->deriveurlfrommodel($deriveargs);
-				$derivedurl = $derived["url"];
-				
-				// make lowercase
-				$childargs["destination_url"]	= $derivedurl; // nxs_url_prettyfy($childargs["destination_url"]);
-				*/
-				
 				$childargs["destination_url"]	= nxs_url_prettyfy($childargs["destination_url"]);
 			}
 		}

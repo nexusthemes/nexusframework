@@ -49,7 +49,10 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 			
 			$lookuphelphtml = "";
 			$lookuphelphtml .= "<a href='#' onclick='nxs_js_popup_site_neweditsession(\"lookuptablemanagementhome\"); return false;' class='nxsbutton1 nxs-float-right'>Manage</a>";
-			$lookuphelphtml .= nxs_l18n__("'{$orig}' translates to '{$translatesto}'") . " ";
+			if ($orig != $translatesto)
+			{
+				$lookuphelphtml .= nxs_l18n__("'{$orig}' translates to '{$translatesto}'") . " ";
+			}
 			$lookuphelphtml .= "<a href='http://nexusthemes.com/support/content-lookup-tables/' target='_blank'>" . nxs_l18n__("Learn more") . "</a>";
 			$lookuphelphtml = '<div class="content" style="font-size: smaller; font-style: italic;">' . $lookuphelphtml . '</div>';
 		}

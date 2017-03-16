@@ -176,7 +176,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 		);
 	</script>
 	<?php
-	
+	/*
 	if ($_REQUEST["screenshot"] == "true")
 	{
 		if ($imageurl != "") 
@@ -196,6 +196,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 			<?php
 		}
 	}
+	*/
 }
 
 /* WIDGET STRUCTURE
