@@ -570,6 +570,15 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		{
 			$mixedattributes[$magicfield] = do_shortcode($mixedattributes[$magicfield]);
 		}
+		
+		// phase 4; pretty-fy the destination_url
+		if (true)
+		{
+			if ($mixedattributes["destination_url_prettyfy"] == "true")
+			{
+				$mixedattributes["destination_url"]	= nxs_url_prettyfy($mixedattributes["destination_url"]);
+			}
+		}
 	}
 	
 	// Output the result array and setting the "result" position to "OK"

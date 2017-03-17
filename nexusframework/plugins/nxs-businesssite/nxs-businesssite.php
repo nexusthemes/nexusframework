@@ -18,76 +18,139 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	// todo: move this information to a model (or even better; model)
+	// todo: move this information to a model
 	function getmodelinterpreter()
 	{
-		$result = array
+		// todo: add in mem caching for each request; the rules cannot and will not change
+		// during one invocation
+		
+		$sitelookup = nxs_lookuptable_getlookup_v2(false);
+		$websiteseoruleshumanid = $sitelookup["websiteseoruleshumanid"];
+		// todo: apply a filter such that specific plugins can overrule the behaviour
+		// instead of requiring a plugin
+		if ($websiteseoruleshumanid == "")
+		{
+			// perhaps use some default here?
+			return false;
+		}
+			
+		// todo: derive the humanid of the model through the hostnam of the website
+		$websiteseorules = $this->getcontentmodel("{$websiteseoruleshumanid}@websiteseorules");
+		
+		$result = array();
+		
+		// todo: derive this from the model too
+		$result["schematowpinstancemapping"] = array
 		(
-			"schematowpinstancemapping" => array
+			// schema => ...
+			"leadservice" => array
 			(
-				// schema => ...
-				"freewebsiteproduct" => array
-				(
-					"title_template" => "{{nxs_searchphrase.searchphrase}}",
-				),
-			),
-			"entries" => array
-			(
-				"entry1freewebsiteproductbybusid" => array
-				(
-					"conditions" => array
-					(
-						"condition1" => array
-						(
-							"type" => "homeurl",
-							"operator" => "equals",
-							"value" => "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/",
-						),
-						"condition2" => array
-						(
-							"type" => "slugatindex",
-							"index" => 0,
-							"operator" => "equals",
-							"value" => "free-willy",
-						),
-						"condition3" => array
-						(
-							"type" => "slugatindex",
-							"index" => 1,
-							"operator" => "betweenpreandpostfixmatchhumanmodelforschema",
-							"value" => "free-|freewebsiteproduct|-website",
-						),
-					),
-				),
-				// 
-				"entry2" => array
-				(
-					"conditions" => array
-					(
-						"condition1" => array
-						(
-							"type" => "homeurl",
-							"operator" => "equals",
-							"value" => "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/",
-						),
-						"condition2" => array
-						(
-							"type" => "slugatindex",
-							"index" => 0,
-							"operator" => "equals",
-							"value" => "free-willy",
-						),
-						"condition3" => array
-						(
-							"type" => "slugatindex",
-							"index" => 1,
-							"operator" => "exactmatchhumanmodelforschema",
-							"schema" => "freewebsiteproduct",
-						),						
-					),
-				),
+				"title_template" => "{{properties.searchphrase}}",
 			),
 		);
+		
+		$entries = $websiteseorules["entry"]["instances"];
+		foreach ($entries as $entry => $entrymeta)
+		{
+			$extpropsjson = $entrymeta["content"]["extpropsjson"];
+			$props = json_decode($extpropsjson, true);
+			$name = $props["name"];
+			$conditions = $props["conditions"];
+			foreach ($conditions as $condition => $conditionmeta)
+			{
+				$conditiontype = $conditionmeta["conditiontype"];
+				$operatortype = $conditionmeta["operatortype"];
+				$value = $conditionmeta["value"];
+				$result["entries"]["entry{$entry}"]["conditions"]["condition{$condition}"] = array
+				(
+					"type" => $conditiontype,
+					"operator" => $operatortype,
+					"value" => $value,
+				);
+			}
+		}
+		
+		/*
+		if (false)
+		{
+			// old "hardcoded" implementation
+			
+			$result = array
+			(
+				"schematowpinstancemapping" => array
+				(
+					// schema => ...
+					"freewebsiteproduct" => array
+					(
+						"title_template" => "{{nxs_searchphrase.searchphrase}}",
+					),
+				),
+				"entries" => array
+				(
+					"entry1freewebsiteproductbybusid" => array
+					(
+						"conditions" => array
+						(
+							"condition1" => array
+							(
+								"type" => "homeurl",
+								"operator" => "equals",
+								"value" => "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/",
+							),
+							"condition2" => array
+							(
+								"type" => "slugatindex",
+								"index" => 0,
+								"operator" => "equals",
+								"value" => "free-willy",
+							),
+							"condition3" => array
+							(
+								"type" => "slugatindex",
+								"index" => 1,
+								"operator" => "betweenpreandpostfixmatchhumanmodelforschema",
+								"value" => "free-|freewebsiteproduct|-website",
+							),
+						),
+					),
+					// 
+					"entry2" => array
+					(
+						"conditions" => array
+						(
+							"condition1" => array
+							(
+								"type" => "homeurl",
+								"operator" => "equals",
+								"value" => "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/",
+							),
+							"condition2" => array
+							(
+								"type" => "slugatindex",
+								"index" => 0,
+								"operator" => "equals",
+								"value" => "free-willy",
+							),
+							"condition3" => array
+							(
+								"type" => "slugatindex",
+								"index" => 1,
+								"operator" => "exactmatchhumanmodelforschema",
+								"schema" => "freewebsiteproduct",
+							),						
+						),
+					),
+				),
+			);
+		}
+		*/
+		
+		if ($_REQUEST["dumprules"] == "true")
+		{
+			echo json_encode($result);
+			die();
+		}
+		
 		return $result;
 	}
 	
@@ -118,87 +181,72 @@ class nxs_g_modelmanager
 	
 	function derivemodelbyuri($uri)
 	{
-		$uripieces = explode("?", $uri);
-		$requestedslug = $uripieces[0];
-		$requestedslug = trim($requestedslug, "/");
+		global $nxs_gl_modelbyuri;
 		
-		$slugcount = count($requestedslug);
-		$slugpieces = explode("/", $requestedslug);
-		
-		// find first condition that matches
-		$result = false;
-		$entries = $this->getentries();
-		foreach ($entries as $entryid => $entrymeta)
+		if (!isset($nxs_gl_modelbyuri[$uri]))
 		{
-			$currententryvalid = "sofar";
-			$currententryderivedparameters = array();
+			$uripieces = explode("?", $uri);
+			$requestedslug = $uripieces[0];
+			$requestedslug = trim($requestedslug, "/");
 			
-			$conditions = $entrymeta["conditions"];
-			foreach ($conditions as $conditionid => $conditionmeta)
+			$slugcount = count($requestedslug);
+			$slugpieces = explode("/", $requestedslug);
+			
+			// find first condition that matches
+			$result = false;
+			$entries = $this->getentries();
+			foreach ($entries as $entryid => $entrymeta)
 			{
-				$currentconditionvalid = false;
-				$conditiontype = $conditionmeta["type"];
-				if ($conditiontype == "homeurl")
+				$currententryvalid = "sofar";
+				$currententryderivedparameters = array();
+				
+				$conditions = $entrymeta["conditions"];
+				foreach ($conditions as $conditionid => $conditionmeta)
 				{
-					// 
-					$operator = $conditionmeta["operator"];
-					$value = $conditionmeta["value"];
-					if ($operator == "equals" && $value == nxs_geturl_home())
+					$currentconditionvalid = false;
+					$conditiontype = $conditionmeta["type"];
+					if ($conditiontype == "homeurl")
 					{
-						// ok, proceed
-					}
-					else
-					{
-						//error_log("homeurl mismatch (".$value . ") vs (" . nxs_geturl_home() . ")");
-						$currententryvalid = false;
-						break;
-					}
-				}
-				else if ($conditiontype == "slugatindex")
-				{
-					$index = $conditionmeta["index"];
-					$operator = $conditionmeta["operator"];
-					$value = $conditionmeta["value"];
-					if ($operator == "equals" && $value == $slugpieces[$index])
-					{
-						// ok, proceed
-					}
-					else if ($operator == "exactmatchhumanmodelforschema")
-					{
-						$humanid = $slugpieces[$index];
-						if ($humanid != "")
+						if ($_REQUEST["finedump"] == "true")
 						{
-							$conditionschema = $conditionmeta["schema"];
-							$currententryderivedparameters["humanid"] = "{$humanid}";
-							$currententryderivedparameters["schema"] = "{$conditionschema}";
+							echo "hoebaboeba";
+							die();
+						}
+						
+						// 
+						$operator = $conditionmeta["operator"];
+						$value = $conditionmeta["value"];
+						if ($operator == "equals" && $value == nxs_geturl_home())
+						{
 							// ok, proceed
 						}
 						else
 						{
+							//error_log("homeurl mismatch (".$value . ") vs (" . nxs_geturl_home() . ")");
 							$currententryvalid = false;
 							break;
 						}
 					}
-					
-					else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
+					else if (nxs_stringstartswith($conditiontype, "slugatindex"))
 					{
-						$value = $conditionmeta["value"];
-						$valuepieces = explode("|", $value);
-						$conditionprefix = $valuepieces[0];
-						$conditionschema = $valuepieces[1];
-						$conditionpostfix = $valuepieces[2];
-						$slug = $slugpieces[$index];
-						if (nxs_stringstartswith($slug, $conditionprefix) && nxs_stringendswith($slug, $conditionpostfix))
+						$index = str_replace("slugatindex", "", $conditiontype);
+						// obsolete/backwards compatibility
+						if ($index == "")
 						{
-							// humanid is {X} as in "prefix{X}postfix"
-							$sluglength = strlen($slug);				
-							$prefixlength = strlen($conditionprefix);		
-							$postfixlength = strlen($conditionpostfix);	
-							$start = $prefixlength;
-							$length = $sluglength - $prefixlength - $postfixlength;
-							$humanid = substr($slug, $start, $length);
+							$index = $conditionmeta["index"];
+						}
+						$operator = $conditionmeta["operator"];
+						$value = $conditionmeta["value"];
+						if ($operator == "equals" && $value == $slugpieces[$index])
+						{
+							// ok, proceed
+						}
+						else if ($operator == "exactmatchhumanmodelforschema")
+						{
+							$humanid = $slugpieces[$index];
 							if ($humanid != "")
 							{
+								$conditionschema = $conditionmeta["value"];
 								$currententryderivedparameters["humanid"] = "{$humanid}";
 								$currententryderivedparameters["schema"] = "{$conditionschema}";
 								// ok, proceed
@@ -209,42 +257,100 @@ class nxs_g_modelmanager
 								break;
 							}
 						}
+						
+						else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
+						{
+							$value = $conditionmeta["value"];
+							$valuepieces = explode("|", $value);
+							$conditionprefix = $valuepieces[0];
+							$conditionschema = $valuepieces[1];
+							$conditionpostfix = $valuepieces[2];
+							$slug = $slugpieces[$index];
+							if (nxs_stringstartswith($slug, $conditionprefix) && nxs_stringendswith($slug, $conditionpostfix))
+							{
+								// humanid is {X} as in "prefix{X}postfix"
+								$sluglength = strlen($slug);				
+								$prefixlength = strlen($conditionprefix);		
+								$postfixlength = strlen($conditionpostfix);	
+								$start = $prefixlength;
+								$length = $sluglength - $prefixlength - $postfixlength;
+								$humanid = substr($slug, $start, $length);
+								if ($humanid != "")
+								{
+									$currententryderivedparameters["humanid"] = "{$humanid}";
+									$currententryderivedparameters["schema"] = "{$conditionschema}";
+									// ok, proceed
+								}
+								else
+								{
+									$currententryvalid = false;
+									break;
+								}
+							}
+							else
+							{
+								$currententryvalid = false;
+								break;
+							}
+						}
 						else
 						{
+							error_log("rule; unsupported operator:($operator) val:($value) index:($index) sp:(" . $slugpieces[$index] . ")");
+							
 							$currententryvalid = false;
 							break;
 						}
 					}
 					else
 					{
-						error_log("nope; op:($operator) val:($value) index:($index) sp:(" . $slugpieces[$index] . ")");
-						
-						$currententryvalid = false;
-						break;
+						echo "unsupported conditiontype?";
+						die();
 					}
+					
+					// error_log("processing rule; conditiontype $conditiontype; valid? $currententryvalid");
+				}
+				
+				if ($currententryvalid == "sofar")
+				{
+					// if we come this far, it means it valid
+					$result = array
+					(
+						"entryid" => $entryid,
+						"parameters" => $currententryderivedparameters,
+					);
+					break;
 				}
 				else
 				{
-					echo "unsupported conditiontype?";
-					die();
+					$homeurl = nxs_geturl_home();
+					if (nxs_stringcontains($homeurl, "websitesexample"))
+					{
+						// absorb
+					}
+					else if (nxs_stringcontains($homeurl, "nexusthemes"))
+					{
+						// absorb
+					}
+					else
+					{
+						$currenturl = nxs_geturlcurrentpage();
+						error_log("rules; condition failed; $conditionid; $conditiontype; $homeurl; $currenturl;");
+					}
+					
+					// perhaps next entry is valid, loop
 				}
 			}
 			
-			if ($currententryvalid == "sofar")
+			if ($result != false)
 			{
-				// if we come this far, it means it valid
-				$result = array
-				(
-					"entryid" => $entryid,
-					"parameters" => $currententryderivedparameters,
-				);
-				break;
+				error_log("rules; conclusion; " . json_encode($result));
 			}
-			else
-			{
-				// error_log("condition failed at; $conditionid");
-				// perhaps next entry is valid, loop
-			}
+			
+			$nxs_gl_modelbyuri[$uri] = $result;
+		}
+		else
+		{	
+			$result = $nxs_gl_modelbyuri[$uri];
 		}
 		
 		return $result;
@@ -275,9 +381,13 @@ class nxs_g_modelmanager
 				{
 					$resultsofar["homeurl"] = nxs_geturl_home();
 				}
-				else if ($conditiontype == "slugatindex")
+				else if (nxs_stringstartswith($conditiontype, "slugatindex"))
 				{
-					$index = $conditionmeta["index"];
+					// obsolete/backwards compatibility
+					if ($index == "")
+					{
+						$index = $conditionmeta["index"];
+					}
 					$operator = $conditionmeta["operator"];
 					$value = $conditionmeta["value"];
 					if ($operator == "equals")
@@ -400,13 +510,6 @@ class nxs_g_modelmanager
 				return $result;
 			}
 			
-			if ($_REQUEST["check"] == "true")
-			{
-				var_dump($modeluri);
-				die();
-			}
-			
-			
 			$lookup = array();
 			foreach ($contentmodel as $taxonomy => $m)
 			{
@@ -422,6 +525,9 @@ class nxs_g_modelmanager
 
 			// get the title_template, for example "{{nxs_searchphrase.searchphrase}}"
 			$title_template = $wpinstancemappingcurrentschema["title_template"];
+			
+			
+			
 		
 			// translate the placeholders
 			$translateargs = array
@@ -430,6 +536,14 @@ class nxs_g_modelmanager
 				"item" => $title_template,
 			);
 			$title = nxs_filter_translate_v2($translateargs);
+			
+			if ($_REQUEST["seodebug"] == "true")
+			{
+				echo "$title_template <br />";
+				echo "$title <br />";				
+				var_dump($lookup);
+				die();
+			}
 			
 			if ($title == "")
 			{

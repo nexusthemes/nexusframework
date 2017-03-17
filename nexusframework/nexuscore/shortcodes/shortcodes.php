@@ -20,13 +20,24 @@ function nxs_sc_spin($attributes, $content = null, $name='')
 	$lookups = $nxs_g_modelmanager->getlookups($modeluri);
 	
 	$text = $lookups["spinner:text.textvalue"];
-		
+	
+	//
+	$text = str_replace("[", "{{", $text);
+	$text = str_replace("]", "}}", $text);
+	
 	if (true)
 	{
 		$lookup = array();
 		foreach ($attributes as $key=>$val)
 		{
-			$lookup[$key] = "<b class='ph'>{$val}</b>";
+			if (is_user_logged_in())
+			{
+				$lookup[$key] = "<b class='ph' style='color: white; text-shadow: none; background-color: #000; border-style: dotted; border-width: 1px; border-color: red; '>{$val}</b>";
+			}
+			else
+			{
+				$lookup[$key] = "{$val}";
+			}
 		}
 	
 		// use the attributes passed in to this shortcode as a lookup table
@@ -66,6 +77,14 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		if ($op == "lo")
 		{
 			$input = strtolower($input);
+		}
+		else if ($op == "up")
+		{
+			$input = strtoupper($input);
+		}
+		else if ($op == "urlprettyfy")
+		{
+			$input = nxs_url_prettyfy($input);
 		}
 		else if ($op == "xspace")
 		{

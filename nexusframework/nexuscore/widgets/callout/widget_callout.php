@@ -522,7 +522,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		
 		// phase 2; translate the magic fields using the (extended) models
 		$lookup = $nxs_g_modelmanager->getlookups($modeluris);
-		$magicfields = array("title", "text", "destination_url", "image_src");
+		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src");
 		$translateargs = array
 		(
 			"lookup" => $lookup,
@@ -530,6 +530,13 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			"fields" => $magicfields,
 		);
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
+		
+		// apply shortcode on the title
+		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src");
+		foreach ($magicfields as $magicfield)
+		{
+			$mixedattributes[$magicfield] = do_shortcode($mixedattributes[$magicfield]);
+		}
 	}
 	
 	// Output the result array and setting the "result" position to "OK"

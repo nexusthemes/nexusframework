@@ -1667,14 +1667,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			);
 			$childargs = nxs_filter_translate_v2($translateargs);
 			
-			error_log("childargs:");
-			error_log(json_encode($childargs));
-			
-			// pretty-fy the destination_url
-			if (true)
-			{
-				$childargs["destination_url"]	= nxs_url_prettyfy($childargs["destination_url"]);
-			}
+			// instruct the text widgets to prettyfy the urls
+			$childargs["destination_url_prettyfy"] = "true";
 		}
 		
 		// replicate styleable fields specific for "TARGET" widgets

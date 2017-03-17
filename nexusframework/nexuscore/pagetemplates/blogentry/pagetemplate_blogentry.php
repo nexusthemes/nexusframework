@@ -174,7 +174,7 @@ function nxs_pagetemplate_handlecontent()
 		}
 		
 		$shouldrenderaddnewrowoption = false;
-		if (nxs_has_adminpermissions() && $contentpostid != "SUPPRESSED")
+		if (nxs_has_adminpermissions() && $contentpostid != "SUPPRESSED" && $contentpostid != -999001)
 		{
 			$shouldrenderaddnewrowoption = true;
 		}
