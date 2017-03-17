@@ -25,7 +25,7 @@ class nxs_g_modelmanager
 		(
 			"schematowpinstancemapping" => array
 			(
-				// realm => ...
+				// schema => ...
 				"freewebsiteproduct" => array
 				(
 					"title_template" => "{{nxs_searchphrase.searchphrase}}",
@@ -54,10 +54,8 @@ class nxs_g_modelmanager
 						(
 							"type" => "slugatindex",
 							"index" => 1,
-							"operator" => "betweenpreandpostfixmatchhumanmodelforrealm",
-							"prefix" => "free-",
-							"postfix" => "-website",
-							"realm" => "freewebsiteproduct",
+							"operator" => "betweenpreandpostfixmatchhumanmodelforschema",
+							"value" => "free-|freewebsiteproduct|-website",
 						),
 					),
 				),
@@ -83,9 +81,9 @@ class nxs_g_modelmanager
 						(
 							"type" => "slugatindex",
 							"index" => 1,
-							"operator" => "exactmatchhumanmodelforrealm",
-							"realm" => "freewebsiteproduct",
-						),
+							"operator" => "exactmatchhumanmodelforschema",
+							"schema" => "freewebsiteproduct",
+						),						
 					),
 				),
 			),
@@ -165,14 +163,14 @@ class nxs_g_modelmanager
 					{
 						// ok, proceed
 					}
-					else if ($operator == "exactmatchhumanmodelforrealm")
+					else if ($operator == "exactmatchhumanmodelforschema")
 					{
 						$humanid = $slugpieces[$index];
 						if ($humanid != "")
 						{
-							$realm = $conditionmeta["realm"];
+							$conditionschema = $conditionmeta["schema"];
 							$currententryderivedparameters["humanid"] = "{$humanid}";
-							$currententryderivedparameters["realm"] = "{$realm}";
+							$currententryderivedparameters["schema"] = "{$conditionschema}";
 							// ok, proceed
 						}
 						else
@@ -181,25 +179,28 @@ class nxs_g_modelmanager
 							break;
 						}
 					}
-					else if ($operator == "betweenpreandpostfixmatchhumanmodelforrealm")
+					
+					else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
 					{
-						$prefix = $conditionmeta["prefix"];
-						$postfix = $conditionmeta["postfix"];
+						$value = $conditionmeta["value"];
+						$valuepieces = explode("|", $value);
+						$conditionprefix = $valuepieces[0];
+						$conditionschema = $valuepieces[1];
+						$conditionpostfix = $valuepieces[2];
 						$slug = $slugpieces[$index];
-						if (nxs_stringstartswith($slug, $prefix) && nxs_stringendswith($slug, $postfix))
+						if (nxs_stringstartswith($slug, $conditionprefix) && nxs_stringendswith($slug, $conditionpostfix))
 						{
 							// humanid is {X} as in "prefix{X}postfix"
 							$sluglength = strlen($slug);				
-							$prefixlength = strlen($prefix);		
-							$postfixlength = strlen($postfix);	
+							$prefixlength = strlen($conditionprefix);		
+							$postfixlength = strlen($conditionpostfix);	
 							$start = $prefixlength;
 							$length = $sluglength - $prefixlength - $postfixlength;
 							$humanid = substr($slug, $start, $length);
 							if ($humanid != "")
 							{
-								$realm = $conditionmeta["realm"];
 								$currententryderivedparameters["humanid"] = "{$humanid}";
-								$currententryderivedparameters["realm"] = "{$realm}";
+								$currententryderivedparameters["schema"] = "{$conditionschema}";
 								// ok, proceed
 							}
 							else
@@ -249,11 +250,12 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	/*
 	function deriveurlfrommodel($parameters)
 	{
 		$result = false;
 		
-		$realm = $parameters["realm"];
+		$schema = $parameters["schema"];
 		$humanid = $parameters["humanid"];
 		
 		$entries = $this->getentries();
@@ -282,15 +284,26 @@ class nxs_g_modelmanager
 					{
 						$resultsofar["slugpieces"][$index] = $value;
 					}
-					else if ($operator == "exactmatchhumanmodelforrealm" && $conditionmeta["realm"] == $realm)
+					else if ($operator == "exactmatchhumanmodelforschema" && $conditionmeta["schema"] == $schema)
 					{
 						$resultsofar["slugpieces"][$index] = $humanid;
 					}
-					else if ($operator == "betweenpreandpostfixmatchhumanmodelforrealm" && $conditionmeta["realm"] == $realm)
+					else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
 					{
-						$prefix = $conditionmeta["prefix"];
-						$postfix = $conditionmeta["postfix"];
-						$resultsofar["slugpieces"][$index] = "{$prefix}{$humanid}{$postfix}";
+						$value = $conditionmeta["value"];
+						$valuepieces = explode("|", $value);
+						$conditionprefix = $valuepieces[0];
+						$conditionschema = $valuepieces[1];
+						$conditionpostfix = $valuepieces[2];
+						if ($conditionschema == $schema)
+						{
+							$resultsofar["slugpieces"][$index] = "{$conditionprefix}{$humanid}{$conditionpostfix}";
+						}
+						else
+						{
+							$currententryvalid = false;
+							break;
+						}
 					}
 					else
 					{
@@ -336,6 +349,7 @@ class nxs_g_modelmanager
 		
 		return $result;
 	}
+	*/
 	
 	// virtual posts; allow entities from the model to 
 	// represent a virtual post/page according to WP
@@ -358,7 +372,7 @@ class nxs_g_modelmanager
 		
 		
 		$modeluri = false;
-		$realm = false;
+		$schema = false;
 		$humanid = false;
 		
 		$derivedcontext = $this->derivemodelforcurrenturl();
@@ -366,8 +380,8 @@ class nxs_g_modelmanager
 		if ($parameters != "")
 		{
 			$humanid = $parameters["humanid"];
-			$realm = $parameters["realm"];
-			$modeluri = "{$humanid}@{$realm}";
+			$schema = $parameters["schema"];
+			$modeluri = "{$humanid}@{$schema}";
 		}
 		
 		// error_log(json_encode($derivedcontext));
@@ -386,6 +400,13 @@ class nxs_g_modelmanager
 				return $result;
 			}
 			
+			if ($_REQUEST["check"] == "true")
+			{
+				var_dump($modeluri);
+				die();
+			}
+			
+			
 			$lookup = array();
 			foreach ($contentmodel as $taxonomy => $m)
 			{
@@ -395,13 +416,13 @@ class nxs_g_modelmanager
 					$lookup["{$taxonomy}.{$key}"] = $val;
 				}
 			}
-				
+			
 			$schematowpinstancemapping = $this->getschematowpinstancemapping();
-			$wpinstancemappingcurrentschema = $schematowpinstancemapping[$realm];
+			$wpinstancemappingcurrentschema = $schematowpinstancemapping[$schema];
 
 			// get the title_template, for example "{{nxs_searchphrase.searchphrase}}"
 			$title_template = $wpinstancemappingcurrentschema["title_template"];
-			
+		
 			// translate the placeholders
 			$translateargs = array
 			(
@@ -416,7 +437,7 @@ class nxs_g_modelmanager
 			}
 			
 			$excerpt = "";	// not practical to fill this
-			$content = ""; // "TODO CONTENT :)";	// lets use the front end instead
+			$content = "";  // lets use the front end instead
 			$rightnow = current_time('mysql');
 			$post_date = $rightnow;
 			$post_date_gmt = $rightnow;
@@ -437,7 +458,7 @@ class nxs_g_modelmanager
 			if ($wp_query->queried_object != NULL)
 			{
 				$wp_query->queried_object->term_id = -1;
-				$wp_query->queried_object->name = $realm;
+				$wp_query->queried_object->name = $schema;
 			}
 			
 			$newpost = new stdClass;
@@ -462,7 +483,7 @@ class nxs_g_modelmanager
 			$newpost->post_modified = $post_modified;
 			$newpost->post_modified_gmt = $post_modified_gmt;
 			$newpost->post_parent = 0;
-			$newpost->post_type = $realm;
+			$newpost->post_type = $schema;
 			// todo; handle in better way
 			$newpost->nxs_content_license = json_encode(array("type" => "attribution", "author" => "benin"));
 			
@@ -496,8 +517,8 @@ class nxs_g_modelmanager
 				if ($parameters != "")
 				{
 					$humanid = $parameters["humanid"];
-					$realm = $parameters["realm"];
-					$modeluri = "{$humanid}@{$realm}";
+					$schema = $parameters["schema"];
+					$modeluri = "{$humanid}@{$schema}";
 				}
 				//var_dump($derivedcontext);
 				//die();
