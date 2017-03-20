@@ -515,13 +515,31 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	{
 		global $nxs_g_modelmanager;
 		
-		// phase 1; replace the possible placeholder "humanid" in the modeluris with its value
+		// phase 1a; replace the possible placeholder "humanid" in the modeluris with its value
 		$modeluris = $mixedattributes["modeluris"];
 		$humanid = $nxs_g_modelmanager->gethumanid("");
 		$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
 		
+		// phase 1b; apply lookup values to the modeluris "extended" models
+		$lookup = $nxs_g_modelmanager->getlookups("");
+		$translateargs = array
+		(
+			"lookup" => $lookup,
+			"item" => $modeluris,
+		);
+		$modeluris = nxs_filter_translate_v2($translateargs);
+		
+		
+		/*
+		// for enabling model references one step further
+		// we will need to support shortcodes
+		// phase 1c; apply shortcode to the modeluris property
+		$modeluris = do_shortcode($modeluris);
+		*/
+		
 		// phase 2; translate the magic fields using the (extended) models
 		$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+		
 		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src");
 		$translateargs = array
 		(
