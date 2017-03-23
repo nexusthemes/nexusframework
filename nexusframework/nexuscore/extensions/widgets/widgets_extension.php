@@ -240,6 +240,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "carousel", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "banner", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "flickr", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "seo", "tags" => array("nexus"));
 		
 		// Never
 		$result[] = array("widgetid" => "wordpresssidebar", "tags" => array("nexus"));
@@ -544,6 +545,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("signpost");
 	nxs_ext_lazyload_widget("social");
 	nxs_ext_lazyload_widget("callout");
+	nxs_ext_lazyload_widget("seo");
 	nxs_ext_lazyload_widget("bio");
 	nxs_ext_lazyload_widget("tumbler");
 	nxs_ext_lazyload_widget("text");

@@ -480,7 +480,6 @@ class nxs_g_modelmanager
 		
 		$countmatches = count($result);
 		
-		
 		$modeluri = false;
 		$schema = false;
 		$humanid = false;
@@ -526,9 +525,6 @@ class nxs_g_modelmanager
 			// get the title_template, for example "{{nxs_searchphrase.searchphrase}}"
 			$title_template = $wpinstancemappingcurrentschema["title_template"];
 			
-			
-			
-		
 			// translate the placeholders
 			$translateargs = array
 			(
@@ -606,6 +602,13 @@ class nxs_g_modelmanager
 			$wp_query->max_num_pages = 1;
 				
 			$result[]= $newpost;
+			
+			if (true)	// $_REQUEST["pimpseo"] == "true")
+			{
+				add_filter('wpseo_title', array($this, 'wpseo_title'), 99999);
+				add_filter('wpseo_metadesc', array($this, 'wpseo_metadesc'), 1999);
+				add_filter('wpseo_canonical', array($this, 'wpseo_canonical'), 99999);
+			}
 			
 			// there can/may be only one match
 			return $result;
@@ -843,6 +846,91 @@ class nxs_g_modelmanager
 			$result[] = array("widgetid" => "taxpageslider", "tags" => array("nexus"));		
 		}
 		
+		return $result;
+	}
+	
+	/* YOAST SEO */
+	
+	function getruntimeseoproperties()
+	{
+		global $nxs_gl_runtimeseoproperties;
+		
+		if ($nxs_gl_runtimeseoproperties == "")
+		{
+			$templateproperties = nxs_gettemplateproperties();
+			$content_postid = $templateproperties["content_postid"];
+			// locate all "seo" widget(s) in the front-end content "template"
+			$filterargs = array
+			(
+				"postid" => $content_postid,
+				"widgettype" => "seo",	// all seo widgets
+			);
+			$seowidgets = nxs_getwidgetsmetadatainpost_v2($filterargs);
+			$mixedattributes = reset($seowidgets);
+			
+			// Lookup atts
+			$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","subtitle", "button_text","destination_url", "image_src"));	
+			
+			// Translate model data
+			$mixedattributes = nxs_filter_translatemodel($mixedattributes, array("title", "metadescription", "canonicalurl"));	
+			
+			// Translate urls
+			$mixedattributes["canonicalurl"] = nxs_url_prettyfy($mixedattributes["canonicalurl"]);
+			
+			$nxs_gl_runtimeseoproperties = $mixedattributes;
+		}
+		
+		return $nxs_gl_runtimeseoproperties;
+	}
+	
+	function wpseo_title($result) 
+	{
+		// if we reach this point, it means the page has a model as its context
+		// the title, description and canonical url can be determined by 
+		// a "seo widget" that is stored in the content template defined
+		// in the page template rules.
+		$runtimeseoproperties = $this->getruntimeseoproperties();
+		$title = $runtimeseoproperties["title"];		
+		if ($title != "")
+		{
+			// 
+			
+			$result = $title;
+		}
+		return $result;
+	}
+	
+	function wpseo_metadesc($result) 
+	{
+		// if we reach this point, it means the page has a model as its context
+		// the title, description and canonical url can be determined by 
+		// a "seo widget" that is stored in the content template defined
+		// in the page template rules.
+		$runtimeseoproperties = $this->getruntimeseoproperties();
+		$title = $runtimeseoproperties["metadescription"];		
+		if ($title != "")
+		{
+			// 
+			
+			$result = $title;
+		}
+		return $result;
+	}
+	
+	function wpseo_canonical($result)
+	{
+		// if we reach this point, it means the page has a model as its context
+		// the title, description and canonical url can be determined by 
+		// a "seo widget" that is stored in the content template defined
+		// in the page template rules.
+		$runtimeseoproperties = $this->getruntimeseoproperties();
+		$title = $runtimeseoproperties["canonicalurl"];		
+		if ($title != "")
+		{
+			// 
+			
+			$result = $title;
+		}
 		return $result;
 	}
 	

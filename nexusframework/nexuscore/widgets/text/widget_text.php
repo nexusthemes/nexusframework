@@ -597,6 +597,14 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
+	// allow plugins to decorate (and also do something with) the mixedattributes 
+	// (an example of "doing something" would be for example to apply QA rules)
+	$filterargs = array
+	(
+		"mixedattributes" => $mixedattributes
+	);
+	$mixedattributes = apply_filters("nxs_f_widgetvisualizationdecorateatts", $mixedattributes, $filterargs);
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";

@@ -7,8 +7,6 @@ function nxs_sc_spin($attributes, $content = null, $name='')
 	
 	nxs_ob_start();
 	
-	// error_log("SC---ATTS:" . json_encode($attributes));
-	
 	if ($modeluri == "")
 	{
 		$modeluri = "{$humanid}@{$schema}";
@@ -30,7 +28,17 @@ function nxs_sc_spin($attributes, $content = null, $name='')
 		$lookup = array();
 		foreach ($attributes as $key=>$val)
 		{
+			$shoulddecorate = false;
+			
 			if (is_user_logged_in())
+			{
+				if ($_REQUEST["spindecorate"] == "true")
+				{
+					$shoulddecorate = true;
+				}
+			}
+			
+			if ($shoulddecorate)
 			{
 				$lookup[$key] = "<b class='ph' style='color: white; text-shadow: none; background-color: #000; border-style: dotted; border-width: 1px; border-color: red; '>{$val}</b>";
 			}
@@ -81,6 +89,10 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "up")
 		{
 			$input = strtoupper($input);
+		}
+		else if ($op == "ucwords")
+		{
+			$input = ucwords($input);
 		}
 		else if ($op == "urlprettyfy")
 		{
@@ -446,8 +458,10 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 	// (for example entities widgets)
 	if ($nxs_global_row_render_statebag["etchrow"] === true)
 	{
-		// temporarily disabled
-		//$output = ""; // "<!-- and its gone -->";
+		if (!is_user_logged_in())
+		{
+			$output = ""; // "<!-- and its gone -->";
+		}
 	}
 
 	// global variable no longer needed

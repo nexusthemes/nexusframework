@@ -315,27 +315,41 @@ function nxs_widgets_entities_home_getoptions($args)
       ),
 			
 			// VISUALIZATION
-     	/*
-      array(
+     	
+     	array(
           "id" 				=> "wrapper_title_begin",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("Child Visualization", "nxs_td"),
+          "label" 			=> nxs_l18n__("Layout", "nxs_td"),
       ),
+      
+      array
+      (
+				"id" 					=> "columnsmin",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Columns min", "nxs_td"),
+				"dropdown" 		=> array
+				(
+					"@@@empty@@@" => "Default",
+					"1" => "1",
+					"2" => "2",
+					"3" => "3",
+					"4" => "4",
+				),
+				"unistylablefield" => true,
+			),
      
       array
       (
-				"id" 					=> "itemsstyle",
+				"id" 					=> "columnsmax",
 				"type" 				=> "select",
-				"popuprefreshonchange" => "true",
-				"label" 			=> nxs_l18n__("Style", "nxs_td"),
+				"label" 			=> nxs_l18n__("Columns max", "nxs_td"),
 				"dropdown" 		=> array
 				(
-					"text" => "Text",
-					"target" => "Target",
-					"signpost" => "Signpost",
-					"bio" => "Bio",
-					"quote" => "Quote",
-					"htmlcustom" => "Html Custom",
+					"@@@empty@@@" => "Default",
+					"1" => "1",
+					"2" => "2",
+					"3" => "3",
+					"4" => "4",
 				),
 				"unistylablefield" => true,
 			),
@@ -344,7 +358,6 @@ function nxs_widgets_entities_home_getoptions($args)
           "id" 				=> "wrapper_title_end",
           "type" 				=> "wrapperend",
       ),
-      */
       
       //
       // WIDGET SPECIFIC STYLING
@@ -1263,9 +1276,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	//$mixedattributes = $temp_array;
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	// Localize atts
-	//$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","entities","button_entities", "destination_url"));
 	
@@ -1544,6 +1554,14 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$numberofcolumns = 1;
 	}
 	
+	if ($columnsmax != "")
+	{
+		if ($numberofcolumns > $columnsmax)
+		{
+			$numberofcolumns = $columnsmax;
+		}
+	}
+	
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
 
@@ -1645,9 +1663,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			foreach ($instance["content"] as $key => $val)
 			{
 				$lookup["@@iterator.{$key}"] = $val;
-				//error_log("@@iterator.{$key} = $val");
 			}
-			
 			foreach ($instance["content"] as $key => $val)
 			{
 				$lookup["{$datasource}.instance.{$key}"] = $val;

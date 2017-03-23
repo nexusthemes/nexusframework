@@ -6001,6 +6001,7 @@ function nxs_isvalidemailaddress($email)
   return true;
 }
 
+// newguid createguid
 function nxs_create_guid($namespace = '') 
 {
 	// credits: http://php.net/manual/en/function.uniqid.php
@@ -11495,6 +11496,46 @@ function nxs_filter_translatelookup($metadata, $fields)
 	);
 	$result = nxs_filter_translate_v2($args);
 	return $result;
+}
+
+function nxs_filter_translatemodel($metadata, $fields)
+{
+	global $nxs_g_modelmanager;
+	$modeluris = $metadata["modeluris"];
+	
+	// phase 1; apply lookup values to the modeluris "extended" models
+	$lookup = $nxs_g_modelmanager->getlookups("");
+	$translateargs = array
+	(
+		"lookup" => $lookup,
+		"item" => $modeluris,
+	);
+	$modeluris = nxs_filter_translate_v2($translateargs);
+	
+	/*
+	// for enabling model references one step further
+	// we will need to support shortcodes
+	// phase 2; apply shortcode to the modeluris property
+	$modeluris = do_shortcode($modeluris);
+	*/
+	
+	// phase 3; translate the fields using the values from the (extended) model(s)
+	$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+	$translateargs = array
+	(
+		"lookup" => $lookup,
+		"items" => $metadata,
+		"fields" => $fields,
+	);
+	$metadata = nxs_filter_translate_v2($translateargs);
+	
+	// phase 3; apply shortcode(s) on the fields
+	foreach ($fields as $field)
+	{
+		$metadata[$field] = do_shortcode($metadata[$field]);
+	}
+	
+	return $metadata;
 }
 
 function nxs_filter_translate_v2($args)
