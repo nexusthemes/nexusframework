@@ -11501,26 +11501,29 @@ function nxs_filter_translatelookup($metadata, $fields)
 function nxs_filter_translatemodel($metadata, $fields)
 {
 	global $nxs_g_modelmanager;
+	
+	$debug = $_REQUEST["wop"] == "v3";
+	if ($debug)
+	{
+		echo "stage 1:<br />";
+		var_dump($metadata);
+		echo "<br />";
+	}
+	
+	// phase 1; evaluate any referenced models in the modeluris property
+	// sub:id@sub|subsub:{{sub.reference}}@subsub|subsubsub:{{subsub.reference}}
 	$modeluris = $metadata["modeluris"];
+	$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris);
 	
-	// phase 1; apply lookup values to the modeluris "extended" models
-	$lookup = $nxs_g_modelmanager->getlookups("");
-	$translateargs = array
-	(
-		"lookup" => $lookup,
-		"item" => $modeluris,
-	);
-	$modeluris = nxs_filter_translate_v2($translateargs);
-	
-	/*
-	// for enabling model references one step further
-	// we will need to support shortcodes
-	// phase 2; apply shortcode to the modeluris property
-	$modeluris = do_shortcode($modeluris);
-	*/
-	
-	// phase 3; translate the fields using the values from the (extended) model(s)
+	// phase 2; translate the fields using the values from the (extended) model(s)
 	$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+	if ($debug)
+	{
+		echo "lookup:<br />";
+		var_dump($lookup);
+		echo "<br />";
+	}
+	
 	$translateargs = array
 	(
 		"lookup" => $lookup,
@@ -11529,10 +11532,52 @@ function nxs_filter_translatemodel($metadata, $fields)
 	);
 	$metadata = nxs_filter_translate_v2($translateargs);
 	
+	if ($debug)
+	{
+		echo "stage 2:<br />";
+		var_dump($metadata);
+		echo "<br />";
+	}
+	
 	// phase 3; apply shortcode(s) on the fields
 	foreach ($fields as $field)
 	{
 		$metadata[$field] = do_shortcode($metadata[$field]);
+	}
+	
+	if ($debug)
+	{
+		echo "stage 3:<br />";
+		var_dump($metadata);
+		die();
+	}
+	
+	/*
+	if ($_REQUEST["wop"] == "v5")
+	{
+		var_dump($metadata);
+		die();
+	}
+	*/	
+	
+	// phase 4; verify all lookup items have been replaced
+	foreach ($fields as $field)
+	{
+		$value = $metadata[$field];
+		$isvalid = true;
+		if (nxs_stringcontains($value, "{{"))
+		{
+			$isvalid = false;
+		}
+		else if (nxs_stringcontains($value, "}}"))
+		{
+			$isvalid = false;
+		}
+		
+		if (!$isvalid)
+		{
+			do_action("nxs_a_modelnotfound", "(loaded=>$modeluris) unresolved:{$value}");
+		}
 	}
 	
 	return $metadata;

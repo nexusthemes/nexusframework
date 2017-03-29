@@ -168,6 +168,114 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	// evaluates nested referenced 
+	function evaluatereferencedmodelsinmodeluris($modeluris)
+	{
+		$shoulddebug = $_REQUEST["magic"] == "debug";		
+		if ($shoulddebug)
+		{
+			echo "debugging evaluatereferencedmodelsinmodeluris for $modeluris <br />";
+		}
+		
+		$humanid = $this->gethumanid("");
+		$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
+		
+		$modelurisparts = explode("|", $modeluris);
+		$recursivelookup = array();
+		$updatedmodeluris = array();
+		
+		foreach ($modelurisparts as $index=>$modelurispart)
+		{
+			$orig = $modelurispart;
+			
+			// sanitize element
+			$modelurispart = trim($modelurispart);
+			
+			if ($shoulddebug)
+			{
+				echo "index: {$index}<br />";
+				echo "modelurispart: {$modelurispart}<br />";
+			}
+			
+			// apply the lookup tables to the parts we've evaluated so far
+			$translateargs = array
+			(
+				"lookup" => $recursivelookup,
+				"item" => $modelurispart,
+			);
+			$modelurispart = nxs_filter_translate_v2($translateargs);
+			
+			if ($shoulddebug)
+			{
+				echo "modelurispart; stage 2; modelurispart: {$modelurispart}<br />";
+			}
+			
+			// now apply lookup values again 
+			
+			// apply lookup values to the modelurispart "extended" models
+			$lookupcurrentpart = $this->getlookups($modelurispart);
+			$recursivelookup = array_merge($recursivelookup, $lookupcurrentpart);
+			
+			$translateargs = array
+			(
+				"lookup" => $recursivelookup,
+				"item" => $modelurispart,
+			);
+			$modelurispart = nxs_filter_translate_v2($translateargs);
+			
+			$hasvalidreferences = true;
+			
+			//
+			if (nxs_stringcontains($modelurispart, "{{"))
+			{
+				$hasvalidreferences = false;
+			}
+			else if (nxs_stringcontains($modelurispart, "}}"))
+			{
+				$hasvalidreferences = false;
+			}
+			
+			if ($shoulddebug)
+			{
+				
+				echo "modelurispart; hasvalidreferences; " . json_encode($hasvalidreferences) . "<br />";
+			}
+			
+			if ($hasvalidreferences)
+			{
+				// good :)
+				$updatedmodeluris[] = $modelurispart;
+			}
+			else
+			{
+				$sofar = implode("|", $updatedmodeluris);
+				// bad
+				do_action("nxs_a_modelnotfound", "(sofar=>$sofar) unresolved:{$orig}");
+				// no need to add the fraction to the list, as it wont resolve
+				// $updatedmodeluris[] = $orig;
+			}
+
+			if ($shoulddebug)
+			{
+				echo "recursivelookup: ";
+				var_dump($recursivelookup);
+				echo "<br />";
+				echo "modelurispart becomes: {$modelurispart}<br />";
+			}
+		}
+
+		// stitch all elements
+		$result = implode("|", $updatedmodeluris);
+		
+		if ($shoulddebug)
+		{
+			echo "result: $result";
+			die();
+		}
+		
+		return $result;
+	}
+	
 	function derivemodelforcurrenturl()
 	{
 		$uriargs = array
@@ -293,6 +401,12 @@ class nxs_g_modelmanager
 								break;
 							}
 						}
+						else if ($operator == "equals" && $value != $slugpieces[$index])
+						{
+							// mismatch
+							$currententryvalid = false;
+							break;
+						}
 						else
 						{
 							error_log("rule; unsupported operator:($operator) val:($value) index:($index) sp:(" . $slugpieces[$index] . ")");
@@ -300,6 +414,7 @@ class nxs_g_modelmanager
 							$currententryvalid = false;
 							break;
 						}
+						
 					}
 					else
 					{
@@ -333,8 +448,8 @@ class nxs_g_modelmanager
 					}
 					else
 					{
-						$currenturl = nxs_geturlcurrentpage();
-						error_log("rules; condition failed; $conditionid; $conditiontype; $homeurl; $currenturl;");
+						// $currenturl = nxs_geturlcurrentpage();
+						// error_log("rules; condition failed; $conditionid; $conditiontype; $homeurl; $currenturl;");
 					}
 					
 					// perhaps next entry is valid, loop
@@ -343,7 +458,7 @@ class nxs_g_modelmanager
 			
 			if ($result != false)
 			{
-				error_log("rules; conclusion; " . json_encode($result));
+				// error_log("rules; conclusion; " . json_encode($result));
 			}
 			
 			$nxs_gl_modelbyuri[$uri] = $result;
@@ -657,6 +772,8 @@ class nxs_g_modelmanager
 	{
 		$result = array();
 		
+		$orig = $modeluris;
+		
 		// error_log("invoked; getlookups; $modeluris");
 		
 		$modeluris = str_replace(" ", "", $modeluris);
@@ -672,6 +789,24 @@ class nxs_g_modelmanager
 		foreach ($modeluripieces as $modeluripiece)
 		{
 			$index++;
+			
+			$isvalid = true;
+			if (nxs_stringcontains($modeluripiece, "{{"))
+			{
+				$isvalid = false;
+			}
+			else if (nxs_stringcontains($modeluripiece, "}}"))
+			{
+				$isvalid = false;
+			}
+			
+			if (!$isvalid)
+			{
+				do_action("nxs_a_modelnotfound", "$modeluripiece (in orig:'$orig')");
+				
+				// skip!
+				continue;
+			}
 			
 			$subpieces = explode(":", $modeluripiece);
 			
@@ -801,14 +936,46 @@ class nxs_g_modelmanager
 	
 	function getmodel_actual($modeluri)
 	{
+		$shoulddebug = false;
+		
+		$isvalid = true;
+		if (nxs_stringstartswith($modeluri, "@"))
+		{
+			$isvalid = false;
+		}
+		else if (nxs_stringstartswith($modeluri, "{{"))
+		{
+			$isvalid = false;
+		}
+		else if (nxs_stringstartswith($modeluri, "}}"))
+		{
+			$isvalid = false;
+		}
+		
+		if (!$isvalid)
+		{
+			//$st = json_encode(nxs_getstacktrace());
+			do_action("nxs_a_modelnotfound", "$modeluri (invalid)");
+			if ($shoulddebug)
+			{	
+				error_log("getmodel_actual; invalid; $modeluri");
+			}
+			return false;
+		}
+		
 		// error_log("getmodel_actual for (($modeluri))");
 		
 		// if modeluri is specified retrieve the model through the modeluri
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/model-by-uri/{$modeluri}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
 		$content = file_get_contents($url);
 		$json = json_decode($content, true);
-		error_log("getmodel_actual url; $url");
-		//error_log("getmodel_actual result; $content");
+		
+		if ($json["found"] === false)
+		{
+			do_action("nxs_a_modelnotfound", "{$modeluri} (not found)");
+			error_log("getmodel_actual; not found");
+			return false;
+		}
 		
 		$result = $json;
 		
@@ -878,6 +1045,12 @@ class nxs_g_modelmanager
 			$mixedattributes["canonicalurl"] = nxs_url_prettyfy($mixedattributes["canonicalurl"]);
 			
 			$nxs_gl_runtimeseoproperties = $mixedattributes;
+		}
+		
+		if ($_REQUEST["wop"] == "v6")
+		{
+			var_dump($nxs_gl_runtimeseoproperties);
+			die();
 		}
 		
 		return $nxs_gl_runtimeseoproperties;
