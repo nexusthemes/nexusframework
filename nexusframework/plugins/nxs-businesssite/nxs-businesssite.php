@@ -315,12 +315,6 @@ class nxs_g_modelmanager
 					$conditiontype = $conditionmeta["type"];
 					if ($conditiontype == "homeurl")
 					{
-						if ($_REQUEST["finedump"] == "true")
-						{
-							echo "hoebaboeba";
-							die();
-						}
-						
 						// 
 						$operator = $conditionmeta["operator"];
 						$value = $conditionmeta["value"];
@@ -368,12 +362,15 @@ class nxs_g_modelmanager
 						
 						else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
 						{
+							
+							
 							$value = $conditionmeta["value"];
 							$valuepieces = explode("|", $value);
 							$conditionprefix = $valuepieces[0];
 							$conditionschema = $valuepieces[1];
 							$conditionpostfix = $valuepieces[2];
 							$slug = $slugpieces[$index];
+							
 							if (nxs_stringstartswith($slug, $conditionprefix) && nxs_stringendswith($slug, $conditionpostfix))
 							{
 								// humanid is {X} as in "prefix{X}postfix"
@@ -382,6 +379,9 @@ class nxs_g_modelmanager
 								$postfixlength = strlen($conditionpostfix);	
 								$start = $prefixlength;
 								$length = $sluglength - $prefixlength - $postfixlength;
+								
+								
+								
 								$humanid = substr($slug, $start, $length);
 								if ($humanid != "")
 								{
@@ -609,7 +609,7 @@ class nxs_g_modelmanager
 		}
 		
 		// error_log(json_encode($derivedcontext));
-		
+			
 		// loop over the contentmodel and verify if the requestedslug matches 
 		// any of the elements of the contentmodel
 		if ($modeluri != "")
@@ -783,7 +783,7 @@ class nxs_g_modelmanager
 		
 		// we also include the "empty" modeluri (which maps to the model of the page
 		// in the current scope
-		$modeluripieces = array_merge(array(""), $modeluripieces);
+		// $modeluripieces = array_merge(array(""), $modeluripieces);
 		
 		$index = -1;
 		foreach ($modeluripieces as $modeluripiece)
@@ -849,7 +849,9 @@ class nxs_g_modelmanager
 			}
 		}
 		
-		$lookup["this.humanid"] = $this->gethumanid($modeluri);
+		$humanid = $this->gethumanid("");
+		$lookup["humanid"] = $humanid;
+		$lookup["this.humanid"] = $humanid;
 		
 		return $lookup;
 	}
@@ -923,11 +925,22 @@ class nxs_g_modelmanager
 		//
 		$transientkey = md5("modeldb_{$modeluri}");
 		$result = get_transient($transientkey);
+		$shouldrefreshdbcache = false;
 		if ($result == "" || $result == false || $_REQUEST["transients"] == "refresh")
+		{
+			$shouldrefreshdbcache = true;
+		}
+		// todo; use a filter instead?
+		if ($_REQUEST["nxs_qa_endtoend"] == "true")
+		{
+			// $shouldrefreshdbcache = true;
+		}
+		
+		if ($shouldrefreshdbcache)
 		{
 			$result = $this->getmodel_actual($modeluri);
 			// update cache
-			$cacheduration = 60 * 60 * 24; // 24 hours cache
+			$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
 			set_transient($transientkey, $result, $cacheduration);
 		}
 		
@@ -937,6 +950,11 @@ class nxs_g_modelmanager
 	function getmodel_actual($modeluri)
 	{
 		$shoulddebug = false;
+		
+		if ($shoulddebug)
+		{	
+			error_log("getmodel_actual; attempt; $modeluri");
+		}
 		
 		$isvalid = true;
 		if (nxs_stringstartswith($modeluri, "@"))

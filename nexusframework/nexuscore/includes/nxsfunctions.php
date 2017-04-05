@@ -11552,15 +11552,10 @@ function nxs_filter_translatemodel($metadata, $fields)
 		die();
 	}
 	
-	/*
-	if ($_REQUEST["wop"] == "v5")
-	{
-		var_dump($metadata);
-		die();
-	}
-	*/	
+	// phase 4; translate lookup tables
+	$metadata = nxs_filter_translatelookup($metadata, $fields);
 	
-	// phase 4; verify all lookup items have been replaced
+	// phase 5; verify all lookup items have been replaced
 	foreach ($fields as $field)
 	{
 		$value = $metadata[$field];
@@ -11576,7 +11571,7 @@ function nxs_filter_translatemodel($metadata, $fields)
 		
 		if (!$isvalid)
 		{
-			do_action("nxs_a_modelnotfound", "(loaded=>$modeluris) unresolved:{$value}");
+			do_action("nxs_a_modelnotfound", "(loaded=>$modeluris) unresolved:{$value} nxsfunctions");
 		}
 	}
 	
