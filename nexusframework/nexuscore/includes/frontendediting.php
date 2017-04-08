@@ -241,13 +241,27 @@
 		$escapedcsscontent = str_replace("\\", "\\\\", $escapedcsscontent);
 				
 		if (is_user_logged_in()) 
-		{ 
+		{
 			// dynamic lookup from the flyout menu
 			?>
 			if (nxs_js_doesuserimpactstyle())
 			{
-				// IE fix; in IE the first css element is ignored...
-				return ".nxsiefixignored {} " + jQ_nxs('#vg_manualcss').val();
+				<?php
+				if ($_REQUEST["customcss"] == "true") 
+				{
+					// allow end-user to tune the custom css
+					?>
+					// IE fix; in IE the first css element is ignored...
+					return ".nxsiefixignored {} " + jQ_nxs('#vg_manualcss').val();
+					<?php
+				}
+				else
+				{
+					?>
+					return ".nxsiefixignored {} <?php echo $escapedcsscontent; ?>";
+					<?php
+				}
+				?>
 			}
 			else
 			{

@@ -75,7 +75,7 @@ function nxs_widgets_contactitemdatetime_getformitemsubmitresult($args)
 		}
 	}
 	
-	$result["output"] = "{$formlabel}: {$value_date} {$value_hh}:$value_mm";
+	$result["output"] = "<b>{$formlabel}:</b> {$value_date} {$value_hh}:$value_mm";
 
 	return $result;
 }

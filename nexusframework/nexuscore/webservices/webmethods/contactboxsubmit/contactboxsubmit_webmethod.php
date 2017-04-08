@@ -154,7 +154,7 @@ function nxs_webmethod_contactboxsubmit()
 			
 			foreach ($outputlines as $currentoutputline)
 			{
-				$body .= $currentoutputline . " \r\n";
+				$body .= $currentoutputline . " <br /><br />\r\n \r\n";
 			}
 
 			global $nxs_global_mail_fromname;

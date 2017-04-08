@@ -56,7 +56,7 @@ function nxs_widgets_contactitemsecret_getformitemsubmitresult($args)
 		$result["markclientsideelements"][] = $key;
 	}
 	
-	$result["output"] = "$formlabel: $value";
+	$result["output"] = "<b>$formlabel:</b> $value";
 	
 	return $result;
 }

@@ -284,13 +284,13 @@ function nxs_webmethod_formboxsubmit()
 			$body = "";
 			if ($mail_body_includesourceurl != "")
 			{
-				$body .= nxs_l18n__("This form was posted from url:", "nxs_td") . $url . "<br />";
+				$body .= nxs_l18n__("This form was posted from url: ", "nxs_td") . $url . "<br /><br />";
 			}
 			foreach ($outputlines as $currentoutputline)
 			{
 				$tunedcurrentoutputline = $currentoutputline;
 				$tunedcurrentoutputline = str_replace("\n","<br />",$tunedcurrentoutputline);
-				$body .= $tunedcurrentoutputline . " <br />";
+				$body .= $tunedcurrentoutputline . "<br /><br />";
 			}
 			$ccemail = "";
 			$bccemail = "";

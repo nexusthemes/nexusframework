@@ -54,7 +54,7 @@ function nxs_widgets_contactitemselect_getformitemsubmitresult($args)
 		}
 	}
 	
-	$result["output"] = "$formlabel: $value";
+	$result["output"] = "<b>$formlabel:</b> $value";
 	
 	return $result;
 }

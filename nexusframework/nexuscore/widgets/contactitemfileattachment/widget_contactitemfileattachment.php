@@ -89,7 +89,7 @@ function nxs_widgets_contactitemfileattachment_getformitemsubmitresult($args)
 	
 	// normally the output is $formlabel: $value
 	// but for the file upload we give the $value later in the formboxsubmit_webmethod
-	$result["output"] = "$formlabel: $filetemp";
+	$result["output"] = "<b>$formlabel:</b> $filetemp";
 	$result["fileupload"] = $value;
 	
 	return $result;
