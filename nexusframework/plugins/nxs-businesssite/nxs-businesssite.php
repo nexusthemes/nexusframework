@@ -723,6 +723,7 @@ class nxs_g_modelmanager
 				add_filter('wpseo_title', array($this, 'wpseo_title'), 99999);
 				add_filter('wpseo_metadesc', array($this, 'wpseo_metadesc'), 1999);
 				add_filter('wpseo_canonical', array($this, 'wpseo_canonical'), 99999);
+				add_filter('wpseo_robots', array($this, 'wpseo_robots'), 99999);
 			}
 			
 			// there can/may be only one match
@@ -1121,6 +1122,21 @@ class nxs_g_modelmanager
 			// 
 			
 			$result = $title;
+		}
+		return $result;
+	}
+	
+	function wpseo_robots($result = "index,follow")
+	{
+		// if we reach this point, it means the page has a model as its context
+		// the title, description and canonical url can be determined by 
+		// a "seo widget" that is stored in the content template defined
+		// in the page template rules.
+		$runtimeseoproperties = $this->getruntimeseoproperties();
+		$canonicalurl = $runtimeseoproperties["canonicalurl"];		
+		if ($canonicalurl != "")
+		{
+			$result = "index,follow";
 		}
 		return $result;
 	}
