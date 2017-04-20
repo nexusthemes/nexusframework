@@ -106,6 +106,42 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = str_replace("_", "", $input);
 		}
+		else if ($op == "replacemodellookupmismatch")
+		{
+			// if the value does not have a model lookup value
+			// it will still have {{ }} values
+			$shouldbereplaced = false;
+			if (nxs_stringcontains($input, "{"))
+			{
+				$shouldbereplaced = true;
+			}
+			else if (nxs_stringcontains($input, "}"))
+			{
+				$shouldbereplaced = true;
+			}
+			if ($shouldbereplaced)
+			{
+				// if thats true, replace it with whatever is set as the replacement in the shortcode
+				$replacement = $attributes["modellookupmismatchreplacement"];
+				$input = $replacement;
+			}
+		}
+		
+		else if ($op == "replaceempty")
+		{
+			// if the value is empty
+			$shouldbereplaced = false;
+			if (trim($input) == "")
+			{
+				$shouldbereplaced = true;
+			}
+			if ($shouldbereplaced)
+			{
+				// if thats true, replace it with whatever is set as the replacement in the shortcode
+				$replacement = $attributes["emptyreplacement"];
+				$input = $replacement;
+			}
+		}
 	}
 	
 	echo $input;

@@ -422,7 +422,7 @@ function nxs_widgets_entities_home_getoptions($args)
 			array
       (
 				"id" 					=> "text_text_template",
-				"type" 				=> "input",
+				"type" 				=> "tinymce", // input",
 				"label" 			=> nxs_l18n__("Text template", "nxs_td"),
 				// "readonly" 		=> "true",
 			),
@@ -1518,7 +1518,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	}
 	
 	//
-	$count = count($instances); // $contentmodel[$taxonomy]["countenabled"];
+	$count = count($instances);
 	
 	$numberofcolumns = 4;
 	if ($count % 3 == 0)
