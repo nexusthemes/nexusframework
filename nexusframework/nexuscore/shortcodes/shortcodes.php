@@ -153,6 +153,68 @@ function nxs_sc_string($attributes, $content = null, $name='')
 }
 add_shortcode('nxsstring', 'nxs_sc_string');
 
+// for example [nxsbool ops="isnotempty" value="aap"]
+function nxs_sc_bool($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	nxs_ob_start();
+	
+	$input = $content;
+	if ($input == "")
+	{
+		$input = $attributes["input"];
+	}
+	if ($input == "")
+	{
+		$input = $attributes["value"];
+	}
+	
+	$ops = $attributes["ops"];
+	$ops = str_replace(",","|", $ops);
+	$ops = str_replace(";","|", $ops);
+	$opslist = explode("|", $ops);
+	foreach ($opslist as $op)
+	{
+		$op = trim($op);
+		if ($op == "isnotempty" || $op == "!isempty")
+		{
+			if (trim($input) == "")
+			{
+				$input = "false";
+			}
+			else
+			{
+				$input = "true";
+			}
+		}
+		else if ($op == "contains")
+		{
+			$needle = $attributes["containsneedle"];
+			
+			
+			if (nxs_stringcontains($input, $needle))
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+			
+			// echo "shortcode condition [$input][$needle] evaluates to [$input]";
+		}
+	}
+	
+	echo $input;
+	
+	$output = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+		
+	return $output;
+}
+add_shortcode('nxsbool', 'nxs_sc_bool');
+
 
 
 // widget specific shortcodes

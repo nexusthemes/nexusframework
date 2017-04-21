@@ -354,6 +354,19 @@ function nxs_widgets_entities_home_getoptions($args)
 				"unistylablefield" => true,
 			),
 			
+			array
+      (
+				"id" 					=> "items_order",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Items order", "nxs_td"),
+			),
+			array
+      (
+				"id" 					=> "items_where",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Items where", "nxs_td"),
+			),
+			
       array(
           "id" 				=> "wrapper_title_end",
           "type" 				=> "wrapperend",
@@ -385,6 +398,8 @@ function nxs_widgets_entities_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
 			),
+			
+			
 
 			array
       (
@@ -1565,12 +1580,12 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
 
-	$index = -1;
+	$databindindex = -1;
+	$databindindexafterfilter = -1;
+	
 	foreach ($instances as $instance)
 	{
-		$enabled = $instance["enabled"];
-		if ($enabled == "") { continue; }
-		$index++;
+		$databindindex++;
 		$post_id = $instance["content"]["post_id"];
 		$post_title = $instance["content"]["title"];
 		
@@ -1637,6 +1652,13 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		// replicate styleable fields specific for "TEXT" widgets
 		if ($childwidgettype == "text" || $childwidgettype == "")
 		{
+			// replicate content fields
+			$magicfields = array("title", "text", "destination_url", "image_src", "modeluris");
+			foreach ($magicfields as $magicfield)
+			{
+				$childargs[$magicfield] = $args["text_{$magicfield}_template"];
+			}			
+			
 			$fieldstoreplicate = array
 			(
 				"title_heading", "text_title_template", "title_postprocessor", "title_fontzen", "title_alignment", "title_fontsize", 
@@ -1656,6 +1678,69 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				}
 			}
 			
+			// apply @@iterator filter to the fields
+			$lookup = array();
+			$magicfields = array("title", "text", "destination_url", "image_src", "modeluris");
+			foreach ($instance["content"] as $key => $val)
+			{
+				$lookup["@@iterator.{$key}"] = $val;
+			}
+			
+			$translateargs = array
+			(
+				"lookup" => $lookup,
+				"items" => $childargs,
+				"fields" => $magicfields,
+			);
+			$childargs = nxs_filter_translate_v2($translateargs);
+			
+			// allow filtering the items
+			if (true)
+			{
+				if ($_REQUEST["disablefilters"] == "true")
+				{
+					// do nothing
+				}
+				else
+				if ($items_where != "")
+				{
+					$filters = $items_where;
+				
+					// translate model fields used in the filters
+					$translateargs = array("shouldapplyshortcodes" => false);
+					$filters = nxs_filter_translatemodel_single($filters, $childargs["modeluris"], $translateargs);
+					
+					$filterconditionvalue = true;
+					$filterpieces = explode(";", $filters);
+					foreach ($filterpieces as $filterpiece)
+					{
+						// apply shortcodes to the filterpiece
+						// for example [nxsbool ops="!isempty" value="monkey"]
+						$evaluation = do_shortcode($filterpiece);
+
+						if ($evaluation == "false")
+						{
+							$filterconditionvalue = false;
+							// it failed
+							continue;
+						}
+						else
+						{
+							// it succeeded, continu to next ops
+						}
+					}
+					
+					if ($filterconditionvalue == false)
+					{
+						// proceed to the next item
+						continue;
+					}
+				}
+			}
+			
+			// increase the counter for bindindexafterfilter
+			$databindindexafterfilter++;
+			
 			// tune contentable fields based on template configuration
 			
 			$lookup = array();
@@ -1669,11 +1754,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				$lookup["{$datasource}.instance.{$key}"] = $val;
 			}
 			
-			$magicfields = array("title", "text", "destination_url", "image_src", "modeluris");
-			foreach ($magicfields as $magicfield)
-			{
-				$childargs[$magicfield] = $args["text_{$magicfield}_template"];
-			}
+			//
+			$lookup["@@iterator.index"] = $databindindexafterfilter;
+			$lookup["@@iterator.filters"] = $filters;
 			
 			$translateargs = array
 			(
@@ -1827,64 +1910,49 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 
 		$subhtml = "";
 		$subhtml .= "<div class='{$child_ph_cssclass} {$child_ph_margin_bottom}'>";
-				
 		$subhtml .= "<div class='ABC {$heightclass} {$abc_concatenated_css}'>";
-		
-		// 
-		$shouldrendereditor = false; // (is_user_logged_in());
-		
-		if ($shouldrendereditor)
-		{
-			nxs_ob_start();
-			
-			$icon = nxs_entities_geticon($datasource);
-			?>
-			<div class="nxs-hover-menu-positioner">
-				<div class="nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-left-top" style="pointer-events:auto;">
-				  <ul class="">
-				    <li title="Edit" class="nxs-hovermenu-button">
-				  		<a href="#" title="Edit" onclick="event.stopPropagation(); nxs_js_edit_entity(this); return false;">
-				      	<span class="nxs-icon-<?php echo $icon; ?>"></span>
-				      </a>
-							<ul>								
-								<li title='<?php nxs_l18n_e("Move", "nxs_td"); ?>' class='nxs-draggable-v2'>
-				        	<span class='nxs-icon-move'></span>				
-				        </li>
-								
-			        	<a class='nxs-no-event-bubbling' href='#' onclick='nxs_js_wipe_entity(this); return false;'>
-			           	<li title='<?php nxs_l18n_e("Delete", "nxs_td"); ?>'>
-			           		<span class='nxs-icon-trash'></span>
-			           	</li>
-			        	</a>
-			        </ul>		
-						</li>
-						
-					</ul>
-				</div>
-			</div>
-			<?php
-			$popup = nxs_ob_get_contents();
-			nxs_ob_end_clean();
-	
-			$subhtml .= "<style>";
-			$subhtml .= ".nxsgrid-item .ABC { position: relative;}";
-			$subhtml .= ".overlay { display: none; background-color: rgba(100,100,100,0.5); position: absolute; pointer-events:none; left:0; right:0;top:0;bottom:0; }";
-			$subhtml .= ".nxsgrid-item:hover .overlay { display: block; }";
-			$subhtml .= "</style>";
-			$subhtml .= "<div class='nxs-hidewheneditorinactive'>";
-			$subhtml .= "<div class='overlay'>";		
-			$subhtml .= $popup;
-			$subhtml .= "</div>";
-			$subhtml .= "</div>";
-		}
-		
 		$subhtml .= "<div class='XYZ {$xyz_concatenated_css}'>";
 		$subhtml .= $subresult["html"];
 		$subhtml .= "</div>";
 		$subhtml .= "</div>";
 		$subhtml .= "</div>";
 		
-		$html .= "<div class='nxsgrid-item nxsgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}'>";
+		// allow overriding the order of the items of the flexbox by a databinding of a model
+		if (true)
+		{
+			$styleatts = array();
+			$modeluris = $childargs["modeluris"];
+			$ordermeta = array
+			(
+				"items_order" => $items_order,
+				"modeluris" => $modeluris,
+			);
+			$translated = nxs_filter_translatemodel($ordermeta, array("items_order"));
+			$value = $translated["items_order"];
+			
+			// allow users to further set the output bas3d upon shortcodes
+			$value = do_shortcode($value);
+			
+			$styleatts["order"] = $value;
+		}
+		
+		
+		// if we reach this far, the filters apply
+		// increase counter of items within filter
+		$indexwithinfilter++;
+		
+		$styleatt = "";
+		if (count($styleatts) > 0)
+		{
+			$values = "";
+			foreach ($styleatts as $k => $v)
+			{
+				$values .= "{$k}: {$v};";
+			}
+			$styleatt = "style='" . $values . "'";
+		}
+		
+		$html .= "<div class='nxsgrid-item nxsgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
 		$html .= $subhtml;
 		$html .= "</div>";
 	}

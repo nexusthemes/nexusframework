@@ -11498,8 +11498,33 @@ function nxs_filter_translatelookup($metadata, $fields)
 	return $result;
 }
 
+function nxs_filter_translatemodel_single($value, $modeluris, $args)
+{
+	$key = "value";
+	$metadata = array
+	(
+		$key => $value,
+		"modeluris" => $modeluris,
+	);
+	$metadata = nxs_filter_translatemodel_v2($metadata, array($key), $args);
+	$result = $metadata[$key];
+	return $result;
+}
+
 function nxs_filter_translatemodel($metadata, $fields)
 {
+	$args = array
+	(
+		"shouldapplyshortcodes" => true,
+	);
+	$result = nxs_filter_translatemodel_v2($metadata, $fields, $args);
+	return $result;
+}
+
+function nxs_filter_translatemodel_v2($metadata, $fields, $args)
+{
+	$shouldapplyshortcodes = $args["shouldapplyshortcodes"];
+	
 	global $nxs_g_modelmanager;
 	
 	$debug = $_REQUEST["wop"] == "v3";
@@ -11513,7 +11538,19 @@ function nxs_filter_translatemodel($metadata, $fields)
 	// phase 1; evaluate any referenced models in the modeluris property
 	// sub:id@sub|subsub:{{sub.reference}}@subsub|subsubsub:{{subsub.reference}}
 	$modeluris = $metadata["modeluris"];
+	if ($debug)
+	{
+		echo "modeluris1:<br />";
+		var_dump($modeluris);
+		echo "<br />";
+	}
 	$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris);
+	if ($debug)
+	{
+		echo "modeluris2:<br />";
+		var_dump($modeluris);
+		echo "<br />";
+	}
 	
 	// phase 2; translate the fields using the values from the (extended) model(s)
 	$lookup = $nxs_g_modelmanager->getlookups($modeluris);
@@ -11540,16 +11577,19 @@ function nxs_filter_translatemodel($metadata, $fields)
 	}
 	
 	// phase 3; apply shortcode(s) on the fields
-	foreach ($fields as $field)
+	if ($shouldapplyshortcodes)
 	{
-		$metadata[$field] = do_shortcode($metadata[$field]);
+		foreach ($fields as $field)
+		{
+			$metadata[$field] = do_shortcode($metadata[$field]);
+		}
 	}
 	
 	if ($debug)
 	{
 		echo "stage 3:<br />";
 		var_dump($metadata);
-		die();
+		//die();
 	}
 	
 	// phase 4; translate lookup tables

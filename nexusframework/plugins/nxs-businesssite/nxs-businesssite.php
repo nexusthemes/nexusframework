@@ -179,6 +179,7 @@ class nxs_g_modelmanager
 		
 		$humanid = $this->gethumanid("");
 		$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
+		$modeluris = str_replace(";", "|", $modeluris);
 		
 		$modelurisparts = explode("|", $modeluris);
 		$recursivelookup = array();
@@ -270,7 +271,7 @@ class nxs_g_modelmanager
 		if ($shoulddebug)
 		{
 			echo "result: $result";
-			die();
+			//die();
 		}
 		
 		return $result;
