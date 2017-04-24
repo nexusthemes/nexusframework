@@ -198,17 +198,6 @@ function nxs_widgets_entities_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 			),
 			array(
-				"id" 				=> "title_postprocessor",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title postprocessor", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@empty@@@" => "None",
-					"truncateall" => "Truncate all",
-				),
-				"unistylablefield"	=> true
-			),
-			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
@@ -275,12 +264,19 @@ function nxs_widgets_entities_home_getoptions($args)
           "type" 				=> "wrapperbegin",
           "label" 			=> nxs_l18n__("Items", "nxs_td"),
       ),
+     array
+      (
+				"id" 					=> "modeluris",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
+				"placeholder" => "for example m1:foo@bar,m2:foo{{humanid}}@schema",
+			),
       array
       (
 				"id" 					=> "modeluri",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Model URI", "nxs_td"),
-				"placeholder" => "Blank or format 'name@schema'",
+				"placeholder" => "Iterator; which model should be used to iterate? (should be a list like 'name@schema')",
 			),
 			// filled by datasource_custom
  			array
@@ -296,18 +292,6 @@ function nxs_widgets_entities_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_entities_datasourcecustom_popupcontent",
 			),
-			array(
-				"id" 				=> "datasource_postprocessor",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Datasource postprocessor", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@empty@@@" => "None",
-					"truncateall" => "Truncate all",
-				),
-				"unistylablefield"	=> true
-			),
-			
 			array
 			(
           "id" 				=> "wrapper_items_end",
@@ -534,37 +518,6 @@ function nxs_widgets_entities_home_getoptions($args)
 			),
 			// 
 
-			
-			//
-			
-			// postprocessor is kind of obsolete...
-			array(
-				"id" 				=> "text_title_postprocessor",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title postprocessor", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@empty@@@" => "None",
-					"truncateall" => "Truncate all",
-				),
-				"unistylablefield"	=> true
-			),
-			
-			
-			
-			
-			//			
-			array(
-				"id" 				=> "text_text_postprocessor",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Text postprocessor", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@empty@@@" => "None",
-					"truncateall" => "Truncate all",
-				),
-				"unistylablefield"	=> true
-			),
 			array
 			(
 				"id" 				=> "text_text_alignment",
@@ -1257,7 +1210,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 {
 	// Importing variables
 	extract($args);
-	
+	 
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
 	if ($render_behaviour == "code")
@@ -1292,7 +1245,25 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = array_merge($temp_array, $args);
 	
 	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","entities","button_entities", "destination_url"));
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "entities", "button_entities", "destination_url"));
+	
+	// Translate model data (apply modeluris, lookups, shortcodes)
+	$mixedattributes = nxs_filter_translatemodel($mixedattributes, array("modeluri"));
+	
+	if ($_REQUEST["grrr"] == "true")
+	{
+		echo "modeluri has become:";
+		var_dump($mixedattributes["modeluri"]);
+		die();
+	}
+	
+	// allow plugins to decorate (and also do something with) the mixedattributes 
+	// (an example of "doing something" would be for example to apply QA rules)
+	$filterargs = array
+	(
+		"mixedattributes" => $mixedattributes
+	);
+	$mixedattributes = apply_filters("nxs_f_widgetvisualizationdecorateatts", $mixedattributes, $filterargs);
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
@@ -1301,17 +1272,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	/*
-	global $nxs_g_modelmanager;
-	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
-	$title = $contentmodel[$datasource]["taxonomy"]["title"];	// old: "post_title"
-	*/
-	
-	if ($title_postprocessor === "truncateall") 
-	{
-		$title = "";
-	}
-
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = $datasource;
 
@@ -1357,9 +1317,19 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
+
 	// the html can contain placeholders
 	global $nxs_g_modelmanager;
+	
+	$modeluri = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluri);
+	if ($_REQUEST["grr"] == "true")
+	{
+		echo "modeluri: $modeluri";
+		die();
+	}
+	
 	$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
+	
 	
 	if ($datasource == "")
 	{
@@ -1527,11 +1497,6 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	$instances = $contentmodel[$taxonomy]["instances"];
 	
-	if ($datasource_postprocessor == "truncateall")
-	{
-		$instances = array();
-	}
-	
 	//
 	$count = count($instances);
 	
@@ -1661,9 +1626,9 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			
 			$fieldstoreplicate = array
 			(
-				"title_heading", "text_title_template", "title_postprocessor", "title_fontzen", "title_alignment", "title_fontsize", 
+				"title_heading", "text_title_template", "title_fontzen", "title_alignment", "title_fontsize", 
 				"top_info_color", "top_info_padding", 
-				"icon_scale", "text_postprocessor", "text_alignment", 
+				"icon_scale", "text_alignment", 
 				"image_src_template", "image_alignment", "image_size", "image_shadow", "image_border_width", 
 				"button_scale", "button_color", "button_fontzen", "button_alignment",
 				"destination_target", "title_heightiq", 
@@ -1705,20 +1670,23 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				if ($items_where != "")
 				{
 					$filters = $items_where;
+					$filters = str_replace("&&", ";", $filters);
 				
 					// translate model fields used in the filters
 					$translateargs = array("shouldapplyshortcodes" => false);
 					$filters = nxs_filter_translatemodel_single($filters, $childargs["modeluris"], $translateargs);
 					
 					$filterconditionvalue = true;
+					
 					$filterpieces = explode(";", $filters);
 					foreach ($filterpieces as $filterpiece)
 					{
+						$filterpiece = trim($filterpiece);
+						
 						// apply shortcodes to the filterpiece
 						// for example [nxsbool ops="!isempty" value="monkey"]
 						$evaluation = do_shortcode($filterpiece);
-
-						if ($evaluation == "false")
+						if ($evaluation != "true")
 						{
 							$filterconditionvalue = false;
 							// it failed
@@ -1961,11 +1929,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	if ($count == 0)
 	{
-		if ($datasource_postprocessor == "truncateall")
-		{
-			// hidden
-		}
-		else
+		if (true)
 		{
 			//
 			if (true) // is_user_logged_in())

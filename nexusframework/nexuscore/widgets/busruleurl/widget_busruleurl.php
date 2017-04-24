@@ -218,7 +218,11 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 		$result["ismatch"] = "false";
 	}
 	
+	if ($_REQUEST["debugme"] == "true")
+	{
+		var_dump($result);
+		die();
+	}
+	
 	return $result;
 }
-
-?>

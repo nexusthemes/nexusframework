@@ -168,106 +168,148 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	// evaluates nested referenced 
+	// evaluates nested references and evaluate variables as set by the seowebsiterules (url parameters)
 	function evaluatereferencedmodelsinmodeluris($modeluris)
 	{
+		if ($modeluris == "")
+		{
+			return $modeluris;
+		}
+		
 		$shoulddebug = $_REQUEST["magic"] == "debug";		
 		if ($shoulddebug)
 		{
 			echo "debugging evaluatereferencedmodelsinmodeluris for $modeluris <br />";
 		}
 		
-		$humanid = $this->gethumanid("");
-		$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
+		// make uniform
 		$modeluris = str_replace(";", "|", $modeluris);
-		
-		$modelurisparts = explode("|", $modeluris);
-		$recursivelookup = array();
-		$updatedmodeluris = array();
-		
-		foreach ($modelurisparts as $index=>$modelurispart)
+						
+		// replace fragments from the url 
+		// for example: request: "http://domain/detail/1234/hello-world
+		// could define fragments ("id" => "1234") and ("name" => "hello-world")
+		if (true)
 		{
-			$orig = $modelurispart;
+			// step 1; ensure the fragments are parsed for the current url
+			$parsed = $this->derivemodelforcurrenturl();
+			$fragments = $parsed["parameters"]["fragments"];
 			
-			// sanitize element
-			$modelurispart = trim($modelurispart);
-			
-			if ($shoulddebug)
+			$fragmentslookup = array();
+			foreach ($fragments as $key => $value)
 			{
-				echo "index: {$index}<br />";
-				echo "modelurispart: {$modelurispart}<br />";
+				$key = "@@url.{$key}";	// for example {@@url.id}} would become 1234
+				$value = $value;
+				$fragmentslookup[$key] = $value;
 			}
 			
 			// apply the lookup tables to the parts we've evaluated so far
 			$translateargs = array
 			(
-				"lookup" => $recursivelookup,
-				"item" => $modelurispart,
+				"lookup" => $fragmentslookup,
+				"item" => $modeluris,
 			);
-			$modelurispart = nxs_filter_translate_v2($translateargs);
-			
-			if ($shoulddebug)
-			{
-				echo "modelurispart; stage 2; modelurispart: {$modelurispart}<br />";
-			}
-			
-			// now apply lookup values again 
-			
-			// apply lookup values to the modelurispart "extended" models
-			$lookupcurrentpart = $this->getlookups($modelurispart);
-			$recursivelookup = array_merge($recursivelookup, $lookupcurrentpart);
-			
-			$translateargs = array
-			(
-				"lookup" => $recursivelookup,
-				"item" => $modelurispart,
-			);
-			$modelurispart = nxs_filter_translate_v2($translateargs);
-			
-			$hasvalidreferences = true;
-			
-			//
-			if (nxs_stringcontains($modelurispart, "{{"))
-			{
-				$hasvalidreferences = false;
-			}
-			else if (nxs_stringcontains($modelurispart, "}}"))
-			{
-				$hasvalidreferences = false;
-			}
-			
-			if ($shoulddebug)
-			{
-				
-				echo "modelurispart; hasvalidreferences; " . json_encode($hasvalidreferences) . "<br />";
-			}
-			
-			if ($hasvalidreferences)
-			{
-				// good :)
-				$updatedmodeluris[] = $modelurispart;
-			}
-			else
-			{
-				$sofar = implode("|", $updatedmodeluris);
-				// bad
-				do_action("nxs_a_modelnotfound", "(sofar=>$sofar) unresolved:{$orig}");
-				// no need to add the fraction to the list, as it wont resolve
-				// $updatedmodeluris[] = $orig;
-			}
-
-			if ($shoulddebug)
-			{
-				echo "recursivelookup: ";
-				var_dump($recursivelookup);
-				echo "<br />";
-				echo "modelurispart becomes: {$modelurispart}<br />";
-			}
+			$modeluris = nxs_filter_translate_v2($translateargs);
+		}
+		
+		// obsolete implementation;
+		if (true)
+		{
+			$humanid = $this->gethumanid("");
+			$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
 		}
 
-		// stitch all elements
-		$result = implode("|", $updatedmodeluris);
-		
+		// loop through each parts of the sequence of modeluris and apply the variables from previous steps
+		// (one part could evaluate a variable that is defined in previous parts)
+		if (true)
+		{
+			$modelurisparts = explode("|", $modeluris);
+			$recursivelookup = array();
+			$updatedmodeluris = array();
+			
+			foreach ($modelurisparts as $index=>$modelurispart)
+			{
+				$orig = $modelurispart;
+				
+				// sanitize element
+				$modelurispart = trim($modelurispart);
+				
+				if ($shoulddebug)
+				{
+					echo "index: {$index}<br />";
+					echo "modelurispart: {$modelurispart}<br />";
+				}
+				
+				// apply the lookup tables to the parts we've evaluated so far
+				$translateargs = array
+				(
+					"lookup" => $recursivelookup,
+					"item" => $modelurispart,
+				);
+				$modelurispart = nxs_filter_translate_v2($translateargs);
+				
+				if ($shoulddebug)
+				{
+					echo "modelurispart; stage 2; modelurispart: {$modelurispart}<br />";
+				}
+				
+				// now apply lookup values again 
+				
+				// apply lookup values to the modelurispart "extended" models
+				$lookupcurrentpart = $this->getlookups($modelurispart);
+				$recursivelookup = array_merge($recursivelookup, $lookupcurrentpart);
+				
+				$translateargs = array
+				(
+					"lookup" => $recursivelookup,
+					"item" => $modelurispart,
+				);
+				$modelurispart = nxs_filter_translate_v2($translateargs);
+				
+				$hasvalidreferences = true;
+				
+				//
+				if (nxs_stringcontains($modelurispart, "{{"))
+				{
+					$hasvalidreferences = false;
+				}
+				else if (nxs_stringcontains($modelurispart, "}}"))
+				{
+					$hasvalidreferences = false;
+				}
+				
+				if ($shoulddebug)
+				{
+					
+					echo "modelurispart; hasvalidreferences; " . json_encode($hasvalidreferences) . "<br />";
+				}
+				
+				if ($hasvalidreferences)
+				{
+					// good :)
+					$updatedmodeluris[] = $modelurispart;
+				}
+				else
+				{
+					$sofar = implode("|", $updatedmodeluris);
+					// bad
+					do_action("nxs_a_modelnotfound", "(sofar=>$sofar) unresolved:{$orig}");
+					// no need to add the fraction to the list, as it wont resolve
+					// $updatedmodeluris[] = $orig;
+				}
+	
+				if ($shoulddebug)
+				{
+					echo "recursivelookup: ";
+					var_dump($recursivelookup);
+					echo "<br />";
+					echo "modelurispart becomes: {$modelurispart}<br />";
+				}
+			}
+	
+			// stitch all elements
+			$result = implode("|", $updatedmodeluris);
+		}
+			
 		if ($shoulddebug)
 		{
 			echo "result: $result";
@@ -352,6 +394,7 @@ class nxs_g_modelmanager
 								$conditionschema = $conditionmeta["value"];
 								$currententryderivedparameters["humanid"] = "{$humanid}";
 								$currententryderivedparameters["schema"] = "{$conditionschema}";
+								$currententryderivedparameters["fragments"][$conditionschema] = $humanid;
 								// ok, proceed
 							}
 							else
@@ -363,9 +406,13 @@ class nxs_g_modelmanager
 						
 						else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
 						{
-							
-							
 							$value = $conditionmeta["value"];
+							
+							$value = str_replace("{{", "{", $value);
+							$value = str_replace("}}", "}", $value);
+							$value = str_replace("}", "|", $value);
+							$value = str_replace("{", "|", $value);
+							
 							$valuepieces = explode("|", $value);
 							$conditionprefix = $valuepieces[0];
 							$conditionschema = $valuepieces[1];
@@ -380,14 +427,14 @@ class nxs_g_modelmanager
 								$postfixlength = strlen($conditionpostfix);	
 								$start = $prefixlength;
 								$length = $sluglength - $prefixlength - $postfixlength;
-								
-								
-								
 								$humanid = substr($slug, $start, $length);
 								if ($humanid != "")
 								{
+									// todo: implement support for "N" humanids instead of just one,
+									// now we can only have one parameter based upon the URL
 									$currententryderivedparameters["humanid"] = "{$humanid}";
 									$currententryderivedparameters["schema"] = "{$conditionschema}";
+									$currententryderivedparameters["fragments"][$conditionschema] = $humanid;
 									// ok, proceed
 								}
 								else
@@ -602,68 +649,40 @@ class nxs_g_modelmanager
 		
 		$derivedcontext = $this->derivemodelforcurrenturl();
 		$parameters = $derivedcontext["parameters"];
-		if ($parameters != "")
+		$fragments = $parameters["fragments"];
+		
+		if ($_REQUEST["fragments"] == "true")
 		{
-			$humanid = $parameters["humanid"];
-			$schema = $parameters["schema"];
-			$modeluri = "{$humanid}@{$schema}";
+			var_dump($derivedcontext);
+			die();
+		}
+		
+		$isvirtual = false;
+		
+		$schema = "nxs_";
+		foreach ($fragments as $key => $val)
+		{
+			if ($schema != "")
+			{
+				$schema .= "_";
+			}
+			$schema .= "{$key}";
+			$isvirtual = true;
 		}
 		
 		// error_log(json_encode($derivedcontext));
 			
 		// loop over the contentmodel and verify if the requestedslug matches 
 		// any of the elements of the contentmodel
-		if ($modeluri != "")
+		if ($isvirtual)
 		{
-			// apparently there's a match
-
-			// make a mapping for the taxonomy fields
-			$contentmodel = $this->getcontentmodel($modeluri);
-			if ($contentmodel == false)
-			{
-				// not found, ignore
-				return $result;
-			}
+			// apparently there's a match;
+			// mimic a post by creating a virtual post
 			
-			$lookup = array();
-			foreach ($contentmodel as $taxonomy => $m)
-			{
-				$keyvalues = $m["taxonomy"];
-				foreach ($keyvalues as $key => $val)
-				{
-					$lookup["{$taxonomy}.{$key}"] = $val;
-				}
-			}
-			
-			$schematowpinstancemapping = $this->getschematowpinstancemapping();
-			$wpinstancemappingcurrentschema = $schematowpinstancemapping[$schema];
-
-			// get the title_template, for example "{{nxs_searchphrase.searchphrase}}"
-			$title_template = $wpinstancemappingcurrentschema["title_template"];
-			
-			// translate the placeholders
-			$translateargs = array
-			(
-				"lookup" => $lookup,
-				"item" => $title_template,
-			);
-			$title = nxs_filter_translate_v2($translateargs);
-			
-			if ($_REQUEST["seodebug"] == "true")
-			{
-				echo "$title_template <br />";
-				echo "$title <br />";				
-				var_dump($lookup);
-				die();
-			}
-			
-			if ($title == "")
-			{
-				$title = "empty?";
-			}
-			
-			$excerpt = "";	// not practical to fill this
-			$content = "";  // lets use the front end instead
+			// derived the seo title
+			$title = $this->wpseo_title();	
+			$excerpt = "";	// intentionally left blank; not practical to fill this
+			$content = "";  // intentionally left blank; lets use the front end instead
 			$rightnow = current_time('mysql');
 			$post_date = $rightnow;
 			$post_date_gmt = $rightnow;
@@ -710,8 +729,9 @@ class nxs_g_modelmanager
 			$newpost->post_modified_gmt = $post_modified_gmt;
 			$newpost->post_parent = 0;
 			$newpost->post_type = $schema;
-			// todo; handle in better way
-			$newpost->nxs_content_license = json_encode(array("type" => "attribution", "author" => "benin"));
+			
+			// todo; perhaps handle content licensing
+			// $newpost->nxs_content_license = json_encode(array("type" => "attribution", "author" => "benin"));
 			
 			$wp_query->posts[0] = $newpost;
 			$wp_query->found_posts = 1;	 
@@ -719,7 +739,8 @@ class nxs_g_modelmanager
 				
 			$result[]= $newpost;
 			
-			if (true)	// $_REQUEST["pimpseo"] == "true")
+			// override the Yoast SEO 
+			if (true)
 			{
 				add_filter('wpseo_title', array($this, 'wpseo_title'), 99999);
 				add_filter('wpseo_metadesc', array($this, 'wpseo_metadesc'), 1999);
@@ -951,7 +972,7 @@ class nxs_g_modelmanager
 	
 	function getmodel_actual($modeluri)
 	{
-		$shoulddebug = false;
+		$shoulddebug = $_REQUEST["debugmodel"] == "true";
 		
 		if ($shoulddebug)
 		{	

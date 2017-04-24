@@ -71,6 +71,16 @@ function nxs_sc_string($attributes, $content = null, $name='')
 {
 	extract($attributes);
 	
+	$content = $content;
+	if ($content == "")
+	{
+		$content = $attributes["input"];
+	}
+	if ($content == "")
+	{
+		$content = $attributes["value"];
+	}
+	
 	nxs_ob_start();
 	
 	$input = $content;
@@ -188,10 +198,20 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 				$input = "true";
 			}
 		}
+		if ($op == "is_numeric")
+		{
+			if (is_numeric($input))
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+		}
 		else if ($op == "contains")
 		{
 			$needle = $attributes["containsneedle"];
-			
 			
 			if (nxs_stringcontains($input, $needle))
 			{
@@ -203,6 +223,10 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			}
 			
 			// echo "shortcode condition [$input][$needle] evaluates to [$input]";
+		}
+		else
+		{
+			
 		}
 	}
 	
