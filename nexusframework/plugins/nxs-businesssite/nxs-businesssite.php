@@ -327,6 +327,7 @@ class nxs_g_modelmanager
 		);
 		$uri = nxs_geturicurrentpage($uriargs);
 		$result = $this->derivemodelbyuri($uri);
+		
 		return $result;
 	}
 	
@@ -403,7 +404,63 @@ class nxs_g_modelmanager
 								break;
 							}
 						}
-						
+						else if ($operator == "startswithhumanmodelforschema")
+						{
+							$currentslugpiece = $slugpieces[$index];
+							// for example the following;
+							// "{{X}}-grab-before-" 
+							// "{{X}}-grab-before-*"
+							// would be a match for "p13-grab-before-hello world" (X would then be "p13")
+							$value = $conditionmeta["value"];
+							
+							$seperator = $value;
+							$seperator = str_replace("*", "", $seperator);
+							$seperator = str_replace("{{", "(", $seperator);
+							$seperator = str_replace("}}", ")", $seperator);
+							$seperator = str_replace("{", "(", $seperator);
+							$seperator = str_replace("}", ")", $seperator);
+							$seperator = preg_replace("/\([^)]+\)/","",$seperator);
+							// for example "{{X}}-grab-before-" then seperator would be "-grab-before-"
+							
+							$slugsubpieces = explode($seperator, $currentslugpiece);
+							// for example ("p13", "hello world")
+							
+							$humanid = $slugsubpieces[0];
+							if ($humanid != "")
+							{
+								$schematemp = $value;
+								$schematemp = str_replace("{{", "", $schematemp);
+								$schematemp = str_replace("{", "", $schematemp);
+								$schematemp = str_replace("}}", "|", $schematemp);
+								$schematemp = str_replace("}", "|", $schematemp);
+								$schematemppieces = explode("|", $schematemp);
+								$conditionschema = $schematemppieces[0];
+								
+								if ($_REQUEST["debugmodel"] == "true")
+								{
+									echo "value:" . $value . "<br />";
+									echo "schematemp:" . $schematemp . "<br />";
+									echo "conditionschema:" . $conditionschema . "<br />";
+									echo "value:" . $value . "<br />";
+								}
+								
+								// for example "{{X}}-grab-before-" then conditionschema be "X"
+
+								
+								// obsolete
+								$currententryderivedparameters["humanid"] = "{$humanid}";
+								$currententryderivedparameters["schema"] = "{$conditionschema}";
+								
+								// new
+								$currententryderivedparameters["fragments"][$conditionschema] = $humanid;
+								// ok, proceed
+							}
+							else
+							{
+								$currententryvalid = false;
+								break;
+							}
+						}
 						else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
 						{
 							$value = $conditionmeta["value"];
@@ -514,6 +571,13 @@ class nxs_g_modelmanager
 		else
 		{	
 			$result = $nxs_gl_modelbyuri[$uri];
+		}
+		
+		if ($_REQUEST["debugmodel"] == "true")
+		{
+			echo "derivemodelbyuri for $uri:<br />";
+			var_dump($result);
+			echo "<br />";
 		}
 		
 		return $result;

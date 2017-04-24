@@ -224,6 +224,23 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			
 			// echo "shortcode condition [$input][$needle] evaluates to [$input]";
 		}
+		else if ($op == "equals")
+		{
+			$equalsvalue = $attributes["equalsvalue"];
+			
+			if ($input == $equalsvalue)
+			{
+				$input = "true";
+			}
+			else
+			{
+				//echo "shortcode condition [$input][$equalsvalue] evaluates to [$input]";
+				error_log("shortcode condition [$input][$equalsvalue] evaluates to [$input]");
+		
+				$input = "false";
+			}
+
+		}
 		else
 		{
 			

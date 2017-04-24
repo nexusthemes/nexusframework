@@ -1257,6 +1257,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		die();
 	}
 	
+	
+	
 	// allow plugins to decorate (and also do something with) the mixedattributes 
 	// (an example of "doing something" would be for example to apply QA rules)
 	$filterargs = array
@@ -1547,6 +1549,11 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 
 	$databindindex = -1;
 	$databindindexafterfilter = -1;
+	
+	if (is_user_logged_in())
+	{
+		echo "<div>you are logged in :)</div>";
+	}
 	
 	foreach ($instances as $instance)
 	{

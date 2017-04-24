@@ -11535,7 +11535,10 @@ function nxs_filter_translatemodel_v2($metadata, $fields, $args)
 		echo "<br />";
 	}
 	
+	// 
+	
 	// phase 1; evaluate any referenced models in the modeluris property
+	// this includes variables from the url fragments (@@uri.field)
 	// sub:id@sub|subsub:{{sub.reference}}@subsub|subsubsub:{{subsub.reference}}
 	$modeluris = $metadata["modeluris"];
 	if ($debug)
