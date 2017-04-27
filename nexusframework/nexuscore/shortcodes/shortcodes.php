@@ -152,6 +152,18 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$input = $replacement;
 			}
 		}
+		else if ($op == "usequeryparameter")
+		{
+			// if thats true, replace it with whatever is set as the replacement in the shortcode
+			$replacement = $_REQUEST[$attributes["queryparameter"]];
+			$input = $replacement;
+		}
+		else if ($op == "urldecode")
+		{
+			// if thats true, replace it with whatever is set as the replacement in the shortcode
+			$replacement = urldecode($input);
+			$input = $replacement;
+		}
 	}
 	
 	echo $input;

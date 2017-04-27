@@ -752,6 +752,14 @@ function nxs_init()
   		{
   			$uploaddir = wp_upload_dir();
   			var_dump($uploaddir);
+  			
+  			if ($_REQUEST["v2"] == "true")
+  			{
+  				// update cache!
+  				$uploaddir = wp_upload_dir(null, true, true);
+  				var_dump($uploaddir);
+  			}
+  			
   			die();
   		}
   		else if ($_REQUEST["nxs"] == "checklicenseserver")

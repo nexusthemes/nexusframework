@@ -85,7 +85,7 @@ function nxs_widgets_formbox_getfileuploadstorageabsfolderurl($metadata)
 
 	$storagerelfolder = "nxsformsfiles";
 	$storageabsfolder = "{$upload_dir}/{$storagerelfolder}/{$formidentifier}/";
-
+	
 	return $storageabsfolder;
 }
 

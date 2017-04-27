@@ -84,7 +84,9 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 	
 	if (!isset($value) || $value == "")
 	{
-		$value = $metadata_initialtext;
+		// first apply any shortcodes if applicable
+		$pimped_initialtext = do_shortcode($metadata_initialtext);
+		$value = $pimped_initialtext;
 	}
 	
 	//
@@ -99,6 +101,12 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 		$colorzencssclass = "nxs-colorzen nxs-colorzen-" . $form_metadata["items_colorzen"];
 	}
 
+	$readonlyattribute = "";
+	if ($metadata_isreadonly != "")
+	{
+		$readonlyattribute = "readonly";
+	}
+
 	?>
 	
   <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
@@ -106,14 +114,15 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
   <?php
   if ($metadata_numofrows == "" || $metadata_numofrows == 0 || $metadata_numofrows == 1)
   {
+  	$pimpedvalue = stripslashes($value);
   	?>
-	  <input type="text" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" value="<?php echo $value;?>" placeholder="<?php echo $metadata_placeholder; ?>" />
+	  <input type="text" <?php echo $readonlyattribute; ?> id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" value="<?php echo $pimpedvalue;?>" placeholder="<?php echo $metadata_placeholder; ?>" />
 		<?php 
 	} 
 	else
 	{
 		?>
-	  <textarea style='min-height: 0px;' rows="<?php echo $metadata_numofrows; ?>" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" placeholder="<?php echo $metadata_placeholder; ?>"><?php echo $value;?></textarea>
+	  <textarea <?php echo $readonlyattribute; ?> style='min-height: 0px;' rows="<?php echo $metadata_numofrows; ?>" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" placeholder="<?php echo $metadata_placeholder; ?>"><?php echo $value;?></textarea>
 		<?php 
 	}
 	
@@ -246,6 +255,13 @@ function nxs_widgets_contactitemtext_home_getoptions($args)
 				"id" 				=> "isrequired",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Is required", "nxs_td"),
+			),
+			
+			array
+			( 
+				"id" 				=> "isreadonly",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Is readonly", "nxs_td"),
 			),
 
 			array

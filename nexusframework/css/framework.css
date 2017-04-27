@@ -187,10 +187,10 @@ input[type=submit]:hover										{ opacity: 0.8; }
 
 /* DEFAULT FORM STYLING */
 .nxs-form input[type=submit] {text-indent: 0px; box-shadow: none; height: auto; font-size: auto; }
-.nxs-form input[type=text],.nxs-form input[type=email],.nxs-form input[type=checkbox] { width: 100%; }
+.nxs-form input[type=text],.nxs-form input[type=email] { width: 100%; }
 .nxs-form label,
 .nxs-form input,
-.nxs-form textarea											{ line-height: 1.625em; font-size: 15px; }
+.nxs-form textarea, ul.nxs-formerrors											{ line-height: 1.625em; font-size: 15px; }
 .nxs-form input												{ height: 30px; line-height: 30px; text-indent: 10px; margin-bottom: 10px; }
 .nxs-form textarea											{ min-height: 200px; width: 98%; padding: 1%; }
 .nxs-form .invalidcontent									{ background-color: red; }
@@ -199,6 +199,11 @@ input[type=submit]:hover										{ opacity: 0.8; }
 	padding: .4em; 
 	background-color: #fff; 
 	box-shadow: 0px 0px 0px 1px gray inset;
+}
+.nxs-form input[readonly]
+{
+	background-color: #dddddd;
+	font-style: italic;
 }
 
 /* DEFAULT FILLER */

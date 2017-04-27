@@ -112,11 +112,11 @@ function nxs_js_formbox_send(postid, placeholderid)
 					if (response.validationerrors != null)
 					{
 						var msg = "";
-						msg += "<ul>";
+						msg += "<ul class='nxs-formerrors'>";
 						// loop over response.validationerrors
 						for (var i = 0; i < response.validationerrors.length; i++) 
 						{
-						   msg += "<li>" + response.validationerrors[i] + "</li>";
+						   msg += "<li><div>" + response.validationerrors[i] + "</div></li>";
 						}
 						msg += "</ul>";
 						
