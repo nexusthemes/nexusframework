@@ -1026,8 +1026,19 @@ class nxs_g_modelmanager
 		if ($shouldrefreshdbcache)
 		{
 			$result = $this->getmodel_actual($modeluri);
+			
 			// update cache
 			$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
+
+			if (isset($result["cachedurationinsecs"]))
+			{
+				$cacheduration = $result["cachedurationinsecs"];
+				if ($cacheduration == 0)
+				{
+					$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
+				}
+			}
+			
 			set_transient($transientkey, $result, $cacheduration);
 		}
 		
@@ -1081,6 +1092,15 @@ class nxs_g_modelmanager
 			error_log("getmodel_actual; not found");
 			return false;
 		}
+		
+		/*
+		if ($json["nxs_queued"] == "true")
+		{
+			// its throttled/queued
+			// for now we return false
+			return false;
+		}
+		*/
 		
 		$result = $json;
 		

@@ -116,6 +116,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = str_replace("_", "", $input);
 		}
+		else if ($op == "trim")
+		{
+			$character_mask = $attributes["trimchars"];
+			$input = trim($input, $character_mask);
+		}
 		else if ($op == "replacemodellookupmismatch")
 		{
 			// if the value does not have a model lookup value
@@ -162,6 +167,24 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			// if thats true, replace it with whatever is set as the replacement in the shortcode
 			$replacement = urldecode($input);
+			$input = $replacement;
+		}
+		else if ($op == "multiply")
+		{
+			// if thats true, replace it with whatever is set as the replacement in the shortcode
+			$replacement = $input * $attributes["multiplyfactor"];
+			$input = $replacement;
+		}
+		else if ($op == "intval")
+		{
+			// if thats true, replace it with whatever is set as the replacement in the shortcode
+			$replacement = intval($input);
+			$input = $replacement;
+		}
+		else if ($op == "negate")
+		{
+			// if thats true, replace it with whatever is set as the replacement in the shortcode
+			$replacement = 0-intval($input);
 			$input = $replacement;
 		}
 	}
@@ -247,7 +270,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			else
 			{
 				//echo "shortcode condition [$input][$equalsvalue] evaluates to [$input]";
-				error_log("shortcode condition [$input][$equalsvalue] evaluates to [$input]");
+				// error_log("shortcode condition [$input][$equalsvalue] evaluates to [$input]");
 		
 				$input = "false";
 			}
