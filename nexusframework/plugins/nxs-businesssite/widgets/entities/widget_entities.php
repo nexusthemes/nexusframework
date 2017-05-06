@@ -257,20 +257,34 @@ function nxs_widgets_entities_home_getoptions($args)
 				"type" 				=> "wrapperend"
 			),
 			
-			// ITEMS
-		
 			array(
           "id" 				=> "wrapper_items_begin",
           "type" 				=> "wrapperbegin",
-          "label" 			=> nxs_l18n__("Items", "nxs_td"),
+          "label" 			=> nxs_l18n__("Datasources", "nxs_td"),
       ),
-     array
+      
+			array
       (
 				"id" 					=> "modeluris",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
 				"placeholder" => "for example m1:foo@bar,m2:foo{{humanid}}@schema",
 			),
+			
+			
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),
+			
+			// ITEMS
+		
+			array(
+          "id" 				=> "wrapper_items_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Iterator", "nxs_td"),
+      ),
+
       array
       (
 				"id" 					=> "modeluri",
@@ -298,6 +312,47 @@ function nxs_widgets_entities_home_getoptions($args)
           "type" 				=> "wrapperend",
       ),
 			
+			array(
+          "id" 				=> "wrapper_title_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Filters", "nxs_td"),
+      ),
+      
+      array
+      (
+				"id" 					=> "filter_stage1_modeluris",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Model URIs (stage 1)", "nxs_td"),
+				"placeholder" => "for example m1:foo@bar,m2:foo{{humanid}}@schema",
+			),
+			
+			array
+      (
+				"id" 					=> "filter_stage1_items_where",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Items where (stage 1)", "nxs_td"),
+			),
+			
+			array
+      (
+				"id" 					=> "filter_stage2_modeluris",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Model URIs (stage 2)", "nxs_td"),
+				"placeholder" => "for example m1:foo@bar,m2:foo{{humanid}}@schema",
+			),
+			
+			array
+      (
+				"id" 					=> "filter_stage2_items_where",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Items where (stage 2)", "nxs_td"),
+			),
+			array
+			(
+          "id" 				=> "wrapper_items_end",
+          "type" 				=> "wrapperend",
+      ),
+			
 			// VISUALIZATION
      	
      	array(
@@ -318,6 +373,8 @@ function nxs_widgets_entities_home_getoptions($args)
 					"2" => "2",
 					"3" => "3",
 					"4" => "4",
+					"5" => "5",
+					"6" => "6",
 				),
 				"unistylablefield" => true,
 			),
@@ -334,6 +391,8 @@ function nxs_widgets_entities_home_getoptions($args)
 					"2" => "2",
 					"3" => "3",
 					"4" => "4",
+					"5" => "5",
+					"6" => "6",
 				),
 				"unistylablefield" => true,
 			),
@@ -344,12 +403,7 @@ function nxs_widgets_entities_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Items order", "nxs_td"),
 			),
-			array
-      (
-				"id" 					=> "items_where",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Items where", "nxs_td"),
-			),
+			
 			
       array(
           "id" 				=> "wrapper_title_end",
@@ -1573,6 +1627,16 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		$post_stars = $instance["content"]["post_stars"];
 		$post_role = $instance["content"]["post_role"];
 		
+		
+		// construct the @@iterator lookup
+		$iteratorlookup = array();
+		$magicfields = array("title", "text", "destination_url", "image_src", "modeluris");
+		foreach ($instance["content"] as $key => $val)
+		{
+			$iteratorlookup["@@iterator.{$key}"] = $val;
+		}
+		
+		
 		// obsolete?
 		// $post_quote = $instance["content"]["post_quote"];
 		
@@ -1650,42 +1714,97 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 				}
 			}
 			
-			// apply @@iterator filter to the fields
-			$lookup = array();
-			$magicfields = array("title", "text", "destination_url", "image_src", "modeluris");
-			foreach ($instance["content"] as $key => $val)
-			{
-				$lookup["@@iterator.{$key}"] = $val;
-			}
-			
 			$translateargs = array
 			(
-				"lookup" => $lookup,
+				"lookup" => $iteratorlookup,
 				"items" => $childargs,
 				"fields" => $magicfields,
 			);
 			$childargs = nxs_filter_translate_v2($translateargs);
 			
-			// allow filtering the items
+			// apply filters on rows; the "original" filter, and the stage1 and stage2 variations
 			if (true)
 			{
-				if ($_REQUEST["disablefilters"] == "true")
+				// todo: make a one function and invoke that one two times, instead of having now 2 idential parts 
+				// below for each stage of the filter
+				
+				// filter filter_stage1_items_where
+				if ($filter_stage1_items_where != "")
 				{
-					// do nothing
-				}
-				else
-				if ($items_where != "")
-				{
-					$filters = $items_where;
-					$filters = str_replace("&&", ";", $filters);
+					//error_log("entities widget; filter_stage1_items_where; $filter_stage1_items_where");
+					
+					$filters = $filter_stage1_items_where;
+					$filters = str_replace(";", "&&", $filters);
+					
+					// ------
+					
+					// translate the iterator properties
+					if (true)
+					{
+						$modeluris_to_apply = nxs_filter_translate_v2(array("lookup" => $iteratorlookup, "item" => $filter_stage1_modeluris));
+					}
+					
+					// ------
+					
+					//error_log("entities widget; filters; $filters");
 				
 					// translate model fields used in the filters
 					$translateargs = array("shouldapplyshortcodes" => false);
-					$filters = nxs_filter_translatemodel_single($filters, $childargs["modeluris"], $translateargs);
+					$filters = nxs_filter_translatemodel_single($filters, $modeluris_to_apply, $translateargs);
 					
 					$filterconditionvalue = true;
 					
-					$filterpieces = explode(";", $filters);
+					$filterpieces = explode("&&", $filters);
+					foreach ($filterpieces as $filterpiece)
+					{
+						$filterpiece = trim($filterpiece);
+						
+						// apply shortcodes to the filterpiece
+						// for example [nxsbool ops="!isempty" value="monkey"]
+						$evaluation = do_shortcode($filterpiece);
+						if ($evaluation != "true")
+						{
+							$filterconditionvalue = false;
+							// it failed
+							continue;
+						}
+						else
+						{
+							// it succeeded, continu to next ops
+						}
+					}
+					
+					if ($filterconditionvalue == false)
+					{
+						// proceed to the next item
+						continue;
+					}
+				}
+				// filter filter_stage2_items_where
+				if ($filter_stage2_items_where != "")
+				{
+					//error_log("entities widget; filter_stage2_items_where; $filter_stage1_items_where");
+					
+					$filters = $filter_stage2_items_where;
+					$filters = str_replace(";", "&&", $filters);
+					
+					// ------
+					// translate the iterator properties
+					if (true)
+					{
+						$modeluris_to_apply = nxs_filter_translate_v2(array("lookup" => $iteratorlookup, "item" => $filter_stage2_modeluris));
+					}
+					// ------
+					
+					//error_log("entities widget; filters; $filters");
+				
+					// translate model fields used in the filters
+					$translateargs = array("shouldapplyshortcodes" => false);
+					$filters = nxs_filter_translatemodel_single($filters, $modeluris_to_apply, $translateargs);
+					
+					$filterconditionvalue = true;
+					
+					$filterpieces = explode("&&", $filters);
 					foreach ($filterpieces as $filterpiece)
 					{
 						$filterpiece = trim($filterpiece);
@@ -1927,7 +2046,11 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			$styleatt = "style='" . $values . "'";
 		}
 		
-		$html .= "<div class='nxsgrid-item nxsgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		
+		
+		//$html .= "<div class='nxsgrid-item nxsgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		$html .= "<div class='nxsgrid-item nxssolidgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		
 		$html .= $subhtml;
 		$html .= "</div>";
 	}

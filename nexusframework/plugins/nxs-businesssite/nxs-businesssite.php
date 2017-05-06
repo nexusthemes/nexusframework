@@ -1013,10 +1013,32 @@ class nxs_g_modelmanager
 		$transientkey = md5("modeldb_{$modeluri}");
 		$result = get_transient($transientkey);
 		$shouldrefreshdbcache = false;
-		if ($result == "" || $result == false || $_REQUEST["transients"] == "refresh")
+		
+		if ($shouldrefreshdbcache == false && $result == "")
 		{
 			$shouldrefreshdbcache = true;
 		}
+		if ($shouldrefreshdbcache == false && $result == false)
+		{
+			$shouldrefreshdbcache = true;
+		}
+		if ($shouldrefreshdbcache == false && $_REQUEST["transients"] == "refresh")
+		{
+			$shouldrefreshdbcache = true;
+		}
+		if ($shouldrefreshdbcache == false && $_REQUEST["transients"] == "refresh_modeluricontains")
+		{
+			$needle = $_REQUEST["modeluricontains"];
+			if ($needle != "")
+			{
+				$ignorecasing = true;
+				if (nxs_stringcontains_v2($modeluri, $needle, $ignorecasing))
+				{
+					$shouldrefreshdbcache = true;
+				}
+			}
+		}
+		
 		// todo; use a filter instead?
 		if ($_REQUEST["nxs_qa_endtoend"] == "true")
 		{

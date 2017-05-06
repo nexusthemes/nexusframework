@@ -11555,6 +11555,9 @@ function nxs_filter_translatemodel_v2($metadata, $fields, $args)
 		echo "<br />";
 	}
 	
+	// iterator model lookups should already have happened?
+	
+	
 	// phase 2; translate the fields using the values from the (extended) model(s)
 	$lookup = $nxs_g_modelmanager->getlookups($modeluris);
 	if ($debug)

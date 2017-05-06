@@ -187,6 +187,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			$replacement = 0-intval($input);
 			$input = $replacement;
 		}
+		else if ($op == "applylookups")
+		{
+			$metadata = array("value" => $input);
+			$multiresponse = nxs_filter_translatelookup($metadata, array("value"));
+			$input = $multiresponse["value"];
+		}
 	}
 	
 	echo $input;
@@ -224,6 +230,8 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		$op = trim($op);
 		if ($op == "isnotempty" || $op == "!isempty")
 		{
+			$orig = $input;
+			
 			if (trim($input) == "")
 			{
 				$input = "false";
@@ -232,6 +240,12 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			{
 				$input = "true";
 			}
+			/*			
+			if ($orig != "")
+			{
+				error_log("shortcode condition $op [$orig] becomes [$input]");			
+			}
+			*/
 		}
 		if ($op == "is_numeric")
 		{
@@ -275,6 +289,20 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 				$input = "false";
 			}
 
+		}
+		else if ($op == "!equals" || $op == "notequals")
+		{
+			$equalsvalue = $attributes["equalsvalue"];
+			$orig = $input;
+			if ($input == $equalsvalue)
+			{
+				$input = "false";
+			}
+			else
+			{
+				$input = "true";
+			}
+			// error_log("shortcode condition [$op][$orig][$equalsvalue] evaluates to [$input]");
 		}
 		else
 		{
