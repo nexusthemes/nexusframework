@@ -321,7 +321,7 @@ function nxs_shouldusecache_stage1()
 	}
 	
 	return $result;	
-}
+} 
 
 function nxs_cache_getmd5hash()
 {
@@ -382,6 +382,12 @@ function nxs_ensurenocacheoutput($buffer)
 	}
 	// return buffer as-is
 	return $buffer;
+}
+
+function nxs_disablecacheforthisrequest()
+{
+	global $nxs_gl_cache_pagecache;
+	$nxs_gl_cache_pagecache = false;
 }
 
 function nxs_storecacheoutput($buffer)

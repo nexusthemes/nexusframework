@@ -475,7 +475,11 @@ function nxs_widgets_entities_home_getoptions($args)
 			array
       (
 				"id" 					=> "text_text_template",
-				"type" 				=> "tinymce", // input",
+				// "type" 				=> "tinymce",
+				
+				"type" 				=> "textarea",
+				"rows"				=> "15",
+				
 				"label" 			=> nxs_l18n__("Text template", "nxs_td"),
 				// "readonly" 		=> "true",
 			),
@@ -1604,10 +1608,12 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	$databindindex = -1;
 	$databindindexafterfilter = -1;
 	
+	/*
 	if (is_user_logged_in())
 	{
 		echo "<div>you are logged in :)</div>";
 	}
+	*/
 	
 	foreach ($instances as $instance)
 	{
@@ -2057,12 +2063,12 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 	
 	$html .= "</div>";
 	
-	if ($count == 0)
+	if ($databindindexafterfilter == -1)
 	{
 		if (true)
 		{
 			//
-			if (true) // is_user_logged_in())
+			if (is_user_logged_in())
 			{
 				global $nxs_g_modelmanager;
 				if (true) // $nxs_g_modelmanager->ismaster() === true)

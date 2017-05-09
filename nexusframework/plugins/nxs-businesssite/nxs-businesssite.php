@@ -145,11 +145,13 @@ class nxs_g_modelmanager
 		}
 		*/
 		
+		/*
 		if ($_REQUEST["dumprules"] == "true")
 		{
 			echo json_encode($result);
 			die();
 		}
+		*/
 		
 		return $result;
 	}
@@ -461,6 +463,81 @@ class nxs_g_modelmanager
 								break;
 							}
 						}
+						else if ($operator == "endswithhumanmodelforschema")
+						{
+							$currentslugpiece = $slugpieces[$index];
+							// for example the following;
+							// "-grab-after-{{X}}" 
+							// "*-grab-after-{{X}}"
+							// would be a match for "hello-world-grab-after-{{X}}" (X would then be "p13")
+							$value = $conditionmeta["value"];	
+							
+							$seperator = $value;
+							$seperator = str_replace("*", "", $seperator);
+							$seperator = str_replace("{{", "(", $seperator);
+							$seperator = str_replace("}}", ")", $seperator);
+							$seperator = str_replace("{", "(", $seperator);
+							$seperator = str_replace("}", ")", $seperator);
+							// for example "-grab-after-(X)"
+							$seperator = preg_replace("/\([^)]+\)/","",$seperator);
+							// for example "-grab-after-"
+							
+							$slugsubpieces = explode($seperator, $currentslugpiece);
+							// for example ("hello-world", "p13")
+							
+							$humanid = end($slugsubpieces);
+							if ($humanid != "")
+							{
+								$schematemp = $value;																// -{{X}}
+								$schematemp = str_replace("{{", "|", $schematemp);	// -|X}}
+								$schematemp = str_replace("{", "|", $schematemp);		// -|X}}
+								$schematemp = str_replace("}}", "", $schematemp);		// -|X
+								$schematemp = str_replace("}", "", $schematemp);		// -|X
+								$schematemppieces = explode("|", $schematemp);			// "-", "X"
+								$conditionschema = $schematemppieces[1];
+								
+								// if the conditionschema has a "@"
+								// we have to use the first part as the variable
+								// and the 2nd part indicated the true modelschema
+								// we should in that case only accept the URL
+								// if the humanid exists in that schema
+								if (nxs_stringcontains($conditionschema, "@"))
+								{
+									$conditionschemapieces = explode("@", $conditionschema);
+									$conditionschema = $conditionschemapieces[0];
+									$modelschema = $conditionschemapieces[1];
+									$toverify = "{$humanid}@{$modelschema}";
+									
+									// check if such model exists
+									$verified = $this->getmodel($toverify);
+									if ($verified === false)
+									{
+										error_log("model $toverify doesn't exist, it should result in a 404!");	
+										$currententryvalid = false;
+										break;
+									}
+								}
+								
+								if ($_REQUEST["debugmodel2"] == "true")
+								{
+									echo "value:" . $value . "<br />";
+									echo "schematemp:" . $schematemp . "<br />";
+									echo "humanid:" . $humanid . "<br />";
+									echo "conditionschema:" . $conditionschema . "<br />";
+									
+								}
+								
+								// for example "grab-after-{X}" then conditionschema be "X"
+
+								$currententryderivedparameters["fragments"][$conditionschema] = $humanid;
+								// ok, proceed
+							}
+							else
+							{
+								$currententryvalid = false;
+								break;
+							}
+						}
 						else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
 						{
 							$value = $conditionmeta["value"];
@@ -715,11 +792,13 @@ class nxs_g_modelmanager
 		$parameters = $derivedcontext["parameters"];
 		$fragments = $parameters["fragments"];
 		
+		/*
 		if ($_REQUEST["fragments"] == "true")
 		{
 			var_dump($derivedcontext);
 			die();
 		}
+		*/
 		
 		$isvirtual = false;
 		
@@ -823,9 +902,11 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	// convert the modeluri to a runtime modeluri
+	// obsolete; convert the modeluri to a runtime modeluri
 	function getruntimemodeluri($modeluri = "")
 	{
+		// old implementation; no longer used; the new implementation uses named fractions
+		/*
 		if ($modeluri == "")
 		{
 			// use the current URI to determine the model
@@ -843,6 +924,7 @@ class nxs_g_modelmanager
 				//die();
 			}
 		}
+		*/
 		
 		return $modeluri;
 	}
@@ -908,11 +990,16 @@ class nxs_g_modelmanager
 				$modeluri = $subpieces[1];
 			}
 			
-			// format = prefix:foo@bar
-			
-			$lookup = $this->getlookup($modeluri, "{$prefix}");
-
-			$result = array_merge($result, $lookup);
+			if ($modeluri == "@")
+			{
+				//
+			}
+			else
+			{
+				// format = prefix:foo@bar
+				$lookup = $this->getlookup($modeluri, "{$prefix}");
+				$result = array_merge($result, $lookup);
+			}
 		}
 		
 		return $result;
@@ -956,7 +1043,14 @@ class nxs_g_modelmanager
 		}
 		
 		global $nxs_g_model;
+		
+		$shouldfetch = false;
 		if (!isset($nxs_g_model[$cachekey]))
+		{
+			$shouldfetch = true;
+		}
+		
+		if ($shouldfetch)
 		{
 			if ($modeluri != "")
 			{
@@ -967,6 +1061,7 @@ class nxs_g_modelmanager
 				// error_log("businessite; no model to be retrieved");
 			}
 		}
+		
 		$result = $nxs_g_model[$cachekey];
 		
 		return $result;
@@ -1009,7 +1104,6 @@ class nxs_g_modelmanager
 	
 	function getmodel_dbcache($modeluri)
 	{
-		//
 		$transientkey = md5("modeldb_{$modeluri}");
 		$result = get_transient($transientkey);
 		$shouldrefreshdbcache = false;
@@ -1035,6 +1129,11 @@ class nxs_g_modelmanager
 				if (nxs_stringcontains_v2($modeluri, $needle, $ignorecasing))
 				{
 					$shouldrefreshdbcache = true;
+					error_log("$modeluri transient will be refetched");
+				}
+				else
+				{
+					// error_log("$modeluri transient will NOT be refetched (needle $needle not found)");
 				}
 			}
 		}
@@ -1081,6 +1180,10 @@ class nxs_g_modelmanager
 		{
 			$isvalid = false;
 		}
+		else if (!nxs_stringcontains($modeluri, "@"))
+		{
+			$isvalid = false;
+		}
 		else if (nxs_stringstartswith($modeluri, "{{"))
 		{
 			$isvalid = false;
@@ -1089,6 +1192,16 @@ class nxs_g_modelmanager
 		{
 			$isvalid = false;
 		}
+	
+		/*
+		if (!nxs_stringcontains_v2($modeluri, "game", true))
+		{
+			if ($modeluri != "")
+			{
+				error_log("getmodel_actual for $modeluri isvalid? " . json_encode($isvalid));
+			}
+		}
+		*/
 		
 		if (!$isvalid)
 		{
@@ -1115,18 +1228,72 @@ class nxs_g_modelmanager
 			return false;
 		}
 		
-		/*
 		if ($json["nxs_queued"] == "true")
 		{
-			// its throttled/queued
-			// for now we return false
-			return false;
+			// overrule the cache behaviour; we disable it,
+			// since some items were queued; don't cache pages that render information based upon 
+			// items that are queued
+			nxs_disablecacheforthisrequest();
+			
+			// error_log("instructing the page to not store cache because of queued content");
 		}
-		*/
 		
 		$result = $json;
 		
 		return $result;
+	}
+	
+	function cachebulkmodels($singularschema)
+	{
+		if (!is_user_logged_in())
+		{
+			echo "only available for administrators";
+			die();
+		}
+		
+		error_log("cachebulkmodels for $singularschema");
+		
+		// step 1; load the bulk model information
+		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/bulkmodels/{$singularschema}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
+		$content = file_get_contents($url);
+		$json = json_decode($content, true);
+		
+		$itemcount = 0;
+		// step 2; loop over each item in the bulk model
+		foreach ($json["items"] as $modeluri => $item)
+		{
+			$itemcount++;
+			
+			// step 3; combine /blend/ the content with the schema
+			$schema = $item["schema"];
+			$item["meta"]["schema"] = $json["schemas"][$schema];
+			
+			// step 3; store the item in the cache
+			$transientkey = md5("modeldb_{$modeluri}");
+
+			//$oldcache = get_transient($transientkey);
+			//echo "item; $modeluri <br />";
+			//echo "---------<br />cached item;<br />";
+			//echo nxs_prettyprint_array($oldcache);
+			//echo "---------<br />new item;<br />";
+			//echo nxs_prettyprint_array($item);
+						
+			// update cache
+			$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
+
+			if (isset($item["cachedurationinsecs"]))
+			{
+				$cacheduration = $item["cachedurationinsecs"];
+				if ($cacheduration == 0)
+				{
+					$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
+				}
+			}
+			
+			set_transient($transientkey, $item, $cacheduration);
+		}
+		
+		error_log("cachebulkmodels; finished updating $itemcount items for $singularschema");
 	}
 	
 	function getwidgets($result, $widgetargs)
@@ -1194,11 +1361,13 @@ class nxs_g_modelmanager
 			$nxs_gl_runtimeseoproperties = $mixedattributes;
 		}
 		
+		/*
 		if ($_REQUEST["wop"] == "v6")
 		{
 			var_dump($nxs_gl_runtimeseoproperties);
 			die();
 		}
+		*/
 		
 		return $nxs_gl_runtimeseoproperties;
 	}
@@ -1280,6 +1449,17 @@ class nxs_g_modelmanager
 
 		// page decorators
 		nxs_lazyload_plugin_widget(__FILE__, "taxpageslider");
+		
+		if ($_REQUEST["bulkmodels"] == "true")
+		{
+			$singularschema = $_REQUEST["singularschema"];
+			if ($singularschema == "") { echo "singularschema not specified?"; die(); }
+
+			$this->cachebulkmodels($singularschema);
+			
+			echo "Bulk models updated :)";
+			die();
+		}
 	}
 	
 	// kudos to https://teleogistic.net/2013/02/11/dynamically-add-items-to-a-wp_nav_menu-list/
