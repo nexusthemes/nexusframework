@@ -2433,6 +2433,7 @@ function nxs_create_post_types_and_taxonomies()
 		// url in the permalinks (i.e. which should behave like pages/posts)
 		$result = array();
 		
+		/*
 		global $nxs_g_modelmanager;
 		$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema();
 		
@@ -2451,6 +2452,7 @@ function nxs_create_post_types_and_taxonomies()
 			 	}
 		 	}
 		}
+		*/
 		
 		return $result;
 	}

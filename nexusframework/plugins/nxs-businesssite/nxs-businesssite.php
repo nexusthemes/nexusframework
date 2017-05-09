@@ -145,13 +145,11 @@ class nxs_g_modelmanager
 		}
 		*/
 		
-		/*
 		if ($_REQUEST["dumprules"] == "true")
 		{
 			echo json_encode($result);
 			die();
 		}
-		*/
 		
 		return $result;
 	}
@@ -447,13 +445,6 @@ class nxs_g_modelmanager
 								}
 								
 								// for example "{{X}}-grab-before-" then conditionschema be "X"
-
-								
-								// obsolete
-								$currententryderivedparameters["humanid"] = "{$humanid}";
-								$currententryderivedparameters["schema"] = "{$conditionschema}";
-								
-								// new
 								$currententryderivedparameters["fragments"][$conditionschema] = $humanid;
 								// ok, proceed
 							}
@@ -564,10 +555,6 @@ class nxs_g_modelmanager
 								$humanid = substr($slug, $start, $length);
 								if ($humanid != "")
 								{
-									// todo: implement support for "N" humanids instead of just one,
-									// now we can only have one parameter based upon the URL
-									$currententryderivedparameters["humanid"] = "{$humanid}";
-									$currententryderivedparameters["schema"] = "{$conditionschema}";
 									$currententryderivedparameters["fragments"][$conditionschema] = $humanid;
 									// ok, proceed
 								}
@@ -598,6 +585,9 @@ class nxs_g_modelmanager
 						}
 						
 					}
+					
+					
+					
 					else
 					{
 						echo "unsupported conditiontype?";
@@ -792,13 +782,11 @@ class nxs_g_modelmanager
 		$parameters = $derivedcontext["parameters"];
 		$fragments = $parameters["fragments"];
 		
-		/*
 		if ($_REQUEST["fragments"] == "true")
 		{
 			var_dump($derivedcontext);
 			die();
 		}
-		*/
 		
 		$isvirtual = false;
 		
@@ -902,36 +890,8 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	// obsolete; convert the modeluri to a runtime modeluri
-	function getruntimemodeluri($modeluri = "")
-	{
-		// old implementation; no longer used; the new implementation uses named fractions
-		/*
-		if ($modeluri == "")
-		{
-			// use the current URI to determine the model
-			if (true)
-			{
-				$derivedcontext = $this->derivemodelforcurrenturl();
-				$parameters = $derivedcontext["parameters"];
-				if ($parameters != "")
-				{
-					$humanid = $parameters["humanid"];
-					$schema = $parameters["schema"];
-					$modeluri = "{$humanid}@{$schema}";
-				}
-				//var_dump($derivedcontext);
-				//die();
-			}
-		}
-		*/
-		
-		return $modeluri;
-	}
-	
 	function gethumanid($modeluri = "")
 	{
-		$modeluri = $this->getruntimemodeluri($modeluri);
 		$pieces = explode("@", $modeluri);
 		$result = $pieces[0];
 		return $result;
@@ -990,13 +950,9 @@ class nxs_g_modelmanager
 				$modeluri = $subpieces[1];
 			}
 			
-			if ($modeluri == "@")
+			// format = prefix:foo@bar
+			if ($modeluri != "")
 			{
-				//
-			}
-			else
-			{
-				// format = prefix:foo@bar
 				$lookup = $this->getlookup($modeluri, "{$prefix}");
 				$result = array_merge($result, $lookup);
 			}
@@ -1009,7 +965,6 @@ class nxs_g_modelmanager
 	{
 		// error_log("invoked; getlookup; $modeluri ($prefix)");
 		
-		$modeluri = $this->getruntimemodeluri($modeluri);
 		$schema = $this->getcontentschema($modeluri);
 		$contentmodel = $this->getcontentmodel($modeluri);
 		
@@ -1030,11 +985,55 @@ class nxs_g_modelmanager
 		return $lookup;
 	}
 	
+	function isvalidmodeluri($modeluri = "")
+	{
+		$isvalid = true;
+		if (nxs_stringstartswith($modeluri, "@"))
+		{
+			$isvalid = false;
+		}
+		else if (!nxs_stringcontains($modeluri, "@"))
+		{
+			$isvalid = false;
+		}
+		else if (nxs_stringstartswith($modeluri, "{{"))
+		{
+			$isvalid = false;
+		}
+		else if (nxs_stringstartswith($modeluri, "}}"))
+		{
+			$isvalid = false;
+		}
+
+		//$st = json_encode(nxs_getstacktrace());
+		if (!$isvalid)
+		{
+			do_action("nxs_a_modelnotfound", "$modeluri (invalid)");
+		
+			$shoulddebug = ($_REQUEST["logrr"] == "true");
+			if ($shoulddebug)
+			{
+				$st = json_encode(debug_backtrace());
+				error_log("getmodel_actual; invalid; $modeluri; $st");
+				die();
+			}
+		}
+
+		return $isvalid;
+	}
+	
 	function getmodel($modeluri = "")
 	{
+		$isvalid = $this->isvalidmodeluri($modeluri);
+		if (!$isvalid)
+		{
+			return false;
+		}
+		
+		// error_log("getmodel for $modeluri");
+		
 		// convert provided modeluri to the runtime one
 		// (empty modeluri will mean modeluri will be derived from the url being accessed)
-		$modeluri = $this->getruntimemodeluri($modeluri);
 		
 		$cachekey = $modeluri;
 		if ($cachekey == "")
@@ -1043,14 +1042,7 @@ class nxs_g_modelmanager
 		}
 		
 		global $nxs_g_model;
-		
-		$shouldfetch = false;
 		if (!isset($nxs_g_model[$cachekey]))
-		{
-			$shouldfetch = true;
-		}
-		
-		if ($shouldfetch)
 		{
 			if ($modeluri != "")
 			{
@@ -1061,7 +1053,6 @@ class nxs_g_modelmanager
 				// error_log("businessite; no model to be retrieved");
 			}
 		}
-		
 		$result = $nxs_g_model[$cachekey];
 		
 		return $result;
@@ -1104,6 +1095,7 @@ class nxs_g_modelmanager
 	
 	function getmodel_dbcache($modeluri)
 	{
+		//
 		$transientkey = md5("modeldb_{$modeluri}");
 		$result = get_transient($transientkey);
 		$shouldrefreshdbcache = false;
@@ -1129,11 +1121,6 @@ class nxs_g_modelmanager
 				if (nxs_stringcontains_v2($modeluri, $needle, $ignorecasing))
 				{
 					$shouldrefreshdbcache = true;
-					error_log("$modeluri transient will be refetched");
-				}
-				else
-				{
-					// error_log("$modeluri transient will NOT be refetched (needle $needle not found)");
 				}
 			}
 		}
@@ -1168,49 +1155,17 @@ class nxs_g_modelmanager
 	
 	function getmodel_actual($modeluri)
 	{
-		$shoulddebug = $_REQUEST["debugmodel"] == "true";
+		error_log("getmodel_actual; attempt; $modeluri");
 		
+		$shoulddebug = $_REQUEST["debugmodel"] == "true";
 		if ($shoulddebug)
 		{	
 			error_log("getmodel_actual; attempt; $modeluri");
 		}
 		
-		$isvalid = true;
-		if (nxs_stringstartswith($modeluri, "@"))
-		{
-			$isvalid = false;
-		}
-		else if (!nxs_stringcontains($modeluri, "@"))
-		{
-			$isvalid = false;
-		}
-		else if (nxs_stringstartswith($modeluri, "{{"))
-		{
-			$isvalid = false;
-		}
-		else if (nxs_stringstartswith($modeluri, "}}"))
-		{
-			$isvalid = false;
-		}
-	
-		/*
-		if (!nxs_stringcontains_v2($modeluri, "game", true))
-		{
-			if ($modeluri != "")
-			{
-				error_log("getmodel_actual for $modeluri isvalid? " . json_encode($isvalid));
-			}
-		}
-		*/
-		
+		$isvalid = $this->isvalidmodeluri($modeluri);
 		if (!$isvalid)
 		{
-			//$st = json_encode(nxs_getstacktrace());
-			do_action("nxs_a_modelnotfound", "$modeluri (invalid)");
-			if ($shoulddebug)
-			{	
-				error_log("getmodel_actual; invalid; $modeluri");
-			}
 			return false;
 		}
 		
@@ -1236,6 +1191,9 @@ class nxs_g_modelmanager
 			nxs_disablecacheforthisrequest();
 			
 			// error_log("instructing the page to not store cache because of queued content");
+			// its throttled/queued
+			// for now we return false
+			return false;
 		}
 		
 		$result = $json;
@@ -1361,13 +1319,11 @@ class nxs_g_modelmanager
 			$nxs_gl_runtimeseoproperties = $mixedattributes;
 		}
 		
-		/*
 		if ($_REQUEST["wop"] == "v6")
 		{
 			var_dump($nxs_gl_runtimeseoproperties);
 			die();
 		}
-		*/
 		
 		return $nxs_gl_runtimeseoproperties;
 	}
@@ -1450,6 +1406,7 @@ class nxs_g_modelmanager
 		// page decorators
 		nxs_lazyload_plugin_widget(__FILE__, "taxpageslider");
 		
+		// handle bulk model prefetching
 		if ($_REQUEST["bulkmodels"] == "true")
 		{
 			$singularschema = $_REQUEST["singularschema"];
@@ -1584,6 +1541,8 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	/*
+	obsolete; this function can be used to automatically apply content attribution in future scenarios
 	function the_content($content) 
 	{
   	global $post;
@@ -1617,6 +1576,7 @@ class nxs_g_modelmanager
 	  }
 	  return $content;
 	}
+	*/
 	
 	function __construct()
   {
@@ -1626,7 +1586,7 @@ class nxs_g_modelmanager
 		
 		add_filter('wp_nav_menu_objects', array($this, 'wp_nav_menu_objects'), 10, 3);
 		
-		add_filter( 'the_content', array($this, 'the_content'), 10, 1);
+		//add_filter( 'the_content', array($this, 'the_content'), 10, 1);
 		
 		add_filter("the_posts", array($this, "businesssite_the_posts"), 1000, 2);
   }

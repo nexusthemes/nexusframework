@@ -520,22 +520,8 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$modeluris = $mixedattributes["modeluris"];
 		$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris); 
 		
-		// phase 2; translate the magic fields using the (extended) models
+		// phase 2; translate the magic fields using the lookup tables of all referenced models
 		$lookup = $nxs_g_modelmanager->getlookups($modeluris);
-		
-		if ($_REQUEST["magic"] == "debug2")
-		{
-			echo "modeluris: $modeluris <br />";
-			var_dump($modeluris);
-			echo "<br />";
-			echo "lookup: <br />";
-			var_dump($lookup);
-			echo "<br />";
-			die();
-		}
-		
-		
-		
 		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src");
 		$translateargs = array
 		(
@@ -544,6 +530,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			"fields" => $magicfields,
 		);
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
+		
 		
 		// phase 3; apply shortcodes to the magic fields
 		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src");
