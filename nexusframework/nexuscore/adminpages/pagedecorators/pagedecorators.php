@@ -283,7 +283,7 @@
 			    				$posttitle = "(leeg)";
 			    			}
 			    			
-			    			$pagemeta = nxs_get_postmeta($postid);
+			    			$pagemeta = nxs_get_corepostmeta($postid);
 			    			
 			    			$postdatetime = $currentpost->post_date;
 		    				$postdatetimepieces = explode(" ", $postdatetime);

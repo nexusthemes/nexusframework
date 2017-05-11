@@ -110,9 +110,6 @@ function nxs_widgets_carouselitem_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 		
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	$image_imageid = $mixedattributes['image_imageid'];
 	$title = $mixedattributes['title'];
 	$text = $mixedattributes['text'];

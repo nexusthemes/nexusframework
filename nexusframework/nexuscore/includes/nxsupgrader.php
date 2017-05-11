@@ -5,7 +5,7 @@ function nxs_upgrade_post($override, $postid)
 	//
 	// update page properties
 	//
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	
 	var_dump($pagemeta);
 	

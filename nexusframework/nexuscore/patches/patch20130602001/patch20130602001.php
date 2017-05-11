@@ -16,7 +16,7 @@ function nxs_apply_patch20130602001()
   {
     $postid = $currentpost->ID;
     echo "[" . $postid . "]";
-		$pagemeta = nxs_get_postmeta($postid);
+		$pagemeta = nxs_get_corepostmeta($postid);
 
 		$pmd = array();
 		$pmd["header_postid_globalid"] = nxs_get_globalid($pagemeta["header_postid"], true);

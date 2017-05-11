@@ -23,8 +23,6 @@ function nxs_widgets_definitionlistitemtext_renderindefinitionlistbox($args)
 {
 	extract($args);
 	
-	// Localize atts
-	$metadata = nxs_localization_localize($metadata);
 	$metadata = nxs_filter_translatelookup($metadata, array("title", "text"));
 
 	extract($metadata, EXTR_PREFIX_ALL, "metadata");
@@ -92,9 +90,6 @@ function nxs_widgets_definitionlistitemtext_render_webpart_render_htmlvisualizat
 	}
 	
 	$mixedattributes = array_merge($temp_array, $args);
-	
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
 	
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "text"));
 

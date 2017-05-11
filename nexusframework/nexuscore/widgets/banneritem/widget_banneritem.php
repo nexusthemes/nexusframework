@@ -101,9 +101,6 @@ function nxs_widgets_banneritem_render_webpart_render_htmlvisualization($args)
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	$image_imageid = $mixedattributes['image_imageid'];
 	$title = $mixedattributes['title'];
 	$text = $mixedattributes['text'];

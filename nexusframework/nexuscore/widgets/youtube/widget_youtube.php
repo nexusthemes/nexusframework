@@ -185,9 +185,6 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	// Localize atts
-	// $mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	extract($mixedattributes);
 	
 	global $nxs_doing_seo;

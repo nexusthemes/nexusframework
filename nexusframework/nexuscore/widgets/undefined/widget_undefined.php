@@ -124,7 +124,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
 	
 	$posttype = $pagedata->post_type;
-	$postmeta = nxs_get_postmeta($postid);
+	$postmeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	
 	$phtargs = array();
@@ -243,7 +243,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 						$defaultmessagedata["html"] = "<div class='content2'>Message 10987098273</div>";
 						$additionalparameters = array();
 						
-						$postmeta = nxs_get_postmeta($postid);
+						$postmeta = nxs_get_corepostmeta($postid);
 						$pagetemplate = nxs_getpagetemplateforpostid($postid);
 						
 						// posttype en pagetemplate ook meesturen

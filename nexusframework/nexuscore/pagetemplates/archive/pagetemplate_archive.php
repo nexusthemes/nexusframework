@@ -43,25 +43,16 @@ function nxs_pagetemplate_handlecontent()
 		<div id="nxs-content" class="nxs-sitewide-element <?php echo $cssclass; ?>">
 			<?php 
 			
-			if (nxs_hastemplateproperties())
+			// derive the layout
+			$templateproperties = nxs_gettemplateproperties();
+			if ($templateproperties["result"] == "OK")
 			{
-				// derive the layout
-				$templateproperties = nxs_gettemplateproperties();
-				if ($templateproperties["result"] == "OK")
-				{
-					$existingsidebarid = $templateproperties["sidebar_postid"];
-				}
-				else
-				{
-					$existingsidebarid = 0;
-				}
+				$existingsidebarid = $templateproperties["sidebar_postid"];
 			}
 			else
 			{
-				$existingsidebarid = nxs_pagetemplate_getsidebarid();
+				$existingsidebarid = 0;
 			}
-			
-			
 			
 			$hassidebar = ($existingsidebarid != ""); 
 			if ($hassidebar)
@@ -97,22 +88,15 @@ function nxs_pagetemplate_handlecontent()
 				// ---------------------------- BEGIN RENDER BLOG POST TOP / SUBHEADER
 				//
 								
-				if (nxs_hastemplateproperties())
+				// derive the layout
+				$templateproperties = nxs_gettemplateproperties();
+				if ($templateproperties["result"] == "OK")
 				{
-					// derive the layout
-					$templateproperties = nxs_gettemplateproperties();
-					if ($templateproperties["result"] == "OK")
-					{
-						$subheaderid = $templateproperties["subheader_postid"];
-					}
-					else
-					{
-						$subheaderid = 0;
-					}
+					$subheaderid = $templateproperties["subheader_postid"];
 				}
 				else
 				{
-					$subheaderid = $meta["subheader_postid"];
+					$subheaderid = 0;
 				}
 					
 				if ($subheaderid != "")
@@ -140,30 +124,18 @@ function nxs_pagetemplate_handlecontent()
 				// want to use a 'strict' template)
 				//
 				
-				if (nxs_hastemplateproperties())
+				// derive the layout
+				$templateproperties = nxs_gettemplateproperties();
+				if ($templateproperties["result"] == "OK")
 				{
-					// derive the layout
-					$templateproperties = nxs_gettemplateproperties();
-					if ($templateproperties["result"] == "OK")
-					{
-						$contentpostid = $templateproperties["content_postid"];
-						$wpcontenthandler = $templateproperties["wpcontenthandler"];
-					}
-					else
-					{
-						$contentpostid = 0;
-						$wpcontenthandler = "";
-					}
-					
-					
+					$contentpostid = $templateproperties["content_postid"];
+					$wpcontenthandler = $templateproperties["wpcontenthandler"];
 				}
 				else
 				{
-					$contentpostid = get_the_ID();
+					$contentpostid = 0;
 					$wpcontenthandler = "";
 				}
-				
-						
 				
 				if ($contentpostid != 0)
 				{
@@ -423,22 +395,15 @@ function nxs_pagetemplate_handlecontent()
 				// ---------------------------- BEGIN RENDER BLOG POST BOTTOM / SUBFOOTER
 				//			
 				
-				if (nxs_hastemplateproperties())
+				// derive the layout
+				$templateproperties = nxs_gettemplateproperties();
+				if ($templateproperties["result"] == "OK")
 				{
-					// derive the layout
-					$templateproperties = nxs_gettemplateproperties();
-					if ($templateproperties["result"] == "OK")
-					{
-						$subfooterid = $templateproperties["subfooter_postid"];
-					}
-					else
-					{
-						$subfooterid = 0;
-					}
+					$subfooterid = $templateproperties["subfooter_postid"];
 				}
 				else
 				{
-					$subfooterid = $meta["subfooter_postid"];
+					$subfooterid = 0;
 				}
 				
 				if ($subfooterid != "")
@@ -488,26 +453,18 @@ function nxs_pagetemplate_handlefooter()
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 
-	$meta = nxs_get_postmeta($containerpostid);
+	$meta = nxs_get_corepostmeta($containerpostid);
 	
-	if (nxs_hastemplateproperties())
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();
+	if ($templateproperties["result"] == "OK")
 	{
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();
-		if ($templateproperties["result"] == "OK")
-		{
-			$existingfooterid = $templateproperties["footer_postid"];
-		}
-		else
-		{
-			$existingfooterid = 0;
-		}
+		$existingfooterid = $templateproperties["footer_postid"];
 	}
 	else
 	{
-		$existingfooterid = $meta["footer_postid"];
+		$existingfooterid = 0;
 	}
-	
 	
 	$iswidescreen = nxs_iswidescreen("footer");
 	if ($iswidescreen)
@@ -557,28 +514,21 @@ function nxs_pagetemplate_handleheader()
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 	
-	$pagemeta = nxs_get_postmeta($containerpostid);
+	$pagemeta = nxs_get_corepostmeta($containerpostid);
 	$page_cssclass = $pagemeta["page_cssclass"];
 
 	$sitemeta	= nxs_getsitemeta();
 
-	if (nxs_hastemplateproperties())
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();
+	
+	if ($templateproperties["result"] == "OK")
 	{
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();
-		
-		if ($templateproperties["result"] == "OK")
-		{
-			$existingheaderid = $templateproperties["header_postid"];
-		}
-		else
-		{
-			$existingheaderid = 0;
-		}
+		$existingheaderid = $templateproperties["header_postid"];
 	}
 	else
 	{
-		$existingheaderid = $pagemeta["header_postid"];
+		$existingheaderid = 0;
 	}
 	
 	if (isset($sitemeta["faviconid"]))
@@ -599,7 +549,7 @@ function nxs_pagetemplate_handleheader()
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
 	<!-- Nexus Framework | http://nexusthemes.com -->	
-	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemename(); ?>" />
+	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemeid(); ?>" />
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 
 	nxs_hideadminbar();	
@@ -773,23 +723,17 @@ function nxs_pagetemplate_handlepagedecorator($pagedecoratorid)
 
 function nxs_pagetemplate_getsidebarid()
 {
-	if (nxs_hastemplateproperties())
-	{		
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();		
-		if ($templateproperties["result"] == "OK")
-		{
-			$existingsidebarid = $templateproperties["sidebar_postid"];
-		}
-		else
-		{
-			$existingsidebarid = 0;
-		}
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();		
+	if ($templateproperties["result"] == "OK")
+	{
+		$existingsidebarid = $templateproperties["sidebar_postid"];
 	}
 	else
 	{
-		$existingsidebarid = $pagemeta["sidebar_postid"];
+		$existingsidebarid = 0;
 	}
+	
 	return $existingsidebarid;
 }
 
@@ -831,7 +775,7 @@ function nxs_pagetemplate_archive_render($args)
 	global $nxs_global_current_containerpostid_being_rendered;
 	$nxs_global_current_containerpostid_being_rendered = $containerpostid;
 	
-	$pagemeta = nxs_get_postmeta($containerpostid);
+	$pagemeta = nxs_get_corepostmeta($containerpostid);
 	$page_cssclass = $pagemeta["page_cssclass"];
 
 	$sitemeta = nxs_getsitemeta();
@@ -885,22 +829,15 @@ function nxs_pagetemplate_archive_render($args)
 	//
 	
 	// derive the layout
-	if (nxs_hastemplateproperties())
-	{	
-		$templateproperties = nxs_gettemplateproperties();
-		
-		if ($templateproperties["result"] == "OK")
-		{
-			$pagedecorator_postid = $templateproperties["pagedecorator_postid"];
-		}
-		else
-		{
-			$pagedecorator_postid = 0;
-		}
+	$templateproperties = nxs_gettemplateproperties();
+	
+	if ($templateproperties["result"] == "OK")
+	{
+		$pagedecorator_postid = $templateproperties["pagedecorator_postid"];
 	}
 	else
 	{
-		$pagedecorator_postid = $pagemeta["pagedecorator_postid"];
+		$pagedecorator_postid = 0;
 	}
 	
 	nxs_pagetemplate_handlepagedecorator($pagedecorator_postid);

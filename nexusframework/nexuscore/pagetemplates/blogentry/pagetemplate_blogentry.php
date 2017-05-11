@@ -54,7 +54,7 @@ function nxs_pagetemplate_handlecontent()
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 	
-	$pagemeta = nxs_get_postmeta($containerpostid);
+	$pagemeta = nxs_get_corepostmeta($containerpostid);
 	
 	$page_title = get_the_title();
 	
@@ -73,46 +73,34 @@ function nxs_pagetemplate_handlecontent()
 	$cssclass = nxs_getcssclassesforsitepage();
 	$cssclass = nxs_concatenateargswithspaces($widescreenclass, $cssclass);
 
-	if (nxs_hastemplateproperties())
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();
+	if ($templateproperties["result"] == "OK")
 	{
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();
-		if ($templateproperties["result"] == "OK")
+		// when the content, subheader, subfooter, and sidebar are suppressed,
+		// the entire wrap (maincontent) should be set to hidden
+		if (
+			$templateproperties["sidebar_postid"] == "@suppressed" &&
+			$templateproperties["subheader_postid"] == "@suppressed" &&
+			$templateproperties["subfooter_postid"] == "@suppressed" &&
+			$templateproperties["content_postid"] == "@suppressed"
+		)
 		{
-			// when the content, subheader, subfooter, and sidebar are suppressed,
-			// the entire wrap (maincontent) should be set to hidden
-			if (
-				$templateproperties["sidebar_postid"] == "@suppressed" &&
-				$templateproperties["subheader_postid"] == "@suppressed" &&
-				$templateproperties["subfooter_postid"] == "@suppressed" &&
-				$templateproperties["content_postid"] == "@suppressed"
-			)
-			{
-				$maincontent_visibility = "hidden";
-			}
-			// also if just the content if suppressed, also hide the content
-			else if ($templateproperties["content_postid"] == "@suppressed")
-			{
-				
-				$maincontent_visibility = "hidden";
-			}
-			else
-			{
-				
-			}
+			$maincontent_visibility = "hidden";
 		}
-	}
-	else
-	{
-		$maincontent_visibility = "";
-		if (isset($meta["maincontent_visibility"]))
+		// also if just the content if suppressed, also hide the content
+		else if ($templateproperties["content_postid"] == "@suppressed")
 		{
-			$maincontent_visibility = $meta["maincontent_visibility"];
+			
+			$maincontent_visibility = "hidden";
+		}
+		else
+		{
+			
 		}
 	}
 	
 	$showcontent = true;
-	
 	
 	if ($maincontent_visibility == "hidden")
 	{
@@ -121,7 +109,8 @@ function nxs_pagetemplate_handlecontent()
 	}
 	
 	$contentpostid = $templateproperties["content_postid"];
-	if (post_password_required($contentpostid))
+	$isremotetemplate = nxs_isremotetemplate($contentpostid);
+	if (!$isremotetemplate && post_password_required($contentpostid)) 
 	{
 		nxs_render_loginforpasswordprotectedcontent();
 		$showcontent = false;
@@ -174,7 +163,8 @@ function nxs_pagetemplate_handlecontent()
 		}
 		
 		$shouldrenderaddnewrowoption = false;
-		if (nxs_has_adminpermissions() && $contentpostid != "SUPPRESSED" && $contentpostid != -999001)
+		$isremotetemplate = nxs_isremotetemplate($contentpostid);
+		if (nxs_has_adminpermissions() && $contentpostid != "SUPPRESSED" && $contentpostid != -999001 && !$isremotetemplate)
 		{
 			$shouldrenderaddnewrowoption = true;
 		}
@@ -344,15 +334,24 @@ function nxs_pagetemplate_handlecontent()
 							if ($shouldrenderthis == true)
 							{
 								// reguliere post/page
+								if ($isremotetemplate)
+								{
+									$contentclass = "nxs-content-remotetemplate";
+								}
+								else
+								{
+									$contentclass = "nxs-content-{$contentpostid}";
+								}
+								
 								?>
-								<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable entry-content nxs-content-<?php echo $contentpostid  . " " . $cssclass; ?>'>
+								<div class='nxs-wpcontent-container nxs-elements-container nxs-layout-editable nxs-widgets-editable entry-content <?php echo $contentclass . " " . $cssclass; ?>'>
 									<div class="nxs-postrows">
 										<div class="nxs-row   " id="nxs-pagerow-content">
 											<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">				
 												<ul class="nxs-placeholder-list"> 
 													<li class='nxs-placeholder nxs-containshovermenu1 nxs-one-whole '>
 														<?php 
-														if (nxs_has_adminpermissions()) 
+														if (nxs_has_adminpermissions() && !$isremotetemplate) 
 														{ 
 															$wordpressbackendurl = get_edit_post_link($contentpostid, array());	
 															?>
@@ -505,26 +504,18 @@ function nxs_pagetemplate_handlefooter()
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 
-	$meta = nxs_get_postmeta($containerpostid);
+	$meta = nxs_get_corepostmeta($containerpostid);
 	
-	if (nxs_hastemplateproperties())
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();
+	if ($templateproperties["result"] == "OK")
 	{
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();
-		if ($templateproperties["result"] == "OK")
-		{
-			$existingfooterid = $templateproperties["footer_postid"];
-		}
-		else
-		{
-			$existingfooterid = 0;
-		}
+		$existingfooterid = $templateproperties["footer_postid"];
 	}
 	else
 	{
-		$existingfooterid = $meta["footer_postid"];
+		$existingfooterid = 0;
 	}
-	
 	
 	$iswidescreen = nxs_iswidescreen("footer");
 	if ($iswidescreen)
@@ -576,28 +567,21 @@ function nxs_pagetemplate_handleheader()
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 		
-	$pagemeta = nxs_get_postmeta($containerpostid);
+	$pagemeta = nxs_get_corepostmeta($containerpostid);
 	$page_cssclass = $pagemeta["page_cssclass"];
 
 	$sitemeta	= nxs_getsitemeta();
 
-	if (nxs_hastemplateproperties())
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();
+	
+	if ($templateproperties["result"] == "OK")
 	{
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();
-		
-		if ($templateproperties["result"] == "OK")
-		{
-			$existingheaderid = $templateproperties["header_postid"];
-		}
-		else
-		{
-			$existingheaderid = 0;
-		}
+		$existingheaderid = $templateproperties["header_postid"];
 	}
 	else
 	{
-		$existingheaderid = $pagemeta["header_postid"];
+		$existingheaderid = 0;
 	}
 	
 	if (isset($sitemeta["faviconid"]))
@@ -624,7 +608,7 @@ function nxs_pagetemplate_handleheader()
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
 	<!-- Nexus Framework | http://nexusthemes.com -->	
 	<!-- Nexus Meta | <?php echo $headmeta; ?> -->
-	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemename(); ?> | <?php echo $version; ?>" />
+	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemeid(); ?> | <?php echo $version; ?>" />
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 
 	nxs_hideadminbar();	
@@ -918,7 +902,7 @@ function nxs_pagetemplate_blogentry_render($args)
 	global $nxs_global_current_containerpostid_being_rendered;
 	$nxs_global_current_containerpostid_being_rendered = $containerpostid;
 	
-	$pagemeta = nxs_get_postmeta($containerpostid);
+	$pagemeta = nxs_get_corepostmeta($containerpostid);
 	
 	$page_cssclass = $pagemeta["page_cssclass"];
 
@@ -940,22 +924,15 @@ function nxs_pagetemplate_blogentry_render($args)
 	//
 	
 	// derive the layout
-	if (nxs_hastemplateproperties())
-	{	
-		$templateproperties = nxs_gettemplateproperties();
-		
-		if ($templateproperties["result"] == "OK")
-		{
-			$pagedecorator_postid = $templateproperties["pagedecorator_postid"];
-		}
-		else
-		{
-			$pagedecorator_postid = 0;
-		}
+	$templateproperties = nxs_gettemplateproperties();
+	
+	if ($templateproperties["result"] == "OK")
+	{
+		$pagedecorator_postid = $templateproperties["pagedecorator_postid"];
 	}
 	else
 	{
-		$pagedecorator_postid = $pagemeta["pagedecorator_postid"];
+		$pagedecorator_postid = 0;
 	}
 	
 	//
@@ -1008,11 +985,11 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 	//
 	extract($args);
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$iscurrentpagethehomepage = nxs_ishomepage($postid);
 	$iscurrentpagethe404page = nxs_is404page($postid);
 	$selectedcategories = get_the_category($postid);
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$titel = nxs_gettitle_for_postid($postid);
 	$slug = nxs_getslug_for_postid($postid);
 	$poststatus = get_post_status($postid);
@@ -1487,7 +1464,7 @@ function nxs_pagetemplate_blogentry_dialogappendrow_getsheethtml($args)
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
 	
 	$posttype = $pagedata->post_type;
-	$postmeta = nxs_get_postmeta($postid);
+	$postmeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);	
 	
 	$prtargs = array();
@@ -1918,20 +1895,8 @@ function nxs_pagetemplate_blogentry_updatedata($args)
 		nxs_merge_postmeta($postid, $modifiedmetadata);
 	}	
 	
-	if ($updatesectionid == "pagelet" || $updatesectionid == "")
-	{	
-		$modifiedmetadata = array();
-		
-		nxs_setpageletid_forpageletinpost($postid, $pageletname, $pageletpostid);
-
-		// persist values
-		nxs_merge_postmeta($postid, $modifiedmetadata);
-	}
-
 	$result = array();
 	$result["result"] = "OK";
 	
 	return $result;
 }
-
-?>

@@ -144,9 +144,6 @@ function nxs_widgets_definitionlistbox_render_webpart_render_htmlvisualization($
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title"));
 

@@ -258,9 +258,6 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";

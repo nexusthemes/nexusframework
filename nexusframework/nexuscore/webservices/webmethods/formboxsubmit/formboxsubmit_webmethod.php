@@ -160,9 +160,6 @@ function nxs_webmethod_formboxsubmit()
 		// Get widget properties
 		$metadata = nxs_getwidgetmetadata($postid, $placeholderid);
 		
-		// Localize atts
-		$metadata = nxs_localization_localize($metadata);
-
 		// Lookup translation
 		$metadata = nxs_filter_translatelookup($metadata, array("internal_email", "sender_email"));
 

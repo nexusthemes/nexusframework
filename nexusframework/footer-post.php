@@ -2,26 +2,18 @@
 	global $nxs_global_current_containerpostid_being_rendered;
 	$postid = $nxs_global_current_containerpostid_being_rendered;
 
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	
-	if (nxs_hastemplateproperties())
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();
+	if ($templateproperties["result"] == "OK")
 	{
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();
-		if ($templateproperties["result"] == "OK")
-		{
-			$existingfooterid = $templateproperties["footer_postid"];
-		}
-		else
-		{
-			$existingfooterid = 0;
-		}
+		$existingfooterid = $templateproperties["footer_postid"];
 	}
 	else
 	{
-		$existingfooterid = $meta["footer_postid"];
+		$existingfooterid = 0;
 	}
-	
 	
 	$iswidescreen = nxs_iswidescreen("footer");
 	if ($iswidescreen)

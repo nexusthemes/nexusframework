@@ -36,12 +36,12 @@ function nxs_pagetemplate_searchresults_home_getsheethtml($args)
 		//
 	extract($args);
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	
 	$iscurrentpagetheserppage = nxs_isserppage($postid);
 	$selectedcategories = get_the_category($postid);
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$titel = nxs_gettitle_for_postid($postid);
 	$slug = nxs_getslug_for_postid($postid);
 	$selectedcategoryids = "";
@@ -94,27 +94,6 @@ function nxs_pagetemplate_searchresults_home_getsheethtml($args)
 					  <div class="nxs-clear"></div>
 					</div>
 					
-					<?php
-					// layout is deprecated
-					if (!nxs_hastemplateproperties())
-					{
-						?>
-						<!-- layout -->
-						<div class="content2">
-			        <div class="box">
-			          <div class="box-title">
-		          		<h4><?php nxs_l18n_e("Layout[nxs:heading]", "nxs_td"); ?></h4>
-			           </div>
-			          <div class="box-content">
-						      <a class='nxsbutton1 nxs-float-right' title="<?php nxs_l18n_e("Change", "nxs_td"); ?>" href='#' onclick="nxs_js_popup_navigateto('layout'); return false;"><?php nxs_l18n_e("Change[nxs:popup,header]", "nxs_td"); ?></a>
-						    </div>
-						  </div>
-						  <div class="nxs-clear"></div>
-						</div>
-						<?php
-					}
-					?>
-
 					<!-- design -->
 					<div class="content2">
 		        <div class="box">
@@ -434,7 +413,7 @@ function nxs_pagetemplate_searchresults_headerhome_getsheethtml($args)
 			
 	$result = array();
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$header_postid = $meta["header_postid"];
 	
 	extract($clientpopupsessiondata);
@@ -645,7 +624,7 @@ function nxs_pagetemplate_searchresults_sidebarhome_getsheethtml($args)
 			
 	$result = array();
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$sidebar_postid = $meta["sidebar_postid"];
 	
 	extract($clientpopupsessiondata);
@@ -855,7 +834,7 @@ function nxs_pagetemplate_searchresults_footerhome_getsheethtml($args)
 			
 	$result = array();
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$footer_postid = $meta["footer_postid"];
 	
 	extract($clientpopupsessiondata);
@@ -1077,7 +1056,7 @@ function nxs_pagetemplate_searchresults_dialogappendrow_getsheethtml($args)
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
 
 	$posttype = $pagedata->post_type;
-	$postmeta = nxs_get_postmeta($postid);
+	$postmeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);	
 	
 	$prtargs = array();

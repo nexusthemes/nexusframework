@@ -36,14 +36,14 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 	//
 	extract($args);
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$pagedecorator_postid = $pagemeta["pagedecorator_postid"];
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	
 	$iscurrentpagethehomepage = nxs_ishomepage($postid);
 	$iscurrentpagethe404page = nxs_is404page($postid);
 	$selectedcategories = get_the_category($postid);
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$titel = nxs_gettitle_for_postid($postid);
 	$slug = nxs_getslug_for_postid($postid);
 	$poststatus = get_post_status($postid);
@@ -555,7 +555,7 @@ function nxs_pagetemplate_webpage_headerhome_getsheethtml($args)
 			
 	$result = array();
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$header_postid = $meta["header_postid"];
 	
 	extract($clientpopupsessiondata);
@@ -766,7 +766,7 @@ function nxs_pagetemplate_webpage_pagedecoratorhome_getsheethtml($args)
 			
 	$result = array();
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$pagedecorator_postid = $meta["pagedecorator_postid"];
 	
 	extract($clientpopupsessiondata);
@@ -991,7 +991,7 @@ function nxs_pagetemplate_webpage_sidebarhome_getsheethtml($args)
 			
 	$result = array();
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$sidebar_postid = $meta["sidebar_postid"];
 	
 	extract($clientpopupsessiondata);
@@ -1201,7 +1201,7 @@ function nxs_pagetemplate_webpage_footerhome_getsheethtml($args)
 			
 	$result = array();
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$footer_postid = $meta["footer_postid"];
 	
 	extract($clientpopupsessiondata);
@@ -1423,7 +1423,7 @@ function nxs_pagetemplate_webpage_dialogappendrow_getsheethtml($args)
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
 	
 	$posttype = $pagedata->post_type;
-	$postmeta = nxs_get_postmeta($postid);
+	$postmeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);	
 	
 	$prtargs = array();

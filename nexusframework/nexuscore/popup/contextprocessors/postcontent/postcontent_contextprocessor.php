@@ -140,7 +140,7 @@ function nxs_popup_contextprocessor_postcontent_render_nxs_js_savegenericpopup($
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	
 	?>
 	function nxs_js_savegenericpopup()

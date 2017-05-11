@@ -11,7 +11,7 @@ function nxs_popup_contextprocessor_pagetemplate_getcustompopuphtml($args)
 	if ($pagetemplate == "") { nxs_webmethod_return_nack("pagetemplate not set"); }
  	if ($sheet == "") { nxs_webmethod_return_nack("sheet not set"); }
  	
- 	//$pagemeta = nxs_get_postmeta($postid);
+ 	//$pagemeta = nxs_get_corepostmeta($postid);
 	//$pagetemplate = nxs_getpagetemplateforpostid($postid);	// no! the pagetemplate should be in context!
 	nxs_requirepagetemplate($pagetemplate);
  	 	
@@ -57,7 +57,7 @@ function nxs_popup_contextprocessor_pagetemplate_supportsoptions($args)
  	}
  	else
  	{
-	 	$pagemeta = nxs_get_postmeta($postid);
+	 	$pagemeta = nxs_get_corepostmeta($postid);
 		$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	}
 	
@@ -93,7 +93,7 @@ function nxs_popup_contextprocessor_pagetemplate_getoptions($args)
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); } 	
  	if ($sheet == "") { nxs_webmethod_return_nack("sheet not set"); }
- 	$pagemeta = nxs_get_postmeta($postid);
+ 	$pagemeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	
 	nxs_requirepagetemplate($pagetemplate);
@@ -138,11 +138,11 @@ function nxs_popup_contextprocessor_pagetemplate_getpersisteddata($args)
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	
 	// delegate
-	$result = nxs_get_postmeta($postid);
+	$result = nxs_get_corepostmeta($postid);
 	
 	return $result;
 }
@@ -176,7 +176,7 @@ function nxs_popup_contextprocessor_pagetemplate_render_nxs_js_savegenericpopup(
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	
 	?>

@@ -43,7 +43,7 @@ function nxs_webmethod_clipboardpaste()
 			$nxs_global_current_postid_being_rendered = $postid;
 			
 			global $nxs_global_current_postmeta_being_rendered;
-			$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);		
+			$nxs_global_current_postmeta_being_rendered = nxs_get_corepostmeta($postid);		
 
 			$metadata = json_decode($serializedmetadata, true);
 			$placeholdertemplate = $metadata['type'];
@@ -90,7 +90,7 @@ function nxs_webmethod_clipboardpaste()
 			$nxs_global_current_postid_being_rendered = $postid;
 			
 			global $nxs_global_current_postmeta_being_rendered;
-			$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);		
+			$nxs_global_current_postmeta_being_rendered = nxs_get_corepostmeta($postid);		
 
 			$clipboardata = json_decode($serializedmetadata, true);
 			$rowtemplate = $clipboardata["rowtemplate"];

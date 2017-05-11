@@ -132,14 +132,11 @@ function nxs_widgets_menuitemcategory_render_webpart_render_htmlvisualization($a
 	
 	$mixedattributes = array_merge($mixedattributes, $args);
 
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	$title = $mixedattributes['title'];
     
-    $icon = $mixedattributes['icon'];
+  $icon = $mixedattributes['icon'];
 	$icon_scale = "0-5";
-    $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
+  $icon_scale_cssclass = nxs_getcssclassesforlookup("nxs-icon-scale-", $icon_scale);
     
 	$destination_category = $mixedattributes['destination_category'];
 	$depthindex = $mixedattributes['depthindex'];	// sibling or child

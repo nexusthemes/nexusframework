@@ -76,7 +76,7 @@ function nxs_popup_contextprocessor_postwizard_getoptions($args)
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); } 	
  	if ($sheet == "") { nxs_webmethod_return_nack("sheet not set"); }
- 	$pagemeta = nxs_get_postmeta($postid);
+ 	$pagemeta = nxs_get_corepostmeta($postid);
 	$postwizard = nxs_getpostwizard($pagemeta);
 	
 	nxs_requirepostwizard($postwizard);
@@ -121,11 +121,11 @@ function nxs_popup_contextprocessor_postwizard_getpersisteddata($args)
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$postwizard = nxs_getpostwizard($pagemeta);
 	
 	// delegate
-	$result = nxs_get_postmeta($postid);
+	$result = nxs_get_corepostmeta($postid);
 	
 	return $result;
 }
@@ -159,7 +159,7 @@ function nxs_popup_contextprocessor_postwizard_render_nxs_js_savegenericpopup($a
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$postwizard = nxs_getpostwizard($pagemeta);
 	
 	?>

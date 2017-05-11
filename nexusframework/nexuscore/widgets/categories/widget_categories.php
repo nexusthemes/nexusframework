@@ -174,9 +174,6 @@ function nxs_widgets_categories_render_webpart_render_htmlvisualization($args)
 	
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	$title = $mixedattributes['title'];
 	$items_filter_includeuncategorized = $mixedattributes['items_filter_includeuncategorized'];
 	$items_filter_includeempty = $mixedattributes['items_filter_includeempty'];

@@ -2,29 +2,22 @@
 	global $post;
 	$postid = $post->ID;
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$page_cssclass = $pagemeta["page_cssclass"];
 
 	$sitemeta	= nxs_getsitemeta();
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 
-	if (nxs_hastemplateproperties())
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();
+	
+	if ($templateproperties["result"] == "OK")
 	{
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();
-		
-		if ($templateproperties["result"] == "OK")
-		{
-			$existingheaderid = $templateproperties["header_postid"];
-		}
-		else
-		{
-			$existingheaderid = 0;
-		}
+		$existingheaderid = $templateproperties["header_postid"];
 	}
 	else
 	{
-		$existingheaderid = $pagemeta["header_postid"];
+		$existingheaderid = 0;
 	}
 	
 	if (isset($sitemeta["faviconid"]))
@@ -52,7 +45,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
 	<!-- Nexus Framework | http://nexusthemes.com -->
 	<!-- Nexus Meta | v1 | <?php echo $headmeta; ?> -->
-	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemename(); ?> | <?php echo $version; ?>" />
+	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemeid(); ?> | <?php echo $version; ?>" />
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 
 	nxs_hideadminbar();	

@@ -355,7 +355,7 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	if (isset($meta["sidebar_postid"])) {
 		$existingsidebarid = $meta["sidebar_postid"];
 	} else {

@@ -104,7 +104,7 @@ function nxs_popup_contextprocessor_post_getpersisteddata($args)
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	
 	// delegate
-	$result = nxs_get_postmeta($postid);
+	$result = nxs_get_corepostmeta($postid);
 	
 	return $result;
 }
@@ -138,7 +138,7 @@ function nxs_popup_contextprocessor_post_render_nxs_js_savegenericpopup($args)
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	
 	?>
 	function nxs_js_savegenericpopup()

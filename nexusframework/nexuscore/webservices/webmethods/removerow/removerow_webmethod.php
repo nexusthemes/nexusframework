@@ -16,7 +16,7 @@ function nxs_webmethod_removerow() {
   global $nxs_global_current_postmeta_being_rendered;
 
   $nxs_global_current_postid_being_rendered = $postid;
-  $nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
+  $nxs_global_current_postmeta_being_rendered = nxs_get_corepostmeta($postid);
 
 	$poststructure = nxs_parsepoststructure($postid);
 	$currentrow = $poststructure[$rowindex];

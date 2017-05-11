@@ -315,9 +315,6 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 	
 	// Widget specific variables
 	extract($mixedattributes);
-	
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
 
 	global $nxs_global_placeholder_render_statebag;
 	

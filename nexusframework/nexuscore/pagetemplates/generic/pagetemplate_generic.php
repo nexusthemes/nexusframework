@@ -4,7 +4,7 @@ function nxs_pagetemplate_generic_layout_getoptions($args)
 {	
 	
 	$postid = $args["clientpopupsessioncontext"]["postid"];
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$headerid = $meta["header_postid"];
 	$subheaderid = $meta["subheader_postid"];
 	$sidebarid = $meta["sidebar_postid"];
@@ -101,25 +101,13 @@ function nxs_pagetemplate_generic_styling_getoptions($args)
 {
 	$postid = $args["clientpopupsessioncontext"]["postid"];
 	
-	if (nxs_hastemplateproperties())
-	{
-		$templateproperties = nxs_gettemplateproperties();
-		$headerid = $templateproperties["header_postid"];
-		$subheaderid = $templateproperties["subheader_postid"];
-		$sidebarid = $templateproperties["sidebar_postid"];
-		$subfooterid = $templateproperties["subfooter_postid"];
-		$footerid = $templateproperties["footer_postid"];
-	}
-	else
-	{	
-		$meta = nxs_get_postmeta($postid);
-		$headerid = $meta["header_postid"];
-		$subheaderid = $meta["subheader_postid"];
-		$sidebarid = $meta["sidebar_postid"];
-		$subfooterid = $meta["subfooter_postid"];
-		$footerid = $meta["footer_postid"];
-	}
-
+	$templateproperties = nxs_gettemplateproperties();
+	$headerid = $templateproperties["header_postid"];
+	$subheaderid = $templateproperties["subheader_postid"];
+	$sidebarid = $templateproperties["sidebar_postid"];
+	$subfooterid = $templateproperties["subfooter_postid"];
+	$footerid = $templateproperties["footer_postid"];
+	
 	$headertitle = nxs_gettitle_for_postid($headerid);
 	$footertitle = nxs_gettitle_for_postid($footerid);
 	

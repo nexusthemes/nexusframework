@@ -407,7 +407,7 @@
                                 	$posttitle = nxs_l18n__("Page to show when unknown page is requested", "nxs_td") . " (" . $posttitle . ")";
                                 }
                                 
-                                $pagemeta = nxs_get_postmeta($postid);
+                                $pagemeta = nxs_get_corepostmeta($postid);
                                 
                                 $postdatetime = $currentpost->post_date;
                                 $postdatetimepieces = explode(" ", $postdatetime);

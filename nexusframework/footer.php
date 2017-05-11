@@ -1,7 +1,7 @@
 <?php
 	global $post;
 	$postid = $post->ID;
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	
 	$iswidescreen = nxs_iswidescreen("footer");
 	if ($iswidescreen)
@@ -16,22 +16,15 @@
 			<div id="nxs-footer" class="nxs-containsimmediatehovermenu nxs-sitewide-element <?php echo $widescreenclass; ?>">
 			  <div id="nxs-footer-container" class="nxs-sitewide-container">
 					<?php 
-						if (nxs_hastemplateproperties())
+						// derive the layout
+						$templateproperties = nxs_gettemplateproperties();
+						if ($templateproperties["result"] == "OK")
 						{
-							// derive the layout
-							$templateproperties = nxs_gettemplateproperties();
-							if ($templateproperties["result"] == "OK")
-							{
-								$existingfooterid = $templateproperties["footer_postid"];
-							}
-							else
-							{
-								$existingfooterid = 0;
-							}
+							$existingfooterid = $templateproperties["footer_postid"];
 						}
 						else
 						{
-							$existingfooterid = $meta["footer_postid"];
+							$existingfooterid = 0;
 						}
 						
 						if ($existingfooterid != "")

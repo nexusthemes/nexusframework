@@ -4,7 +4,7 @@
 	
 	
 	// process meta data
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	$nxssubposttype = nxs_get_nxssubposttype($postid);
 	//
 	//

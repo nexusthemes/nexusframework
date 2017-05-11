@@ -27,7 +27,7 @@ function nxs_webmethod_exportcontent()
 		echo "# \r\n";
 		
 		$parsedpoststructure = nxs_parsepoststructure($postid);
-		$newpostcontents = nxs_getcontentsofpoststructure($postid, $parsedpoststructure);
+		$newpostcontents = nxs_getcontentsofpoststructure($parsedpoststructure);
 		$globalid = nxs_get_globalid($postid, false);
 		
 		echo "# @postid@" . $postid . "\r\n";
@@ -86,7 +86,7 @@ function nxs_webmethod_exportcontent()
 	    $postid = $currentpost->ID;
 
 			$parsedpoststructure = nxs_parsepoststructure($postid);
-			$newpostcontents = nxs_getcontentsofpoststructure($postid, $parsedpoststructure);
+			$newpostcontents = nxs_getcontentsofpoststructure($parsedpoststructure);
 			$globalid = nxs_get_globalid($postid, false);	// indien nog niet bestond, maak 'm dan maar aan
 			
 			echo "# @postid@" . $postid . "\r\n";

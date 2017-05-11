@@ -82,7 +82,7 @@ function nxs_widgets_stack_render_webpart_render_htmlvisualization($args)
 	
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
 	
-	$meta = nxs_get_postmeta($postid);
+	$meta = nxs_get_corepostmeta($postid);
 	if (isset($meta["sidebar_postid"]))
 	{
 		$existingsidebarid = $meta["sidebar_postid"];

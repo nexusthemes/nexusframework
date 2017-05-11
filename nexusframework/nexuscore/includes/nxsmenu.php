@@ -46,7 +46,7 @@
 		else
 		{
 			$posttype = $post->post_type;
-			$postmeta = nxs_get_postmeta($postid);
+			$postmeta = nxs_get_corepostmeta($postid);
 			$pagetemplate = nxs_getpagetemplateforpostid($postid);
 			$nxsposttype = nxs_getnxsposttype_by_wpposttype($posttype);
 		}
@@ -697,28 +697,23 @@
 			      	</a>
 			      </li>
 			      <?php
-			      if (nxs_hastemplateproperties())
-			      {
-			      	$templateproperties = nxs_gettemplateproperties();
-			      	$rulesid = $templateproperties["templaterulespostid"];
-			      	if ($rulesid == 0)
-			      	{
-			      		$url = nxs_geturl_home();
-								$url = nxs_addqueryparametertourl_v2($url, "nxserr", "nxsnotemplateproperties", true, true);
-			      	}
-			      	else
-			      	{
-			      		$url = nxs_geturl_for_postid($rulesid);
-			      	}
-				      ?>
-				      <li>
-		     		  	<a href="<?php echo $url; ?>" title="<?php nxs_l18n_e("Business rules", "nxs_td"); ?>" class="site">
-						  		<span class='nxs-icon-wand'></span>
-						  	</a>
-				      </li>
-			      	<?php
-			      }
+		      	$templateproperties = nxs_gettemplateproperties();
+		      	$rulesid = $templateproperties["templaterulespostid"];
+		      	if ($rulesid == 0)
+		      	{
+		      		$url = nxs_geturl_home();
+							$url = nxs_addqueryparametertourl_v2($url, "nxserr", "nxsnotemplateproperties", true, true);
+		      	}
+		      	else
+		      	{
+		      		$url = nxs_geturl_for_postid($rulesid);
+		      	}
 			      ?>
+			      <li>
+	     		  	<a href="<?php echo $url; ?>" title="<?php nxs_l18n_e("Business rules", "nxs_td"); ?>" class="site">
+					  		<span class='nxs-icon-wand'></span>
+					  	</a>
+			      </li>
 			      <li>
 			      	<a href="<?php echo home_url('/'); ?>?nxs_admin=admin&backendpagetype=forms" title="<?php nxs_l18n_e("Forms", "nxs_td"); ?>" class="site">
 			      		<span class='nxs-icon-pencil2'></span>

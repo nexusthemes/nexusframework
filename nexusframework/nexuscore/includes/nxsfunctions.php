@@ -886,14 +886,6 @@ function nxs_cap_getdesigncapability()
 	return "nxs_cap_design_site";
 }
 
-function nxs_hastemplateproperties()
-{
-	
-	$result = true;
-	
-	return $result;
-}
-
 // derives the template properties for the current executing request, cached
 function nxs_gettemplateproperties()
 {
@@ -1018,7 +1010,7 @@ function nxs_gettemplateproperties_internal()
 		// users can overrule the layout engine
 		$postid = get_the_ID();
 		
-		$nxs_semanticlayout = get_post_meta($postid, 'nxs_semanticlayout', true);
+		$nxs_semanticlayout = nxs_get_post_meta($postid, 'nxs_semanticlayout', true);
 		if ($nxs_semanticlayout == "landingpage")
 		{
 			$ishandled = true;
@@ -1051,7 +1043,7 @@ function nxs_gettemplateproperties_internal()
 		{
 		}
 		
-		if ( $query->have_posts() ) 	
+		if ($query->have_posts()) 	
 		{
 			$postid = $query->posts[0]->ID;
 			$result["templaterulespostid"] = $postid;
@@ -1121,6 +1113,12 @@ function nxs_gettemplateproperties_internal()
 		}
 	}
 	
+	if ($_REQUEST["exttemplatetest"] == "true")
+	{
+		//error_log("exttemplatetest;" . json_encode($result));
+		$result["content_postid"] = "982@http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/@remotetemplate";
+	}
+	
 	return $result;
 }
 
@@ -1128,12 +1126,9 @@ function nxs_gettemplateproperties_internal()
 function nxs_addnewarticle($args)
 {	
 	global $wp_version;
-	if ( $wp_version < 4.4 ) 
-	{
-		// from 4.4 on the meta_input is supported
-		echo "nxs_addnewarticle; this feature requires at least wp 4.4 or higher";
-    die();
-	}
+	
+	// from 4.4 on the meta_input is supported
+	if ( $wp_version < 4.4 ) { nxs_webmethod_return_nack("nxs_addnewarticle; this feature requires at least wp 4.4 or higher"); }
 	
 	extract($args);
 	
@@ -1380,11 +1375,6 @@ function nxs_registernexustype($title, $ispublic)
 }
 
 
-function nxs_cutstring($string, $length)
-{
-	return (strlen($string) > ($length + 3)) ? substr($string,0,$length).'...' : $string;
-}
-
 function nxs_getpostidbyslug($slug)
 {
 	global $wpdb;
@@ -1403,6 +1393,9 @@ function nxs_getcategoryidbyname($name)
 
 function nxs_getcategorynameandslugs($postid)
 {
+	$isremotetemplate = nxs_isremotetemplate($postid);	
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_getcategorynameandslugs only supports local postids; $postid"); }
+
 	$post_categories = wp_get_post_categories($postid);
 	$cats = array();
 	
@@ -1414,99 +1407,9 @@ function nxs_getcategorynameandslugs($postid)
 	return $cats;
 }
 
-function nxs_stringstartswith($haystack, $needle)
-{
-	$length = strlen($needle);
-	return (substr($haystack, 0, $length) === $needle);
-}
-
-// kudos to http://stackoverflow.com/questions/3225538/delete-first-instance-of-string-with-php
-function nxs_stringreplacefirst($input, $search, $replacement)
-{
-  $pos = stripos($input, $search);
-  if($pos === false)
-  {
-     return $input;
-  }
-  else
-  {
-  	$result = substr_replace($input, $replacement, $pos, strlen($search));
-   	return $result;
-  }
-}
-
-function nxs_stringendswith($haystack, $needle)
-{
-    $length = strlen($needle);
-    if ($length == 0) {
-        return true;
-    }
-
-    return (substr($haystack, -$length) === $needle);
-}
-
-function nxs_stringcontains($haystack, $needle)
-{
-	$ignorecasing = false;
-	$result = nxs_stringcontains_v2($haystack, $needle, $ignorecasing);
-	return $result;
-}
-
-function nxs_stringcontains_v2($haystack, $needle, $ignorecasing)
-{
-	if ($ignorecasing === true)
-	{
-		$pos = stripos($haystack,$needle);
-	}
-	else
-	{
-		$pos = strpos($haystack,$needle);
-	}
-	
-	if($pos === false) 
-	{
-	 // string needle NOT found in haystack
-	 return false;
-	}
-	else 
-	{
-	 // string needle found in haystack
-	 return true;
-	}
-}
-
-/** 
- * Convert a date format to a jQuery UI DatePicker format  
- * 
- * @param string $dateFormat a date format 
- * @return string 
- */ 
-function nxs_date_getdatepickerformatclientside() 
-{ 
-	$result = get_option("date_format");
-	
-  	$chars = array( 
-      // Day
-      'd' => 'dd', 'j' => 'd', 'l' => 'DD', 'D' => 'D',
-      // Month 
-      'm' => 'mm', 'n' => 'm', 'F' => 'MM', 'M' => 'M', 
-      // Year 
-      'Y' => 'yy', 'y' => 'y', 
-      // Suffix
-      'S' => '',
-  	); 
-
-  	$result = strtr((string)$result, $chars); 
-  	return $result;
-} 
-
-function nxs_insertarrayindex($array, $new_element, $index) 
-{
-	$start = array_slice($array, 0, $index); 
-	$end = array_slice($array, $index);
-	$start[] = $new_element;
-	return array_merge($start, $end);
-}
+// ===
+// query operations
+// ===
 
 function nxs_addqueryparametertourl($url, $parameter, $value)
 {
@@ -1593,6 +1496,435 @@ function nxs_removequeryparameterfromurl($url, $parametertoremove)
 	}
 	return $result;
 }
+
+// ===
+// string operations
+// ===
+
+function nxs_strleft($s1, $s2) 
+{
+	return substr($s1, 0, strpos($s1, $s2));
+}
+
+// taken from http://stackoverflow.com/questions/79960/how-to-truncate-a-string-in-php-to-the-word-closest-to-a-certain-number-of-chara
+function nxs_truncate_string($string, $your_desired_width)
+{
+  $parts = preg_split('/([\s\n\r]+)/', $string, null, PREG_SPLIT_DELIM_CAPTURE);
+  $parts_count = count($parts);
+
+  $length = 0;
+  $last_part = 0;
+  for (; $last_part < $parts_count; ++$last_part) {
+    $length += strlen($parts[$last_part]);
+    if ($length > $your_desired_width) { break; }
+  }
+
+  return implode(array_slice($parts, 0, $last_part));
+}
+
+// kudos to http://stackoverflow.com/questions/3835636/php-replace-last-occurence-of-a-string-in-a-string
+function nxs_str_lastreplace($search, $replace, $subject)
+{
+    $pos = strrpos($subject, $search);
+
+    if($pos !== false)
+    {
+        $subject = substr_replace($subject, $replace, $pos, strlen($search));
+    }
+
+    return $subject;
+}
+
+function nxs_htmlescape($input)
+{
+	$result = htmlentities($input);
+	$result = str_replace("'","&#039;", $result);
+		
+	return $result;
+}
+
+// kudos to http://stackoverflow.com/questions/4356289/php-random-string-generator
+function nxs_generaterandomstring($length = 10)
+{
+  $characters = 'abcdefghijklmnopqrstuvwxyz';
+  $randomString = '';
+  for ($i = 0; $i < $length; $i++) {
+      $randomString .= $characters[rand(0, strlen($characters) - 1)];
+  }
+  return $randomString;
+}
+
+function nxs_cutstring($string, $length)
+{
+	return (strlen($string) > ($length + 3)) ? substr($string,0,$length).'...' : $string;
+}
+
+function nxs_stringstartswith($haystack, $needle)
+{
+	$length = strlen($needle);
+	return (substr($haystack, 0, $length) === $needle);
+}
+
+// kudos to http://stackoverflow.com/questions/3225538/delete-first-instance-of-string-with-php
+function nxs_stringreplacefirst($input, $search, $replacement)
+{
+  $pos = stripos($input, $search);
+  if($pos === false)
+  {
+     return $input;
+  }
+  else
+  {
+  	$result = substr_replace($input, $replacement, $pos, strlen($search));
+   	return $result;
+  }
+}
+
+function nxs_stringendswith($haystack, $needle)
+{
+  $length = strlen($needle);
+  if ($length == 0) {
+      return true;
+  }
+
+  return (substr($haystack, -$length) === $needle);
+}
+
+function nxs_stringcontains($haystack, $needle)
+{
+	$ignorecasing = false;
+	$result = nxs_stringcontains_v2($haystack, $needle, $ignorecasing);
+	return $result;
+}
+
+function nxs_stringcontains_v2($haystack, $needle, $ignorecasing)
+{
+	if ($ignorecasing === true)
+	{
+		$pos = stripos($haystack,$needle);
+	}
+	else
+	{
+		$pos = strpos($haystack,$needle);
+	}
+	
+	if($pos === false) 
+	{
+	 // string needle NOT found in haystack
+	 return false;
+	}
+	else 
+	{
+	 // string needle found in haystack
+	 return true;
+	}
+}
+
+
+// 2012 06 04; GJ; in some particular situation (unclear yet when exactly) the result cannot be json encoded
+// erroring with 'Invalid UTF-8 sequence in range'.
+// Solution appears to be to UTF encode the input
+function nxs_array_toutf8string($result)
+{
+	foreach ($result as $resultkey => $resultvalue)
+	{
+		if (is_string($resultvalue))
+		{
+			if (!nxs_isutf8($resultvalue))
+			{
+				$result[$resultkey] = nxs_toutf8string($resultvalue);
+			}
+
+			// also fix the special character \u00a0 (no breaking space),
+			// as this one also could result into issues
+			$result[$resultkey] = preg_replace('~\x{00a0}~siu', ' ', $result[$resultkey]);   
+		}
+		else if (is_array($resultvalue))
+		{
+			$result[$resultkey] = nxs_array_toutf8string($resultvalue);
+		}
+		else
+		{
+			// leave as is...
+		}
+	}
+	
+	return $result;
+}
+
+if(!function_exists('mb_detect_order')) 
+{
+	
+	function mb_detect_order($encoding_list)
+	{
+		$result = false;
+		if (is_null($encoding_list))
+		{
+			$result = array("ASCII", "UTF-8");	
+		}
+	}
+}
+
+// 17 aug 2013; workaround if mb_detect_encoding is not available (milos)
+// kudos to http://php.net/manual/de/function.mb-detect-encoding.php
+if(!function_exists('mb_detect_encoding')) 
+{ 
+	function mb_detect_encoding($string, $enc=null) 
+	{ 	    
+    static $list = array('utf-8', 'iso-8859-1', 'windows-1251');
+    
+    foreach ($list as $item) {
+        $sample = iconv($item, $item, $string);
+        if (md5($sample) == md5($string)) { 
+            if ($enc == $item) { return true; }    else { return $item; } 
+        }
+    }
+    return null;
+	}
+}
+
+// 17 aug 2013; workaround if mb_convert_encoding is not available (milos)
+// kudos to http://php.net/manual/de/function.mb-detect-encoding.php
+if(!function_exists('mb_convert_encoding')) 
+{ 
+	function mb_convert_encoding($string, $target_encoding, $source_encoding) 
+	{ 
+		if ($source_encoding == "UTF-8" && $target_encoding == "HTML-ENTITIES")
+		{
+			// 2016 05 27; found issue while rendering html widgets in WC; resulting in blank output
+			// to avoid error; leave string as is for this particular convert task
+			// Notice: iconv(): Wrong charset, conversion from `UTF-8' to `HTML-ENTITIES'
+			// resulting in string that only have a space as output
+		}
+		else
+		{
+    	$string = iconv($source_encoding, $target_encoding, $string);
+    }
+    
+    return $string; 
+	}
+}
+
+function nxs_isutf8($string) 
+{
+  if (function_exists("mb_check_encoding")) 
+  {
+    return mb_check_encoding($string, 'UTF8');
+  }
+  
+  return (bool)preg_match('//u', serialize($string));
+}
+
+function nxs_toutf8string($in_str)
+{
+	$in_str_v2=mb_convert_encoding($in_str,"UTF-8","auto");
+	if ($in_str_v2 === false)
+	{
+		$in_str_v2 = $in_str;
+	}
+	
+	$cur_encoding = mb_detect_encoding($in_str_v2) ; 
+  if($cur_encoding == "UTF-8" && nxs_isutf8($in_str_v2)) 
+  {
+  	$result = $in_str_v2; 
+  }
+  else 
+  {
+    $result = utf8_encode($in_str_v2); 
+  }
+    
+  return $result;
+}
+
+// deserialize / unserialize an array of values, as serialized by for example the javascript call
+// see function nxs_js_getescapeddictionary(input)
+function nxs_urldecodearrayvalues($array)
+{
+	return nxs_urldecodearrayvalues_internal($array, 0);
+}
+
+function nxs_urldecodearrayvalues_internal($array, $depth)
+{
+	$result = array();
+	
+	// prevent endless loop
+	$maxdepth = 10;	// increase if you need structures that are nested further
+	if ($depth > $maxdepth) 
+	{ 
+		nxs_webmethod_return_nack("not sure, but suspecting a loop? increase the maxdepth if this is done on purpose ($maxdepth)"); 
+	}
+	
+	if ($array == null)
+	{
+		//
+	}
+	else if (count($array) == 0)
+	{
+		//
+	}
+	else
+	{
+		foreach ($array as $key => $val)
+		{
+			if ($val != null)
+			{
+				if (is_array($val))
+				{
+					// recursive call
+					$result[$key] = nxs_urldecodearrayvalues_internal($val, $depth + 1);
+				}
+				else
+				{
+					$result[$key] = utf8_urldecode($val);
+					
+					// nxs_js_getescapeddictionary() also escapes single quotes,
+					// here we de-escape \' back into ' 
+					$result[$key] = str_replace("\'","'", $result[$key]);
+				}
+			}
+			else
+			{
+				$result[$key] = null;
+			}
+		}
+	}
+	
+	// fix issue seen in TandenOnline; if client encodes json (originating from server),
+	// the string passed to us isn't utf8, causing problems when decoding the string to php json objects
+	// therefore before returning the result, we will convert the string's in the array to valid utf8 strings (if present)
+	$result = nxs_array_toutf8string($result);
+	
+	return $result;
+}
+
+function utf8_urldecode($val) 
+{
+ 	$result = preg_replace("/%u([0-9a-f]{3,4})/i","&#x\\1;",urldecode($val));
+  return $result;
+}
+
+function nxs_urlencodearrayvalues($array)
+{
+	$result = array();
+	
+	if ($array == null)
+	{
+		//
+	}
+	else if (count($array) == 0)
+	{
+		//
+	}
+	else
+	{
+		foreach ($array as $key => $val)
+		{
+			if ($val != null)
+			{
+				$result[$key] = urlencode($val);
+			}
+			else
+			{
+				$result[$key] = null;
+			}
+		}
+	}
+	
+	return $result;
+}
+
+
+// kudos to http://stackoverflow.com/questions/6232846/best-email-validation-function-in-general-and-specific-college-domain
+function nxs_isvalidemailaddress($email) 
+{
+  // First, we check that there's one @ symbol, and that the lengths are right
+  if (!preg_match("/^[^@]{1,64}@[^@]{1,255}$/", $email)) {
+      // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
+      return false;
+  }
+  // Split it into sections to make life easier
+  $email_array = explode("@", $email);
+  $local_array = explode(".", $email_array[0]);
+  for ($i = 0; $i < sizeof($local_array); $i++) {
+      if (!preg_match("/^(([A-Za-z0-9!#$%&'*+\/=?^_`{|}~-][A-Za-z0-9!#$%&'*+\/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$/", $local_array[$i])) {
+          return false;
+      }
+  }
+  if (!preg_match("/^\[?[0-9\.]+\]?$/", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
+      $domain_array = explode(".", $email_array[1]);
+      if (sizeof($domain_array) < 2) {
+          return false; // Not enough parts to domain
+      }
+      for ($i = 0; $i < sizeof($domain_array); $i++) {
+          if (!preg_match("/^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$/", $domain_array[$i])) {
+              return false;
+          }
+      }
+  }
+
+  return true;
+}
+
+// newguid createguid
+function nxs_create_guid($namespace = '') 
+{
+	// credits: http://php.net/manual/en/function.uniqid.php
+  static $guid = '';
+  $uid = uniqid("", true);
+  $data = $namespace;
+  $data .= $_SERVER['REQUEST_TIME'];
+  $data .= $_SERVER['HTTP_USER_AGENT'];
+  $data .= $_SERVER['LOCAL_ADDR'];
+  $data .= $_SERVER['LOCAL_PORT'];
+  $data .= $_SERVER['REMOTE_ADDR'];
+  $data .= $_SERVER['REMOTE_PORT'];
+  $hash = strtoupper(hash('ripemd128', $uid . $guid . md5($data)));
+  $guid = substr($hash,  0,  8) . 
+          '-' .
+          substr($hash,  8,  4) .
+          '-' .
+          substr($hash, 12,  4) .
+          '-' .
+          substr($hash, 16,  4) .
+          '-' .
+          substr($hash, 20, 12);
+  return $guid;
+}
+
+
+/** 
+ * Convert a date format to a jQuery UI DatePicker format  
+ * 
+ * @param string $dateFormat a date format 
+ * @return string 
+ */ 
+function nxs_date_getdatepickerformatclientside() 
+{ 
+	$result = get_option("date_format");
+	
+  	$chars = array( 
+      // Day
+      'd' => 'dd', 'j' => 'd', 'l' => 'DD', 'D' => 'D',
+      // Month 
+      'm' => 'mm', 'n' => 'm', 'F' => 'MM', 'M' => 'M', 
+      // Year 
+      'Y' => 'yy', 'y' => 'y', 
+      // Suffix
+      'S' => '',
+  	); 
+
+  	$result = strtr((string)$result, $chars); 
+  	return $result;
+} 
+
+function nxs_insertarrayindex($array, $new_element, $index) 
+{
+	$start = array_slice($array, 0, $index); 
+	$end = array_slice($array, $index);
+	$start[] = $new_element;
+	return array_merge($start, $end);
+}
+
 
 function nxs_getwidgets($widgetargs)
 {
@@ -1808,17 +2140,6 @@ function nxs_getrandompostname()
 	}
 	
 	return $random;
-}
-
-// kudos to http://stackoverflow.com/questions/4356289/php-random-string-generator
-function nxs_generaterandomstring($length = 10)
-{
-  $characters = 'abcdefghijklmnopqrstuvwxyz';
-  $randomString = '';
-  for ($i = 0; $i < $length; $i++) {
-      $randomString .= $characters[rand(0, strlen($characters) - 1)];
-  }
-  return $randomString;
 }
 
 function nxs_get_var_dump($variable)
@@ -2107,186 +2428,7 @@ function nxs_getpagerowtemplatecontent($template)
 	return $newcontent;
 }
 
-// deserialize / unserialize an array of values, as serialized by for example the javascript call
-// see function nxs_js_getescapeddictionary(input)
-function nxs_urldecodearrayvalues($array)
-{
-	return nxs_urldecodearrayvalues_internal($array, 0);
-}
-
-function nxs_urldecodearrayvalues_internal($array, $depth)
-{
-	$result = array();
-	
-	// prevent endless loop
-	$maxdepth = 10;	// increase if you need structures that are nested further
-	if ($depth > $maxdepth) 
-	{ 
-		nxs_webmethod_return_nack("not sure, but suspecting a loop? increase the maxdepth if this is done on purpose ($maxdepth)"); 
-	}
-	
-	if ($array == null)
-	{
-		//
-	}
-	else if (count($array) == 0)
-	{
-		//
-	}
-	else
-	{
-		foreach ($array as $key => $val)
-		{
-			if ($val != null)
-			{
-				if (is_array($val))
-				{
-					// recursive call
-					$result[$key] = nxs_urldecodearrayvalues_internal($val, $depth + 1);
-				}
-				else
-				{
-					$result[$key] = utf8_urldecode($val);
-					
-					// nxs_js_getescapeddictionary() also escapes single quotes,
-					// here we de-escape \' back into ' 
-					$result[$key] = str_replace("\'","'", $result[$key]);
-				}
-			}
-			else
-			{
-				$result[$key] = null;
-			}
-		}
-	}
-	
-	// fix issue seen in TandenOnline; if client encodes json (originating from server),
-	// the string passed to us isn't utf8, causing problems when decoding the string to php json objects
-	// therefore before returning the result, we will convert the string's in the array to valid utf8 strings (if present)
-	$result = nxs_array_toutf8string($result);
-	
-	return $result;
-}
-
-function utf8_urldecode($val) 
-{
- 	$result = preg_replace("/%u([0-9a-f]{3,4})/i","&#x\\1;",urldecode($val));
- 	
- 	/*
- 	if (nxs_stringcontains($val, "%5C"))
-	{
-		$result = $val;
-	}
-	*/
-	
-	
-	
- 	
-  return $result;
-}
-
-function nxs_urlencodearrayvalues($array)
-{
-	$result = array();
-	
-	if ($array == null)
-	{
-		//
-	}
-	else if (count($array) == 0)
-	{
-		//
-	}
-	else
-	{
-		foreach ($array as $key => $val)
-		{
-			if ($val != null)
-			{
-				$result[$key] = urlencode($val);
-			}
-			else
-			{
-				$result[$key] = null;
-			}
-		}
-	}
-	
-	return $result;
-}
-
-function nxs_getplaceholdertemplate($postid, $placeholderid)
-{
-	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set (gpht)"); };
-	if ($postid== "") { nxs_webmethod_return_nack("postid not set (gpht)"); };
-	
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
-	
-	if ($temp_array == "")
-	{
-		$result = "";
-	}
-	else
-	{
-		$result = $temp_array['type'];
-	}
-	
-	return $result;
-}
-
-function nxs_cloneplaceholder($postid, $placeholderidtobecloned)
-{
-	if ($postid== "")
-	{
-		nxs_webmethod_return_nack("postid not set (cloneph)");
-	}
-	if ($placeholderidtobecloned == "")
-	{
-		nxs_webmethod_return_nack("placeholderidtobecloned not set");
-	}
-	
-	$metadatatoclone = nxs_getwidgetmetadata($postid, $placeholderidtobecloned);
-	if ($metadatatoclone["type"] == "")
-	{
-		nxs_webmethod_return_nack("source placeholderid ($placeholderidtobecloned) to be cloned not found on page ($postid)");
-	}
-	
-	// TODO: add loop in case the placeholderid was already allocated (retry mechanism with max limit or retries)
-	
-	$placeholderid = rand(1000000, 9999999) . 'ID';
-
-	// ensure the placeholderid is not in use
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
-	if (isset( $temp_array['type']))
-	{
-		nxs_webmethod_return_nack("unable to allocate unused ID, please retry");
-	}
-	
-	// vrije id gevonden
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($metadatatoclone));
-		
-	return $placeholderid;
-}
-
-function nxs_storebinarypoststructure($postid, $poststructure)
-{
-	$newpostcontents = nxs_getcontentsofpoststructure($postid, $poststructure);
-
-	nxs_updatepoststructure($postid, $newpostcontents);
-
-	//
-	// na het updaten kunnen bepaalde velden zijn bijgewerkt, deze halen we direct weer op
-	// 
-	$the_post = get_page($postid);
-	$post_modified = $the_post->post_modified;	// de nieuwe timestamp
-	
-	$result = array();
-	$result["modified"] = $post_modified;
-	
-	return $result;
-}
-
-function nxs_getcontentsofpoststructure($postid, $poststructure)
+function nxs_getcontentsofpoststructure($poststructure)
 {
 	$content = "";
 		
@@ -2315,13 +2457,6 @@ function nxs_getcontentsofpoststructure($postid, $poststructure)
 	return $content;
 }
 
-function nxs_getrowindex_forpostidplaceholderid($postid, $placeholderid)
-{
-	$parsedpoststructure = nxs_parsepoststructure($postid);
-	$result = nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid);
-	return $result;
-}
-
 // NOTE; this is the rowindex, not the pagerowid! (rowindexes always start with 0,
 // the pagerowid is the unique id of the row!
 function nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid)
@@ -2338,16 +2473,6 @@ function nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid)
 			break;
 		}
 	}
-	return $result;
-}
-
-/*
-*/
-
-function nxs_getpagerowid_forpostidplaceholderid($postid, $placeholderid)
-{
-	$parsedpoststructure = nxs_parsepoststructure($postid);
-	$result = nxs_getpagerowid_for_placeholderid($parsedpoststructure, $placeholderid);
 	return $result;
 }
 
@@ -2368,56 +2493,9 @@ function nxs_getpagerowid_for_placeholderid($parsedpoststructure, $placeholderid
 	return $result;
 }
 
-/*
-*/
-
 function nxs_parserowidfrompagerow($parsedrowfromstructure)
 {
 	return $parsedrowfromstructure["pagerowid"];
-}
-
-function nxs_getwidgetsmetadatainpost($postid)
-{
-	$filter = array();
-	$filter["postid"] = $postid;
-	return nxs_getwidgetsmetadatainpost_v2($filter);
-}
-
-// widgets metadata 
-function nxs_getwidgetsmetadatainpost_v2($filter)
-{
-	$result = array();
-	
-	$postid = $filter["postid"];
-	$widgettype = $filter["widgettype"];
-	
-	$rows = nxs_parsepoststructure($postid);
-	$index = 0;
-	foreach ($rows as $currentrow) 
-	{
-		$content = $currentrow["content"];
-		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
-		foreach ($placeholderids as $placeholderid)
-		{
-			$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
-			$shouldinclude = true;
-			if ($widgettype != "")
-			{
-				if ($placeholdermetadata["type"] != $widgettype)
-				{
-					// wrong type; ignore!
-					$shouldinclude = false;
-				}
-			}
-			
-			if ($shouldinclude)
-			{
-				$result[$placeholderid] = $placeholdermetadata;
-			}
-		}
-	}
-	
-	return $result;
 }
 
 function nxs_getallpostids()
@@ -2468,74 +2546,6 @@ function nxs_getwidgetsmetadatainsite($filter)
 		}
 	}
 	
-	return $result;
-}
-
-function nxs_parsepoststructure($postid)
-{
-	// haal de contents op van de pagina voor postid
- 	$content = nxs_getpoststructure($postid);
-
-	// haal een array op van alle pagerows op de pagina
- 	$regex_pattern = "/\[nxspagerow(.*)\](.*)\[\/nxspagerow\]/Us";
- 	preg_match_all($regex_pattern,$content,$matches);
-
-	$result = array();
-
-	// loop over the pagerowtemplates as currently stored in the page
-	foreach ($matches[1] as $rowindex => $pagerowtemplateidentification)
-	{
-		//
-		//
-		//
-		$pagerowattributes = $matches[1][$rowindex];	// contains the attributes
-		$content = $matches[2][$rowindex];	// contains the content
-		$outercontent = $matches[0][$rowindex];		
-		
-		//
-		// pagerowtemplate (required)
-		//
-		$prt_sub_regex_pattern = "/" . "pagerowtemplate=" . "[\'\"]" . "(.*)" . "[\'\"]" . "/" . "Us";
- 		$prt_identificationsfound = preg_match($prt_sub_regex_pattern,$pagerowtemplateidentification,$prt_sub_matches);
- 		// ensure row has pagerowtemplate attribute
- 		if ($prt_identificationsfound != 1)
- 		{
- 			// not found?
-			// incorrect page contents layout?
-			nxs_webmethod_return_nack("incorrect page contents layout; no pagerowtemplate or multiple pagerowtemplates found?;" . $prt_identificationsfound);
-	 	}
-		$pagerowtemplate = $prt_sub_matches[1];
-
-		//
-		// pagerowid (optional)
-		//
-		$prid_sub_regex_pattern = "/" . "pagerowid=" . "[\'\"]" . "(.*)" . "[\'\"]" . "/" . "Us";
- 		$prid_identificationsfound = preg_match($prid_sub_regex_pattern,$pagerowtemplateidentification,$prid_sub_matches);
- 		
- 		if ($prid_identificationsfound == 0)
- 		{
- 			$pagerowid = "";
- 		}
- 		else if ($prid_identificationsfound == 1)
- 		{
- 			$pagerowid = $prid_sub_matches[1];
- 		}
- 		else
- 		{
- 			nxs_webmethod_return_nack("incorrect page contents layout; multiple pagerowids found?"); 		
- 		}
-		
-		$result[] = array
-		(
-			"rowindex" => $rowindex,
-			"pagerowtemplate" => $pagerowtemplate,
-			"pagerowid" => $pagerowid,	// could be empty
-			"pagerowattributes" => $pagerowattributes,
-			"content" => $content,
-			"outercontent" => $outercontent,
-		);
-	}
-		
 	return $result;
 }
 
@@ -2768,128 +2778,6 @@ function nxs_getstacktrace()
 	return $result;
 }
 
-// posttitle
-function nxs_gettitle_for_postid($postid)
-{
-	$result = get_the_title($postid);
-	return $result; 
-}
-
-// 2012 06 04; GJ; in some particular situation (unclear yet when exactly) the result cannot be json encoded
-// erroring with 'Invalid UTF-8 sequence in range'.
-// Solution appears to be to UTF encode the input
-function nxs_array_toutf8string($result)
-{
-	foreach ($result as $resultkey => $resultvalue)
-	{
-		if (is_string($resultvalue))
-		{
-			if (!nxs_isutf8($resultvalue))
-			{
-				$result[$resultkey] = nxs_toutf8string($resultvalue);
-			}
-
-			// also fix the special character \u00a0 (no breaking space),
-			// as this one also could result into issues
-			$result[$resultkey] = preg_replace('~\x{00a0}~siu', ' ', $result[$resultkey]);   
-		}
-		else if (is_array($resultvalue))
-		{
-			$result[$resultkey] = nxs_array_toutf8string($resultvalue);
-		}
-		else
-		{
-			// leave as is...
-		}
-	}
-	
-	return $result;
-}
-
-if(!function_exists('mb_detect_order')) 
-{
-	
-	function mb_detect_order($encoding_list)
-	{
-		$result = false;
-		if (is_null($encoding_list))
-		{
-			$result = array("ASCII", "UTF-8");	
-		}
-	}
-}
-
-// 17 aug 2013; workaround if mb_detect_encoding is not available (milos)
-// kudos to http://php.net/manual/de/function.mb-detect-encoding.php
-if(!function_exists('mb_detect_encoding')) 
-{ 
-	function mb_detect_encoding($string, $enc=null) 
-	{ 	    
-    static $list = array('utf-8', 'iso-8859-1', 'windows-1251');
-    
-    foreach ($list as $item) {
-        $sample = iconv($item, $item, $string);
-        if (md5($sample) == md5($string)) { 
-            if ($enc == $item) { return true; }    else { return $item; } 
-        }
-    }
-    return null;
-	}
-}
-
-// 17 aug 2013; workaround if mb_convert_encoding is not available (milos)
-// kudos to http://php.net/manual/de/function.mb-detect-encoding.php
-if(!function_exists('mb_convert_encoding')) 
-{ 
-	function mb_convert_encoding($string, $target_encoding, $source_encoding) 
-	{ 
-		if ($source_encoding == "UTF-8" && $target_encoding == "HTML-ENTITIES")
-		{
-			// 2016 05 27; found issue while rendering html widgets in WC; resulting in blank output
-			// to avoid error; leave string as is for this particular convert task
-			// Notice: iconv(): Wrong charset, conversion from `UTF-8' to `HTML-ENTITIES'
-			// resulting in string that only have a space as output
-		}
-		else
-		{
-    	$string = iconv($source_encoding, $target_encoding, $string);
-    }
-    
-    return $string; 
-	}
-}
-
-function nxs_isutf8($string) 
-{
-  if (function_exists("mb_check_encoding")) 
-  {
-    return mb_check_encoding($string, 'UTF8');
-  }
-  
-  return (bool)preg_match('//u', serialize($string));
-}
-
-function nxs_toutf8string($in_str)
-{
-	$in_str_v2=mb_convert_encoding($in_str,"UTF-8","auto");
-	if ($in_str_v2 === false)
-	{
-		$in_str_v2 = $in_str;
-	}
-	
-	$cur_encoding = mb_detect_encoding($in_str_v2) ; 
-  if($cur_encoding == "UTF-8" && nxs_isutf8($in_str_v2)) 
-  {
-  	$result = $in_str_v2; 
-  }
-  else 
-  {
-    $result = utf8_encode($in_str_v2); 
-  }
-    
-  return $result;
-}
-
 function nxs_get_main_titles_on_page($postid)
 {
 	$result = array();
@@ -2955,226 +2843,15 @@ function nxs_get_main_titles_on_page($postid)
 	
 	if (count($result) == 0)
 	{
-		$result[] = "Geen passende titel gevonden";
-	}	
-	
-	return $result;
-}
-
-function nxs_clonepost($postid)
-{
-	if (!nxs_postexistsbyid($postid))
-	{
-		echo "nothing to clone? $postid";
-		die();
+		$result[] = "No title found";
 	}
 	
-	//$sessionid = nxs_generaterandomstring(5);
-	
-	// grab the basic lookups, like the posttype and the globalid, etc.
-	$posttype = get_post_type($postid);
-	$nxsposttype = nxs_getnxsposttype_by_postid($postid);
-	$nxssubposttype = nxs_get_nxssubposttype($postid);
-	$globalid = nxs_get_globalid($postid, true);
-	$title = nxs_gettitle_for_postid($postid);
-	$slug = nxs_getslug_for_postid($postid);
-	$nxs_semanticlayout = get_post_meta($postid, 'nxs_semanticlayout', true);
-	$structure = nxs_parsepoststructure($postid);
-	
-	$destinationpostid = "";
-	$destinationglobalid = "";
-	
-	if (in_array($posttype, array("nxs_genericlist")))
-	{
-		$newpost_args = array();
-		$newpost_args["slug"] = $slug;	// sessionid toevoegen?
-		$newpost_args["titel"] = $title;
-		$newpost_args["wpposttype"] = $posttype;
-		$newpost_args["nxsposttype"] = $nxsposttype;
-		$newpost_args["nxssubposttype"] = $nxssubposttype;
-		$newpost_args["postwizard"] = "skip";
-		//$newpost_args["globalid"] = $currentpostglobalid;
-		//$newpost_args["postmetas"] = $postmetas;
-		$response = nxs_addnewarticle($newpost_args);
-		$destinationpostid = $response["postid"];
-		$destinationglobalid = $response["globalid"];
-		
-		// replicate the structure of the post
-		nxs_storebinarypoststructure($destinationpostid, $structure);
-		
-		// replicate the data per row
-		$rowindex = 0;
-		foreach ($structure as $pagerow)
-		{
-			// ---------------- ROW META
-			
-			// replicate the metadata of the row
-			$pagerowid = nxs_parserowidfrompagerow($pagerow);
-			if (isset($pagerowid))
-			{
-				// get source meta
-				$rowmetadata = nxs_getpagerowmetadata($postid, $pagerowid);
-				// store destination meta
-				nxs_overridepagerowmetadata($destinationpostid, $pagerowid, $rowmetadata);
-			}
-			
-			// ---------------- WIDGET META
-			
-			// replicate the metadata of the widgets in the row
-			$filter = array("postid" => $postid);
-			$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
-			
-			foreach ($widgetsmetadata as $placeholderid => $widgetmetadata)
-			{
-				nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $widgetmetadata);
-			}
-		}
-	}
-	else
-	{
-		echo "to be implemented; $posttype";
-		die();
-	}
-	
-	$result = array
-	(
-		"destinationpostid" => $destinationpostid,
-		"destinationglobalid" => $destinationglobalid,
-	);
-	
-	return $result;
-}
-
-// will update the metadata of the widget postid, placeholderid,
-// for the fields that reference other widgets, by cloning the existing
-// referencing posts, and then updating the meta fields of the widget itself
-// this is a function that is being used AFTER the pasting of a widget, row or
-// entire page is has cloned al fields by value, to ensure that referenced
-// fields are cloned too (instead of both the source and destination using
-// the same generic lists for example)
-function nxs_clonereferencedfieldsforwidget($postid, $placeholderid)
-{
-	// grab the existing widgetmetadata of this widget
-	$metadata = nxs_getwidgetmetadata($postid, $placeholderid);
-	$placeholdertemplate = $metadata["type"];
-	
-	// clone referenced entities
-	// for debugging this could be done based upon the IP address
-	//$ip = $_SERVER['REMOTE_ADDR'];
-	//$shouldclonereferencedgenericlists = ($ip == "83.162.43.67");
-	$shouldclonereferencedgenericlists = true;				
-	
-	$isdirty = false;
-	
-	if ($shouldclonereferencedgenericlists)
-	{
-		// loop over properties of the widgettype
-		// if one of the properties represents a genericlist,
-		// then clone that genericlist post,
-		// give it a new unique globalid and postid
-		// and update the widgetmeta of "this" widget we are pasting,
-		// such that it will point to that cloned entity
-		nxs_requirewidget($placeholdertemplate);
-		$widget = $placeholdertemplate;
-		$sheet = "home";
-		$functionnametoinvoke = 'nxs_widgets_' . $widget . '_' . $sheet . '_getoptions';
-		if (function_exists($functionnametoinvoke))
-		{
-			// todo: 20161007; a better solution would be to loop over the properties through reflection
-			// instead of looking for the hardcoded "items_genericlistid" fieldname,
-			// but for now this should be enough
-			if ($metadata["items_genericlistid"] != "" && $metadata["items_genericlistid"] != "0")
-			{
-				//error_log("clone generic lists = genericlist set");
-				
-				// we found a referenced post; clone that post first
-				$tobeclonedpostid = $metadata["items_genericlistid"];
-				//error_log("clone generic lists = cloning $tobeclonedpostid");
-				$clonedresult = nxs_clonepost($tobeclonedpostid);
-				//error_log("clone generic lists = clone finished " . json_encode($clonedresult));
-				// update the metadata with the cloned result
-				$metadata["items_genericlistid"] = $clonedresult["destinationpostid"];
-				$metadata["items_genericlistid_globalid"] = $clonedresult["destinationglobalid"];
-				
-				$isdirty = true;
-			}
-		}
-		else
-		{
-			// for old style widgets we don't support this
-		}
-	}
-	
-	if ($isdirty)
-	{
-		// update the widgetmetadata
-		nxs_overridewidgetmetadata($postid, $placeholderid, $metadata);
-	}
-}
-
-function nxs_replicatepoststructure($replicatemetadata)
-{
-	extract($replicatemetadata);
-	
-	if ($destinationpostid == "") { nxs_webmethod_return_nack("destinationpostid empty? (shp)"); }
-	if ($destinationpostid == "0") { nxs_webmethod_return_nack("destinationpostid empty? (shp)"); }
-	if ($sourcepostid == "") { nxs_webmethod_return_nack("sourcepostid empty? (shp)"); }
-	if ($sourcepostid == "0") { nxs_webmethod_return_nack("sourcepostid empty? (shp)"); }
-	if ($sourcepostid == $destinationpostid) { nxs_webmethod_return_nack("sourcepostid is the same as the destination postid (shp)"); }
-	
-	// replicate the data structure and metafields from source to destination
-	$structure = nxs_parsepoststructure($sourcepostid);
-	nxs_storebinarypoststructure($destinationpostid, $structure);
-	
-	// replicate the data per row
-	$rowindex = 0;
-	foreach ($structure as $pagerow)
-	{
-		// ---------------- ROW META
-		
-		// replicate the metadata of the row
-		$pagerowid = nxs_parserowidfrompagerow($pagerow);
-		if (isset($pagerowid))
-		{
-			// get source meta
-			$metadata = nxs_getpagerowmetadata($sourcepostid, $pagerowid);
-			// store destination meta
-			nxs_overridepagerowmetadata($destinationpostid, $pagerowid, $metadata);
-		}
-		
-		// ---------------- WIDGET META
-		
-		// replicate the metadata of the widgets in the row
-		$content = $pagerow["content"];
-		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
-		foreach ($placeholderids as $placeholderid)
-		{
-			// get source metadata
-			$metadata = nxs_getwidgetmetadata($sourcepostid, $placeholderid);
-			// store destination metadata
-			nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $metadata);
-		}
-	}
-	
-	// huray!
-	$result = array();
-	return $result;
-}
-
-// first_image get first image
-function nxs_get_key_imageid_in_post($postid)
-{
-	$result = 0;
-	$imageids = nxs_get_images_in_post($postid);
-	foreach ($imageids as $currentimageid)
-	{
-		$result = $currentimageid;
-		break;
-	}
 	return $result;
 }
 
 // gets an improved version of the image, based on the themeversion
+// usage: the version will be appeneded to images, which will cause
+// cache expiration if the photopack is installed and/or if the theme version is changed
 function nxs_img_getimageurlthemeversion($result)
 {
 	if (function_exists("nxs_theme_getmeta"))
@@ -3201,57 +2878,6 @@ function nxs_img_getstamp()
 		}
 	}
 	return $nxs_gl_img_stamp;
-}
-
-function nxs_get_images_in_post($postid)
-{
-	$result = array();
-	
-	// add featured image (if set)
-	$featuredimageid = get_post_thumbnail_id($postid);
-	if ($featuredimageid != "" && $featuredimageid != 0)
-	{
-		if (!in_array($featuredimageid, $result))
-		{
-			$result[] = $featuredimageid;
-		}
-	}
-	
-	// parse de pagina
-	$parsedpoststructure = nxs_parsepoststructure($postid);
-	// loop over each row, get placeholderid,
-	$rowindex = 0;
-	foreach ($parsedpoststructure as $pagerow)
-	{
-		$content = $pagerow["content"];		
-		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
-		foreach ($placeholderids as $placeholderid)
-		{
-			$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
-			
-			$item = strip_tags($placeholdermetadata["thumbid"]);
-			if ($item != "")
-			{
-				if (!in_array($item, $result))
-				{
-					$result[] = $item;
-				}
-			}			
-			$item = strip_tags($placeholdermetadata["image_imageid"]);
-			if ($item != "")
-			{
-				if (!in_array($item, $result))
-				{
-					$result[] = $item;
-				}
-			}
-			
-			// check for other attributes too, if that's needed in the future
-		}
-		$rowindex++;
-	}
-	
-	return $result;
 }
 
 function nxs_get_images_in_site()
@@ -3321,223 +2947,6 @@ function nxs_get_advanced_strippedtags($data_str, $allowable_tags, $allowable_at
 	return $data_str;
 }
 
-function nxs_get_text_blocks_on_page($postid)
-{
-	return nxs_get_text_blocks_on_page_v2($postid, "...");
-}
-
-function nxs_get_text_blocks_on_page_v2($postid, $emptyplaceholder)
-{
-	return nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, "before");
-
-}
-
-function nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, $wpcontentrenderbehaviour)
-{
-	$result = array();
-
-	if ($wpcontentrenderbehaviour == "none")
-	{
-		//
-	}
-	else if ($wpcontentrenderbehaviour == "before")
-	{
-		// the wp content
-		$text = do_shortcode(nxs_getwpcontent_for_postid($postid));
-		// 20151009 - disabled nxs_toutf8string; it produces garbled output on the blog widgets/
-		// on one of Kacems sites
-		//$item = nxs_toutf8string(strip_tags($text));	
-		$item = strip_tags($text);
-		
-		if ($item != "")
-		{
-			if (!in_array($item, $result))
-			{
-				$result[] = $item;
-			}
-		}
-	}
-	else
-	{
-		// unknown
-	}
-	
-	// parse de pagina
-	$parsedpoststructure = nxs_parsepoststructure($postid);
-
-	// loop over each row, get placeholderid,
-	foreach ($parsedpoststructure as $pagerow)
-	{
-		$content = $pagerow["content"];		
-		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
-		foreach ($placeholderids as $placeholderid)
-		{
-			$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
-
-			// per placeholderid get all meta data
-			$text = $placeholdermetadata["text"];
-			// the <br /> tag should be replaced with a space rather than being removed
-			// the <br> tag should also be replaced with a space rather than being removed
-			$text = str_ireplace("<br />", " ", $text);
-			$text = str_ireplace("<br>", " ", $text);
-			
-			$stripped = strip_tags($text);
-			$item = $stripped;
-			
-			// apply lookup tables
-			$temp  = array("text" => $item);
-			$temp = nxs_filter_translatelookup($temp, array("text"));
-			$item = $temp["text"];
-			
-			if ($item != "")
-			{
-				if (!in_array($item, $result))
-				{
-					$result[] = $item;
-				}
-			}
-			// check for other attributes too, if that's needed in the future
-		}
-	}
-	
-	if (count($result) == 0)
-	{
-		$result[] = $emptyplaceholder;
-	}
-	
-	return $result;
-}
-
-function nxs_getwpposttype($postid)
-{
-	$postdata = get_page($postid);
-	if ($postdata == null)
-	{
-		nxs_webmethod_return_nack("nxs_getwpposttype; postid not found;" . $postid);
-	}
-	$result = $postdata->post_type;
-	return $result;
-}
-
-function nxs_converttopage($postid)
-{
-	$resultaat = array();
-	
-	set_post_type($postid, 'page');
-	
-	return $resultaat;
-}
-
-function nxs_converttopost($postid)
-{
-	$result = array();
-	
-	$iscurrentpagethehomepage = nxs_ishomepage($postid);
-	if ($iscurrentpagethehomepage)
-	{
-		// leave as-is
-		echo "error; homepage cannot be marked as post; please first assign the homepage to another post";
-		return;
-	}
-	
-	set_post_type($postid, 'post');
-	
-	return $result;
-}
-
-// TODO: check if following method is still in use?
-function nxs_updatewpposttype($postid, $wpoldposttype, $wpnewposttype, $shouldflushrewriterules)
-{
-	$result = array();
-	
-	global $wpdb;
-	$query = "UPDATE " . $wpdb->posts . " SET post_type = '" . $wpnewposttype . "' WHERE id=" . $postid; // . " and post_type = '" . $wpoldposttype . "'";
-	$queryresult = $wpdb->query($query);
-	$queryerror = $wpdb->print_error();
-	
-	if ($queryresult == 1)
-	{
-		// 1 row updated; OK!
-		$result["result"] = "OK";
-		$result["qr"] = $queryresult;
-		$result["qe"] = $queryerror;
-	} 
-	else 
-	{
-	  // failed
-		$result["result"] = "NACK";
-	}
-	
-	if ($shouldflushrewriterules)
-	{
-		global $wp_rewrite;
-		//Important! Rewrites permalinks for post/page files 
-		$wp_rewrite->flush_rules();
-	}
-	
-	return $result;
-}
-
-function nxs_getnxsposttype_by_postid($postid)
-{
-	$wpposttype = nxs_getwpposttype($postid);
-	if ($wpposttype == "")
-	{
-		nxs_webmethod_return_nack("unknown wp posttype");
-	}
-	else
-	{
-		$result = nxs_getnxsposttype_by_wpposttype($wpposttype);
-	}
-	return $result;
-}
-
-function nxs_getslug_for_postid($postid)
-{
-	$postdata = get_post($postid);
-	if (isset($postdata))
-	{
-		$result = $postdata->post_name;
-	}
-	else
-	{
-		$result = "";
-	}
-	return $result; 
-}
-
-function nxs_getwpcontent_for_postid($postid)
-{
-	$postdata = get_post($postid);
-	$title = $postdata->post_content;
-	return $title; 
-}
-
-function nxs_setwpcontent_for_postid($postid, $wpcontent)
-{
-	nxs_disabledwprevisions();
-	
-  $my_post = array();
-  $my_post['ID'] = $postid;
-  $my_post['post_content'] = $wpcontent;
-
-	// Update the post into the database
-  wp_update_post( $my_post );
-}
-
-function nxs_getwpcategoryids_for_postid($postid)
-{
-	$result = "";
-	
-	$categoryids = wp_get_post_categories($postid);
-	foreach ($categoryids as $categoryid)
-	{
-		$result .= "[" . $categoryid . "]";
-	}
-	
-	return $result;
-}
-
 function nxs_getpostid_for_title_and_nxstype($title, $nxsposttype)
 {
 	$posttype = nxs_getposttype_by_nxsposttype($nxsposttype);
@@ -3549,14 +2958,6 @@ function nxs_getpostid_for_title_and_wpposttype($title, $wpposttype)
 {
 	$post = get_page_by_title($title, "OBJECT", $wpposttype);
 	return $post->ID;	
-}
-
-function nxs_htmlescape($input)
-{
-	$result = htmlentities($input);
-	$result = str_replace("'","&#039;", $result);
-		
-	return $result;
 }
 
 function nxs_render_html_escape_gtlt($input)
@@ -3612,62 +3013,6 @@ function nxs_getsiteslug()
 	$result = str_replace("--", "-", $result);
 	$result = str_replace("--", "-", $result);
 	$result = str_replace("--", "-", $result);
-}
-
-function nxs_getsites()
-{
-	$result = array();
-	
-	global $wpdb;
-  $blogs = $wpdb->get_results("SELECT blog_id, registered FROM $wpdb->blogs");
-  foreach ($blogs as $currentblog)
-  {
-  	$blog_id = $currentblog->blog_id;
-  	$url = get_site_url($blog_id);
-  	$result[$blog_id] = $url;
-  }
-  
-  return $result;
-}
-
-// kudos to http://stackoverflow.com/questions/3835636/php-replace-last-occurence-of-a-string-in-a-string
-function nxs_str_lastreplace($search, $replace, $subject)
-{
-    $pos = strrpos($subject, $search);
-
-    if($pos !== false)
-    {
-        $subject = substr_replace($subject, $replace, $pos, strlen($search));
-    }
-
-    return $subject;
-}
-
-// todo: add in mem caching go to speed things up?
-// url get posturl getposturl geturlforpost
-function nxs_geturl_for_postid($postid)
-{
-	if ($postid == null)
-	{
-		$result = "";
-	}
-	else if ($postid == 0)
-	{
-		$result = "";
-	}
-	else if ($postid == "")
-	{
-		$result = "";
-	}
-	else if (nxs_ishomepage($postid))
-	{
-		$result = nxs_geturl_home();
-	}
-	else
-	{
-		$result = get_permalink($postid);
-	}
-	return $result; 
 }
 
 // geturlforglobalid (convenience function)
@@ -3766,7 +3111,7 @@ function nxs_getsitemeta_internal($nackwhenerror)
 			}
 			// store site settings as pagemeta of specific postid
 			$postid = $postids[0];
-			$result = nxs_get_postmeta($postid);
+			$result = nxs_get_corepostmeta($postid);
 			
 			// allow plugins to tune the result
 			// (for example the stans plugin will post-process the 
@@ -3886,18 +3231,19 @@ function nxs_wipe_sitemetakeys_internal($keystoberemoved, $performsanitycheck)
 }
 
 //called after category is edited
-function nxs_dataconsistency_after_edited_terms() {
+function nxs_dataconsistency_after_edited_terms() 
+{
 	nxs_set_dataconsistencyvalidationrequired();
 }
 
-function nxs_dataconsistency_notify_data_inconsistent() {
+function nxs_dataconsistency_notify_data_inconsistent() 
+{
 	$url = admin_url('admin.php?page=nxs_data_verification_page_content');
 	echo '<div class="error">
 	    <p>
 	    	Data verification required.
 	    	<br />
-	    	<A HREF="'.$url.'">Click here to verify the data of the website</A>
-	    	
+	    	<a href="'.$url.'">Click here to verify the data of the website</A>
 	    </p>
 	  </div>';
 }
@@ -3939,89 +3285,6 @@ function nxs_isdataconsistencyvalidationrequired()
 		$metadatakey = 'nxs_dataconsistencyvalidationrequired';
 	
 		$result = get_option($metadatakey) == "true";
-	}
-	
-	return $result;
-}
-
-function nxs_updatepagetemplate($args)
-{
-	extract($args);
-	
- 	if ($postid == "") { nxs_webmethod_return_nack("postid empty? (uphd)"); }
- 	if ($pagetemplate == "") { nxs_webmethod_return_nack("pagetemplate empty?"); }
-
-	// ensure it exists
-	nxs_requirepagetemplate($pagetemplate);
- 	
- 	//
- 	$articlesubtype = $pagetemplate;
- 	
- 	// store as taxonomy
-	$result = wp_set_object_terms(strval($postid), $articlesubtype, "nxs_tax_subposttype");
-	
-	return $result;
-}
-
-function nxs_set_nxssubposttype($postid, $nxssubposttype)
-{
-	$result = wp_set_object_terms(strval($postid), $nxssubposttype, "nxs_tax_subposttype");
-	if (is_wp_error($result)) 
-	{
-		$msg = $result->get_error_message();
-		error_log("nxs_set_nxssubposttype invoked with $postid $nxssubposttype error result $msg");
-	}
-	else
-	{
-		//error_log("nxs_set_nxssubposttype; result: $result");
-	}
-	return $result;
-}
-
-// note; only invoke this function AFTER the nxs_create_post_types_and_taxonomies() function 
-// of the framework is invoked, or else the taxonomy won't be available,
-// meaning it will return "nxserr" error messages!
-function nxs_get_nxssubposttype($postid)
-{
-	if ($postid == "")
-	{
-		echo "postid is niet geset? (subpt a)";
-		return "postid is niet geset? (subpt) b";
-	}
-	
-	$terms = wp_get_object_terms(strval($postid), 'nxs_tax_subposttype');
-	
-	if(!empty($terms))
-	{
-		if(!is_wp_error($terms))
-		{
-			if (count($terms) == 1)
-			{
-				$term = $terms[0];
-				$result = $term->name;
-				
-				// fix; on rare installations system returns capitalized first letters, "Gallery" instead of "gallery",
-				// messing up the behaviour. Fix is to always lowercase the result
-
-				$result = strtolower($result); 
-			}
-			else
-			{
-				// unexpected; we found 0, or multiple taxonomies?
-				error_log("nxs_get_nxssubposttype for $postid nxserr(1)");
-				$result = false;
-			}
-		}
-		else
-		{
-			error_log("nxs_get_nxssubposttype for $postid nxserr(2)");
-			$result = false;
-		}		
-	}
-	else
-	{
-		error_log("nxs_get_nxssubposttype for $postid nxserr(3)");
-		$result = false;
 	}
 	
 	return $result;
@@ -4107,115 +3370,6 @@ function nxs_get_backslashescaped_string($val)
 	return $val;
 }
 
-function nxs_merge_postmeta($postid, $modifiedmetadata)
-{	
-	if ($postid == "")
-	{
-		echo "postid is niet geset? (mpm)";
-		return "postid is niet geset? (mpm)";
-	}
-
-	$metadatakey = 'nxs_core';
-	$temp_array = array();
-	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	$result = array_merge((array)$temp_array, (array)$modifiedmetadata);
-	// fix; 20140307; backslashes are removed in anything we stored, unless
-	// double-backslashed, see: 
-	// - http://codex.wordpress.org/Function_Reference/update_post_meta
-	// - https://codex.wordpress.org/Function_Reference/wp_slash
-	$updateresult = update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($result));
-
-	// wipe cached data	
-	global $nxs_gl_cache_postmeta;
-	if (!isset($nxs_gl_cache_postmeta))
-	{
-		$nxs_gl_cache_postmeta = array();
-	}
-	if (array_key_exists($postid, $nxs_gl_cache_postmeta))
-	{
-		// remove item
-		unset($nxs_gl_cache_postmeta[$postid]);
-	}
-	
-	// TODO: handle updateresult (false means error for example)
-}
-
-function nxs_wipe_postmetakey($postid, $keytoberemoved)
-{
-	$keystoberemoved = array();
-	$keystoberemoved[] = $keytoberemoved;
-	return nxs_wipe_postmetakeys($postid, $keystoberemoved);
-}
-
-function nxs_wipe_postmetakeys($postid, $keystoberemoved)
-{
-	if ($postid == "")
-	{
-		echo "postid is niet geset? (mpm)";
-		return "postid is niet geset? (mpm)";
-	}
-
-	$metadatakey = 'nxs_core';
-	$temp_array = array();
-	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	
-	foreach ($keystoberemoved as $currentkeytoberemoved)
-	{
-		if (isset($temp_array[$currentkeytoberemoved]))
-		{
-			unset($temp_array[$currentkeytoberemoved]);
-		}
-	}
-	
-	$updateresult = update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($temp_array));
-
-	// wipe cached data	
-	global $nxs_gl_cache_postmeta;
-	if (!isset($nxs_gl_cache_postmeta))
-	{
-		$nxs_gl_cache_postmeta = array();
-	}
-	if (array_key_exists($postid, $nxs_gl_cache_postmeta))
-	{
-		// remove item
-		unset($nxs_gl_cache_postmeta[$postid]);
-	}
-}
-
-// getpostmeta
-function nxs_get_postmeta($postid)
-{
-	if ($postid == "")
-	{
-		nxs_webmethod_return_nack("postid not set (getpostmeta)");
-	}
-	
-	global $nxs_gl_cache_postmeta;
-	if (!isset($nxs_gl_cache_postmeta))
-	{
-		$nxs_gl_cache_postmeta = array();
-	}
-	
-	if (!array_key_exists($postid, $nxs_gl_cache_postmeta))
-	{
-		// its not (yet/anymore) in the cache; fetch!
-		$metadatakey = 'nxs_core';
-		$result = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-		if ($result == null || $result == "index.php")
-		{
-			$result = array();
-		}
-		// store fetched result in the cache
-		$nxs_gl_cache_postmeta[$postid] = $result;
-	}
-	else
-	{
-		$result = $nxs_gl_cache_postmeta[$postid];
-	}
-	
-	return $result;
-}
-
 function nxs_analytics_handleanalytics()
 {
 	// see https://developers.google.com/analytics/devguides/collection/analyticsjs/#the_javascript_tracking_snippet
@@ -4246,27 +3400,6 @@ function nxs_analytics_handleanalytics()
 	} 
 }
 
-function nxs_wpseo_video_index_content($content, $vid)
-{
-  $postid = $vid['post_id'];
-  // $postid will or at least point to revision
-  
-  $content = "";
-	// include nxs content
-	$rendermode = "anonymous";
-	
-	
-	global $nxs_global_current_postmeta_being_rendered;
-	$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
-	
-	$content .= nxs_getrenderedhtml($postid, $rendermode); 
-	// include regular WP content
-	//$postcontent .= " " . apply_filters('the_content', get_post_field('post_content', $postid));	
-	$content .= " " . get_post_field('post_content', $postid);
-  
-  return $content;
-}
-
 function nxs_seo_getanalyticsua()
 {
 	$sitemeta = nxs_getsitemeta_internal(false);
@@ -4275,39 +3408,7 @@ function nxs_seo_getanalyticsua()
 	{
 		$result = "";
 	}
-	// for logged in users we will skype the 
 	return $result;
-}
-
-function nxs_wpseo_pre_analysis_post_content($content)
-{
-	global $nxs_doing_seo;
-	$nxs_doing_seo = true;
-	global $nxs_seo_output;
-	
-	global $post;
-	$postid = $post->ID;
-	
-	if ($postid != 0)
-	{
-		$rendermode = "anonymous";
-	
-		// we use a postadapter, since we want to output the analysis based on the entire content,
-		// including the drag'n'drop items, not "just" the wp content.
-	
-		$content = "";
-		// include nxs content
-		$content .= nxs_getrenderedhtml($postid, $rendermode); 
-		// include regular WP content
-		//$postcontent .= " " . apply_filters('the_content', get_post_field('post_content', $postid));	
-		$content .= " " . get_post_field('post_content', $postid);
-	} 
-	else
-	{
-		// leave content as-is, this is for example the case when user creates a new post or page in the WP backend
-	}	
-	
-	return $content;
 }
 
 function nxs_yoast_backend_enqueuescript()
@@ -4319,10 +3420,6 @@ function nxs_addyoastseosupport()
 {
 	// for the page analysis, note that for the video content, a different patch is applied,
 	// since the video plugin doesn't apply the wpseo_pre_analysis_post_content filter, see #438957387
-
-	// deprecated since Yoast 3.0
-	//add_filter("wpseo_pre_analysis_post_content", "nxs_wpseo_pre_analysis_post_content");
-	//add_filter("wpseo_video_index_content", "nxs_wpseo_video_index_content", 10, 2 );
 
 	add_action("admin_enqueue_scripts", "nxs_yoast_backend_enqueuescript");
 	add_action( 'admin_head', 'nxs_admin_addyoastv3support' );
@@ -4387,319 +3484,6 @@ function nxs_getpagecssclass($pagemeta)
 	}
 }
 
-function nxs_getpagetemplateforpostid($postid)
-{
-	if ($postid== "")
-	{
-		echo "postid is niet geset? (subpt a)";
-		return "postid is niet geset? (subpt) b";
-	}
-	
-	$terms = wp_get_object_terms(strval($postid), 'nxs_tax_subposttype');
-	
-	if(!empty($terms))
-	{
-		if(!is_wp_error($terms))
-		{
-			if (count($terms) == 1)
-			{
-				$term = $terms[0];
-				$result = $term->name;
-			}
-			else if (count($terms) > 1)
-			{
-				// unexpected; we found 0, or multiple taxonomies?
-				$result = "nxserr (n>1;n==" . count($terms) . ";postid=$postid)";
-			} 
-			else
-			{
-				// unexpected; we found 0, or multiple taxonomies?
-				$result = "nxserr (n==0)";
-			}
-		}
-		else
-		{
-			$result = "nxserr (wperr)";
-			var_dump($terms);
-		}		
-	}
-	else
-	{
-		// for legacy pages/posts/custom posts and for items created by 
-		// third parties (extensions / plugins),
-		// but only if they are publicly available		
-		$wpposttype = nxs_getwpposttype($postid);
-		
-		$publicposttypes = get_post_types( array( 'public' => true));
-		if (array_key_exists($wpposttype, $publicposttypes))
-		{
-			if ($wpposttype == "post")
-			{
-				// for legacy pages
-				$result = "blogentry";
-			}
-			else if ($wpposttype == "page")
-			{
-				$result = "webpage";
-			}
-			else
-			{
-				// assumed webpage-like
-				$result = "webpage";
-			}
-		}
-		else
-		{
-			$result = "nxserr ($wpposttype) (not public)";
-		}
-	}
-	
-	return $result;
-}
-
-function nxs_updatepoststructure($postid, $postcontents)
-{
-	$metadatakey = 'nxs_struct';
-
-	// 2012 06 16 GJ; bug fix	
-	// sanitize the post contents, see http://wordpress.org/support/topic/plugin-wordpress-importer-how-to-import-multiline-post-metadata
-	// we replace '\r\n' with '\r\' to prevent the import (when export/importing) from mis-interpreting the \r\rn resulting in empty structures
-	$postcontents = str_replace("\r\n", "\r", $postcontents);
-	
-	$temp_array = array();
-	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	$temp_array["structure"] = $postcontents;
-	$result = array_merge((array)$temp_array, (array)$modifiedmetadata);
-	
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($result));
-}
-
-function nxs_getpoststructure($postid)
-{
-	$metadatakey = 'nxs_struct';
-	
-	$temp_array = array();
-	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	if ($temp_array == "")
-	{
-		// empty
-		$result = "";
-	} 
-	else
-	{
-		// downwards compatibility...
-		$result = $temp_array['structure'];
-	}
-	return $result;
-}
-
-function nxs_updaterendercache($postid, $structure)
-{
-	// update the nexus struct	
-	$metadatakey = 'nxs_rendercache';
-	
-	$temp_array = array();
-	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	$temp_array["structure"] = $structure;
-	$result = array_merge((array)$temp_array, (array)$modifiedmetadata);
-	
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($result));
-}
-
-function nxs_getrendercache($postid)
-{
-	$metadatakey = 'nxs_rendercache';
-	
-	$temp_array = array();
-	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	return $temp_array["structure"];
-}
-
-function nxs_getrenderedrowhtml($postid, $rowindex, $rendermode)
-{	
-	$parsedpoststructure = nxs_parsepoststructure($postid);
-
-	$result = nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rendermode, $parsedpoststructure);
-	
-	return $result;
-}
-
-function nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rendermode, $parsedpoststructure)
-{
-	global $nxs_global_current_nxsposttype_being_rendered;
-	global $nxs_global_current_postid_being_rendered;
-	global $nxs_global_current_postmeta_being_rendered;
-	global $nxs_global_current_render_mode;
-	global $nxs_global_current_rowindex_being_rendered;
-	
-	// temporarily replace the variables being rendered
-
-	$original_nxs_global_current_nxsposttype_being_rendered = $nxs_global_current_nxsposttype_being_rendered;
-	$nxs_global_current_nxsposttype_being_rendered = nxs_getnxsposttype_by_postid($postid);
-
-	$original_nxs_global_current_postid_being_rendered = $nxs_global_current_postid_being_rendered;
-	$nxs_global_current_postid_being_rendered = $postid;
-	
-	$original_nxs_global_current_postmeta_being_rendered = $nxs_global_current_postmeta_being_rendered;
-	$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
-	
-	// same for the rendermode
-	$original_nxs_global_current_render_mode = $nxs_global_current_render_mode;
-	$nxs_global_current_render_mode = $rendermode;
-	
-	// same for the rowindex
-	$original_nxs_global_current_rowindex_being_rendered = $nxs_global_current_rowindex_being_rendered;
-	// let op, als de variabele op 0 wordt gezet wordt deze op null gezet,
-	// vandaar de quotes die we ervoor plaatsen.
-	$nxs_global_current_rowindex_being_rendered = "" . $rowindex;
-	
-	if (!array_key_exists($rowindex, $parsedpoststructure))
-	{
-		nxs_webmethod_return_nack("postid ($postid) does not contain rowindex ($rowindex).");
-	}
-	
-	// LET OP, de quote is noodzakelijk; als deze op 0 wordt gezet wordt de variabele
-	// op NULL gezet!!
-	$nxs_global_current_rowindex_being_rendered = "" . $rowindex;	
-	
-	$row = $parsedpoststructure[$rowindex];
-	$outercontent = $row["outercontent"];
-
-	nxs_ob_start();
-	
-	echo do_shortcode($outercontent);
-	$result = nxs_ob_get_contents();
-	nxs_ob_end_clean();
-		
-	// revert nxs_global_current_postid_being_rendered to its original value
-	$nxs_global_current_postid_being_rendered = $original_nxs_global_current_postid_being_rendered;
-	
-	// same for the rendermode
-	$nxs_global_current_render_mode = $original_nxs_global_current_render_mode;
-	
-	// same for the rowindex
-	$nxs_global_current_rowindex_being_rendered = $original_nxs_global_current_rowindex_being_rendered;
-	
-	// nxsposttype
-	$nxs_global_current_nxsposttype_being_rendered = $original_nxs_global_current_nxsposttype_being_rendered;
-
-	// postmeta
-	$nxs_global_current_postmeta_being_rendered = $original_nxs_global_current_postmeta_being_rendered;
-
-	return $result;
-}
-
-function nxs_getrenderedhtml($postid, $rendermode)
-{
-	return nxs_getrenderedhtmlincontainer($postid, $postid, $rendermode);
-}
-
-function nxs_getrenderedhtmlincontainer($containerpostid, $postid, $rendermode)
-{
-	if ($containerpostid == "")
-	{
-		nxs_webmethod_return_nack("containerpostid is not set");
-	}
-	
-	$poststatus = get_post_status($postid);
-	if ($poststatus == "publish")
-	{
-		$parsedpoststructure = nxs_parsepoststructure($postid);
-		$result = nxs_getrenderedhtmlinparsedpoststructure($containerpostid, $postid, $parsedpoststructure, $rendermode);
-	}
-	else if ($poststatus === false)
-	{
-		if ($postid == "SUPPRESSED")
-		{
-		}
-		else
-		{
-			$reconfigure = "<a class='nxsbutton1' href='#' onclick='nxs_js_popup_pagetemplate_neweditsession(&quot;layout&quot;); return false;'>Change</a>";
-			$result = nxs_getrowswarning(nxs_l18n__("Deleted section. Consider (re)configuring it.", "nxs_td") . $reconfigure);
-		}
-	}
-	else if ($poststatus == "draft" || $poststatus == "private" || $poststatus == "future")
- 		{
- 		if (!is_user_logged_in())
- 		{
- 			nxs_webmethod_return_nack("unexpected; user is not logged on?");
- 		}
- 				
- 		$parsedpoststructure = nxs_parsepoststructure($postid);
- 		$result = nxs_getrenderedhtmlinparsedpoststructure($containerpostid, $postid, $parsedpoststructure, $rendermode);
- 	}	
-	else if ($poststatus == "trash")
-	{
-		$reconfigure = "<a class='nxsbutton1' href='#' onclick='nxs_js_popup_pagetemplate_neweditsession(&quot;layout&quot;); return false;'>Change</a>";
-		$result = nxs_getrowswarning(nxs_l18n__("Trashed section. Consider (re)publishing it.", "nxs_td") . $reconfigure);
-	}	
-	else
-	{
-		$reconfigure = "<a class='nxsbutton1' href='#' onclick='nxs_js_popup_pagetemplate_neweditsession(&quot;layout&quot;); return false;'>Change</a>";
-		$result = nxs_getrowswarning(nxs_l18n__("Section found, but in unsupported state ($poststatus). Consider (re)publishing it.", "nxs_td") . $reconfigure);
-	}
-	
-	return $result;
-}
-
-function nxs_getrenderedhtmlinparsedpoststructure($containerpostid, $postid, $parsedpoststructure, $rendermode)
-{
-	global $nxs_global_current_nxsposttype_being_rendered;
-	global $nxs_global_current_containerpostid_being_rendered;
-	global $nxs_global_current_postid_being_rendered;
-	global $nxs_global_current_postmeta_being_rendered;
-	global $nxs_global_current_render_mode;
-
-	// temporarily replace variables for rendering
-	// this is required to render the shortcodes 
-
-	$original_nxs_global_current_containerpostid_being_rendered = $nxs_global_current_containerpostid_being_rendered;
-	$nxs_global_current_containerpostid_being_rendered = $containerpostid;
-
-	$original_nxs_global_current_nxsposttype_being_rendered = $nxs_global_current_nxsposttype_being_rendered;
-	$nxs_global_current_nxsposttype_being_rendered = nxs_getnxsposttype_by_postid($postid);
-
-	$original_nxs_global_current_postid_being_rendered = $nxs_global_current_postid_being_rendered;
-	$nxs_global_current_postid_being_rendered = $postid;
-
-	$original_nxs_global_current_postmeta_being_rendered = $nxs_global_current_postmeta_being_rendered;
-	$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
-		
-	$original_nxs_global_current_render_mode = $nxs_global_current_render_mode;
-	$nxs_global_current_render_mode = $rendermode;
-	
-	//
-	
-	$result = "";
-	$result .= "<div class='nxs-postrows'>";
-	
-	$rowindex = 0;
-	foreach ($parsedpoststructure as $pagerow)
-	{
-		$result .= nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rendermode, $parsedpoststructure);	
-		$rowindex++;
-	}
-	
-	$result .= "</div>";
-	
-	// revert nxs_global_current_postid_being_rendered to its original value
-	$nxs_global_current_postid_being_rendered = $original_nxs_global_current_postid_being_rendered;
-
-	// revert nxs_global_current_postid_being_rendered to its original value
-	$nxs_global_current_containerpostid_being_rendered = $original_nxs_global_current_containerpostid_being_rendered;
-	
-	// same for the rendermode
-	$nxs_global_current_render_mode = $original_nxs_global_current_render_mode;
-	
-	// same for the nxsposttype
-	$nxs_global_current_nxsposttype_being_rendered = $original_nxs_global_current_nxsposttype_being_rendered;
-
-	// same for postmeta
-	$nxs_global_current_postmeta_being_rendered = $original_nxs_global_current_postmeta_being_rendered;
-
-	return $result;
-}
-
 // function to filter an array of posts by complex filters (practical when filtering using sql is impossible or too complex)
 function nxs_getfilteredposts(&$postshaystack, $filters)
 {
@@ -4714,31 +3498,7 @@ function nxs_getfilteredposts(&$postshaystack, $filters)
 	foreach($postshaystack as $elementKey => $element) 
 	{
 		$shouldremoveitem = false;
-		
-		/*
-		if (!$shouldremoveitem && array_key_exists("foobarkey", $filters))
-		{			
-			$nxsposttypefound = getsomepropertyfromcurrentelement(.);
-			$nxsposttypetokeep = $filters["foobarkey"];
-			
-			if ($nxsposttypefound == $nxsposttypetokeep)			
-			{
-				// keep
-			}
-			else
-			{
-				$shouldremoveitem = true;
-			}
-		}
-		// else if ( . ) { . }
-		else
-		{
-			// no more filters to check
-			
-		}
-		*/
-    
-    if ($shouldremoveitem)
+		if ($shouldremoveitem)
     {
     	unset($postshaystack[$elementKey]);
     }
@@ -4791,55 +3551,7 @@ function nxs_getfilteredcategories(&$categorieshaystack, $filters)
 	$categorieshaystack = array_values($categorieshaystack);
 }
 
-function nxs_after_postcontents_updated($postid)
-{
-	$result["result"] = "OK";
-	
-	// perform after save actions based on the nxsposttype
-	$nxsposttype = nxs_getnxsposttype_by_postid($postid);
-	if ($nxsposttype == "menu")
-	{
-		// no longer needed; we render the menu ourselves
-	}
-	else if (
-		$nxsposttype == "sidebar" ||
-		$nxsposttype == "post" ||
-		$nxsposttype == "footer" ||
-		$nxsposttype == "header" ||
-		$nxsposttype == "genericlist" ||
-		$nxsposttype == "admin" || 
-		$nxsposttype == "subfooter" ||
-		$nxsposttype == "subheader" ||
-		$nxsposttype == "template" ||
-		$nxsposttype == "pagelet")
-	{
-		// nothing needs to be derived
-	}
-	else
-	{
-		$args = array();
-		$result = apply_filters("nxs_after_postcontents_updated", $result, $args);
-	}
-	
-	// patching; implements handling of post updates for extensions not supporting front-end editing out of the box
-	
-	// patch #438957387; the video plugin of yoast does not apply the "wpseo_pre_analysis_post_content" filter
-	// but we need this when we update the post on the front-end part. This patch ensures that the video is automatically
-	// updated when the front-end content is updated
-	if (class_exists('wpseo_Video_Sitemap'))
-	{
-		global $shortcode_tags;
-		$old_shortcode_tags = $shortcode_tags;
 
-		// WP VIDEO SEO plugin only updated the post when is_admin() is true
-		$nxs_wpseo_Video_Sitemap = new wpseo_Video_Sitemap();
-		$nxs_wpseo_Video_Sitemap->update_video_post_meta($postid);
-		
-		$shortcode_tags= $old_shortcode_tags;
-	}
-	
-	return $result;
-}
 
 function nxs_isnxswebservicerequest()
 {
@@ -4909,532 +3621,9 @@ function nxs_wp_resetrewriterules()
 	$wp_rewrite->flush_rules();
 }
 
-function nxs_is404page($postid)
-{
-	$sitemeta = nxs_getsitemeta();
-	$configuredpostid = $sitemeta["404_postid"];
-	if ($configuredpostid == "" || $configuredpostid == null)
-	{
-		// legacy; to be removed eventually
-		$configuredpostid = get_option("nxs_404_postid");
-	}
-	
-	$result = ($configuredpostid == $postid);
-		
-	return $result;
-}
-
-function nxs_set404page($postid)
-{
-	$modifiedmetadata = array();
-	$modifiedmetadata["404_postid"] = $postid;
-	$modifiedmetadata["404_postid_globalid"] = nxs_get_globalid($postid, true);
-	
-	nxs_mergesitemeta($modifiedmetadata);
-}
-
-function nxs_isserppage($postid)
-{
-	$sitemeta = nxs_getsitemeta();
-	$serppageid = $sitemeta["serp_postid"];
-	$result = ($serppageid == $postid);
-		
-	return $result;
-}
-
-function nxs_setserppage($postid)
-{
-	$modifiedmetadata = array();
-	$modifiedmetadata["serp_postid"] = $postid;
-	$modifiedmetadata["serp_postid_globalid"] = nxs_get_globalid($postid, true);
-	
-	nxs_mergesitemeta($modifiedmetadata);
-}
-
-function nxs_cleanupobsoletewidgetmetadata($postid, $persistchanges)
-{
-	$parsedpoststructure = nxs_parsepoststructure($postid);
-	
-	// get placeholderids in use according to structure
-	$rowindex = 0;
-	$metakeysinuse = array();
-	foreach ($parsedpoststructure as $pagerow)
-	{
-		$content = $pagerow["content"];		
-		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
-		foreach ($placeholderids as $placeholderid)
-		{
-			$metakeysinuse[] = "nxs_ph_" . $placeholderid;
-		}
-	}
-	
-	$obsoletemetakeys = array();
-	$origpost_meta_all = nxs_get_post_meta_all($postid);
-	$keystokeep = array("nxs_page_meta", "nxs_struct", "nxs_core", "nxs_globalid");
-	foreach ($origpost_meta_all as $meta_key => $meta_value)
-	{
-		if (in_array($meta_key, $keystokeep))
-		{
-			// keep :)
-		}
-		else if (nxs_stringstartswith($meta_key, "ewm"))
-		{
-			// old product name eigenwebsitemaken (EWM); deprecated field
-			$obsoletemetakeys[] = $meta_key;
-		}
-		else if ($meta_key == "nxs_version")
-		{
-			// no longer used; deprecated field
-			$obsoletemetakeys[] = $meta_key;
-		}
-		else if (nxs_stringstartswith($meta_key, "_yoast_"))
-		{
-			// keep
-		}
-		else if (nxs_stringstartswith($meta_key, "_woocommerce_"))
-		{
-			// keep
-		}
-		else if (nxs_stringstartswith($meta_key, "_edit_"))
-		{
-			// keep
-		}
-		else if (nxs_stringstartswith($meta_key, "_wp_"))
-		{
-			// keep
-		}
-		else if (nxs_stringstartswith($meta_key, "nxs_pr_"))
-		{
-			// keep product row meta
-		}
-		else if (nxs_stringstartswith($meta_key, "_order"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "_billing"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "_shipping"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "_payment"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "_prices"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "_customer"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "Customer"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "_thumbnail"))
-		{
-			// not sure who creates this one
-		}
-		else if (nxs_stringstartswith($meta_key, "totalsales"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "_tax"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "_cart"))
-		{
-			// woocommerce
-		}
-		else if (nxs_stringstartswith($meta_key, "nxs_ph_"))
-		{
-			// potential item to be removed
-			if (in_array($meta_key, $metakeysinuse))
-			{
-				// keep!
-			}
-			else
-			{
-				$obsoletemetakeys[] = $meta_key;
-			}
-		}
-		else
-		{
-			// assumed to have to keep
-			//echo "<br />other metakey found; keeping;" . $meta_key . "<br />";
-		}
-	}
-	
-	foreach ($obsoletemetakeys as $current_obsoletemetakey)
-	{
-		echo "<br />removing;" . $current_obsoletemetakey . "<br />";
-		$olddata = get_post_meta($postid, $current_obsoletemetakey);
-		var_dump($olddata);
-		
-		if ($persistchanges == true)
-		{
-			delete_post_meta($postid, $current_obsoletemetakey); 
-		}
-	}
-}
-
-function nxs_getwidgettype($postid, $placeholderid)
-{
-	$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
-	$result = $placeholdermetadata["type"];
-	return $result;
-}
-
-// obsolete function; the getwidgetmetadata didn't process the 
-// unistyle and unicontent values causing widgets to be rendered
-// incorrectly; in the new method the processing of lookupunistyle and unicontent
-// can be configured by an additional parameter
-function nxs_getwidgetmetadata($postid, $placeholderid)
-{
-	$behaviourargs = array();
-	$behaviourargs["lookupunistyle"] = true;
-	$behaviourargs["lookupunicontent"] = true;
-
-	$result = nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs);
-
-	return $result;
-}
-
-function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
-{
-	$metadatakey = 'nxs_ph_' . $placeholderid;
-	$result = array();
-	$result = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	
-	if ($result == "")
-	{
-		$result = array();
-	}
-	
-	// optionally process unistyle
-	// if the widget has a unistyle, the properties of the unistyle should 
-	// override the properties stored in the widget itself
-	// this method is pretty fast since the unistyle configurations are cached in mem
-	if ($behaviourargs["lookupunistyle"] == true && $result["unistyle"] != "")
-	{
-		// unistyle lookup should override the result
-		$widgetname = $result["type"];
-		$unistyle = $result["unistyle"];
-		$unistylegroup = nxs_getunifiedstylinggroup($widgetname);
-		if ($unistylegroup != "")
-		{
-			$unistyleproperties = nxs_unistyle_getunistyleproperties($unistylegroup, $unistyle);
-			$result = array_merge($result, $unistyleproperties);
-		}
-	}
-	
-	// optionally process unicontent
-	// if the widget has a unicontent, the properties of the unicontent should 
-	// override the properties stored in the widget itself
-	// this method is pretty fast since the unicontent configurations are cached in mem
-	if ($behaviourargs["lookupunicontent"] == true && $result["unicontent"] != "")
-	{
-		// unicontentlookup should override the result
-		$widgetname = $result["type"];
-		$unicontent = $result["unicontent"];
-		$unifiedcontentgroup = nxs_unicontent_getunifiedcontentgroup($widgetname);
-		if ($unifiedcontentgroup != "")
-		{
-			$unicontentproperties = nxs_unicontent_getunicontentproperties($unifiedcontentgroup, $unicontent);
-			$result = array_merge($result, $unicontentproperties);
-		}
-	}
-	
-	// allow plugins to further manipulate the output
-	$args = array
-	(
-		
-	);
-	$result = apply_filters("nxs_f_getwidgetmetadata", $result, $args);
-	
-	return $result;
-}
-
-//
-
 function nxs_row_getunifiedstylinggroup()
 {
 	return "row";
-}
-
-function nxs_getpagerowmetadata($postid, $pagerowid)
-{
-	$behaviourargs = array();
-	$behaviourargs["lookupunistyle"] = true;
-	
-	return nxs_getpagerowmetadata_v2($postid, $pagerowid, $behaviourargs);
-}
-
-function nxs_getpagerowmetadata_v2($postid, $pagerowid, $behaviourargs)
-{
-	$metadatakey = 'nxs_pr_' . $pagerowid;
-	$result = array();
-	$result = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	
-	if ($result == "")
-	{
-		$result = array();
-	}
-	
-	// optionally process unistyle
-	// if the row has a unistyle, the properties of the unistyle should 
-	// override the properties stored in the row itself
-	// this method is pretty fast since the unistyle configurations are cached in mem
-	if ($behaviourargs["lookupunistyle"] == true && $result["unistyle"] != "")
-	{
-		$unistyle = $result["unistyle"];
-
-		// unistyle lookup should override the result
-		$unistylegroup = nxs_row_getunifiedstylinggroup();
-		if ($unistylegroup != "")
-		{
-			$unistyleproperties = nxs_unistyle_getunistyleproperties($unistylegroup, $unistyle);
-			$result = array_merge($result, $unistyleproperties);
-		}
-	}
-	
-	return $result;
-}
-
-// persists the widget's metadata (assumes the global data is already enriched)
-function nxs_mergewidgetmetadata_internal($postid, $placeholderid, $updatedvalues)
-{
-	$behaviourargs = array();
-	$behaviourargs["updateunistyle"] = true;
-	$behaviourargs["updateunicontent"] = true;
-	return nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedvalues, $behaviourargs);
-}
-
-// persists the widget's metadata (assumes the global data is already enriched)
-function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedvalues, $behaviourargs)
-{
-	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_mergewidgetmetadata_internal_v2)"); }
-	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
-	if ($updatedvalues == "") { nxs_webmethod_return_nack("updatedvalues not set"); }
-	
-	if (count($updatedvalues) == 0)
-	{
-		return;
-	}
-	
-	//
-	// determine the entire "set" of properties to store for this widget,
-	// this is the serialized properties combined with the updated key/values
-	//
-	$metadatakey = 'nxs_ph_' . $placeholderid;
-	$result = array();
-	$existing = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	if ($existing == "")
-	{
-		// 2012 07 23; bug fix; first time the widget is initialized, the meta data is empty(""),
-		// in this case we only set the new values and ignore the old one
-		$allvalues = $updatedvalues;
-	}
-	else
-	{
-		$allvalues = array_merge($existing, $updatedvalues);
-	}
-	
-	//
-	// step 1; store the metadata of the widget itself
-	//
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($allvalues));
-	 
-	//
-	// step 2; update the metadata of the unistyle
-	//
-	$unistyle = $allvalues["unistyle"];
-	if (isset($unistyle) && $unistyle != "" && $behaviourargs["updateunistyle"] == true)
-	{
-		$widget = $allvalues["type"];
-		if (!isset($widget) || $widget == "") { nxs_webmethod_return_nack("widget type not set"); }
-		
-		nxs_requirewidget($widget);
-		$sheet = "home";
-		
-		nxs_requirepopup_contextprocessor("widgets");
-		$options = nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $sheet);
-		
-		// we store 'all' unistyleable fields (not just the fieldids that are unistyleable, also
-		// the derived globalids. To determine which global fields there are, we look over
-		// all fields, and we include all ones starting with unistylablefields,
-		// for example "foo" and "foo_globalid"; all ones are added, "foo*").
-		$unistyleablefields = array();
-		$fieldids = nxs_unistyle_getunistyleablefieldids($options);
-		foreach ($fieldids as $currentfieldid)
-		{
-			// find derivations of this field, also the globalids
-			foreach ($allvalues as $currentkey => $currentvalue)
-			{
-				if ($currentkey == $currentfieldid)
-				{
-					// exact match
-					$unistyleablefields[$currentkey] = $currentvalue;
-				}
-				else if (nxs_stringstartswith($currentkey, "{$currentfieldid}_g"))
-				{
-					// for the globalid "versions" (p.e. "a" => "a_globalid")
-					// note that this does not make much sense for unistyling,
-					// as unistyling does not likely have globalid fields (those
-					// are more unicontent related, but regardless).
-					$unistyleablefields[$currentkey] = $currentvalue;
-				}
-			}
-		}
-		
-		$unigroup = $options["unifiedstyling"]["group"];
-		if (!isset($unigroup) || $unigroup == "") { echo "a) options: "; var_dump($options);nxs_webmethod_return_nack("unigroup not set"); }
-		nxs_unistyle_persistunistyle($unigroup, $unistyle, $unistyleablefields);
-	}
-	
-	//
-	// step 3; update the metadata of the unicontent
-	//
-	$unicontent = $allvalues["unicontent"];
-	if (isset($unicontent) && $unicontent != "" && $behaviourargs["updateunicontent"] == true)
-	{
-		$widget = $allvalues["type"];
-		if (!isset($widget) || $widget == "") { nxs_webmethod_return_nack("widget type not set"); }
-		
-		nxs_requirewidget($widget);
-		$sheet = "home";
-		
-		nxs_requirepopup_contextprocessor("widgets");
-		$options = nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $sheet);
-
-		// we store 'all' unicontentable fields (not just the fieldids that are unicontentable, also
-		// the derived globalids. To determine which global fields there are, we look over
-		// all fields, and we include all ones starting with unicontentablefieldids,
-		// for example "foo" and "foo_globalid"; all ones are added, "foo*").
-
-		$unicontentablefields = array();
-		$fieldids = nxs_unicontent_getunicontentablefieldids($options);
-		
-		foreach ($fieldids as $currentfieldid)
-		{
-			// find derivations of this field, also the globalids
-			foreach ($allvalues as $currentkey => $currentvalue)
-			{
-				if ($currentkey == $currentfieldid)
-				{
-					// exact match
-					$unicontentablefields[$currentkey] = $currentvalue;
-				}
-				else if (nxs_stringstartswith($currentkey, "{$currentfieldid}_g"))
-				{
-					// for the globalid "versions" (p.e. "image_imageid" => "image_imageid_globalid")
-					$unicontentablefields[$currentkey] = $currentvalue;
-				}
-			}
-		}
-		 
-		$unigroup = $options["unifiedcontent"]["group"];
-		if (!isset($unigroup) || $unigroup == "") { echo "b) options: "; var_dump($options);nxs_webmethod_return_nack("unigroup not set"); }
-		nxs_unicontent_persistunicontent($unigroup, $unicontent, $unicontentablefields);
-	}
-	else
-	{
-		// unicontent not applicable
-	}
-}
-
-function nxs_purgeplaceholdermetadata($postid, $placeholderid)
-{	
-	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set (owmd)"); };
-	if ($postid== "") { nxs_webmethod_return_nack("postid not set (owmd)"); };
-
-	$metadatakey = 'nxs_ph_' . $placeholderid;
-	delete_post_meta($postid, $metadatakey);
-}
-
-function nxs_resetplaceholdermetadata($postid, $placeholderid)
-{
-	$metadata = array();
-	$metadata["type"] = "undefined";
-	nxs_overridewidgetmetadata($postid, $placeholderid, $metadata);
-}
-
-function nxs_overridewidgetmetadata($postid, $placeholderid, $metadata)
-{
-	//
-	//
-	//
-
-	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set (owmd)"); };
-	if ($postid== "") { nxs_webmethod_return_nack("postid not set (owmd)"); };
-	
-	$metadatakey = 'nxs_ph_' . $placeholderid;
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($metadata));
-}
-
-function nxs_persistwidgettype($postid, $placeholderid, $placeholdertemplate)
-{
-	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_persistwidgettype)"); }
-	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
-	
- 	$datatomerge = array();
- 	$datatomerge["type"] = $placeholdertemplate;
-	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $datatomerge);
-}
-
-function nxs_initializewidget($args) 
-{
-	if (!isset($args["clientpopupsessioncontext"])) { nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
-	
-	extract($args["clientpopupsessioncontext"]);
-	$placeholdertemplate = $args["placeholdertemplate"];
-	
-	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set (nxs_initializewidget)"); }
-	if (!isset($placeholderid)) { nxs_webmethod_return_nack("placeholderid not set"); }
-	if (!isset($placeholdertemplate)) { nxs_webmethod_return_nack("placeholdertemplate not set"); }
-
-	// ensure widget exists
- 	nxs_requirewidget($placeholdertemplate);
- 	
- 	// crucial step; first we set the type for this widget to the specified type
- 	nxs_persistwidgettype($postid, $placeholderid, $placeholdertemplate);
-
-	// load context processor 	
- 	nxs_requirepopup_contextprocessor("widgets");
- 	
-	if (nxs_genericpopup_supportsoptions($args))
-	{
-		$blendedmetadata = array();
-		
-		// the initial data
-		$initialmetadata = nxs_genericpopup_getinitialoptionsvalues($args);
-  	$blendedmetadata = array_merge($blendedmetadata, $initialmetadata);
-  	
-		// enrich the initialdata; globalids
-  	$enrichedmetadata = nxs_genericpopup_getderivedglobalmetadata($args, $initialmetadata);
-  	$blendedmetadata = array_merge($blendedmetadata, $enrichedmetadata);
-  
-  	$result = nxs_popup_contextprocessor_widgets_mergedata_internal($args, $blendedmetadata);
-	}
- 	
-	// if it exists, invoke nxs_widgets_image_initplaceholderdata($args)
-	// else invoke nxs_widgets_image_updateplaceholderdata($args)
-	$functionnametoinvoke = 'nxs_widgets_' . $placeholdertemplate . '_initplaceholderdata';
-	if (function_exists($functionnametoinvoke))
-	{
-		$p = array();
-		$p["postid"] = $postid;
-		$p["placeholderid"] = $placeholderid;
-		
-		$result = call_user_func($functionnametoinvoke, $p);
-	}
-	
-	return $result;
 }
 
 function nxs_getdepth($postid, $placeholderid)
@@ -5552,28 +3741,6 @@ function nxs_render_popup_header_v2($title, $iconid, $sheethelp) {
 function nxs_applyshortcodes($content)
 {
 	$result = do_shortcode(shortcode_unautop($content));
-	return $result;
-}
-
-function nxs_cleanup_paragraphbreaks($content)
-{
-	$content = preg_replace('#^<\/p>|^<br \/>|<p>$#', '', $content);
-	$content = preg_replace('#<br \/>#', '', $content);
-		
-	return trim($content);
-}
-
-function nxs_invokenexusservicevalue_internal($data)
-{
-	$result = array();
-	$result["result"] = "NACK";
-	return $result;
-}
-
-function nxs_invokenexusservicevalue($key, $subkey, $data)
-{
-	$result = array();
-	$result["result"] = "NACK";
 	return $result;
 }
 
@@ -5763,12 +3930,6 @@ function nxs_sendhtmlmailtemplate($fromname, $fromemail, $toemail, $ccemail, $bc
 	return nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body);
 }
 
-function nxs_dump_post_meta_all($post_id)
-{
-	$output = get_post_custom($post->ID);
-	var_dump($output);
-}
-
 function nxs_getpostwizards($args)
 {
 	$result = array();
@@ -5904,22 +4065,6 @@ function nxs_issiteinmaintenancemode()
 	return $result;
 }
 
-// taken from http://stackoverflow.com/questions/79960/how-to-truncate-a-string-in-php-to-the-word-closest-to-a-certain-number-of-chara
-function nxs_truncate_string($string, $your_desired_width)
-{
-  $parts = preg_split('/([\s\n\r]+)/', $string, null, PREG_SPLIT_DELIM_CAPTURE);
-  $parts_count = count($parts);
-
-  $length = 0;
-  $last_part = 0;
-  for (; $last_part < $parts_count; ++$last_part) {
-    $length += strlen($parts[$last_part]);
-    if ($length > $your_desired_width) { break; }
-  }
-
-  return implode(array_slice($parts, 0, $last_part));
-}
-
 // credits: http://www.kavoir.com/2010/03/php-how-to-detect-get-the-real-client-ip-address-of-website-visitors.html
 function nxs_get_ip_address()
 {
@@ -5976,104 +4121,6 @@ function nxs_getcommentwithid($allcomments, $commentid)
 	return $result;
 }
 
-// kudos to http://stackoverflow.com/questions/6232846/best-email-validation-function-in-general-and-specific-college-domain
-function nxs_isvalidemailaddress($email) 
-{
-  // First, we check that there's one @ symbol, and that the lengths are right
-  if (!preg_match("/^[^@]{1,64}@[^@]{1,255}$/", $email)) {
-      // Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
-      return false;
-  }
-  // Split it into sections to make life easier
-  $email_array = explode("@", $email);
-  $local_array = explode(".", $email_array[0]);
-  for ($i = 0; $i < sizeof($local_array); $i++) {
-      if (!preg_match("/^(([A-Za-z0-9!#$%&'*+\/=?^_`{|}~-][A-Za-z0-9!#$%&'*+\/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$/", $local_array[$i])) {
-          return false;
-      }
-  }
-  if (!preg_match("/^\[?[0-9\.]+\]?$/", $email_array[1])) { // Check if domain is IP. If not, it should be valid domain name
-      $domain_array = explode(".", $email_array[1]);
-      if (sizeof($domain_array) < 2) {
-          return false; // Not enough parts to domain
-      }
-      for ($i = 0; $i < sizeof($domain_array); $i++) {
-          if (!preg_match("/^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$/", $domain_array[$i])) {
-              return false;
-          }
-      }
-  }
-
-  return true;
-}
-
-// newguid createguid
-function nxs_create_guid($namespace = '') 
-{
-	// credits: http://php.net/manual/en/function.uniqid.php
-  static $guid = '';
-  $uid = uniqid("", true);
-  $data = $namespace;
-  $data .= $_SERVER['REQUEST_TIME'];
-  $data .= $_SERVER['HTTP_USER_AGENT'];
-  $data .= $_SERVER['LOCAL_ADDR'];
-  $data .= $_SERVER['LOCAL_PORT'];
-  $data .= $_SERVER['REMOTE_ADDR'];
-  $data .= $_SERVER['REMOTE_PORT'];
-  $hash = strtoupper(hash('ripemd128', $uid . $guid . md5($data)));
-  $guid = substr($hash,  0,  8) . 
-          '-' .
-          substr($hash,  8,  4) .
-          '-' .
-          substr($hash, 12,  4) .
-          '-' .
-          substr($hash, 16,  4) .
-          '-' .
-          substr($hash, 20, 12);
-  return $guid;
-}
-
-function nxs_postwithstatusexistsbyid($postid, $status)
-{
-	//
-	global $wpdb;
-
-  $dbresult = $wpdb->get_results( $wpdb->prepare("
-      	SELECT * FROM $wpdb->posts
-		where ID = %s and post_status = %s
-	", $postid, $status), OBJECT );
-
-	//var_dump($dbresult);
-
-	if (count($dbresult) == 1)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-function nxs_postexistsbyid($postid)
-{
-	global $wpdb;
-
-  $dbresult = $wpdb->get_results( $wpdb->prepare("
-      	SELECT 1 FROM $wpdb->posts
-		where ID = %s
-	", $postid), OBJECT );
-
-	if (count($dbresult) == 1)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
 function nxs_global_globalidexists($globalid)
 {
 	if ($globalid == "" || $globalid == "0" || $globalid == "NXS-NULL")
@@ -6120,70 +4167,6 @@ function nxs_get_postidsaccordingtoglobalid($globalid)
 		$result[] = $dbrow["ID"];
 	}
 
-	return $result;
-}
-
-function nxs_reset_globalid($postid)
-{
-	$result = nxs_create_guid();
-	return nxs_reset_globalidtovalue($postid, $result);
-}
-
-function nxs_reset_globalidtovalue($postid, $globalid)
-{
-	/*
-	if (nxs_isdebug())
-	{
-		var_dump(nxs_getstacktrace());
-		die();
-	}
-	*/   
-	
-	$metadatakey = 'nxs_globalid';
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($globalid));
-	return $globalid;
-}
-
-// getglobalid_by_postid,getglobalid_for_postid
-function nxs_get_globalid($postid, $createwhennotexists)
-{	
-	if ($postid == "")
-	{
-		// valide antwoord
-		$result = "NXS-NULL";
-	}
-	else if ($postid == 0)
-	{
-		// valide antwoord
-		$result = "NXS-NULL";
-	}
-	else
-	{
-		$posttype = get_post_type($postid);
-		if (!$posttype)
-		{
-			$result = "NXS-NULL";
-		}
-		else
-		{
-			$metadatakey = 'nxs_globalid';
-			$result = get_post_meta($postid, $metadatakey, true);
-			
-			if ($result == "")
-			{
-				if ($createwhennotexists)
-				{
-					// globalid was (nog) niet gealloceerd, maar we hebben toestemming om deze dan nu te alloceren
-					$result = nxs_reset_globalid($postid);
-				}
-				else
-				{
-					//echo "[not found, no permission to update]";
-				}
-			}
-		}
-	}
-	
 	return $result;
 }
 
@@ -6361,102 +4344,6 @@ function nxs_getpagetemplatetitle($pagetemplateid)
 	return $result;
 }
 
-function nxs_append_posttemplate($postid, $pagetemplate)
-{
-	if ($pagetemplate == "")
-	{
-		nxs_webmethod_return_nack("pagetemplate is leeg?");
-	}
-	
-	$poststructure = nxs_parsepoststructure($postid);
-			
-	foreach ($pagetemplate as $pagetemplateitem)
-	{
-		$pagerowtemplate = $pagetemplateitem["pagerowtemplate"];
-		$pagerowid = $pagetemplateitem["pagerowid"];
-		$placeholdertemplatestogetherwithargs = $pagetemplateitem["pagerowtemplateinitializationargs"];
-			
-		$newrow = array();
-		$newrow["rowindex"] = "new";
-		$newrow["pagerowtemplate"] = $pagerowtemplate;
-		$newrow["pagerowid"] = nxs_getrandompagerowid();
-		$newrow["pagerowattributes"] = "pagerowtemplate='" . $pagerowtemplate . "' pagerowid='" . $pagerowid . "'";
-		$newrow["content"] = nxs_getpagerowtemplatecontent($pagerowtemplate);
-	
-		$rowindex = count($poststructure);	// begint bij 0 dus wordt altijd ge-append
-	
-		//echo "inserting at index " . $rowindex;
-	
-		// insert row into structure
-		$updatedpoststructure = nxs_insertarrayindex($poststructure, $newrow, $rowindex);
-		
-		// persist structure
-		$updateresult = nxs_storebinarypoststructure($postid, $updatedpoststructure);
-		
-		// get the updated structure; should now contain 1 row
-		$poststructure = nxs_parsepoststructure($postid);
-	
-		//echo "poststructure after update:";
-		//var_dump($poststructure);
-	
-		$pagerow = $poststructure[$rowindex];
-		
-		//echo "pagerow:";	
-		//var_dump($pagerow);
-		
-		$content = $pagerow["content"];
-		
-		//echo "content:";	
-		//var_dump($content);
-	
-		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
-		
-		//echo "placeholderids:";	
-		//var_dump($placeholderids);
-		
-		$placeholderindex = -1;
-		foreach ($placeholderids as $placeholderid)
-		{	
-			$placeholderindex++;
-			
-			//echo "current placeholderindex:" . $placeholderid;
-			
-			$args = array();
-			
-			$args["clientpopupsessioncontext"] = array();	// hierrr
-			$args["clientpopupsessioncontext"]["postid"] = $postid;
-			$args["clientpopupsessioncontext"]["placeholderid"] = $placeholderid;
-			$args["clientpopupsessioncontext"]["placeholdertemplate"] = $placeholdertemplate;
-			$args["clientpopupsessioncontext"]["contextprocessor"] = "widgets";
-			$args["clientpopupsessioncontext"]["sheet"] = "home";
-			
-			$args["postid"] = $postid;
-			$args["placeholderid"] = $placeholderid;
-			$placeholdertemplate = $placeholdertemplatestogetherwithargs[$placeholderindex]["placeholdertemplate"];
-			
-			$args["placeholdertemplate"] = $placeholdertemplate;
-			nxs_initializewidget($args);
-			// hierrr
-						
-			//echo "init finished";
-			
-			// update de waarden op basis van de argumenten die mee zijn gegeven
-			
-			$args = array();
-			$args["postid"] = $postid;
-			$args["placeholderid"] = $placeholderid;
-			$args["placeholdertemplate"] = $placeholdertemplate;
-			$updatedvalues = $placeholdertemplatestogetherwithargs[$placeholderindex]["args"];
-			nxs_mergewidgetmetadata_internal($postid, $placeholderid, $updatedvalues);
-		}
-	}
-	
-	//
-	// ensure related items (menu's for example) are updated too
-	//
-	nxs_after_postcontents_updated($postid);
-}
-
 function nxs_getthemeversion() 
 {
 	global $nxs_global_themeversion;
@@ -6482,7 +4369,7 @@ function nxs_getthemeversion()
 	return $value;
 }
 
-// obsolete function; should eventually be removed
+// obsolete function; should eventually be removed (some plugins should be updated first!)
 function nxs_getthemename()
 {
 	return nxs_getthemeid();
@@ -6503,28 +4390,6 @@ function nxs_getthemeid()
 	$nxs_global_themeid = $value;
 
 	return $value;
-}
-
-function nxs_ispostfound($postid)
-{
-	global $wpdb;
-	
-	$q = "
-		select 
-			* 
-		from 
-			$wpdb->posts posts
-		where	posts.ID = %s
-	";
-
-	$posts = $wpdb->get_results( $wpdb->prepare($q, $postid), OBJECT); // ARRAY_A );
-	
-	$result = false;
-	if (count($posts) == 1)
-	{
-		$result = true;
-	}
-	return $result;
 }
 
 function nxs_getsearchresults($searchargs)
@@ -6630,53 +4495,6 @@ function nxs_getsearchresults($searchargs)
 	$posts = $wpdb->get_results( $wpdb->prepare($q, $metafields, $search, $search, $search), OBJECT); // ARRAY_A );
 	
 	return $posts;
-}
-
-function nxs_getpageletid_forpageletinpost($postid, $pageletname)
-{
-	$postmeta = nxs_get_postmeta($postid);
-	
-	$key = "pagelets_" . $pageletname . "_pageletid";
-	if (array_key_exists($key, $postmeta))
-	{
-		$result = $postmeta[$key];
-	}
-	else
-	{
-		// pageletid is niet expliciet gezet op pagina niveau
-		// we nemen de generi
-		$result = nxs_getpostid_for_title_and_nxstype($pageletname, 'pagelet');
-		if ($result == null || $result == "")
-		{
-			$postwizard = 'pagelet_default_' . $pageletname;
-			$result = nxs_postwizard_createpost_noparameters($pageletname, $pageletname, 'pagelet', $postwizard);
-			nxs_setpageletid_forpageletinpost($postid, $pageletname, $result);
-		}
-		else
-		{
-			nxs_setpageletid_forpageletinpost($postid, $pageletname, $result);
-		}
-	}	
-	
-	// todo: for now we always perform existence check; this could be optimized
-	if (!nxs_ispostfound($result))
-	{
-		$postwizard = 'pagelet_default_' . $pageletname;
-		$result = nxs_postwizard_createpost_noparameters($pageletname, $pageletname, 'pagelet', $postwizard);
-		nxs_setpageletid_forpageletinpost($postid, $pageletname, $result);
-	}
-	
-	return $result;
-}
-
-function nxs_setpageletid_forpageletinpost($postid, $pageletname, $pageletid)
-{
-	$modifiedmetadata = array();
-	$key = "pagelets_" . $pageletname . "_pageletid";
-	$modifiedmetadata[$key] = $pageletid;
-	$key = "pagelets_" . $pageletname . "_pageletid_globalid";
-	$modifiedmetadata[$key] = nxs_get_globalid($pageletid, true);	// global referentie
-	nxs_merge_postmeta($postid, $modifiedmetadata);
 }
 
 // pretty_print
@@ -6968,8 +4786,6 @@ function nxs_webmethod_return_alternativeflow($altflowid, $args)
 // see http://ottopress.com/2011/tutorial-using-the-wp_filesystem/
 function nxs_downloadframeworkversion($version, $url)
 {
-	// todo: ensure framework is not already in place, if so, complain!
-	
 	if (!nxs_has_adminpermissions())
 	{
 		// no access
@@ -7148,11 +4964,6 @@ function nxs_getfooter($name)
 	require_once(NXS_FRAMEWORKPATH . "/footer-$name.php");
 }
 
-function nxs_strleft($s1, $s2) 
-{
-	return substr($s1, 0, strpos($s1, $s2));
-}
-
 function nxs_ishttps()
 {
 	$result = false;
@@ -7209,166 +5020,6 @@ function nxs_geturlcurrentpage()
   $protocol = nxs_strleft(strtolower($_SERVER["SERVER_PROTOCOL"]), "/").$s;
   $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
   return $protocol."://".$_SERVER['HTTP_HOST'].$port.$serverrequri;   
-}
-
-function nxs_updateseooption($postid, $key, $val)
-{
-	if (!defined('WPSEO_PATH'))
-	{
-		nxs_webmethod_return_nack("please install the WordPress Seo plugin by Yoast");
-	}
-		
-	if (!class_exists ("WPSEO_Metabox"))
-	{
-		require WPSEO_PATH.'admin/class-metabox.php';
-	}
-	if (!class_exists ("WPSEO_Admin"))
-	{
-		require WPSEO_PATH.'admin/class-admin.php';
-	}
-	
-	require_once ABSPATH . 'wp-admin/includes/post.php';
-	
-	wpseo_set_value($key, $val, $postid);
-}
-
-// allocates a new random (but non-existing) pagerowid
-// for the specified postid, to be used for a new row
-// that will be inserted or appended to the post
-function nxs_allocatenewpagerowid($postid)
-{
-	$random = rand(1, getrandmax());
-	
-	if ($random == "")
-	{
-		nxs_webmethod_return_nack("random is empty?! (1)");
-	}
-	
-	return "prid" . $random;
-}
-
-function nxs_mergepagerowmetadata_internal($postid, $pagerowid, $updatedvalues)
-{
-	$behaviourargs = array();
-	$behaviourargs["updateunistyle"] = true;
-	return nxs_mergepagerowmetadata_internal_v2($postid, $pagerowid, $updatedvalues, $behaviourargs);
-}
-
-function nxs_mergepagerowmetadata_internal_v2($postid, $pagerowid, $updatedvalues, $behaviourargs)
-{
-	$metadatakey = 'nxs_pr_' . $pagerowid;
-	$result = array();
-	$existing = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	if ($existing == "")
-	{
-		// first time the widget is initialized, the meta data is empty(""),
-		// in this case we only set the new values and ignore the old one
-		$allvalues = $updatedvalues;
-	}
-	else
-	{
-		$allvalues = array_merge($existing, $updatedvalues);
-	}
-	
-	//
-	// step 1; store the metadata of the row itself
-	//
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($allvalues));
-	
-	//
-	// step 2; update the metadata of the unistyle
-	//
-	$unistyle = $allvalues["unistyle"];
-	if (isset($unistyle) && $unistyle != "" && $behaviourargs["updateunistyle"] == true)
-	{
-		$filetobeincluded = NXS_FRAMEWORKPATH . "/nexuscore/row/row.php";
-		if (!file_exists($filetobeincluded)) { nxs_webmethod_return_nack("file not found"); }
-		require_once($filetobeincluded);
-		
-		$sheet = "home";
-		$args = array();
-		$options = nxs_pagerow_home_getoptions($args);
-		
-		// we store 'all' unistyleable fields (not just the fieldids that are unistyleable, also
-		// the derived globalids. To determine which global fields there are, we look over
-		// all fields, and we include all ones starting with unistylablefields,
-		// for example "foo" and "foo_globalid"; all ones are added, "foo*").
-		$unistyleablefields = array();
-		$fieldids = nxs_unistyle_getunistyleablefieldids($options);
-		foreach ($fieldids as $currentfieldid)
-		{
-			// find derivations of this field, also the globalids
-			foreach ($allvalues as $currentkey => $currentvalue)
-			{
-				if (nxs_stringstartswith($currentkey, $currentfieldid))
-				{
-					$unistyleablefields[$currentkey] = $currentvalue;
-				}
-			}
-		}
-		
-		$unigroup = $options["unifiedstyling"]["group"];
-		if (!isset($unigroup) || $unigroup == "") { echo "c) options: "; var_dump($options); nxs_webmethod_return_nack("unigroup not set"); }
-		nxs_unistyle_persistunistyle($unigroup, $unistyle, $unistyleablefields);
-	}
-}
-
-function nxs_overridepagerowmetadata($postid, $pagerowid, $metadata)
-{
-	if ($postid== "") { nxs_webmethod_return_nack("postid not set (owmd)"); };
-	if ($pagerowid== "") { nxs_webmethod_return_nack("pagerowid not set (owmd)"); };
-	$metadatakey = 'nxs_pr_' . $pagerowid;
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($metadata));
-}
-
-function nxs_struct_purgerow($postid, $rowid)
-{
-	if ($postid == "") { nxs_webmethod_return_nack("postid not specified /nxs_webmethod_removerow/"); }
-	if ($rowid == "") { nxs_webmethod_return_nack("rowid not specified"); }
-
-	$result = array();
-
-  global $nxs_global_current_postid_being_rendered;
-  global $nxs_global_current_postmeta_being_rendered;
-
-  $nxs_global_current_postid_being_rendered = $postid;
-  $nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
-
-	$poststructure = nxs_parsepoststructure($postid);
-	foreach ($poststructure as $rowindex => $currentrow)
-	{
-		$rowidaccordingtoindex = nxs_parserowidfrompagerow($currentrow);
-		if ($rowidaccordingtoindex == $rowid)
-		{
-			// this is the one, delete it!
-			$content = $currentrow["content"];
-		
-			// delete metadata of placeholders in row	
-			$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
-			foreach ($placeholderids as $placeholderid)
-			{
-				nxs_purgeplaceholdermetadata($postid, $placeholderid);
-		  }
-		
-			// delete row
-			unset($poststructure[$rowindex]);
-			$poststructure = array_values($poststructure);
-			nxs_storebinarypoststructure($postid, $poststructure);
-			
-			// update items that are derived (based upon the structure and contents of the page, such as menu's)
-			$updateresult = nxs_after_postcontents_updated($postid);
-			if ($updateresult["pagedirty"] == "true") 
-			{
-				$result["pagedirty"] = "true";
-			}
-		}
-		else
-		{
-			// this row should be kept; skip it
-		}
-	}
-	//
-	return $result;
 }
 
 //
@@ -7446,7 +5097,7 @@ function nxs_widgets_initplaceholderdatageneric_v2($widget, $args)
 function nxs_optiontype_getpersistbehaviour($type)
 {
 	nxs_requirepopup_optiontype($type);
-	$functionnametoinvoke = 'nxs_popup_optiontype_' . $type . '_getpersistbehaviour';
+	$functionnametoinvoke = "nxs_popup_optiontype_{$type}_getpersistbehaviour";
 	if (function_exists($functionnametoinvoke))
 	{
 		$result = call_user_func($functionnametoinvoke);
@@ -7594,6 +5245,9 @@ function nxs_widgets_mergeunenrichedmetadata($widget, $args)
 {
 	$postid = $args["postid"];
 	$placeholderid = $args["placeholderid"];
+	
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_widgets_mergeunenrichedmetadata only supports local posts; $postid"); }
 
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_widgets_mergeunenrichedmetadata)"); }
  	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
@@ -7689,26 +5343,6 @@ function nxs_genericpopup_getpopuphtml($args)
 	
 	return $result;
 }
-
-/* LOCALIZATION */
-
-/*
-function nxs_localization_getoptions()
-{
-	$result = array
-	(
-		"nl" => array
-		(
-			"key" => "val"
-		),
-		"en" => array
-		(
-			"key" => "val"
-		),
-	);
-	return $result;
-}
-*/
 
 function nxs_localization_isactivated()
 {
@@ -7856,20 +5490,7 @@ function nxs_localization_getlocalizedsitetype()
 	return $result;
 }
 
-// kudos to http://wpsnipp.com/index.php/functions-php/get-all-post-meta-data/
-function nxs_get_post_meta_all($post_id)
-{
-	$result = array();
-	
-	$keys = get_post_custom_keys($post_id);
-	foreach ($keys as $current_key)
-	{
-		$currentvalue = get_post_meta($post_id, $current_key, true);	// deserialize if its an object
-		$result[$current_key] = $currentvalue;
-	}
-	
-	return $result;
-}
+
 
 function nxs_resetthumbnaildimensions()
 {
@@ -10671,7 +8292,7 @@ function nxs_getcssclassesforsitepage()
 
 function nxs_getcssclassesforrowcontainer($rowcontainerid)
 {
-	$metadata = nxs_get_postmeta($rowcontainerid);
+	$metadata = nxs_get_corepostmeta($rowcontainerid);
 	
 	$rc_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata["rc_colorzen"]);;
 	$rc_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $metadata["rc_linkcolorvar"]);
@@ -10687,16 +8308,25 @@ function nxs_getcssclassesforrowcontainer($rowcontainerid)
 	
 	$postclass = "nxs-post-{$rowcontainerid}";
 	
-	// editable classes
-	if (nxs_cap_hasdesigncapabilities())
+	$isremotetemplate = nxs_isremotetemplate($rowcontainerid);
+	if ($isremotetemplate)
 	{
-		$layouteditable = "nxs-layout-editable";
-		$widgetseditable = "nxs-widgets-editable";
+		$layouteditable = "";	
+		$widgetseditable = "";
 	}
 	else
-	{
-		$layouteditable = "";	// layout is not editable
-		$widgetseditable = "nxs-widgets-editable";
+	{	
+		// editable classes
+		if (nxs_cap_hasdesigncapabilities())
+		{
+			$layouteditable = "nxs-layout-editable";
+			$widgetseditable = "nxs-widgets-editable";
+		}
+		else
+		{
+			$layouteditable = "";	// layout is not editable
+			$widgetseditable = "nxs-widgets-editable";
+		}
 	}
 	
 	//
@@ -12119,17 +9749,6 @@ function nxs_wp_getpostidsbymetahavingposttype($key, $value, $posttype)
 	return $result;
 }
 
-function nxs_reseller_getreseller()
-{
-	$result = esc_attr(get_option('nxs_reseller'));
-	return $result;
-}
-
-function nxs_reseller_setreseller($reseller)
-{
-	update_option('nxs_reseller', "reseller");
-}
-
 function nxs_warranty_getwarrantystate()
 {
 	$result = esc_attr(get_option('nxs_warrantystate'));
@@ -12139,83 +9758,6 @@ function nxs_warranty_getwarrantystate()
 function nxs_warranty_break()
 {
 	update_option('nxs_warrantystate', "broken");
-}
-
-// appends a new "one" row, with the specified widget properties to an existing post
-function nxs_add_widget_to_post($args) 
-{	
-	extract($args);
-	
-	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_add_widget_to_post)"); }
-	if ($widgetmetadata == "") { nxs_webmethod_return_nack("widgetmetadata not set"); }
-	if ($widgetmetadata["type"] == "") { nxs_webmethod_return_nack("typeof widgetmetadata not set"); }
-	if ($widgetmetadata["postid"] != "") { nxs_webmethod_return_nack("postid of widgetmetadata should be empty"); }
-	if ($widgetmetadata["placeholderid"] != "") { nxs_webmethod_return_nack("placeholderid of widgetmetadata should be empty"); }
-	
-	$pagerowtemplate = "one";
-	
-	$wpposttype = nxs_getwpposttype($postid);
-	$nxsposttype = nxs_getnxsposttype_by_postid($postid);
-	$pagetemplate = nxs_getpagetemplateforpostid($postid);
-	
-	$prtargs = array();
-	$prtargs["invoker"] = "code";
-	$prtargs["wpposttype"] = $wpposttype;
-	$prtargs["nxsposttype"] = $nxsposttype;
-	$prtargs["pagetemplate"] = $pagetemplate;		
-	$postrowtemplates = nxs_getpostrowtemplates($prtargs);
-
-	// verify the pagerowtemplate is allowed to be placed
-	if (!in_array($pagerowtemplate, $postrowtemplates)) { nxs_webmethod_return_nack("unsupport pagerowtemplate?"); }
-	
-	// get poststructure (list of rowindex, pagerowtemplate, pagerowattributes, content)
-	$poststructure = nxs_parsepoststructure($postid);
-	
-	$pagerowid = nxs_allocatenewpagerowid($postid);
-
-	// create new row
-	$newrow = array();
-	$newrow["rowindex"] = "new";
-	$newrow["pagerowtemplate"] = $pagerowtemplate;
-	$newrow["pagerowid"] = $pagerowid;
-	$newrow["pagerowattributes"] = "pagerowtemplate='" . $pagerowtemplate . "' pagerowid='" . $pagerowid . "'";
-	$newrow["content"] = nxs_getpagerowtemplatecontent($pagerowtemplate);
-
-	$tailindex = count($poststructure);	// to be inserted AFTER the last item
-	
-	// insert row into structure
-	$updatedpoststructure = nxs_insertarrayindex($poststructure, $newrow, $tailindex);
-	
-	// persist structure
-	$updateresult = nxs_storebinarypoststructure($postid, $updatedpoststructure);
-	
-	// apply placeholdertemplates for the placeholders just created...
-	$placeholderid = nxs_parsepagerow($newrow["content"]);
-
-	$clientpopupsessioncontext = array();
-	$clientpopupsessioncontext["postid"] = $postid;
-	$clientpopupsessioncontext["placeholderid"] = $placeholderid;
-	$clientpopupsessioncontext["contextprocessor"] = "widgets";
-	$clientpopupsessioncontext["sheet"] = "home";
-
-	$args = $widgetmetadata;
-	$args["clientpopupsessioncontext"] = $clientpopupsessioncontext;
-	$args["placeholdertemplate"] = $widgetmetadata["type"];
-	
-	// for downwards compatibility we replicate the postid and placeholderid to the 'root'
-	$args["postid"] = $postid;
-	$args["placeholderid"] = $placeholderid;
-	
-	nxs_initializewidget($args);
-	// 
-	nxs_widgets_mergeunenrichedmetadata($widgetmetadata["type"], $args);
-	
-	// update items that are derived (based upon the structure and contents of the page, such as menu's)
-	nxs_after_postcontents_updated($postid);
-	
-	//
-	
-	return $result;
 }
 
 function nxs_connectivity_invoke_api_get($args)
@@ -12301,3 +9843,2565 @@ function nxs_connectivity_invoke_api_get($args)
 	return $response;
 }
 
+// =======
+// sanity checked for remote posts wrappers below
+// =======
+
+// sanity checked for remote posts
+function nxs_get_post_status($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$result = "publish";
+	}
+	else
+	{
+		$result = get_post_status($postid);
+	}
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_get_page($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$result = new object();
+		$result->post_type = "nxs_remote";
+	}
+	else
+	{
+		$result = get_page($postid);
+	}
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getwpposttype($postid)
+{
+	$postdata = nxs_get_page($postid);
+	if ($postdata == null) { nxs_webmethod_return_nack("nxs_getwpposttype; postid not found;" . $postid); }
+	$result = $postdata->post_type;
+	return $result;
+}
+
+// sanity checked for remote posts
+// getpostmeta returns the "core" postmeta information of the specified postid,
+// note that this function name is obsolete; use nxs_get_corepostmeta instead,
+// this function is still being used by some plugins so we cannot yet remove it,
+// unless those plugins are updated...
+function nxs_get_postmeta($postid)
+{
+	$result = nxs_get_corepostmeta($postid);
+	return $result;
+}
+
+// sanity checked for remote posts
+// getpostmeta
+function nxs_get_corepostmeta($postid)
+{
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set (getpostmeta)"); }
+	
+	global $nxs_gl_cache_postmeta;
+	if (!isset($nxs_gl_cache_postmeta))
+	{
+		$nxs_gl_cache_postmeta = array();
+	}
+	
+	if (!array_key_exists($postid, $nxs_gl_cache_postmeta))
+	{
+		// its not (yet/anymore) in the cache; fetch!
+		$metadatakey = 'nxs_core';
+		$result = maybe_unserialize(nxs_get_post_meta($postid, $metadatakey, true));
+		if ($result == null || $result == "index.php")
+		{
+			$result = array();
+		}
+		// store fetched result in the cache
+		$nxs_gl_cache_postmeta[$postid] = $result;
+	}
+	else
+	{
+		$result = $nxs_gl_cache_postmeta[$postid];
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_remote_getpost($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if (!$isremotetemplate) { echo "incompatible postid?"; die(); }
+	
+	global $nxs_gl_remote_posts;
+	$result = $nxs_gl_remote_posts[$postid];
+	if (!isset($result))
+	{
+		$result = nxs_remote_getpost_transient($postid);
+		if ($result != "")
+		{
+			$nxs_gl_remote_posts[$postid] = $result;
+		}
+		else
+		{
+			error_log("nxs_remote_getpost; $postid; empty?");
+		}
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_remote_getpost_transient($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if (!$isremotetemplate) { echo "incompatible postid?"; die(); }
+	
+	$key = md5("nxs_remote_post_{$postid}");
+	$result = get_transient($key);
+	if ($result == false)
+	{
+		$result = nxs_remote_getpost_actual($postid);
+		$expiration = 60;	// 60 secs
+		
+		if ($result != "")
+		{
+			// store the result only when its valid
+			// update_transient($key, $result, $expiration);
+		}
+		else
+		{
+			error_log("nxs_remote_getpost_transient; $postid; empty?");
+		}
+	}
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_remote_getpost_actual($postid)
+{
+	error_log("nxs_remote_getpost_actual; {$postid}");
+	
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if (!$isremotetemplate) { echo "incompatible postid?"; die(); }
+	
+	// 
+	$pieces = explode("@", $postid);
+	$postid = $pieces[0];
+	$url = $pieces[1];		
+	
+	// invoke webmethod; let remote server do the rendering bit
+	$invokeurl = "{$url}api/1/prod/getpost/{$postid}/?nxs=site-api&nxs_json_output_format=prettyprint";
+	//error_log($invokeurl);
+	$invokedresultstring = file_get_contents($invokeurl);
+	$invokedresult = json_decode($invokedresultstring, true);
+	
+	return $invokedresult;
+}
+
+// sanity checked for remote posts
+function nxs_get_post_meta($postid, $key, $single) 
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["metas"][$key];
+		
+		error_log("nxs_get_post_meta; debug; remote; $postid; $key; " . json_encode($result));
+	}
+	else
+	{
+		$result = get_post_meta($postid, $key, single);
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_isremotetemplate($postid) 
+{
+	$result = nxs_stringcontains($postid, "@remotetemplate");
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getrenderedhtml($postid, $rendermode) 
+{
+	$result = nxs_getrenderedhtmlincontainer($postid, $postid, $rendermode);
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getpoststructure($postid)	
+{
+	$metadatakey = 'nxs_struct';
+	
+	$temp_array = array();
+	$temp_array = maybe_unserialize(nxs_get_post_meta($postid, $metadatakey, true));
+	if ($temp_array == "")
+	{
+		// empty
+		$result = "";
+	} 
+	else
+	{
+		// downwards compatibility...
+		$result = $temp_array['structure'];
+	}
+
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_get_post_custom_keys($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["post_custom_keys"];
+	}
+	else
+	{
+		$result = get_post_custom_keys($postid);
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+// kudos to http://wpsnipp.com/index.php/functions-php/get-all-post-meta-data/
+function nxs_get_post_meta_all($postid)
+{
+	$result = array();
+	
+	$keys = nxs_get_post_custom_keys($postid);
+	foreach ($keys as $current_key)
+	{
+		$currentvalue = nxs_get_post_meta($postid, $current_key, true);	// deserialize if its an object
+		$result[$current_key] = $currentvalue;
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_parsepoststructure($postid)
+{
+	// haal de contents op van de pagina voor postid
+ 	$content = nxs_getpoststructure($postid);	// sanity checked for remote posts
+
+	// haal een array op van alle pagerows op de pagina
+ 	$regex_pattern = "/\[nxspagerow(.*)\](.*)\[\/nxspagerow\]/Us";
+ 	preg_match_all($regex_pattern,$content,$matches);
+
+	$result = array();
+
+	// loop over the pagerowtemplates as currently stored in the page
+	foreach ($matches[1] as $rowindex => $pagerowtemplateidentification)
+	{
+		//
+		//
+		//
+		$pagerowattributes = $matches[1][$rowindex];	// contains the attributes
+		$content = $matches[2][$rowindex];	// contains the content
+		$outercontent = $matches[0][$rowindex];		
+		
+		//
+		// pagerowtemplate (required)
+		//
+		$prt_sub_regex_pattern = "/" . "pagerowtemplate=" . "[\'\"]" . "(.*)" . "[\'\"]" . "/" . "Us";
+ 		$prt_identificationsfound = preg_match($prt_sub_regex_pattern,$pagerowtemplateidentification,$prt_sub_matches);
+ 		// ensure row has pagerowtemplate attribute
+ 		
+ 		
+		// not found? / incorrect page contents layout?
+ 		if ($prt_identificationsfound != 1) { nxs_webmethod_return_nack("incorrect page contents layout; no pagerowtemplate or multiple pagerowtemplates found?;" . $prt_identificationsfound); }
+ 		$pagerowtemplate = $prt_sub_matches[1];
+
+		//
+		// pagerowid (optional)
+		//
+		$prid_sub_regex_pattern = "/" . "pagerowid=" . "[\'\"]" . "(.*)" . "[\'\"]" . "/" . "Us";
+ 		$prid_identificationsfound = preg_match($prid_sub_regex_pattern,$pagerowtemplateidentification,$prid_sub_matches);
+ 		
+ 		if ($prid_identificationsfound == 0)
+ 		{
+ 			$pagerowid = "";
+ 		}
+ 		else if ($prid_identificationsfound == 1)
+ 		{
+ 			$pagerowid = $prid_sub_matches[1];
+ 		}
+ 		else
+ 		{
+ 			nxs_webmethod_return_nack("incorrect page contents layout; multiple pagerowids found?"); 		
+ 		}
+		
+		$result[] = array
+		(
+			"rowindex" => $rowindex,
+			"pagerowtemplate" => $pagerowtemplate,
+			"pagerowid" => $pagerowid,	// could be empty
+			"pagerowattributes" => $pagerowattributes,
+			"content" => $content,
+			"outercontent" => $outercontent,
+		);
+	}
+		
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getwidgettype($postid, $placeholderid)
+{
+	$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+	$result = $placeholdermetadata["type"];
+	return $result;
+}
+
+// obsolete function; the getwidgetmetadata didn't process the 
+// unistyle and unicontent values causing widgets to be rendered
+// incorrectly; in the new method the processing of lookupunistyle and unicontent
+// can be configured by an additional parameter
+// sanity checked for remote posts
+function nxs_getwidgetmetadata($postid, $placeholderid)
+{
+	$behaviourargs = array();
+	$behaviourargs["lookupunistyle"] = true;
+	$behaviourargs["lookupunicontent"] = true;
+
+	$result = nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs);
+
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getwidgetmetadata_v2($postid, $placeholderid, $behaviourargs)
+{
+	$metadatakey = 'nxs_ph_' . $placeholderid;
+	$result = array();
+	$result = maybe_unserialize(nxs_get_post_meta($postid, $metadatakey, true));
+	
+	if ($result == "")
+	{
+		$result = array();
+	}
+	
+	// optionally process unistyle
+	// if the widget has a unistyle, the properties of the unistyle should 
+	// override the properties stored in the widget itself
+	// this method is pretty fast since the unistyle configurations are cached in mem
+	if ($behaviourargs["lookupunistyle"] == true && $result["unistyle"] != "")
+	{
+		// unistyle lookup should override the result
+		$widgetname = $result["type"];
+		$unistyle = $result["unistyle"];
+		$unistylegroup = nxs_getunifiedstylinggroup($widgetname);
+		if ($unistylegroup != "")
+		{
+			$unistyleproperties = nxs_unistyle_getunistyleproperties($unistylegroup, $unistyle);
+			$result = array_merge($result, $unistyleproperties);
+		}
+	}
+	
+	// optionally process unicontent
+	// if the widget has a unicontent, the properties of the unicontent should 
+	// override the properties stored in the widget itself
+	// this method is pretty fast since the unicontent configurations are cached in mem
+	if ($behaviourargs["lookupunicontent"] == true && $result["unicontent"] != "")
+	{
+		// unicontentlookup should override the result
+		$widgetname = $result["type"];
+		$unicontent = $result["unicontent"];
+		$unifiedcontentgroup = nxs_unicontent_getunifiedcontentgroup($widgetname);
+		if ($unifiedcontentgroup != "")
+		{
+			$unicontentproperties = nxs_unicontent_getunicontentproperties($unifiedcontentgroup, $unicontent);
+			$result = array_merge($result, $unicontentproperties);
+		}
+	}
+	
+	// allow plugins to further manipulate the output
+	$args = array
+	(
+		
+	);
+	$result = apply_filters("nxs_f_getwidgetmetadata", $result, $args);
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_post_password_required($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["post_password_required"];
+	}
+	else
+	{
+		$result = post_password_required($postid);
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getplaceholdertemplate($postid, $placeholderid)
+{
+	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set (gpht)"); };
+	if ($postid== "") { nxs_webmethod_return_nack("postid not set (gpht)"); };
+	
+	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid); 
+	if ($temp_array == "")
+	{
+		$result = "";
+	}
+	else
+	{
+		$result = $temp_array["type"];
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_cloneplaceholder($postid, $placeholderidtobecloned)
+{	
+	if ($postid== "") { nxs_webmethod_return_nack("postid not set (cloneph)"); }
+	if ($placeholderidtobecloned == "") { nxs_webmethod_return_nack("placeholderidtobecloned not set"); }
+	
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("cloning is only allowed on local posts (this is a remote one); $postid; $placeholderidtobecloned"); }
+
+	$metadatatoclone = nxs_getwidgetmetadata($postid, $placeholderidtobecloned);
+	if ($metadatatoclone["type"] == "") { nxs_webmethod_return_nack("source placeholderid ($placeholderidtobecloned) to be cloned not found on page ($postid)"); }
+	
+	// TODO: add loop in case the placeholderid was already allocated (retry mechanism with max limit or retries)
+	$placeholderid = rand(1000000, 9999999) . 'ID';
+
+	// ensure the placeholderid is not in use
+	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	if (isset($temp_array['type'])) { nxs_webmethod_return_nack("unable to allocate unused ID, please retry"); }
+	
+	// found a free id
+	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($metadatatoclone));
+		
+	return $placeholderid;
+}
+
+// sanity checked for remote posts
+function nxs_storebinarypoststructure($postid, $poststructure)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_storebinarypoststructure is only allowed on local posts; $postid"); }
+	$newpostcontents = nxs_getcontentsofpoststructure($poststructure);
+
+	nxs_updatepoststructure($postid, $newpostcontents);
+
+	// after updating certain fields can be updates, therefore we auto refetch the post
+	$the_post = nxs_get_page($postid);
+	$post_modified = $the_post->post_modified;	// the new timestamp
+	
+	$result = array();
+	$result["modified"] = $post_modified;
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getrowindex_forpostidplaceholderid($postid, $placeholderid)
+{
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	$result = nxs_getrowindex_for_placeholderid($parsedpoststructure, $placeholderid);
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getpagerowid_forpostidplaceholderid($postid, $placeholderid)
+{
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	$result = nxs_getpagerowid_for_placeholderid($parsedpoststructure, $placeholderid);
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getwidgetsmetadatainpost($postid)
+{
+	$filter = array();
+	$filter["postid"] = $postid;
+	return nxs_getwidgetsmetadatainpost_v2($filter);
+}
+
+// sanity checked for remote posts
+// widgets metadata 
+function nxs_getwidgetsmetadatainpost_v2($filter)
+{
+	$result = array();
+	
+	$postid = $filter["postid"];
+	$widgettype = $filter["widgettype"];
+	
+	$rows = nxs_parsepoststructure($postid);
+	$index = 0;
+	foreach ($rows as $currentrow) 
+	{
+		$content = $currentrow["content"];
+		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+		foreach ($placeholderids as $placeholderid)
+		{
+			$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+			$shouldinclude = true;
+			if ($widgettype != "")
+			{
+				if ($placeholdermetadata["type"] != $widgettype)
+				{
+					// wrong type; ignore!
+					$shouldinclude = false;
+				}
+			}
+			
+			if ($shouldinclude)
+			{
+				$result[$placeholderid] = $placeholdermetadata;
+			}
+		}
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+// posttitle
+function nxs_gettitle_for_postid($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["title"];
+	}
+	else
+	{
+		$result = get_the_title($postid);
+	}
+	return $result; 
+}
+
+// sanity checked for remote posts
+function nxs_clonepost($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_clonepost; cloning is only allowed on local posts (this is a remote one); {$postid}"); }
+	
+	if (!nxs_postexistsbyid($postid)) { nxs_webmethod_return_nack("nxs_clonepost; post does not exist $postid"); }
+	
+	// grab the basic lookups, like the posttype and the globalid, etc.
+	$posttype = get_post_type($postid);
+	$nxsposttype = nxs_getnxsposttype_by_postid($postid);
+	$nxssubposttype = nxs_get_nxssubposttype($postid);
+	$globalid = nxs_get_globalid($postid, true);
+	$title = nxs_gettitle_for_postid($postid);
+	$slug = nxs_getslug_for_postid($postid);
+	$nxs_semanticlayout = get_post_meta($postid, 'nxs_semanticlayout', true);
+	$structure = nxs_parsepoststructure($postid);
+	
+	$destinationpostid = "";
+	$destinationglobalid = "";
+	
+	if (in_array($posttype, array("nxs_genericlist")))
+	{
+		$newpost_args = array();
+		$newpost_args["slug"] = $slug;	// sessionid toevoegen?
+		$newpost_args["titel"] = $title;
+		$newpost_args["wpposttype"] = $posttype;
+		$newpost_args["nxsposttype"] = $nxsposttype;
+		$newpost_args["nxssubposttype"] = $nxssubposttype;
+		$newpost_args["postwizard"] = "skip";
+		//$newpost_args["globalid"] = $currentpostglobalid;
+		//$newpost_args["postmetas"] = $postmetas;
+		$response = nxs_addnewarticle($newpost_args);
+		$destinationpostid = $response["postid"];
+		$destinationglobalid = $response["globalid"];
+		
+		// replicate the structure of the post
+		nxs_storebinarypoststructure($destinationpostid, $structure);
+		
+		// replicate the data per row
+		$rowindex = 0;
+		foreach ($structure as $pagerow)
+		{
+			// ---------------- ROW META
+			
+			// replicate the metadata of the row
+			$pagerowid = nxs_parserowidfrompagerow($pagerow);
+			if (isset($pagerowid))
+			{
+				// get source meta
+				$rowmetadata = nxs_getpagerowmetadata($postid, $pagerowid);
+				// store destination meta
+				nxs_overridepagerowmetadata($destinationpostid, $pagerowid, $rowmetadata);
+			}
+			
+			// ---------------- WIDGET META
+			
+			// replicate the metadata of the widgets in the row
+			$filter = array("postid" => $postid);
+			$widgetsmetadata = nxs_getwidgetsmetadatainpost_v2($filter);
+			
+			foreach ($widgetsmetadata as $placeholderid => $widgetmetadata)
+			{
+				nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $widgetmetadata);
+			}
+		}
+	}
+	else
+	{
+		echo "to be implemented; $posttype";
+		die();
+	}
+	
+	$result = array
+	(
+		"destinationpostid" => $destinationpostid,
+		"destinationglobalid" => $destinationglobalid,
+	);
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+// will update the metadata of the widget postid, placeholderid,
+// for the fields that reference other widgets, by cloning the existing
+// referencing posts, and then updating the meta fields of the widget itself
+// this is a function that is being used AFTER the pasting of a widget, row or
+// entire page is has cloned al fields by value, to ensure that referenced
+// fields are cloned too (instead of both the source and destination using
+// the same generic lists for example)
+function nxs_clonereferencedfieldsforwidget($postid, $placeholderid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_clonereferencedfieldsforwidget; cloning is only allowed on local posts (this is a remote one); {$postid}; {$placeholderid}"); }	
+
+	// grab the existing widgetmetadata of this widget
+	$metadata = nxs_getwidgetmetadata($postid, $placeholderid);
+	$placeholdertemplate = $metadata["type"];
+	
+	// clone referenced entities
+	// for debugging this could be done based upon the IP address
+	//$ip = $_SERVER['REMOTE_ADDR'];
+	//$shouldclonereferencedgenericlists = ($ip == "83.162.43.67");
+	$shouldclonereferencedgenericlists = true;				
+	
+	$isdirty = false;
+	
+	if ($shouldclonereferencedgenericlists)
+	{
+		// loop over properties of the widgettype
+		// if one of the properties represents a genericlist,
+		// then clone that genericlist post,
+		// give it a new unique globalid and postid
+		// and update the widgetmeta of "this" widget we are pasting,
+		// such that it will point to that cloned entity
+		nxs_requirewidget($placeholdertemplate);
+		$widget = $placeholdertemplate;
+		$sheet = "home";
+		$functionnametoinvoke = 'nxs_widgets_' . $widget . '_' . $sheet . '_getoptions';
+		if (function_exists($functionnametoinvoke))
+		{
+			// todo: 20161007; a better solution would be to loop over the properties through reflection
+			// instead of looking for the hardcoded "items_genericlistid" fieldname,
+			// but for now this should be enough
+			if ($metadata["items_genericlistid"] != "" && $metadata["items_genericlistid"] != "0")
+			{
+				//error_log("clone generic lists = genericlist set");
+				
+				// we found a referenced post; clone that post first
+				$tobeclonedpostid = $metadata["items_genericlistid"];
+				//error_log("clone generic lists = cloning $tobeclonedpostid");
+				$clonedresult = nxs_clonepost($tobeclonedpostid);
+				//error_log("clone generic lists = clone finished " . json_encode($clonedresult));
+				// update the metadata with the cloned result
+				$metadata["items_genericlistid"] = $clonedresult["destinationpostid"];
+				$metadata["items_genericlistid_globalid"] = $clonedresult["destinationglobalid"];
+				
+				$isdirty = true;
+			}
+		}
+		else
+		{
+			// for old style widgets we don't support this
+		}
+	}
+	
+	if ($isdirty)
+	{
+		// update the widgetmetadata
+		nxs_overridewidgetmetadata($postid, $placeholderid, $metadata);
+	}
+}
+
+// sanity checked for remote posts
+function nxs_replicatepoststructure($replicatemetadata)
+{
+	extract($replicatemetadata);
+	
+	if ($destinationpostid == "") { nxs_webmethod_return_nack("destinationpostid empty? (shp)"); }
+	if ($destinationpostid == "0") { nxs_webmethod_return_nack("destinationpostid empty? (shp)"); }
+	$isremotetemplate = nxs_isremotetemplate($destinationpostid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_replicatepoststructure; only allow if destination is local; {$destinationpostid}"); }
+	
+	if ($sourcepostid == "") { nxs_webmethod_return_nack("sourcepostid empty? (shp)"); }
+	if ($sourcepostid == "0") { nxs_webmethod_return_nack("sourcepostid empty? (shp)"); }
+	if ($sourcepostid == $destinationpostid) { nxs_webmethod_return_nack("sourcepostid is the same as the destination postid (shp)"); }
+	
+	// replicate the data structure and metafields from source to destination
+	$structure = nxs_parsepoststructure($sourcepostid);
+	nxs_storebinarypoststructure($destinationpostid, $structure);
+	
+	// replicate the data per row
+	$rowindex = 0;
+	foreach ($structure as $pagerow)
+	{
+		// ---------------- ROW META
+		
+		// replicate the metadata of the row
+		$pagerowid = nxs_parserowidfrompagerow($pagerow);
+		if (isset($pagerowid))
+		{
+			// get source meta
+			$metadata = nxs_getpagerowmetadata($sourcepostid, $pagerowid);
+			// store destination meta
+			nxs_overridepagerowmetadata($destinationpostid, $pagerowid, $metadata);
+		}
+		
+		// ---------------- WIDGET META
+		
+		// replicate the metadata of the widgets in the row
+		$content = $pagerow["content"];
+		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+		foreach ($placeholderids as $placeholderid)
+		{
+			// get source metadata
+			$metadata = nxs_getwidgetmetadata($sourcepostid, $placeholderid);
+			// store destination metadata
+			nxs_overridewidgetmetadata($destinationpostid, $placeholderid, $metadata);
+		}
+	}
+	
+	// huray!
+	$result = array();
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_get_images_in_post($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_get_images_in_post; can only be invoked on local posts"); }
+		
+	$result = array();
+	
+	// add featured image (if set)
+	$featuredimageid = get_post_thumbnail_id($postid);
+	if ($featuredimageid != "" && $featuredimageid != 0)
+	{
+		if (!in_array($featuredimageid, $result))
+		{
+			$result[] = $featuredimageid;
+		}
+	}
+	
+	// parse de pagina
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	// loop over each row, get placeholderid,
+	$rowindex = 0;
+	foreach ($parsedpoststructure as $pagerow)
+	{
+		$content = $pagerow["content"];		
+		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+		foreach ($placeholderids as $placeholderid)
+		{
+			$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+			
+			$item = strip_tags($placeholdermetadata["thumbid"]);
+			if ($item != "")
+			{
+				if (!in_array($item, $result))
+				{
+					$result[] = $item;
+				}
+			}			
+			$item = strip_tags($placeholdermetadata["image_imageid"]);
+			if ($item != "")
+			{
+				if (!in_array($item, $result))
+				{
+					$result[] = $item;
+				}
+			}
+			
+			// check for other attributes too, if that's needed in the future
+		}
+		$rowindex++;
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+// first_image get first image
+function nxs_get_key_imageid_in_post($postid)
+{
+	$result = 0;
+	$imageids = nxs_get_images_in_post($postid);
+	foreach ($imageids as $currentimageid)
+	{
+		$result = $currentimageid;
+		break;
+	}
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getwpcontent_for_postid($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["post_content"];
+	}
+	else
+	{
+		$postdata = get_post($postid);
+		$result = $postdata->post_content;
+	}
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_get_text_blocks_on_page($postid)
+{
+	return nxs_get_text_blocks_on_page_v2($postid, "...");
+}
+
+// sanity checked for remote posts
+function nxs_get_text_blocks_on_page_v2($postid, $emptyplaceholder)
+{
+	return nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, "before");
+}
+
+// sanity checked for remote posts
+function nxs_get_text_blocks_on_page_v3($postid, $emptyplaceholder, $wpcontentrenderbehaviour)
+{
+	$result = array();
+
+	if ($wpcontentrenderbehaviour == "none")
+	{
+		//
+	}
+	else if ($wpcontentrenderbehaviour == "before")
+	{
+		// the wp content
+		$text = do_shortcode(nxs_getwpcontent_for_postid($postid));
+		// 20151009 - disabled nxs_toutf8string; it produces garbled output on the blog widgets/
+		// on one of Kacems sites
+		//$item = nxs_toutf8string(strip_tags($text));	
+		$item = strip_tags($text);
+		
+		if ($item != "")
+		{
+			if (!in_array($item, $result))
+			{
+				$result[] = $item;
+			}
+		}
+	}
+	else
+	{
+		// unknown
+	}
+	
+	// parse de pagina
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+
+	// loop over each row, get placeholderid,
+	foreach ($parsedpoststructure as $pagerow)
+	{
+		$content = $pagerow["content"];		
+		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+		foreach ($placeholderids as $placeholderid)
+		{
+			$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+
+			// per placeholderid get all meta data
+			$text = $placeholdermetadata["text"];
+			// the <br /> tag should be replaced with a space rather than being removed
+			// the <br> tag should also be replaced with a space rather than being removed
+			$text = str_ireplace("<br />", " ", $text);
+			$text = str_ireplace("<br>", " ", $text);
+			
+			$stripped = strip_tags($text);
+			$item = $stripped;
+			
+			// apply lookup tables
+			$temp  = array("text" => $item);
+			$temp = nxs_filter_translatelookup($temp, array("text"));
+			$item = $temp["text"];
+			
+			if ($item != "")
+			{
+				if (!in_array($item, $result))
+				{
+					$result[] = $item;
+				}
+			}
+			// check for other attributes too, if that's needed in the future
+		}
+	}
+	
+	if (count($result) == 0)
+	{
+		$result[] = $emptyplaceholder;
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_converttopage($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_converttopage; is only available for local posts; $postid"); }
+
+	$resultaat = array();
+	
+	set_post_type($postid, 'page');
+	
+	return $resultaat;
+}
+
+// sanity checked for remote posts
+function nxs_converttopost($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_converttopage; is only available for local posts; $postid"); }
+	
+	$result = array();
+	
+	$iscurrentpagethehomepage = nxs_ishomepage($postid);
+	if ($iscurrentpagethehomepage)
+	{
+		// leave as-is
+		echo "error; homepage cannot be marked as post; please first assign the homepage to another post";
+		return;
+	}
+	
+	set_post_type($postid, 'post');
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getnxsposttype_by_postid($postid)
+{
+	$wpposttype = nxs_getwpposttype($postid);
+	if ($wpposttype == "") { nxs_webmethod_return_nack("unknown wp posttype"); }
+	
+	$result = nxs_getnxsposttype_by_wpposttype($wpposttype);
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getslug_for_postid($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["post_name"];
+	}
+	else
+	{
+		$postdata = get_post($postid);
+		if (isset($postdata))
+		{
+			$result = $postdata->post_name;
+		}
+		else
+		{
+			$result = "";
+		}
+	}
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_setwpcontent_for_postid($postid, $wpcontent)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_setwpcontent_for_postid only possible on local posts; $postid"); }
+	
+	nxs_disabledwprevisions();
+	
+  $my_post = array();
+  $my_post['ID'] = $postid;
+  $my_post['post_content'] = $wpcontent;
+
+	// Update the post into the database
+  wp_update_post( $my_post );
+}
+
+// sanity checked for remote posts
+function nxs_getwpcategoryids_for_postid($postid)
+{
+	$result = "";
+	
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	$islocaltemplate = !$isremotetemplate;
+	
+	if ($islocaltemplate) 
+	{	
+		$categoryids = wp_get_post_categories($postid);
+		foreach ($categoryids as $categoryid)
+		{
+			$result .= "[" . $categoryid . "]";
+		}
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+// url get posturl getposturl geturlforpost
+function nxs_geturl_for_postid($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["url"];
+	}
+	else
+	{
+		if ($postid == null)
+		{
+			$result = "";
+		}
+		else if ($postid == 0)
+		{
+			$result = "";
+		}
+		else if ($postid == "")
+		{
+			$result = "";
+		}
+		else if (nxs_ishomepage($postid))
+		{
+			$result = nxs_geturl_home();
+		}
+		else
+		{
+			$result = get_permalink($postid);
+		}
+	}
+	
+	return $result; 
+}
+
+// sanity checked for remote posts
+function nxs_updatepagetemplate($args)
+{
+	extract($args);
+	
+ 	if ($postid == "") { nxs_webmethod_return_nack("postid empty? (uphd)"); }
+ 	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_updatepagetemplate only allowed for local posts ($postid)"); }
+ 	
+ 	if ($pagetemplate == "") { nxs_webmethod_return_nack("pagetemplate empty?"); }
+
+	// ensure it exists
+	nxs_requirepagetemplate($pagetemplate);
+ 	
+ 	//
+ 	$articlesubtype = $pagetemplate;
+ 	
+ 	// store as taxonomy
+	$result = wp_set_object_terms(strval($postid), $articlesubtype, "nxs_tax_subposttype");
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_set_nxssubposttype($postid, $nxssubposttype)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_set_nxssubposttype only allowed for local posts ($postid)"); }
+	
+	$result = wp_set_object_terms(strval($postid), $nxssubposttype, "nxs_tax_subposttype");
+	if (is_wp_error($result)) 
+	{
+		$msg = $result->get_error_message();
+		error_log("nxs_set_nxssubposttype invoked with $postid $nxssubposttype error result $msg");
+	}
+	else
+	{
+		//error_log("nxs_set_nxssubposttype; result: $result");
+	}
+	return $result;
+}
+
+// sanity checked for remote posts
+// note; only invoke this function AFTER the nxs_create_post_types_and_taxonomies() function 
+// of the framework is invoked, or else the taxonomy won't be available,
+// meaning it will return "nxserr" error messages instead!
+function nxs_get_nxssubposttype($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["nxssubposttype"];
+	}
+	else
+	{
+		if ($postid == "")
+		{
+			echo "postid is niet geset? (subpt a)";
+			return "postid is niet geset? (subpt) b";
+		}
+		
+		$terms = wp_get_object_terms(strval($postid), 'nxs_tax_subposttype');
+		
+		if(!empty($terms))
+		{
+			if(!is_wp_error($terms))
+			{
+				if (count($terms) == 1)
+				{
+					$term = $terms[0];
+					$result = $term->name;
+					
+					// fix; on rare installations system returns capitalized first letters, "Gallery" instead of "gallery",
+					// messing up the behaviour. Fix is to always lowercase the result
+	
+					$result = strtolower($result); 
+				}
+				else
+				{
+					// unexpected; we found 0, or multiple taxonomies?
+					error_log("nxs_get_nxssubposttype for $postid nxserr(1)");
+					$result = false;
+				}
+			}
+			else
+			{
+				error_log("nxs_get_nxssubposttype for $postid nxserr(2)");
+				$result = false;
+			}		
+		}
+		else
+		{
+			error_log("nxs_get_nxssubposttype for $postid nxserr(3)");
+			$result = false;
+		}
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_merge_postmeta($postid, $modifiedmetadata)
+{	
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_merge_postmeta only allowed on local posts; $postid"); }
+
+	if ($postid == "")
+	{
+		echo "postid is niet geset? (mpm)";
+		return "postid is niet geset? (mpm)";
+	}
+
+	$metadatakey = 'nxs_core';
+	$temp_array = array();
+	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
+	$result = array_merge((array)$temp_array, (array)$modifiedmetadata);
+	// fix; 20140307; backslashes are removed in anything we stored, unless
+	// double-backslashed, see: 
+	// - http://codex.wordpress.org/Function_Reference/update_post_meta
+	// - https://codex.wordpress.org/Function_Reference/wp_slash
+	$updateresult = update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($result));
+
+	// wipe cached data	
+	global $nxs_gl_cache_postmeta;
+	if (!isset($nxs_gl_cache_postmeta))
+	{
+		$nxs_gl_cache_postmeta = array();
+	}
+	if (array_key_exists($postid, $nxs_gl_cache_postmeta))
+	{
+		// remove item
+		unset($nxs_gl_cache_postmeta[$postid]);
+	}
+	
+	// TODO: handle updateresult (false means error for example)
+}
+
+// sanity checked for remote posts
+function nxs_wipe_postmetakey($postid, $keytoberemoved)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_merge_postmeta only allowed on local posts; $postid"); }
+
+	$keystoberemoved = array();
+	$keystoberemoved[] = $keytoberemoved;
+	return nxs_wipe_postmetakeys($postid, $keystoberemoved);
+}
+
+// sanity checked for remote posts
+function nxs_wipe_postmetakeys($postid, $keystoberemoved)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_merge_postmeta only allowed on local posts; $postid"); }
+
+	if ($postid == "")
+	{
+		echo "postid is niet geset? (mpm)";
+		return "postid is niet geset? (mpm)";
+	}
+
+	$metadatakey = 'nxs_core';
+	$temp_array = array();
+	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
+	
+	foreach ($keystoberemoved as $currentkeytoberemoved)
+	{
+		if (isset($temp_array[$currentkeytoberemoved]))
+		{
+			unset($temp_array[$currentkeytoberemoved]);
+		}
+	}
+	
+	$updateresult = update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($temp_array));
+
+	// wipe cached data	
+	global $nxs_gl_cache_postmeta;
+	if (!isset($nxs_gl_cache_postmeta))
+	{
+		$nxs_gl_cache_postmeta = array();
+	}
+	if (array_key_exists($postid, $nxs_gl_cache_postmeta))
+	{
+		// remove item
+		unset($nxs_gl_cache_postmeta[$postid]);
+	}
+}
+
+// sanity checked for remote posts
+function nxs_getpagetemplateforpostid($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["pagetemplate"];
+	}
+	else
+	{
+		if ($postid == "")
+		{
+			echo "postid is niet geset? (subpt a)";
+			return "postid is niet geset? (subpt) b";
+		}
+		
+		$terms = wp_get_object_terms(strval($postid), 'nxs_tax_subposttype');
+		
+		if(!empty($terms))
+		{
+			if(!is_wp_error($terms))
+			{
+				if (count($terms) == 1)
+				{
+					$term = $terms[0];
+					$result = $term->name;
+				}
+				else if (count($terms) > 1)
+				{
+					// unexpected; we found 0, or multiple taxonomies?
+					$result = "nxserr (n>1;n==" . count($terms) . ";postid=$postid)";
+				} 
+				else
+				{
+					// unexpected; we found 0, or multiple taxonomies?
+					$result = "nxserr (n==0)";
+				}
+			}
+			else
+			{
+				$result = "nxserr (wperr)";
+				var_dump($terms);
+			}		
+		}
+		else
+		{
+			// for legacy pages/posts/custom posts and for items created by 
+			// third parties (extensions / plugins),
+			// but only if they are publicly available		
+			$wpposttype = nxs_getwpposttype($postid);
+			
+			$publicposttypes = get_post_types( array( 'public' => true));
+			if (array_key_exists($wpposttype, $publicposttypes))
+			{
+				if ($wpposttype == "post")
+				{
+					// for legacy pages
+					$result = "blogentry";
+				}
+				else if ($wpposttype == "page")
+				{
+					$result = "webpage";
+				}
+				else
+				{
+					// assumed webpage-like
+					$result = "webpage";
+				}
+			}
+			else
+			{
+				$result = "nxserr ($wpposttype) (not public)";
+			}
+		}
+	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_updatepoststructure($postid, $postcontents)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_updatepoststructure only allowed on local posts; $postid"); }
+
+	$metadatakey = 'nxs_struct';
+
+	// 2012 06 16 GJ; bug fix	
+	// sanitize the post contents, see http://wordpress.org/support/topic/plugin-wordpress-importer-how-to-import-multiline-post-metadata
+	// we replace '\r\n' with '\r\' to prevent the import (when export/importing) from mis-interpreting the \r\rn resulting in empty structures
+	$postcontents = str_replace("\r\n", "\r", $postcontents);
+	
+	$temp_array = array();
+	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
+	$temp_array["structure"] = $postcontents;
+	$result = array_merge((array)$temp_array, (array)$modifiedmetadata);
+	
+	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($result));
+}
+
+// sanity checked for remote posts
+function nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rendermode, $parsedpoststructure)
+{
+	global $nxs_global_current_nxsposttype_being_rendered;
+	global $nxs_global_current_postid_being_rendered;
+	global $nxs_global_current_postmeta_being_rendered;
+	global $nxs_global_current_render_mode;
+	global $nxs_global_current_rowindex_being_rendered;
+	
+	// temporarily replace the variables being rendered
+
+	$original_nxs_global_current_nxsposttype_being_rendered = $nxs_global_current_nxsposttype_being_rendered;
+	$nxs_global_current_nxsposttype_being_rendered = nxs_getnxsposttype_by_postid($postid);
+
+	$original_nxs_global_current_postid_being_rendered = $nxs_global_current_postid_being_rendered;
+	$nxs_global_current_postid_being_rendered = $postid;
+	
+	$original_nxs_global_current_postmeta_being_rendered = $nxs_global_current_postmeta_being_rendered;
+	$nxs_global_current_postmeta_being_rendered = nxs_get_corepostmeta($postid);
+	
+	// same for the rendermode
+	$original_nxs_global_current_render_mode = $nxs_global_current_render_mode;
+	$nxs_global_current_render_mode = $rendermode;
+	
+	// same for the rowindex
+	$original_nxs_global_current_rowindex_being_rendered = $nxs_global_current_rowindex_being_rendered;
+	// NOTE; de double quotes below are necessay, otherwise the variable will be set to NULL (resulting in issues further on)
+	$nxs_global_current_rowindex_being_rendered = "" . $rowindex;
+	
+	if (!array_key_exists($rowindex, $parsedpoststructure)) { nxs_webmethod_return_nack("postid ($postid) does not contain rowindex ($rowindex)."); }
+	
+	// NOTE; de double quotes below are necessay, otherwise the variable will be set to NULL (resulting in issues further on)
+	$nxs_global_current_rowindex_being_rendered = "" . $rowindex;	
+	
+	$row = $parsedpoststructure[$rowindex];
+	$outercontent = $row["outercontent"];
+
+	nxs_ob_start();
+	
+	echo do_shortcode($outercontent);
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+		
+	// revert nxs_global_current_postid_being_rendered to its original value
+	$nxs_global_current_postid_being_rendered = $original_nxs_global_current_postid_being_rendered;
+	
+	// same for the rendermode
+	$nxs_global_current_render_mode = $original_nxs_global_current_render_mode;
+	
+	// same for the rowindex
+	$nxs_global_current_rowindex_being_rendered = $original_nxs_global_current_rowindex_being_rendered;
+	
+	// nxsposttype
+	$nxs_global_current_nxsposttype_being_rendered = $original_nxs_global_current_nxsposttype_being_rendered;
+
+	// postmeta
+	$nxs_global_current_postmeta_being_rendered = $original_nxs_global_current_postmeta_being_rendered;
+
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getrenderedrowhtml($postid, $rowindex, $rendermode)
+{	
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	$result = nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rendermode, $parsedpoststructure);
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getrenderedhtmlinparsedpoststructure($containerpostid, $postid, $parsedpoststructure, $rendermode)
+{
+	global $nxs_global_current_nxsposttype_being_rendered;
+	global $nxs_global_current_containerpostid_being_rendered;
+	global $nxs_global_current_postid_being_rendered;
+	global $nxs_global_current_postmeta_being_rendered;
+	global $nxs_global_current_render_mode;
+
+	// temporarily replace variables for rendering
+	// this is required to render the shortcodes 
+
+	$original_nxs_global_current_containerpostid_being_rendered = $nxs_global_current_containerpostid_being_rendered;
+	$nxs_global_current_containerpostid_being_rendered = $containerpostid;
+
+	$original_nxs_global_current_nxsposttype_being_rendered = $nxs_global_current_nxsposttype_being_rendered;
+	$nxs_global_current_nxsposttype_being_rendered = nxs_getnxsposttype_by_postid($postid);
+
+	$original_nxs_global_current_postid_being_rendered = $nxs_global_current_postid_being_rendered;
+	$nxs_global_current_postid_being_rendered = $postid;
+
+	$original_nxs_global_current_postmeta_being_rendered = $nxs_global_current_postmeta_being_rendered;
+	$nxs_global_current_postmeta_being_rendered = nxs_get_corepostmeta($postid);
+		
+	$original_nxs_global_current_render_mode = $nxs_global_current_render_mode;
+	$nxs_global_current_render_mode = $rendermode;
+	
+	//
+	
+	$result = "";
+	$result .= "<div class='nxs-postrows'>";
+	
+	$rowindex = 0;
+	foreach ($parsedpoststructure as $pagerow)
+	{
+		$result .= nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rendermode, $parsedpoststructure);	
+		$rowindex++;
+	}
+	
+	$result .= "</div>";
+	
+	// revert nxs_global_current_postid_being_rendered to its original value
+	$nxs_global_current_postid_being_rendered = $original_nxs_global_current_postid_being_rendered;
+
+	// revert nxs_global_current_postid_being_rendered to its original value
+	$nxs_global_current_containerpostid_being_rendered = $original_nxs_global_current_containerpostid_being_rendered;
+	
+	// same for the rendermode
+	$nxs_global_current_render_mode = $original_nxs_global_current_render_mode;
+	
+	// same for the nxsposttype
+	$nxs_global_current_nxsposttype_being_rendered = $original_nxs_global_current_nxsposttype_being_rendered;
+
+	// same for postmeta
+	$nxs_global_current_postmeta_being_rendered = $original_nxs_global_current_postmeta_being_rendered;
+
+	return $result;
+}
+
+// sanity checked for remote posts
+function nxs_getrenderedhtmlincontainer($containerpostid, $postid, $rendermode)
+{
+	if ($containerpostid == "") { nxs_webmethod_return_nack("containerpostid is not set"); }
+	
+	$poststatus = nxs_get_post_status($postid);
+	if ($poststatus == "publish")
+	{
+		$parsedpoststructure = nxs_parsepoststructure($postid);
+		$result = nxs_getrenderedhtmlinparsedpoststructure($containerpostid, $postid, $parsedpoststructure, $rendermode);
+	}
+	else if ($poststatus === false)
+	{
+		if ($postid == "SUPPRESSED")
+		{
+		}
+		else
+		{
+			$reconfigure = "<a class='nxsbutton1' href='#' onclick='nxs_js_popup_pagetemplate_neweditsession(&quot;layout&quot;); return false;'>Change</a>";
+			$result = nxs_getrowswarning(nxs_l18n__("Deleted section. Consider (re)configuring it.", "nxs_td") . $reconfigure);
+		}
+	}
+	else if ($poststatus == "draft" || $poststatus == "private" || $poststatus == "future")
+ 		{
+ 		if (!is_user_logged_in())
+ 		{
+ 			nxs_webmethod_return_nack("unexpected; user is not logged on?");
+ 		}
+ 				
+ 		$parsedpoststructure = nxs_parsepoststructure($postid);
+ 		$result = nxs_getrenderedhtmlinparsedpoststructure($containerpostid, $postid, $parsedpoststructure, $rendermode);
+ 	}	
+	else if ($poststatus == "trash")
+	{
+		$reconfigure = "<a class='nxsbutton1' href='#' onclick='nxs_js_popup_pagetemplate_neweditsession(&quot;layout&quot;); return false;'>Change</a>";
+		$result = nxs_getrowswarning(nxs_l18n__("Trashed section. Consider (re)publishing it.", "nxs_td") . $reconfigure);
+	}	
+	else
+	{
+		$reconfigure = "<a class='nxsbutton1' href='#' onclick='nxs_js_popup_pagetemplate_neweditsession(&quot;layout&quot;); return false;'>Change</a>";
+		$result = nxs_getrowswarning(nxs_l18n__("Section found, but in unsupported state ($poststatus). Consider (re)publishing it.", "nxs_td") . $reconfigure);
+	}
+	
+	return $result;
+}
+
+function nxs_after_postcontents_updated($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_after_postcontents_updated; can only be used on local posts; $postid"); }
+	
+	$result["result"] = "OK";
+	
+	// perform after save actions based on the nxsposttype
+	$nxsposttype = nxs_getnxsposttype_by_postid($postid);
+	if ($nxsposttype == "menu")
+	{
+		// no longer needed; we render the menu ourselves
+	}
+	else if (
+		$nxsposttype == "sidebar" ||
+		$nxsposttype == "post" ||
+		$nxsposttype == "footer" ||
+		$nxsposttype == "header" ||
+		$nxsposttype == "genericlist" ||
+		$nxsposttype == "admin" || 
+		$nxsposttype == "subfooter" ||
+		$nxsposttype == "subheader" ||
+		$nxsposttype == "template" ||
+		$nxsposttype == "pagelet")
+	{
+		// nothing needs to be derived
+	}
+	else
+	{
+		$args = array();
+		$result = apply_filters("nxs_after_postcontents_updated", $result, $args);
+	}
+	
+	// patching; implements handling of post updates for extensions not supporting front-end editing out of the box
+	
+	// patch #438957387; the video plugin of yoast does not apply the "wpseo_pre_analysis_post_content" filter
+	// but we need this when we update the post on the front-end part. This patch ensures that the video is automatically
+	// updated when the front-end content is updated
+	if (class_exists('wpseo_Video_Sitemap'))
+	{
+		global $shortcode_tags;
+		$old_shortcode_tags = $shortcode_tags;
+
+		// WP VIDEO SEO plugin only updated the post when is_admin() is true
+		$nxs_wpseo_Video_Sitemap = new wpseo_Video_Sitemap();
+		$nxs_wpseo_Video_Sitemap->update_video_post_meta($postid);
+		
+		$shortcode_tags= $old_shortcode_tags;
+	}
+	
+	return $result;
+}
+
+function nxs_is404page($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_is404page only supports local posts; $postid"); }
+	
+	$sitemeta = nxs_getsitemeta();
+	$configuredpostid = $sitemeta["404_postid"];
+	if ($configuredpostid == "" || $configuredpostid == null)
+	{
+		// legacy; to be removed eventually
+		$configuredpostid = get_option("nxs_404_postid");
+	}
+	
+	$result = ($configuredpostid == $postid);
+		
+	return $result;
+}
+
+function nxs_set404page($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_is404page only supports local posts; $postid"); }
+
+	$modifiedmetadata = array();
+	$modifiedmetadata["404_postid"] = $postid;
+	$modifiedmetadata["404_postid_globalid"] = nxs_get_globalid($postid, true);
+	
+	nxs_mergesitemeta($modifiedmetadata);
+}
+
+function nxs_isserppage($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_isserppage only supports local posts; $postid"); }
+
+	$sitemeta = nxs_getsitemeta();
+	$serppageid = $sitemeta["serp_postid"];
+	$result = ($serppageid == $postid);
+		
+	return $result;
+}
+
+function nxs_setserppage($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_setserppage only supports local posts; $postid"); }
+
+	$modifiedmetadata = array();
+	$modifiedmetadata["serp_postid"] = $postid;
+	$modifiedmetadata["serp_postid_globalid"] = nxs_get_globalid($postid, true);
+	
+	nxs_mergesitemeta($modifiedmetadata);
+}
+
+function nxs_cleanupobsoletewidgetmetadata($postid, $persistchanges)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_isserppage only supports local posts; $postid"); }
+
+	$parsedpoststructure = nxs_parsepoststructure($postid);
+	
+	// get placeholderids in use according to structure
+	$rowindex = 0;
+	$metakeysinuse = array();
+	foreach ($parsedpoststructure as $pagerow)
+	{
+		$content = $pagerow["content"];		
+		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+		foreach ($placeholderids as $placeholderid)
+		{
+			$metakeysinuse[] = "nxs_ph_" . $placeholderid;
+		}
+	}
+	
+	$obsoletemetakeys = array();
+	$origpost_meta_all = nxs_get_post_meta_all($postid);
+	$keystokeep = array("nxs_page_meta", "nxs_struct", "nxs_core", "nxs_globalid");
+	foreach ($origpost_meta_all as $meta_key => $meta_value)
+	{
+		if (in_array($meta_key, $keystokeep))
+		{
+			// keep :)
+		}
+		else if (nxs_stringstartswith($meta_key, "ewm"))
+		{
+			// old product name eigenwebsitemaken (EWM); deprecated field
+			$obsoletemetakeys[] = $meta_key;
+		}
+		else if ($meta_key == "nxs_version")
+		{
+			// no longer used; deprecated field
+			$obsoletemetakeys[] = $meta_key;
+		}
+		else if (nxs_stringstartswith($meta_key, "_yoast_"))
+		{
+			// keep
+		}
+		else if (nxs_stringstartswith($meta_key, "_woocommerce_"))
+		{
+			// keep
+		}
+		else if (nxs_stringstartswith($meta_key, "_edit_"))
+		{
+			// keep
+		}
+		else if (nxs_stringstartswith($meta_key, "_wp_"))
+		{
+			// keep
+		}
+		else if (nxs_stringstartswith($meta_key, "nxs_pr_"))
+		{
+			// keep product row meta
+		}
+		else if (nxs_stringstartswith($meta_key, "_order"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "_billing"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "_shipping"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "_payment"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "_prices"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "_customer"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "Customer"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "_thumbnail"))
+		{
+			// not sure who creates this one
+		}
+		else if (nxs_stringstartswith($meta_key, "totalsales"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "_tax"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "_cart"))
+		{
+			// woocommerce
+		}
+		else if (nxs_stringstartswith($meta_key, "nxs_ph_"))
+		{
+			// potential item to be removed
+			if (in_array($meta_key, $metakeysinuse))
+			{
+				// keep!
+			}
+			else
+			{
+				$obsoletemetakeys[] = $meta_key;
+			}
+		}
+		else
+		{
+			// assumed to have to keep
+			//echo "<br />other metakey found; keeping;" . $meta_key . "<br />";
+		}
+	}
+	
+	foreach ($obsoletemetakeys as $current_obsoletemetakey)
+	{
+		echo "<br />removing;" . $current_obsoletemetakey . "<br />";
+		$olddata = get_post_meta($postid, $current_obsoletemetakey);
+		var_dump($olddata);
+		
+		if ($persistchanges == true)
+		{
+			delete_post_meta($postid, $current_obsoletemetakey); 
+		}
+	}
+}
+
+
+function nxs_getpagerowmetadata($postid, $pagerowid)
+{
+	$behaviourargs = array();
+	$behaviourargs["lookupunistyle"] = true;
+	
+	return nxs_getpagerowmetadata_v2($postid, $pagerowid, $behaviourargs);
+}
+
+function nxs_getpagerowmetadata_v2($postid, $pagerowid, $behaviourargs)
+{
+	$metadatakey = 'nxs_pr_' . $pagerowid;
+	$result = array();
+	$result = maybe_unserialize(nxs_get_post_meta($postid, $metadatakey, true));
+	
+	if ($result == "")
+	{
+		$result = array();
+	}
+	
+	// optionally process unistyle
+	// if the row has a unistyle, the properties of the unistyle should 
+	// override the properties stored in the row itself
+	// this method is pretty fast since the unistyle configurations are cached in mem
+	if ($behaviourargs["lookupunistyle"] == true && $result["unistyle"] != "")
+	{
+		$unistyle = $result["unistyle"];
+
+		// unistyle lookup should override the result
+		$unistylegroup = nxs_row_getunifiedstylinggroup();
+		if ($unistylegroup != "")
+		{
+			$unistyleproperties = nxs_unistyle_getunistyleproperties($unistylegroup, $unistyle);
+			$result = array_merge($result, $unistyleproperties);
+		}
+	}
+	
+	return $result;
+}
+
+// persists the widget's metadata (assumes the global data is already enriched)
+function nxs_mergewidgetmetadata_internal($postid, $placeholderid, $updatedvalues)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_mergewidgetmetadata_internal; only supports local postids; $postid"); }
+	
+	$behaviourargs = array();
+	$behaviourargs["updateunistyle"] = true;
+	$behaviourargs["updateunicontent"] = true;
+	return nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedvalues, $behaviourargs);
+}
+
+// persists the widget's metadata (assumes the global data is already enriched)
+function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedvalues, $behaviourargs)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_mergewidgetmetadata_internal_v2; only supports local postids; $postid"); }
+
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_mergewidgetmetadata_internal_v2)"); }
+	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
+	if ($updatedvalues == "") { nxs_webmethod_return_nack("updatedvalues not set"); }
+	
+	if (count($updatedvalues) == 0)
+	{
+		return;
+	}
+	
+	//
+	// determine the entire "set" of properties to store for this widget,
+	// this is the serialized properties combined with the updated key/values
+	//
+	$metadatakey = 'nxs_ph_' . $placeholderid;
+	$result = array();
+	$existing = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
+	if ($existing == "")
+	{
+		// 2012 07 23; bug fix; first time the widget is initialized, the meta data is empty(""),
+		// in this case we only set the new values and ignore the old one
+		$allvalues = $updatedvalues;
+	}
+	else
+	{
+		$allvalues = array_merge($existing, $updatedvalues);
+	}
+	
+	//
+	// step 1; store the metadata of the widget itself
+	//
+	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($allvalues));
+	 
+	//
+	// step 2; update the metadata of the unistyle
+	//
+	$unistyle = $allvalues["unistyle"];
+	if (isset($unistyle) && $unistyle != "" && $behaviourargs["updateunistyle"] == true)
+	{
+		$widget = $allvalues["type"];
+		if (!isset($widget) || $widget == "") { nxs_webmethod_return_nack("widget type not set"); }
+		
+		nxs_requirewidget($widget);
+		$sheet = "home";
+		
+		nxs_requirepopup_contextprocessor("widgets");
+		$options = nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $sheet);
+		
+		// we store 'all' unistyleable fields (not just the fieldids that are unistyleable, also
+		// the derived globalids. To determine which global fields there are, we look over
+		// all fields, and we include all ones starting with unistylablefields,
+		// for example "foo" and "foo_globalid"; all ones are added, "foo*").
+		$unistyleablefields = array();
+		$fieldids = nxs_unistyle_getunistyleablefieldids($options);
+		foreach ($fieldids as $currentfieldid)
+		{
+			// find derivations of this field, also the globalids
+			foreach ($allvalues as $currentkey => $currentvalue)
+			{
+				if ($currentkey == $currentfieldid)
+				{
+					// exact match
+					$unistyleablefields[$currentkey] = $currentvalue;
+				}
+				else if (nxs_stringstartswith($currentkey, "{$currentfieldid}_g"))
+				{
+					// for the globalid "versions" (p.e. "a" => "a_globalid")
+					// note that this does not make much sense for unistyling,
+					// as unistyling does not likely have globalid fields (those
+					// are more unicontent related, but regardless).
+					$unistyleablefields[$currentkey] = $currentvalue;
+				}
+			}
+		}
+		
+		$unigroup = $options["unifiedstyling"]["group"];
+		if (!isset($unigroup) || $unigroup == "") { echo "a) options: "; var_dump($options);nxs_webmethod_return_nack("unigroup not set"); }
+		nxs_unistyle_persistunistyle($unigroup, $unistyle, $unistyleablefields);
+	}
+	
+	//
+	// step 3; update the metadata of the unicontent
+	//
+	$unicontent = $allvalues["unicontent"];
+	if (isset($unicontent) && $unicontent != "" && $behaviourargs["updateunicontent"] == true)
+	{
+		$widget = $allvalues["type"];
+		if (!isset($widget) || $widget == "") { nxs_webmethod_return_nack("widget type not set"); }
+		
+		nxs_requirewidget($widget);
+		$sheet = "home";
+		
+		nxs_requirepopup_contextprocessor("widgets");
+		$options = nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $sheet);
+
+		// we store 'all' unicontentable fields (not just the fieldids that are unicontentable, also
+		// the derived globalids. To determine which global fields there are, we look over
+		// all fields, and we include all ones starting with unicontentablefieldids,
+		// for example "foo" and "foo_globalid"; all ones are added, "foo*").
+
+		$unicontentablefields = array();
+		$fieldids = nxs_unicontent_getunicontentablefieldids($options);
+		
+		foreach ($fieldids as $currentfieldid)
+		{
+			// find derivations of this field, also the globalids
+			foreach ($allvalues as $currentkey => $currentvalue)
+			{
+				if ($currentkey == $currentfieldid)
+				{
+					// exact match
+					$unicontentablefields[$currentkey] = $currentvalue;
+				}
+				else if (nxs_stringstartswith($currentkey, "{$currentfieldid}_g"))
+				{
+					// for the globalid "versions" (p.e. "image_imageid" => "image_imageid_globalid")
+					$unicontentablefields[$currentkey] = $currentvalue;
+				}
+			}
+		}
+		 
+		$unigroup = $options["unifiedcontent"]["group"];
+		if (!isset($unigroup) || $unigroup == "") { echo "b) options: "; var_dump($options);nxs_webmethod_return_nack("unigroup not set"); }
+		nxs_unicontent_persistunicontent($unigroup, $unicontent, $unicontentablefields);
+	}
+	else
+	{
+		// unicontent not applicable
+	}
+}
+
+function nxs_purgeplaceholdermetadata($postid, $placeholderid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_purgeplaceholdermetadata; only supports local postids; $postid"); }
+	
+	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set (owmd)"); };
+	if ($postid== "") { nxs_webmethod_return_nack("postid not set (owmd)"); };
+
+	$metadatakey = 'nxs_ph_' . $placeholderid;
+	delete_post_meta($postid, $metadatakey);
+}
+
+function nxs_resetplaceholdermetadata($postid, $placeholderid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_resetplaceholdermetadata; only supports local postids; $postid"); }
+	
+	$metadata = array();
+	$metadata["type"] = "undefined";
+	nxs_overridewidgetmetadata($postid, $placeholderid, $metadata);
+}
+
+function nxs_overridewidgetmetadata($postid, $placeholderid, $metadata)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_overridewidgetmetadata; only supports local postids; $postid"); }
+	
+	//
+	//
+	//
+
+	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set (owmd)"); };
+	if ($postid== "") { nxs_webmethod_return_nack("postid not set (owmd)"); };
+	
+	$metadatakey = 'nxs_ph_' . $placeholderid;
+	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($metadata));
+}
+
+function nxs_persistwidgettype($postid, $placeholderid, $placeholdertemplate)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_persistwidgettype; only supports local postids; $postid"); }
+
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_persistwidgettype)"); }
+	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
+	
+ 	$datatomerge = array();
+ 	$datatomerge["type"] = $placeholdertemplate;
+	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $datatomerge);
+}
+
+function nxs_initializewidget($args) 
+{
+	if (!isset($args["clientpopupsessioncontext"])) { nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
+	
+	extract($args["clientpopupsessioncontext"]);
+	$placeholdertemplate = $args["placeholdertemplate"];
+	
+	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set (nxs_initializewidget)"); }
+	if (!isset($placeholderid)) { nxs_webmethod_return_nack("placeholderid not set"); }
+	if (!isset($placeholdertemplate)) { nxs_webmethod_return_nack("placeholdertemplate not set"); }
+
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_initializewidget; only supports local postids; $postid"); }
+
+	// ensure widget exists
+ 	nxs_requirewidget($placeholdertemplate);
+ 	
+ 	// crucial step; first we set the type for this widget to the specified type
+ 	nxs_persistwidgettype($postid, $placeholderid, $placeholdertemplate);
+
+	// load context processor 	
+ 	nxs_requirepopup_contextprocessor("widgets");
+ 	
+	if (nxs_genericpopup_supportsoptions($args))
+	{
+		$blendedmetadata = array();
+		
+		// the initial data
+		$initialmetadata = nxs_genericpopup_getinitialoptionsvalues($args);
+  	$blendedmetadata = array_merge($blendedmetadata, $initialmetadata);
+  	
+		// enrich the initialdata; globalids
+  	$enrichedmetadata = nxs_genericpopup_getderivedglobalmetadata($args, $initialmetadata);
+  	$blendedmetadata = array_merge($blendedmetadata, $enrichedmetadata);
+  
+  	$result = nxs_popup_contextprocessor_widgets_mergedata_internal($args, $blendedmetadata);
+	}
+ 	
+	// if it exists, invoke nxs_widgets_image_initplaceholderdata($args)
+	// else invoke nxs_widgets_image_updateplaceholderdata($args)
+	$functionnametoinvoke = 'nxs_widgets_' . $placeholdertemplate . '_initplaceholderdata';
+	if (function_exists($functionnametoinvoke))
+	{
+		$p = array();
+		$p["postid"] = $postid;
+		$p["placeholderid"] = $placeholderid;
+		
+		$result = call_user_func($functionnametoinvoke, $p);
+	}
+	
+	return $result;
+}
+
+function nxs_reset_globalid($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_reset_globalid; only works for local posts; $postid"); }
+	
+	$result = nxs_create_guid();
+	return nxs_reset_globalidtovalue($postid, $result);
+}
+
+function nxs_reset_globalidtovalue($postid, $globalid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_reset_globalidtovalue; only works for local posts; $postid"); }
+
+	
+	$metadatakey = 'nxs_globalid';
+	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($globalid));
+	return $globalid;
+}
+
+function nxs_postwithstatusexistsbyid($postid, $status)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_postwithstatusexistsbyid; only works for local posts; $postid"); }
+	
+	//
+	global $wpdb;
+
+  $dbresult = $wpdb->get_results( $wpdb->prepare("
+      	SELECT * FROM $wpdb->posts
+		where ID = %s and post_status = %s
+	", $postid, $status), OBJECT );
+
+	if (count($dbresult) == 1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function nxs_postexistsbyid($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_postexistsbyid; only works for local posts; $postid"); }
+
+	global $wpdb;
+
+  $dbresult = $wpdb->get_results( $wpdb->prepare("
+      	SELECT 1 FROM $wpdb->posts
+		where ID = %s
+	", $postid), OBJECT );
+
+	if (count($dbresult) == 1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+// getglobalid_by_postid,getglobalid_for_postid
+function nxs_get_globalid($postid, $createwhennotexists)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_get_globalid only works for local postids; $postid"); }
+	
+	if ($postid == "")
+	{
+		// valide antwoord
+		$result = "NXS-NULL";
+	}
+	else if ($postid == 0)
+	{
+		// valide antwoord
+		$result = "NXS-NULL";
+	}
+	else
+	{
+		$posttype = get_post_type($postid);
+		if (!$posttype)
+		{
+			$result = "NXS-NULL";
+		}
+		else
+		{
+			$metadatakey = 'nxs_globalid';
+			$result = get_post_meta($postid, $metadatakey, true);
+			
+			if ($result == "")
+			{
+				if ($createwhennotexists)
+				{
+					// globalid was (nog) niet gealloceerd, maar we hebben toestemming om deze dan nu te alloceren
+					$result = nxs_reset_globalid($postid);
+				}
+				else
+				{
+					//echo "[not found, no permission to update]";
+				}
+			}
+		}
+	}
+	
+	return $result;
+}
+
+function nxs_append_posttemplate($postid, $pagetemplate)
+{
+	if ($pagetemplate == "") { nxs_webmethod_return_nack("pagetemplate is leeg?"); }
+	
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_append_posttemplate only supports local posts; $postid"); }
+	
+	$poststructure = nxs_parsepoststructure($postid);
+			
+	foreach ($pagetemplate as $pagetemplateitem)
+	{
+		$pagerowtemplate = $pagetemplateitem["pagerowtemplate"];
+		$pagerowid = $pagetemplateitem["pagerowid"];
+		$placeholdertemplatestogetherwithargs = $pagetemplateitem["pagerowtemplateinitializationargs"];
+			
+		$newrow = array();
+		$newrow["rowindex"] = "new";
+		$newrow["pagerowtemplate"] = $pagerowtemplate;
+		$newrow["pagerowid"] = nxs_getrandompagerowid();
+		$newrow["pagerowattributes"] = "pagerowtemplate='" . $pagerowtemplate . "' pagerowid='" . $pagerowid . "'";
+		$newrow["content"] = nxs_getpagerowtemplatecontent($pagerowtemplate);
+	
+		$rowindex = count($poststructure);	// begint bij 0 dus wordt altijd ge-append
+	
+		//echo "inserting at index " . $rowindex;
+	
+		// insert row into structure
+		$updatedpoststructure = nxs_insertarrayindex($poststructure, $newrow, $rowindex);
+		
+		// persist structure
+		$updateresult = nxs_storebinarypoststructure($postid, $updatedpoststructure);
+		
+		// get the updated structure; should now contain 1 row
+		$poststructure = nxs_parsepoststructure($postid);
+	
+		//echo "poststructure after update:";
+		//var_dump($poststructure);
+	
+		$pagerow = $poststructure[$rowindex];
+		
+		//echo "pagerow:";	
+		//var_dump($pagerow);
+		
+		$content = $pagerow["content"];
+		
+		//echo "content:";	
+		//var_dump($content);
+	
+		$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+		
+		//echo "placeholderids:";	
+		//var_dump($placeholderids);
+		
+		$placeholderindex = -1;
+		foreach ($placeholderids as $placeholderid)
+		{	
+			$placeholderindex++;
+			
+			//echo "current placeholderindex:" . $placeholderid;
+			
+			$args = array();
+			
+			$args["clientpopupsessioncontext"] = array();	// hierrr
+			$args["clientpopupsessioncontext"]["postid"] = $postid;
+			$args["clientpopupsessioncontext"]["placeholderid"] = $placeholderid;
+			$args["clientpopupsessioncontext"]["placeholdertemplate"] = $placeholdertemplate;
+			$args["clientpopupsessioncontext"]["contextprocessor"] = "widgets";
+			$args["clientpopupsessioncontext"]["sheet"] = "home";
+			
+			$args["postid"] = $postid;
+			$args["placeholderid"] = $placeholderid;
+			$placeholdertemplate = $placeholdertemplatestogetherwithargs[$placeholderindex]["placeholdertemplate"];
+			
+			$args["placeholdertemplate"] = $placeholdertemplate;
+			nxs_initializewidget($args);
+			// hierrr
+						
+			//echo "init finished";
+			
+			// update de waarden op basis van de argumenten die mee zijn gegeven
+			
+			$args = array();
+			$args["postid"] = $postid;
+			$args["placeholderid"] = $placeholderid;
+			$args["placeholdertemplate"] = $placeholdertemplate;
+			$updatedvalues = $placeholdertemplatestogetherwithargs[$placeholderindex]["args"];
+			nxs_mergewidgetmetadata_internal($postid, $placeholderid, $updatedvalues);
+		}
+	}
+	
+	//
+	// ensure related items (menu's for example) are updated too
+	//
+	nxs_after_postcontents_updated($postid);
+}
+
+function nxs_ispostfound($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_is404page only supports local posts; $postid"); }	
+	
+	global $wpdb;
+	
+	$q = "
+		select 
+			* 
+		from 
+			$wpdb->posts posts
+		where	posts.ID = %s
+	";
+
+	$posts = $wpdb->get_results( $wpdb->prepare($q, $postid), OBJECT); // ARRAY_A );
+	
+	$result = false;
+	if (count($posts) == 1)
+	{
+		$result = true;
+	}
+	return $result;
+}
+
+// allocates a new random (but non-existing) pagerowid
+// for the specified postid, to be used for a new row
+// that will be inserted or appended to the post
+function nxs_allocatenewpagerowid($postid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_allocatenewpagerowid only supports local posts; $postid"); }
+
+	$random = rand(1, getrandmax());
+	
+	if ($random == "")
+	{
+		nxs_webmethod_return_nack("random is empty?! (1)");
+	}
+	
+	$result = "prid{$random}";
+	return $result;
+}
+
+
+function nxs_updateseooption($postid, $key, $val)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_updateseooption only supports local posts; $postid"); }
+	
+	if (!defined('WPSEO_PATH'))
+	{
+		nxs_webmethod_return_nack("please install the WordPress Seo plugin by Yoast");
+	}
+		
+	if (!class_exists ("WPSEO_Metabox"))
+	{
+		require WPSEO_PATH.'admin/class-metabox.php';
+	}
+	if (!class_exists ("WPSEO_Admin"))
+	{
+		require WPSEO_PATH.'admin/class-admin.php';
+	}
+	
+	require_once ABSPATH . 'wp-admin/includes/post.php';
+	
+	wpseo_set_value($key, $val, $postid);
+}
+
+function nxs_mergepagerowmetadata_internal($postid, $pagerowid, $updatedvalues)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_mergepagerowmetadata_internal only supports local posts; $postid"); }
+	
+	$behaviourargs = array();
+	$behaviourargs["updateunistyle"] = true;
+	return nxs_mergepagerowmetadata_internal_v2($postid, $pagerowid, $updatedvalues, $behaviourargs);
+}
+
+function nxs_mergepagerowmetadata_internal_v2($postid, $pagerowid, $updatedvalues, $behaviourargs)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_mergepagerowmetadata_internal_v2 only supports local posts; $postid"); }
+
+	$metadatakey = 'nxs_pr_' . $pagerowid;
+	$result = array();
+	$existing = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
+	if ($existing == "")
+	{
+		// first time the widget is initialized, the meta data is empty(""),
+		// in this case we only set the new values and ignore the old one
+		$allvalues = $updatedvalues;
+	}
+	else
+	{
+		$allvalues = array_merge($existing, $updatedvalues);
+	}
+	
+	//
+	// step 1; store the metadata of the row itself
+	//
+	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($allvalues));
+	
+	//
+	// step 2; update the metadata of the unistyle
+	//
+	$unistyle = $allvalues["unistyle"];
+	if (isset($unistyle) && $unistyle != "" && $behaviourargs["updateunistyle"] == true)
+	{
+		$filetobeincluded = NXS_FRAMEWORKPATH . "/nexuscore/row/row.php";
+		if (!file_exists($filetobeincluded)) { nxs_webmethod_return_nack("file not found"); }
+		require_once($filetobeincluded);
+		
+		$sheet = "home";
+		$args = array();
+		$options = nxs_pagerow_home_getoptions($args);
+		
+		// we store 'all' unistyleable fields (not just the fieldids that are unistyleable, also
+		// the derived globalids. To determine which global fields there are, we look over
+		// all fields, and we include all ones starting with unistylablefields,
+		// for example "foo" and "foo_globalid"; all ones are added, "foo*").
+		$unistyleablefields = array();
+		$fieldids = nxs_unistyle_getunistyleablefieldids($options);
+		foreach ($fieldids as $currentfieldid)
+		{
+			// find derivations of this field, also the globalids
+			foreach ($allvalues as $currentkey => $currentvalue)
+			{
+				if (nxs_stringstartswith($currentkey, $currentfieldid))
+				{
+					$unistyleablefields[$currentkey] = $currentvalue;
+				}
+			}
+		}
+		
+		$unigroup = $options["unifiedstyling"]["group"];
+		if (!isset($unigroup) || $unigroup == "") { echo "c) options: "; var_dump($options); nxs_webmethod_return_nack("unigroup not set"); }
+		nxs_unistyle_persistunistyle($unigroup, $unistyle, $unistyleablefields);
+	}
+}
+
+function nxs_overridepagerowmetadata($postid, $pagerowid, $metadata)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_overridepagerowmetadata only supports local posts; $postid"); }
+
+	if ($postid== "") { nxs_webmethod_return_nack("postid not set (owmd)"); };
+	if ($pagerowid== "") { nxs_webmethod_return_nack("pagerowid not set (owmd)"); };
+	$metadatakey = 'nxs_pr_' . $pagerowid;
+	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($metadata));
+}
+
+function nxs_struct_purgerow($postid, $rowid)
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_struct_purgerow only supports local posts; $postid"); }
+	
+	if ($postid == "") { nxs_webmethod_return_nack("postid not specified /nxs_webmethod_removerow/"); }
+	if ($rowid == "") { nxs_webmethod_return_nack("rowid not specified"); }
+
+	$result = array();
+
+  global $nxs_global_current_postid_being_rendered;
+  global $nxs_global_current_postmeta_being_rendered;
+
+  $nxs_global_current_postid_being_rendered = $postid;
+  $nxs_global_current_postmeta_being_rendered = nxs_get_corepostmeta($postid);
+
+	$poststructure = nxs_parsepoststructure($postid);
+	foreach ($poststructure as $rowindex => $currentrow)
+	{
+		$rowidaccordingtoindex = nxs_parserowidfrompagerow($currentrow);
+		if ($rowidaccordingtoindex == $rowid)
+		{
+			// this is the one, delete it!
+			$content = $currentrow["content"];
+		
+			// delete metadata of placeholders in row	
+			$placeholderids = nxs_parseplaceholderidsfrompagerow($content);
+			foreach ($placeholderids as $placeholderid)
+			{
+				nxs_purgeplaceholdermetadata($postid, $placeholderid);
+		  }
+		
+			// delete row
+			unset($poststructure[$rowindex]);
+			$poststructure = array_values($poststructure);
+			nxs_storebinarypoststructure($postid, $poststructure);
+			
+			// update items that are derived (based upon the structure and contents of the page, such as menu's)
+			$updateresult = nxs_after_postcontents_updated($postid);
+			if ($updateresult["pagedirty"] == "true") 
+			{
+				$result["pagedirty"] = "true";
+			}
+		}
+		else
+		{
+			// this row should be kept; skip it
+		}
+	}
+	//
+	return $result;
+}
+
+// appends a new "one" row, with the specified widget properties to an existing post
+function nxs_add_widget_to_post($args) 
+{	
+	extract($args);
+	
+	if ($postid == "") { nxs_webmethod_return_nack("postid not set (nxs_add_widget_to_post)"); }
+	if ($widgetmetadata == "") { nxs_webmethod_return_nack("widgetmetadata not set"); }
+	if ($widgetmetadata["type"] == "") { nxs_webmethod_return_nack("typeof widgetmetadata not set"); }
+	if ($widgetmetadata["postid"] != "") { nxs_webmethod_return_nack("postid of widgetmetadata should be empty"); }
+	if ($widgetmetadata["placeholderid"] != "") { nxs_webmethod_return_nack("placeholderid of widgetmetadata should be empty"); }
+	
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_add_widget_to_post only supports local posts; $postid"); }
+	
+	$pagerowtemplate = "one";
+	
+	$wpposttype = nxs_getwpposttype($postid);
+	$nxsposttype = nxs_getnxsposttype_by_postid($postid);
+	$pagetemplate = nxs_getpagetemplateforpostid($postid);
+	
+	$prtargs = array();
+	$prtargs["invoker"] = "code";
+	$prtargs["wpposttype"] = $wpposttype;
+	$prtargs["nxsposttype"] = $nxsposttype;
+	$prtargs["pagetemplate"] = $pagetemplate;		
+	$postrowtemplates = nxs_getpostrowtemplates($prtargs);
+
+	// verify the pagerowtemplate is allowed to be placed
+	if (!in_array($pagerowtemplate, $postrowtemplates)) { nxs_webmethod_return_nack("unsupport pagerowtemplate?"); }
+	
+	// get poststructure (list of rowindex, pagerowtemplate, pagerowattributes, content)
+	$poststructure = nxs_parsepoststructure($postid);
+	
+	$pagerowid = nxs_allocatenewpagerowid($postid);
+
+	// create new row
+	$newrow = array();
+	$newrow["rowindex"] = "new";
+	$newrow["pagerowtemplate"] = $pagerowtemplate;
+	$newrow["pagerowid"] = $pagerowid;
+	$newrow["pagerowattributes"] = "pagerowtemplate='" . $pagerowtemplate . "' pagerowid='" . $pagerowid . "'";
+	$newrow["content"] = nxs_getpagerowtemplatecontent($pagerowtemplate);
+
+	$tailindex = count($poststructure);	// to be inserted AFTER the last item
+	
+	// insert row into structure
+	$updatedpoststructure = nxs_insertarrayindex($poststructure, $newrow, $tailindex);
+	
+	// persist structure
+	$updateresult = nxs_storebinarypoststructure($postid, $updatedpoststructure);
+	
+	// apply placeholdertemplates for the placeholders just created...
+	$placeholderid = nxs_parsepagerow($newrow["content"]);
+
+	$clientpopupsessioncontext = array();
+	$clientpopupsessioncontext["postid"] = $postid;
+	$clientpopupsessioncontext["placeholderid"] = $placeholderid;
+	$clientpopupsessioncontext["contextprocessor"] = "widgets";
+	$clientpopupsessioncontext["sheet"] = "home";
+
+	$args = $widgetmetadata;
+	$args["clientpopupsessioncontext"] = $clientpopupsessioncontext;
+	$args["placeholdertemplate"] = $widgetmetadata["type"];
+	
+	// for downwards compatibility we replicate the postid and placeholderid to the 'root'
+	$args["postid"] = $postid;
+	$args["placeholderid"] = $placeholderid;
+	
+	nxs_initializewidget($args);
+	// 
+	nxs_widgets_mergeunenrichedmetadata($widgetmetadata["type"], $args);
+	
+	// update items that are derived (based upon the structure and contents of the page, such as menu's)
+	nxs_after_postcontents_updated($postid);
+	
+	//
+	
+	return $result;
+}

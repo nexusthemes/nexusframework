@@ -137,9 +137,6 @@ function nxs_webmethod_contactboxsubmit()
 		// send the mail!
 		$metadata = nxs_getwidgetmetadata($postid, $placeholderid);
 		
-		// Localize atts
-		$metadata = nxs_localization_localize($metadata);
-
 	 	extract($metadata);
 	
 		if ($internal_email != "" && nxs_isvalidemailaddress($internal_email))

@@ -243,7 +243,7 @@
                                 $postname = $currentitem->post_name;
                                 $posttitle = $currentitem->post_title;
                                 
-                                $pagemeta = nxs_get_postmeta($postid);
+                                $pagemeta = nxs_get_corepostmeta($postid);
                                 
                                 $postdatetime = $currentitem->post_date;
                                 $postdatetimepieces = explode(" ", $postdatetime);

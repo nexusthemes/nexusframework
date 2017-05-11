@@ -1407,15 +1407,73 @@ class nxs_g_modelmanager
 		nxs_lazyload_plugin_widget(__FILE__, "taxpageslider");
 		
 		// handle bulk model prefetching
-		if ($_REQUEST["bulkmodels"] == "true")
+		if (is_user_logged_in())
 		{
-			$singularschema = $_REQUEST["singularschema"];
-			if ($singularschema == "") { echo "singularschema not specified?"; die(); }
-
-			$this->cachebulkmodels($singularschema);
-			
-			echo "Bulk models updated :)";
-			die();
+			$dumpmodeluri = $_REQUEST["dumpmodeluri"];
+			if ($dumpmodeluri != "")
+			{
+				echo "output for $dumpmodeluri:<br /><br />";
+				$d = $this->getmodel($dumpmodeluri);
+				echo json_encode($d);
+				die();
+			}
+			if ($_REQUEST["bulkmodels"] == "true")
+			{
+				$singularschema = $_REQUEST["singularschema"];
+				if ($singularschema == "") { echo "singularschema not specified?"; die(); }
+	
+				$this->cachebulkmodels($singularschema);
+				
+				echo "Bulk models updated :)";
+				die();
+			}
+			if ($_REQUEST["awstest"] == "true")
+			{
+				$leftovers = 9000;
+				$d = $this->getmodel("singleton@listofgame");
+				$instances = $d["contentmodel"]["game"]["instances"];
+				
+				echo "num of instances: " . count($instances) . "<br />";
+				//die();
+				$invaliditems = array();
+				
+				foreach ($instances as $instancemeta)
+				{
+					$gameid = $instancemeta["content"]["humanmodelid"];
+					$gamemodel = $this->getmodel("{$gameid}@game");
+					$upc = $gamemodel["contentmodel"]["properties"]["taxonomy"]["upc"];
+					//echo "loading upc {$upc}<br />";
+					$result = $this->getmodel("{$upc}@upc@awsproductapi");
+					
+					if (true)
+					{
+						if ($result["nxs_error"] == "true")
+						{
+							$invaliditems[] = $upc;
+						}
+					}
+					
+					// var_dump($awsmodel);
+					// die();
+					$leftovers--;
+					if ($leftovers<=1)
+					{
+						echo "no more left overs... stopping";
+						die();
+					}
+				}
+				
+				$invalidcnt = count($invaliditems);
+				echo "invalidcnt; $invalidcnt<br />";
+				echo "finished; left overs; $leftovers<br />";
+				
+				foreach ($invaliditems as $upc)
+				{
+					echo "{$upc}<br />";
+				}
+				
+				die();
+			}
 		}
 	}
 	
@@ -1459,8 +1517,6 @@ class nxs_g_modelmanager
 						{
 							$shouldrender = true;
 						}
-						
-						
 						
 						if ($shouldrender)
 						{
@@ -1541,47 +1597,10 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	/*
-	obsolete; this function can be used to automatically apply content attribution in future scenarios
-	function the_content($content) 
-	{
-  	global $post;
-  	$posttype = $post->post_type;
-  	$taxonomy = $posttype;
-
-		global $nxs_g_modelmanager;
-		$businessmodeltaxonomies = $nxs_g_modelmanager->getcontentschema();
-  	
-		// only do so when the attribution is a feature of this taxonomy
-		$shouldprocess = $businessmodeltaxonomies[$taxonomy]["features"]["contentattribution"]["enabled"] == true;
-  	if ($shouldprocess)
-  	{
-	  	$nxs_content_license = $post->nxs_content_license;
-	  	if ($nxs_content_license != "")
-	  	{
-	  		$data = json_decode($nxs_content_license, true);
-	  		if ($data["type"] == "attribution")
-	  		{
-		  		// for now this is hardcoded
-		  		if ($data["author"] == "benin")
-		  		{
-		    		$content .= "<p style='font-size:small'>Benin Brown is a web copywriter who specializes in providing high quality website content for digital marketing professionals. As a white label content provider he is well-versed in writing for all industries. To learn more you can visit <a target='_blank' href='http://www.brownwebcopy.com'>www.brownwebcopy.com</p>";
-		    	}
-		    	else
-		    	{
-		    		$content .= $nxs_content_license;
-		    	}
-		    }
-	    }
-	  }
-	  return $content;
-	}
-	*/
-	
 	function __construct()
   {
-  	add_filter( 'init', array($this, "instance_init"), 5, 1);
-		add_action( 'nxs_getwidgets',array( $this, "getwidgets"), 20, 2);
+  	add_filter('init', array($this, "instance_init"), 5, 1);
+		add_action('nxs_getwidgets',array( $this, "getwidgets"), 20, 2);
 		add_action('admin_head', array($this, "instance_admin_head"), 30, 1);
 		
 		add_filter('wp_nav_menu_objects', array($this, 'wp_nav_menu_objects'), 10, 3);

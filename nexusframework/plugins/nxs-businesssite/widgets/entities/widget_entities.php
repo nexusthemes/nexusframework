@@ -2054,8 +2054,8 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 		
 		
 		
-		//$html .= "<div class='nxsgrid-item nxsgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
-		$html .= "<div class='nxsgrid-item nxssolidgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		$html .= "<div class='nxsgrid-item nxsgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		// $html .= "<div class='nxsgrid-item nxssolidgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
 		
 		$html .= $subhtml;
 		$html .= "</div>";

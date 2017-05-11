@@ -1,7 +1,7 @@
 <?php
 	global $post;
 	$postid = $post->ID;
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$sitemeta = nxs_getsitemeta();
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 ?>

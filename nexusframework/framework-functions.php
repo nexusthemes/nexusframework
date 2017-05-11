@@ -2628,36 +2628,17 @@ function nxs_template_include($template)
 	// force all pages to be handled by page-template.php
 	// note, this overrides all regular templates (like woocommerce), on purpose
 
-	if (!nxs_hastemplateproperties())
+	// store the original template that was about to render this request
+	global $nxs_gl_templates_wp;
+	$nxs_gl_templates_wp = $template;
+	
+	if (is_attachment())
 	{
-		// obsolete old version...
-		if (is_attachment())
-		{
-			// leave template as-is
-		}
-		else if (is_archive())
-		{
-			// leave template as-is
-		}
-		else
-		{
-			$template = NXS_FRAMEWORKPATH . '/page-template.php';
-		}
+		// leave template as-is
 	}
 	else
 	{
-		// store the original template that was about to render this request
-		global $nxs_gl_templates_wp;
-		$nxs_gl_templates_wp = $template;
-		
-		if (is_attachment())
-		{
-			// leave template as-is
-		}
-		else
-		{
-			$template = NXS_FRAMEWORKPATH . '/page-template.php';
-		}
+		$template = NXS_FRAMEWORKPATH . '/page-template.php';
 	}	
 		
 	return $template;

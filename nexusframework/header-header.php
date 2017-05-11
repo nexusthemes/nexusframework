@@ -1,26 +1,19 @@
 <?php
 	global $post;
 	$postid = $post->ID;
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$sitemeta = nxs_getsitemeta();
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	
-	if (nxs_hastemplateproperties())
+	// derive the layout
+	$templateproperties = nxs_gettemplateproperties();
+	if ($templateproperties["result"] == "OK")
 	{
-		// derive the layout
-		$templateproperties = nxs_gettemplateproperties();
-		if ($templateproperties["result"] == "OK")
-		{
-			$existingheaderid = $templateproperties["header_postid"];
-		}
-		else
-		{
-			$existingheaderid = 0;
-		}
+		$existingheaderid = $templateproperties["header_postid"];
 	}
 	else
 	{
-		$existingheaderid = $pagemeta["header_postid"];
+		$existingheaderid = 0;
 	}
 	
 	$faviconid = $sitemeta["faviconid"];

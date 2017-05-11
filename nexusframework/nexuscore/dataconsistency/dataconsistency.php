@@ -953,7 +953,7 @@ function nxs_dataconsistency_sanitize_postmetadata($postid)
 {
 	echo "<span title='More information in the HTML DOM'>[...]</span><!-- pm " . $postid ." -->";
 	//
-	$currentpagemeta = nxs_get_postmeta($postid);
+	$currentpagemeta = nxs_get_corepostmeta($postid);
 	$modifiedmetadata = nxs_getdatarequiringmodificationforglobalidfix($currentpagemeta);
 	if (count($modifiedmetadata) > 0)
 	{

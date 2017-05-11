@@ -63,7 +63,7 @@ function nxs_webmethod_getcontent()
 		global $nxs_global_current_postid_being_rendered;
 		$nxs_global_current_postid_being_rendered = $postid;
 		global $nxs_global_current_postmeta_being_rendered;
-		$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
+		$nxs_global_current_postmeta_being_rendered = nxs_get_corepostmeta($postid);
 		global $nxs_global_current_render_mode;
 		$nxs_global_current_render_mode = "default";
 		

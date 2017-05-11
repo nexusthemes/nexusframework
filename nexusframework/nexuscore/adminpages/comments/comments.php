@@ -263,7 +263,7 @@
                               	$posttitle = "(leeg, id:" . $postid . ")";
                               }
                               
-                              $pagemeta = nxs_get_postmeta($postid);
+                              $pagemeta = nxs_get_corepostmeta($postid);
                               
                               $auteur = $currentcomment->comment_author . " / " . $currentcomment->comment_author_email . " / " . $currentcomment->comment_author_url;
                               

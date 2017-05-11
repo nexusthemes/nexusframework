@@ -41,7 +41,7 @@ function nxs_post_home_rendersheet($args)
 		nxs_webmethod_return_nack("postid is niet geset? (gpm)");
 	}
 	
-	$pagemeta = nxs_get_postmeta($postid);
+	$pagemeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);
 	$posttype = nxs_getwpposttype($postid);
 	
@@ -197,7 +197,7 @@ function nxs_post_dialogappendrow_rendersheet($args)
 	$nxsposttype = nxs_getnxsposttype_by_wpposttype($pagedata->post_type);
 	
 	$posttype = $pagedata->post_type;
-	$postmeta = nxs_get_postmeta($postid);
+	$postmeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);	
 	
 	$prtargs = array();
@@ -506,7 +506,7 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 	$posttype = $pagedata->post_type;
 	$nxssubposttype = nxs_get_nxssubposttype($postid);
 
-	$postmeta = nxs_get_postmeta($postid);
+	$postmeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);	
 	
 	$phtargs = array();
@@ -683,7 +683,7 @@ function nxs_post_dialogappendbusrulessetitem_rendersheet($args)
 	$posttype = $pagedata->post_type;
 	$nxssubposttype = nxs_get_nxssubposttype($postid);
 
-	$postmeta = nxs_get_postmeta($postid);
+	$postmeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);	
 	
 	$phtargs = array();
@@ -951,7 +951,7 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
 	$posttype = $pagedata->post_type;
 	$nxssubposttype = nxs_get_nxssubposttype($postid);
 
-	$postmeta = nxs_get_postmeta($postid);
+	$postmeta = nxs_get_corepostmeta($postid);
 	$pagetemplate = nxs_getpagetemplateforpostid($postid);	
 	
 	$phtargs = array();

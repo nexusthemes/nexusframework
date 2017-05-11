@@ -132,9 +132,6 @@ function nxs_widgets_menuitemarticle_render_webpart_render_htmlvisualization($ar
 	
 	$mixedattributes = array_merge($mixedattributes, $args);
 
-	// Localize atts
-	$mixedattributes = nxs_localization_localize($mixedattributes);
-	
 	$title = $mixedattributes['title'];
 	
     $icon = $mixedattributes['icon'];

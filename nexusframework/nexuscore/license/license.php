@@ -10,7 +10,7 @@ function nxs_site_wipepostsinposttype($posttype)
 	
 	global $wpdb;
 	
-	//$result = nxs_get_postmeta(24);
+	//$result = nxs_get_corepostmeta(24);
 	//var_dump($result);
 	//die();
 	

@@ -11,7 +11,7 @@ function nxs_webmethod_restorepage()
 	global $nxs_global_current_postid_being_rendered;
 	$nxs_global_current_postid_being_rendered = $postid;
 	global $nxs_global_current_postmeta_being_rendered;
-	$nxs_global_current_postmeta_being_rendered = nxs_get_postmeta($postid);
+	$nxs_global_current_postmeta_being_rendered = nxs_get_corepostmeta($postid);
 
 	wp_untrash_post($postid);
 	

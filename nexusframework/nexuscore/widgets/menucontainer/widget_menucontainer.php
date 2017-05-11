@@ -804,8 +804,6 @@ function nxs_menu_getmemstructure($menu_menuid, $poststructure)
 		$content = $pagerow["content"];
     $placeholderid = nxs_parsepagerow($content);
     $placeholdermetadata = nxs_getwidgetmetadata($menu_menuid, $placeholderid);
-    // localize fields
-    $placeholdermetadata = nxs_localization_localize($placeholdermetadata);
  
     $result[] = $placeholdermetadata;
 	}
