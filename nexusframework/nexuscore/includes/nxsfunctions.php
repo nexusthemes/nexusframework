@@ -9868,7 +9868,7 @@ function nxs_get_page($postid)
 	$isremotetemplate = nxs_isremotetemplate($postid);
 	if ($isremotetemplate)
 	{
-		$result = new object();
+		$result = new stdClass();
 		$result->post_type = "nxs_remote";
 	}
 	else
@@ -10031,6 +10031,12 @@ function nxs_isremotetemplate($postid)
 // sanity checked for remote posts
 function nxs_getrenderedhtml($postid, $rendermode) 
 {
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$rendermode = "anonymous";
+	}
+	
 	$result = nxs_getrenderedhtmlincontainer($postid, $postid, $rendermode);
 	return $result;
 }
