@@ -1103,6 +1103,9 @@ function nxs_gettemplateproperties_internal()
 	  		$result[$currentsitewideelement] = $statebag["out"][$currentsitewideelement];
 	  	}
 	  	
+	  	// 
+	  	$result["content_modelmapping"] = $statebag["out"]["content_modelmapping"];
+	  	
 	  	$result["lastmatchingrule"] = $lastmatchingrule;
 			
 			$result["result"] = "OK";
@@ -1113,10 +1116,34 @@ function nxs_gettemplateproperties_internal()
 		}
 	}
 	
-	if ($_REQUEST["exttemplatetest"] == "true")
+	$template = "";
+	$content_postid = $result["content_postid"];
+	if ($content_postid != "")
 	{
-		//error_log("exttemplatetest;" . json_encode($result));
-		$result["content_postid"] = "982@http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/@remotetemplate";
+		$intval = intval($content_postid);
+		if ($intval > 0 || ($intval === $content_postid))
+		{
+			// its a number; local template
+			// error_log("its a number; $intval vs " . $result["content_postid"]);
+		}
+		else
+		{
+			$template = $content_postid;
+		}
+	}
+	
+	if ($template != "")
+	{
+		// load template from the model
+		global $nxs_g_modelmanager;
+		$modeluri = "{$template}@templatemapping";
+		$maps_to = $nxs_g_modelmanager->getcontentmodelproperty($modeluri, "maps_to");
+		if ($maps_to == "")
+		{
+			echo "model not found <!-- {$modeluri} -->";
+			die();
+		}
+		$result["content_postid"] = $maps_to;
 	}
 	
 	return $result;
@@ -8849,8 +8876,10 @@ function nxs_is_nxswebservice()
 	return $result;
 }
 
-function nxs_busrules_getgenericoptions()
+function nxs_busrules_getgenericoptions($args)
 {
+	
+	
 	$options = array
 	(
 		"fields" => array
@@ -10011,7 +10040,7 @@ function nxs_get_post_meta($postid, $key, $single)
 		$remotepost = nxs_remote_getpost($postid);
 		$result = $remotepost["metas"][$key];
 		
-		error_log("nxs_get_post_meta; debug; remote; $postid; $key; " . json_encode($result));
+		// error_log("nxs_get_post_meta; debug; remote; $postid; $key; " . json_encode($result));
 	}
 	else
 	{

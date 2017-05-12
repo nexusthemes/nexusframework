@@ -45,7 +45,17 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 				"id" 				=> "p1",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Parameter 1", "nxs_td"),
-			),			
+			),
+			array(
+				"id" 				=> "content_postid",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Content template (local id or remote ref)", "nxs_td"),
+			),
+			array(
+				"id" 				=> "content_modelmapping",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Content model mapping", "nxs_td"),
+			),
 			array( 
 				"id" 					=> "wrapper_condition_end",
 				"type" 				=> "wrapperend"
@@ -54,6 +64,19 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 	);
 	
 	$moreoptions = nxs_busrules_getgenericoptions($args);
+	
+	// strip the content_postid from the moreoptions
+	$items = $moreoptions["fields"];
+	$i = -1;
+	foreach ($items as $item)
+	{
+		$i++;
+		if ($item["id"] == "content_postid")
+		{
+			unset($items[$i]);
+		}
+	}
+	
 	$options["fields"] = array_merge($options["fields"], $moreoptions["fields"]);
 	
 	return $options;
@@ -205,6 +228,24 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 				$statebag["out"][$currentsitewideelement] = $metadata[$currentsitewideelement];
 			}
 		}
+		
+		// handle the modelmappings
+		$content_modelmapping = $metadata["content_modelmapping"];
+		if ($content_modelmapping != "")
+		{
+			$modelmappinglines = explode("\n", $content_modelmapping);
+			foreach ($modelmappinglines as $modelmappingline)
+			{
+				$pieces = explode("=", $modelmappingline);
+				$key = trim($pieces[0]);
+				$val = trim($pieces[1]);
+				
+				if ($key != "" && $val != "")
+				{
+					$statebag["out"]["content_modelmapping"][$key] = $val;
+				}
+			}
+		}
 
 		// instruct rule engine to stop further processing if configured to do so (=default)
 		$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
@@ -216,12 +257,6 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 	else
 	{
 		$result["ismatch"] = "false";
-	}
-	
-	if ($_REQUEST["debugme"] == "true")
-	{
-		var_dump($result);
-		die();
 	}
 	
 	return $result;

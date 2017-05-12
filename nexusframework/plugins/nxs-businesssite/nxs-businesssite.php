@@ -184,10 +184,46 @@ class nxs_g_modelmanager
 		
 		// make uniform
 		$modeluris = str_replace(";", "|", $modeluris);
-						
+		
+		// apply templateuri mappings
+		// for example in the modeluris "titlemodel:{{@@templateuri.titlemodel}}"
+		// the templated variable "@@templateuri.titlemodel" could map to "{{@@url.id}}@game"
+		// meaning modeluris would evaluate to "titlemodel:{{@url.id}}@game
+		if (true)
+		{
+			$templateurimappingslookup = array();
+			
+			// various options to implement the behaviour of the templateuri mapping;
+			// see https://docs.google.com/document/d/1rcRJR8sX8OIdofu7rlR3gd_jqFv0IDW6eoVPcpE4cQA/edit#
+			// for now we implement the mapping using the businessrules
+			$templateproperties = nxs_gettemplateproperties();
+			$content_modelmapping = $templateproperties["content_modelmapping"];
+			if ($content_modelmapping != "")
+			{
+				foreach ($content_modelmapping as $key => $val)
+				{
+					if ($key != "" && $val != "")
+					{
+						$key = trim($key);
+						$val = trim($val);
+						$templateurimappingslookup["@@templateuri.{$key}"] = $val;
+					}
+				}
+				
+				// apply the lookup tables to the parts we've evaluated so far
+				$translateargs = array
+				(
+					"lookup" => $templateurimappingslookup,
+					"item" => $modeluris,
+				);
+				$modeluris = nxs_filter_translate_v2($translateargs);
+			}
+		}
+		
 		// replace fragments from the url 
 		// for example: request: "http://domain/detail/1234/hello-world
 		// could define fragments ("id" => "1234") and ("name" => "hello-world")
+		// meaning that the modeluris value of "g:{{@@url.id}}@game" could map to "g:1234@game"
 		if (true)
 		{
 			// step 1; ensure the fragments are parsed for the current url
@@ -1004,6 +1040,14 @@ class nxs_g_modelmanager
 		{
 			$isvalid = false;
 		}
+		else if (nxs_stringcontains($url, "<"))
+		{
+			$isvalid = false;
+		}
+		else if (nxs_stringcontains($url, ">"))
+		{
+			$isvalid = false;
+		}
 
 		//$st = json_encode(nxs_getstacktrace());
 		if (!$isvalid)
@@ -1062,6 +1106,13 @@ class nxs_g_modelmanager
 	{
 		$model = $this->getmodel($modeluri);
 		return $model["contentmodel"];
+	}
+	
+	function getcontentmodelproperty($modeluri, $property)
+	{
+		$contentmodel = $this->getcontentmodel($modeluri);
+		$value = $contentmodel["properties"]["taxonomy"][$property];
+		return $value;
 	}
 	
 	function getcontentschema($modeluri = "")

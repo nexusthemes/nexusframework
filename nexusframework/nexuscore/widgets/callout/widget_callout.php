@@ -515,7 +515,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		// phase 1; evaluate any referenced models in the modeluris property
 		// sub:id@sub|subsub:{{sub.reference}}@subsub|subsubsub:{{subsub.reference}}
 		$modeluris = $mixedattributes["modeluris"];
-		$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris); 
+		$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris);
 		
 		// phase 2; translate the magic fields using the lookup tables of all referenced models
 		$lookup = $nxs_g_modelmanager->getlookups($modeluris);
