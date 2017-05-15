@@ -898,7 +898,7 @@ function nxs_gettemplateproperties()
 		if (true)
 		{
 			$result = nxs_gettemplateproperties_internal();
-			$result["content_modelmapping_lookup"] = array("stage1" => "true");
+			//$result["content_modelmapping_lookup"] = array("stage1" => "true");
 			
 			// important step; here we already set the global variable,
 			// even though the variables have not yet been processed,
@@ -906,7 +906,7 @@ function nxs_gettemplateproperties()
 			// the logic requires the template properties themselves!
 			$nxs_gl_cache_templateprops = $result;
 			
-			error_log("nxs_gettemplateproperties; nxs_gl_cache_templateprops is now set (stage 1)");
+			// error_log("nxs_gettemplateproperties; nxs_gl_cache_templateprops is now set (stage 1)");
 		}
 		
 		// stage 2; set the template variables (see #43856394587)
@@ -961,10 +961,10 @@ function nxs_gettemplateproperties()
 								"modeluris" => $modeluris,
 								"shouldincludetemplateproperties" => false,
 							);
-							$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+							$innerlookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 							$translateargs = array
 							(
-								"lookup" => $lookup,
+								"lookup" => $innerlookup,
 								"item" => $val,
 							);
 							$val = nxs_filter_translate_v2($translateargs);
