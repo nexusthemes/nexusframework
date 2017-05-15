@@ -524,7 +524,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			"shouldincludetemplateproperties" => false,
 		);
 		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
-		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src");
+		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src", "button_text");
 		$translateargs = array
 		(
 			"lookup" => $lookup,
@@ -535,7 +535,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		
 		
 		// phase 3; apply shortcodes to the magic fields
-		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src");
+		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src", "button_text"); 
 		foreach ($magicfields as $magicfield)
 		{
 			$mixedattributes[$magicfield] = do_shortcode($mixedattributes[$magicfield]);
