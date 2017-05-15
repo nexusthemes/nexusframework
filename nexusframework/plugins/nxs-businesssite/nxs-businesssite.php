@@ -1045,17 +1045,21 @@ class nxs_g_modelmanager
 		}
 		
 		//
-		$shouldincludetemplateproperties = true;	// 
-		if ($shouldincludetemplateproperties)
+		if (true)
 		{
 			// include parameters as derived by the template engine
 			$templateproperties = nxs_gettemplateproperties();
 			$modelmapping = $templateproperties["content_modelmapping_lookup"];
+			
 			foreach ($modelmapping as $key => $val)
 			{
 				$lookupkey = "@@template.{$key}";
 				$result[$lookupkey] = $val;
-				error_log("extrakeys; {$lookupkey} => $val");
+				
+				$lookupkey = "{$key}";
+				$result[$lookupkey] = $val;
+				
+				//error_log("extrakeys; {$lookupkey} => $val");
 			}
 		}
 		

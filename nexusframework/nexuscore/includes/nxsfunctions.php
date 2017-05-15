@@ -898,6 +898,7 @@ function nxs_gettemplateproperties()
 		if (true)
 		{
 			$result = nxs_gettemplateproperties_internal();
+			$result["content_modelmapping_lookup"] = array("stage1" => "true");
 			
 			// important step; here we already set the global variable,
 			// even though the variables have not yet been processed,
@@ -909,7 +910,7 @@ function nxs_gettemplateproperties()
 		}
 		
 		// stage 2; set the template variables (see #43856394587)
-		if ($_REQUEST["d"] == "dd")
+		if (true)
 		{
 			// only AFTER the templateproperties have been evaluated,
 			// and AFTER the cached variable has been set,
