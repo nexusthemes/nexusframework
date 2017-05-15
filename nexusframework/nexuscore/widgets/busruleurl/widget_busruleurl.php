@@ -52,6 +52,11 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Content template (local id or remote ref)", "nxs_td"),
 			),
 			array(
+				"id" 				=> "content_modeluris",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Content model uris", "nxs_td"),
+			),
+			array(
 				"id" 				=> "content_modelmapping",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Content model mapping", "nxs_td"),
@@ -189,6 +194,14 @@ function nxs_widgets_busruleurl_initplaceholderdata($args)
 
 function nxs_busrule_busruleurl_process($args, &$statebag)
 {
+	global $nxs_gl_isevaluatingreferencedmodels;
+	if ($nxs_gl_isevaluatingreferencedmodels === true)
+	{
+		//echo "endless loop?";
+		//nxs_dumpstacktrace();		
+		//die();
+	}
+	
 	$result = array();
 	$result["result"] = "OK";
 
@@ -229,24 +242,10 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 			}
 		}
 		
-		// handle the modelmappings
-		$content_modelmapping = $metadata["content_modelmapping"];
-		if ($content_modelmapping != "")
-		{
-			$modelmappinglines = explode("\n", $content_modelmapping);
-			foreach ($modelmappinglines as $modelmappingline)
-			{
-				$pieces = explode("=", $modelmappingline);
-				$key = trim($pieces[0]);
-				$val = trim($pieces[1]);
-				
-				if ($key != "" && $val != "")
-				{
-					$statebag["out"]["content_modelmapping"][$key] = $val;
-				}
-			}
-		}
-
+		// set the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
+		$statebag["out"]["content_modeluris"] = $metadata["content_modeluris"];
+		$statebag["out"]["content_modelmapping"] = $metadata["content_modelmapping"];
+		
 		// instruct rule engine to stop further processing if configured to do so (=default)
 		$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
 		if ($flow_stopruleprocessingonmatch != "")

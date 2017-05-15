@@ -518,7 +518,12 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris);
 		
 		// phase 2; translate the magic fields using the lookup tables of all referenced models
-		$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+		$lookupargs = array
+		(
+			"modeluris" => $modeluris,
+			"shouldincludetemplateproperties" => false,
+		);
+		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src");
 		$translateargs = array
 		(

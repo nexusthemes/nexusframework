@@ -886,15 +886,108 @@ function nxs_cap_getdesigncapability()
 	return "nxs_cap_design_site";
 }
 
+
+
 // derives the template properties for the current executing request, cached
 function nxs_gettemplateproperties()
 {
 	global $nxs_gl_cache_templateprops;
 	if (!isset($nxs_gl_cache_templateprops))
 	{
-		$result = nxs_gettemplateproperties_internal();
+		// stage 1; the evaluation that determines which rules are active
+		if (true)
+		{
+			$result = nxs_gettemplateproperties_internal();
+			
+			// important step; here we already set the global variable,
+			// even though the variables have not yet been processed,
+			// this is because while processing the variables (which happens in the next stage)
+			// the logic requires the template properties themselves!
+			$nxs_gl_cache_templateprops = $result;
+			
+			error_log("nxs_gettemplateproperties; nxs_gl_cache_templateprops is now set (stage 1)");
+		}
 		
-		$nxs_gl_cache_templateprops = $result;
+		// stage 2; set the template variables (see #43856394587)
+		if ($_REQUEST["d"] == "dd")
+		{
+			// only AFTER the templateproperties have been evaluated,
+			// and AFTER the cached variable has been set,
+			// we can THEN derive the template variables
+			
+			// handle the modelmappings
+			
+			$modeluris = $result["content_modeluris"];
+			$modelmapping = $result["content_modelmapping"];
+			
+			if ($modeluris != "")
+			{
+				global $nxs_g_modelmanager;
+				//var_dump($content_modeluris);
+				// to prevent endless loop here we invoke the evaluatereferencedmodelsinmodeluris without
+				// re-applying the shouldapplytemplateurimappings, see #23029458092475
+				$args = array
+				(
+					"modeluris" => $modeluris,
+					"shouldapplytemplateurimappings" => false,
+					"shouldapplyurlvariables" => !($nxs_gl_isevaluatingreferencedmodels === true),
+					"shouldincludetemplateproperties" => true,	// the only time this one should be set to true is here
+				);
+				$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris_v2($args);
+			}
+			
+			if ($modelmapping != "")
+			{
+				$lookup = array();
+				
+				$modelmappinglines = explode("\n", $modelmapping);
+				foreach ($modelmappinglines as $modelmappingline)
+				{
+					$pieces = explode("=", $modelmappingline);
+					$key = trim($pieces[0]);
+					
+					if ($key != "")
+					{
+						$val = trim($pieces[1]);	
+						
+						// transform the value field (applies model references, lookups, etc.)
+						
+						// phase 1; translate the magic fields using the lookup tables of all referenced models
+						if (true)
+						{
+							$lookupargs = array
+							(
+								"modeluris" => $modeluris,
+								"shouldincludetemplateproperties" => false,
+							);
+							$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+							$translateargs = array
+							(
+								"lookup" => $lookup,
+								"item" => $val,
+							);
+							$val = nxs_filter_translate_v2($translateargs);
+						}
+						
+						// phase 2; apply shortcodes
+						if (true)
+						{
+							$val = do_shortcode($val);
+						}
+						
+						//
+						
+						$lookup[$key] = $val;
+					}
+				}
+				
+				$nxs_gl_cache_templateprops["content_modelmapping_lookup"]= $lookup;
+				error_log("nxs_gettemplateproperties; content_modelmapping_lookup set (stage 2); " . json_encode($nxs_gl_cache_templateprops["content_modelmapping_lookup"]));
+			}
+			
+			//var_dump($nxs_gl_cache_templateprops["content_modelmapping_lookup"]);
+			//die();
+		}
 	}
 	else
 	{
@@ -1103,7 +1196,9 @@ function nxs_gettemplateproperties_internal()
 	  		$result[$currentsitewideelement] = $statebag["out"][$currentsitewideelement];
 	  	}
 	  	
-	  	// 
+	  	// pass through the values for the modeluris and modelmappings of the various sections
+	  	// for now only the content section (in the future also the header, subheader, ...)
+	  	$result["content_modeluris"] = $statebag["out"]["content_modeluris"];
 	  	$result["content_modelmapping"] = $statebag["out"]["content_modelmapping"];
 	  	
 	  	$result["lastmatchingrule"] = $lastmatchingrule;
@@ -9111,6 +9206,7 @@ function nxs_filter_translatemodel($metadata, $fields)
 	$args = array
 	(
 		"shouldapplyshortcodes" => true,
+		"shouldincludetemplateproperties" => false,
 	);
 	$result = nxs_filter_translatemodel_v2($metadata, $fields, $args);
 	return $result;
@@ -9154,7 +9250,12 @@ function nxs_filter_translatemodel_v2($metadata, $fields, $args)
 	
 	
 	// phase 2; translate the fields using the values from the (extended) model(s)
-	$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+	$lookupargs = array
+	(
+		"modeluris" => $modeluris,
+		"shouldincludetemplateproperties" => $args["shouldincludetemplateproperties"],
+	);
+	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 	if ($debug)
 	{
 		echo "lookup:<br />";

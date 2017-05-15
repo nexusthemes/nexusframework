@@ -15,8 +15,12 @@ function nxs_generic_modeltaxfieldpicker_popupcontent($optionvalues, $args, $run
 	// phase 1a; replace the possible placeholder "humanid" in the modeluris with its value
 	$modeluris = $runtimeblendeddata["modeluris"];
 	$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris);
-	
-	$lookup = $nxs_g_modelmanager->getlookups($modeluris);
+	$lookupargs = array
+	(
+		"modeluris" => $modeluris,
+		"shouldincludetemplateproperties" => false,
+	);
+	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 	$options = array();
 	
 	foreach ($lookup as $key => $val)

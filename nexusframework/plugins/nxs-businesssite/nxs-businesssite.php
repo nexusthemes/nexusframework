@@ -168,9 +168,29 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	// evaluates nested references and evaluate variables as set by the seowebsiterules (url parameters)
 	function evaluatereferencedmodelsinmodeluris($modeluris)
 	{
+		//error_log("evaluatereferencedmodelsinmodeluris (" . $modeluris . ")");
+		
+		$args = array
+		(
+			"modeluris" => $modeluris,
+			"shouldapplytemplateurimappings" => true,
+			"shouldapplyurlvariables" => true,
+			"shouldincludetemplateproperties" => false,
+		);
+		$result = $this->evaluatereferencedmodelsinmodeluris_v2($args);
+		return $result;
+	}
+	
+	// evaluates nested references and evaluate variables as set by the seowebsiterules (url parameters)
+	function evaluatereferencedmodelsinmodeluris_v2($args)
+	{
+		$modeluris = $args["modeluris"];
+		
+		global $nxs_gl_isevaluatingreferencedmodels;
+		$nxs_gl_isevaluatingreferencedmodels[$modeluris]++;
+		
 		if ($modeluris == "")
 		{
 			return $modeluris;
@@ -185,11 +205,16 @@ class nxs_g_modelmanager
 		// make uniform
 		$modeluris = str_replace(";", "|", $modeluris);
 		
+		
 		// apply templateuri mappings
 		// for example in the modeluris "titlemodel:{{@@templateuri.titlemodel}}"
 		// the templated variable "@@templateuri.titlemodel" could map to "{{@@url.id}}@game"
 		// meaning modeluris would evaluate to "titlemodel:{{@url.id}}@game
-		if (true)
+		// whether or not these are applied is determined by a argument,
+		// when evaluating the modeluris a recursive call is made, and for this recursive call
+		// we should NOT apply them (to avoid endless loops), see #23029458092475
+		$shouldapplytemplateurimappings = $args["shouldapplytemplateurimappings"];
+		if ($shouldapplytemplateurimappings)
 		{
 			$templateurimappingslookup = array();
 			
@@ -224,7 +249,8 @@ class nxs_g_modelmanager
 		// for example: request: "http://domain/detail/1234/hello-world
 		// could define fragments ("id" => "1234") and ("name" => "hello-world")
 		// meaning that the modeluris value of "g:{{@@url.id}}@game" could map to "g:1234@game"
-		if (true)
+		$shouldapplyurlvariables = $args["shouldapplyurlvariables"];
+		if ($shouldapplyurlvariables)
 		{
 			// step 1; ensure the fragments are parsed for the current url
 			$parsed = $this->derivemodelforcurrenturl();
@@ -248,7 +274,7 @@ class nxs_g_modelmanager
 		}
 		
 		// obsolete implementation;
-		if (true)
+		if (false) //true)
 		{
 			$humanid = $this->gethumanid("");
 			$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
@@ -291,7 +317,12 @@ class nxs_g_modelmanager
 				// now apply lookup values again 
 				
 				// apply lookup values to the modelurispart "extended" models
-				$lookupcurrentpart = $this->getlookups($modelurispart);
+				$lookupargs = array
+				(
+					"modeluris" => $modeluris,
+					"shouldincludetemplateproperties" => $args["shouldincludetemplateproperties"],
+				);
+				$lookupcurrentpart = $this->getlookups_v2($lookupargs);
 				$recursivelookup = array_merge($recursivelookup, $lookupcurrentpart);
 				
 				$translateargs = array
@@ -369,6 +400,17 @@ class nxs_g_modelmanager
 	
 	function derivemodelbyuri($uri)
 	{
+		if ($_REQUEST["d"] == "dd")
+		{
+			global $d;
+			$d++;
+			if ($d > 10)
+			{
+				die();
+			}
+			error_log("derivemodelbyuri; $uri ($d)");
+		}
+		
 		global $nxs_gl_modelbyuri;
 		
 		if (!isset($nxs_gl_modelbyuri[$uri]))
@@ -535,6 +577,7 @@ class nxs_g_modelmanager
 									$modelschema = $conditionschemapieces[1];
 									$toverify = "{$humanid}@{$modelschema}";
 									
+									
 									// check if such model exists
 									$verified = $this->getmodel($toverify);
 									if ($verified === false)
@@ -619,11 +662,7 @@ class nxs_g_modelmanager
 							$currententryvalid = false;
 							break;
 						}
-						
 					}
-					
-					
-					
 					else
 					{
 						echo "unsupported conditiontype?";
@@ -674,6 +713,13 @@ class nxs_g_modelmanager
 		else
 		{	
 			$result = $nxs_gl_modelbyuri[$uri];
+			
+			if ($_REQUEST["d"] == "dd")
+			{
+				//error_log("returning ... $uri (from cache)");
+				//nxs_dumpstacktrace();
+				//die();
+			}
 		}
 		
 		if ($_REQUEST["debugmodel"] == "true")
@@ -682,7 +728,9 @@ class nxs_g_modelmanager
 			var_dump($result);
 			echo "<br />";
 		}
+
 		
+									
 		return $result;
 	}
 	
@@ -847,7 +895,7 @@ class nxs_g_modelmanager
 			// mimic a post by creating a virtual post
 			
 			// derived the seo title
-			$title = $this->wpseo_title();	
+			$title = "title of virtual post"; // $this->wpseo_title();	
 			$excerpt = "";	// intentionally left blank; not practical to fill this
 			$content = "";  // intentionally left blank; lets use the front end instead
 			$rightnow = current_time('mysql');
@@ -933,9 +981,11 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	function getlookups($modeluris = "")
+	function getlookups_v2($args)
 	{
 		$result = array();
+		
+		$modeluris = $args["modeluris"];
 		
 		$orig = $modeluris;
 		
@@ -991,6 +1041,21 @@ class nxs_g_modelmanager
 			{
 				$lookup = $this->getlookup($modeluri, "{$prefix}");
 				$result = array_merge($result, $lookup);
+			}
+		}
+		
+		//
+		$shouldincludetemplateproperties = true;	// 
+		if ($shouldincludetemplateproperties)
+		{
+			// include parameters as derived by the template engine
+			$templateproperties = nxs_gettemplateproperties();
+			$modelmapping = $templateproperties["content_modelmapping_lookup"];
+			foreach ($modelmapping as $key => $val)
+			{
+				$lookupkey = "@@template.{$key}";
+				$result[$lookupkey] = $val;
+				error_log("extrakeys; {$lookupkey} => $val");
 			}
 		}
 		

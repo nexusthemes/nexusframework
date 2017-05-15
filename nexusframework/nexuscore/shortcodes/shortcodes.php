@@ -15,7 +15,13 @@ function nxs_sc_spin($attributes, $content = null, $name='')
 	$modeluri = "spinner:{$modeluri}";
 	
 	global $nxs_g_modelmanager;
-	$lookups = $nxs_g_modelmanager->getlookups($modeluri);
+	
+	$lookupargs = array
+	(
+		"modeluris" => $modeluri,
+		"shouldincludetemplateproperties" => false,
+	);
+	$lookups = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 	
 	$text = $lookups["spinner:text.textvalue"];
 	
