@@ -921,7 +921,7 @@ function nxs_gettemplateproperties()
 			$modeluris = $result["content_modeluris"];
 			$modelmapping = $result["content_modelmapping"];
 			
-			if ($modeluris != "")
+			if ($modeluris != "" && $modelmapping != "")
 			{
 				global $nxs_g_modelmanager;
 				//var_dump($content_modeluris);
@@ -982,12 +982,52 @@ function nxs_gettemplateproperties()
 					}
 				}
 				
-				$nxs_gl_cache_templateprops["content_modelmapping_lookup"]= $lookup;
-				//error_log("nxs_gettemplateproperties; content_modelmapping_lookup set (stage 2); " . json_encode($nxs_gl_cache_templateprops["content_modelmapping_lookup"]));
+				
+				
+				// now that the entire lookup table is filled,
+				// recursively apply the lookup tables to its values
+				// for those keys that have one or more placeholders in their values
+				$triesleft = 2;
+				while ($triesleft > 0)
+				{
+					$triesleft--;
+					
+					$didsomething = false;
+					
+					foreach ($lookup as $key => $val)
+					{
+						if (nxs_stringcontains($val, "{{"))
+						{
+							$origval = $val;
+							
+							$translateargs = array
+							(
+								"lookup" => $lookup,
+								"item" => $val,
+							);
+							$val = nxs_filter_translate_v2($translateargs);
+							$somethingchanged = ($val != $origval);
+							if ($somethingchanged)
+							{
+								$lookup[$key] = $val;
+								$didsomething = true;
+							}
+							else
+							{
+								break;
+							}
+						}
+					}
+					
+					if (!$didsomething)
+					{
+						break;
+					}
+				}
+				
+				// store the lookup table
+				$nxs_gl_cache_templateprops["content_modelmapping_lookup"] = $lookup;
 			}
-			
-			//var_dump($nxs_gl_cache_templateprops["content_modelmapping_lookup"]);
-			//die();
 		}
 	}
 	else
