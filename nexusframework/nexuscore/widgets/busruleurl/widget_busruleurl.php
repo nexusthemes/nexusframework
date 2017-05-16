@@ -53,7 +53,7 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "content_modeluris",
-				"type" 				=> "input",
+				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Content model uris", "nxs_td"),
 			),
 			array(

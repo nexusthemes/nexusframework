@@ -203,9 +203,14 @@ class nxs_g_modelmanager
 		}
 		
 		// make uniform
+		
+		// error_log("before; $modeluris");
+		
 		$modeluris = str_replace(";", "|", $modeluris);
-		
-		
+		$modeluris = str_replace("\r\n", "|", $modeluris);
+		$modeluris = str_replace("\r", "|", $modeluris);
+		$modeluris = str_replace("\n", "|", $modeluris);
+
 		// apply templateuri mappings
 		// for example in the modeluris "titlemodel:{{@@templateuri.titlemodel}}"
 		// the templated variable "@@templateuri.titlemodel" could map to "{{@@url.id}}@game"
@@ -264,6 +269,11 @@ class nxs_g_modelmanager
 				$fragmentslookup[$key] = $value;
 			}
 			
+			// add the hostname
+			$key = "@@url.hostname";
+			$value = $_SERVER['HTTP_HOST'];
+			$fragmentslookup[$key] = $value;			
+			
 			// apply the lookup tables to the parts we've evaluated so far
 			$translateargs = array
 			(
@@ -273,18 +283,12 @@ class nxs_g_modelmanager
 			$modeluris = nxs_filter_translate_v2($translateargs);
 		}
 		
-		// obsolete implementation;
-		if (false) //true)
-		{
-			$humanid = $this->gethumanid("");
-			$modeluris = str_replace("{{humanid}}", $humanid, $modeluris);
-		}
-
 		// loop through each parts of the sequence of modeluris and apply the variables from previous steps
 		// (one part could evaluate a variable that is defined in previous parts)
 		if (true)
 		{
 			$modelurisparts = explode("|", $modeluris);
+			
 			$recursivelookup = array();
 			$updatedmodeluris = array();
 			
@@ -295,10 +299,18 @@ class nxs_g_modelmanager
 				// sanitize element
 				$modelurispart = trim($modelurispart);
 				
+				// if its blank, ignore it
+				if ($modelurispart == "")
+				{
+					continue;
+				}
+				
 				if ($shoulddebug)
 				{
 					echo "index: {$index}<br />";
 					echo "modelurispart: {$modelurispart}<br />";
+					// echo "shouldincludetemplateproperties: " . json_encode($args["shouldincludetemplateproperties"]) . "<br />";/
+					echo "recursivelookup: " . json_encode($recursivelookup) . "<br />";
 				}
 				
 				// apply the lookup tables to the parts we've evaluated so far
@@ -319,7 +331,7 @@ class nxs_g_modelmanager
 				// apply lookup values to the modelurispart "extended" models
 				$lookupargs = array
 				(
-					"modeluris" => $modeluris,
+					"modeluris" => $modelurispart,
 					"shouldincludetemplateproperties" => $args["shouldincludetemplateproperties"],
 				);
 				$lookupcurrentpart = $this->getlookups_v2($lookupargs);
@@ -400,17 +412,6 @@ class nxs_g_modelmanager
 	
 	function derivemodelbyuri($uri)
 	{
-		if ($_REQUEST["d"] == "dd")
-		{
-			global $d;
-			$d++;
-			if ($d > 10)
-			{
-				die();
-			}
-			error_log("derivemodelbyuri; $uri ($d)");
-		}
-		
 		global $nxs_gl_modelbyuri;
 		
 		if (!isset($nxs_gl_modelbyuri[$uri]))
@@ -713,13 +714,6 @@ class nxs_g_modelmanager
 		else
 		{	
 			$result = $nxs_gl_modelbyuri[$uri];
-			
-			if ($_REQUEST["d"] == "dd")
-			{
-				//error_log("returning ... $uri (from cache)");
-				//nxs_dumpstacktrace();
-				//die();
-			}
 		}
 		
 		if ($_REQUEST["debugmodel"] == "true")
@@ -728,8 +722,6 @@ class nxs_g_modelmanager
 			var_dump($result);
 			echo "<br />";
 		}
-
-		
 									
 		return $result;
 	}
@@ -895,7 +887,7 @@ class nxs_g_modelmanager
 			// mimic a post by creating a virtual post
 			
 			// derived the seo title
-			$title = "title of virtual post"; // $this->wpseo_title();	
+			$title = $this->wpseo_title();	
 			$excerpt = "";	// intentionally left blank; not practical to fill this
 			$content = "";  // intentionally left blank; lets use the front end instead
 			$rightnow = current_time('mysql');
@@ -981,6 +973,9 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	//
+	//
+	//
 	function getlookups_v2($args)
 	{
 		$result = array();
@@ -1082,10 +1077,6 @@ class nxs_g_modelmanager
 				$lookup["{$prefix}{$taxonomyid}.{$fieldid}"] = $val;
 			}
 		}
-		
-		$humanid = $this->gethumanid("");
-		$lookup["humanid"] = $humanid;
-		$lookup["this.humanid"] = $humanid;
 		
 		return $lookup;
 	}

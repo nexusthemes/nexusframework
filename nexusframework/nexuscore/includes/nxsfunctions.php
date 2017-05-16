@@ -983,7 +983,7 @@ function nxs_gettemplateproperties()
 				}
 				
 				$nxs_gl_cache_templateprops["content_modelmapping_lookup"]= $lookup;
-				error_log("nxs_gettemplateproperties; content_modelmapping_lookup set (stage 2); " . json_encode($nxs_gl_cache_templateprops["content_modelmapping_lookup"]));
+				//error_log("nxs_gettemplateproperties; content_modelmapping_lookup set (stage 2); " . json_encode($nxs_gl_cache_templateprops["content_modelmapping_lookup"]));
 			}
 			
 			//var_dump($nxs_gl_cache_templateprops["content_modelmapping_lookup"]);
