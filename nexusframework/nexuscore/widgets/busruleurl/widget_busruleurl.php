@@ -241,9 +241,9 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 			}
 		}
 		
-		// set the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
-		$statebag["out"]["content_modeluris"] = $metadata["content_modeluris"];
-		$statebag["out"]["content_modelmapping"] = $metadata["content_modelmapping"];
+		// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
+		$statebag["out"]["content_modeluris"] .= "\r\n" . $metadata["content_modeluris"];
+		$statebag["out"]["content_modelmapping"] .= "\r\n" . $metadata["content_modelmapping"];
 		
 		// instruct rule engine to stop further processing if configured to do so (=default)
 		$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
