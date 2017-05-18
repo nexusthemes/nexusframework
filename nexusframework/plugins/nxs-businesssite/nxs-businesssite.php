@@ -1048,8 +1048,9 @@ class nxs_g_modelmanager
 			
 			foreach ($modelmapping as $key => $val)
 			{
-				$lookupkey = "@@template.{$key}";
-				$result[$lookupkey] = $val;
+				// no longer need these; only make things complex
+				//$lookupkey = "@@template.{$key}";
+				//$result[$lookupkey] = $val;
 				
 				$lookupkey = "{$key}";
 				$result[$lookupkey] = $val;
@@ -1285,6 +1286,9 @@ class nxs_g_modelmanager
 		// if modeluri is specified retrieve the model through the modeluri
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/model-by-uri/{$modeluri}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
 		$content = file_get_contents($url);
+
+		error_log("getmodel_actual; returned content");
+		
 		$json = json_decode($content, true);
 		
 		if ($json["found"] === false)
@@ -1418,11 +1422,18 @@ class nxs_g_modelmanager
 			$seowidgets = nxs_getwidgetsmetadatainpost_v2($filterargs);
 			$mixedattributes = reset($seowidgets);
 			
-			// Lookup atts
-			$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","subtitle", "button_text","destination_url", "image_src"));	
+			// Translate templated properties
+			// getlookups_v2
+			
 			
 			// Translate model data
-			$mixedattributes = nxs_filter_translatemodel($mixedattributes, array("title", "metadescription", "canonicalurl"));	
+			// $mixedattributes = nxs_filter_translatemodel($mixedattributes, array("title", "metadescription", "canonicalurl"));
+			$args = array
+			(
+				"shouldapplyshortcodes" => true,
+				"shouldincludetemplateproperties" => true,
+			);
+			$mixedattributes = nxs_filter_translatemodel_v2($mixedattributes, array("title", "metadescription", "canonicalurl"), $args);
 			
 			// Translate urls
 			$mixedattributes["canonicalurl"] = nxs_url_prettyfy($mixedattributes["canonicalurl"]);

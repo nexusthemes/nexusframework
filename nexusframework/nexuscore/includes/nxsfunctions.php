@@ -898,7 +898,6 @@ function nxs_gettemplateproperties()
 		if (true)
 		{
 			$result = nxs_gettemplateproperties_internal();
-			//$result["content_modelmapping_lookup"] = array("stage1" => "true");
 			
 			// important step; here we already set the global variable,
 			// even though the variables have not yet been processed,
@@ -944,7 +943,8 @@ function nxs_gettemplateproperties()
 				$modelmappinglines = explode("\n", $modelmapping);
 				foreach ($modelmappinglines as $modelmappingline)
 				{
-					$pieces = explode("=", $modelmappingline);
+					$limit = 2;	// 
+					$pieces = explode("=", $modelmappingline, $limit);
 					$key = trim($pieces[0]);
 					
 					if ($key != "")
@@ -981,8 +981,6 @@ function nxs_gettemplateproperties()
 						$lookup[$key] = $val;
 					}
 				}
-				
-				
 				
 				// now that the entire lookup table is filled,
 				// recursively apply the lookup tables to its values
@@ -9377,42 +9375,54 @@ function nxs_filter_translate_v2($args)
 	
 	$lookup = $args["lookup"];
 	
-	if ($lookup == "") { nxs_webmethod_return_nack("error ; lookup not set"); }
-	
-	if (isset($args["items"]))
+	if ($lookup == "") 
 	{
-		// requesting to translate an array
-		$metadata = $args["items"];
-		
-		if (isset($args["fields"]))
+		if (isset($args["items"])) 
 		{
-			// only translate the specified fields
-			$fields = $args["fields"];
+			$result = $args["items"];
 		}
 		else
 		{
-			// assumed all fields
-			$fields = array();
-			foreach ($metadata as $key => $val)
-			{
-				$fields[] = $key;
-			}
+			$result = $args["item"];
 		}
-		
-		$result = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
 	}
 	else
 	{
-		$fields = array("item");
-		
-		// only one value is provided; wrap that item in an array
-		$metadata = array
-		(
-			"item" => $args["item"],
-		);
-		$tempresult = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
-		// unwrap the result
-		$result = $tempresult["item"];
+		if (isset($args["items"]))
+		{
+			// requesting to translate an array
+			$metadata = $args["items"];
+			
+			if (isset($args["fields"]))
+			{
+				// only translate the specified fields
+				$fields = $args["fields"];
+			}
+			else
+			{
+				// assumed all fields
+				$fields = array();
+				foreach ($metadata as $key => $val)
+				{
+					$fields[] = $key;
+				}
+			}
+			
+			$result = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
+		}
+		else
+		{
+			$fields = array("item");
+			
+			// only one value is provided; wrap that item in an array
+			$metadata = array
+			(
+				"item" => $args["item"],
+			);
+			$tempresult = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
+			// unwrap the result
+			$result = $tempresult["item"];
+		}
 	}
 	
 	return $result;
@@ -9420,21 +9430,30 @@ function nxs_filter_translate_v2($args)
 
 function nxs_url_prettyfy($slug)
 {
-	if ($slug != "")
+	if (nxs_stringcontains($slug, "{{"))
 	{
-		$slug = strtolower($slug);
-		$slug = preg_replace('/[^A-Za-z0-9.\/]/', '-', $slug); // Replaces any non alpha numeric with -
-		for ($cnt = 0; $cnt < 3; $cnt++)
+		// leave as-is (this is (hopefully) a placeholder)
+		// todo: add an action that can be received by a editor plugin
+		// to indicate something might be wrong
+	}
+	else
+	{
+		if ($slug != "")
 		{
-			$slug = str_replace("--", "-", $slug);
+			$slug = strtolower($slug);
+			$slug = preg_replace('/[^A-Za-z0-9.\/]/', '-', $slug); // Replaces any non alpha numeric with -
+			for ($cnt = 0; $cnt < 3; $cnt++)
+			{
+				$slug = str_replace("--", "-", $slug);
+			}
+			// 
+			$slug = str_replace("//", nxs_geturl_home(), $slug);
+			
+			if (!nxs_stringendswith($slug, "/"))
+			{
+				$slug .= "/";
+			}	
 		}
-		// 
-		$slug = str_replace("//", nxs_geturl_home(), $slug);
-		
-		if (!nxs_stringendswith($slug, "/"))
-		{
-			$slug .= "/";
-		}	
 	}
 	return $slug;
 }

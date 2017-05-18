@@ -49,7 +49,7 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 			array(
 				"id" 				=> "content_postid",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Content template (local id or remote ref)", "nxs_td"),
+				"label" 			=> nxs_l18n__("Content template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
 			array(
 				"id" 				=> "content_modeluris",
@@ -82,7 +82,7 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 		}
 	}
 	
-	$options["fields"] = array_merge($options["fields"], $moreoptions["fields"]);
+	$options["fields"] = array_merge($options["fields"], $items);
 	
 	return $options;
 }
@@ -214,7 +214,6 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 
 	if ($operator == "contains" && nxs_stringcontains($currenturl, $p1))
 	{
-		
 		$result["ismatch"] = "true";
 		
 		// process configured site wide elements
