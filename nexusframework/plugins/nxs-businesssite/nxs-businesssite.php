@@ -283,6 +283,42 @@ class nxs_g_modelmanager
 			$modeluris = nxs_filter_translate_v2($translateargs);
 		}
 		
+		// applying of url variables v2
+		if (true)//$_REQUEST["m"] == "mm")
+		{
+			$shouldapplyurlvariables = $args["shouldapplyurlvariables"];
+			if ($shouldapplyurlvariables)
+			{
+				// todo: perhaps use the condition here on whether or not we should do this,
+				// preventing possible endless loops... for now we will assume this will always go saf
+				
+				$templateproperties = nxs_gettemplateproperties();
+				$url_fragment_variables = $templateproperties["url_fragment_variables"];
+				
+				$fragmentslookup = array();
+				foreach ($url_fragment_variables as $key => $value)
+				{
+					// $key = "@@url.{$key}";	// for example {{@@url.id}}} would become 1234
+					$key = $key;	// for example {{@@url.id}}} would become 1234
+					$value = $value;
+					$fragmentslookup[$key] = $value;
+				}
+				
+				// add the hostname
+				$key = "@@url.hostname";
+				$value = $_SERVER['HTTP_HOST'];
+				$fragmentslookup[$key] = $value;			
+				
+				// apply the lookup tables to the parts we've evaluated so far
+				$translateargs = array
+				(
+					"lookup" => $fragmentslookup,
+					"item" => $modeluris,
+				);
+				$modeluris = nxs_filter_translate_v2($translateargs);
+			}
+		}
+		
 		// loop through each parts of the sequence of modeluris and apply the variables from previous steps
 		// (one part could evaluate a variable that is defined in previous parts)
 		if (true)
@@ -858,12 +894,6 @@ class nxs_g_modelmanager
 		$parameters = $derivedcontext["parameters"];
 		$fragments = $parameters["fragments"];
 		
-		if ($_REQUEST["fragments"] == "true")
-		{
-			var_dump($derivedcontext);
-			die();
-		}
-		
 		$isvirtual = false;
 		
 		$schema = "nxs_";
@@ -874,6 +904,14 @@ class nxs_g_modelmanager
 				$schema .= "_";
 			}
 			$schema .= "{$key}";
+			$isvirtual = true;
+		}
+		
+		//
+		$templateproperties = nxs_gettemplateproperties();
+		if ($templateproperties["lastmatchingrule"] == "busruleurl")
+		{
+			$schema = "nxs_vtemplate";
 			$isvirtual = true;
 		}
 		
@@ -981,7 +1019,7 @@ class nxs_g_modelmanager
 		$result = array();
 		
 		$modeluris = $args["modeluris"];
-		
+
 		$orig = $modeluris;
 		
 		// error_log("invoked; getlookups; $modeluris");
@@ -990,10 +1028,6 @@ class nxs_g_modelmanager
 		$modeluris = str_replace(";", ",", $modeluris);
 		$modeluris = str_replace("|", ",", $modeluris);
 		$modeluripieces = explode(",", $modeluris);
-		
-		// we also include the "empty" modeluri (which maps to the model of the page
-		// in the current scope
-		// $modeluripieces = array_merge(array(""), $modeluripieces);
 		
 		$index = -1;
 		foreach ($modeluripieces as $modeluripiece)
@@ -1012,6 +1046,7 @@ class nxs_g_modelmanager
 			
 			if (!$isvalid)
 			{
+				error_log("invalid model lookup; $modeluripiece (in orig:'$orig')");
 				do_action("nxs_a_modelnotfound", "$modeluripiece (in orig:'$orig')");
 				
 				// skip!
@@ -1048,14 +1083,8 @@ class nxs_g_modelmanager
 			
 			foreach ($modelmapping as $key => $val)
 			{
-				// no longer need these; only make things complex
-				//$lookupkey = "@@template.{$key}";
-				//$result[$lookupkey] = $val;
-				
 				$lookupkey = "{$key}";
 				$result[$lookupkey] = $val;
-				
-				//error_log("extrakeys; {$lookupkey} => $val");
 			}
 		}
 		

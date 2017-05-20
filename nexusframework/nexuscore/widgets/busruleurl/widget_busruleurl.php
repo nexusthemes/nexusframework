@@ -39,6 +39,7 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Operator", "nxs_td"),
 				"dropdown" 			=> array(
 					"contains"	=>"contains",
+					"template"	=>"template",
 				),
 			),	
 			array(
@@ -250,6 +251,204 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 		if ($flow_stopruleprocessingonmatch != "")
 		{
 			$result["stopruleprocessingonmatch"] = "true";
+		}
+	}
+	else if ($operator == "template")
+	{
+		$isconditionvalid = true;
+		
+		// check condition
+		if (true)
+		{
+			$template = $p1;														// for example "/detail/*-{{name@model}}/"
+			$template = trim($template, "/");						// for example "detail/*-{{name@model}}"
+			$templatepieces = explode("/", $template);	// for example ["detail", "*-{{name@model}}"]
+			$cnttemplatepieces = count($templatepieces);
+			
+			$uriargs = array
+			(
+				"rewritewebmethods" => true,
+			);
+			$uri = nxs_geturicurrentpage($uriargs);			// for example "/detail/very-nice-1/?page=2"
+			$uripieces = explode("?", $uri);
+			$uri = $uripieces[0];												// for example "/detail/very-nice-1/"
+			$uri = trim($uri, "/");											// for example "detail/very-nice-1"
+			$uripieces = explode("/", $uri);						// for example ["detail", "very-nice-1"]
+			$cnturipieces = count($uripieces);
+			
+			if ($cnttemplatepieces == $cnturipieces)
+			{
+				// its valid, until we conclude one piece is not valid
+				$isconditionvalid = true;
+				
+				$derivedurlfragmentkeyvalues = "";
+				$url_fragment_variables = array();
+				
+				// possible match
+				for ($fragmentindex = 0; $fragmentindex < $cnturipieces; $fragmentindex++)
+				{
+					$uripiece = $uripieces[$fragmentindex];
+					$templatepiece = $templatepieces[$fragmentindex];
+					
+					$containsvariable = false;
+					if (nxs_stringcontains_v2($templatepiece, "{", false))
+					{
+						$containsvariable = true;
+					}
+					
+					if ($containsvariable)
+					{						
+						$endswithvariable = nxs_stringendswith($templatepiece, "}");
+						if ($endswithvariable)
+						{
+							// wildcard / model lookup check, which should/will set a variable,
+							// for example "/detail/*-{{name@model}}/"
+							
+							$currentslugpiece = $uripiece;
+							// for example the following;
+							// "-grab-after-{{X}}" 
+							// "*-grab-after-{{X}}"
+							// would be a match for "hello-world-grab-after-{{X}}" (X would then be "p13")
+							$value = $templatepiece;
+							
+							$seperator = $value;
+							$seperator = str_replace("*", "", $seperator);
+							$seperator = str_replace("{{", "(", $seperator);
+							$seperator = str_replace("}}", ")", $seperator);
+							$seperator = str_replace("{", "(", $seperator);
+							$seperator = str_replace("}", ")", $seperator);
+							// for example "-grab-after-(X)"
+							$seperator = preg_replace("/\([^)]+\)/","",$seperator);
+							// for example "-grab-after-"
+							
+							$slugsubpieces = explode($seperator, $currentslugpiece);
+							// for example ("hello-world", "p13")
+							
+							$humanid = end($slugsubpieces);
+							if ($humanid != "")
+							{
+								$schematemp = $value;																// -{{X}}
+								$schematemp = str_replace("{{", "|", $schematemp);	// -|X}}
+								$schematemp = str_replace("{", "|", $schematemp);		// -|X}}
+								$schematemp = str_replace("}}", "", $schematemp);		// -|X
+								$schematemp = str_replace("}", "", $schematemp);		// -|X
+								$schematemppieces = explode("|", $schematemp);			// ["-", "X"]
+								$conditionschema = $schematemppieces[1];
+								
+								// if the conditionschema has a "@"
+								// we have to use the first part as the variable
+								// and the 2nd part indicated the true modelschema
+								// we should in that case only accept the URL
+								// if the humanid exists in that schema
+								$representsmodellookup = nxs_stringcontains($conditionschema, "@");
+								if ($representsmodellookup)
+								{
+									$conditionschemapieces = explode("@", $conditionschema);
+									$conditionschema = $conditionschemapieces[0];
+									$modelschema = $conditionschemapieces[1];
+									$toverify = "{$humanid}@{$modelschema}";
+									
+									// check if such model exists
+									$verified = $this->getmodel($toverify);
+									if ($verified === false)
+									{
+										// error_log("model $toverify doesn't exist, it should result in a 404!");	
+										$currententryvalid = false;
+										break;
+									}
+								}
+								else
+								{
+									// its "just" a variable, not a model lookup
+								}
+								
+								// for example "grab-after-{X}" then conditionschema be "X"
+	
+								$derivedurlfragmentkeyvalues .= "{$conditionschema}={$humanid}\r\n";
+								$url_fragment_variables[$conditionschema] = $humanid;
+								
+								// ok, proceed
+							}
+							else
+							{
+								$currententryvalid = false;
+								break;
+							}
+						}
+						else
+						{
+							// format is not (yet) supported
+							$currententryvalid = false;
+							break;
+						}
+					}
+					else
+					{
+						// static 1:1 comparison
+						if ($templatepiece === $uripiece)
+						{
+							// yes its identical, continue to the next fragment
+						}
+						else
+						{
+							// fragment mismatch; break the loop!
+							$isconditionvalid = false;
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				// mismatch
+				$isconditionvalid = false;
+			}
+		}
+		
+		if ($isconditionvalid)
+		{
+			// yes, unless one of the fragments is a mismatch
+			$result["ismatch"] = "true";
+			
+			// process configured site wide elements
+			$sitewideelements = nxs_pagetemplates_getsitewideelements();
+			foreach($sitewideelements as $currentsitewideelement)
+			{
+				$selectedvalue = $metadata[$currentsitewideelement];
+				if ($selectedvalue == $filter_authoremail)
+				{
+					// skip
+				} 
+				else if ($selectedvalue == "@leaveasis")
+				{
+					// skip
+				}
+				else if ($selectedvalue == "@suppressed")
+				{
+					// reset
+					$statebag["out"][$currentsitewideelement] = 0;
+				}
+				else
+				{
+					// set the value as selected
+					$statebag["out"][$currentsitewideelement] = $metadata[$currentsitewideelement];
+				}
+			}
+			
+			// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
+			$statebag["out"]["content_modeluris"] .= "\r\n" . $metadata["content_modeluris"];
+			$statebag["out"]["content_modelmapping"] .= "\r\n" . $metadata["content_modelmapping"];
+			// also add the url fragment keyvalues as derived from the url
+			$statebag["out"]["content_modelmapping"] .= "\r\n" . $derivedurlfragmentkeyvalues;
+			$statebag["out"]["url_fragment_variables"] = $url_fragment_variables;
+			
+			
+			// instruct rule engine to stop further processing if configured to do so (=default)
+			$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
+			if ($flow_stopruleprocessingonmatch != "")
+			{
+				$result["stopruleprocessingonmatch"] = "true";
+			}
 		}
 	}
 	else

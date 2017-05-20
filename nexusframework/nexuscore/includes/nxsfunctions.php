@@ -912,6 +912,7 @@ function nxs_gettemplateproperties()
 		if (true)
 		{
 			// only AFTER the templateproperties have been evaluated,
+			// (which means also AFTER the url parameters have been evaluate),
 			// and AFTER the cached variable has been set,
 			// we can THEN derive the template variables
 			
@@ -1239,6 +1240,7 @@ function nxs_gettemplateproperties_internal()
 	  	// for now only the content section (in the future also the header, subheader, ...)
 	  	$result["content_modeluris"] = $statebag["out"]["content_modeluris"];
 	  	$result["content_modelmapping"] = $statebag["out"]["content_modelmapping"];
+	  	$result["url_fragment_variables"] = $statebag["out"]["url_fragment_variables"];
 	  	
 	  	$result["lastmatchingrule"] = $lastmatchingrule;
 			
@@ -1266,6 +1268,7 @@ function nxs_gettemplateproperties_internal()
 		}
 	}
 	
+	// handle external template
 	if ($template != "")
 	{
 		// load template from the model
@@ -1278,6 +1281,13 @@ function nxs_gettemplateproperties_internal()
 			die();
 		}
 		$result["content_postid"] = $maps_to;
+	}
+	
+	if ($_REQUEST["k"] == "kk")
+	{
+		var_dump($result);
+		nxs_dumpstacktrace();
+		die();
 	}
 	
 	return $result;
