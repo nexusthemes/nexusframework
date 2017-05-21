@@ -559,7 +559,7 @@ function nxs_widgets_pageslider_beforeend_head()
 	{
 		// the startslide and autoplay can be specified in the url
 		// this is for generating screenshots for the product image
-		$startslide = 0;
+		$startslide = 1;	// value 1 = start at the first one (0 would mean start at a random slide)
 		
 		$autoplay = 1;
 		if ($_REQUEST['screenshot'] == "true")

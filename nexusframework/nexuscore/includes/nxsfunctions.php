@@ -886,8 +886,6 @@ function nxs_cap_getdesigncapability()
 	return "nxs_cap_design_site";
 }
 
-
-
 // derives the template properties for the current executing request, cached
 function nxs_gettemplateproperties()
 {
@@ -1170,7 +1168,12 @@ function nxs_gettemplateproperties_internal()
 		
 		if (is_singular())
 		{
-			$statebag["out"]["content_postid"] = get_the_ID();
+			// get_the_ID is not yet available here the first time we get invoked ...
+			// so we cannot use $postid = get_the_ID();
+			global $wp_query;
+			$p = $wp_query->posts[0];
+			$postid = $p->ID;
+			$statebag["out"]["content_postid"] = $postid;
 		}
 		else if (is_archive())
 		{
@@ -1283,12 +1286,15 @@ function nxs_gettemplateproperties_internal()
 		$result["content_postid"] = $maps_to;
 	}
 	
+	/*
 	if ($_REQUEST["k"] == "kk")
 	{
 		var_dump($result);
+		echo "<br />";
 		nxs_dumpstacktrace();
 		die();
 	}
+	*/
 	
 	return $result;
 }
