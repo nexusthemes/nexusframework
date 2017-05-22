@@ -389,7 +389,7 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	if ($image_imageid != "") {     
 		// Core WP function returns ID ($logo_id), size of image (thumbnail, medium, large or full)
 		// This is a generic function to return a variable which contains the image chosen from the media manager
-		$imagemetadata= wp_get_attachment_image_src($image_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl 		= $imagemetadata[0];
@@ -504,7 +504,7 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	// Image background
 	if ($bg_image_imageid != "") 
 	{
-		$imagemetadata= wp_get_attachment_image_src($bg_image_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($bg_image_imageid, 'full', true);
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl 		= $imagemetadata[0];
 		$imageurl = nxs_img_getimageurlthemeversion($imageurl);

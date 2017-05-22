@@ -511,7 +511,7 @@ function nxs_widgets_commercialmsgs_render_webpart_render_htmlvisualization($arg
 			
 			$imageurl = "https://d3mwusvabcs8z9.cloudfront.net/?nxs_imagecropper=true&requestedwidth={$width}&requestedheight={$height}&debug=tru&url={$media}&scope=lazydetect";
 			
-			//$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
+			//$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
 			//$imageurl = $lookup[0];
 			//$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 			//$width = $lookup[1];

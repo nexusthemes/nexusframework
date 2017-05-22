@@ -690,7 +690,7 @@ function nxs_widgets_pageslider_beforeend_head()
 												}
 											}*/
 											
-											$lookup = wp_get_attachment_image_src($imageid, 'full', true);
+											$lookup = nxs_wp_get_attachment_image_src($imageid, 'full', true);
 											$imageurl = $lookup[0];
 											$imageurl = nxs_img_getimageurlthemeversion($imageurl);		
 											

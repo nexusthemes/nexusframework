@@ -534,7 +534,7 @@ function nxs_pagetemplate_handleheader()
 	if (isset($sitemeta["faviconid"]))
 	{
 		$faviconid = $sitemeta["faviconid"];
-		$faviconlookup = wp_get_attachment_image_src($faviconid, 'full', true);
+		$faviconlookup = nxs_wp_get_attachment_image_src($faviconid, 'full', true);
 		$faviconurl = $faviconlookup[0];
 		$faviconurl = nxs_img_getimageurlthemeversion($faviconurl);
 	}

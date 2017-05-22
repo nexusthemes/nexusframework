@@ -239,7 +239,7 @@ function nxs_widgets_banner_render_webpart_render_htmlvisualization($args)
 			{
                     
 				$image_imageid = $placeholdermetadata['image_imageid'];
-				$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
+				$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
 				
 				$banner_imageurl 		= $lookup[0];
 				$banner_imageurl = nxs_img_getimageurlthemeversion($banner_imageurl);

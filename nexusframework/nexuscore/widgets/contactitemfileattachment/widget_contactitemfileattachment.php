@@ -159,12 +159,12 @@ function nxs_widgets_contactitemfileattachment_render_webpart_render_htmlvisuali
 	$text = $mixedattributes['text'];
 	$destination_articleid = $mixedattributes['destination_articleid'];
 	
-	$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
+	$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
 	
 	$width = $lookup[1];
 	$height = $lookup[2];		
 	
-	$lookup = wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
+	$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
 	$url = $lookup[0];
 	$url = nxs_img_getimageurlthemeversion($url);
 

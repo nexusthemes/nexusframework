@@ -368,11 +368,11 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 								}		
 					
 								// wp_get_attachment_url($attachmentID);
-								$lookup = wp_get_attachment_image_src($currentimage->ID, 'thumbnail', true);
+								$lookup = nxs_wp_get_attachment_image_src($currentimage->ID, 'thumbnail', true);
 								$url = $lookup[0];
 								$url = nxs_img_getimageurlthemeversion($url);
 								
-								$fullimagemetadata = wp_get_attachment_image_src($currentimage->ID, 'full', true);
+								$fullimagemetadata = nxs_wp_get_attachment_image_src($currentimage->ID, 'full', true);
 								$fullimagewidth 	= $fullimagemetadata[1] . "px";
 								$fullimageheight 	= $fullimagemetadata[2] . "px";	
 								

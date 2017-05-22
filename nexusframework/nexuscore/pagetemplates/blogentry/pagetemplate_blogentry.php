@@ -587,7 +587,7 @@ function nxs_pagetemplate_handleheader()
 	if (isset($sitemeta["faviconid"]))
 	{
 		$faviconid = $sitemeta["faviconid"];
-		$faviconlookup = wp_get_attachment_image_src($faviconid, 'full', true);
+		$faviconlookup = nxs_wp_get_attachment_image_src($faviconid, 'full', true);
 		$faviconurl = $faviconlookup[0];
 		$faviconurl = nxs_img_getimageurlthemeversion($faviconurl);
 	}
@@ -854,7 +854,7 @@ function nxs_pagetemplate_blogentry_render($args)
 			<?php 
 			if (wp_attachment_is_image($attachmentid))
 			{
-				$att_image = wp_get_attachment_image_src($attachmentid, "full"); 
+				$att_image = nxs_wp_get_attachment_image_src($attachmentid, "full"); 
 				$att_image_src = $att_image[0];
 				$att_image_src = nxs_img_getimageurlthemeversion($att_image_src);
 				?>

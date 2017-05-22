@@ -440,7 +440,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($rss_url != "" && $rss_imageid != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($rss_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($rss_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$rss_imageurl 		= $imagemetadata[0];
@@ -464,7 +464,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($twitter_url != "" && $twitter_imageid != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($twitter_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($twitter_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$twitter_imageurl 		= $imagemetadata[0];
@@ -487,7 +487,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($facebook_url != "" && $facebook_imageid != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($facebook_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($facebook_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$facebook_imageurl 		= $imagemetadata[0];
@@ -510,7 +510,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($linkedin_url != "" && $linkedin_imageid != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($linkedin_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($linkedin_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$linkedin_imageurl 		= $imagemetadata[0];
@@ -533,7 +533,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($googleplus_url != "" && $googleplus_imageid != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($googleplus_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($googleplus_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$google_imageurl 		= $imagemetadata[0];
@@ -556,7 +556,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($youtube_url != "" && $youtube_imageid != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($youtube_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($youtube_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$youtube_imageurl 		= $imagemetadata[0];
@@ -579,7 +579,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($pinterest_url != "" && $pinterest_imageid != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($pinterest_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($pinterest_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$pinterest_imageurl 		= $imagemetadata[0];
@@ -602,7 +602,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($instagram_url != "" && $instagram_imageid != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($instagram_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($instagram_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$instagram_imageurl 		= $imagemetadata[0];
@@ -628,7 +628,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 
 	// If both the accountname and a custom image is set
 	} else if ($custom_1_url && $custom_1_imageid) {
-		$imagemetadata= wp_get_attachment_image_src($custom_1_imageid, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($custom_1_imageid, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$custom_1_imageurl = $imagemetadata[0];

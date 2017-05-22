@@ -283,7 +283,7 @@
                             		if (nxs_stringstartswith($mimetype, "image")) 
                             		{
                             			// preview plaatje
-      			                      $lookup = wp_get_attachment_image_src($currentitem->ID, 'thumbnail', true);
+      			                      $lookup = nxs_wp_get_attachment_image_src($currentitem->ID, 'thumbnail', true);
 						                      $url = $lookup[0];
 						                      $url = nxs_img_getimageurlthemeversion($url);
 						                      ?>
@@ -322,7 +322,7 @@
                                 <?php 
                                 if (nxs_stringstartswith($mimetype, "image")) 
                                 {
-                                	$lookup = wp_get_attachment_image_src($currentitem->ID, 'full', true);
+                                	$lookup = nxs_wp_get_attachment_image_src($currentitem->ID, 'full', true);
 						                      $url = $lookup[0];
 						                      $url = nxs_img_getimageurlthemeversion($url);
                                 }

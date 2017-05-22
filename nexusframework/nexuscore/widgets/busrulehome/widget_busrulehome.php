@@ -35,6 +35,12 @@ function nxs_widgets_busrulehome_home_getoptions($args)
 			),
 			array
 			(
+				"id" 				=> "header_postid",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Header template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+			),
+			array
+			(
 				"id" 				=> "content_postid",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Content template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
@@ -68,6 +74,10 @@ function nxs_widgets_busrulehome_home_getoptions($args)
 	{
 		$i++;
 		if ($item["id"] == "content_postid")
+		{
+			unset($items[$i]);
+		}
+		else if ($item["id"] == "header_postid")
 		{
 			unset($items[$i]);
 		}

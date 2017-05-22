@@ -533,7 +533,7 @@ function nxs_widgets_template_render_webpart_render_htmlvisualization($args)
 		// Determines which image size, full or thumbnail, should be used    
 		$wpsize = nxs_getwpimagesize($image_size);
 		
-		$imagemetadata= wp_get_attachment_image_src($image_imageid, $wpsize, true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($image_imageid, $wpsize, true);
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl 		= $imagemetadata[0];
 		$imageurl = nxs_img_getimageurlthemeversion($imageurl);

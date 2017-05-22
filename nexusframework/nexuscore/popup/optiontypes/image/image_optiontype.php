@@ -35,7 +35,7 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
           </script>
                       
           <?php
-						$imagemetadata = wp_get_attachment_image_src($imgidtopreview, 'thumbnail', true);
+						$imagemetadata = nxs_wp_get_attachment_image_src($imgidtopreview, 'thumbnail', true);
 						$imageurl = $imagemetadata[0];	// index 0 = url		
 						$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 						//var_dump($imageurl);
@@ -99,7 +99,7 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 					if ($imageexists && $imagemetadata != "") 
 					{
 						// resetting the image to "full" for correct metadata "width" and "height" inclusion 
-						$imagemetadata= wp_get_attachment_image_src($imgidtopreview, 'full', true);
+						$imagemetadata= nxs_wp_get_attachment_image_src($imgidtopreview, 'full', true);
 						
 						if ($imagemetadata[1] > 1999 || $imagemetadata[2] > 1999) {	
 							

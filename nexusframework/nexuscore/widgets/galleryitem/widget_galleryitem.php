@@ -27,12 +27,12 @@ function nxs_widgets_galleryitem_render_webpart_render_htmlvisualization($args) 
 	$text = $mixedattributes['text'];
 	$destination_articleid = $mixedattributes['destination_articleid'];
 	
-	$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
+	$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
 	
 	$width = $lookup[1];
 	$height = $lookup[2];		
 	
-	$lookup = wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
+	$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'thumbnail', true);
 	$url = $lookup[0];
 	$url = nxs_img_getimageurlthemeversion($url);
 
@@ -150,7 +150,7 @@ function nxs_widgets_galleryitem_initplaceholderdata($args)
 function nxs_widgets_galleryitem_getfullsizeurl($placeholdermetadata)
 {
 	$imageid = $placeholdermetadata['image_imageid'];
-	$lookup = wp_get_attachment_image_src($imageid, 'full', true);
+	$lookup = nxs_wp_get_attachment_image_src($imageid, 'full', true);
 	$fullimageurl = $lookup[0];
 	$fullimageurl = nxs_img_getimageurlthemeversion($fullimageurl);
 
@@ -165,11 +165,11 @@ function nxs_widgets_galleryitem_renderingallery($args)
 	$imageid = $placeholdermetadata['image_imageid'];
 	if ($orientation == "landscape"  || $orientation == "") 
 	{
-		$lookup = wp_get_attachment_image_src($imageid, 'nxs_cropped_320x200', true);
+		$lookup = nxs_wp_get_attachment_image_src($imageid, 'nxs_cropped_320x200', true);
 	} 
 	else if ($orientation == "portrait") 
 	{
-		$lookup = wp_get_attachment_image_src($imageid, 'nxs_cropped_320x512', true);	
+		$lookup = nxs_wp_get_attachment_image_src($imageid, 'nxs_cropped_320x512', true);	
 	}
 	
 	$thumbimageurl = $lookup[0];

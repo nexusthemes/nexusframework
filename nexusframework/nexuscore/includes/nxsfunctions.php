@@ -1283,54 +1283,42 @@ function nxs_gettemplateproperties_internal()
 		}
 	}
 	
-	$template = "";
-	$content_postid = $result["content_postid"];
-	if ($content_postid != "")
+	$keys = array("header_postid", "content_postid");
+	foreach ($keys as $key)
 	{
-		$intval = intval($content_postid);
-		if ($intval > 0 || ($intval === $content_postid))
+		$value = $result[$key];
+		if ($value != "")
 		{
-			// its a number; local template
-			// error_log("its a number; $intval vs " . $result["content_postid"]);
-		}
-		else
-		{
-			$template = $content_postid;
+			$islocalreference = (intval($value) > 0);
+			if ($islocalreference)
+			{
+				// local template; keep the id "as-is"
+			}
+			else
+			{
+				$isremotetemplate = nxs_isremotetemplate($postid);
+				if ($isremotetemplate)
+				{
+					// keep as-is
+				}
+				else
+				{
+					// assumed its a external template specified using a name (like a DNS)
+					
+					$name = $value;
+					global $nxs_g_modelmanager;
+					$modeluri = "{$name}@templatemapping";
+					$maps_to = $nxs_g_modelmanager->getcontentmodelproperty($modeluri, "maps_to");
+					if ($maps_to == "")
+					{
+						echo "model not found <!-- {$modeluri} -->";
+						die();
+					}
+					$result[$key] = $maps_to;
+				}
+			}
 		}
 	}
-	
-	// handle external template
-	if ($template != "")
-	{
-		// load template from the model
-		global $nxs_g_modelmanager;
-		$modeluri = "{$template}@templatemapping";
-		$maps_to = $nxs_g_modelmanager->getcontentmodelproperty($modeluri, "maps_to");
-		if ($maps_to == "")
-		{
-			echo "model not found <!-- {$modeluri} -->";
-			die();
-		}
-		$result["content_postid"] = $maps_to;
-	}
-	
-	/*
-	if ($_REQUEST["k"] == "kk")
-	{
-		global $wp_query;
-		$p = $wp_query->posts[0];
-		$currentpostid = $p->ID;
-		var_dump($currentpostid);
-		echo "<br />";
-		echo "<br />";
-		var_dump($result);
-		echo "<br />";
-		echo "<br />";
-		echo "<br />";
-		nxs_dumpstacktrace();
-		die();
-	}
-	*/
 	
 	return $result;
 }
@@ -8346,7 +8334,7 @@ function nxs_gethtmlforimage_v2($image_imageid = "", $image_src = "", $image_bor
 	
 	if ($image_imageid != "")
 	{
-		$imagemetadata= wp_get_attachment_image_src($image_imageid, $wpsize, true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($image_imageid, $wpsize, true);
 	
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$imageurl 		= $imagemetadata[0];
@@ -8985,7 +8973,7 @@ function nxs_ext_feed_img($content)
 	{
 		$url = nxs_geturl_for_postid($postid);
 	
-		$image_attributes = wp_get_attachment_image_src($imageid, "full", false);
+		$image_attributes = nxs_wp_get_attachment_image_src($imageid, "full", false);
 		$src = $image_attributes[0];
 		$src = nxs_img_getimageurlthemeversion($src);
 		$width = $image_attributes[1];
@@ -10242,6 +10230,11 @@ function nxs_remote_getpost_actual($postid)
 	$invokedresultstring = file_get_contents($invokeurl);
 	$invokedresult = json_decode($invokedresultstring, true);
 	
+	if ($invokedresult == "")
+	{
+		error_log("nxs_remote_getpost_actual; empty result; $url");
+	}
+	
 	return $invokedresult;
 }
 
@@ -11354,6 +11347,23 @@ function nxs_wipe_postmetakeys($postid, $keystoberemoved)
 	}
 }
 
+function nxs_wp_get_attachment_image_src($attachment_id, $size, $icon)
+{
+	$isremotetemplate = nxs_isremotetemplate($attachment_id);
+	if ($isremotetemplate)
+	{
+		// remote images should not be allowed; use media references instead!
+		$result = array();
+	}
+	else
+	{
+		$result = wp_get_attachment_image_src($attachment_id, $size, $icon);
+	}
+	
+	return $result;
+}
+
+
 // sanity checked for remote posts
 function nxs_getpagetemplateforpostid($postid)
 {
@@ -12422,7 +12432,6 @@ function nxs_allocatenewpagerowid($postid)
 	$result = "prid{$random}";
 	return $result;
 }
-
 
 function nxs_updateseooption($postid, $key, $val)
 {

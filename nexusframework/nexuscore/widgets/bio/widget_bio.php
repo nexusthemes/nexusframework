@@ -552,7 +552,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($rss != "" && $icon_rss != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($icon_rss, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($icon_rss, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$rss_imageurl 		= $imagemetadata[0];
@@ -575,7 +575,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($twitter != "" && $icon_twitter != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($icon_twitter, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($icon_twitter, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$twitter_imageurl 		= $imagemetadata[0];
@@ -598,7 +598,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($facebook != "" && $icon_facebook != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($icon_facebook, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($icon_facebook, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$facebook_imageurl 		= $imagemetadata[0];
@@ -621,7 +621,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($linkedin != "" && $icon_linkedin != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($icon_linkedin, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($icon_linkedin, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$linkedin_imageurl 		= $imagemetadata[0];
@@ -644,7 +644,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($google != "" && $icon_google != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($icon_google, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($icon_google, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$google_imageurl 		= $imagemetadata[0];
@@ -667,7 +667,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($youtube != "" && $icon_youtube != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($icon_youtube, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($icon_youtube, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$youtube_imageurl 		= $imagemetadata[0];
@@ -691,7 +691,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// If both the emailaddress and a custom icon is set
 	} else if ($emailaddress != "" && $icon_emailaddress != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($icon_emailaddress, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($icon_emailaddress, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$emailaddress_imageurl 		= $imagemetadata[0];
@@ -714,7 +714,7 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// If both the accountname and a custom icon is set
 	} else if ($skypechat != "" && $icon_skypechat != "") {
 	
-		$imagemetadata= wp_get_attachment_image_src($icon_skypechat, 'full', true);
+		$imagemetadata= nxs_wp_get_attachment_image_src($icon_skypechat, 'full', true);
 		
 		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
 		$skypechat_imageurl 		= $imagemetadata[0];

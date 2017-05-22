@@ -515,7 +515,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 			else if ($placeholdertype == "slide") 
 			{
 				$image_imageid = $placeholdermetadata['image_imageid'];
-				$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
+				$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
 				$imageurl = $lookup[0];
 				$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 				$width = $lookup[1];
@@ -657,7 +657,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 					
 					if ($image_imageid > 0)
 					{
-						$lookup = wp_get_attachment_image_src($image_imageid, 'full', true);
+						$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
 						$imageurl = $lookup[0];
 						$imageurl = nxs_img_getimageurlthemeversion($imageurl);
 						$width = $lookup[1];
