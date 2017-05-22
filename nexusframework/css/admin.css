@@ -1632,6 +1632,12 @@ img.nxs-preview-thumbnail 									{ max-width: 48px; max-height: 48px; }
 .nxs-popup-dyncontentcontainer .nxs-fraction li:hover 		{ cursor: pointer !important; }
 .nxs-popup-dyncontentcontainer .nxs-fraction li p:hover 	{ cursor: pointer !important; }
 
+.nxs-popup-content-canvas input[readonly]
+{
+	background-color: #dddddd;
+	font-style: italic;
+}
+
 #nxsbox_overlay 												{ z-index: 130; }
 #nxsbox_window 													{ z-index: 140; }
 

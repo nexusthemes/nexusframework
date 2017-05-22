@@ -1283,7 +1283,7 @@ function nxs_gettemplateproperties_internal()
 		}
 	}
 	
-	$keys = array("header_postid", "content_postid");
+	$keys = array("header_postid", "subheader_postid", "content_postid", "subfooter_postid", "footer_postid", "pagedecorator_postid");
 	foreach ($keys as $key)
 	{
 		$value = $result[$key];
@@ -9050,10 +9050,96 @@ function nxs_is_nxswebservice()
 	return $result;
 }
 
-function nxs_busrules_getgenericoptions($args)
+function nxs_busrules_get_popuphtml($id, $posttype, $subposttype, $remotesingularschema)
 {
+	nxs_ob_start();
 	
+	// grab all local options
+	$publishedargs = array();
+	$publishedargs["post_status"] = array("publish", "future");
+	$publishedargs["post_type"] = $posttype;
+	$publishedargs["orderby"] = "post_data";
+	$publishedargs["order"] = "DESC";
+	$publishedargs["numberposts"] 	= -1;	// all!
+	if (isset($subposttype))
+	{
+		// if a subposttype is specified,
+		// add the subposttype taxonomy to the filter 
+		$publishedargs["nxs_tax_subposttype"] = $subposttype;
+	}
+	$localitems = get_posts($publishedargs);
 	
+	// grab all remote options
+	if ($remotesingularschema != "")
+	{
+		global $nxs_g_modelmanager;
+		$nxs_g_modelmanager = new nxs_g_modelmanager();
+		$remotemodel = $nxs_g_modelmanager->getmodel("singleton@listof{$remotesingularschema}");
+		$remoteitems = $remotemodel["contentmodel"][$remotesingularschema]["instances"];
+	}
+	if (count($remoteitems) > 0)
+	{
+		?>	
+		Remote:<br />
+		<?php
+		$isfirst = true;
+		foreach ($remoteitems as $instancemeta)
+		{
+			if ($isfirst)
+			{
+				$isfirst = false;
+			}
+			else
+			{
+				echo " | ";
+			}
+			$templatemapping_id = $instancemeta["content"]["humanmodelid"];
+			?>
+			<a href='#' onclick="jQuery('#<?php echo $id; ?>').val('<?php echo $templatemapping_id; ?>'); nxs_js_popup_sessiondata_make_dirty(); return false;"><?php echo $templatemapping_id; ?></a>
+			<?php
+		}
+	}
+	if (count($localitems) > 0)
+	{
+		?>
+		<br />
+		Local:<br />
+		<?php
+		$isfirst = true;
+		foreach ($localitems as $currentpost) 
+		{
+			if ($isfirst)
+			{
+				$isfirst = false;
+			}
+			else
+			{
+				echo " | ";
+			}
+			$currentpostid = $currentpost->ID;
+			$currentpoststatus = $currentpost->post_status;
+			$posttitle = nxs_cutstring($currentpost->post_title, 50);
+			?>
+			<a href='#' onclick="jQuery('#<?php echo $id; ?>').val('<?php echo $currentpostid; ?>'); nxs_js_popup_sessiondata_make_dirty(); return false;"><?php echo $posttitle; ?> (local; <?php echo $currentpostid; ?>)</a>
+			<?php
+		}
+	}
+	?>
+	<br />
+	Alternative:<br />
+	<a href='#' onclick="jQuery('#<?php echo $id; ?>').val('@leaveasis'); nxs_js_popup_sessiondata_make_dirty(); return false;">Leave as-is</a> | 
+	<a href='#' onclick="jQuery('#<?php echo $id; ?>').val('@suppressed'); nxs_js_popup_sessiondata_make_dirty(); return false;">Suppress</a>
+	<br />
+	<?php
+	
+	// ----
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
+}
+
+function nxs_busrules_getgenericoptions($args)
+{	
 	$options = array
 	(
 		"fields" => array
@@ -9070,90 +9156,95 @@ function nxs_busrules_getgenericoptions($args)
 			array
 			( 
 				"id"								=> "header_postid",
-				"type" 							=> "selectpost",
-				"post_status"				=> array("publish", "future"),
-				"previewlink_enable"=> "false",
-				"label" 						=> nxs_l18n__("Header", "nxs_td"),
-				"tooltip" 					=> nxs_l18n__("Select a header to show on the top of your page", "nxs_td"),
-				"post_type" 				=> "nxs_header",
-				"buttontext" 				=> nxs_l18n__("Style header", "nxs_td"),
-				"emptyitem_enable"	=> false,
-				"beforeitems" 			=> nxs_widgets_busrule_pagetemplates_getbeforeitems(),
+				"type" 							=> "input",
+				"readonly" 					=> "true",
+				"label" 			=> nxs_l18n__("Header template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+			),
+			array(
+				"id" 				=> "custom",
+				"type" 				=> "custom",
+				"custom"	=> nxs_busrules_get_popuphtml("header_postid", "nxs_header", "", ""),
+				"label" 			=> nxs_l18n__("...", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "footer_postid",
-				"type" 							=> "selectpost",
-				"post_status"				=> array("publish", "future"),
-				"previewlink_enable"=> "false",
-				"label" 						=> nxs_l18n__("Footer", "nxs_td"),
-				"tooltip" 					=> nxs_l18n__("Select a header to show on the top of your page", "nxs_td"),
-				"post_type" 				=> "nxs_footer",
-				"emptyitem_enable"	=> false,
-				"beforeitems" 			=> nxs_widgets_busrule_pagetemplates_getbeforeitems(),
+				"type" 							=> "input",
+				"readonly" 					=> "true",
+				"label" 			=> nxs_l18n__("Footer template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+			),
+			array(
+				"id" 				=> "custom",
+				"type" 				=> "custom",
+				"custom"	=> nxs_busrules_get_popuphtml("footer_postid", "nxs_footer", "", ""),
+				"label" 			=> nxs_l18n__("...", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "sidebar_postid",
-				"type" 							=> "selectpost",
-				"post_status"				=> array("publish", "future"),
-				"previewlink_enable"=> "false",
-				"label" 						=> nxs_l18n__("Sidebar", "nxs_td"),
-				"tooltip" 					=> nxs_l18n__("Select a sidebar to show on the right side of your page", "nxs_td"),
-				"post_type" 				=> "nxs_sidebar",
-				"emptyitem_enable"	=> false,
-				"beforeitems" 			=> nxs_widgets_busrule_pagetemplates_getbeforeitems(),
+				"type" 							=> "input",
+				"readonly" 					=> "true",
+				"label" 			=> nxs_l18n__("Sidebar template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+			),
+			array(
+				"id" 				=> "custom",
+				"type" 				=> "custom",
+				"custom"	=> nxs_busrules_get_popuphtml("sidebar_postid", "nxs_sidebar", "", ""),
+				"label" 			=> nxs_l18n__("...", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "subheader_postid",
-				"type" 							=> "selectpost",
-				"post_status"				=> array("publish", "future"),
-				"previewlink_enable"=> "false",
-				"label" 						=> nxs_l18n__("Sub header", "nxs_td"),
-				"tooltip" 					=> nxs_l18n__("Select a sub header to show above your main content", "nxs_td"),
-				"post_type" 				=> "nxs_subheader",
-				"emptyitem_enable"	=> false,
-				"beforeitems" 			=> nxs_widgets_busrule_pagetemplates_getbeforeitems(),
+				"type" 							=> "input",
+				"readonly" 					=> "true",
+				"label" 			=> nxs_l18n__("Subheader template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+			),
+			array(
+				"id" 				=> "custom",
+				"type" 				=> "custom",
+				"custom"	=> nxs_busrules_get_popuphtml("subheader_postid", "nxs_subheader", "", ""),
+				"label" 			=> nxs_l18n__("...", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "subfooter_postid",
-				"type" 							=> "selectpost",
-				"post_status"				=> array("publish", "future"),
-				"previewlink_enable"=> "false",
-				"label" 						=> nxs_l18n__("Sub footer", "nxs_td"),
-				"tooltip" 					=> nxs_l18n__("Select a sub footer to show below your main content", "nxs_td"),
-				"post_type" 				=> "nxs_subfooter",
-				"emptyitem_enable"	=> false,
-				"beforeitems" 			=> nxs_widgets_busrule_pagetemplates_getbeforeitems(),
+				"type" 							=> "input",
+				"readonly" 					=> "true",
+				"label" 			=> nxs_l18n__("Ssubfooter template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+			),
+			array(
+				"id" 				=> "custom",
+				"type" 				=> "custom",
+				"custom"	=> nxs_busrules_get_popuphtml("subfooter_postid", "nxs_subfooter", "", ""),
+				"label" 			=> nxs_l18n__("...", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "pagedecorator_postid",
-				"type" 							=> "selectpost",
-				"post_status"				=> array("publish", "future"),
-				"post_type" 				=> "nxs_genericlist",
-				"subposttype" => "pagedecorator", 
-				"previewlink_enable"=> "false",
-				"label" 						=> nxs_l18n__("Decorator", "nxs_td"),
-				"tooltip" 					=> nxs_l18n__("Select a decorator to decorate your page", "nxs_td"),
-				"emptyitem_enable"	=> false,
-				"beforeitems" 			=> nxs_widgets_busrule_pagetemplates_getbeforeitems(),
+				"type" 							=> "input",
+				"readonly" 					=> "true",
+				"label" 			=> nxs_l18n__("Pagedecorator template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+			),
+			array(
+				"id" 				=> "custom",
+				"type" 				=> "custom",
+				"custom"	=> nxs_busrules_get_popuphtml("pagedecorator_postid", "nxs_genericlist", "pagedecorator", ""),
+				"label" 			=> nxs_l18n__("...", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "content_postid",
-				"type" 							=> "selectpost",
-				"post_status"				=> array("publish", "future"),
-				"previewlink_enable"=> "false",
-				"post_type" 				=> "nxs_templatepart",
-				"subposttype"				=> "content",				
-				"label" 						=> nxs_l18n__("Frontend Content", "nxs_td"),
-				"tooltip" 					=> nxs_l18n__("Select a content template", "nxs_td"),
-				"emptyitem_enable"	=> false,
-				"beforeitems" 			=> nxs_widgets_busrule_pagetemplates_getbeforeitems(),
+				"type" 							=> "input",
+				"readonly" 					=> "true",
+				"label" 			=> nxs_l18n__("Main Content template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
+			array(
+				"id" 				=> "custom",
+				"type" 				=> "custom",
+				"custom"	=> nxs_busrules_get_popuphtml("content_postid", array("post", "page"), "", "templatemapping"),
+				"label" 			=> nxs_l18n__("...", "nxs_td"),
+			),
+						
 			array
 			( 
 				"id"								=> "wpcontenthandler",
@@ -9168,7 +9259,41 @@ function nxs_busrules_getgenericoptions($args)
 					"@template@never"			=>nxs_l18n__("Never show", "nxs_td"), 
 				)
 			),
+			array
+			( 
+				"id" 				=> "wrapper_template_end",
+				"type" 				=> "wrapperend"
+			),
 			array( 
+				"id" 				=> "wrapper_flowcontrol_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Models", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "templaterules_modeluris",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
+			),
+			array
+			( 
+				"id" 				=> "wrapper_template_end",
+				"type" 				=> "wrapperend"
+			),
+			array
+			( 
+				"id" 				=> "wrapper_flowcontrol_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookup Table", "nxs_td"),
+			),			
+			array
+			(
+				"id" 				=> "templaterules_lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup values", "nxs_td"),
+			),			
+			array
+			( 
 				"id" 				=> "wrapper_template_end",
 				"type" 				=> "wrapperend"
 			),

@@ -18,8 +18,6 @@ function nxs_widgets_busrulehome_gettitle() {
 // Define the properties of this widget
 function nxs_widgets_busrulehome_home_getoptions($args) 
 {
-	// CORE WIDGET OPTIONS
-	
 	$options = array
 	(
 		"sheettitle" => nxs_widgets_busrulehome_gettitle(),
@@ -27,63 +25,14 @@ function nxs_widgets_busrulehome_home_getoptions($args)
 		//"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"fields" => array
 		(
-			array
-			( 
-				"id" 					=> "wrapper_condition_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Condition", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "header_postid",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Header template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "content_postid",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Content template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "templaterules_modeluris",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "templaterules_lookups",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Lookup values", "nxs_td"),
-			),
-			array
-			( 
-				"id" 					=> "wrapper_condition_end",
-				"type" 				=> "wrapperend"
-			),			
+			//	
 		)
 	);
 	
 	$moreoptions = nxs_busrules_getgenericoptions($args);
+	// optionally strip items here
 	
-	// strip the content_postid from the moreoptions
-	$items = $moreoptions["fields"];
-	$i = -1;
-	foreach ($items as $item)
-	{
-		$i++;
-		if ($item["id"] == "content_postid")
-		{
-			unset($items[$i]);
-		}
-		else if ($item["id"] == "header_postid")
-		{
-			unset($items[$i]);
-		}
-	}
-	
-	$options["fields"] = array_merge($options["fields"], $items);
+	$options["fields"] = array_merge($options["fields"], $moreoptions["fields"]);
 	
 	return $options;
 }

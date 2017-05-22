@@ -31,4 +31,3 @@ function nxs_applypatch($patchname, $args)
  		nxs_webmethod_return_nack("file not found; {$filetobeincluded}");
 	}
 }
-?>

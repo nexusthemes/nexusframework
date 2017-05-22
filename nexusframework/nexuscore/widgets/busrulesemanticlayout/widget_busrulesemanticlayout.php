@@ -47,6 +47,8 @@ function nxs_widgets_busrulesemanticlayout_home_getoptions($args)
 	);
 	
 	$moreoptions = nxs_busrules_getgenericoptions($args);
+	// optionally strip items here
+	
 	$options["fields"] = array_merge($options["fields"], $moreoptions["fields"]);
 	
 	return $options;
@@ -200,6 +202,10 @@ function nxs_busrule_busrulesemanticlayout_process($args, &$statebag)
 			}
 		}
 
+		// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
+		$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
+		$statebag["out"]["templaterules_lookups"] .= "\r\n" . $metadata["templaterules_lookups"];
+
 		// instruct rule engine to stop further processing if configured to do so (=default)
 		$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
 		if ($flow_stopruleprocessingonmatch != "")
@@ -214,5 +220,3 @@ function nxs_busrule_busrulesemanticlayout_process($args, &$statebag)
 	
 	return $result;
 }
-
-?>

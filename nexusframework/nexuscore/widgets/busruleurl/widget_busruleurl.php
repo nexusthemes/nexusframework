@@ -19,8 +19,6 @@ function nxs_widgets_busruleurl_gettitle()
 // Define the properties of this widget
 function nxs_widgets_busruleurl_home_getoptions($args) 
 {
-	// CORE WIDGET OPTIONS
-	
 	$options = array
 	(
 		"sheettitle" => nxs_widgets_busruleurl_gettitle(),
@@ -28,62 +26,14 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 		//"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"fields" => array
 		(
-			array( 
-				"id" 					=> "wrapper_condition_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Condition", "nxs_td"),
-			),
-			array(
-				"id" 				=> "operator",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Operator", "nxs_td"),
-				"dropdown" 			=> array(
-					"contains"	=>"contains",
-					"template"	=>"template",
-				),
-			),	
-			array(
-				"id" 				=> "p1",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Parameter 1", "nxs_td"),
-			),
-			array(
-				"id" 				=> "content_postid",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Content template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
-			),
-			array(
-				"id" 				=> "templaterules_modeluris",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
-			),
-			array(
-				"id" 				=> "templaterules_lookups",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Lookup values", "nxs_td"),
-			),
-			array( 
-				"id" 					=> "wrapper_condition_end",
-				"type" 				=> "wrapperend"
-			),
-		) 
+			//	
+		)
 	);
 	
 	$moreoptions = nxs_busrules_getgenericoptions($args);
+	// optionally strip items here
 	
-	// strip the content_postid from the moreoptions
-	$items = $moreoptions["fields"];
-	$i = -1;
-	foreach ($items as $item)
-	{
-		$i++;
-		if ($item["id"] == "content_postid")
-		{
-			unset($items[$i]);
-		}
-	}
-	
-	$options["fields"] = array_merge($options["fields"], $items);
+	$options["fields"] = array_merge($options["fields"], $moreoptions["fields"]);
 	
 	return $options;
 }
@@ -438,10 +388,11 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 			// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
 			$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
 			$statebag["out"]["templaterules_lookups"] .= "\r\n" . $metadata["templaterules_lookups"];
+			
+			// the following is UNIQUE for this specific rule;
 			// also add the url fragment keyvalues as derived from the url
 			$statebag["out"]["templaterules_lookups"] .= "\r\n" . $derivedurlfragmentkeyvalues;
 			$statebag["out"]["url_fragment_variables"] = $url_fragment_variables;
-			
 			
 			// instruct rule engine to stop further processing if configured to do so (=default)
 			$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
