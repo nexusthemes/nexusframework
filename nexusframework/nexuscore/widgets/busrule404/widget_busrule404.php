@@ -27,12 +27,53 @@ function nxs_widgets_busrule404_home_getoptions($args)
 		//"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"fields" => array
 		(
-			
-		) 
+			array
+			( 
+				"id" 					=> "wrapper_condition_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Condition", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "content_postid",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Content template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "templaterules_modeluris",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "templaterules_lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup values", "nxs_td"),
+			),
+			array
+			( 
+				"id" 					=> "wrapper_condition_end",
+				"type" 				=> "wrapperend"
+			),			
+		)
 	);
 	
 	$moreoptions = nxs_busrules_getgenericoptions($args);
-	$options["fields"] = array_merge($options["fields"], $moreoptions["fields"]);
+	
+	// strip the content_postid from the moreoptions
+	$items = $moreoptions["fields"];
+	$i = -1;
+	foreach ($items as $item)
+	{
+		$i++;
+		if ($item["id"] == "content_postid")
+		{
+			unset($items[$i]);
+		}
+	}
+	
+	$options["fields"] = array_merge($options["fields"], $items);
 	
 	return $options;
 }
@@ -149,15 +190,19 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 
 	$metadata = $args["metadata"];
 
-	// condition
+	global $wp_query;
+	$p = $wp_query->posts;
+	
 	$isnotfound = false;
-	if (is_404())
+	if (count($p) == 0)
 	{
 		$isnotfound = true;
 	}
 	else
 	{
-		global $post;
+		// it is found, but is it published?
+		$post = $p[0];
+	
 		if (!nxs_has_adminpermissions() && is_singular())
 		{
 			if ($post->post_status !== "publish")
@@ -197,6 +242,10 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 				$statebag["out"][$currentsitewideelement] = $metadata[$currentsitewideelement];
 			}
 		}
+		
+		// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
+		$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
+		$statebag["out"]["templaterules_lookups"] .= "\r\n" . $metadata["templaterules_lookups"];		
 
 		// instruct rule engine to stop further processing if configured to do so (=default)
 		$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
@@ -212,5 +261,3 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 	
 	return $result;
 }
-
-?>

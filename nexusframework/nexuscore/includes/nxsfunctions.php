@@ -1314,9 +1314,15 @@ function nxs_gettemplateproperties_internal()
 		$result["content_postid"] = $maps_to;
 	}
 	
-	
+	/*
 	if ($_REQUEST["k"] == "kk")
 	{
+		global $wp_query;
+		$p = $wp_query->posts[0];
+		$currentpostid = $p->ID;
+		var_dump($currentpostid);
+		echo "<br />";
+		echo "<br />";
 		var_dump($result);
 		echo "<br />";
 		echo "<br />";
@@ -1324,7 +1330,7 @@ function nxs_gettemplateproperties_internal()
 		nxs_dumpstacktrace();
 		die();
 	}
-	
+	*/
 	
 	return $result;
 }
@@ -12203,23 +12209,32 @@ function nxs_postwithstatusexistsbyid($postid, $status)
 function nxs_postexistsbyid($postid)
 {
 	$isremotetemplate = nxs_isremotetemplate($postid);
-	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_postexistsbyid; only works for local posts; $postid"); }
-
-	global $wpdb;
-
-  $dbresult = $wpdb->get_results( $wpdb->prepare("
-      	SELECT 1 FROM $wpdb->posts
-		where ID = %s
-	", $postid), OBJECT );
-
-	if (count($dbresult) == 1)
-	{
-		return true;
+	if ($isremotetemplate) 
+	{ 
+		// assumed true, could be further implemented to see if the post indeed exists,
+		// but for now we won't
+		$result = true;
 	}
 	else
 	{
-		return false;
+		global $wpdb;
+
+	  $dbresult = $wpdb->get_results( $wpdb->prepare("
+	      	SELECT 1 FROM $wpdb->posts
+			where ID = %s
+		", $postid), OBJECT );
+	
+		if (count($dbresult) == 1)
+		{
+			$result = true;
+		}
+		else
+		{
+			$result = false;
+		}
 	}
+	
+	return $result;
 }
 
 // getglobalid_by_postid,getglobalid_for_postid

@@ -190,13 +190,37 @@ function nxs_busrule_busrulehome_process($args, &$statebag)
 
 	$metadata = $args["metadata"];
 	
+	
+	
 	global $wp_query;
 	$p = $wp_query->posts[0];
 	$currentpostid = $p->ID;
-
 	$homepageid = nxs_gethomepageid();
 	
-	if ($currentpostid == $homepageid)
+	$ishomepage = false;
+	
+	// check through the uri
+	if (true)
+	{
+		$serverrequri = nxs_geturicurrentpage();
+		$pieces = explode("?", $serverrequri);
+		$path = trim($pieces[0], "/");
+		if ($path == "")
+		{
+			$ishomepage = true;
+		}
+	}
+	
+	// check through the configuration
+	if (true)
+	{
+		if ($currentpostid == $homepageid)
+		{
+			$ishomepage = true;
+		}
+	}
+	
+	if ($ishomepage)
 	{
 		$result["ismatch"] = "true";
 		
