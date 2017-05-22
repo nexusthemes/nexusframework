@@ -916,13 +916,13 @@ function nxs_gettemplateproperties()
 			
 			// handle the modelmappings
 			
-			$modeluris = $result["content_modeluris"];
-			$modelmapping = $result["content_modelmapping"];
+			$modeluris = $result["templaterules_modeluris"];
+			$modelmapping = $result["templaterules_lookups"];
 			
 			if ($modeluris != "" && $modelmapping != "")
 			{
 				global $nxs_g_modelmanager;
-				//var_dump($content_modeluris);
+				//var_dump($templaterules_modeluris);
 				// to prevent endless loop here we invoke the evaluatereferencedmodelsinmodeluris without
 				// re-applying the shouldapplytemplateurimappings, see #23029458092475
 				$args = array
@@ -1023,7 +1023,7 @@ function nxs_gettemplateproperties()
 				}
 				
 				// store the lookup table
-				$nxs_gl_cache_templateprops["content_modelmapping_lookup"] = $lookup;
+				$nxs_gl_cache_templateprops["templaterules_lookups_lookup"] = $lookup;
 			}
 		}
 	}
@@ -1104,18 +1104,46 @@ function nxs_getbusinessruleimpact($metadata)
 		}
 		else
 		{
-			// set the value as selected
-			$title = nxs_gettitle_for_postid($selectedvalue);
-			$url = nxs_geturl_for_postid($selectedvalue);
-			
-			$poststatus = get_post_status($selectedvalue);
-			if ($poststatus != "publish" && $poststatus != "future")
+			$isremotetemplate = nxs_isremotetemplate($selectedvalue);			
+			if ($isremotetemplate)
 			{
-				$title .= " (<b class='blink'>" . nxs_l18n__("warning, not found!", "nxs_td") . "</b> <span class='nxs-icon-point-left'></span>)";
+				$impact[] = "$translatedcurrentsitewideelement; remote template";
 			}
-			
-			$impact[] = "<a target='_blank' href='{$url}'>{$translatedcurrentsitewideelement}: " . $title . "</a>";
+			else
+			{
+				$islocalreference = (intval($selectedvalue) > 0);
+				if ($islocalreference)
+				{
+					// its a local lookup/reference
+					// set the value as selected
+					$title = nxs_gettitle_for_postid($selectedvalue);
+					$url = nxs_geturl_for_postid($selectedvalue);
+					
+					$poststatus = get_post_status($selectedvalue);
+					if ($poststatus != "publish" && $poststatus != "future")
+					{
+						$title .= " (<b class='blink'>" . nxs_l18n__("warning, not found!", "nxs_td") . "</b> <span class='nxs-icon-point-left'></span>)";
+					}
+					
+					$impact[] = "<a target='_blank' href='{$url}'>{$translatedcurrentsitewideelement}: " . $title . "</a>";
+				}
+				else
+				{
+					// its likely a named lookup (like DNS) to a remote template
+					$impact[] = "{$translatedcurrentsitewideelement}: {$selectedvalue} (remote template)";
+				}
+			}
 		}
+	}
+	
+	if (trim($metadata["templaterules_modeluris"]) != "")
+	{
+		$impact[] = "models";
+	}
+	
+	if (trim($metadata["templaterules_lookups"]) != "")
+	{
+		$impact[] = "lookups";
 	}
 	
 	if (count($impact) == 0)
@@ -1241,8 +1269,8 @@ function nxs_gettemplateproperties_internal()
 	  	
 	  	// pass through the values for the modeluris and modelmappings of the various sections
 	  	// for now only the content section (in the future also the header, subheader, ...)
-	  	$result["content_modeluris"] = $statebag["out"]["content_modeluris"];
-	  	$result["content_modelmapping"] = $statebag["out"]["content_modelmapping"];
+	  	$result["templaterules_modeluris"] = $statebag["out"]["templaterules_modeluris"];
+	  	$result["templaterules_lookups"] = $statebag["out"]["templaterules_lookups"];
 	  	$result["url_fragment_variables"] = $statebag["out"]["url_fragment_variables"];
 	  	
 	  	$result["lastmatchingrule"] = $lastmatchingrule;
@@ -1286,15 +1314,17 @@ function nxs_gettemplateproperties_internal()
 		$result["content_postid"] = $maps_to;
 	}
 	
-	/*
+	
 	if ($_REQUEST["k"] == "kk")
 	{
 		var_dump($result);
 		echo "<br />";
+		echo "<br />";
+		echo "<br />";
 		nxs_dumpstacktrace();
 		die();
 	}
-	*/
+	
 	
 	return $result;
 }
@@ -1570,7 +1600,7 @@ function nxs_getcategoryidbyname($name)
 
 function nxs_getcategorynameandslugs($postid)
 {
-	$isremotetemplate = nxs_isremotetemplate($postid);	
+	$isremotetemplate = nxs_isremotetemplate($postid);
 	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_getcategorynameandslugs only supports local postids; $postid"); }
 
 	$post_categories = wp_get_post_categories($postid);
@@ -9595,7 +9625,8 @@ function nxs_widgets_busrule_pagetemplate_renderrow($iconids, $filteritemshtml, 
 			</div>
 		  	<div class="box-content nxs-width50 nxs-float-left">
 			  	<?php
-					echo nxs_getbusinessruleimpact($mixedattributes);
+			  	$bri = nxs_getbusinessruleimpact($mixedattributes);
+					echo $bri;
 			  	?>
 			</div>
 	  		<div class="nxs-clear"></div>
@@ -10168,7 +10199,7 @@ function nxs_remote_getpost_transient($postid)
 	
 	$key = md5("nxs_remote_post_{$postid}");
 	$result = get_transient($key);
-	if ($result == false)
+	if ($result == false || ($_REQUEST["transients_remoteposts"] == "refresh" && is_user_logged_in()))
 	{
 		$result = nxs_remote_getpost_actual($postid);
 		$expiration = 60;	// 60 secs
@@ -10176,7 +10207,7 @@ function nxs_remote_getpost_transient($postid)
 		if ($result != "")
 		{
 			// store the result only when its valid
-			// update_transient($key, $result, $expiration);
+			set_transient($key, $result, $expiration);
 		}
 		else
 		{

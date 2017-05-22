@@ -43,12 +43,29 @@ function nxs_webmethod_contactform()
  	}
  	
  	// haal properties op van de placeholder
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	$mixedattributes = nxs_getwidgetmetadata($postid, $placeholderid);
+	
+	// translate the magic fields using the lookup tables of all referenced models
+	$lookupargs = array
+	(
+		"modeluris" => $modeluris,
+		"shouldincludetemplateproperties" => false,
+	);
+	global $nxs_g_modelmanager;
+	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+	$magicfields = array("title", "button_text", "internal_email", "sender_email");
+	$translateargs = array
+	(
+		"lookup" => $lookup,
+		"items" => $mixedattributes,
+		"fields" => $magicfields,
+	);
+	$mixedattributes = nxs_filter_translate_v2($translateargs);
  	
- 	$url = nxs_geturl_for_postid($containerpostid)	;
- 	$internalemail = $temp_array['internal_email'];
- 	$texttop = $temp_array['texttop'];
- 	$pageidaftersqueeze = $temp_array['destination_articleid'];
+ 	$url = nxs_geturl_for_postid($containerpostid);
+ 	$internalemail = $mixedattributes['internal_email'];
+ 	$texttop = $mixedattributes['texttop'];
+ 	$pageidaftersqueeze = $mixedattributes['destination_articleid'];
 
 	if ($internalemail != "")
 	{
@@ -93,4 +110,3 @@ function nxs_webmethod_contactform()
  	$responseargs["url"] = get_permalink($pageidaftersqueeze);
 	nxs_webmethod_return_ok($responseargs);
 }
-?>

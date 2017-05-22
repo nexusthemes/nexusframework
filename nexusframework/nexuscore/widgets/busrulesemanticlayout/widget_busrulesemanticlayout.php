@@ -164,7 +164,9 @@ function nxs_busrule_busrulesemanticlayout_process($args, &$statebag)
 
 	$metadata = $args["metadata"];
 	
-	$currentpostid = get_the_ID();
+	global $wp_query;
+	$p = $wp_query->posts[0];
+	$currentpostid = $p->ID;
 	
 	$nxs_semanticlayout = get_post_meta($currentpostid, 'nxs_semanticlayout', true);
 	$filter_id = $metadata["filter_id"];

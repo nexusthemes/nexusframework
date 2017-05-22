@@ -205,7 +205,11 @@ function nxs_busrule_busruleposttype_process($args, &$statebag)
 
 	if (is_singular())
 	{
-		$current_post_type = get_post_type(get_the_ID()); 
+		global $wp_query;
+		$p = $wp_query->posts[0];
+		$currentpostid = $p->ID;
+		
+		$current_post_type = get_post_type($currentpostid); 
 		$metadata = $args["metadata"];
 		
 		if ($current_post_type == $metadata["filter_posttype"])

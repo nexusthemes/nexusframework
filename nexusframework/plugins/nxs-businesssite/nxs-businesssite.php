@@ -227,10 +227,10 @@ class nxs_g_modelmanager
 			// see https://docs.google.com/document/d/1rcRJR8sX8OIdofu7rlR3gd_jqFv0IDW6eoVPcpE4cQA/edit#
 			// for now we implement the mapping using the businessrules
 			$templateproperties = nxs_gettemplateproperties();
-			$content_modelmapping = $templateproperties["content_modelmapping"];
-			if ($content_modelmapping != "")
+			$templaterules_lookups = $templateproperties["templaterules_lookups"];
+			if ($templaterules_lookups != "")
 			{
-				foreach ($content_modelmapping as $key => $val)
+				foreach ($templaterules_lookups as $key => $val)
 				{
 					if ($key != "" && $val != "")
 					{
@@ -1079,7 +1079,7 @@ class nxs_g_modelmanager
 		{
 			// include parameters as derived by the template engine
 			$templateproperties = nxs_gettemplateproperties();
-			$modelmapping = $templateproperties["content_modelmapping_lookup"];
+			$modelmapping = $templateproperties["templaterules_lookups_lookup"];
 			
 			foreach ($modelmapping as $key => $val)
 			{

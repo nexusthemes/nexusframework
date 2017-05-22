@@ -16,8 +16,11 @@ function nxs_widgets_contactbox_getunifiedstylinggroup() {
 }
 
 // Used by the individual contactitem widgets to determine an automated unique ID
-function nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid) {
-	$result = "nxs_cf_" . $postid . "_" . $placeholderid . "_";
+function nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid) 
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	$result = "nxs_cf_" . md5($postid) . "_" . $placeholderid . "_";
+
 	return $result;
 }
 

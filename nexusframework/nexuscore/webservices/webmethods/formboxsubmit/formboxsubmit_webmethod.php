@@ -1,5 +1,7 @@
 <?php
 
+$requirewidgetresult = nxs_requirewidget("formbox");
+
 // function used to collect errors on a per-form-item basis. This function
 // is for example used to figure out whether a required field is indeed entered.
 function nxs_widgets_formboxitem_getformitemsubmitresult($widget, $args)
@@ -158,17 +160,46 @@ function nxs_webmethod_formboxsubmit()
 	 	$url = nxs_geturl_for_postid($containerpostid);
 
 		// Get widget properties
-		$metadata = nxs_getwidgetmetadata($postid, $placeholderid);
+		$mixedattributes = nxs_getwidgetmetadata($postid, $placeholderid);
 		
 		// Lookup translation
-		$metadata = nxs_filter_translatelookup($metadata, array("internal_email", "sender_email"));
+		$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("internal_email", "sender_email"));
+		
+		// ** START
+		// these lines are required, as otherwise the {{email}} is not properly interpreted/returned
+		$templateproperties = nxs_gettemplateproperties();
+		$modelmapping = $templateproperties["templaterules_lookups_lookup"];
+		//error_log("modelmappingX;".json_encode($modelmapping));
+		// ** END
 
-	 	extract($metadata);
+		
+		// phase 2; translate the magic fields using the lookup tables of all referenced models
+		$lookupargs = array
+		(
+			"modeluris" => $modeluris,
+			"shouldincludetemplateproperties" => false,
+		);
+		global $nxs_g_modelmanager;
+		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+		
+		
+		error_log("formboxsubmit;".json_encode($lookup));
+		
+		$magicfields = array("internal_email", "sender_email");
+		$translateargs = array
+		(
+			"lookup" => $lookup,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+
+	 	extract($mixedattributes);
 
 	 	// upload files
 		foreach ($fileuploads as $fileupload)
 		{
-			$fileuploadstorageabsfolder = nxs_widgets_formbox_getfileuploadstorageabsfolder($metadata);
+			$fileuploadstorageabsfolder = nxs_widgets_formbox_getfileuploadstorageabsfolder($mixedattributes);
 
 			$filename = $fileupload["name"];
 			$fileext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -187,11 +218,12 @@ function nxs_webmethod_formboxsubmit()
 			}
 
 			// Change the outputlines for the file
-			foreach ($outputlines as $key => $value) {
+			foreach ($outputlines as $key => $value) 
+			{
 				$pos = strpos($value, $filetempname);
 				if ($pos)
 				{
-					$fileuploadstorageabsfolderurl = nxs_widgets_formbox_getfileuploadstorageabsfolderurl($metadata);
+					$fileuploadstorageabsfolderurl = nxs_widgets_formbox_getfileuploadstorageabsfolderurl($mixedattributes);
 					$filedestinationurl = "{$fileuploadstorageabsfolderurl}{$newfilename}.{$fileext}";
 
 					$formlabel = substr($value, 0, $pos);
@@ -204,7 +236,7 @@ function nxs_webmethod_formboxsubmit()
 		}
 
 		// store data in csv
-		$storageabspath = nxs_widgets_formbox_getpath($metadata);
+		$storageabspath = nxs_widgets_formbox_getpath($mixedattributes);
 		if ($storageabspath != "")
 		{
 			$lineseperator = "\r\n";
@@ -261,12 +293,22 @@ function nxs_webmethod_formboxsubmit()
 		if ($internal_email == "info@example.org")
 	 	{
 	 		$responseargs = array();
-
 	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to the dummy e-mail address info@example.org", "nxs_td");
 		}
 		
+		if (nxs_stringcontains($internal_email, "{"))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid e-mail address (ACCOLADE OPEN)", "nxs_td");
+		}
+		else if (nxs_stringcontains($internal_email, "}"))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid e-mail address (ACCOLADE CLOSE)", "nxs_td");
+		}
+		
 		// allow plugins to also validate the form
-		$validationerrors = apply_filters('nxs_formboxsubmit_verify', $validationerrors, $metadata);
+		$validationerrors = apply_filters('nxs_formboxsubmit_verify', $validationerrors, $mixedattributes);
 		if (count($validationerrors) > 0)
 		{
 			$responseargs = array();

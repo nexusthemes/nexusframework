@@ -179,7 +179,10 @@ function nxs_busrule_busrulepostid_process($args, &$statebag)
 
 	$metadata = $args["metadata"];
 	
-	$currentpostid = get_the_ID();
+	global $wp_query;
+	$p = $wp_query->posts[0];
+	$currentpostid = $p->ID;
+	
 	if ($currentpostid == $metadata["filter_postid"])
 	{
 		$result["ismatch"] = "true";

@@ -41,6 +41,44 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("htmlcustom"));
 	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		/*
+		// phase 1; evaluate any referenced models in the modeluris property
+		// sub:id@sub|subsub:{{sub.reference}}@subsub|subsubsub:{{subsub.reference}}
+		$modeluris = $mixedattributes["modeluris"];
+		$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris);
+		*/
+		
+		// phase 2; translate the magic fields using the lookup tables of all referenced models
+		$lookupargs = array
+		(
+			"modeluris" => $modeluris,
+			"shouldincludetemplateproperties" => false,
+		);
+		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+		$magicfields = array("htmlcustom");
+		$translateargs = array
+		(
+			"lookup" => $lookup,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+		
+		/*
+		// phase 3; apply shortcodes to the magic fields
+		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src", "button_text"); 
+		foreach ($magicfields as $magicfield)
+		{
+			$mixedattributes[$magicfield] = do_shortcode($mixedattributes[$magicfield]);
+		}
+		*/
+	}
+	
 	$htmlcustom = $mixedattributes['htmlcustom'];
 
 	global $nxs_global_placeholder_render_statebag;

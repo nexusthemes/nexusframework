@@ -149,7 +149,10 @@ function nxs_busrule_busrulehaspostcontent_process($args, &$statebag)
 
 	$metadata = $args["metadata"];
 	
-	$currentpostid = get_the_ID();
+	global $wp_query;
+	$p = $wp_query->posts[0];
+	$currentpostid = $p->ID;
+		
 	$postcontent = get_post_field('post_content', $currentpostid);
 	if ($postcontent != "")
 	{

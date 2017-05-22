@@ -17,7 +17,7 @@ function nxs_widgets_formbox_getunifiedstylinggroup() {
 
 // Used by the individual formitem widgets to determine an automated unique ID
 function nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid) {
-	$result = "nxs_cf_" . $postid . "_" . $placeholderid . "_";
+	$result = "nxs_cf_" . md5($postid) . "_" . $placeholderid . "_";
 	return $result;
 }
 
@@ -447,6 +447,23 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "button_text", "internal_email", "sender_email"));
 	
+	// translate the magic fields using the lookup tables of all referenced models
+	$lookupargs = array
+	(
+		"modeluris" => $modeluris,
+		"shouldincludetemplateproperties" => false,
+	);
+	global $nxs_g_modelmanager;
+	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+	$magicfields = array("title", "button_text", "internal_email", "sender_email");
+	$translateargs = array
+	(
+		"lookup" => $lookup,
+		"items" => $mixedattributes,
+		"fields" => $magicfields,
+	);
+	$mixedattributes = nxs_filter_translate_v2($translateargs);
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
@@ -530,7 +547,9 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	$button_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
 	$button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
 	
-	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_formbox_send(" .  $postid . ", &quot;" . $placeholderid . "&quot;);');";
+	
+	
+	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_formbox_send(&quot;" .  $postid . "&quot;, &quot;" . $placeholderid . "&quot;);');";
 
 	// Button
 	$htmlbutton = '

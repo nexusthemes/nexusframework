@@ -41,15 +41,15 @@ function nxs_widgets_busrulecatchall_home_getoptions($args)
 			),
 			array
 			(
-				"id" 				=> "content_modeluris",
+				"id" 				=> "templaterules_modeluris",
 				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Content model uris", "nxs_td"),
+				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
 			),
 			array
 			(
-				"id" 				=> "content_modelmapping",
+				"id" 				=> "templaterules_lookups",
 				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Content model mapping", "nxs_td"),
+				"label" 			=> nxs_l18n__("Lookup values", "nxs_td"),
 			),
 			array
 			( 
@@ -219,8 +219,8 @@ function nxs_busrule_busrulecatchall_process($args, &$statebag)
 	}
 	
 	// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
-	$statebag["out"]["content_modeluris"] .= "\r\n" . $metadata["content_modeluris"];
-	$statebag["out"]["content_modelmapping"] .= "\r\n" . $metadata["content_modelmapping"];
+	$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
+	$statebag["out"]["templaterules_lookups"] .= "\r\n" . $metadata["templaterules_lookups"];
 
 	// instruct rule engine to stop further processing if configured to do so (=default)
 	$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];

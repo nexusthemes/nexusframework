@@ -215,7 +215,9 @@ function nxs_busrule_busrulecategory_process($args, &$statebag)
 	
 	if (is_singular())
 	{
-		$postid = get_the_ID();
+		global $wp_query;
+		$p = $wp_query->posts[0];
+		$postid = $p->ID;
 		
 		$reccatidsforpost = array();
 		
