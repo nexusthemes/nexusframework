@@ -10143,7 +10143,7 @@ function nxs_connectivity_invoke_api_get($args)
 	}
 	
 	$environment = "prod";	// $this->settings["api_environment"];
-	$timeout = 3;
+	$timeout = 8;
 	$version = 1;
 	
 	//$fingerprint = $this->settings["api_fingerprint"];
@@ -10190,10 +10190,10 @@ function nxs_connectivity_invoke_api_get($args)
 		{
 			// mark as error
 			echo "<div style='padding: 10px; margin: 10px; background-color: red; color: white;'>";
-			echo "Error; unable to connect to the server; {$hostname} (more details in html source)<br /><br />";
+			echo "Error; unable to connect to the server; {$hostname} (...)<br /><br />";
 			echo "<!-- " . $apiurl . " -->";
 			echo "Most likely reasons:<br />";
-			echo "* An outbound firewall; contact your hosting provider and ask if they block outbound network activity from the webserver. If they do, ask them to whitelist the following hostname: {$hostname} (without it, the discounter plugin wont be able to work)<br />";
+			echo "* An outbound firewall; contact your hosting provider and ask if they block outbound network activity from the webserver. If they do, ask them to whitelist the following hostname: {$hostname} (without it, some features wont work) and after that wait 5 mins and retry<br />";
 			echo "* A temporary network issue; retry in 5 mins<br />";
 			echo "</div>";
 		}
@@ -10208,6 +10208,12 @@ function nxs_connectivity_invoke_api_get($args)
 	
 	//
 	$response["debug"]["nxs_connectivity_invoke_api_get"]["apiurl"] = $apiurl;
+	if ($json == "")
+	{
+		$response["debug"]["connectivity"]["errors"] = true;
+		$response["debug"]["connectivity"]["msg"] = "Error; unable to connect to the server; {$hostname}";
+		$response["debug"]["connectivity"]["reasons"] = "Most likely reasons:<br />* An outbound firewall; contact your hosting provider and ask if they block outbound network activity from the webserver. If they do, ask them to whitelist the following hostname: {$hostname} (without it, some features wont work)<br />* A temporary network issue; retry in 5 mins<br />";
+	}
 	
 	return $response;
 }

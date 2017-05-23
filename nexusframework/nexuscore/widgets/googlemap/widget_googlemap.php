@@ -366,7 +366,7 @@ function nxs_widget_googlemap_getlatlng($address)
 		{
 			$key = "maplatlng_" . md5($address . $licensekey);
 			$latlng = get_transient($key);
-			if ($latlng == false)
+			if ($latlng == false || $_REQUEST["refreshlatlng"] == "true")
 			{
 				// refetch
 				$thememeta = nxs_theme_getmeta();
@@ -390,7 +390,15 @@ function nxs_widget_googlemap_getlatlng($address)
 				}
 				else
 				{
-					set_transient($key, $latlng, 60 * 60 * 24 * 30);	// keep the cache for a month
+					global $nxs_connectivity_errors;
+					if ($nxs_connectivity_errors > 0)
+					{
+						set_transient($key, $latlng, 60 * 5);	// keep the cache for 5 mins
+					}
+					else
+					{
+						set_transient($key, $latlng, 60 * 60 * 24 * 30);	// keep the cache for a month
+					}
 				}
 			}
 		
@@ -958,10 +966,23 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 			</div>
 			<?php
 		}
-			else { ?>
+		else if ($latlng["debug"]["connectivity"]["errors"] == true)
+		{
+			?>
+			<div>Unable to render the Google Maps Widget</div>
+			<?php
+			echo "<div style='padding: 10px; margin: 10px; background-color: red; color: white;'>";
+			echo $latlng["debug"]["connectivity"]["msg"];
+			echo "<br />";
+			echo $latlng["debug"]["connectivity"]["reasons"];
+			echo "</div>";
+		}
+		else 
+		{ 
+			?>
 			<div>Maps placeholder :(</div>
-		<?php } ?>
-		<?php
+			<?php 
+		}
 		
 		// TEXT
 		
@@ -1059,17 +1080,19 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
     </div>
     <div class="nxs-clear"></div>
     <?php
+    
 		$sitemeta = nxs_getsitemeta_internal(false);
 		$apikey = trim($sitemeta["googlemapsapikey"]);
     if ($apikey == "")
     {
     	?>
      	<div style='margin-top: 10px;'>
-     		Note; to use the search function a (free) <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Google Maps API key is required (learn more)</a><br />
+     		Note; to use the Google Maps function a (free) <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Google Maps API key is required (learn more)</a><br />
      	</div>
       <div class="nxs-clear"></div>
     	<?php
   	}
+  	
     ?>
 	</div> <!--END content-->
 	<script>
@@ -1274,7 +1297,15 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 			<div class="content2">
 				Unable to render the map
 				<?php
-				var_dump($latlng);
+				if ($latlng["debug"]["connectivity"]["errors"] == true)
+				{
+					echo "<div style='padding: 10px; margin: 10px; background-color: red; color: white;'>";
+					echo $latlng["debug"]["connectivity"]["msg"];
+					echo "<br />";
+					echo $latlng["debug"]["connectivity"]["reasons"];
+					echo "</div>";
+				}
+				// var_dump($latlng);
 				?>
 			</div>
 			<?php 
