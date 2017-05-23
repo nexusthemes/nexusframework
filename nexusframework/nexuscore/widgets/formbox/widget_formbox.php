@@ -451,7 +451,6 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	$lookupargs = array
 	(
 		"modeluris" => $modeluris,
-		"shouldincludetemplateproperties" => false,
 	);
 	global $nxs_g_modelmanager;
 	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);

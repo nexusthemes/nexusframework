@@ -175,9 +175,8 @@ class nxs_g_modelmanager
 		$args = array
 		(
 			"modeluris" => $modeluris,
-			"shouldapplytemplateurimappings" => true,
+			"shouldapply_templaterules_lookups" => true,
 			"shouldapplyurlvariables" => true,
-			"shouldincludetemplateproperties" => false,
 		);
 		$result = $this->evaluatereferencedmodelsinmodeluris_v2($args);
 		return $result;
@@ -218,8 +217,8 @@ class nxs_g_modelmanager
 		// whether or not these are applied is determined by a argument,
 		// when evaluating the modeluris a recursive call is made, and for this recursive call
 		// we should NOT apply them (to avoid endless loops), see #23029458092475
-		$shouldapplytemplateurimappings = $args["shouldapplytemplateurimappings"];
-		if ($shouldapplytemplateurimappings)
+		$shouldapply_templaterules_lookups = $args["shouldapply_templaterules_lookups"];
+		if ($shouldapply_templaterules_lookups)
 		{
 			$templateurimappingslookup = array();
 			
@@ -250,6 +249,7 @@ class nxs_g_modelmanager
 			}
 		}
 		
+		// START - OLD IMPLEMENTATION - USED BY SOMETHING LIKE 4 WEBSITES SHOULD BE PHASED OUT!
 		// replace fragments from the url 
 		// for example: request: "http://domain/detail/1234/hello-world
 		// could define fragments ("id" => "1234") and ("name" => "hello-world")
@@ -282,9 +282,10 @@ class nxs_g_modelmanager
 			);
 			$modeluris = nxs_filter_translate_v2($translateargs);
 		}
+		// END
 		
 		// applying of url variables v2
-		if (true)//$_REQUEST["m"] == "mm")
+		if (true)
 		{
 			$shouldapplyurlvariables = $args["shouldapplyurlvariables"];
 			if ($shouldapplyurlvariables)
@@ -345,7 +346,6 @@ class nxs_g_modelmanager
 				{
 					echo "index: {$index}<br />";
 					echo "modelurispart: {$modelurispart}<br />";
-					// echo "shouldincludetemplateproperties: " . json_encode($args["shouldincludetemplateproperties"]) . "<br />";/
 					echo "recursivelookup: " . json_encode($recursivelookup) . "<br />";
 				}
 				
@@ -368,7 +368,6 @@ class nxs_g_modelmanager
 				$lookupargs = array
 				(
 					"modeluris" => $modelurispart,
-					"shouldincludetemplateproperties" => $args["shouldincludetemplateproperties"],
 				);
 				$lookupcurrentpart = $this->getlookups_v2($lookupargs);
 				$recursivelookup = array_merge($recursivelookup, $lookupcurrentpart);
@@ -1122,11 +1121,11 @@ class nxs_g_modelmanager
 		{
 			$isvalid = false;
 		}
-		else if (nxs_stringstartswith($modeluri, "{{"))
+		else if (nxs_stringcontains($modeluri, "{{"))
 		{
 			$isvalid = false;
 		}
-		else if (nxs_stringstartswith($modeluri, "}}"))
+		else if (nxs_stringcontains($modeluri, "}}"))
 		{
 			$isvalid = false;
 		}
@@ -1148,7 +1147,7 @@ class nxs_g_modelmanager
 			if ($shoulddebug)
 			{
 				$st = json_encode(debug_backtrace());
-				error_log("getmodel_actual; invalid; $modeluri; $st");
+				error_log("isvalidmodeluri; invalid; $modeluri; $st");
 				die();
 			}
 		}
@@ -1298,19 +1297,11 @@ class nxs_g_modelmanager
 	{
 		error_log("getmodel_actual; attempt; $modeluri");
 		
-		$shoulddebug = $_REQUEST["debugmodel"] == "true";
-		if ($shoulddebug)
-		{	
-			error_log("getmodel_actual; attempt; $modeluri");
-		}
-		
 		$isvalid = $this->isvalidmodeluri($modeluri);
 		if (!$isvalid)
 		{
 			return false;
 		}
-		
-		// error_log("getmodel_actual for (($modeluri))");
 		
 		// if modeluri is specified retrieve the model through the modeluri
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/model-by-uri/{$modeluri}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
@@ -1405,6 +1396,7 @@ class nxs_g_modelmanager
 		
 		if ($nxsposttype == "post") 
 		{
+			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "entities");
 			$result[] = array("widgetid" => "phone");
 			$result[] = array("widgetid" => "socialaccounts");
@@ -1412,6 +1404,7 @@ class nxs_g_modelmanager
 		}
 		else if ($nxsposttype == "sidebar") 
 		{
+			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "entities");
 			$result[] = array("widgetid" => "phone");
 			$result[] = array("widgetid" => "socialaccounts");
@@ -1460,7 +1453,6 @@ class nxs_g_modelmanager
 			$args = array
 			(
 				"shouldapplyshortcodes" => true,
-				"shouldincludetemplateproperties" => true,
 			);
 			$mixedattributes = nxs_filter_translatemodel_v2($mixedattributes, array("title", "metadescription", "canonicalurl"), $args);
 			
@@ -1548,6 +1540,7 @@ class nxs_g_modelmanager
 	function instance_init()
 	{
 		// widgets
+		nxs_lazyload_plugin_widget(__FILE__, "list");
 		nxs_lazyload_plugin_widget(__FILE__, "entities");
 		nxs_lazyload_plugin_widget(__FILE__, "phone");
 		nxs_lazyload_plugin_widget(__FILE__, "buslogo");

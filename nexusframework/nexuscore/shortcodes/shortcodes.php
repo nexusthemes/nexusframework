@@ -19,7 +19,6 @@ function nxs_sc_spin($attributes, $content = null, $name='')
 	$lookupargs = array
 	(
 		"modeluris" => $modeluri,
-		"shouldincludetemplateproperties" => false,
 	);
 	$lookups = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 	

@@ -49,7 +49,6 @@ function nxs_webmethod_contactform()
 	$lookupargs = array
 	(
 		"modeluris" => $modeluris,
-		"shouldincludetemplateproperties" => false,
 	);
 	global $nxs_g_modelmanager;
 	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);

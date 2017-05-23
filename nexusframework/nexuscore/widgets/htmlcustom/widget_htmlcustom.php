@@ -57,7 +57,6 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 		$lookupargs = array
 		(
 			"modeluris" => $modeluris,
-			"shouldincludetemplateproperties" => false,
 		);
 		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 		$magicfields = array("htmlcustom");

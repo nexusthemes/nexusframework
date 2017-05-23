@@ -886,6 +886,15 @@ function nxs_cap_getdesigncapability()
 	return "nxs_cap_design_site";
 }
 
+function nxs_gettemplateruleslookups()
+{
+	// this invocation will set the nxs_gl_cache_templateprops
+	$tp = nxs_gettemplateproperties();
+	global $nxs_gl_cache_templateprops;
+	$result = $nxs_gl_cache_templateprops["templaterules_lookups_lookup"];
+	return $result;
+}
+
 // derives the template properties for the current executing request, cached
 function nxs_gettemplateproperties()
 {
@@ -917,33 +926,32 @@ function nxs_gettemplateproperties()
 			// handle the modelmappings
 			
 			$modeluris = $result["templaterules_modeluris"];
-			$modelmapping = $result["templaterules_lookups"];
+			$templaterules_lookups = $result["templaterules_lookups"];
 			
-			if ($modeluris != "" && $modelmapping != "")
+			if ($modeluris != "" && $templaterules_lookups != "")
 			{
 				global $nxs_g_modelmanager;
 				//var_dump($templaterules_modeluris);
 				// to prevent endless loop here we invoke the evaluatereferencedmodelsinmodeluris without
-				// re-applying the shouldapplytemplateurimappings, see #23029458092475
+				// re-applying the shouldapply_templaterules_lookups, see #23029458092475
 				$args = array
 				(
 					"modeluris" => $modeluris,
-					"shouldapplytemplateurimappings" => false,
+					"shouldapply_templaterules_lookups" => false,
 					"shouldapplyurlvariables" => !($nxs_gl_isevaluatingreferencedmodels === true),
-					"shouldincludetemplateproperties" => true,	// the only time this one should be set to true is here
 				);
 				$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris_v2($args);
 			}
 			
-			if ($modelmapping != "")
+			if ($templaterules_lookups != "")
 			{
 				$lookup = array();
 				
-				$modelmappinglines = explode("\n", $modelmapping);
-				foreach ($modelmappinglines as $modelmappingline)
+				$lines = explode("\n", $templaterules_lookups);
+				foreach ($lines as $line)
 				{
 					$limit = 2;	// 
-					$pieces = explode("=", $modelmappingline, $limit);
+					$pieces = explode("=", $line, $limit);
 					$key = trim($pieces[0]);
 					
 					if ($key != "")
@@ -958,7 +966,6 @@ function nxs_gettemplateproperties()
 							$lookupargs = array
 							(
 								"modeluris" => $modeluris,
-								"shouldincludetemplateproperties" => false,
 							);
 							$innerlookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 							$translateargs = array
@@ -9410,7 +9417,6 @@ function nxs_filter_translatemodel($metadata, $fields)
 	$args = array
 	(
 		"shouldapplyshortcodes" => true,
-		"shouldincludetemplateproperties" => false,
 	);
 	$result = nxs_filter_translatemodel_v2($metadata, $fields, $args);
 	return $result;
@@ -9457,7 +9463,6 @@ function nxs_filter_translatemodel_v2($metadata, $fields, $args)
 	$lookupargs = array
 	(
 		"modeluris" => $modeluris,
-		"shouldincludetemplateproperties" => $args["shouldincludetemplateproperties"],
 	);
 	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 	if ($debug)

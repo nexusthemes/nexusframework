@@ -18,7 +18,6 @@ function nxs_generic_modeltaxfieldpicker_popupcontent($optionvalues, $args, $run
 	$lookupargs = array
 	(
 		"modeluris" => $modeluris,
-		"shouldincludetemplateproperties" => false,
 	);
 	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 	$options = array();
