@@ -449,7 +449,13 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 	
+	$datasource_isvalid = true;
 	if ($iterator_datasource == "" || nxs_stringcontains($iterator_datasource, "{{"))
+	{
+		$datasource_isvalid	= false;
+	}
+	
+	if (!$datasource_isvalid)
 	{
 		// guaranteed failure
 		if (nxs_has_adminpermissions())
@@ -472,8 +478,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
 		$instances = $contentmodel[$iterator_datasource]["instances"];
 	}
-	
-	
 	
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
@@ -512,28 +516,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		// second, set (override) lookup key/values as defined within the widget itself
 		if ($item_lookups != "")
 		{
-			// the first thing we do here; is apply the lookups of the pagetemplaterules to the item_lookups,
-			// as the widget itself will not be able to know which fields in the datasource should be used
-			// (the list widget only outputs semantic variables, and the mapping to the model is semantic too)
-			//
-			//   pagetemplate_lookups
-			//	 {
-			//			mapping.item.title="{{wb:properties.searchphrase}}"
-			//	 }
-			//   datasource: "wb:websitebouwer"
-			//   item_lookups 
-			//   {
-			// 			item.title = {{mapping.item.title}}
-			//   }
-			//
-			// will evaluate to
-			//
-			//   item_lookups 
-			//   {
-			// 			item.title = {{searchphrase}}
-			//   }
-			//
-			
 			$lines = explode("\n", $item_lookups);
 			foreach ($lines as $line)
 			{
@@ -551,10 +533,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 				}
 				else
 				{
-					$val = trim($pieces[1]);	
-			
-					//
-					
+					$val = $pieces[1];
 					$lookup[$key] = $val;
 				}
 			}
@@ -638,15 +617,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		
 		// replace the placeholders in the template
 		$subhtml = $item_htmltemplate_a;
-		$translateargs = array
-		(
-			"lookup" => $lookup,
-			"item" => $subhtml,
-		);
-		$subhtml = nxs_filter_translate_v2($translateargs);
 		
-		// apply shortcodes
-		$subhtml = do_shortcode($subhtml);
 		
 		$styleatt = "";
 		if (count($styleatts) > 0)
@@ -661,8 +632,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		
 		$columnsvariable = '{{NXS.NUMCOLUMNS}}';
 		
-		$html .= "<div class='nxsgrid-item nxsgrid-column-{$columnsvariable} nxs-entity' data-id='{$post_id}' {$styleatt}>";
-		// $html .= "<div class='nxsgrid-item nxssolidgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
 				
 		$html .= $subhtml;
 		
