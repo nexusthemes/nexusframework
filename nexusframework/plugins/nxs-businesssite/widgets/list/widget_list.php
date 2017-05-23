@@ -551,8 +551,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$lookup = array_merge($lookup, $widgetreferencedmodelslookup);
 		}
 		
-		// recursively apply/blend the lookup table to the values, until nothing changes or when we run out of 
-		// attempts (this is to prevent endless possible flaws)
+		// recursively apply/blend the lookup table to the values, until nothing changes or when we run out of attempts 
 		if (true)
 		{			
 			// now that the entire lookup table is filled,
@@ -561,6 +560,8 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$triesleft = 4;
 			while ($triesleft > 0)
 			{
+				//
+				
 				$triesleft--;
 				
 				$didsomething = false;
@@ -592,7 +593,11 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 				
 				if (!$didsomething)
 				{
+					
 					break;
+				}
+				else
+				{
 				}
 			}
 		}
@@ -618,6 +623,18 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		// replace the placeholders in the template
 		$subhtml = $item_htmltemplate_a;
 		
+		if ($datasource_isvalid)
+		{
+			$translateargs = array
+			(
+				"lookup" => $lookup,
+				"item" => $subhtml,
+			);
+			$subhtml = nxs_filter_translate_v2($translateargs);
+			
+			// apply shortcodes
+			$subhtml = do_shortcode($subhtml);
+		}
 		
 		$styleatt = "";
 		if (count($styleatts) > 0)
@@ -632,6 +649,8 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		
 		$columnsvariable = '{{NXS.NUMCOLUMNS}}';
 		
+		//$html .= "<div class='nxsgrid-item nxsgrid-column-{$columnsvariable} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		$html .= "<div class='nxsgrid-item nxssolidgrid-column-{$columnsvariable} nxs-entity' data-id='{$post_id}' {$styleatt}>";
 				
 		$html .= $subhtml;
 		
