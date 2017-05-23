@@ -954,7 +954,15 @@ function nxs_gettemplateproperties()
 					$pieces = explode("=", $line, $limit);
 					$key = trim($pieces[0]);
 					
-					if ($key != "")
+					if ($key == "")
+					{
+						// empty line, ignore
+					}
+					else if (nxs_stringstartswith($key, "//"))
+					{
+						// its a comment, ignore
+					}
+					else
 					{
 						$val = trim($pieces[1]);	
 						
@@ -1018,7 +1026,7 @@ function nxs_gettemplateproperties()
 							}
 							else
 							{
-								break;
+								// continu, perhaps next item will change?
 							}
 						}
 					}

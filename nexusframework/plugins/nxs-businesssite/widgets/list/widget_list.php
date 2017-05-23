@@ -404,6 +404,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
+	global $nxs_g_modelmanager;
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["data_atts"]["nxs-datasource"] = $datasource;
 
@@ -447,11 +448,32 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
-
-	$iteratormodeluri = "singleton@listof{$iterator_datasource}";
-	global $nxs_g_modelmanager;
-	$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
-	$instances = $contentmodel[$iterator_datasource]["instances"];
+	
+	if ($iterator_datasource == "" || nxs_stringcontains($iterator_datasource, "{{"))
+	{
+		// guaranteed failure
+		if (nxs_has_adminpermissions())
+		{
+			// output some dummy items to at least show something to the administrator
+			$instances = array
+			(
+				"0", "0", "0", "0", 
+			);
+		}
+		else
+		{
+			// 
+		}
+	}
+	else
+	{
+		$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+		
+		$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+		$instances = $contentmodel[$iterator_datasource]["instances"];
+	}
+	
+	
 	
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
@@ -519,7 +541,15 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 				$pieces = explode("=", $line, $limit);
 				$key = trim($pieces[0]);
 				
-				if ($key != "")
+				if ($key == "")
+				{
+					// empty line, ignore
+				}
+				else if (nxs_stringstartswith($key, "//"))
+				{
+					// its a comment, ignore
+				}
+				else
 				{
 					$val = trim($pieces[1]);	
 			
@@ -549,13 +579,12 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			// now that the entire lookup table is filled,
 			// recursively apply the lookup tables to its values
 			// for those keys that have one or more placeholders in their values
-			$triesleft = 2;
+			$triesleft = 4;
 			while ($triesleft > 0)
 			{
 				$triesleft--;
 				
 				$didsomething = false;
-				
 				foreach ($lookup as $key => $val)
 				{
 					if (nxs_stringcontains($val, "{{"))
@@ -568,6 +597,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 							"item" => $val,
 						);
 						$val = nxs_filter_translate_v2($translateargs);
+						
 						$somethingchanged = ($val != $origval);
 						if ($somethingchanged)
 						{
@@ -576,7 +606,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 						}
 						else
 						{
-							break;
+							// continue;
 						}
 					}
 				}
@@ -595,12 +625,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			{
 				$lookup[$key] = do_shortcode($val);
 			}
-		}
-		
-		if ($_REQUEST["a"] == "aa")
-		{
-			var_dump($lookup);
-			die();
 		}
 		
 		// optionally evaluate/apply runtime filters based upon the values as defined in the models and lookups
@@ -624,12 +648,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		// apply shortcodes
 		$subhtml = do_shortcode($subhtml);
 		
-		if (nxs_has_adminpermissions() && $_REQUEST["customhtml"] == "off")
-		{
-			// in case we mess up
-			$subhtml = "<div>ITEM</div>";
-		}
-		
 		$styleatt = "";
 		if (count($styleatts) > 0)
 		{
@@ -641,7 +659,9 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$styleatt = "style='" . $values . "'";
 		}
 		
-		$html .= "<div class='nxsgrid-item nxsgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		$columnsvariable = '{{NXS.NUMCOLUMNS}}';
+		
+		$html .= "<div class='nxsgrid-item nxsgrid-column-{$columnsvariable} nxs-entity' data-id='{$post_id}' {$styleatt}>";
 		// $html .= "<div class='nxsgrid-item nxssolidgrid-column-{$numberofcolumns} nxs-entity' data-id='{$post_id}' {$styleatt}>";
 				
 		$html .= $subhtml;
@@ -652,14 +672,14 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	
 	$html .= "</div>";
 	
-	if ($indexwithinfilter == -1)
+	if ($indexwithinfilter <= 0)
 	{
 		if (true)
 		{
 			//
 			if (is_user_logged_in())
 			{
-				if ($iterator_datasource_schema == "")
+				if ($iterator_datasource == "")
 				{
 					$html .= "<div>The iterator_datasource is not yet set</div>";
 					$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
@@ -675,6 +695,69 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 				// hide for anynomous users
 			}
 		}
+	}
+	
+	$numberofitemsactuallyshowing = $indexwithinfilter;
+	
+	// derive the number of columns to render
+	if (true)
+	{
+		$numberofcolumns = 4;
+		if ($numberofitemsactuallyshowing % 3 == 0)
+		{
+			$numberofcolumns = 3;
+		}
+		else if ($numberofitemsactuallyshowing % 4 == 0)
+		{
+			$numberofcolumns = 4;
+		}
+		else if ($numberofitemsactuallyshowing % 2 == 0)
+		{
+			$numberofcolumns = 2;
+		}
+		else
+		{
+			if ($numberofitemsactuallyshowing == 1)
+			{
+				$numberofcolumns = 1;
+			}
+			else if ($numberofitemsactuallyshowing == 5)
+			{
+				$numberofcolumns = 3;
+			}
+			else
+			{
+				$numberofcolumns = 4;
+			}
+		}
+	
+		if ($posttype2 == "nxs_sidebar")
+		{
+			$numberofcolumns = 1;
+		}
+		
+		if ($columnsmax != "")
+		{
+			if ($numberofcolumns > $columnsmax)
+			{
+				$numberofcolumns = $columnsmax;
+			}
+		}
+		if ($columnsmin != "")
+		{
+			if ($numberofcolumns < $columnsmin)
+			{
+				$numberofcolumns = $columnsmin;
+			}
+		}
+		
+		// apply the conclusion to the html
+	}
+	
+	// apply the number of columns to the rendered result
+	if (true)
+	{
+		$html = str_replace($columnsvariable, $numberofcolumns, $html);
 	}
 	
 	if (nxs_has_adminpermissions() && $_REQUEST["customhtml"] == "off")

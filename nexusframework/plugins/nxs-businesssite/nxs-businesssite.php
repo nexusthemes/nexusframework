@@ -182,7 +182,7 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	// evaluates nested references and evaluate variables as set by the seowebsiterules (url parameters)
+	// evaluates nested references and optionally evaluate variables as set by the seowebsiterules (url parameters)
 	function evaluatereferencedmodelsinmodeluris_v2($args)
 	{
 		$modeluris = $args["modeluris"];
@@ -336,9 +336,15 @@ class nxs_g_modelmanager
 				// sanitize element
 				$modelurispart = trim($modelurispart);
 				
-				// if its blank, ignore it
+				
 				if ($modelurispart == "")
 				{
+					// if its blank, ignore
+					continue;
+				}
+				else if (nxs_stringstartswith($modelurispart, "//"))
+				{
+					// a comment, ignore
 					continue;
 				}
 				
@@ -1134,6 +1140,10 @@ class nxs_g_modelmanager
 			$isvalid = false;
 		}
 		else if (nxs_stringcontains($url, ">"))
+		{
+			$isvalid = false;
+		}
+		else if ($url == "singleton@listof")
 		{
 			$isvalid = false;
 		}
