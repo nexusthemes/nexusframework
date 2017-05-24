@@ -1581,53 +1581,6 @@ class nxs_g_modelmanager
 				echo "Bulk models updated :)";
 				die();
 			}
-			if ($_REQUEST["awstest"] == "true")
-			{
-				$leftovers = 9000;
-				$d = $this->getmodel("singleton@listofgame");
-				$instances = $d["contentmodel"]["game"]["instances"];
-				
-				echo "num of instances: " . count($instances) . "<br />";
-				//die();
-				$invaliditems = array();
-				
-				foreach ($instances as $instancemeta)
-				{
-					$gameid = $instancemeta["content"]["humanmodelid"];
-					$gamemodel = $this->getmodel("{$gameid}@game");
-					$upc = $gamemodel["contentmodel"]["properties"]["taxonomy"]["upc"];
-					//echo "loading upc {$upc}<br />";
-					$result = $this->getmodel("{$upc}@upc@awsproductapi");
-					
-					if (true)
-					{
-						if ($result["nxs_error"] == "true")
-						{
-							$invaliditems[] = $upc;
-						}
-					}
-					
-					// var_dump($awsmodel);
-					// die();
-					$leftovers--;
-					if ($leftovers<=1)
-					{
-						echo "no more left overs... stopping";
-						die();
-					}
-				}
-				
-				$invalidcnt = count($invaliditems);
-				echo "invalidcnt; $invalidcnt<br />";
-				echo "finished; left overs; $leftovers<br />";
-				
-				foreach ($invaliditems as $upc)
-				{
-					echo "{$upc}<br />";
-				}
-				
-				die();
-			}
 		}
 	}
 	
