@@ -620,6 +620,14 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		// increase counter of items within filter
 		$indexwithinfilter++;
 		
+		if ($item_htmltemplate_a == "")
+		{
+			if (is_user_logged_in())
+			{
+				$item_htmltemplate_a = "<div>Empty</div>";
+			}
+		}
+		
 		// replace the placeholders in the template
 		$subhtml = $item_htmltemplate_a;
 		

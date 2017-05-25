@@ -51,6 +51,9 @@ function nxs_webmethod_formboxsubmit()
  	
  	// ensure the widget exists
  	$widgetmetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+ 	
+ 	
+ 	
  	$items_genericlistid = $widgetmetadata["items_genericlistid"];
  	$structure = nxs_parsepoststructure($items_genericlistid);
 	if (count($structure) == 0) 
@@ -67,6 +70,7 @@ function nxs_webmethod_formboxsubmit()
  	$markclientsideelements = array();
  	$outputlines = array();
  	$fileuploads = array();
+ 	$subresults = array();
  	
  	// load the form fields, and delegate handling to the form elements
  	$index = -1;
@@ -104,6 +108,7 @@ function nxs_webmethod_formboxsubmit()
 
 		 		// gets results from here
 		 		$subresult = nxs_widgets_formboxitem_getformitemsubmitresult($widget, $submitargs);
+		 		$subresults[] = $subresult;
 
 		 		// var_dump($subresult);
 
@@ -194,7 +199,7 @@ function nxs_webmethod_formboxsubmit()
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
 
 	 	extract($mixedattributes);
-
+	 	
 	 	// upload files
 		foreach ($fileuploads as $fileupload)
 		{
@@ -319,6 +324,168 @@ function nxs_webmethod_formboxsubmit()
 		}
 		else if ($internal_email != "" && nxs_isvalidemailaddress($internal_email))
 		{
+			// temporary implementation to see how creating new model instances could/should work
+			if (true)
+			{
+				//
+				if ($widgetmetadata["debug"] == "submitmodel")
+			 	{
+			 		$lookup = array();
+			 		
+			 		// first the lookup table as defined in the pagetemplaterules
+					if (true)
+					{
+						$templateruleslookups = nxs_gettemplateruleslookups();
+						$lookup = array_merge($lookup, $templateruleslookups);
+					}
+			 		
+			 		// second; include the raw list of submitted key/values
+			 		if (true)
+			 		{
+				 		$submittedlookups = array(); 
+				 		foreach ($subresults as $subresult)
+				 		{
+				 			$key = $subresult["formlabel"];
+				 			$value = $subresult["value"];
+				 			$submittedlookups[$key] = $value;
+				 		}
+				 		$lookup = array_merge($lookup, $submittedlookups);
+			 		}
+			 		
+			 		// third; include the debug_lookups mapping
+			 		if ($debug_lookups != "")
+					{
+						$mappinglookups = array();
+						
+						$lines = explode("\n", $debug_lookups);
+						foreach ($lines as $line)
+						{
+							$limit = 2;	// 
+							$pieces = explode("=", $line, $limit);
+							$key = trim($pieces[0]);
+							
+							if ($key == "")
+							{
+								// empty line, ignore
+							}
+							else if (nxs_stringstartswith($key, "//"))
+							{
+								// its a comment, ignore
+							}
+							else
+							{
+								$val = $pieces[1];
+								$mappinglookups[$key] = $val;
+							}
+						}
+						$lookup = array_merge($lookup, $mappinglookups);
+					}
+					
+					// recursively apply/blend the lookup table to the values, until nothing changes or when we run out of attempts 
+					if (true)
+					{			
+						// now that the entire lookup table is filled,
+						// recursively apply the lookup tables to its values
+						// for those keys that have one or more placeholders in their values
+						$triesleft = 4;
+						while ($triesleft > 0)
+						{
+							//
+							
+							$triesleft--;
+							
+							$didsomething = false;
+							foreach ($lookup as $key => $val)
+							{
+								if (nxs_stringcontains($val, "{{"))
+								{
+									$origval = $val;
+									
+									$translateargs = array
+									(
+										"lookup" => $lookup,
+										"item" => $val,
+									);
+									$val = nxs_filter_translate_v2($translateargs);
+									
+									$somethingchanged = ($val != $origval);
+									if ($somethingchanged)
+									{
+										$lookup[$key] = $val;
+										$didsomething = true;
+									}
+									else
+									{
+										// continue;
+									}
+								}
+							}
+							
+							if (!$didsomething)
+							{
+								break;
+							}
+							else
+							{
+							}
+						}
+					}
+					
+					// apply shortcodes
+					if (true)
+					{
+						foreach ($lookup as $key => $val)
+						{
+							$lookup[$key] = do_shortcode($val);
+						}
+					}
+					
+					// evaluate the modeluri which will be used to store the submitted information
+					$translateargs = array
+					(
+						"lookup" => $lookup,
+						"item" => $debug_modeluri,
+					);
+					$debug_modeluri = nxs_filter_translate_v2($translateargs);
+					$pieces = explode("@", $debug_modeluri);
+					$humanmodelidentification = $pieces[0];
+					$schema = $pieces[1];
+					
+					// instead of invoking the businessmodel logic right here,
+					// the system should use a webmethod invocation
+					
+					require_once("/srv/generic/plugins-available/nxs-contentprovider/businessmodellogic.php");
+					
+					// create a new model for this line
+					$createmodelargs = array
+					(
+						"schema" => $schema,
+						"humanmodelidentification" => $humanmodelidentification,
+						"extendlistmodel" => true,
+					);
+					// populate the model
+					// TODO: instead of setting all key/values of the lookup,
+					// we should only set the ones as defined as taxonomy properties according to the schema
+					foreach ($lookup as $key => $value)
+					{
+						$createmodelargs["unwrappedmodel"]["properties"]["taxonomy"][$key] = $value;
+					}
+					$createresult = nxs_businessmodel_createmodel($createmodelargs);
+					//
+					$responseargs = array();
+	 		
+			 		$responseargs["validationerrorhead"] = nxs_l18n__("DEBUG TEST", "nxs_td");
+			 		$validationerrors = array();
+			 		$validationerrors []= "submitted:" . json_encode($lookup);
+			 		$validationerrors []= "storing model as $debug_modeluri";
+			 		$validationerrors []= "store result " . json_encode($createresult);
+			 		
+				 	$responseargs["validationerrors"] = $validationerrors;
+				 	$responseargs["markclientsideelements"] = $markclientsideelements;
+					nxs_webmethod_return_ok($responseargs);
+			 	}
+			}
+			
 			$body = "";
 			if ($mail_body_includesourceurl != "")
 			{

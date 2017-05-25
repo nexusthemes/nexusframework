@@ -55,6 +55,10 @@ function nxs_widgets_contactitemtext_getformitemsubmitresult($args)
 	
 	$result["output"] = "<b>$formlabel:</b> $value";
 	
+	// passthrough the formlabel and value
+	$result["formlabel"] = $formlabel;
+	$result["value"] = $value;
+	
 	return $result;
 }
 

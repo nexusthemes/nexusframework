@@ -105,6 +105,37 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = strtoupper($input);
 		}
+		else if ($op == "md5")
+		{
+			$input = md5($input);
+		}
+		else if ($op == "time")
+		{
+			$input = time();
+		}
+		else if ($op == "rand")
+		{
+			$min = 0;
+			if (isset($attributes["min"]))
+			{
+				$min = $attributes["min"];
+			}
+			$max = getrandmax();
+			if (isset($attributes["max"]))
+			{
+				$max = $attributes["max"];
+			}
+			$input = rand($min, $max);
+		}
+		else if ($op == "randomstring")
+		{
+			$length = 10;
+			if (isset($attributes["length"]))
+			{
+				$length = $attributes["length"];
+			}
+			$input = nxs_generaterandomstring($length);
+		}
 		else if ($op == "ucwords")
 		{
 			$input = ucwords($input);

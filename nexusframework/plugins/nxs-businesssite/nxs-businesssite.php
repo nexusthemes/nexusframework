@@ -1119,7 +1119,11 @@ class nxs_g_modelmanager
 	function isvalidmodeluri($modeluri = "")
 	{
 		$isvalid = true;
-		if (nxs_stringstartswith($modeluri, "@"))
+		if (nxs_stringendswith($modeluri, "@"))
+		{
+			$isvalid = false;
+		}
+		else if (nxs_stringstartswith($modeluri, "@"))
 		{
 			$isvalid = false;
 		}

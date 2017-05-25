@@ -184,7 +184,25 @@ function nxs_widgets_formbox_home_getoptions($args)
 		"unifiedstyling" 	=> array("group" => nxs_widgets_formbox_getunifiedstylinggroup(),),		
 		"fields" 			=> array
 		(
-						
+			array
+			(
+				"id" 				=> "debug",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Debug", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "debug_lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "debug_modeluri",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Modeluri (defines in which model will be stored)", "nxs_td"),
+			),
+									
 			// TITLE	
 			
 			array( 
