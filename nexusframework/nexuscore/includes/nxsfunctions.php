@@ -3394,7 +3394,6 @@ function nxs_mergesitemeta_internal($modifiedmetadata, $performsanitycheck)
 	nxs_sitemeta_clearcache();
 }
 
-
 // turn off sanitycheck to update all activesitesettings, if multiple
 // ones are found (only the case when user imports 1-click-content
 // while the current site already has an activesitesettings itself)
@@ -3766,8 +3765,6 @@ function nxs_getfilteredcategories(&$categorieshaystack, $filters)
 	// restructure array
 	$categorieshaystack = array_values($categorieshaystack);
 }
-
-
 
 function nxs_isnxswebservicerequest()
 {

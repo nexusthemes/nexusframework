@@ -451,10 +451,6 @@ function nxs_webmethod_formboxsubmit()
 					$humanmodelidentification = $pieces[0];
 					$schema = $pieces[1];
 					
-					// instead of invoking the businessmodel logic right here,
-					// the system should use a webmethod invocation
-					
-					require_once("/srv/generic/plugins-available/nxs-contentprovider/businessmodellogic.php");
 					
 					// create a new model for this line
 					$createmodelargs = array
@@ -462,6 +458,7 @@ function nxs_webmethod_formboxsubmit()
 						"schema" => $schema,
 						"humanmodelidentification" => $humanmodelidentification,
 						"extendlistmodel" => true,
+						"writeaccesstoken" => $widgetmetadata["debug_writeaccesstoken"],	
 					);
 					// populate the model
 					// TODO: instead of setting all key/values of the lookup,
@@ -470,19 +467,62 @@ function nxs_webmethod_formboxsubmit()
 					{
 						$createmodelargs["unwrappedmodel"]["properties"]["taxonomy"][$key] = $value;
 					}
-					$createresult = nxs_businessmodel_createmodel($createmodelargs);
+					
+					// do a post request to the server
+					if (true)
+					{
+						$licensekey = nxs_license_getlicensekey();
+						$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/create-model-postmethod/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
+						$serviceparams = array
+						(
+							'timeout' => 15,
+							'sslverify' => false,
+							'body' => array
+							(
+								"createmodelargs" => $createmodelargs,
+							)
+						);
+						$response = wp_remote_post($url, $serviceparams);
+						$body = $response["body"];
+						$createresult = json_decode($body, true);
+						//error_log("formboxsubmit; response of remote; " . json_encode($response));
+					}
+					
 					//
 					$responseargs = array();
-	 		
-			 		$responseargs["validationerrorhead"] = nxs_l18n__("DEBUG TEST", "nxs_td");
-			 		$validationerrors = array();
-			 		$validationerrors []= "submitted:" . json_encode($lookup);
-			 		$validationerrors []= "storing model as $debug_modeluri";
-			 		$validationerrors []= "store result " . json_encode($createresult);
-			 		
-				 	$responseargs["validationerrors"] = $validationerrors;
-				 	$responseargs["markclientsideelements"] = $markclientsideelements;
-					nxs_webmethod_return_ok($responseargs);
+					
+					
+					
+					$error = $createresult["error"];
+					if (isset($error))
+					{
+						if ($error == "notauthorized")
+						{
+							$responseargs["validationerrorhead"] = nxs_l18n__("Not authorized", "nxs_td");
+				 		
+					 		$validationerrors = array();
+					 		$validationerrors []= "access token is incorrect";
+					 		
+					 		$responseargs["validationerrors"] = $validationerrors;
+						 	$responseargs["markclientsideelements"] = $markclientsideelements;
+							nxs_webmethod_return_ok($responseargs);
+						}
+						else
+						{
+							nxs_webmethod_return_nack("createresult; unexpected error; $error");	
+						}
+					}
+					else
+					{
+						// went OK
+						$responseargs["validationerrorhead"] = nxs_l18n__("Happy Happy :)", "nxs_td");
+				 		
+				 		$validationerrors = array();
+				 		$validationerrors []= "success :) (id:" . $createresult["id"] . ")";
+					 	$responseargs["validationerrors"] = $validationerrors;
+					 	$responseargs["markclientsideelements"] = $markclientsideelements;
+						nxs_webmethod_return_ok($responseargs);
+					}
 			 	}
 			}
 			

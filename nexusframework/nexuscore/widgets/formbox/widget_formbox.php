@@ -202,6 +202,12 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Modeluri (defines in which model will be stored)", "nxs_td"),
 			),
+			array
+			(
+				"id" 				=> "debug_writeaccesstoken",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Access token (permission key to store data in the model)", "nxs_td"),
+			),
 									
 			// TITLE	
 			
