@@ -1328,7 +1328,7 @@ class nxs_g_modelmanager
 		if ($json["found"] === false)
 		{
 			do_action("nxs_a_modelnotfound", "{$modeluri} (not found)");
-			error_log("getmodel_actual; not found");
+			error_log("getmodel_actual; not found; $url");
 			return false;
 		}
 		

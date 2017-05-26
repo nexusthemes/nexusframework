@@ -156,7 +156,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "iterator_datasource",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Iterator datasource", "nxs_td"),
-				"placeholder" => "(for example 'foobar' to iterate over singleton@listoffoobar models)",
+				"placeholder" => "For example 'foobar' to iterate over singleton@listoffoobar models, or a list like (foo@model;bar@model) for a specific set of models",
 			),
 			array
 			(
@@ -207,7 +207,7 @@ function nxs_widgets_list_home_getoptions($args)
 			(
         "id" 				=> "wrapper_items_begin",
         "type" 				=> "wrapperbegin",
-        "label" 			=> nxs_l18n__("Templates (item)", "nxs_td"),
+        "label" 			=> nxs_l18n__("Design", "nxs_td"),
       ),
       array
       (
@@ -215,6 +215,43 @@ function nxs_widgets_list_home_getoptions($args)
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Template A (item)", "nxs_td"),
 			),
+			
+			array
+      (
+				"id" 					=> "columnsmin",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Columns min", "nxs_td"),
+				"dropdown" 		=> array
+				(
+					"@@@empty@@@" => "Default",
+					"1" => "1",
+					"2" => "2",
+					"3" => "3",
+					"4" => "4",
+					"5" => "5",
+					"6" => "6",
+				),
+				"unistylablefield" => true,
+			),
+			
+			array
+      (
+				"id" 					=> "columnsmax",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Columns max", "nxs_td"),
+				"dropdown" 		=> array
+				(
+					"@@@empty@@@" => "Default",
+					"1" => "1",
+					"2" => "2",
+					"3" => "3",
+					"4" => "4",
+					"5" => "5",
+					"6" => "6",
+				),
+				"unistylablefield" => true,
+			),
+			
 			array
 			(
         "id" 				=> "wrapper_items_end",
@@ -461,8 +498,26 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		if (nxs_has_adminpermissions())
 		{
 			// output some dummy items to at least show something to the administrator
-			$instances = array
+			$modeluriset = array
 			(
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
+				"0", "0", "0", "0", 
 				"0", "0", "0", "0", 
 			);
 		}
@@ -473,11 +528,59 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	}
 	else
 	{
-		$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+		//
+		$settype = "unsupported";
+		$iterator_datasource = trim($iterator_datasource);
+		if (nxs_stringcontains($iterator_datasource, "@"))
+		{
+			$settype = "custom";
+		}
+		else
+		{
+			$settype = "complete";
+		}
 		
-		$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
-		$instances = $contentmodel[$iterator_datasource]["instances"];
+		if ($settype == "complete")
+		{
+			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+			
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+			$instances = $contentmodel[$iterator_datasource]["instances"];
+			foreach ($instances as $instance)
+			{
+				$itemhumanmodelid = $instance["content"]["humanmodelid"];
+				$modeluriset[] = "{$itemhumanmodelid}@{$iterator_datasource}";
+			}
+		}
+		else if ($settype == "custom")
+		{
+			$canonical_iterator_datasource = $iterator_datasource;
+			// iterator_datasource is for example (foobar1@bar,foobar2@bar)
+			$canonical_iterator_datasource = trim($canonical_iterator_datasource, "()");
+			$canonical_iterator_datasource = trim($canonical_iterator_datasource, "[]");
+			// iterator_datasource is for example foobar1@bar,foobar2@bar
+			$canonical_iterator_datasource = str_replace(",", ";", $canonical_iterator_datasource);
+			$canonical_iterator_datasource = str_replace("|", ";", $canonical_iterator_datasource);
+			$canonical_iterator_datasource = str_replace(" ", ";", $canonical_iterator_datasource);
+			$pieces = split(";", $canonical_iterator_datasource);
+			foreach ($pieces as $piece)
+			{
+				$itemhumanmodelid = trim($piece);
+				$modeluriset[] = $itemhumanmodelid;
+			}
+		}
 	}
+	
+	/*
+	if ($_REQUEST["showlist"] == "true")
+	{
+		var_dump($settype);
+		var_dump($iterator_datasource);
+		var_dump($canonical_iterator_datasource);
+		var_dump($modeluriset);
+		//die();
+	}
+	*/
 	
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
@@ -485,14 +588,16 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	$databindindex = -1;
 	$databindindexafterfilter = -1;
 	
-	foreach ($instances as $instance)
+	foreach ($modeluriset as $modeluri)
 	{
 		$databindindex++;
 
-		// determine which models to load;
-		$itemhumanmodelid = $instance["content"]["humanmodelid"];
+		$pieces = split("@", $modeluri);
+		$itemhumanmodelid = $pieces[0];
+		$itemschema = $pieces[1];
+
 		// combine the iterator model together with any other additional models the template needs
-		$iteratormodeluri = "iterator:{$itemhumanmodelid}@{$iterator_datasource}";
+		$iteratormodeluri = "iterator:{$itemhumanmodelid}@{$itemschema}";
 		$combinedmodeluris = "{$iteratormodeluri}|{$item_modeluris}";
 		
 		// translates variables in the combinedmodeluris
