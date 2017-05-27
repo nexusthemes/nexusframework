@@ -9089,60 +9089,106 @@ function nxs_busrules_get_popuphtml($id, $posttype, $subposttype, $remotesingula
 		$remotemodel = $nxs_g_modelmanager->getmodel("singleton@listof{$remotesingularschema}");
 		$remoteitems = $remotemodel["contentmodel"][$remotesingularschema]["instances"];
 	}
-	if (count($remoteitems) > 0)
-	{
-		?>	
-		Remote:<br />
+	
+	?>
+	<div id='<?php echo $id; ?>_options'>
 		<?php
-		$isfirst = true;
-		foreach ($remoteitems as $instancemeta)
+		if (count($remoteitems) > 0)
 		{
-			if ($isfirst)
-			{
-				$isfirst = false;
-			}
-			else
-			{
-				echo " | ";
-			}
-			$templatemapping_id = $instancemeta["content"]["humanmodelid"];
-			?>
-			<a href='#' onclick="jQuery('#<?php echo $id; ?>').val('<?php echo $templatemapping_id; ?>'); nxs_js_popup_sessiondata_make_dirty(); return false;"><?php echo $templatemapping_id; ?></a>
+			?>	
+			Remote:<br />
 			<?php
+			$isfirst = true;
+			foreach ($remoteitems as $instancemeta)
+			{
+				if ($isfirst)
+				{
+					$isfirst = false;
+				}
+				else
+				{
+					echo " | ";
+				}
+				$templatemapping_id = $instancemeta["content"]["humanmodelid"];
+				?>
+				<a href='#' data-thisval='<?php echo $templatemapping_id; ?>' onclick="return nxs_js_setactiveitemforgroup('<?php echo $id; ?>', '<?php echo $templatemapping_id; ?>');"><?php echo $templatemapping_id; ?></a>
+				<?php
+			}
 		}
-	}
-	if (count($localitems) > 0)
-	{
+		if (count($localitems) > 0)
+		{
+			?>
+			<br />
+			Local:<br />
+			<?php
+			$isfirst = true;
+			foreach ($localitems as $currentpost) 
+			{
+				if ($isfirst)
+				{
+					$isfirst = false;
+				}
+				else
+				{
+					echo " | ";
+				}
+				$currentpostid = $currentpost->ID;
+				$currentpoststatus = $currentpost->post_status;
+				$posttitle = nxs_cutstring($currentpost->post_title, 50);
+				?>
+				<a href='#' data-thisval='<?php echo $currentpostid; ?>' onclick="return nxs_js_setactiveitemforgroup('<?php echo $id; ?>', '<?php echo $currentpostid; ?>');"><?php echo $posttitle; ?></a>
+				<?php
+			}
+		}
 		?>
 		<br />
-		Local:<br />
-		<?php
-		$isfirst = true;
-		foreach ($localitems as $currentpost) 
+		Alternative:<br />
+		<a href='#' data-thisval='@leaveasis' onclick="return nxs_js_setactiveitemforgroup('<?php echo $id; ?>', '@leaveasis');">Leave as-is</a> | 
+		<a href='#' data-thisval='@suppressed' onclick="return nxs_js_setactiveitemforgroup('<?php echo $id; ?>', '@suppressed');">Suppress</a>
+		<br />
+	</div>
+	
+	<script>
+		function nxs_js_setactiveitemforgroup(id, val)
 		{
-			if ($isfirst)
-			{
-				$isfirst = false;
-			}
-			else
-			{
-				echo " | ";
-			}
-			$currentpostid = $currentpost->ID;
-			$currentpoststatus = $currentpost->post_status;
-			$posttitle = nxs_cutstring($currentpost->post_title, 50);
-			?>
-			<a href='#' onclick="jQuery('#<?php echo $id; ?>').val('<?php echo $currentpostid; ?>'); nxs_js_popup_sessiondata_make_dirty(); return false;"><?php echo $posttitle; ?> (local; <?php echo $currentpostid; ?>)</a>
-			<?php
+			jQuery('#' + id).val(val); 
+			nxs_js_popup_sessiondata_make_dirty();
+			nxs_js_setactivepopupforgroup(id);
+			return false;
 		}
-	}
-	?>
-	<br />
-	Alternative:<br />
-	<a href='#' onclick="jQuery('#<?php echo $id; ?>').val('@leaveasis'); nxs_js_popup_sessiondata_make_dirty(); return false;">Leave as-is</a> | 
-	<a href='#' onclick="jQuery('#<?php echo $id; ?>').val('@suppressed'); nxs_js_popup_sessiondata_make_dirty(); return false;">Suppress</a>
-	<br />
+		
+		function nxs_js_setactivepopupforgroup(id)
+		{
+			console.log("nxs_js_setactivepopupforgroup for :" + id);
+			var selectedval = jQuery('#' + id).val();
+			console.log("selectedval is:" + selectedval);
+			jQuery.each
+			(
+				jQuery('#' + id + '_options a'), 
+				function(i, item)
+				{
+					var currentval = jQuery(item).data("thisval");
+					if (currentval == selectedval)
+					{
+						jQuery(item).addClass("active");
+						jQuery(item).removeClass("inactive");
+					}
+					else
+					{
+						jQuery(item).addClass("inactive");
+						jQuery(item).removeClass("active");
+					}
+				}
+			);
+		}
+		nxs_js_setactivepopupforgroup('<?php echo $id; ?>');
+		// highlight current value
+	</script>
+	
 	<?php
+	
+	
+	
 	
 	// ----
 	$result = nxs_ob_get_contents();

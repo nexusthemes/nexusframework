@@ -26,7 +26,33 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 		//"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"fields" => array
 		(
-			//	
+			array
+			(
+ 				"id" 					=> "wrapper_condition_begin",		 
+				"type" 				=> "wrapperbegin",		
+				"label" 			=> nxs_l18n__("Condition", "nxs_td"),		
+			),		
+			array
+			(		
+				"id" 				=> "operator",		
+				"type" 				=> "select",		
+				"label" 			=> nxs_l18n__("Operator", "nxs_td"),		
+				"dropdown" 			=> array(		
+					"contains"	=>"contains",		
+					"template"	=>"template",		
+				),		
+			),			
+			array
+			(		
+				"id" 				=> "p1",		
+				"type" 				=> "input",		
+				"label" 			=> nxs_l18n__("Parameter 1", "nxs_td"),		
+			),		
+			array
+			(
+        "id" 				=> "wrapper_items_end",
+        "type" 				=> "wrapperend",
+      ),
 		)
 	);
 	
