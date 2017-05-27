@@ -9207,100 +9207,107 @@ function nxs_busrules_getgenericoptions($args)
 			//
 			
 			array( 
-				"id" 				=> "wrapper_template_begin",
+				"id" 					=> "wrapper_template_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Template", "nxs_td"),
 			),
 			array
 			( 
-				"id"								=> "header_postid",
-				"type" 							=> "input",
-				"readonly" 					=> "true",
-				"label" 			=> nxs_l18n__("Header template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+				"id"					=> "header_postid",
+				"type" 				=> "input",
+				"readonly" 		=> "true",
+				"visibility"	=> "hidden",	// its set by the custom one below
+				"label" 			=> nxs_l18n__("Header (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
 				"custom"	=> nxs_busrules_get_popuphtml("header_postid", "nxs_header", "", ""),
-				"label" 			=> nxs_l18n__("...", "nxs_td"),
+				"label" 			=> nxs_l18n__("Header", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "footer_postid",
 				"type" 							=> "input",
 				"readonly" 					=> "true",
-				"label" 			=> nxs_l18n__("Footer template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+				"visibility"	=> "hidden",	// its set by the custom one below
+				"label" 			=> nxs_l18n__("Footer (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
 				"custom"	=> nxs_busrules_get_popuphtml("footer_postid", "nxs_footer", "", ""),
-				"label" 			=> nxs_l18n__("...", "nxs_td"),
+				"label" 			=> nxs_l18n__("Footer", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "sidebar_postid",
 				"type" 							=> "input",
 				"readonly" 					=> "true",
-				"label" 			=> nxs_l18n__("Sidebar template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+				"visibility"	=> "hidden",	// its set by the custom one below
+				"label" 			=> nxs_l18n__("Sidebar (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
 				"custom"	=> nxs_busrules_get_popuphtml("sidebar_postid", "nxs_sidebar", "", ""),
-				"label" 			=> nxs_l18n__("...", "nxs_td"),
+				"label" 			=> nxs_l18n__("Sidebar", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "subheader_postid",
 				"type" 							=> "input",
 				"readonly" 					=> "true",
-				"label" 			=> nxs_l18n__("Subheader template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+				"visibility"	=> "hidden",	// its set by the custom one below
+				"label" 			=> nxs_l18n__("Subheader (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
 				"custom"	=> nxs_busrules_get_popuphtml("subheader_postid", "nxs_subheader", "", ""),
-				"label" 			=> nxs_l18n__("...", "nxs_td"),
+				"label" 			=> nxs_l18n__("Subheader", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "subfooter_postid",
 				"type" 							=> "input",
 				"readonly" 					=> "true",
-				"label" 			=> nxs_l18n__("Ssubfooter template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+				"visibility"	=> "hidden",	// its set by the custom one below
+				"label" 			=> nxs_l18n__("Subfooter (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
 				"custom"	=> nxs_busrules_get_popuphtml("subfooter_postid", "nxs_subfooter", "", ""),
-				"label" 			=> nxs_l18n__("...", "nxs_td"),
+				"label" 			=> nxs_l18n__("Subfooter", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "pagedecorator_postid",
 				"type" 							=> "input",
 				"readonly" 					=> "true",
+				"visibility"	=> "hidden",	// its set by the custom one below
 				"label" 			=> nxs_l18n__("Pagedecorator template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
 				"custom"	=> nxs_busrules_get_popuphtml("pagedecorator_postid", "nxs_genericlist", "pagedecorator", ""),
-				"label" 			=> nxs_l18n__("...", "nxs_td"),
+				"label" 			=> nxs_l18n__("Pagedecorator", "nxs_td"),
 			),
 			array
 			( 
 				"id"								=> "content_postid",
 				"type" 							=> "input",
 				"readonly" 					=> "true",
-				"label" 			=> nxs_l18n__("Main Content template (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
+				"visibility"	=> "hidden",	// its set by the custom one below
+				"label" 			=> nxs_l18n__("Main Content (local id or <a href='https://docs.google.com/spreadsheets/d/1ve5P0pJL_Ofr8cfNtjZHnRju1RfFe2XXNpwz9aUhOt8/edit#gid=0' target='_blank'>remote ref</a>)", "nxs_td"),
 			),
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
 				"custom"	=> nxs_busrules_get_popuphtml("content_postid", array("post", "page"), "", "templatemapping"),
-				"label" 			=> nxs_l18n__("...", "nxs_td"),
+				"label" 			=> nxs_l18n__("Main Content", "nxs_td"),
 			),
 						
 			array
