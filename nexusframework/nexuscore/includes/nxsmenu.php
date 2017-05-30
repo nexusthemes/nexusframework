@@ -14,18 +14,6 @@
 		return;
 	}
 	
-	global $nxs_g_modelmanager;
-	if ($nxs_g_modelmanager->ismaster() === false)
-	{
-		// alleen als je in master mode zit,
-		// moet de editor aanstaan
-		// return;
-	}
-	else
-	{
-		
-	}
-	
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	
 	if (nxs_shouldshowadminbar())

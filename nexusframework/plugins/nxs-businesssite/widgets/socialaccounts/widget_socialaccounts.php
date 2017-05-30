@@ -291,20 +291,11 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 		if (is_user_logged_in())
 		{
 			global $nxs_g_modelmanager;
-			if ($nxs_g_modelmanager->ismaster() === true)
-			{
-				global $nxs_g_modelmanager;
-				global $nxs_global_row_render_statebag;
-				$contentmodel = $nxs_g_modelmanager->getcontentmodel();
-				$url = $contentmodel["nxs_socialaccount"]["url"];
-				$icon_font_list .= "<div>No social accounts configured <a class='nxsbutton' href='{$url}'>Manage</a></div>";
-				$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
-			}
-			else
-			{
-				global $nxs_global_row_render_statebag;
-				$nxs_global_row_render_statebag["etchrow"] = true;
-			}
+			global $nxs_global_row_render_statebag;
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel();
+			$url = $contentmodel["nxs_socialaccount"]["url"];
+			$icon_font_list .= "<div>No social accounts configured <a class='nxsbutton' href='{$url}'>Manage</a></div>";
+			$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
 		}
 		else
 		{
@@ -313,7 +304,6 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 			// $html = "";
 		}
 	}
-
 	
 	// Alignment
 	if 		($halign == 'left') {

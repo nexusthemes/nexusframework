@@ -2071,7 +2071,7 @@ function nxs_widgets_entities_render_webpart_render_htmlvisualization($args)
 			if (is_user_logged_in())
 			{
 				global $nxs_g_modelmanager;
-				if (true) // $nxs_g_modelmanager->ismaster() === true)
+				if (true)
 				{
 					$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema($modeluri);
 					$taxonomymeta = $taxonomiesmeta[$taxonomy];

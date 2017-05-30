@@ -305,6 +305,15 @@ function nxs_widgets_list_home_getoptions($args)
 				"layouttype"		=> "custom",
 			),
 			
+			/*
+			// 
+			array
+			(
+				"id" 				=> "modelpicker",
+				"type" 				=> "modelpicker",
+				"label" 			=> nxs_l18n__("modelpicker", "nxs_td"),
+			),
+			*/
 		)
 	);
 	

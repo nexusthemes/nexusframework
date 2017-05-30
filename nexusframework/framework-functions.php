@@ -1453,11 +1453,6 @@ add_action('nxs_action_postfooterlink', 'nxs_render_postfooterlink');
 function nxs_render_postfooterlink()
 {
 	global $nxs_g_modelmanager;
-	if ($nxs_g_modelmanager->ismaster() === false)
-	{
-		// only masters can do something here :)
-		return;
-	}
 	
 	$url = nxs_geturlcurrentpage();
 	$homeurl = nxs_geturl_home();
