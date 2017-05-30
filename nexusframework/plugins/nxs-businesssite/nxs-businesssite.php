@@ -18,156 +18,6 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	// todo: move this information to a model
-	function getmodelinterpreter()
-	{
-		// todo: add in mem caching for each request; the rules cannot and will not change
-		// during one invocation
-		
-		$sitelookup = nxs_lookuptable_getlookup_v2(false);
-		$websiteseoruleshumanid = $sitelookup["websiteseoruleshumanid"];
-		// todo: apply a filter such that specific plugins can overrule the behaviour
-		// instead of requiring a plugin
-		if ($websiteseoruleshumanid == "")
-		{
-			// perhaps use some default here?
-			return false;
-		}
-			
-		// todo: derive the humanid of the model through the hostnam of the website
-		$websiteseorules = $this->getcontentmodel("{$websiteseoruleshumanid}@websiteseorules");
-		
-		$result = array();
-		
-		// todo: derive this from the model too
-		$result["schematowpinstancemapping"] = array
-		(
-			// schema => ...
-			"leadservice" => array
-			(
-				"title_template" => "{{properties.searchphrase}}",
-			),
-		);
-		
-		$entries = $websiteseorules["entry"]["instances"];
-		foreach ($entries as $entry => $entrymeta)
-		{
-			$extpropsjson = $entrymeta["content"]["extpropsjson"];
-			$props = json_decode($extpropsjson, true);
-			$name = $props["name"];
-			$conditions = $props["conditions"];
-			foreach ($conditions as $condition => $conditionmeta)
-			{
-				$conditiontype = $conditionmeta["conditiontype"];
-				$operatortype = $conditionmeta["operatortype"];
-				$value = $conditionmeta["value"];
-				$result["entries"]["entry{$entry}"]["conditions"]["condition{$condition}"] = array
-				(
-					"type" => $conditiontype,
-					"operator" => $operatortype,
-					"value" => $value,
-				);
-			}
-		}
-		
-		/*
-		if (false)
-		{
-			// old "hardcoded" implementation
-			
-			$result = array
-			(
-				"schematowpinstancemapping" => array
-				(
-					// schema => ...
-					"freewebsiteproduct" => array
-					(
-						"title_template" => "{{nxs_searchphrase.searchphrase}}",
-					),
-				),
-				"entries" => array
-				(
-					"entry1freewebsiteproductbybusid" => array
-					(
-						"conditions" => array
-						(
-							"condition1" => array
-							(
-								"type" => "homeurl",
-								"operator" => "equals",
-								"value" => "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/",
-							),
-							"condition2" => array
-							(
-								"type" => "slugatindex",
-								"index" => 0,
-								"operator" => "equals",
-								"value" => "free-willy",
-							),
-							"condition3" => array
-							(
-								"type" => "slugatindex",
-								"index" => 1,
-								"operator" => "betweenpreandpostfixmatchhumanmodelforschema",
-								"value" => "free-|freewebsiteproduct|-website",
-							),
-						),
-					),
-					// 
-					"entry2" => array
-					(
-						"conditions" => array
-						(
-							"condition1" => array
-							(
-								"type" => "homeurl",
-								"operator" => "equals",
-								"value" => "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/",
-							),
-							"condition2" => array
-							(
-								"type" => "slugatindex",
-								"index" => 0,
-								"operator" => "equals",
-								"value" => "free-willy",
-							),
-							"condition3" => array
-							(
-								"type" => "slugatindex",
-								"index" => 1,
-								"operator" => "exactmatchhumanmodelforschema",
-								"schema" => "freewebsiteproduct",
-							),						
-						),
-					),
-				),
-			);
-		}
-		*/
-		
-		if ($_REQUEST["dumprules"] == "true")
-		{
-			echo json_encode($result);
-			die();
-		}
-		
-		return $result;
-	}
-	
-	function getschematowpinstancemapping()
-	{
-		$sitemapping = $this->getmodelinterpreter();
-		$result = $sitemapping["schematowpinstancemapping"];
-		return $result;
-	}
-	
-	function getentries()
-	{
-		$sitemapping = $this->getmodelinterpreter();
-		$result = $sitemapping["entries"];
-		return $result;
-	}
-	
 	function evaluatereferencedmodelsinmodeluris($modeluris)
 	{
 		//error_log("evaluatereferencedmodelsinmodeluris (" . $modeluris . ")");
@@ -248,41 +98,6 @@ class nxs_g_modelmanager
 				$modeluris = nxs_filter_translate_v2($translateargs);
 			}
 		}
-		
-		// START - OLD IMPLEMENTATION - USED BY SOMETHING LIKE 4 WEBSITES SHOULD BE PHASED OUT!
-		// replace fragments from the url 
-		// for example: request: "http://domain/detail/1234/hello-world
-		// could define fragments ("id" => "1234") and ("name" => "hello-world")
-		// meaning that the modeluris value of "g:{{@@url.id}}@game" could map to "g:1234@game"
-		$shouldapplyurlvariables = $args["shouldapplyurlvariables"];
-		if ($shouldapplyurlvariables)
-		{
-			// step 1; ensure the fragments are parsed for the current url
-			$parsed = $this->derivemodelforcurrenturl();
-			$fragments = $parsed["parameters"]["fragments"];
-			
-			$fragmentslookup = array();
-			foreach ($fragments as $key => $value)
-			{
-				$key = "@@url.{$key}";	// for example {@@url.id}} would become 1234
-				$value = $value;
-				$fragmentslookup[$key] = $value;
-			}
-			
-			// add the hostname
-			$key = "@@url.hostname";
-			$value = $_SERVER['HTTP_HOST'];
-			$fragmentslookup[$key] = $value;			
-			
-			// apply the lookup tables to the parts we've evaluated so far
-			$translateargs = array
-			(
-				"lookup" => $fragmentslookup,
-				"item" => $modeluris,
-			);
-			$modeluris = nxs_filter_translate_v2($translateargs);
-		}
-		// END
 		
 		// applying of url variables v2
 		if (true)
@@ -435,18 +250,6 @@ class nxs_g_modelmanager
 			echo "result: $result";
 			//die();
 		}
-		
-		return $result;
-	}
-	
-	function derivemodelforcurrenturl()
-	{
-		$uriargs = array
-		(
-			"rewritewebmethods" => true,
-		);
-		$uri = nxs_geturicurrentpage($uriargs);
-		$result = $this->derivemodelbyuri($uri);
 		
 		return $result;
 	}
@@ -757,120 +560,9 @@ class nxs_g_modelmanager
 			$result = $nxs_gl_modelbyuri[$uri];
 		}
 		
-		if ($_REQUEST["debugmodel"] == "true")
-		{
-			echo "derivemodelbyuri for $uri:<br />";
-			var_dump($result);
-			echo "<br />";
-		}
-									
+				
 		return $result;
 	}
-	
-	/*
-	function deriveurlfrommodel($parameters)
-	{
-		$result = false;
-		
-		$schema = $parameters["schema"];
-		$humanid = $parameters["humanid"];
-		
-		$entries = $this->getentries();
-		foreach ($entries as $entryid => $entrymeta)
-		{
-			$resultsofar = array();
-			
-			$currententryvalid = "sofar";
-			$currententryderivedparameters = array();
-			
-			$conditions = $entrymeta["conditions"];
-			foreach ($conditions as $conditionid => $conditionmeta)
-			{
-				$currentconditionvalid = false;
-				$conditiontype = $conditionmeta["type"];
-				if ($conditiontype == "homeurl")
-				{
-					$resultsofar["homeurl"] = nxs_geturl_home();
-				}
-				else if (nxs_stringstartswith($conditiontype, "slugatindex"))
-				{
-					// obsolete/backwards compatibility
-					if ($index == "")
-					{
-						$index = $conditionmeta["index"];
-					}
-					$operator = $conditionmeta["operator"];
-					$value = $conditionmeta["value"];
-					if ($operator == "equals")
-					{
-						$resultsofar["slugpieces"][$index] = $value;
-					}
-					else if ($operator == "exactmatchhumanmodelforschema" && $conditionmeta["schema"] == $schema)
-					{
-						$resultsofar["slugpieces"][$index] = $humanid;
-					}
-					else if ($operator == "betweenpreandpostfixmatchhumanmodelforschema")
-					{
-						$value = $conditionmeta["value"];
-						$valuepieces = explode("|", $value);
-						$conditionprefix = $valuepieces[0];
-						$conditionschema = $valuepieces[1];
-						$conditionpostfix = $valuepieces[2];
-						if ($conditionschema == $schema)
-						{
-							$resultsofar["slugpieces"][$index] = "{$conditionprefix}{$humanid}{$conditionpostfix}";
-						}
-						else
-						{
-							$currententryvalid = false;
-							break;
-						}
-					}
-					else
-					{
-						$currententryvalid = false;
-						break;
-					}
-				}
-				else
-				{
-					echo "unsupported conditiontype?";
-					die();
-				}
-			}
-			
-			if ($currententryvalid == "sofar")
-			{
-				// if we come this far, it means it valid
-				$result = $resultsofar;
-				
-				$url = $resultsofar["homeurl"];
-				$index = -1;
-				while (true)
-				{
-					$index++;
-					$part = $resultsofar["slugpieces"][$index];
-					// error_log("part: $part");
-					if ($part == "" || $index > 10)
-					{
-						break;
-					}
-					$url .= $part . "/";
-				}
-				$result["url"] = $url;
-				
-				break;
-			}
-			else
-			{
-				// error_log("condition failed at; $conditionid");
-				// perhaps next entry is valid, loop
-			}
-		}
-		
-		return $result;
-	}
-	*/
 	
 	// virtual posts; allow entities from the model to 
 	// represent a virtual post/page according to WP
@@ -894,23 +586,6 @@ class nxs_g_modelmanager
 		$modeluri = false;
 		$schema = false;
 		$humanid = false;
-		
-		$derivedcontext = $this->derivemodelforcurrenturl();
-		$parameters = $derivedcontext["parameters"];
-		$fragments = $parameters["fragments"];
-		
-		$isvirtual = false;
-		
-		$schema = "nxs_";
-		foreach ($fragments as $key => $val)
-		{
-			if ($schema != "")
-			{
-				$schema .= "_";
-			}
-			$schema .= "{$key}";
-			$isvirtual = true;
-		}
 		
 		//
 		$templateproperties = nxs_gettemplateproperties();
@@ -1155,13 +830,16 @@ class nxs_g_modelmanager
 		//$st = json_encode(nxs_getstacktrace());
 		if (!$isvalid)
 		{
-			do_action("nxs_a_modelnotfound", "$modeluri (invalid)");
+			if ($modeluri != "")
+			{
+				do_action("nxs_a_modelnotfound", "$modeluri (invalid)");
+			}
 		
 			$shoulddebug = ($_REQUEST["logrr"] == "true");
 			if ($shoulddebug)
 			{
 				$st = json_encode(debug_backtrace());
-				error_log("isvalidmodeluri; invalid; $modeluri; $st");
+				error_log("isvalidmodeluri; invalid; ('$modeluri'); $st");
 				die();
 			}
 		}
@@ -1171,6 +849,9 @@ class nxs_g_modelmanager
 	
 	function getmodel($modeluri = "")
 	{
+		// 
+		do_action("nxs_a_getmodel", array("modeluri" => $modeluri));
+		
 		$isvalid = $this->isvalidmodeluri($modeluri);
 		if (!$isvalid)
 		{
@@ -1224,29 +905,6 @@ class nxs_g_modelmanager
 		return $model["meta"]["schema"];
 	}
 	
-	function ismaster()
-	{
-		$result = true;
-		$homeurl = nxs_geturl_home();
-		if ($homeurl == "http://theme1.testgj.c1.us-e1.nexusthemes.com/")
-		{
-			$result = false;	
-		}
-		else if ($homeurl == "http://theme2.testgj.c1.us-e1.nexusthemes.com/")
-		{
-			$result = false;	
-		}
-		else if ($homeurl == "http://theme3.testgj.c1.us-e1.nexusthemes.com/")
-		{
-			$result = false;	
-		}
-		else if ($homeurl == "http://blablabusiness.testgj.c1.us-e1.nexusthemes.com/")
-		{
-			$result = false;	
-		}
-		return $result;
-	}
-	
 	function getmodel_dbcache($modeluri)
 	{
 		//
@@ -1277,12 +935,6 @@ class nxs_g_modelmanager
 					$shouldrefreshdbcache = true;
 				}
 			}
-		}
-		
-		// todo; use a filter instead?
-		if ($_REQUEST["nxs_qa_endtoend"] == "true")
-		{
-			// $shouldrefreshdbcache = true;
 		}
 		
 		if ($shouldrefreshdbcache)
@@ -1412,23 +1064,23 @@ class nxs_g_modelmanager
 		{
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "entities");
-			$result[] = array("widgetid" => "phone");
-			$result[] = array("widgetid" => "socialaccounts");
-			$result[] = array("widgetid" => "commercialmsgs");
+			//$result[] = array("widgetid" => "phone");
+			//$result[] = array("widgetid" => "socialaccounts");
+			//$result[] = array("widgetid" => "commercialmsgs");
 		}
 		else if ($nxsposttype == "sidebar") 
 		{
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "entities");
-			$result[] = array("widgetid" => "phone");
-			$result[] = array("widgetid" => "socialaccounts");
+			//$result[] = array("widgetid" => "phone");
+			//$result[] = array("widgetid" => "socialaccounts");
 		}
 		else if ($nxsposttype == "header") 
 		{
 			$result[] = array("widgetid" => "phone");
 			$result[] = array("widgetid" => "buslogo");
-			$result[] = array("widgetid" => "socialaccounts");
-			$result[] = array("widgetid" => "commercialmsgs");
+			//$result[] = array("widgetid" => "socialaccounts");
+			//$result[] = array("widgetid" => "commercialmsgs");
 		}
 		
 		if ($pagetemplate == "pagedecorator") 
@@ -1713,11 +1365,7 @@ class nxs_g_modelmanager
   	add_filter('init', array($this, "instance_init"), 5, 1);
 		add_action('nxs_getwidgets',array( $this, "getwidgets"), 20, 2);
 		add_action('admin_head', array($this, "instance_admin_head"), 30, 1);
-		
 		add_filter('wp_nav_menu_objects', array($this, 'wp_nav_menu_objects'), 10, 3);
-		
-		//add_filter( 'the_content', array($this, 'the_content'), 10, 1);
-		
 		add_filter("the_posts", array($this, "businesssite_the_posts"), 1000, 2);
   }
   
