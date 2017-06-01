@@ -273,9 +273,55 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 					}
 					
 					if ($containsvariable)
-					{						
+					{
+						$startswithvariable = nxs_stringstartswith($templatepiece, "{");
 						$endswithvariable = nxs_stringendswith($templatepiece, "}");
-						if ($endswithvariable)
+						if ($startswithvariable && $endswithvariable)
+						{
+							// wildcard for complete fragment,
+							// for example "/detail/{{name@model}}/"
+							
+							$humanid = $uripiece;
+							
+							$conditionschema = $templatepiece;													// {{name@model}}
+							$conditionschema = str_replace("{", "", $conditionschema);	// name@model}}
+							$conditionschema = str_replace("}", "", $conditionschema);	// name@model
+								
+							// if the conditionschema has a "@"
+							// we have to use the first part as the variable
+							// and the 2nd part indicated the true modelschema
+							// we should in that case only accept the URL
+							// if the humanid exists in that schema
+							$representsmodellookup = nxs_stringcontains($conditionschema, "@");
+							if ($representsmodellookup)
+							{
+								$conditionschemapieces = explode("@", $conditionschema);
+								$conditionschema = $conditionschemapieces[0];
+								$modelschema = $conditionschemapieces[1];
+								$toverify = "{$humanid}@{$modelschema}";
+								
+								// check if such model exists
+								$verified = $this->getmodel($toverify);
+								if ($verified === false)
+								{
+									// error_log("model $toverify doesn't exist, it should result in a 404!");	
+									$currententryvalid = false;
+									break;
+								}
+							}
+							else
+							{
+								// its "just" a variable, not a model lookup
+							}
+							
+							// for example "grab-after-{X}" then conditionschema be "X"
+
+							$derivedurlfragmentkeyvalues .= "{$conditionschema}={$humanid}\r\n";
+							$url_fragment_variables[$conditionschema] = $humanid;
+							
+							// ok, proceed
+						}
+						else if ($endswithvariable)
 						{
 							// wildcard / model lookup check, which should/will set a variable,
 							// for example "/detail/*-{{name@model}}/"

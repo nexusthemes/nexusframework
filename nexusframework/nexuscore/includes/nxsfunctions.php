@@ -1713,6 +1713,46 @@ function nxs_removequeryparameterfromurl($url, $parametertoremove)
 	return $result;
 }
 
+function nxs_removeallqueryparametersfromurl($url)
+{
+	$parsed = parse_url($url);
+	if (isset($parsed['query'])) 
+	{
+		$params = array();
+		foreach (explode('&', $parsed['query']) as $param) 
+		{
+		  $item = explode('=', $param);
+		}
+		//
+		$result = '';
+		if (isset($parsed['scheme']))
+		{
+		  $result .= $parsed['scheme'] . "://";
+		}
+		if (isset($parsed['host']))
+		{
+		  $result .= $parsed['host'];
+		}
+		if (isset($parsed['path']))
+		{
+		  $result .= $parsed['path'];
+		}
+		if (count($params) > 0) 
+		{
+		  $result .= '?' . urldecode(http_build_query($params));
+		}
+		if (isset($parsed['fragment']))
+		{
+		  $result .= "#" . $parsed['fragment'];
+		}
+	}
+	else
+	{
+		$result = $url;
+	}
+	return $result;
+}
+
 // ===
 // string operations
 // ===

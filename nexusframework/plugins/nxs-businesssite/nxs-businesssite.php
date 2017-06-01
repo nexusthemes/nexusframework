@@ -18,6 +18,17 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	function getmodeltaxonomyproperty($args)
+	{
+		$modeluri = $args["modeluri"];
+		$property = $args["property"];
+		$contentmodel = $this->getcontentmodel($modeluri);
+		$taxonomy = "properties";
+		$result = $contentmodel[$taxonomy]["taxonomy"][$property];
+		//error_log("model result:" . $result);
+		return $result;
+	}
+	
 	function evaluatereferencedmodelsinmodeluris($modeluris)
 	{
 		//error_log("evaluatereferencedmodelsinmodeluris (" . $modeluris . ")");
@@ -688,6 +699,13 @@ class nxs_g_modelmanager
 	{
 		$pieces = explode("@", $modeluri);
 		$result = $pieces[0];
+		return $result;
+	}
+	
+	function getschema($modeluri = "")
+	{
+		$pieces = explode("@", $modeluri);
+		$result = end($pieces);
 		return $result;
 	}
 	
