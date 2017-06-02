@@ -196,6 +196,19 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			$input = nxs_generaterandomstring($length);
 		}
+		else if ($op == "md5stringpicker")
+		{
+			error_log("md5stringpicker;" . json_encode($attributes));
+			
+			$options = $attributes["options"];
+			$pieces = explode("|", $options);
+			$max = count($pieces);
+			$indexer = $attributes["indexer"];
+			$md5 = md5($indexer);
+			$inthash = intval(substr($md5, 0, 8), 16);
+			$index = $inthash % $max;
+			$input = $pieces[$index];
+		}
 		else if ($op == "ucwords")
 		{
 			$input = ucwords($input);
