@@ -2849,6 +2849,13 @@ function nxs_load_plugins()
 	}
 }
 
+function nxs_title_format($content) 
+{
+	return '%s';
+}
+add_filter('private_title_format', 'nxs_title_format');
+add_filter('protected_title_format', 'nxs_title_format');
+
 //
 nxs_load_plugins();
 

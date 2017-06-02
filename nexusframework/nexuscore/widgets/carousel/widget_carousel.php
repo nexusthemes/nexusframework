@@ -338,6 +338,8 @@ function nxs_widgets_carousel_render_webpart_render_htmlvisualization($args)
 				$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
 				
 				$carousel_imageurl 		= $lookup[0];
+				$carousel_imageurl = nxs_img_getimageurlthemeversion($carousel_imageurl);
+				
 				$carousel_imagewidth 	= $lookup[1]. "px";
 				$carousel_imageheight 	= $lookup[2]. "px";		
 				

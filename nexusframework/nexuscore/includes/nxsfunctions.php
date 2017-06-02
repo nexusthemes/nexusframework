@@ -1165,7 +1165,7 @@ function nxs_getbusinessruleimpact($metadata)
 	{
 		$impact[] = "no impact";
 	}
-
+	
 	$result .= "<ul><li>";
 	$result .= implode("</li><li>", $impact);
 	$result .= "</li></ul>";
@@ -10416,6 +10416,9 @@ function nxs_remote_getpost($postid)
 		}
 	}
 	
+	// enable plugins to do something with this
+	do_action("nxs_a_remote_gepost", array("postid" => $postid, "post" => $result));
+	
 	return $result;
 }
 
@@ -10430,7 +10433,7 @@ function nxs_remote_getpost_transient($postid)
 	if ($result == false || ($_REQUEST["transients_remoteposts"] == "refresh" && is_user_logged_in()))
 	{
 		$result = nxs_remote_getpost_actual($postid);
-		$expiration = 60;	// 60 secs
+		$expiration = 60 * 60 * 24 * 30;	// 30 days
 		
 		if ($result != "")
 		{

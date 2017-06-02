@@ -1,5 +1,55 @@
 <?php 
 
+//
+// sometimes we want to process certain shortcodes conditionally
+// meaning, it should keep the shortcode as-is if the condition is not met,
+// and it shsould transform the shortcode when the condition is met
+// to facilitate this we use the following function
+//
+function nxs_sc_handlescope($attributes, $content = null, $name='')
+{
+	extract($attributes);
+	
+	$result = false;
+	
+	if (isset($sc_scope))
+	{
+		global $nxs_gl_sc_currentscope;
+		if ($nxs_gl_sc_currentscope[$sc_scope] === true)
+		{
+			// we are inside the scope that should process/apply the shortcode
+		}
+		else
+		{
+			// wrong scope, wont execute
+			// NOTE; we don't "just" return the value, we  return the entire shortcode as-is
+			// such that it can be re-evaluated by this same shortcode when we -are- executing in
+			// the right scope
+			
+			$implodedattributes = implode
+			(
+				' ', 
+				array_map
+				(
+		    	function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
+		    	$attributes,
+		    	array_keys($attributes)
+				)
+			);
+			
+			$reconstructed = "[{$name} {$implodedattributes}]";
+			if ($content !== null && $content !== "")
+			{
+				$reconstructed .= "{$content}[/{$name}]";
+			}
+			
+			$result = $reconstructed;
+		}
+	}
+	
+	return $result;
+}
+
 // spinner shortcodes
 function nxs_sc_spin($attributes, $content = null, $name='') 
 {
@@ -75,6 +125,16 @@ add_shortcode('nxsspin', 'nxs_sc_spin');
 function nxs_sc_string($attributes, $content = null, $name='') 
 {
 	extract($attributes);
+	
+	if (isset($sc_scope))
+	{
+		$scoperesult = nxs_sc_handlescope($attributes, $content, $name);
+		if ($scoperesult !== false)
+		{
+			// we are outside the scope, exit
+			return $scoperesult;
+		}
+	}
 	
 	$content = $content;
 	if ($content == "")
@@ -245,6 +305,16 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 {
 	extract($attributes);
 	
+	if (isset($sc_scope))
+	{
+		$scoperesult = nxs_sc_handlescope($attributes, $content, $name);
+		if ($scoperesult !== false)
+		{
+			// we are outside the scope, exit
+			return $scoperesult;
+		}
+	}
+	
 	nxs_ob_start();
 	
 	$input = $content;
@@ -350,12 +420,21 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 	
 	$output = nxs_ob_get_contents();
 	nxs_ob_end_clean();
+	
+	/*
+	if (isset($sc_scope))
+	{
+		echo "prior to evaluation;";
+		var_dump($attributes);
+		var_dump($content);
+		var_dump($output);
+		echo "----<br />";
+	}
+	*/
 		
 	return $output;
 }
 add_shortcode('nxsbool', 'nxs_sc_bool');
-
-
 
 // widget specific shortcodes
 

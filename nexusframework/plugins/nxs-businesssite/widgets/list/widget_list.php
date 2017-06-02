@@ -201,6 +201,26 @@ function nxs_widgets_list_home_getoptions($args)
         "id" 				=> "wrapper_items_end",
         "type" 				=> "wrapperend",
       ),
+      
+      //
+      array
+			(
+        "id" 				=> "wrapper_items_begin",
+        "type" 				=> "wrapperbegin",
+        "label" 			=> nxs_l18n__("Filters", "nxs_td"),
+      ),
+      array
+      (
+				"id" 					=> "filter_items_where",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Items where", "nxs_td"),
+			),
+			
+			array
+			(
+        "id" 				=> "wrapper_items_end",
+        "type" 				=> "wrapperend",
+      ),			
 			
 			// item_htmltemplate
 			array
@@ -496,6 +516,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	---------------------------------------------------------------------------------------------------- */
 	
 	$datasource_isvalid = true;
+	
 	if ($iterator_datasource == "" || nxs_stringcontains($iterator_datasource, "{{"))
 	{
 		$datasource_isvalid	= false;
@@ -580,17 +601,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
-	/*
-	if ($_REQUEST["showlist"] == "true")
-	{
-		var_dump($settype);
-		var_dump($iterator_datasource);
-		var_dump($canonical_iterator_datasource);
-		var_dump($modeluriset);
-		//die();
-	}
-	*/
-	
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
 
@@ -626,7 +636,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$templateruleslookups = nxs_gettemplateruleslookups();
 			$lookup = array_merge($lookup, $templateruleslookups);
 		}
-	
+		
 		// second, set (override) lookup key/values as defined within the widget itself
 		if ($item_lookups != "")
 		{
@@ -716,6 +726,9 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			}
 		}
 		
+		global $nxs_gl_sc_currentscope;
+		$nxs_gl_sc_currentscope["list.iterator.filter"] = true;
+		
 		// apply shortcodes
 		if (true)
 		{
@@ -723,6 +736,63 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			{
 				$lookup[$key] = do_shortcode($val);
 			}
+		}
+		
+		global $nxs_gl_sc_currentscope;
+		$nxs_gl_sc_currentscope["list.iterator.filter"] = false;
+		
+		if ($datasource_isvalid)
+		{
+			// apply the lookup values on the where variable
+			$filterargs = array
+			(
+				"lookup" => $lookup,
+				"item" => $filter_items_where,
+			);
+			$evaluated_filter_items_where = nxs_filter_translate_v2($filterargs);
+					
+			//
+			if ($evaluated_filter_items_where != "")
+			{
+				$filters = $evaluated_filter_items_where;
+				$filters = str_replace(";", "&&", $filters);
+				
+				$filterconditionvalue = true;
+				
+				$filterpieces = explode("&&", $filters);
+				
+				foreach ($filterpieces as $filterpiece)
+				{
+					$filterpiece = trim($filterpiece);
+					$evaluation = $filterpiece;
+					
+					if ($evaluation != "true")
+					{
+						$filterconditionvalue = false;
+						// it failed
+						break;
+					}
+					else
+					{
+						// it succeeded, continu to next ops
+					}
+				}
+				
+				if ($filterconditionvalue == false)
+				{
+					// proceed to the next item
+					continue;
+				}
+				else
+				{
+					//var_dump($lookup);
+					//die();
+				}
+			}
+		}
+		else
+		{
+			// skip filter; we want to show dummy items
 		}
 		
 		// optionally evaluate/apply runtime filters based upon the values as defined in the models and lookups
