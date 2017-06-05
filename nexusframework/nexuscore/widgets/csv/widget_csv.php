@@ -370,6 +370,9 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 		// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 		$mixedattributes = array_merge($temp_array, $args);
 		
+		// Lookup atts
+		$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title"));
+		
 		$hovermenuargs = array();
 		$hovermenuargs["postid"] = $postid;
 		$hovermenuargs["placeholderid"] = $placeholderid;

@@ -946,14 +946,22 @@ function nxs_init()
 		  	echo "postid:<br />";
 		  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
 				var_dump($postids);
-				echo "<br /><br />prettyprint:<br />";
-				$sitemeta = nxs_getsitemeta_internal(false);
-				echo nxs_prettyprint_array($sitemeta);
-				echo "<br /><br />dumped:<br />"; 
-				var_dump($sitemeta);
+				//echo "<br /><br />prettyprint:<br />";
+				//$sitemeta = nxs_getsitemeta_internal(false);
+				//echo nxs_prettyprint_array($sitemeta);
+				//echo "<br /><br />dumped:<br />"; 
+				//var_dump($sitemeta);
+
 				echo "<br /><br />json:<br />"; 
 				$jsonsitemeta = json_encode($sitemeta);
 				echo "$jsonsitemeta<br />";
+
+				echo "<br /><br />json2:<br />"; 
+				$jsonsitemeta = str_replace("\r\n", "<br class='nxsrnfix' />", $jsonsitemeta);
+				$jsonsitemeta = str_replace("\r", "<br class='nxsrfix' />", $jsonsitemeta);
+				$jsonsitemeta = str_replace("\n", "<br class='nxsnfix' />", $jsonsitemeta);
+				echo "$jsonsitemeta<br />";
+
 		  	die();
 		  }
 		  else if ($_REQUEST["nxs"] == "fixwrongglobalidsmanual")

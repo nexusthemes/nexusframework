@@ -250,7 +250,6 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$input = $replacement;
 			}
 		}
-		
 		else if ($op == "replaceempty")
 		{
 			// if the value is empty
@@ -268,9 +267,47 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "usequeryparameter")
 		{
+			if (nxs_iswebmethodinvocation())
+			{
+				$uricurrentpage = $_REQUEST["uricurrentpage"];
+				$pieces = explode("?", $uricurrentpage);
+				$queryparameters = $pieces[1];
+				$pieces = explode("&", $queryparameters);
+				foreach ($pieces as $piece)
+				{
+					$subpieces = explode("=", $piece);
+					$key = $subpieces[0];
+					$value = $subpieces[1];
+					$lookup[$key] = $value;
+				}
+				// error_log("queryparams;" . json_encode($lookup));
+			}
+			else
+			{
+				// normal request
+				$lookup = $_REQUEST;
+			}
+			
 			// if thats true, replace it with whatever is set as the replacement in the shortcode
-			$replacement = $_REQUEST[$attributes["queryparameter"]];
-			$input = $replacement;
+			$queryparameter = $attributes["queryparameter"];
+			$replacement = $lookup[$queryparameter];
+			if (isset($replacement))
+			{
+				$input = $replacement;
+			}
+			else
+			{
+				if (isset($attributes["fallback"]))
+				{
+					$fallback = $attributes["fallback"];
+				}
+				else
+				{
+					$fallback = "";
+				}
+				
+				$input = $fallback;
+			}
 		}
 		else if ($op == "urldecode")
 		{
@@ -390,7 +427,11 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 				$input = "false";
 			}
 			
-			// echo "shortcode condition [$input][$needle] evaluates to [$input]";
+			if ($_REQUEST["scdebug"] == "true")
+			{
+				echo "shortcode condition [$input][$needle] evaluates to [$input]";
+				die();
+			}
 		}
 		else if ($op == "equals")
 		{

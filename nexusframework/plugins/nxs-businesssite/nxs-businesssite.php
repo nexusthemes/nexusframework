@@ -1082,7 +1082,8 @@ class nxs_g_modelmanager
 		{
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "entities");
-			//$result[] = array("widgetid" => "phone");
+			$result[] = array("widgetid" => "embed");
+			
 			//$result[] = array("widgetid" => "socialaccounts");
 			//$result[] = array("widgetid" => "commercialmsgs");
 		}
@@ -1090,13 +1091,16 @@ class nxs_g_modelmanager
 		{
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "entities");
-			//$result[] = array("widgetid" => "phone");
+			$result[] = array("widgetid" => "embed");
+			
 			//$result[] = array("widgetid" => "socialaccounts");
 		}
 		else if ($nxsposttype == "header") 
 		{
 			$result[] = array("widgetid" => "phone");
 			$result[] = array("widgetid" => "buslogo");
+			$result[] = array("widgetid" => "embed");
+			
 			//$result[] = array("widgetid" => "socialaccounts");
 			//$result[] = array("widgetid" => "commercialmsgs");
 		}
@@ -1226,6 +1230,8 @@ class nxs_g_modelmanager
 		// widgets
 		nxs_lazyload_plugin_widget(__FILE__, "list");
 		nxs_lazyload_plugin_widget(__FILE__, "entities");
+		nxs_lazyload_plugin_widget(__FILE__, "embed");
+		
 		nxs_lazyload_plugin_widget(__FILE__, "phone");
 		nxs_lazyload_plugin_widget(__FILE__, "buslogo");
 		nxs_lazyload_plugin_widget(__FILE__, "socialaccounts");

@@ -743,13 +743,20 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		
 		if ($datasource_isvalid)
 		{
-			// apply the lookup values on the where variable
-			$filterargs = array
-			(
-				"lookup" => $lookup,
-				"item" => $filter_items_where,
-			);
-			$evaluated_filter_items_where = nxs_filter_translate_v2($filterargs);
+			if ($filter_items_where != "")
+			{
+				// apply the lookup values on the where variable
+				$filterargs = array
+				(
+					"lookup" => $lookup,
+					"item" => $filter_items_where,
+				);
+				$evaluated_filter_items_where = nxs_filter_translate_v2($filterargs);
+				
+				// apply the shortcodes
+				$evaluated_filter_items_where = do_shortcode($evaluated_filter_items_where);
+			}
+			
 					
 			//
 			if ($evaluated_filter_items_where != "")

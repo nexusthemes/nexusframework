@@ -17,6 +17,10 @@ function nxs_popup_contextprocessor_widgets_getcustompopuphtml($args)
 	
 	// retrieve the placeholdertemplate
 	$widget = nxs_getplaceholdertemplate($postid, $placeholderid);
+	if ($widget == "")
+	{
+		nxs_webmethod_return_nack("widget not set for $postid $placeholderid");
+	}
 	if (nxs_widgetexists($widget))
 	{
 		nxs_requirewidget($widget);

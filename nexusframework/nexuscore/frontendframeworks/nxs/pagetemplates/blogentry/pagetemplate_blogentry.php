@@ -838,9 +838,7 @@ function nxs_pagetemplate_handlepagedecorator($pagedecoratorid)
 }
 
 function nxs_pagetemplate_blogentry_render($args)
-{
-	
-	
+{	
 	if (is_attachment())
 	{
 		$templateproperties = nxs_gettemplateproperties();
@@ -1334,7 +1332,6 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 
 	$pagedata = get_post($postid);
 	$titel = $pagedata->post_title;
-	
 
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);

@@ -169,7 +169,7 @@ function nxs_pagetemplate_handlecontent()
 			$shouldrenderaddnewrowoption = true;
 		}
 		?>
-		<div id="nxs-content" class="nxs-sitewide-element <?php echo $cssclass; ?>">
+		<div class="nxs-sitewide-element <?php echo $cssclass; ?>">
 			<?php 
 			$hassidebar = ($existingsidebarid != ""); 
 			if ($hassidebar)
@@ -459,7 +459,6 @@ function nxs_pagetemplate_handlecontent()
 			
 			</div>
 			
-		</div> <!-- END content -->
 		<?php
 	}
 }
@@ -601,153 +600,15 @@ function nxs_pagetemplate_handleheader()
 	
 	$headmeta = trim(nxs_getheadmeta()) . " v1";
 ?>
-<!DOCTYPE html>
-<?php nxs_render_htmlstarttag(); ?>
-<head profile="http://gmpg.org/xfn/11">
-	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
-	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
-	<!-- Nexus Framework | http://nexusthemes.com -->	
-	<!-- Nexus Meta | <?php echo $headmeta; ?> -->
-	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemeid(); ?> | <?php echo $version; ?>" />
-	<?php nxs_render_htmlcorescripts(); ?>
-	<?php 
-	nxs_hideadminbar();	
-	wp_enqueue_style('nxsbox');
-	// the wp_head alters the $post variable,
-	// to prevent this from happening, we store the post
-	$beforepost = $post;
-	
-	wp_head();
-	
-	// the wp_head alters the $post variable,
-	// to prevent this from happening, we restore the post
-	$post = $beforepost;
-	?>
-	<?php	if (isset($faviconurl)) { ?>
-	<link rel="shortcut icon" href="<?php echo $faviconurl; ?>" type="image/x-icon" />
-	<?php	} ?>
-	<?php
-
-	// dit wordt niet op goede plek ge-enqueued
-	
-	?>
-	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
-	<?php
-
-	//
-	nxs_render_headstyles();
-	nxs_analytics_handleanalytics();
-	
-	if (is_user_logged_in()) { ?>
-	
-	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
-	<script type="text/javascript">
-		onload=function()
-		{
-			// refresh the screen when the user pushes the back button
-			var e=document.getElementById("nxs-refreshed-indicator");
-			if(e.value=="no")e.value="yes";
-			else
-			{
-				e.value="no";
-				location.reload();
-			}
-		}
-	</script>
-	
-	<?php } ?>
-	
-	<?php
-
-	if (nxs_has_adminpermissions() && $_REQUEST["customhtml"] == "off")
-	{
-		// suppress
-	}
-	else
-	{
-		echo $sitemeta["vg_injecthead"];
-	}
-	
-	// Google Tag Manager; HEAD PART - NEW STYLE
-	if ($sitemeta["googletagmanagerid"] != "")
-	{
-		if (!is_user_logged_in())
-		{
-			?>
-			<!-- Google Tag Manager -->
-			<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','<?php echo $sitemeta["googletagmanagerid"]; ?>');</script>
-			<!-- End Google Tag Manager -->
-			<?php
-		}
-		else
-		{
-			?><!-- Google Tag Manager is suppressed for authenticated users (see https://github.com/nexusthemes/communityrfc/issues/60) --><?php
-		}
-	}
-	do_action('nxs_beforeend_head');
-	?>
-</head>
-
-<body <?php body_class(); ?> <?php do_action('nxs_render_bodyatts'); ?>>
-	<?php
-	// Google Tag Manager; OLD STYLE
-	if ($sitemeta["googletagmanager"] != "" && $sitemeta["googletagmanagerid"] == "")
-	{
-		if (!is_user_logged_in())
-		{
-			echo "<!-- Google Tag Manager -->";
-			echo $sitemeta["googletagmanager"];
-		}
-		else
-		{
-			?><!-- Google Tag Manager is suppressed for authenticated users (see https://github.com/nexusthemes/communityrfc/issues/60) --><?php
-		}
-	}
-	// Google Tag Manager; BODY PART - NEW STYLE
-	if ($sitemeta["googletagmanagerid"] != "")
-	{
-		if (!is_user_logged_in())
-		{
-			?>
-			<!-- Google Tag Manager (noscript) -->
-			<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?php echo $sitemeta["googletagmanagerid"]; ?>"
-			height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-			<!-- End Google Tag Manager (noscript) -->
-			<?php
-		}
-		else
-		{
-			?><!-- Google Tag Manager is suppressed for authenticated users (see https://github.com/nexusthemes/communityrfc/issues/60) --><?php
-		}
-	}
-	?>
-	<?php if (nxs_showloadcover()) { ?>
-		<div id="nxs-load-cover" style='position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #000; z-index:9999;'></div>
-	<?php } else { ?>
-		<div id="nxs-load-cover" style=''></div>
-	<?php } ?>
-	
-	<?php do_action('nxs_bodybegin'); ?>
-	<?php include(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsmenu.php'); ?>
-	
 	<?php
 	// loading the frontendediting overrides the containerpostid,
 	// we therefore store it first
 	global $nxs_global_current_containerpostid_being_rendered;
 	$nxs_global_current_containerpostid_being_rendered = $containerpostid;
-	?>
-	<?php require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php'); ?>
-	<?php
 	// loading the frontendediting overrides the containerpostid?
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 	?>
-	
-	<?php global $nxs_global_extendrootclass; ?>
- <div id="nxs-container" class="nxs-containsimmediatehovermenu nxs-no-click-propagation <?php echo $page_cssclass . " " . $nxs_global_extendrootclass; ?>">
+ <div id="nxs-template">
 	<?php
 	$iswidescreen = nxs_iswidescreen("header");
 	if ($iswidescreen)
@@ -757,31 +618,6 @@ function nxs_pagetemplate_handleheader()
 	else
 	{
 		$widescreenclass = "";
-	}
-	
-	if (isset($existingheaderid) && $existingheaderid != 0)
-	{
-		$cssclass = nxs_getcssclassesforrowcontainer($existingheaderid);
-		?>
-		<div id="nxs-header" class="nxs-containshovermenu1 nxs-sitewide-element <?php echo $widescreenclass; ?>">
-			<div id="nxs-header-container" class="nxs-sitewide-container nxs-header-container nxs-containshovermenu1 <?php echo $cssclass; ?>">
-				<?php 
-					if ($existingheaderid != "")
-					{
-						?>
-						<div class="nxs-header-topfiller"></div>
-						<?php
-						echo nxs_getrenderedhtmlincontainer($containerpostid, $existingheaderid, "default");
-					}
-					else
-					{
-						// don't render anything if its not there
-					}
-				?>
-	    </div>
-	    <div class="nxs-clear"></div>
-	  </div> <!-- end #nxs-header -->
-	  <?php 
 	}
 }
 
@@ -838,9 +674,7 @@ function nxs_pagetemplate_handlepagedecorator($pagedecoratorid)
 }
 
 function nxs_pagetemplate_blogentry_render($args)
-{
-	
-	
+{	
 	if (is_attachment())
 	{
 		$templateproperties = nxs_gettemplateproperties();
@@ -941,18 +775,18 @@ function nxs_pagetemplate_blogentry_render($args)
 	// ACTUAL RENDERING OF PAGE
 	//
 	
-	nxs_pagetemplate_handlepagedecorator($pagedecorator_postid);
+	//nxs_pagetemplate_handlepagedecorator($pagedecorator_postid);
 	
 	//
 	//
 	//
 	
 
-	nxs_pagetemplate_handleheader();
+	//nxs_pagetemplate_handleheader();
 	
 	//
 	
-	do_action('nxs_ext_betweenheadandcontent');
+	//do_action('nxs_ext_betweenheadandcontent');
 	
 	//
 	
@@ -960,7 +794,7 @@ function nxs_pagetemplate_blogentry_render($args)
 
 	//
 
-	nxs_pagetemplate_handlefooter();
+	//nxs_pagetemplate_handlefooter();
 }
 
 function nxs_pagetemplate_blogentry_renderpreview($args)
@@ -1334,7 +1168,6 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 
 	$pagedata = get_post($postid);
 	$titel = $pagedata->post_title;
-	
 
 	extract($clientpopupsessiondata);
 	extract($clientshortscopedata);
