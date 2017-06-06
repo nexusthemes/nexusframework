@@ -3,7 +3,7 @@
 function nxs_widgets_embed_geticonid() 
 {
 	//$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-text";
+	return "nxs-icon-puzzle";
 }
 
 // Setting the widget title
@@ -17,26 +17,82 @@ function nxs_widgets_embed_gettitle()
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
 
-function nxs_widgets_embed_home_getfieldstoadd()
-{
-	$result = array
-	(
-	);
-	return $result;
-}
-
 // Define the properties of this widget
 function nxs_widgets_embed_home_getoptions($args) 
 {
-	$fields = array
-	(	
-	);
+	if (nxs_iswebmethodinvocation())
+	{
+		$clientpopupsessioncontext = $_REQUEST["clientpopupsessioncontext"];
+		$clientpopupsessiondata = $_REQUEST["clientpopupsessiondata"];
+		//
+		$containerpostid = $clientpopupsessioncontext["containerpostid"];
+		$placeholderid = $clientpopupsessioncontext["placeholderid"];
+		
+		// load the widget's data from the persisted db
+		$placeholdermetadata = nxs_getwidgetmetadata($containerpostid, $placeholderid);
+		$embeddabletypemodeluri = $placeholdermetadata["embeddabletypemodeluri"];
+		
+		//echo "before:";
+		//var_dump($placeholdermetadata);
+		//die();
+		
+		// but allow it to be overriden in the session
+		if (isset($clientpopupsessiondata["embeddabletypemodeluri"]))
+		{
+			$embeddabletypemodeluri = $clientpopupsessiondata["embeddabletypemodeluri"];
+		}
 
+		if ($embeddabletypemodeluri == "")
+		{
+			// todo: invoke the content provider to get the content of the things we can embed here 
+			// (this should be a template)
+			
+			$custompicker = "<div><a href='#' onclick='nxs_js_popup_setsessiondata(\"embeddabletypemodeluri\", \"1@embeddable\"); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;'>WP Themes in Businesstype</a></div>";
+			
+			// 
+			$fields = array
+			(	
+				array
+		    (
+					"id" 					=> "embeddabletypemodeluri",
+					"type" 				=> "input",
+					"label" 			=> nxs_l18n__("Embeddable (todo: implement picker)", "nxs_td"),
+				),
+				array
+				(
+					"id" 					=> "embeddabletypemodeluripicker",
+					"type" 				=> "custom",
+					"label" 			=> nxs_l18n__("Embeddable (todo: implement picker)", "nxs_td"),
+					"custom"	=> $custompicker,
+				),
+			);
+			
+			// this should be a read only / hidden field,
+			// and there should be another custom field populated with content defined by the content provider
+			
+			$sheettitle = "What do you want to embed?";
+			$sheeticon = "nxs-icon-puzzle";
+		}
+		else
+		{
+			// load the selected embeddabletypemodeluri from the contentprovider
+			global $nxs_g_modelmanager;
+			$sheettitle = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "title");
+			$sheeticon = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "icon");
+			$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
+			$fields = json_decode($fieldsjsonstring, true);
+			// todo: add an option to switch embeddabletypemodeluri ?
+		}
+	}
+	else
+	{
+		// 
+	}
 	
 	$options = array
 	(
-		"sheettitle" => nxs_widgets_embed_gettitle(),
-		"sheeticonid" => nxs_widgets_embed_geticonid(),
+		"sheettitle" => $sheettitle,
+		"sheeticonid" => $sheeticon,
 		"fields" => $fields,
 	);
 	
@@ -54,9 +110,15 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	// Importing variables
 	extract($args);
 	
-	// Every widget needs it's own unique id for all sorts of purposes
-	// The $postid and $placeholderid are used when building the HTML later on
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	if ($render_behaviour == "code")
+	{
+		//
+		$temp_array = array();
+	}
+	else
+	{
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	}
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
@@ -77,14 +139,26 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	global $nxs_global_row_render_statebag;
 	global $nxs_global_placeholder_render_statebag;
 		
-	// Appending custom widget class
-	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-embed ";
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-embed ";
+	}
 	
 	// EXPRESSIONS
 	// ---------------------------------------------------------------------------------------------------- 
 	
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
+
+	//
+	global $nxs_g_modelmanager;
+	$templateurl = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "templateurl");
+	$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
+	$fields = json_decode($fieldsjsonstring, true);
 
 	// OUTPUT
 	// ---------------------------------------------------------------------------------------------------- 
@@ -101,11 +175,19 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		$args["placeholderid"] = $placeholderid;
 		$args["placeholdertemplate"] = "embed";
 		
-		$url = "http://webdesign.c1.us-e1.nexusthemes.com/wordpress-themes-in-businesstype/";
+		$url = $templateurl;
 		$url = nxs_addqueryparametertourl_v2($url, "frontendframework", "alt", true, true);
 		// add query parameters based upon the lookup tables of the widget (options)
-		$url = nxs_addqueryparametertourl_v2($url, "businesstype", "electrician", true, true);
-		$url = nxs_addqueryparametertourl_v2($url, "devicetype", "laptopf", true, true);
+		
+		foreach ($fields as $field => $fieldmeta)
+		{
+			$id = $fieldmeta["id"];
+			$value = $$id;
+			
+			//$url = nxs_addqueryparametertourl_v2($url, "businesstype", $businesstype, true, true);
+			//$url = nxs_addqueryparametertourl_v2($url, "devicetype", "laptopf", true, true);
+			$url = nxs_addqueryparametertourl_v2($url, $id, $value, true, true);
+		}
 		
 		$content = file_get_contents($url);
 		// tune the output (should be done by the content platform)
@@ -130,7 +212,15 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	// note, we set the generic widget hover menu AFTER rendering, as the blog widget
 	// will also set the generic hover menu; we don't want to see the generic hover
 	// menu of the blog, we want to see it of this specific wrapping type
-	nxs_widgets_setgenericwidgethovermenu($postid, $placeholderid, $placeholdertemplate);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{	
+		nxs_widgets_setgenericwidgethovermenu($postid, $placeholderid, $placeholdertemplate);
+	}
+	
 
 	// -------------------------------------------------------------------------------------------------
 	 

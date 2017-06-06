@@ -291,7 +291,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			// if thats true, replace it with whatever is set as the replacement in the shortcode
 			$queryparameter = $attributes["queryparameter"];
 			$replacement = $lookup[$queryparameter];
-			if (isset($replacement))
+			if (isset($replacement) && $replacement != "")
 			{
 				$input = $replacement;
 			}
@@ -1352,4 +1352,20 @@ function nxs_vimeo_shortcode( $atts )
 }
 add_shortcode('vimeo', 'nxs_vimeo_shortcode');
 
-?>
+function nxs_sc_embed($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	nxs_requirewidget("embed");
+
+	$args = array
+	(
+		"render_behaviour" => "code",
+	);
+	// blend the parameters given
+	$args = array_merge($args, $attributes);
+	
+	$renderresult = nxs_widgets_embed_render_webpart_render_htmlvisualization($args);
+	return $renderresult["html"];
+}
+add_shortcode('nxsembed', 'nxs_sc_embed');
