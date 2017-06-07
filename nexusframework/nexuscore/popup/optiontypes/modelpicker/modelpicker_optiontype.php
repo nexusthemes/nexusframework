@@ -1,119 +1,110 @@
 <?php
-require_once("/srv/generic/plugins-available/nxs-contentprovider/businessmodellogic.php");
-
 function nxs_popup_optiontype_modelpicker_renderhtmlinpopup($optionvalues, $args, $runtimeblendeddata) 
 {
+	// default values
+	$emptyitem_enable = "true";
+	$emptyitem_text = "";
+	$emptyitem_value = "";
+	
+	$previewlink_enable = "true";
+	$previewlink_text = "preview";
+	$previewlink_target = "_blank";
+	
+	$beforeitems = array();
+	
 	extract($optionvalues);
 	extract($args);
 	extract($runtimeblendeddata);
 	
-	if (isset($$id))
+	$value = $runtimeblendeddata[$id];	// $id is the parametername, $$id is the value of that parameter
+	
+	//
+	//$iterator_datasource = "embeddable";
+	$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+	
+	global $nxs_g_modelmanager;
+	
+	$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+	$instances = $contentmodel[$iterator_datasource]["instances"];
+	
+	$items = array();
+	foreach ($instances as $instance)
 	{
-		$value = $$id;	// $id is the parametername, $$id is the value of that parameter
+		$itemhumanmodelid = $instance["content"]["humanmodelid"];
+		$itemuri = "{$itemhumanmodelid}@${iterator_datasource}";
+		$itemtitle = $nxs_g_modelmanager->getcontentmodelproperty($itemuri, $textproperty);
+		$itemvalue = $nxs_g_modelmanager->getcontentmodelproperty($itemuri, $valueproperty);
+		
+		$items[$itemvalue] = $itemtitle;
 	}
-	else
-	{
-		$value = "";
-	}
 	
-	$singularschema = "websitebouwerusp";
-	// load all data
+	asort($items);
 	
-	$listschema = "listof{$singularschema}";
-	$listhumanmodelidentification = "singleton";
-	
-	$listresult = nxs_businessmodel_getmodelbyhumanid($listschema, $listhumanmodelidentification);
-	
-	nxs_ob_start();
+	// add a variable option so people can use a lookup too (perhaps make this optional?)
+	$items["{{" . $id . "}}"] = "{{" . $id . "}}";
 	
 	?>
 	<div class="content2">
-    <div class="box">
-    	<?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
+		<div class="box">
+	    <?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
 			<div class="box-content">
-				<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" />
-				<script>
-					var entiretexttoid = [
-						<?php
-						$instances = $listresult["contentmodel"][$singularschema]["instances"];
-						foreach ($instances as $index => $instancemeta)
-						{
-							$currentcontent = $instancemeta["content"];
-							$currenthumanmodelid = $currentcontent["humanmodelid"];
-							$instance = nxs_businessmodel_getmodelbyhumanid($singularschema, $currenthumanmodelid);
-							$contentmodel = $instance["contentmodel"];
-							$taxonomyproperties = $contentmodel["properties"]["taxonomy"];
-							var_dump($taxonomyproperties);
-							?>
-							{
-								<?php
-								$isfirstprop = true;
-								foreach ($taxonomyproperties as $key => $val)
-								{
-									if ($isfirstprop)
-									{
-										$isfirstprop = false;
-									}
-									else
-									{
-										echo ",\r\n";
-									}
-									echo "{$key}: '{$val}'";
-								}
-								?>
-							}
-							<?php
-						}
-						?>
-					];
-					
-				</script>
-	        <?php 
-	        if (isset($value) && $value != "") 
-	        { 
-	        	?>
-	      		<span class="<?php echo $value; ?> nxs-icon">
-						<?php 
+				<select id="<?php echo $id; ?>" class="chosen-select" name="<?php echo $id; ?>" onchange="nxs_js_popup_sessiondata_make_dirty();">
+				<?php				 
+					if ($id == "") 
+					{
+						$selected = "selected='selected'";
 					} 
 					else 
-					{ 
-						// nothing (yet)
-						/*
-						?>
-						<a href="#" onclick="nxs_js_starticonpicker_<?php echo $id; ?>(); return false;"><?php echo nxs_l18n__("None", "nxs_td"); ?></a>
-						<?php
-						*/
+					{
+						$selected = "";
+					}
+				
+				$isfound = false;
+				foreach ($items as $itemvalue => $itemtext) 
+				{
+					$itemtext = nxs_cutstring($itemtext, 50);
+					if (trim($itemtext) == "")
+					{
+						$itemtext = "(empty)";
+					}
+					
+					$selected = "";
+					if ($itemvalue == $value) 
+					{
+						$isfound = true;
+						$selected = "selected='selected'";
 					} 
-					?>
-				</li>
-      	<input type="hidden" name="<?php echo $id; ?>" id="<?php echo $id; ?>" value="<?php echo $value; ?>" />
-      </div>
+					else 
+					{
+						$selected = "";
+					}
+					echo "<option value='$itemvalue' $selected	>$itemtext</option>\r\n";
+				}
+				?>
+				</select>
+			</div>
 		</div>
-    <div class="nxs-clear"></div>
-  </div>
-  
-  <?php
-  
-  $html = nxs_ob_get_contents();
-  
-  //error_log("list picker;");
-  //error_log($html);
-  
-	nxs_ob_end_clean();
-	
-	echo $html;
-	//
+		<div class="nxs-clear"></div>
+	</div> <!--END content-->
+	<?php
 }
 
 function nxs_popup_optiontype_modelpicker_renderstorestatecontroldata($optionvalues)
 {
 	$id = $optionvalues["id"];
-	echo 'nxs_js_popup_storestatecontroldata_hiddenfield("' . $id . '", "' . $id . '");';	
+	echo 'nxs_js_popup_storestatecontroldata_dropdown("' . $id . '", "' . $id . '");';	
 }
 
 function nxs_popup_optiontype_modelpicker_getitemstoextendbeforepersistoccurs($optionvalues, $metadata)
 {
 	$result = array();
+	
+	$id = $optionvalues["id"];
+	$value = $metadata[$id];
+	
+	$globalid = nxs_get_globalid($value, true);
+	$result[$id . "_globalid"] = $globalid;
+	
 	return $result;
 }
 

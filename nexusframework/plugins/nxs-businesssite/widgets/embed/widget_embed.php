@@ -44,10 +44,25 @@ function nxs_widgets_embed_home_getoptions($args)
 
 		if ($embeddabletypemodeluri == "")
 		{
-			// todo: invoke the content provider to get the content of the things we can embed here 
-			// (this should be a template)
 			
-			$custompicker = "<div><a href='#' onclick='nxs_js_popup_setsessiondata(\"embeddabletypemodeluri\", \"1@embeddable\"); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;'>WP Themes in Businesstype</a></div>";
+			$iterator_datasource = "embeddable";
+			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+			
+			global $nxs_g_modelmanager;
+			
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+			$instances = $contentmodel[$iterator_datasource]["instances"];
+			
+			$custompicker = "";
+			$custompicker .= "<div>";
+			foreach ($instances as $instance)
+			{
+				$itemhumanmodelid = $instance["content"]["humanmodelid"];
+				$itemuri = "{$itemhumanmodelid}@${iterator_datasource}";
+				$itemtitle = $nxs_g_modelmanager->getcontentmodelproperty($itemuri, "title");
+				$custompicker .= "<a href='#' onclick='nxs_js_popup_setsessiondata(\"embeddabletypemodeluri\", \"{$itemuri}\"); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;'>{$itemtitle}</a><br />";
+			}
+			$custompicker .= "</div>";
 			
 			// 
 			$fields = array
@@ -56,15 +71,27 @@ function nxs_widgets_embed_home_getoptions($args)
 		    (
 					"id" 					=> "embeddabletypemodeluri",
 					"type" 				=> "input",
-					"label" 			=> nxs_l18n__("Embeddable (todo: implement picker)", "nxs_td"),
+					"visibility" => "hidden",
+					"label" 			=> nxs_l18n__("Embeddable", "nxs_td"),
 				),
 				array
 				(
 					"id" 					=> "embeddabletypemodeluripicker",
 					"type" 				=> "custom",
-					"label" 			=> nxs_l18n__("Embeddable (todo: implement picker)", "nxs_td"),
+					"label" 			=> nxs_l18n__("Embeddable", "nxs_td"),
 					"custom"	=> $custompicker,
 				),
+				/*
+				array
+				(
+					"id" 					=> "test",
+					"type" 				=> "modelpicker",
+					"label" 			=> nxs_l18n__("test", "nxs_td"),
+					"iterator_datasource" => "businesstype",
+					"textproperty" => "nexus_prim_bus_type",
+					"valueproperty" => "nexus_prim_bus_type",
+				),
+				*/
 			);
 			
 			// this should be a read only / hidden field,
@@ -82,6 +109,18 @@ function nxs_widgets_embed_home_getoptions($args)
 			$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
 			$fields = json_decode($fieldsjsonstring, true);
 			// todo: add an option to switch embeddabletypemodeluri ?
+			
+			$additionalfields = array
+			(
+				array
+				( 
+					"id" 				=> "lookups",
+					"type" 				=> "textarea",
+					"label" 			=> nxs_l18n__("Lookup values", "nxs_td"),
+				),
+			);
+			
+			$fields = array_merge($fields, $additionalfields);
 		}
 	}
 	else
@@ -94,6 +133,7 @@ function nxs_widgets_embed_home_getoptions($args)
 		"sheettitle" => $sheettitle,
 		"sheeticonid" => $sheeticon,
 		"fields" => $fields,
+		"footerfiller" => true,
 	);
 	
 	return $options;
@@ -154,11 +194,18 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	global $nxs_global_current_containerpostid_being_rendered;
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 
-	//
-	global $nxs_g_modelmanager;
-	$templateurl = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "templateurl");
-	$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
-	$fields = json_decode($fieldsjsonstring, true);
+	if ($embeddabletypemodeluri == "")
+	{
+		$alternativemessage = "Configure me please :)";
+	}
+	else
+	{
+		//
+		global $nxs_g_modelmanager;
+		$templateurl = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "templateurl");
+		$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
+		$fields = json_decode($fieldsjsonstring, true);
+	}
 
 	// OUTPUT
 	// ---------------------------------------------------------------------------------------------------- 
@@ -184,12 +231,61 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			$id = $fieldmeta["id"];
 			$value = $$id;
 			
-			//$url = nxs_addqueryparametertourl_v2($url, "businesstype", $businesstype, true, true);
-			//$url = nxs_addqueryparametertourl_v2($url, "devicetype", "laptopf", true, true);
+			// it could be that the value contains a lookup placeholder; replace those
+			if (nxs_stringcontains($value, "{"))
+			{
+				$thelookup = array();
+				
+				$moreitems = nxs_gettemplateruleslookups();
+				$thelookup = array_merge($thelookup, $moreitems);
+				
+				$moreitems = nxs_parse_keyvalues($lookups);				
+				$thelookup = array_merge($thelookup, $moreitems);
+				
+				//error_log("thelookup:" . json_encode($thelookup));
+				//error_log("value before:" . $value);
+								
+				// interpret the iterator_datasource by applying the lookup tables from the pagetemplate_rules
+				$translateargs = array
+				(
+					"lookup" => $thelookup,
+					"item" => $value,
+				);
+				$value = nxs_filter_translate_v2($translateargs);
+
+				//error_log("value after:" . $value);
+			}
+				
 			$url = nxs_addqueryparametertourl_v2($url, $id, $value, true, true);
 		}
+		error_log("theurl:" . $url);
 		
-		$content = file_get_contents($url);
+		$transientkey = md5("embed_tr_{$url}");
+		$content = get_transient($transientkey);
+		$shouldrefreshdbcache = false;
+		if ($shouldrefreshdbcache == false && $content == "")
+		{
+			$shouldrefreshdbcache = true;
+		}
+		if ($shouldrefreshdbcache == false && $_REQUEST["embed_transients"] == "refresh")
+		{
+			$shouldrefreshdbcache = true;
+		}
+		
+		if ($shouldrefreshdbcache)
+		{
+			$content = file_get_contents($url);
+			
+			// update cache
+			$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
+			set_transient($transientkey, $content, $cacheduration);
+			
+			if ($_REQUEST["debugembed"] == "true")
+			{
+				error_log("embed; url; $url");
+			}
+		}
+		
 		// tune the output (should be done by the content platform)
 		$content = str_replace("nxs-content-container", "template-content-container", $content);
 		$content = str_replace("nxs-article-container", "template-article-container", $content);
@@ -207,6 +303,8 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		$content = str_replace("nxs-runtime-autocellsize", "template-runtime-autocellsize", $content);
 		
 		echo $content;
+		
+		
 	}
 
 	// note, we set the generic widget hover menu AFTER rendering, as the blog widget

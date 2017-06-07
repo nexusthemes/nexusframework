@@ -371,7 +371,6 @@ function nxs_cache_getexpirationinsecs()
 	return $result;
 }
 
-
 function nxs_ensurenocacheoutput($buffer)
 {
 	$file = nxs_cache_getcachedfilename();
@@ -691,8 +690,7 @@ function nxs_init_themeboot()
  				add_action('admin_notices', 'nxs_nositesettings_adminnotice');
  			}
  		}
- 	}
- 	
+ 	}	
 }
 
 function nxs_renderplaceholderwarning($message)
@@ -892,6 +890,12 @@ function nxs_gettemplateruleslookups()
 	$tp = nxs_gettemplateproperties();
 	global $nxs_gl_cache_templateprops;
 	$result = $nxs_gl_cache_templateprops["templaterules_lookups_lookup"];
+	
+	if ($result === null || $result == "")
+	{
+		$result = array();
+	}
+	
 	return $result;
 }
 
@@ -1663,6 +1667,35 @@ function nxs_addqueryparametertourl_v2($url, $parameter, $value, $shouldurlencod
 	else
 	{
 		$result = $result . $parameter . "=" . $value;
+	}
+	
+	return $result;
+}
+
+function nxs_parse_keyvalues($lookups)
+{
+	$result = array();
+	
+	$lines = explode("\n", $lookups);
+	foreach ($lines as $line)
+	{
+		$limit = 2;	// 
+		$pieces = explode("=", $line, $limit);
+		$key = trim($pieces[0]);
+		
+		if ($key == "")
+		{
+			// empty line, ignore
+		}
+		else if (nxs_stringstartswith($key, "//"))
+		{
+			// its a comment, ignore
+		}
+		else
+		{
+			$val = $pieces[1];
+			$result[$key] = $val;
+		}
 	}
 	
 	return $result;

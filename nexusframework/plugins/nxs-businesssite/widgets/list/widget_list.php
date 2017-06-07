@@ -212,7 +212,7 @@ function nxs_widgets_list_home_getoptions($args)
       array
       (
 				"id" 					=> "filter_items_where",
-				"type" 				=> "input",
+				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Items where", "nxs_td"),
 			),
 			
@@ -324,16 +324,6 @@ function nxs_widgets_list_home_getoptions($args)
 				"label" 			=> nxs_l18n__("...", "nxs_td"),
 				"layouttype"		=> "custom",
 			),
-			
-			/*
-			// 
-			array
-			(
-				"id" 				=> "modelpicker",
-				"type" 				=> "modelpicker",
-				"label" 			=> nxs_l18n__("modelpicker", "nxs_td"),
-			),
-			*/
 		)
 	);
 	
@@ -640,27 +630,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		// second, set (override) lookup key/values as defined within the widget itself
 		if ($item_lookups != "")
 		{
-			$lines = explode("\n", $item_lookups);
-			foreach ($lines as $line)
-			{
-				$limit = 2;	// 
-				$pieces = explode("=", $line, $limit);
-				$key = trim($pieces[0]);
-				
-				if ($key == "")
-				{
-					// empty line, ignore
-				}
-				else if (nxs_stringstartswith($key, "//"))
-				{
-					// its a comment, ignore
-				}
-				else
-				{
-					$val = $pieces[1];
-					$lookup[$key] = $val;
-				}
-			}
+			$lookup = nxs_parse_keyvalues($item_lookups);
 		}
 		
 		// third, set (override) lookup key/values as defined by referenced models
