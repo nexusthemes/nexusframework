@@ -4076,6 +4076,8 @@ span.reviewer 															{ margin-left: 5px; }
 	order: 1; 
 	-webkit-order: 1;
 }
+.nxs-justify-content-flex-start { justify-content: flex-start; }
+.nxs-justify-content-space-between { justify-content: space-between }
 
 /* MOBILE FRIENDLY TEST
 ---------------------------------------------------------------------------------------------------- */
