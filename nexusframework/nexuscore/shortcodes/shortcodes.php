@@ -5,7 +5,7 @@
 // meaning, it should keep the shortcode as-is if the condition is not met,
 // and it shsould transform the shortcode when the condition is met
 // to facilitate this we use the following function
-//
+// sample; sc_scope="list.iterator.filter"
 function nxs_sc_handlescope($attributes, $content = null, $name='')
 {
 	extract($attributes);
@@ -213,9 +213,35 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = ucwords($input);
 		}
+		else if ($op == "ucfirstchar")
+		{
+			$input = strtoupper(substr($input, 0, 1)) . substr($input, 1);
+		}
 		else if ($op == "urlprettyfy")
 		{
 			$input = nxs_url_prettyfy($input);
+		}
+		else if ($op == "youtubeify")
+		{
+			// thanks to https://stackoverflow.com/questions/19050890/find-youtube-link-in-php-string-and-convert-it-into-embed-code
+			$input = preg_replace(
+        "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
+        "<br /><div class=\"container\"><iframe class=\"video\" width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/$2\" allowfullscreen></iframe></div><br />",
+        $input
+    	);
+		}
+		else if ($op == "linkify")
+		{
+			$input = preg_replace
+			(
+        "~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~",
+        "<a target=\"blank\" class=\"linkified\" href=\"\\0\">\\0</a>", 
+        $input
+      );
+		}
+		else if ($op == "htmlentities")
+		{
+			$input = htmlentities($input);
 		}
 		else if ($op == "xspace")
 		{

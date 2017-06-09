@@ -984,6 +984,21 @@ class nxs_g_modelmanager
 			}
 			
 			set_transient($transientkey, $result, $cacheduration);
+			
+			// check for greedy fetch request
+			if ($result["meta"]["greedyfetchsupport"])
+			{
+				error_log("found greedyfetchsupport instruction when fetching $modeluri :)");
+				// 
+				$schema = $this->getschema($modeluri);
+				$this->cachebulkmodels($schema);
+			}
+		}
+		
+		if ($result["found"] === false)
+		{
+			error_log("getmodel_dbcache; {$modeluri}; not found");
+			$result = false;
 		}
 		
 		return $result;
@@ -1011,7 +1026,7 @@ class nxs_g_modelmanager
 		{
 			do_action("nxs_a_modelnotfound", "{$modeluri} (not found)");
 			error_log("getmodel_actual; not found; $url");
-			return false;
+			return $json;
 		}
 		
 		if ($json["nxs_queued"] == "true")
@@ -1028,7 +1043,7 @@ class nxs_g_modelmanager
 		}
 		
 		$result = $json;
-		
+	
 		return $result;
 	}
 	
@@ -1265,6 +1280,11 @@ class nxs_g_modelmanager
 			}
 			if ($_REQUEST["bulkmodels"] == "true")
 			{
+				if (!is_user_logged_in())
+				{
+					echo "sorry only available if you are logged in";
+				}
+				
 				$singularschema = $_REQUEST["singularschema"];
 				if ($singularschema == "") { echo "singularschema not specified?"; die(); }
 	
