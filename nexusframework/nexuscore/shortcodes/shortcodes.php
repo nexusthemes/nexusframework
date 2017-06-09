@@ -365,6 +365,16 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			$multiresponse = nxs_filter_translatelookup($metadata, array("value"));
 			$input = $multiresponse["value"];
 		}
+		else if ($op == "modelproperty")
+		{
+			global $nxs_g_modelmanager;
+			$args = array
+			(
+				"modeluri" => $attributes["modeluri"],
+				"property" => $attributes["property"],
+			);
+			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
+		}
 	}
 	
 	echo $input;
@@ -443,8 +453,9 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		else if ($op == "contains")
 		{
 			$needle = $attributes["containsneedle"];
+			$ignorecase = $attributes["ignorecase"] === "true";
 			
-			if (nxs_stringcontains($input, $needle))
+			if (nxs_stringcontains_v2($input, $needle, $ignorecase))
 			{
 				$input = "true";
 			}

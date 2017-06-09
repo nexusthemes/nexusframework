@@ -164,6 +164,13 @@ function nxs_widgets_list_home_getoptions($args)
         "type" 				=> "wrapperend",
       ),
 			
+      array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			
 			//
 			array
 			(
@@ -194,7 +201,7 @@ function nxs_widgets_list_home_getoptions($args)
       (
 				"id" 					=> "item_lookups",
 				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Lookup table (item)", "nxs_td"),
+				"label" 			=> nxs_l18n__("Lookup table (evaluated for each iteration of the datasource)", "nxs_td"),
 			),
 			array
 			(
@@ -597,6 +604,37 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	$databindindex = -1;
 	$databindindexafterfilter = -1;
 	
+	// first the lookup table as defined in the pagetemplaterules
+	$lookups_widget = array();
+	if ($lookups != "")
+	{
+		$lookups_widget = nxs_parse_keyvalues($lookups);
+		// evaluate the lookups widget values line by line
+		$sofar = array();
+		foreach ($lookups_widget as $key => $val)
+		{
+			$sofar[$key] = $val;
+			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+
+			//echo "step 2; about to evaluate lookup tables on; $val<br />";
+			// apply the lookup values
+			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+
+			// apply shortcodes
+			$val = $sofar[$key];
+			//echo "step 3; result is $val<br />";
+
+			//echo "step 4; about to evaluate shortcode on; $val<br />";
+
+			$val = do_shortcode($val);
+			$sofar[$key] = $val;
+
+			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+
+			$lookups_widget[$key] = $val;
+		}
+	}
+	
 	foreach ($modeluriset as $modeluri)
 	{
 		$databindindex++;
@@ -627,10 +665,13 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$lookup = array_merge($lookup, $templateruleslookups);
 		}
 		
+		// add the lookup values from the widget itself
+		$lookup = array_merge($lookup, $lookups_widget);
+		
 		// second, set (override) lookup key/values as defined within the widget itself
 		if ($item_lookups != "")
 		{
-			$lookup = nxs_parse_keyvalues($item_lookups);
+			$lookup = array_merge($lookup, nxs_parse_keyvalues($item_lookups));
 		}
 		
 		// third, set (override) lookup key/values as defined by referenced models
@@ -645,55 +686,10 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$lookup = array_merge($lookup, $widgetreferencedmodelslookup);
 		}
 		
-		// recursively apply/blend the lookup table to the values, until nothing changes or when we run out of attempts 
+		// apply lookups to one-self
 		if (true)
-		{			
-			// now that the entire lookup table is filled,
-			// recursively apply the lookup tables to its values
-			// for those keys that have one or more placeholders in their values
-			$triesleft = 4;
-			while ($triesleft > 0)
-			{
-				//
-				
-				$triesleft--;
-				
-				$didsomething = false;
-				foreach ($lookup as $key => $val)
-				{
-					if (nxs_stringcontains($val, "{{"))
-					{
-						$origval = $val;
-						
-						$translateargs = array
-						(
-							"lookup" => $lookup,
-							"item" => $val,
-						);
-						$val = nxs_filter_translate_v2($translateargs);
-						
-						$somethingchanged = ($val != $origval);
-						if ($somethingchanged)
-						{
-							$lookup[$key] = $val;
-							$didsomething = true;
-						}
-						else
-						{
-							// continue;
-						}
-					}
-				}
-				
-				if (!$didsomething)
-				{
-					
-					break;
-				}
-				else
-				{
-				}
-			}
+		{
+			$lookup = nxs_lookups_blendlookupstoitselfrecursively($lookup);
 		}
 		
 		global $nxs_gl_sc_currentscope;

@@ -1701,6 +1701,63 @@ function nxs_parse_keyvalues($lookups)
 	return $result;
 }
 
+function nxs_lookups_blendlookupstoitselfrecursively($lookup)
+{
+	// recursively apply/blend the lookup table to the values, until nothing changes or when we run out of attempts 
+	if (true)
+	{			
+		// now that the entire lookup table is filled,
+		// recursively apply the lookup tables to its values
+		// for those keys that have one or more placeholders in their values
+		$triesleft = 4;	// to prevent endless loops
+		while ($triesleft > 0)
+		{
+			//
+			
+			$triesleft--;
+			
+			$didsomething = false;
+			foreach ($lookup as $key => $val)
+			{
+				if (nxs_stringcontains($val, "{{"))
+				{
+					$origval = $val;
+					
+					$translateargs = array
+					(
+						"lookup" => $lookup,
+						"item" => $val,
+					);
+					$val = nxs_filter_translate_v2($translateargs);
+					
+					$somethingchanged = ($val != $origval);
+					if ($somethingchanged)
+					{
+						$lookup[$key] = $val;
+						$didsomething = true;
+					}
+					else
+					{
+						// continue;
+					}
+				}
+			}
+			
+			if (!$didsomething)
+			{
+				
+				break;
+			}
+			else
+			{
+				// something changed, retry as this might have impacted the lookup itself
+			}
+		}
+	}
+	
+	return $lookup;
+}
+
 // kudos to http://stackoverflow.com/questions/4937478/strip-off-url-parameter-with-php
 function nxs_removequeryparameterfromurl($url, $parametertoremove)
 {
