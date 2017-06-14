@@ -821,6 +821,14 @@ class nxs_g_modelmanager
 		return $lookup;
 	}
 	
+	function isvalidschema($singularschema = "")
+	{
+		$normalized = $this->getnormalizedschema($singularschema);
+		$result = ($normalized == $singularschema);
+
+		return $result;
+	}
+	
 	function isvalidmodeluri($modeluri = "")
 	{
 		$isvalid = true;
@@ -1049,12 +1057,20 @@ class nxs_g_modelmanager
 	
 	function cachebulkmodels($singularschema)
 	{
-		if (!is_user_logged_in())
-		{
-			echo "only available for administrators";
-			die();
-		}
+		if ($singularschema == "") { echo "singularschema not specified?"; die(); }
+		if (!$this->isvalidschema($singularschema)) { echo "invalid singularschema $singularschema?"; die(); }
+		if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot cachebulkmodels lists; cachebulkmodels the singular model to refetch the list"; die(); }
+
+		// the fetching of the models
+		$this->cachebulkmodels_internal($singularschema);
 		
+		// the fetching of the list model conneced to it
+		$listofschema = "listof{$singularschema}";
+		$this->cachebulkmodels_internal($listofschema);
+	}
+	
+	function cachebulkmodels_internal($singularschema)
+	{
 		error_log("cachebulkmodels for $singularschema");
 		
 		// step 1; load the bulk model information
@@ -1284,13 +1300,15 @@ class nxs_g_modelmanager
 				{
 					echo "sorry only available if you are logged in";
 				}
-				
+								
 				$singularschema = $_REQUEST["singularschema"];
 				if ($singularschema == "") { echo "singularschema not specified?"; die(); }
-	
+				if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot refetch lists; refetch the singular model to refetch the list"; die(); }
+
+				// this function will itself also update the list
 				$this->cachebulkmodels($singularschema);
 				
-				echo "Bulk models updated :)";
+				echo "Bulk fetching finished ($singularschema) :)";
 				die();
 			}
 		}

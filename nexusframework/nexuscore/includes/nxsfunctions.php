@@ -394,6 +394,7 @@ function nxs_storecacheoutput($buffer)
 	$shouldstore = true;
 	$nocacheexplanations = array();
 	
+	// dont store if there's an acive user session
 	if(session_id() != '') 
 	{
 		// dont store; the session is set
@@ -401,6 +402,7 @@ function nxs_storecacheoutput($buffer)
 		$nocacheexplanations[] = "session is set/active";
 	}
 	
+	// dont store urls with weird chars
 	if ($shouldstore)
 	{
 		$uri = nxs_geturicurrentpage();
@@ -421,6 +423,7 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	// dont store urls that are suspiciously long
 	if ($shouldstore)
 	{
 		$uri = nxs_geturicurrentpage();
@@ -436,6 +439,7 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	// dont store urls that dont exist
 	if ($shouldstore)
 	{
 		if (is_404())
@@ -446,6 +450,7 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	// dont store if woocommerce items are in the cart
 	if ($shouldstore)
 	{
 		global $woocommerce;
@@ -463,6 +468,7 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	// dont store if there's an active user session
 	if ($shouldstore)
 	{
 		if(session_id() == '') 
@@ -477,6 +483,7 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	// dont store if something external (plugin) told us to not store it
 	if ($shouldstore)
 	{
 		global $nxs_gl_cache_pagecache;
@@ -490,7 +497,7 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
-	
+	// dont store unsupported content-types
 	$lowercasecontenttype = "";
 	if ($shouldstore)
 	{
@@ -530,6 +537,7 @@ function nxs_storecacheoutput($buffer)
 		}
 	}
 	
+	// dont store if the page didnt properly finish rendering 
 	if ($shouldstore)
 	{
 		if ($buffer == "")
@@ -1733,6 +1741,9 @@ function nxs_lookups_blendlookupstoitselfrecursively($lookup)
 					$somethingchanged = ($val != $origval);
 					if ($somethingchanged)
 					{
+						// instantly apply the shortcode too if something changed
+						$val = do_shortcode($val);
+						
 						$lookup[$key] = $val;
 						$didsomething = true;
 					}
@@ -5021,6 +5032,13 @@ if (!function_exists('http_response_code'))
 
 function nxs_webmethod_return_ok($args)
 {
+	$content = $args;
+	$content["result"] = "OK";
+	nxs_webmethod_return_raw($content);
+}
+
+function nxs_webmethod_return_raw($args)
+{
 	if (headers_sent($filename, $linenum)) 
 	{
 		echo "nxs headers already send; $filename $linenum";
@@ -5035,15 +5053,8 @@ function nxs_webmethod_return_ok($args)
 		$existingoutput[] = nxs_ob_get_clean();
 	}
 	
-	
-	
 	nxs_set_jsonheader();
 	http_response_code(200);
-
-
-
-	//header($_SERVER['SERVER_PROTOCOL'] . " 200 OK");
-	//header("Status: 200 OK"); // for fast cgi
 
 	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
 	{
@@ -5055,7 +5066,7 @@ function nxs_webmethod_return_ok($args)
 	}
 
 	// add 'result' to array
-	$args["result"] = "OK";
+	// $args["result"] = "OK";
 	
 	// sanitize malformed utf8 (if the case)
 	$args = nxs_array_toutf8string($args);
@@ -5317,6 +5328,7 @@ function nxs_ishttps()
 	return $result;
 }
 
+// is_web_method is_webmethod
 function nxs_iswebmethodinvocation()
 {
 	$result = false;
@@ -9436,7 +9448,7 @@ function nxs_busrules_getgenericoptions($args)
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
-				"custom"	=> nxs_busrules_get_popuphtml("content_postid", array("post", "page"), "", "templatemapping"),
+				"custom"	=> nxs_busrules_get_popuphtml("content_postid", "nxs_templatepart", "", "templatemapping"), 
 				"label" 			=> nxs_l18n__("Main Content", "nxs_td"),
 			),
 						
@@ -10486,6 +10498,7 @@ function nxs_get_corepostmeta($postid)
 }
 
 // sanity checked for remote posts
+// getremotepost
 function nxs_remote_getpost($postid)
 {
 	$isremotetemplate = nxs_isremotetemplate($postid);
@@ -12998,4 +13011,12 @@ function nxs_add_widget_to_post($args)
 	//
 	
 	return $result;
+}
+
+// delete transients, clear_transients
+function nxs_cache_cleartransients($prefix)
+{
+	error_log("clearing transients for '$prefix'");
+	global $wpdb;
+	$sqlquery = $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_{$prefix}%%'" );
 }

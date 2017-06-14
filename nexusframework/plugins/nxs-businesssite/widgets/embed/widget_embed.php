@@ -25,22 +25,28 @@ function nxs_widgets_embed_home_getoptions($args)
 		$clientpopupsessioncontext = $_REQUEST["clientpopupsessioncontext"];
 		$clientpopupsessiondata = $_REQUEST["clientpopupsessiondata"];
 		//
-		$containerpostid = $clientpopupsessioncontext["containerpostid"];
+		$postid = $clientpopupsessioncontext["postid"];
 		$placeholderid = $clientpopupsessioncontext["placeholderid"];
 		
 		// load the widget's data from the persisted db
-		$placeholdermetadata = nxs_getwidgetmetadata($containerpostid, $placeholderid);
+		$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
 		$embeddabletypemodeluri = $placeholdermetadata["embeddabletypemodeluri"];
 		
-		//echo "before:";
-		//var_dump($placeholdermetadata);
-		//die();
+		/*
+		echo "before:";
+		var_dump($postid);
+		var_dump($placeholderid);
+		var_dump($placeholdermetadata);
+		die();
+		*/
 		
 		// but allow it to be overriden in the session
 		if (isset($clientpopupsessiondata["embeddabletypemodeluri"]))
 		{
 			$embeddabletypemodeluri = $clientpopupsessiondata["embeddabletypemodeluri"];
 		}
+		
+		
 
 		if ($embeddabletypemodeluri == "")
 		{
@@ -106,6 +112,8 @@ function nxs_widgets_embed_home_getoptions($args)
 			global $nxs_g_modelmanager;
 			$sheettitle = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "title");
 			$sheeticon = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "icon");
+			
+			// 
 			$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
 			$fields = json_decode($fieldsjsonstring, true);
 			// todo: add an option to switch embeddabletypemodeluri ?
@@ -120,7 +128,7 @@ function nxs_widgets_embed_home_getoptions($args)
 				),
 			);
 			
-			$fields = array_merge($fields, $additionalfields);
+			$fields = array_merge($additionalfields, $fields);
 		}
 	}
 	else
@@ -198,14 +206,7 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	{
 		$alternativemessage = "Configure me please :)";
 	}
-	else
-	{
-		//
-		global $nxs_g_modelmanager;
-		$templateurl = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "templateurl");
-		$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
-		$fields = json_decode($fieldsjsonstring, true);
-	}
+	
 
 	// OUTPUT
 	// ---------------------------------------------------------------------------------------------------- 
@@ -216,6 +217,12 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	} 
 	else 
 	{
+		//
+		global $nxs_g_modelmanager;
+		$templateurl = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "templateurl");
+		$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
+		$fields = json_decode($fieldsjsonstring, true);
+	
 		$args = $temp_array;
 		//  override the following parameter
 		$args["postid"] = $containerpostid;
@@ -260,7 +267,7 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		}
 		error_log("theurl:" . $url);
 		
-		$transientkey = md5("embed_tr_{$url}");
+		$transientkey = "embed_tr_" . md5("{$url}");
 		$content = get_transient($transientkey);
 		$shouldrefreshdbcache = false;
 		if ($shouldrefreshdbcache == false && $content == "")

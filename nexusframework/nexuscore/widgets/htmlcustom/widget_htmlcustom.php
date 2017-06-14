@@ -46,19 +46,50 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 	{
 		global $nxs_g_modelmanager;
 		
-		/*
-		// phase 1; evaluate any referenced models in the modeluris property
-		// sub:id@sub|subsub:{{sub.reference}}@subsub|subsubsub:{{subsub.reference}}
-		$modeluris = $mixedattributes["modeluris"];
-		$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris);
-		*/
+		$lookups_widget = array();
+		if ($lookups != "")
+		{
+			$lookups_widget = nxs_parse_keyvalues($lookups);
+			// evaluate the lookups widget values line by line
+			$sofar = array();
+			foreach ($lookups_widget as $key => $val)
+			{
+				$sofar[$key] = $val;
+				//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+	
+				//echo "step 2; about to evaluate lookup tables on; $val<br />";
+				// apply the lookup values
+				$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+	
+				// apply shortcodes
+				$val = $sofar[$key];
+				//echo "step 3; result is $val<br />";
+	
+				//echo "step 4; about to evaluate shortcode on; $val<br />";
+	
+				$val = do_shortcode($val);
+				$sofar[$key] = $val;
+	
+				//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+	
+				$lookups_widget[$key] = $val;
+			}
+		}
 		
-		// phase 2; translate the magic fields using the lookup tables of all referenced models
-		$lookupargs = array
-		(
-			"modeluris" => $modeluris,
-		);
-		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+		// fill the lookups
+		$lookup = array();
+		
+		// first the lookup table as defined in the pagetemplaterules
+		if (true)
+		{
+			$templateruleslookups = nxs_gettemplateruleslookups();
+			$lookup = array_merge($lookup, $templateruleslookups);
+		}
+		
+		// add the lookup values from the widget itself
+		$lookup = array_merge($lookup, $lookups_widget);
+		
+		// apply the lookups and shortcodes to the customhtml
 		$magicfields = array("htmlcustom");
 		$translateargs = array
 		(
@@ -67,15 +98,6 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 			"fields" => $magicfields,
 		);
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
-		
-		/*
-		// phase 3; apply shortcodes to the magic fields
-		$magicfields = array("title", "subtitle", "text", "destination_url", "image_src", "button_text"); 
-		foreach ($magicfields as $magicfield)
-		{
-			$mixedattributes[$magicfield] = do_shortcode($mixedattributes[$magicfield]);
-		}
-		*/
 	}
 	
 	$htmlcustom = $mixedattributes['htmlcustom'];
@@ -183,6 +205,13 @@ function nxs_widgets_htmlcustom_home_getoptions($args)
 		"fields" => array
 		(
 			// -------------------------------------------------------			
+			
+			 array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
 			
 			array( 
 				"id" 					=> "wrapper_input_begin",

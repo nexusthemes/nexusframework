@@ -143,6 +143,13 @@ function nxs_widgets_list_home_getoptions($args)
 		"footerfiller" => true,	// add some space at the bottom
 		"fields" => array
 		(
+			array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			
 			// datasource
 			array
 			(
@@ -158,18 +165,33 @@ function nxs_widgets_list_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Iterator datasource", "nxs_td"),
 				"placeholder" => "For example 'foobar' to iterate over singleton@listoffoobar models, or a list like (foo@model;bar@model) for a specific set of models",
 			),
+			
+			array
+      (
+				"id" 					=> "filter_items_indexconstrained_min",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Number of index items to ignore (blank=no skipping)", "nxs_td"),
+			),
+			
+			array
+      (
+				"id" 					=> "filter_items_indexconstrained_max",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Max index to process (blank=no skipping)", "nxs_td"),
+			),
+			
+			array
+      (
+				"id" 					=> "filter_pagination_pagesize",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Max number of items per page (blank=no paging)", "nxs_td"),
+			),
+						
 			array
 			(
         "id" 				=> "wrapper_items_end",
         "type" 				=> "wrapperend",
       ),
-			
-      array
-      (
-				"id" 					=> "lookups",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
-			),
 			
 			//
 			array
@@ -238,9 +260,21 @@ function nxs_widgets_list_home_getoptions($args)
       ),
       array
       (
+				"id" 					=> "widget_start_htmltemplate",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Widget start html (renders 1x above the items)", "nxs_td"),
+			),
+      array
+      (
 				"id" 					=> "item_htmltemplate_a",
 				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Template A (item)", "nxs_td"),
+				"label" 			=> nxs_l18n__("Template (renders for each iterated item)", "nxs_td"),
+			),
+			 array
+      (
+				"id" 					=> "widget_end_htmltemplate",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Widget end html (renders 1x below the items)", "nxs_td"),
 			),
 			
 			array
@@ -501,13 +535,57 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	global $nxs_global_current_postid_being_rendered;
 	$posttype2 = get_post_type($nxs_global_current_postid_being_rendered);
 	
-	// interpret the iterator_datasource by applying the lookup tables from the pagetemplate_rules
+	$lookups_widget = array();
+	if ($lookups != "")
+	{
+		$lookups_widget = nxs_parse_keyvalues($lookups);
+		// evaluate the lookups widget values line by line
+		$sofar = array();
+		foreach ($lookups_widget as $key => $val)
+		{
+			$sofar[$key] = $val;
+			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+
+			//echo "step 2; about to evaluate lookup tables on; $val<br />";
+			// apply the lookup values
+			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+
+			// apply shortcodes
+			$val = $sofar[$key];
+			//echo "step 3; result is $val<br />";
+
+			//echo "step 4; about to evaluate shortcode on; $val<br />";
+
+			$val = do_shortcode($val);
+			$sofar[$key] = $val;
+
+			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+
+			$lookups_widget[$key] = $val;
+		}
+	}
+	
+	// interpret the iterator_datasource by applying the lookup tables from the pagetemplate_rules and the lookup table of the widget
+	
+	$dslookups = array();
+	$dslookups = array_merge($dslookups, nxs_gettemplateruleslookups());
+	$dslookups = array_merge($dslookups, $lookups_widget);
+	
 	$translateargs = array
 	(
-		"lookup" => nxs_gettemplateruleslookups(),
 		"item" => $iterator_datasource,
+		"lookup" => $dslookups,
 	);
 	$iterator_datasource = nxs_filter_translate_v2($translateargs);
+	
+	/*
+	if ($_REQUEST["datasourcedebug"] == "true")
+	{
+		var_dump($dslookups);
+		var_dump($iterator_datasource);
+		die();
+	}
+	*/
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -598,47 +676,101 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
+	if (is_user_logged_in())
+	{
+		$indexcount = count($modeluriset);
+		$html .= "<div class='nxs-hidewheneditorinactive' style'display: block;'>List hint; indexcount; $indexcount</div><br />";
+	}
+
+	if (is_user_logged_in())
+	{
+		if (nxs_iswebmethodinvocation())
+		{
+			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>You might need to refresh the page to get actual results</div><br />";
+		}
+	}
+
+	
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
 
 	$databindindex = -1;
 	$databindindexafterfilter = -1;
 	
+	// fill the lookups
+	$lookup = array();
+	
+			
+	
 	// first the lookup table as defined in the pagetemplaterules
-	$lookups_widget = array();
-	if ($lookups != "")
+	if (true)
 	{
-		$lookups_widget = nxs_parse_keyvalues($lookups);
-		// evaluate the lookups widget values line by line
-		$sofar = array();
-		foreach ($lookups_widget as $key => $val)
-		{
-			$sofar[$key] = $val;
-			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
-
-			//echo "step 2; about to evaluate lookup tables on; $val<br />";
-			// apply the lookup values
-			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
-
-			// apply shortcodes
-			$val = $sofar[$key];
-			//echo "step 3; result is $val<br />";
-
-			//echo "step 4; about to evaluate shortcode on; $val<br />";
-
-			$val = do_shortcode($val);
-			$sofar[$key] = $val;
-
-			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
-
-			$lookups_widget[$key] = $val;
-		}
+		
+		
+		
+		$templateruleslookups = nxs_gettemplateruleslookups();
+		$lookup = array_merge($lookup, $templateruleslookups);
 	}
+	
+	// add the lookup values from the widget itself
+	$lookup = array_merge($lookup, $lookups_widget);
+	
+	// ------------
+	// head
+	$translateargs = array
+	(
+		"lookup" => $lookup,
+		"item" => $widget_start_htmltemplate,
+	);
+	$widget_start_htmltemplate = nxs_filter_translate_v2($translateargs);
+	
+	//var_dump($widget_start_htmltemplate);
+	//var_dump($lookup);
+	//die();
+	
+	// apply shortcodes
+	$widget_start_htmltemplate = do_shortcode($widget_start_htmltemplate);
+	// ------------
+	
+	// footer
+	$translateargs = array
+	(
+		"lookup" => $lookup,
+		"item" => $widget_end_htmltemplate,
+	);
+	$widget_end_htmltemplate = nxs_filter_translate_v2($translateargs);
+	
+	// apply shortcodes
+	$widget_end_htmltemplate = do_shortcode($widget_end_htmltemplate);
+	
+	
+	
+	$html .= $widget_start_htmltemplate;
 	
 	foreach ($modeluriset as $modeluri)
 	{
 		$databindindex++;
-
+		
+		if ($filter_items_indexconstrained_min != "")
+		{
+			if ($databindindex <= $filter_items_indexconstrained_min)
+			{
+				// ignore
+				continue;
+			}
+		}
+		
+		if ($filter_items_indexconstrained_max != "")
+		{
+			if ($databindindex >= $filter_items_indexconstrained_max)
+			{
+				// ignore
+				break;
+			}
+		}
+		
+		//
+		
 		$pieces = split("@", $modeluri);
 		$itemhumanmodelid = $pieces[0];
 		$itemschema = $pieces[1];
@@ -675,7 +807,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// third, set (override) lookup key/values as defined by referenced models
-		// (such as iterator:x@x models)
+		// (such as iterator:properties.{xyz})
 		if ($combinedmodeluris != "")
 		{
 			$lookupargs = array
@@ -691,6 +823,18 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		{
 			$lookup = nxs_lookups_blendlookupstoitselfrecursively($lookup);
 		}
+		
+		/*
+		if ($_REQUEST["huh"] == "b2")
+		{
+			foreach ($lookup as $k => $v)
+			{
+				echo "$k<br />value<br />$v<br /><br />";
+			}
+			var_dump($lookup);
+			die();
+		}
+		*/
 		
 		global $nxs_gl_sc_currentscope;
 		$nxs_gl_sc_currentscope["list.iterator.filter"] = true;
@@ -781,7 +925,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		{
 			if (is_user_logged_in())
 			{
-				$item_htmltemplate_a = "<div>Empty</div>";
+				$item_htmltemplate_a = "<div>Empty template</div>";
 			}
 		}
 		
@@ -790,6 +934,9 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		
 		if ($datasource_isvalid)
 		{
+			// ----
+			
+			// content			
 			$translateargs = array
 			(
 				"lookup" => $lookup,
@@ -799,6 +946,10 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			
 			// apply shortcodes
 			$subhtml = do_shortcode($subhtml);
+			
+			// ----
+			
+			
 		}
 		
 		$styleatt = "";
@@ -821,7 +972,23 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		
 		
 		$html .= "</div>";
+		
+		// break the loop if this was the max pagesize
+		if ($filter_pagination_pagesize != "")
+		{
+			if ($indexwithinfilter >= $filter_pagination_pagesize)
+			{
+				if (is_user_logged_in())
+				{
+					$html .= "<br/><div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;;'>hint; reached pagination max, perhaps additional items are left out</div>";
+				}				
+
+				break;
+			}
+		}
 	}
+	
+	$html .= $widget_end_htmltemplate;
 	
 	$html .= "</div>";
 	

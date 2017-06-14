@@ -291,7 +291,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$input = $replacement;
 			}
 		}
-		else if ($op == "usequeryparameter")
+		else if ($op == "queryparameter" || $op == "usequeryparameter")
 		{
 			if (nxs_iswebmethodinvocation())
 			{
@@ -316,6 +316,17 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			
 			// if thats true, replace it with whatever is set as the replacement in the shortcode
 			$queryparameter = $attributes["queryparameter"];
+			$description = $attributes["description"];
+			
+			// expose to the outside world this queryparameter is used and what it does
+			// so code that invokes the page will know what input parameters to use
+			$actionargs = array
+			(
+				"queryparameter" => $queryparameter,
+				"description" => $description,
+			);
+			do_action("nxs_a_usesqueryparameter", $actionargs);
+			
 			$replacement = $lookup[$queryparameter];
 			if (isset($replacement) && $replacement != "")
 			{
@@ -374,6 +385,89 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				"property" => $attributes["property"],
 			);
 			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
+		}
+		else if ($op == "listmodeluris")
+		{
+			$instanceuris = array();
+			
+			global $nxs_g_modelmanager;
+			$iterator_datasource = $attributes["singularschema"];
+			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+			$instances = $contentmodel[$iterator_datasource]["instances"];
+			
+			$cachebehaviour = $attributes["cachebehaviour"];
+			if ($cachebehaviour == "")
+			{
+			}
+			else if ($cachebehaviour == "refreshfirstphpruntime")
+			{
+				// refreshes the cache the first time this is requested in the php runtime duration
+				global $nxs_g_modelrefreshphpruntime;
+				if (!isset($nxs_g_modelrefreshphpruntime[$iterator_datasource]))
+				{
+					$nxs_g_modelrefreshphpruntime[$iterator_datasource] = true;
+					error_log("nxs_g_modelrefreshphpruntime refresh required for $iterator_datasource");
+					// clear it!
+					$nxs_g_modelmanager->cachebulkmodels($iterator_datasource);
+				}
+			}
+			
+			// return "instances count:" . count($instances);
+			foreach ($instances as $instance)
+			{
+				$itemhumanmodelid = $instance["content"]["humanmodelid"];
+				$instanceuri = "{$itemhumanmodelid}@{$iterator_datasource}";
+				
+				$operatorproperty = $attributes["property"];
+				$operator = $attributes["operator"];
+				$operatorvalue = $attributes["value"];
+				
+				$conditionevaluation = false;
+				
+				if ($operator == "caseinsensitivelike")
+				{
+					$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+					$conditionevaluation = nxs_stringcontains_v2($fieldvalue, $operatorvalue, true);
+				}
+				else
+				{
+					return "unsupported operator $operator";
+					// not supported; evaluates to false
+				}
+				
+				if ($conditionevaluation)
+				{
+					$instanceuris[] = $instanceuri;
+				}
+			}
+			
+			$input = implode(";", $instanceuris);
+		}
+		else if ($op == "filegetcontents")
+		{
+			$url = $attributes["url"];
+			$input = file_get_contents($url);
+		}
+		else if ($op == "jsonsubvalues")
+		{
+			$key = $attributes["key"];
+			$json = json_decode($input, true);
+			$json = $json[$key];
+			$input = json_encode($json);
+		}
+		else if ($op == "ifthenelse")
+		{
+			error_log("condition for $input");
+			$condition = $attributes["condition"];
+			if ($condition == "true")
+			{
+				$input = $attributes["then"];
+			}
+			else
+			{
+				$input = $attributes["else"];
+			}
 		}
 	}
 	
@@ -501,9 +595,104 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			}
 			// error_log("shortcode condition [$op][$orig][$equalsvalue] evaluates to [$input]");
 		}
+		else if ($op == "httpok")
+		{
+			$webmethodoverrideresult = $attributes["webmethodoverrideresult"];
+			if (nxs_iswebmethodinvocation() && $webmethodoverrideresult != "")
+			{
+				// if the list is very long, its very annoying if the configuration of the list widget
+				// will cause the entire list to be reloaded (as this is a very resource heavy operation)
+				// to avoid the server from getting messed up, we return a static value here instead
+				// error_log("url httpok check for; $url; overriden as $webmethodoverrideresult");
+				$input = $webmethodoverrideresult;
+			}
+			else
+			{
+				$url = $attributes["url"];
+				if ($url == "")
+				{
+					// error_log("url httpok check for; $url; no url specified?");
+					return "false";
+				}
+				
+				$isactualretrievalrequired = true;
+				
+				$cache = $attributes["cache"];
+				$key = "httpheaderresponse_" . md5($url);
+				if ($cache == "")
+				{
+					// ignore cache
+				}
+				else if ($cache == "200")
+				{
+					// check local cache
+					
+					$statuscode = get_transient($key);
+					if ($statuscode == 'HTTP/1.1 200 OK')
+					{
+						$isactualretrievalrequired = false;
+					}
+					else
+					{
+						$isactualretrievalrequired = true;
+					}
+				}
+				else
+				{
+					// not supported
+					error_log("url httpok; cache value has unsupported value; $cache");
+				}
+				
+				
+				if ($isactualretrievalrequired)
+				{
+					// the resource heavy invocation ...
+					$headers = get_headers($url, 1);
+					$statuscode = $headers[0];
+					
+					// log this so we can see whats going on on the server
+					error_log("url httpok; actual; check for; $url; $statuscode");
+					
+					// update the cache if the cache is being used
+					if ($cache != "")
+					{
+						set_transient($key, $statuscode);
+					}
+				}
+				else
+				{
+					error_log("url httpok; cache; $url; $statuscode");
+				}
+				
+				if ($statuscode == 'HTTP/1.1 200 OK') 
+				{
+					// this indicates it went ok; no httpok
+					$input = "true";
+				}
+				else
+				{
+					$input = "false";
+				}
+			}
+		}
+		else if ($op == "not")
+		{
+			if ($input == "true")
+			{
+				$input = "false";
+			}
+			else if ($input == "false")
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "err";
+			}
+		}
 		else
 		{
-			
+			// bool operation to be implemented ...
 		}
 	}
 	
