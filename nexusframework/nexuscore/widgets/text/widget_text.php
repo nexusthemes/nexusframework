@@ -41,22 +41,25 @@ function nxs_widgets_text_home_getoptions($args)
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_text_getunifiedcontentgroup(),),
 		"fields" => array
 		(
+			// -------------------------------------------------------			
+			
+			// LOOKUPS
+			
 			array
 			( 
-				"id" 				=> "wrapper_model_begin",
+				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Model", "nxs_td"),
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
 			),
 			array
       (
-				"id" 					=> "modeluris",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
-				"placeholder" => "for example m1:foo@bar,m2:foo{{humanid}}@schema",
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 			),
-			array
-			( 
-				"id" 					=> "wrapper_model_end",
+			array( 
+				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 			),
 			
@@ -543,46 +546,60 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text", "destination_url"));
 	
-	// Translate model magical fields - STAGE 1
+	// Translate model magical fields
 	if (true)
 	{
 		global $nxs_g_modelmanager;
 		
-		// phase 1; evaluate any referenced models in the modeluris property
-		// sub:id@sub|subsub:{{sub.reference}}@subsub|subsubsub:{{subsub.reference}}
-		$modeluris = $mixedattributes["modeluris"];
-		$modeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris($modeluris); 
+		// first the lookup table as defined in the pagetemplaterules
+		if (true)
+		{
+			$templateruleslookups = nxs_gettemplateruleslookups();
+		}
 		
-		// phase 2; translate the magic fields using the lookup tables of all referenced models
-		$lookupargs = array
-		(
-			"modeluris" => $modeluris,
-		);
-		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
-		$magicfields = array("title", "text", "destination_url", "image_src");
+		$lookups_widget = array();
+		if ($lookups != "")
+		{
+			$lookups_widget = nxs_parse_keyvalues($lookups);
+			$lookups_widget = array_merge($templateruleslookups, $lookups_widget);
+			
+			//
+			
+			// evaluate the lookups widget values line by line
+			$sofar = array();
+			foreach ($lookups_widget as $key => $val)
+			{
+				$sofar[$key] = $val;
+				//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+	
+				//echo "step 2; about to evaluate lookup tables on; $val<br />";
+				// apply the lookup values
+				$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+	
+				// apply shortcodes
+				$val = $sofar[$key];
+				//echo "step 3; result is $val<br />";
+	
+				//echo "step 4; about to evaluate shortcode on; $val<br />";
+	
+				$val = do_shortcode($val);
+				$sofar[$key] = $val;
+	
+				//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+	
+				$lookups_widget[$key] = $val;
+			}
+		}
+		
+		// apply the lookups and shortcodes to the customhtml
+		$magicfields = array("title", "text");
 		$translateargs = array
 		(
-			"lookup" => $lookup,
+			"lookup" => $lookups_widget,
 			"items" => $mixedattributes,
 			"fields" => $magicfields,
 		);
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
-		
-		// phase 3; apply shortcodes to the magic fields
-		$magicfields = array("title", "text", "destination_url", "image_src");
-		foreach ($magicfields as $magicfield)
-		{
-			$mixedattributes[$magicfield] = do_shortcode($mixedattributes[$magicfield]);
-		}
-		
-		// phase 4; pretty-fy the destination_url
-		if (true)
-		{
-			if ($mixedattributes["destination_url_prettyfy"] == "true")
-			{
-				$mixedattributes["destination_url"]	= nxs_url_prettyfy($mixedattributes["destination_url"]);
-			}
-		}
 	}
 	
 	// allow plugins to decorate (and also do something with) the mixedattributes 

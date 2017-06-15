@@ -193,25 +193,6 @@ function nxs_widgets_list_home_getoptions($args)
         "type" 				=> "wrapperend",
       ),
 			
-			//
-			array
-			(
-        "id" 				=> "wrapper_items_begin",
-        "type" 				=> "wrapperbegin",
-        "label" 			=> nxs_l18n__("Item model URIs", "nxs_td"),
-      ),
-      array
-      (
-				"id" 					=> "item_modeluris",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Model URIs (item)", "nxs_td"),
-			),
-			array
-			(
-        "id" 				=> "wrapper_items_end",
-        "type" 				=> "wrapperend",
-      ),
-			
 			// item lookup table
 			array
 			(
@@ -673,9 +654,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
-	//
-	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
-
 	$databindindex = -1;
 	$databindindexafterfilter = -1;
 	
@@ -721,7 +699,13 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	// apply shortcodes
 	$widget_end_htmltemplate = do_shortcode($widget_end_htmltemplate);
 	
+	$shouldrendercolumns = $lookup["nxs_list_layout"] == "";
 	
+	if ($shouldrendercolumns)
+	{
+		//
+		$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
+	}
 	
 	$html .= $widget_start_htmltemplate;
 	
@@ -943,15 +927,21 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$styleatt = "style='" . $values . "'";
 		}
 		
-		$columnsvariable = '{{NXS.NUMCOLUMNS}}';
-		
-		//$html .= "<div class='nxsgrid-item nxsgrid-column-{$columnsvariable} nxs-entity' data-id='{$post_id}' {$styleatt}>";
-		$html .= "<div class='nxsgrid-item nxssolidgrid-column-{$columnsvariable} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		$shouldrendercolumns = $lookup["nxs_list_layout"] == "";
+		if ($shouldrendercolumns)
+		{
+			$columnsvariable = '{{NXS.NUMCOLUMNS}}';
+			
+			//$html .= "<div class='nxsgrid-item nxsgrid-column-{$columnsvariable} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+			$html .= "<div class='nxsgrid-item nxssolidgrid-column-{$columnsvariable} nxs-entity' data-id='{$post_id}' {$styleatt}>";
+		}
 				
 		$html .= $subhtml;
 		
-		
-		$html .= "</div>";
+		if ($shouldrendercolumns)
+		{
+			$html .= "</div>";
+		}
 		
 		// break the loop if this was the max pagesize
 		if ($filter_pagination_pagesize != "")
@@ -966,7 +956,10 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	
 	$html .= $widget_end_htmltemplate;
 	
-	$html .= "</div>";
+	if ($shouldrendercolumns)
+	{
+		$html .= "</div>";
+	}
 	
 	if (is_user_logged_in())
 	{

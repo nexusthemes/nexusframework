@@ -221,6 +221,14 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = nxs_url_prettyfy($input);
 		}
+		else if ($op == "urlfraction")
+		{
+			$input = preg_replace('/[^A-Za-z0-9]/', '-', $input); // Replaces any non alpha numeric with -
+			for ($cnt = 0; $cnt < 3; $cnt++)
+			{
+				$input = str_replace("--", "-", $input);
+			}
+		}
 		else if ($op == "youtubeify")
 		{
 			// thanks to https://stackoverflow.com/questions/19050890/find-youtube-link-in-php-string-and-convert-it-into-embed-code
@@ -386,6 +394,15 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			);
 			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
 		}
+		else if ($op == "modeldump")
+		{
+			global $nxs_g_modelmanager;
+			$modeluri = $attributes["modeluri"];
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
+			$taxonomy = "properties";
+			$props = $contentmodel[$taxonomy]["taxonomy"];
+			$input = "json of $modeluri:<br />".json_encode($props)."<br />";
+		}
 		else if ($op == "listmodeluris")
 		{
 			$instanceuris = array();
@@ -429,6 +446,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				{
 					$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
 					$conditionevaluation = nxs_stringcontains_v2($fieldvalue, $operatorvalue, true);
+				}
+				else if ($operator == "equals")
+				{
+					$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+					$conditionevaluation = ($fieldvalue == $operatorvalue);
 				}
 				else
 				{

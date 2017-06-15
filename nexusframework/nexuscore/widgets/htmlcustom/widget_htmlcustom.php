@@ -206,11 +206,24 @@ function nxs_widgets_htmlcustom_home_getoptions($args)
 		(
 			// -------------------------------------------------------			
 			
-			 array
+			// LOOKUPS
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
+			),
+			array
       (
 				"id" 					=> "lookups",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
 			),
 			
 			array( 
