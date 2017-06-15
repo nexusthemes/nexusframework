@@ -1000,6 +1000,11 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		{
 			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>You might need to refresh the page to get actual results</div><br />";
 		}
+		
+		if (!$datasource_isvalid)
+		{
+			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>No, or invalid datasource; '$iterator_datasource'</div><br />";
+		}
 	}
 	
 	$numberofitemsactuallyshowing = $indexwithinfilter;

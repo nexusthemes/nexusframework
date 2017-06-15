@@ -46,10 +46,18 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 	{
 		global $nxs_g_modelmanager;
 		
+		// first the lookup table as defined in the pagetemplaterules
+		if (true)
+		{
+			$templateruleslookups = nxs_gettemplateruleslookups();
+		}
+		
 		$lookups_widget = array();
 		if ($lookups != "")
 		{
 			$lookups_widget = nxs_parse_keyvalues($lookups);
+			$lookups_widget = array_merge($templateruleslookups, $lookups_widget);
+
 			// evaluate the lookups widget values line by line
 			$sofar = array();
 			foreach ($lookups_widget as $key => $val)
@@ -76,24 +84,11 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 			}
 		}
 		
-		// fill the lookups
-		$lookup = array();
-		
-		// first the lookup table as defined in the pagetemplaterules
-		if (true)
-		{
-			$templateruleslookups = nxs_gettemplateruleslookups();
-			$lookup = array_merge($lookup, $templateruleslookups);
-		}
-		
-		// add the lookup values from the widget itself
-		$lookup = array_merge($lookup, $lookups_widget);
-		
 		// apply the lookups and shortcodes to the customhtml
 		$magicfields = array("htmlcustom");
 		$translateargs = array
 		(
-			"lookup" => $lookup,
+			"lookup" => $lookups_widget,
 			"items" => $mixedattributes,
 			"fields" => $magicfields,
 		);

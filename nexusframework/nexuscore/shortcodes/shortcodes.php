@@ -396,12 +396,20 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "modeldump")
 		{
-			global $nxs_g_modelmanager;
-			$modeluri = $attributes["modeluri"];
-			$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
-			$taxonomy = "properties";
-			$props = $contentmodel[$taxonomy]["taxonomy"];
-			$input = "json of $modeluri:<br />".json_encode($props)."<br />";
+			if (is_user_logged_in())
+			{
+				global $nxs_g_modelmanager;
+				$modeluri = $attributes["modeluri"];
+				$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
+				$taxonomy = "properties";
+				$props = $contentmodel[$taxonomy]["taxonomy"];
+				$input = "json of $modeluri:<br />".json_encode($props)."<br />";
+			}
+			else
+			{
+				// hidden for anonymous users
+				$input = "";
+			}
 		}
 		else if ($op == "listmodeluris")
 		{
