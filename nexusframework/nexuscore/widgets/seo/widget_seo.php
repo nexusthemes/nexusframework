@@ -259,6 +259,9 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 			seo canonical url: <?php echo $canonicalurl; ?>
 		</div>
 	</div>
+	<script>
+		document.title = "<?php echo $title; ?>";
+	</script>
 	<?php
 	
 	/* ------------------------------------------------------------------------------------------------- */

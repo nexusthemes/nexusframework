@@ -535,10 +535,16 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	global $nxs_global_current_postid_being_rendered;
 	$posttype2 = get_post_type($nxs_global_current_postid_being_rendered);
 	
+	$trlookups = nxs_gettemplateruleslookups();
+	
 	$lookups_widget = array();
 	if ($lookups != "")
 	{
 		$lookups_widget = nxs_parse_keyvalues($lookups);
+		
+		//
+		$lookups_widget = array_merge($trlookups, $lookups_widget);
+		
 		// evaluate the lookups widget values line by line
 		$sofar = array();
 		foreach ($lookups_widget as $key => $val)
@@ -577,15 +583,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		"lookup" => $dslookups,
 	);
 	$iterator_datasource = nxs_filter_translate_v2($translateargs);
-	
-	/*
-	if ($_REQUEST["datasourcedebug"] == "true")
-	{
-		var_dump($dslookups);
-		var_dump($iterator_datasource);
-		die();
-	}
-	*/
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -676,21 +673,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
-	if (is_user_logged_in())
-	{
-		$indexcount = count($modeluriset);
-		$html .= "<div class='nxs-hidewheneditorinactive' style'display: block;'>List hint; indexcount; $indexcount</div><br />";
-	}
-
-	if (is_user_logged_in())
-	{
-		if (nxs_iswebmethodinvocation())
-		{
-			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>You might need to refresh the page to get actual results</div><br />";
-		}
-	}
-
-	
 	//
 	$html .= "<div class='nxsgrid-container' id='nxsgrid-c-{$placeholderid}'>";
 
@@ -723,10 +705,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		"item" => $widget_start_htmltemplate,
 	);
 	$widget_start_htmltemplate = nxs_filter_translate_v2($translateargs);
-	
-	//var_dump($widget_start_htmltemplate);
-	//var_dump($lookup);
-	//die();
 	
 	// apply shortcodes
 	$widget_start_htmltemplate = do_shortcode($widget_start_htmltemplate);
@@ -794,11 +772,13 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		if (true)
 		{
 			$templateruleslookups = nxs_gettemplateruleslookups();
-			$lookup = array_merge($lookup, $templateruleslookups);
+			$lookup = array_merge($lookup, $trlookups);
 		}
 		
 		// add the lookup values from the widget itself
 		$lookup = array_merge($lookup, $lookups_widget);
+		
+		
 		
 		// second, set (override) lookup key/values as defined within the widget itself
 		if ($item_lookups != "")
@@ -978,11 +958,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		{
 			if ($indexwithinfilter >= $filter_pagination_pagesize)
 			{
-				if (is_user_logged_in())
-				{
-					$html .= "<br/><div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;;'>hint; reached pagination max, perhaps additional items are left out</div>";
-				}				
-
+				$reachedpaginationmax = true;
 				break;
 			}
 		}
@@ -992,28 +968,44 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	
 	$html .= "</div>";
 	
-	if ($indexwithinfilter <= 0)
+	if (is_user_logged_in())
 	{
-		if (true)
+		if ($indexwithinfilter <= 0)
 		{
-			//
-			if (is_user_logged_in())
+			if (true)
 			{
-				if ($iterator_datasource == "")
+				//
+				if (is_user_logged_in())
 				{
-					$html .= "<div>The iterator_datasource is not yet set</div>";
-					$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+					if ($iterator_datasource == "")
+					{
+						$html .= "<div>The iterator_datasource is not yet set</div>";
+						$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+					}
+					else
+					{
+						$html .= "<div>No {$iterator_datasource} items found</div>";
+						$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+					}
 				}
 				else
 				{
-					$html .= "<div>No {$iterator_datasource} items found</div>";
-					$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+					// hide for anynomous users
 				}
 			}
-			else
-			{
-				// hide for anynomous users
-			}
+		}
+	
+		if ($reachedpaginationmax)
+		{
+			$html .= "<br/><div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;'>hint; reached pagination max, possibly additional items are not rendered</div>";
+		}
+		
+		$indexcount = count($modeluriset);
+		$html .= "<div class='nxs-hidewheneditorinactive' style'display: block;'>hint; iterated over $indexcount items, rendered $indexwithinfilter items</div><br />";
+	
+		if (nxs_iswebmethodinvocation())
+		{
+			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>You might need to refresh the page to get actual results</div><br />";
 		}
 	}
 	

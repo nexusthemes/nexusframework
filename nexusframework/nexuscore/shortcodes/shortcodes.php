@@ -458,7 +458,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "ifthenelse")
 		{
-			error_log("condition for $input");
+			//error_log("condition for $input");
 			$condition = $attributes["condition"];
 			if ($condition == "true")
 			{
@@ -468,6 +468,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			{
 				$input = $attributes["else"];
 			}
+		}
+		else if ($op == "strip_tags")
+		{
+			$orig = $input;
+			$input = strip_tags($input);
+			error_log("strip_tags; $orig becomes $input");
 		}
 	}
 	

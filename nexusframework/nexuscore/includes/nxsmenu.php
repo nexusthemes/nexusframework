@@ -452,7 +452,7 @@
 			                      </div>
 
 														<div class="nxs-clear padding"></div>
-														<a class="nxsbutton1 nxs-float-left" href='#' onclick="nxs_js_popup_site_neweditsession('managecolorization'); return false;">Manage</a>
+														<a class="nxsbutton1 nxs-float-left" href='#' onclick="nxs_js_popup_site_neweditsession('managecolorization'); return false;"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
 			            					<a style='display: none;' href='#' class="nxs_menu_savekleurenbutton nxsbutton nxs-float-left" onclick='nxs_js_menu_savepalette(); return false;'><?php nxs_l18n_e("Save[nxs:btn]", "nxs_td"); ?></a>
 			            					<a style='display: none;' href='#' class="nxs_menu_savekleurenbutton nxsbutton nxs-float-left" onclick='nxs_js_menu_createnewpalette(); return false;'><?php nxs_l18n_e("Create new", "nxs_td"); ?></a>
 				                      

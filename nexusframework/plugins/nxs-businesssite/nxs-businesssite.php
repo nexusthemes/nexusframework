@@ -450,7 +450,7 @@ class nxs_g_modelmanager
 									$verified = $this->getmodel($toverify);
 									if ($verified === false)
 									{
-										error_log("model $toverify doesn't exist, it should result in a 404!");	
+										// error_log("model $toverify doesn't exist, it should result in a 404!");	
 										$currententryvalid = false;
 										break;
 									}
