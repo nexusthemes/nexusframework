@@ -699,7 +699,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	// apply shortcodes
 	$widget_end_htmltemplate = do_shortcode($widget_end_htmltemplate);
 	
-	$shouldrendercolumns = $lookup["nxs_list_layout"] == "";
+	$shouldrendercolumns = $lookup["nxs_list_layout"] == "flexauto";
 	
 	if ($shouldrendercolumns)
 	{
@@ -927,7 +927,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$styleatt = "style='" . $values . "'";
 		}
 		
-		$shouldrendercolumns = $lookup["nxs_list_layout"] == "";
 		if ($shouldrendercolumns)
 		{
 			$columnsvariable = '{{NXS.NUMCOLUMNS}}';

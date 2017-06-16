@@ -956,12 +956,21 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		$items_filter_catidsarray = explode(",", $items_filter_catids);
 	
 		$publishedargs = array();
-		$publishedargs["post_status"] = "publish";
+		
+		
+		if (current_user_can("read_private_posts") && current_user_can("read_private_pages"))
+		{
+			$publishedargs["post_status"] = array('publish', 'private'); 
+		}
+		else
+		{
+			$publishedargs["post_status"] = "publish";
+		}
 
 		// query all posts types
 		$ptargs = array
 		(
-   		'public'   => true
+   		'public'   => true,
    	);
 		$post_types = get_post_types($ptargs);
 		
