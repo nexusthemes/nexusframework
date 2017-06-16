@@ -557,8 +557,10 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 			$templateruleslookups = nxs_gettemplateruleslookups();
 		}
 		
+		$lookups = $mixedattributes["lookups"];
+		
 		$lookups_widget = array();
-		if ($lookups != "")
+		if ($lookups != "" || count($templateruleslookups) > 0)
 		{
 			$lookups_widget = nxs_parse_keyvalues($lookups);
 			$lookups_widget = array_merge($templateruleslookups, $lookups_widget);

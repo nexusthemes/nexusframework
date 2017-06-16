@@ -315,7 +315,6 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 							}
 							
 							// for example "grab-after-{X}" then conditionschema be "X"
-
 							$derivedurlfragmentkeyvalues .= "{$conditionschema}={$humanid}\r\n";
 							$url_fragment_variables[$conditionschema] = $humanid;
 							
@@ -388,7 +387,6 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 								}
 								
 								// for example "grab-after-{X}" then conditionschema be "X"
-	
 								$derivedurlfragmentkeyvalues .= "{$conditionschema}={$humanid}\r\n";
 								$url_fragment_variables[$conditionschema] = $humanid;
 								
@@ -464,15 +462,24 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 					$statebag["out"][$currentsitewideelement] = $metadata[$currentsitewideelement];
 				}
 			}
+
+			// the following is UNIQUE for this specific rule;
+			// also add the url fragment keyvalues as derived from the url
+			// NOTE; its very important to add the derivedurlfragmentkeyvalues
+			// to the templaterules_lookups PRIOR to adding the templaterules_lookups
+			// as likely the templaterules_lookups use the variable. If this is done
+			// in the wrong order, its likely that modelproperty shortcodes
+			// will try to fetch a model with an unreplaced variable, resulting in empty
+			// values.
+			$statebag["out"]["templaterules_lookups"] .= "\r\n" . trim($derivedurlfragmentkeyvalues);
+			$statebag["out"]["url_fragment_variables"] = $url_fragment_variables;
+
+
 			
 			// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
 			$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
-			$statebag["out"]["templaterules_lookups"] .= "\r\n" . $metadata["templaterules_lookups"];
+			$statebag["out"]["templaterules_lookups"] .= "\r\n" . trim($metadata["templaterules_lookups"]);
 			
-			// the following is UNIQUE for this specific rule;
-			// also add the url fragment keyvalues as derived from the url
-			$statebag["out"]["templaterules_lookups"] .= "\r\n" . $derivedurlfragmentkeyvalues;
-			$statebag["out"]["url_fragment_variables"] = $url_fragment_variables;
 			
 			// instruct rule engine to stop further processing if configured to do so (=default)
 			$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];

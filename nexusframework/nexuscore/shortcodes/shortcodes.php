@@ -387,12 +387,20 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "modelproperty")
 		{
 			global $nxs_g_modelmanager;
+			$modeluri = $attributes["modeluri"];
+			$property = $attributes["property"];
+			
 			$args = array
 			(
-				"modeluri" => $attributes["modeluri"],
-				"property" => $attributes["property"],
+				"modeluri" => $modeluri,
+				"property" => $property,
 			);
 			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
+			
+			if ($attributes["errorlog"] == "true")
+			{
+				error_log("shortcodes;modeluri:$modeluri;property:$property;input:$input");
+			}
 		}
 		else if ($op == "modeldump")
 		{

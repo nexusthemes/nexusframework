@@ -53,7 +53,8 @@ function nxs_widgets_htmlcustom_render_webpart_render_htmlvisualization($args)
 		}
 		
 		$lookups_widget = array();
-		if ($lookups != "")
+		$lookups = $mixedattributes["lookups"];
+		if ($lookups != "" || count($templateruleslookups) > 0)
 		{
 			$lookups_widget = nxs_parse_keyvalues($lookups);
 			$lookups_widget = array_merge($templateruleslookups, $lookups_widget);

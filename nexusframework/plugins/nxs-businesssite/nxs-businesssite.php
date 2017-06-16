@@ -756,8 +756,8 @@ class nxs_g_modelmanager
 			
 			if (!$isvalid)
 			{
-				error_log("invalid model lookup; $modeluripiece (in orig:'$orig')");
-				do_action("nxs_a_modelnotfound", "$modeluripiece (in orig:'$orig')");
+				// error_log("invalid model lookup; $modeluripiece (in orig:'$orig')");
+				do_action("nxs_a_modelnotfound", array("modeluri" => "$modeluripiece"));
 				
 				// skip!
 				continue;
@@ -870,7 +870,7 @@ class nxs_g_modelmanager
 		{
 			if ($modeluri != "")
 			{
-				do_action("nxs_a_modelnotfound", "$modeluri (invalid)");
+				do_action("nxs_a_modelnotfound", array("modeluri" => $modeluri));
 			}
 		
 			$shoulddebug = ($_REQUEST["logrr"] == "true");
@@ -977,6 +977,8 @@ class nxs_g_modelmanager
 		
 		if ($shouldrefreshdbcache)
 		{
+			
+			
 			$result = $this->getmodel_actual($modeluri);
 			
 			// update cache
@@ -1001,6 +1003,15 @@ class nxs_g_modelmanager
 				$schema = $this->getschema($modeluri);
 				$this->cachebulkmodels($schema);
 			}
+			else
+			{
+				
+			}
+			
+			if ($_REQUEST["loggetmodels"] == "true")
+			{
+				error_log("getmodel;result;$modeluri;" . json_encode($result));
+			}
 		}
 		
 		if ($result["found"] === false)
@@ -1019,6 +1030,7 @@ class nxs_g_modelmanager
 		$isvalid = $this->isvalidmodeluri($modeluri);
 		if (!$isvalid)
 		{
+			error_log("getmodel_actual; not valid; $modeluri; returning false");
 			return false;
 		}
 		
@@ -1030,10 +1042,25 @@ class nxs_g_modelmanager
 		
 		$json = json_decode($content, true);
 		
+		// 
+		if ($json === null)
+		{
+			
+			$json = array
+			(
+				"found" => false,
+				"err" => array
+				(
+					"scenario" => "empty/invalid json",
+					"content" => $content,
+				),
+			);
+		}
+		
 		if ($json["found"] === false)
 		{
-			do_action("nxs_a_modelnotfound", "{$modeluri} (not found)");
-			error_log("getmodel_actual; not found; $url");
+			do_action("nxs_a_modelnotfound", array("modeluri" => "$modeluripiece"));
+			// error_log("getmodel_actual; not found; $url");
 			return $json;
 		}
 		

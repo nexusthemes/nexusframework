@@ -957,100 +957,35 @@ function nxs_gettemplateproperties()
 			
 			if ($templaterules_lookups != "")
 			{
-				$lookup = array();
-				
-				$lines = explode("\n", $templaterules_lookups);
-				foreach ($lines as $line)
+				$parsed_templaterules_lookups = nxs_parse_keyvalues($templaterules_lookups);
+	
+				// evaluate the lookups widget values line by line
+				$sofar = array();
+				foreach ($parsed_templaterules_lookups as $key => $val)
 				{
-					$limit = 2;	// 
-					$pieces = explode("=", $line, $limit);
-					$key = trim($pieces[0]);
-					
-					if ($key == "")
-					{
-						// empty line, ignore
-					}
-					else if (nxs_stringstartswith($key, "//"))
-					{
-						// its a comment, ignore
-					}
-					else
-					{
-						$val = trim($pieces[1]);	
-						
-						// transform the value field (applies model references, lookups, etc.)
-						
-						// phase 1; translate the magic fields using the lookup tables of all referenced models
-						if (true)
-						{
-							$lookupargs = array
-							(
-								"modeluris" => $modeluris,
-							);
-							$innerlookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
-							$translateargs = array
-							(
-								"lookup" => $innerlookup,
-								"item" => $val,
-							);
-							$val = nxs_filter_translate_v2($translateargs);
-						}
-						
-						// phase 2; apply shortcodes
-						if (true)
-						{
-							$val = do_shortcode($val);
-						}
-						
-						//
-						
-						$lookup[$key] = $val;
-					}
-				}
-				
-				// now that the entire lookup table is filled,
-				// recursively apply the lookup tables to its values
-				// for those keys that have one or more placeholders in their values
-				$triesleft = 2;
-				while ($triesleft > 0)
-				{
-					$triesleft--;
-					
-					$didsomething = false;
-					
-					foreach ($lookup as $key => $val)
-					{
-						if (nxs_stringcontains($val, "{{"))
-						{
-							$origval = $val;
-							
-							$translateargs = array
-							(
-								"lookup" => $lookup,
-								"item" => $val,
-							);
-							$val = nxs_filter_translate_v2($translateargs);
-							$somethingchanged = ($val != $origval);
-							if ($somethingchanged)
-							{
-								$lookup[$key] = $val;
-								$didsomething = true;
-							}
-							else
-							{
-								// continu, perhaps next item will change?
-							}
-						}
-					}
-					
-					if (!$didsomething)
-					{
-						break;
-					}
+					$sofar[$key] = $val;
+					//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+		
+					//echo "step 2; about to evaluate lookup tables on; $val<br />";
+					// apply the lookup values
+					$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+		
+					// apply shortcodes
+					$val = $sofar[$key];
+					//echo "step 3; result is $val<br />";
+		
+					//echo "step 4; about to evaluate shortcode on; $val<br />";
+		
+					$val = do_shortcode($val);
+					$sofar[$key] = $val;
+		
+					//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+		
+					$parsed_templaterules_lookups[$key] = trim($val);
 				}
 				
 				// store the lookup table
-				$nxs_gl_cache_templateprops["templaterules_lookups_lookup"] = $lookup;
+				$nxs_gl_cache_templateprops["templaterules_lookups_lookup"] = $parsed_templaterules_lookups;
 			}
 		}
 	}
@@ -1756,7 +1691,7 @@ function nxs_lookups_blendlookupstoitselfrecursively($lookup)
 			
 			if (!$didsomething)
 			{
-				
+				// if nothing changed, dont re-attempt to apply variables and/or shortcodes
 				break;
 			}
 			else
@@ -9705,26 +9640,6 @@ function nxs_filter_translatemodel_v2($metadata, $fields, $args)
 	
 	// phase 4; translate lookup tables
 	$metadata = nxs_filter_translatelookup($metadata, $fields);
-	
-	// phase 5; verify all lookup items have been replaced
-	foreach ($fields as $field)
-	{
-		$value = $metadata[$field];
-		$isvalid = true;
-		if (nxs_stringcontains($value, "{{"))
-		{
-			$isvalid = false;
-		}
-		else if (nxs_stringcontains($value, "}}"))
-		{
-			$isvalid = false;
-		}
-		
-		if (!$isvalid)
-		{
-			do_action("nxs_a_modelnotfound", "(loaded=>$modeluris) unresolved:{$value} nxsfunctions");
-		}
-	}
 	
 	return $metadata;
 }

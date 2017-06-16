@@ -47,24 +47,28 @@ function nxs_widgets_seo_home_getoptions($args)
 		),
 		"fields" => array
 		(
+			// -------------------------------------------------------			
+			
+			// LOOKUPS
+			
 			array
 			( 
-				"id" 				=> "wrapper_model_begin",
+				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Model", "nxs_td"),
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
 			),
 			array
       (
-				"id" 					=> "modeluris",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
-				"placeholder" => "for example m1:foo@bar,m2:foo{{humanid}}@schema",
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 			),
-			array
-			( 
-				"id" 					=> "wrapper_model_end",
+			array( 
+				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
-			),		
+			),			
+			
 			// TITLES
 				
 			array( 
@@ -176,14 +180,63 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "metadescription", "canonicalurl"));	
+	if (true)
+	{
+		$templateruleslookups = nxs_gettemplateruleslookups();
+	}
 	
-	// Translate model data
-	$mixedattributes = nxs_filter_translatemodel($mixedattributes, array("title", "metadescription", "canonicalurl"));	
+	//
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		// first the lookup table as defined in the pagetemplaterules
+		
+		$lookups_widget = array();
+		$lookups = $mixedattributes["lookups"];
+		if ($lookups != "" || count($templateruleslookups)>0)
+		{
+			$lookups_widget = nxs_parse_keyvalues($lookups);
+			$lookups_widget = array_merge($templateruleslookups, $lookups_widget);
+
+			// evaluate the lookups widget values line by line
+			$sofar = array();
+			foreach ($lookups_widget as $key => $val)
+			{
+				$sofar[$key] = $val;
+				//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
 	
-	// Translate urls
-	$mixedattributes["canonicalurl"] = nxs_url_prettyfy($mixedattributes["canonicalurl"]);
+				//echo "step 2; about to evaluate lookup tables on; $val<br />";
+				// apply the lookup values
+				$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+	
+				// apply shortcodes
+				$val = $sofar[$key];
+				//echo "step 3; result is $val<br />";
+	
+				//echo "step 4; about to evaluate shortcode on; $val<br />";
+	
+				$val = do_shortcode($val);
+				$sofar[$key] = $val;
+	
+				//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+	
+				$lookups_widget[$key] = $val;
+			}
+		}
+		
+		// apply the lookups and shortcodes to the customhtml
+		$magicfields = array("title", "metadescription", "canonicalurl");
+		$translateargs = array
+		(
+			"lookup" => $lookups_widget,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
+	//
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();

@@ -788,18 +788,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$lookup = nxs_lookups_blendlookupstoitselfrecursively($lookup);
 		}
 		
-		/*
-		if ($_REQUEST["huh"] == "b2")
-		{
-			foreach ($lookup as $k => $v)
-			{
-				echo "$k<br />value<br />$v<br /><br />";
-			}
-			var_dump($lookup);
-			die();
-		}
-		*/
-		
 		global $nxs_gl_sc_currentscope;
 		$nxs_gl_sc_currentscope["list.iterator.filter"] = true;
 		
@@ -960,52 +948,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		$html .= "</div>";
 	}
 	
-	if (is_user_logged_in())
-	{
-		if ($indexwithinfilter <= 0)
-		{
-			if (true)
-			{
-				//
-				if (is_user_logged_in())
-				{
-					if ($iterator_datasource == "")
-					{
-						$html .= "<div>The iterator_datasource is not yet set</div>";
-						$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
-					}
-					else
-					{
-						$html .= "<div>No {$iterator_datasource} items found</div>";
-						$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
-					}
-				}
-				else
-				{
-					// hide for anynomous users
-				}
-			}
-		}
-	
-		if ($reachedpaginationmax)
-		{
-			$html .= "<br/><div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;'>hint; reached pagination max, possibly additional items are not rendered</div>";
-		}
-		
-		$indexcount = count($modeluriset);
-		$html .= "<div class='nxs-hidewheneditorinactive' style'display: block;'>hint; iterated over $indexcount items, rendered $indexwithinfilter items</div><br />";
-	
-		if (nxs_iswebmethodinvocation())
-		{
-			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>You might need to refresh the page to get actual results</div><br />";
-		}
-		
-		if (!$datasource_isvalid)
-		{
-			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>No, or invalid datasource; '$iterator_datasource'</div><br />";
-		}
-	}
-	
 	$numberofitemsactuallyshowing = $indexwithinfilter;
 	
 	// derive the number of columns to render
@@ -1069,10 +1011,63 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		$html = str_replace($columnsvariable, $numberofcolumns, $html);
 	}
 	
+	//
+	
+	if (is_user_logged_in())
+	{
+		if ($indexwithinfilter <= 0)
+		{
+			if (true)
+			{
+				//
+				if (is_user_logged_in())
+				{
+					if ($iterator_datasource == "")
+					{
+						$html .= "<div>The iterator_datasource is not yet set</div>";
+						$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+					}
+					else
+					{
+						$html .= "<div>No {$iterator_datasource} items found</div>";
+						$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
+					}
+				}
+				else
+				{
+					// hide for anynomous users
+				}
+			}
+		}
+	
+		if ($reachedpaginationmax)
+		{
+			$html .= "<br/><div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;'>hint; reached pagination max, possibly additional items are not rendered</div>";
+		}
+		
+		$indexcount = count($modeluriset);
+		$html .= "<div class='nxs-hidewheneditorinactive' style'display: block;'>hint; iterated over $indexcount items, rendered $indexwithinfilter items</div><br />";
+	
+		if (nxs_iswebmethodinvocation())
+		{
+			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>You might need to refresh the page to get actual results</div><br />";
+		}
+		
+		if (!$datasource_isvalid)
+		{
+			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>No, or invalid datasource; '$iterator_datasource'</div><br />";
+		}
+	}
+	
+	//
+	
 	if (nxs_has_adminpermissions() && $_REQUEST["customhtml"] == "off")
 	{
 		$html = "<div>ITEMS</div>";
 	}
+	
+	
+	
 
 	echo $html;
 	
