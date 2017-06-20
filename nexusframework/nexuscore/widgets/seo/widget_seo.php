@@ -304,12 +304,36 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 		$nxs_global_row_render_statebag["etchrow"] = true;
 	}
 	
+	// this is needed... 
+	$canonicalurl = do_shortcode($canonicalurl);
+	$currenturl = nxs_geturlcurrentpage();
+	
+	$canonicalstate = "";
+	$canonicaliconhtml = "";
+	if ($canonicalurl != $currenturl)
+	{
+		$canonicalstate = "nxs-can-err";
+		/*
+		echo "<br />";
+		echo $canonicalurl;
+		echo "<br />";
+		echo $currenturl;
+		die();
+		//$canonicaliconhtml = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="7" fill="none" stroke="#e04006" stroke-width="2"/><path fill="none" stroke="#e04006" stroke-width="2" d="M8 4v6m0 1v2"/></svg>';
+		*/
+	}
 	?>
+	<style>
+		.nxs-can-err
+		{
+			color: red !important;
+		}
+	</style>
 	<div class='nxs-hidewheneditorinactive'>
 		<div style="background-color: white; border: 2px solid black; color: black; padding: 5px;">
 			seo title: <?php echo $title; ?><br />
 			seo description: <?php echo $metadescription; ?><br />
-			seo canonical url: <?php echo $canonicalurl; ?>
+			seo canonical url: <a class='<?php echo $canonicalstate; ?>' href='<?php echo $canonicalurl; ?>' target='_blank'><?php echo $canonicalurl; ?></a>
 		</div>
 	</div>
 	<script>

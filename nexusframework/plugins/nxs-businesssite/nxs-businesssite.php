@@ -587,8 +587,7 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	// virtual posts; allow entities from the model to 
-	// represent a virtual post/page according to WP
+	// virtual posts; allow virtual posts to be mapped to a local or remote template
 	function businesssite_the_posts($result, $args)
 	{
 		global $wp,$wp_query;
@@ -618,8 +617,6 @@ class nxs_g_modelmanager
 			$isvirtual = true;
 		}
 		
-		// error_log(json_encode($derivedcontext));
-			
 		// loop over the contentmodel and verify if the requestedslug matches 
 		// any of the elements of the contentmodel
 		if ($isvirtual)
@@ -677,9 +674,6 @@ class nxs_g_modelmanager
 			$newpost->post_modified_gmt = $post_modified_gmt;
 			$newpost->post_parent = 0;
 			$newpost->post_type = $schema;
-			
-			// todo; perhaps handle content licensing
-			// $newpost->nxs_content_license = json_encode(array("type" => "attribution", "author" => "benin"));
 			
 			$wp_query->posts[0] = $newpost;
 			$wp_query->found_posts = 1;	 
@@ -814,6 +808,8 @@ class nxs_g_modelmanager
 			foreach ($taxonomyextendedproperties as $fieldid => $fieldmeta)
 			{
 				$val = $contentmodel[$taxonomyid]["taxonomy"][$fieldid];
+				// to avoid issues we transform the < signs
+				$val = htmlentities($val); // str_replace("<", "&lt;", $val);
 				$lookup["{$prefix}{$taxonomyid}.{$fieldid}"] = $val;
 			}
 		}
@@ -825,6 +821,11 @@ class nxs_g_modelmanager
 	{
 		$normalized = $this->getnormalizedschema($singularschema);
 		$result = ($normalized == $singularschema);
+		
+		if (!$result)
+		{
+			do_action("nxs_a_invalidschema", array("schema" => "$singularschema"));
+		}
 
 		return $result;
 	}
@@ -1045,6 +1046,7 @@ class nxs_g_modelmanager
 		// 
 		if ($json === null)
 		{
+			do_action("nxs_a_modelerror", array("modeluri" => "$modeluripiece"));
 			
 			$json = array
 			(
@@ -1055,6 +1057,8 @@ class nxs_g_modelmanager
 					"content" => $content,
 				),
 			);
+			
+			return $json;
 		}
 		
 		if ($json["found"] === false)
@@ -1151,7 +1155,7 @@ class nxs_g_modelmanager
 		if ($nxsposttype == "post") 
 		{
 			$result[] = array("widgetid" => "list");
-			$result[] = array("widgetid" => "entities");
+			//$result[] = array("widgetid" => "entities");
 			$result[] = array("widgetid" => "embed");
 			
 			//$result[] = array("widgetid" => "socialaccounts");
@@ -1160,7 +1164,7 @@ class nxs_g_modelmanager
 		else if ($nxsposttype == "sidebar") 
 		{
 			$result[] = array("widgetid" => "list");
-			$result[] = array("widgetid" => "entities");
+			//$result[] = array("widgetid" => "entities");
 			$result[] = array("widgetid" => "embed");
 			
 			//$result[] = array("widgetid" => "socialaccounts");
@@ -1202,29 +1206,71 @@ class nxs_g_modelmanager
 			$seowidgets = nxs_getwidgetsmetadatainpost_v2($filterargs);
 			$mixedattributes = reset($seowidgets);
 			
-			// Translate templated properties
-			// getlookups_v2
+			// apply the lookups
+			$templateruleslookups = nxs_gettemplateruleslookups();
 			
+			$lookups_widget = array();
+			$lookups = $mixedattributes["lookups"];
+			if ($lookups != "" || count($templateruleslookups) > 0)
+			{
+				$lookups_widget = nxs_parse_keyvalues($lookups);
+				$lookups_widget = array_merge($templateruleslookups, $lookups_widget);
+	
+				// evaluate the lookups widget values line by line
+				$sofar = array();
+				foreach ($lookups_widget as $key => $val)
+				{
+					$sofar[$key] = $val;
+					//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+		
+					//echo "step 2; about to evaluate lookup tables on; $val<br />";
+					// apply the lookup values
+					$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+		
+					// apply shortcodes
+					$val = $sofar[$key];
+					//echo "step 3; result is $val<br />";
+		
+					//echo "step 4; about to evaluate shortcode on; $val<br />";
+		
+					$val = do_shortcode($val);
+					$sofar[$key] = $val;
+		
+					//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+		
+					$lookups_widget[$key] = trim($val);
+				}
+			}
 			
-			// Translate model data
-			// $mixedattributes = nxs_filter_translatemodel($mixedattributes, array("title", "metadescription", "canonicalurl"));
-			$args = array
+			// apply the lookups and shortcodes to the customhtml
+			$magicfields = array("title", "metadescription", "canonicalurl");
+			$translateargs = array
 			(
-				"shouldapplyshortcodes" => true,
+				"lookup" => $lookups_widget,
+				"items" => $mixedattributes,
+				"fields" => $magicfields,
 			);
-			$mixedattributes = nxs_filter_translatemodel_v2($mixedattributes, array("title", "metadescription", "canonicalurl"), $args);
-			
-			// Translate urls
-			$mixedattributes["canonicalurl"] = nxs_url_prettyfy($mixedattributes["canonicalurl"]);
+			$mixedattributes = nxs_filter_translate_v2($translateargs);
 			
 			$nxs_gl_runtimeseoproperties = $mixedattributes;
 		}
 		
+		$canonicalurl = $nxs_gl_runtimeseoproperties["canonicalurl"];
+		$nxs_gl_runtimeseoproperties["canonicalurl"] = do_shortcode($canonicalurl);
+		
+		/*
 		if ($_REQUEST["wop"] == "v6")
 		{
-			var_dump($nxs_gl_runtimeseoproperties);
+			$url = $nxs_gl_runtimeseoproperties["canonicalurl"];
+			var_dump($url);
+			$url = do_shortcode($url);
+			echo "<br />";
+			var_dump($url);
+			echo "<br />";
+			
 			die();
 		}
+		*/
 		
 		return $nxs_gl_runtimeseoproperties;
 	}
@@ -1299,7 +1345,7 @@ class nxs_g_modelmanager
 	{
 		// widgets
 		nxs_lazyload_plugin_widget(__FILE__, "list");
-		nxs_lazyload_plugin_widget(__FILE__, "entities");
+		//nxs_lazyload_plugin_widget(__FILE__, "entities");
 		nxs_lazyload_plugin_widget(__FILE__, "embed");
 		
 		nxs_lazyload_plugin_widget(__FILE__, "phone");

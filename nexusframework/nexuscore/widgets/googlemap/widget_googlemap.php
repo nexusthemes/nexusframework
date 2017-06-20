@@ -35,6 +35,28 @@ function nxs_widgets_googlemap_home_getoptions($args)
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_googlemap_getunifiedcontentgroup(),),
 		"fields" => array
 		(
+			// -------------------------------------------------------			
+			
+			// LOOKUPS
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
+			),
+			array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),		
+		
 			// TITLE
 			
 			array( 
@@ -332,7 +354,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				"initial_toggle_state"	=> "closed",
 				"label" 			=> nxs_l18n__("Shortcode", "nxs_td"),
 			),
-			/*
+			
 			array
 			(
 				"type" 	=> "custom",
@@ -341,7 +363,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 				"layouttype" => "custom",
 				"localizablefield"	=> "true"
 			),			
-			*/
+			
 			array
 			( 
 				"id" 				=> "wrapper_shortcode_end",
@@ -433,6 +455,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 
 	if ($render_behaviour == "code")
 	{
+		$temp_array = array();
 		//
 	}
 	else
@@ -459,8 +482,71 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 
 	$mixedattributes = array_merge($temp_array, $args);
 
+	
+
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("address"));
+	
+	
+
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		// first the lookup table as defined in the pagetemplaterules
+		if (true)
+		{
+			$templateruleslookups = nxs_gettemplateruleslookups();
+		}
+		
+		$lookups = $mixedattributes["lookups"];
+		
+		$lookups_widget = array();
+		if ($lookups != "" || count($templateruleslookups) > 0)
+		{
+			$lookups_widget = nxs_parse_keyvalues($lookups);
+			$lookups_widget = array_merge($templateruleslookups, $lookups_widget);
+			
+			//
+			
+			// evaluate the lookups widget values line by line
+			$sofar = array();
+			foreach ($lookups_widget as $key => $val)
+			{
+				$sofar[$key] = $val;
+				//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+	
+				//echo "step 2; about to evaluate lookup tables on; $val<br />";
+				// apply the lookup values
+				$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+	
+				// apply shortcodes
+				$val = $sofar[$key];
+				//echo "step 3; result is $val<br />";
+	
+				//echo "step 4; about to evaluate shortcode on; $val<br />";
+	
+				$val = do_shortcode($val);
+				$sofar[$key] = $val;
+	
+				//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+	
+				$lookups_widget[$key] = $val;
+			}
+		}
+		
+		// apply the lookups and shortcodes to the customhtml
+		$magicfields = array("address");
+		$translateargs = array
+		(
+			"lookup" => $lookups_widget,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
+
 
 	global $nxs_g_modelmanager;
 	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
@@ -546,7 +632,12 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	else
 	{
 		// 
-		if 
+		if ($height == "stretch")
+		{
+			// this will cause the google map to span the entire size of the placeholder
+			$cellsizeclass = "nxs-runtime-autocellsize";
+		}
+		else if 
 		(
 			$title == "" && 
 			$button_text == "" && 
@@ -766,45 +857,58 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 		<?php 
 		if ($ismapsavailable) 
 		{ 
-			?>
-			<div id="map_canvas_<?php echo $placeholderid;?>" class="<?php echo $applycssclasses; ?>" style="<?php echo $applycssstyles; ?>"></div>
-			<div id="alt_map_canvas_<?php echo $placeholderid;?>" style="display:none; padding: 5px; margin: 5px;" class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+			if ($renderstyle == "v2")
+			{
+				?>
+				<div id="map_canvas_<?php echo $placeholderid;?>"></div>
+				<div id="alt_map_canvas_<?php echo $placeholderid;?>" style="display:none; padding: 5px; margin: 5px;" class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+				</div>
 				<?php
-				if (is_user_logged_in())
-				{
-					if ($apikey == "")
+			}
+			else
+			{
+				?>
+				<div id="map_canvas_<?php echo $placeholderid;?>" class="<?php echo $applycssclasses; ?>" style="<?php echo $applycssstyles; ?>"></div>
+				<div id="alt_map_canvas_<?php echo $placeholderid;?>" style="display:none; padding: 5px; margin: 5px;" class="nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0 nxs-align-left">
+					<?php
+					if (is_user_logged_in())
 					{
-						// its not set; explain its mandatory 
-						?>
-						Google Maps temporary placeholder<br />
-						<br />
-						Problem; Google Maps API key not yet configured<br />
-						<br />
-						<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Click here to learn how to configure the Google Maps API key</a><br />
-						<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession("integrationshome"); return false;'>Click here to configure your Google Maps API Key</a>
-						<?php
+						if ($apikey == "")
+						{
+							// its not set; explain its mandatory 
+							?>
+							Google Maps temporary placeholder<br />
+							<br />
+							Problem; Google Maps API key not yet configured<br />
+							<br />
+							<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support/nexus-themes-widgets/google-map-widget/?reason=noapikeyset'>Click here to learn how to configure the Google Maps API key</a><br />
+							<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession("integrationshome"); return false;'>Click here to configure your Google Maps API Key</a>
+							<?php
+						}
+						else
+						{
+							// its set; explain its not (yet) valid
+							?>
+							Google Maps temporary placeholder<br />
+							<br />
+							Problem; Google Maps API key not (yet?) valid<br />
+							<br />
+							Please check <a target='_blank' href='http://oopssomethingwentwrong.com/'>oopssomethingwentwrong.com</a> on how to resolve this.
+							<?php
+						}
 					}
 					else
 					{
-						// its set; explain its not (yet) valid
 						?>
 						Google Maps temporary placeholder<br />
-						<br />
-						Problem; Google Maps API key not (yet?) valid<br />
-						<br />
-						Please check <a target='_blank' href='http://oopssomethingwentwrong.com/'>oopssomethingwentwrong.com</a> on how to resolve this.
+						(login to see how to fix this)
 						<?php
 					}
-				}
-				else
-				{
 					?>
-					Google Maps temporary placeholder<br />
-					(login to see how to fix this)
-					<?php
-				}
-				?>
-			</div>
+				</div>
+				<?php
+			}
+			?>
 			<script type='text/javascript'>
 				// if the browser is resized, then also re-center the map
 				jQ_nxs(document).bind('nxs_event_resizeend', function() 
@@ -1000,6 +1104,13 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 		}
 
 	$html = nxs_ob_get_contents();
+	
+	if ($_REQUEST["frontendframework"] == "alt")
+	{
+		// $html = "<div>alt map :) [nxsstring ops='up' value='aap']</div>";
+		$html = "[nxsgooglemap height='stretch' maptypeid='{$maptypeid}' zoom='{$zoom}' address='{$address}']";
+	}
+	
 	nxs_ob_end_clean();
 	
 	$result["html"] = $html;	
@@ -1099,6 +1210,7 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 		
 		function nxs_js_ext_widget_googlemap_update_hidden_fields()
 		{
+			/*
 			address = jQuery('#<?php echo $id; ?>').val();
     	//console.log("address is set to:" + address);
 			jQuery('#<?php echo $altid["address"]; ?>').val(address);
@@ -1116,9 +1228,11 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 			deltalng = <?php echo $olng; ?> - map_popup_<?php echo $placeholderid; ?>.getCenter().lng();    	
     	jQuery('#<?php echo $altid["deltalng"]; ?>').val(deltalng);
     	<?php } ?>
-    	
-    	//var content = "[nxsgooglemap height=200 lat=" + lat + " lng=" + lng + " maptypeid=" + maptypeid + " zoom=" + zoom + "]";
-    	//jQuery('.shortcodeholder').text(content);
+    	*/
+    	/*
+    	var content = "[nxsgooglemap height=200 lat='<?php echo $lat; ?>' lng='<?php echo $lng; ?>' maptypeid='<?php echo $maptypeid; ?>' zoom='<?php echo $zoom; ?>']";
+    	jQuery('.shortcodeholder').text(content);
+    	*/
 		}
 		
 		function nxs_js_ext_widget_googlemap_search_map()

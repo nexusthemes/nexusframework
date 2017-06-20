@@ -4,11 +4,11 @@ nxs_requirewidget("generic");
 
 function nxs_widgets_list_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-moving";
+	return "nxs-icon-loop2";
 }
 
 function nxs_widgets_list_gettitle() {
-	return nxs_l18n__("list", "nxs_td");
+	return nxs_l18n__("Repeater", "nxs_td");
 }
 
 // Unistyle

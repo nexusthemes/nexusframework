@@ -9,7 +9,7 @@ function nxs_widgets_embed_geticonid()
 // Setting the widget title
 function nxs_widgets_embed_gettitle() 
 {
-	return nxs_l18n__("embed", "nxs_td");
+	return nxs_l18n__("Section", "nxs_td");
 }
 
 /* WIDGET STRUCTURE
@@ -115,20 +115,57 @@ function nxs_widgets_embed_home_getoptions($args)
 			
 			// 
 			$fieldsjsonstring = $nxs_g_modelmanager->getcontentmodelproperty($embeddabletypemodeluri, "fields");
-			$fields = json_decode($fieldsjsonstring, true);
+			$specificfields = json_decode($fieldsjsonstring, true);
 			// todo: add an option to switch embeddabletypemodeluri ?
 			
-			$additionalfields = array
+			$lookupfields = array
 			(
+				// -------------------------------------------------------			
+				
+				// LOOKUPS
+				
 				array
 				( 
-					"id" 				=> "lookups",
+					"id" 				=> "wrapper_title_begin",
+					"type" 				=> "wrapperbegin",
+					"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+					"initial_toggle_state" => "closed",
+				),
+				array
+	      (
+					"id" 					=> "lookups",
 					"type" 				=> "textarea",
-					"label" 			=> nxs_l18n__("Lookup values", "nxs_td"),
+					"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+				),
+				array( 
+					"id" 				=> "wrapper_title_end",
+					"type" 				=> "wrapperend"
 				),
 			);
 			
-			$fields = array_merge($additionalfields, $fields);
+			$propertiesheaderfields = array
+			(
+				array
+				( 
+					"id" 				=> "wrapper_title_begin",
+					"type" 				=> "wrapperbegin",
+					"label" 			=> nxs_l18n__("Properties", "nxs_td"),
+				),
+			);
+			
+			$propertiesfooterfields = array
+			(
+				array( 
+					"id" 				=> "wrapper_title_end",
+					"type" 				=> "wrapperend"
+				),
+			);
+			
+			$fields = array();	
+			$fields = array_merge($fields, $lookupfields);
+			$fields = array_merge($fields, $propertiesheaderfields);
+			$fields = array_merge($fields, $specificfields);
+			$fields = array_merge($fields, $propertiesfooterfields);
 		}
 	}
 	else
@@ -243,6 +280,15 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			{
 				$thelookup = array();
 				
+				$sitelookups = nxs_lookuptable_getlookup_v2(true);
+				if ($_REQUEST["debugsitelookup"] == "true")
+				{
+					var_dump($sitelookups);
+					die();
+				}
+				
+				$thelookup = array_merge($thelookup, $sitelookups);
+				
 				$moreitems = nxs_gettemplateruleslookups();
 				$thelookup = array_merge($thelookup, $moreitems);
 				
@@ -265,9 +311,21 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 				
 			$url = nxs_addqueryparametertourl_v2($url, $id, $value, true, true);
 		}
-		error_log("theurl:" . $url);
 		
-		$transientkey = "embed_tr_" . md5("{$url}");
+		$prefix = "embed_tr_";
+		$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
+		
+		do_action("nxs_a_usetransients", array("prefix" => $prefix, "title" => "Embed widget", "cacheduration" => $cacheduration));
+		
+		if ($_REQUEST["embed_transients"] == "refresh")
+		{
+			if (is_user_logged_in())
+			{
+				nxs_cache_cleartransients($prefix);
+			}
+		}
+		
+		$transientkey = $prefix . md5("{$url}");
 		$content = get_transient($transientkey);
 		$shouldrefreshdbcache = false;
 		if ($shouldrefreshdbcache == false && $content == "")
@@ -284,7 +342,6 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			$content = file_get_contents($url);
 			
 			// update cache
-			$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
 			set_transient($transientkey, $content, $cacheduration);
 			
 			if ($_REQUEST["debugembed"] == "true")
@@ -293,7 +350,13 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			}
 		}
 		
+		// apply shortcodes (used in for example the google maps widget)
+		// this has to be done prior to changing the clases (see below)
+		$content = do_shortcode($content);
+		
 		// tune the output (should be done by the content platform)
+		
+		$content = str_replace("nxs-sitewide-element", "template-sitewide-element", $content);
 		$content = str_replace("nxs-content-container", "template-content-container", $content);
 		$content = str_replace("nxs-article-container", "template-article-container", $content);
 		$content = str_replace("nxs-postrows", "template-postrows", $content);
@@ -308,6 +371,12 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		$content = str_replace("has-no-sidebar", "template-has-no-sidebar", $content);
 		$content = str_replace("nxs-elements-container", "template-XYZ", $content);
 		$content = str_replace("nxs-runtime-autocellsize", "template-runtime-autocellsize", $content);
+		
+		echo "<style>";
+		echo ".template-placeholder-list { display: flex; }";
+		echo ".template-ABC.nxs-height100 { height: 100% !important; }";
+		echo ".template-placeholder-list .nxs-one-whole { width: 100% !important; border-right: 0px !important; }";
+		echo "</style>";
 		
 		echo $content;
 		

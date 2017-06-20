@@ -977,11 +977,12 @@ function nxs_gettemplateproperties()
 					//echo "step 4; about to evaluate shortcode on; $val<br />";
 		
 					$val = do_shortcode($val);
+					$val = trim($val);
 					$sofar[$key] = $val;
 		
 					//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
 		
-					$parsed_templaterules_lookups[$key] = trim($val);
+					$parsed_templaterules_lookups[$key] = $val;
 				}
 				
 				// store the lookup table
@@ -5299,16 +5300,19 @@ function nxs_geturicurrentpage($args = array())
   return $result;
 }
 
-// current url geturl currentpage currenturl
 function nxs_geturlcurrentpage()
 {
 	// note; the "fragment" part (after "#"), is not available by definition;
 	// its something browsers use; its not send to the server (unless some clientside
 	// logic does so)
-  $serverrequri = nxs_geturicurrentpage();
+	$args = array
+	(
+		"rewritewebmethods" => "true",
+	);
+  $serverrequri = nxs_geturicurrentpage($args);
   $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
   $protocol = nxs_strleft(strtolower($_SERVER["SERVER_PROTOCOL"]), "/").$s;
-  $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
+  $port = ($_SERVER["SERVER_PORT"] == "80" || $_SERVER["SERVER_PORT"] == "443") ? "" : (":".$_SERVER["SERVER_PORT"]);
   return $protocol."://".$_SERVER['HTTP_HOST'].$port.$serverrequri;   
 }
 
@@ -7781,6 +7785,7 @@ function nxs_extend_widgetoptionfields(&$existingoptions, $extendoptions)
 	}
 }
 
+// render_widget renderwidget
 function nxs_getrenderedwidget($args) 
 {
 	extract($args);
@@ -7826,7 +7831,7 @@ function nxs_getrenderedwidget($args)
 	}
 	else
 	{
-		nxs_webmethod_return_nack("unsupported renderdisplay; " . $args["renderdisplay"]);
+		nxs_webmethod_return_nack("unsupported contenttype; $contenttype");
 	}
 			
 	//
@@ -9718,14 +9723,16 @@ function nxs_url_prettyfy($slug)
 	// 
 	for ($cnt = 0; $cnt < 3; $cnt++)
 	{
-		$slug = str_replace("///", "//", $slug);
+		$slug = str_replace('///', '//', $slug);
 	}
 	
 	if (nxs_stringcontains($slug, "{{"))
 	{
-		// leave as-is (this is (hopefully) a placeholder)
-		// todo: add an action that can be received by a editor plugin
-		// to indicate something might be wrong
+		// leave as-is (this is (hopefully) a placeholder), note that this does indicate an error;
+		// the shortcode responsible for invoking this function should prevent this function
+		// from being invoked, if it doesn't then clearly this is an error which
+		// can be intercepted by a plugin or so
+		do_action("nxs_a_prettyfyurlerror", array("slug" => "$slug"));
 	}
 	else
 	{

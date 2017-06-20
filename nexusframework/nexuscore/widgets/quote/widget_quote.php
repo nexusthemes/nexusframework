@@ -37,7 +37,32 @@ function nxs_widgets_quote_home_getoptions($args)
 		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_quote_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_quote_getunifiedcontentgroup(),),
-		"fields" 			=> array(
+		"fields" 			=> array
+		(
+
+			// -------------------------------------------------------			
+			
+			// LOOKUPS
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
+			),
+			array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),
+
+			//
 			
 			array( 
 				"id" 				=> "wrapper_begin",
@@ -188,6 +213,65 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
+	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		// first the lookup table as defined in the pagetemplaterules
+		if (true)
+		{
+			$templateruleslookups = nxs_gettemplateruleslookups();
+		}
+		
+		$lookups = $mixedattributes["lookups"];
+		
+		$lookups_widget = array();
+		if ($lookups != "" || count($templateruleslookups) > 0)
+		{
+			$lookups_widget = nxs_parse_keyvalues($lookups);
+			$lookups_widget = array_merge($templateruleslookups, $lookups_widget);
+			
+			//
+			
+			// evaluate the lookups widget values line by line
+			$sofar = array();
+			foreach ($lookups_widget as $key => $val)
+			{
+				$sofar[$key] = $val;
+				//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+	
+				//echo "step 2; about to evaluate lookup tables on; $val<br />";
+				// apply the lookup values
+				$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+	
+				// apply shortcodes
+				$val = $sofar[$key];
+				//echo "step 3; result is $val<br />";
+	
+				//echo "step 4; about to evaluate shortcode on; $val<br />";
+	
+				$val = do_shortcode($val);
+				$sofar[$key] = $val;
+	
+				//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+	
+				$lookups_widget[$key] = $val;
+			}
+		}
+		
+		// apply the lookups and shortcodes to the customhtml
+		$magicfields = array("text", "source", "destination_url");
+		$translateargs = array
+		(
+			"lookup" => $lookups_widget,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}	
+	
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();

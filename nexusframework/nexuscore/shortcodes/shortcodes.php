@@ -1,5 +1,27 @@
 <?php 
 
+function nxs_sc_reconstructshortcode($attributes, $content, $name)
+{
+	$implodedattributes = implode
+	(
+		' ', 
+		array_map
+		(
+    	function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
+    	$attributes,
+    	array_keys($attributes)
+		)
+	);
+	
+	$reconstructed = "[{$name} {$implodedattributes}]";
+	if ($content !== null && $content !== "")
+	{
+		$reconstructed .= "{$content}[/{$name}]";
+	}
+	
+	return $reconstructed;
+}
+
 //
 // sometimes we want to process certain shortcodes conditionally
 // meaning, it should keep the shortcode as-is if the condition is not met,
@@ -25,25 +47,7 @@ function nxs_sc_handlescope($attributes, $content = null, $name='')
 			// NOTE; we don't "just" return the value, we  return the entire shortcode as-is
 			// such that it can be re-evaluated by this same shortcode when we -are- executing in
 			// the right scope
-			
-			$implodedattributes = implode
-			(
-				' ', 
-				array_map
-				(
-		    	function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
-		    	$attributes,
-		    	array_keys($attributes)
-				)
-			);
-			
-			$reconstructed = "[{$name} {$implodedattributes}]";
-			if ($content !== null && $content !== "")
-			{
-				$reconstructed .= "{$content}[/{$name}]";
-			}
-			
-			$result = $reconstructed;
+			$result = nxs_sc_reconstructshortcode($attributes, $content, $name);
 		}
 	}
 	
@@ -136,6 +140,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 	}
 	
+	$origcontent = $content;
+	
 	$content = $content;
 	if ($content == "")
 	{
@@ -213,16 +219,33 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = ucwords($input);
 		}
-		else if ($op == "ucfirstchar")
+		else if ($op == "ucfirst" || $op == "ucfirstchar")
 		{
 			$input = strtoupper(substr($input, 0, 1)) . substr($input, 1);
 		}
 		else if ($op == "urlprettyfy")
 		{
-			$input = nxs_url_prettyfy($input);
+			if ($attributes["debug"] == "true")
+			{
+				return "urlprettyfy;debug;($content);($input);($value)";
+			}
+			
+			// special case handling; 
+			if (nxs_stringcontains($input, "{{") || nxs_stringcontains($slug, "["))
+			{
+				// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
+				$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
+				// note; an INSTANT return; don't proceed with any other possible operators
+				return $input;
+			}
+			else
+			{
+				$input = nxs_url_prettyfy($input);
+			}
 		}
 		else if ($op == "urlfraction")
 		{
+			$input = strtolower($input);
 			$input = preg_replace('/[^A-Za-z0-9]/', '-', $input); // Replaces any non alpha numeric with -
 			for ($cnt = 0; $cnt < 3; $cnt++)
 			{
@@ -251,6 +274,10 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = htmlentities($input);
 		}
+		else if ($op == "htmlspecialchars")
+		{
+			$input = htmlspecialchars($input);
+		}
 		else if ($op == "xspace")
 		{
 			$input = str_replace(" ", "", $input);
@@ -261,8 +288,15 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "trim")
 		{
-			$character_mask = $attributes["trimchars"];
-			$input = trim($input, $character_mask);
+			if (isset($attributes["trimchars"]))
+			{
+				$character_mask = $attributes["trimchars"];
+				$input = trim($input, $character_mask);
+			}
+			else
+			{
+				$input = trim($input);
+			}
 		}
 		else if ($op == "replacemodellookupmismatch")
 		{
@@ -386,21 +420,61 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "modelproperty")
 		{
-			global $nxs_g_modelmanager;
-			$modeluri = $attributes["modeluri"];
-			$property = $attributes["property"];
-			
-			$args = array
-			(
-				"modeluri" => $modeluri,
-				"property" => $property,
-			);
-			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
-			
 			if ($attributes["errorlog"] == "true")
 			{
-				error_log("shortcodes;modeluri:$modeluri;property:$property;input:$input");
+				error_log("shortcodes errorlog;modeluri:$modeluri;property:$property");
 			}
+			if ($attributes["debug"] == "true")
+			{
+				return "modelproperty; modeluri:$modeluri;property:$property";
+			}
+			
+			// special case handling; 
+			if (nxs_stringcontains($input, "{{") || nxs_stringcontains($slug, "["))
+			{
+				// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
+				$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
+				// note; an INSTANT return; don't proceed with any other possible operators
+				return $input;
+			}
+			else
+			{
+				global $nxs_g_modelmanager;
+				$modeluri = $attributes["modeluri"];
+				$property = $attributes["property"];
+				// $property = $attributes["property"];
+				
+				$args = array
+				(
+					"modeluri" => $modeluri,
+					"property" => $property,
+				);
+				$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
+				$input = htmlentities($input);
+				
+				if ($attributes["errorlog"] == "true")
+				{
+					error_log("shortcodes;modeluri:$modeluri;property:$property;input:$input");
+				}
+			}
+		}
+		else if ($op == "test")
+		{
+			$input = substr($input, 0, 10);// "aaa";
+			
+			$input = htmlspecialchars($input);
+			return $input;
+			//var_dump($input);
+			die();
+			
+			/*
+			if (nxs_stringcontains($input, "remove this from"))
+			{
+				var_dump($input);
+				die();
+			}
+			$input = str_replace("<!--", "", $input);
+			*/
 		}
 		else if ($op == "modeldump")
 		{
@@ -512,6 +586,10 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			$orig = $input;
 			$input = strip_tags($input);
 			error_log("strip_tags; $orig becomes $input");
+		}
+		else if ($op == "year" || $op == "currentyear")
+		{
+			$input = date("Y");
 		}
 	}
 	
@@ -734,6 +812,17 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 				$input = "err";
 			}
 		}
+		else if ($op == "is_user_logged_in")
+		{
+			if (is_user_logged_in())
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+		}
 		else
 		{
 			// bool operation to be implemented ...
@@ -774,7 +863,7 @@ function nxs_sc_googlemap($attributes, $content = null, $name='')
 	{
 		$height = 200;	// fallback
 	}
-	
+
 	$zoom = intval($zoom);
 	if ($zoom == 0)
 	{
@@ -802,31 +891,60 @@ function nxs_sc_googlemap($attributes, $content = null, $name='')
 	
 	nxs_requirewidget("googlemap");
 	nxs_ob_start();
-
+	
 	?>
+	<style>
+		
+	</style>
+	<div class='nice'>
+		<?php
+			$args = array
+			(
+				"render_behaviour" => "code",
+				"map_canvas_class" => "mapsheightofcontainer",
+				"placeholderid" => $id,
+				"address" => $address,
+				"zoom" => $zoom,
+				"maptypeid" => $maptypeid,
+				"renderstyle" => "v2",
+			);
+			
+			$renderresult = nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args);
+			echo $renderresult["html"];
+		?>
+	</div>
+	<script>
+		jQuery(".nice").parent().parent().css("position", "absolute").css("width", "100%").css("height", "100%");
+		jQuery(".nice").parent().css("position", "absolute").css("width", "100%").css("height", "100%");
+		jQuery(".nice").css("position", "absolute").css("width", "100%").css("height", "100%");
+		jQuery("#map_canvas_<?php echo $id; ?>").css("position", "absolute").css("width", "100%").css("height", "100%");
+	</script>
+	
+	
+	<?php
+	
+	if (false)
+	{
+		?>
 		<style>.mapsheightofcontainer{height:100%;}</style>
-		<div id='mapcontainer_<?php echo $id; ?>' style='height: <?php echo $height; ?>px; width: 100%; overflow: hidden;'>
+		<div id='mapcontainer_<?php echo $id; ?>' style='<?php echo $heightattribute; ?>;width: 100%; overflow: hidden;'>
 			<?php
 			$args = array
 			(
 				"render_behaviour" => "code",
 				"map_canvas_class" => "mapsheightofcontainer",
 				"placeholderid" => $id,
-				"lat" => $lat,
-				"lng" => $lng,
+				"address" => $address,
 				"zoom" => $zoom,
 				"maptypeid" => $maptypeid,
 			);
+			
 			$renderresult = nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args);
 			echo $renderresult["html"];
 			?>
 		</div>
-		<!--
-		<div style='height: <?php echo $height; ?>px; background-color: red;'>
-			this is the background of the map
-		</div>
-		-->
-	<?php
+		<?php
+	}
 	$output = nxs_ob_get_contents();
 	nxs_ob_end_clean();
 	

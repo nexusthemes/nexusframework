@@ -594,7 +594,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// apply the lookups and shortcodes to the customhtml
-		$magicfields = array("title", "text");
+		$magicfields = array("title", "text", "destination_url");
 		$translateargs = array
 		(
 			"lookup" => $lookups_widget,
@@ -757,8 +757,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("Button: both external URL and article reference are set (ambiguous URL)", "nxs_td");
 	}
 	
-	// if both external and article link are set
-	if ($destination_url == "" && $destination_articleid == "" && $destination_js == "" && $button_text != "") {
+	if ($destination_url == "" && $destination_articleid == "" && $destination_js == "" && $button_text != "") 
+	{
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Button: button is set, but no reference is set (no URL)", "nxs_td");
 	}
