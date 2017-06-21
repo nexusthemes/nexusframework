@@ -10456,12 +10456,19 @@ function nxs_remote_getpost($postid)
 // sanity checked for remote posts
 function nxs_remote_getpost_transient($postid)
 {
+	$prefix = "nxs_remote_post_";
+	if ($_REQUEST["transients_remoteposts"] == "refresh" && is_user_logged_in())
+	{
+		// clear the cache
+		nxs_cache_cleartransients($prefix);
+	}
+	
 	$isremotetemplate = nxs_isremotetemplate($postid);
 	if (!$isremotetemplate) { echo "incompatible postid?"; die(); }
 	
-	$key = md5("nxs_remote_post_{$postid}");
+	$key = $prefix . md5("{$postid}");
 	$result = get_transient($key);
-	if ($result == false || ($_REQUEST["transients_remoteposts"] == "refresh" && is_user_logged_in()))
+	if ($result == false)
 	{
 		$result = nxs_remote_getpost_actual($postid);
 		$expiration = 60 * 60 * 24 * 30;	// 30 days

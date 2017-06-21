@@ -614,7 +614,13 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		//
 		$settype = "unsupported";
 		$iterator_datasource = trim($iterator_datasource);
-		if (nxs_stringcontains($iterator_datasource, "@"))
+		if (nxs_stringstartswith($iterator_datasource, "json:"))
+		{
+			$settype = "json";
+			$jsonstring= substr($iterator_datasource, 5);
+			$modeluriset = json_decode($jsonstring, true);
+		}
+		else if (nxs_stringcontains($iterator_datasource, "@"))
 		{
 			$settype = "custom";
 		}
@@ -651,6 +657,10 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 				$itemhumanmodelid = trim($piece);
 				$modeluriset[] = $itemhumanmodelid;
 			}
+		}
+		else if ($settype == "json")
+		{
+			//
 		}
 	}
 	
@@ -737,17 +747,20 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		$itemhumanmodelid = $pieces[0];
 		$itemschema = $pieces[1];
 
-		// combine the iterator model together with any other additional models the template needs
-		$iteratormodeluri = "iterator:{$itemhumanmodelid}@{$itemschema}";
-		$combinedmodeluris = "{$iteratormodeluri}|{$item_modeluris}";
-		
-		// translates variables in the combinedmodeluris
-		$evaluateargs = array
-		(
-			"modeluris" => $combinedmodeluris,
-			"shouldapply_templaterules_lookups" => true,
-		);
-		$combinedmodeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris_v2($evaluateargs);
+		if ($settype == "custom" || $settype == "complete")
+		{
+			// combine the iterator model together with any other additional models the template needs
+			$iteratormodeluri = "iterator:{$itemhumanmodelid}@{$itemschema}";
+			$combinedmodeluris = "{$iteratormodeluri}|{$item_modeluris}";
+			
+			// translates variables in the combinedmodeluris
+			$evaluateargs = array
+			(
+				"modeluris" => $combinedmodeluris,
+				"shouldapply_templaterules_lookups" => true,
+			);
+			$combinedmodeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris_v2($evaluateargs);
+		}
 		
 		// fill the lookups
 		$lookup = array();
@@ -770,16 +783,34 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$lookup = array_merge($lookup, nxs_parse_keyvalues($item_lookups));
 		}
 		
-		// third, set (override) lookup key/values as defined by referenced models
-		// (such as iterator:properties.{xyz})
-		if ($combinedmodeluris != "")
+		if ($settype == "custom" || $settype == "complete")
 		{
-			$lookupargs = array
-			(
-				"modeluris" => $combinedmodeluris,
-			);
-			$widgetreferencedmodelslookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
-			$lookup = array_merge($lookup, $widgetreferencedmodelslookup);
+			// third, set (override) lookup key/values as defined by referenced models
+			// (such as iterator:properties.{xyz})
+			if ($combinedmodeluris != "")
+			{
+				$lookupargs = array
+				(
+					"modeluris" => $combinedmodeluris,
+				);
+				$iteratorlookups = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+				$lookup = array_merge($lookup, $iteratorlookups);
+			}
+		}
+		else if ($settype == "json")
+		{
+			$iteratorlookups = array();
+			foreach ($modeluri as $key => $val)
+			{
+				$iteratorlookups["iterator:properties.$key"] = $val;
+			}
+			$lookup = array_merge($lookup, $iteratorlookups);
+		}
+		
+		if ($_REQUEST["gj"] == "25")
+		{
+			var_dump($settype);
+			die();
 		}
 		
 		// apply lookups to one-self

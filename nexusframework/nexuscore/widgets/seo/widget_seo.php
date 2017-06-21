@@ -313,14 +313,6 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 	if ($canonicalurl != $currenturl)
 	{
 		$canonicalstate = "nxs-can-err";
-		/*
-		echo "<br />";
-		echo $canonicalurl;
-		echo "<br />";
-		echo $currenturl;
-		die();
-		//$canonicaliconhtml = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="7" fill="none" stroke="#e04006" stroke-width="2"/><path fill="none" stroke="#e04006" stroke-width="2" d="M8 4v6m0 1v2"/></svg>';
-		*/
 	}
 	?>
 	<style>

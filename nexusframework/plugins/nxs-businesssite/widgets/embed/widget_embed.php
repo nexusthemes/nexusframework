@@ -9,7 +9,7 @@ function nxs_widgets_embed_geticonid()
 // Setting the widget title
 function nxs_widgets_embed_gettitle() 
 {
-	return nxs_l18n__("Section", "nxs_td");
+	return nxs_l18n__("Embed", "nxs_td");
 }
 
 /* WIDGET STRUCTURE
@@ -217,7 +217,7 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	
 	// Turn on output buffering
 	ob_start();
-	
+	 
 	// Setting the widget name variable to the folder name
 	$widget_name = basename(dirname(__FILE__));
 
@@ -268,7 +268,44 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		
 		$url = $templateurl;
 		$url = nxs_addqueryparametertourl_v2($url, "frontendframework", "alt", true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "nxs_triggeredby", "embedwidget", true, true);
 		// add query parameters based upon the lookup tables of the widget (options)
+		
+		$thelookup = array();
+				
+		$sitelookups = nxs_lookuptable_getlookup_v2(true);
+		$thelookup = array_merge($thelookup, $sitelookups);
+		
+		$moreitems = nxs_gettemplateruleslookups();
+		$thelookup = array_merge($thelookup, $moreitems);
+		
+		$moreitems = nxs_parse_keyvalues($lookups);				
+		$thelookup = array_merge($thelookup, $moreitems);
+		
+		// evaluate the thelookup values line by line
+		$sofar = array();
+		foreach ($thelookup as $key => $val)
+		{
+			$sofar[$key] = $val;
+			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+
+			//echo "step 2; about to evaluate lookup tables on; $val<br />";
+			// apply the lookup values
+			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+
+			// apply shortcodes
+			$val = $sofar[$key];
+			//echo "step 3; result is $val<br />";
+
+			//echo "step 4; about to evaluate shortcode on; $val<br />";
+
+			$val = do_shortcode($val);
+			$sofar[$key] = $val;
+
+			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+
+			$thelookup[$key] = $val;
+		}
 		
 		foreach ($fields as $field => $fieldmeta)
 		{
@@ -278,22 +315,7 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			// it could be that the value contains a lookup placeholder; replace those
 			if (nxs_stringcontains($value, "{"))
 			{
-				$thelookup = array();
 				
-				$sitelookups = nxs_lookuptable_getlookup_v2(true);
-				if ($_REQUEST["debugsitelookup"] == "true")
-				{
-					var_dump($sitelookups);
-					die();
-				}
-				
-				$thelookup = array_merge($thelookup, $sitelookups);
-				
-				$moreitems = nxs_gettemplateruleslookups();
-				$thelookup = array_merge($thelookup, $moreitems);
-				
-				$moreitems = nxs_parse_keyvalues($lookups);				
-				$thelookup = array_merge($thelookup, $moreitems);
 				
 				//error_log("thelookup:" . json_encode($thelookup));
 				//error_log("value before:" . $value);
@@ -343,11 +365,12 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			
 			// update cache
 			set_transient($transientkey, $content, $cacheduration);
-			
-			if ($_REQUEST["debugembed"] == "true")
-			{
-				error_log("embed; url; $url");
-			}
+		}
+
+		if ($_REQUEST["debugembed"] == "true" && is_user_logged_in())
+		{
+			echo $url;
+			die();
 		}
 		
 		// apply shortcodes (used in for example the google maps widget)

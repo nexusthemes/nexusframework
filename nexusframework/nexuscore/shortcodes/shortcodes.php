@@ -204,7 +204,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "md5stringpicker")
 		{
-			error_log("md5stringpicker;" . json_encode($attributes));
+			//error_log("md5stringpicker;" . json_encode($attributes));
 			
 			$options = $attributes["options"];
 			$pieces = explode("|", $options);
@@ -387,6 +387,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				
 				$input = $fallback;
 			}
+			
+			if ($attributes["quotesfix"] == "true")
+			{
+				$input = str_replace('\"', '"', $input);
+			}
 		}
 		else if ($op == "urldecode")
 		{
@@ -457,6 +462,32 @@ function nxs_sc_string($attributes, $content = null, $name='')
 					error_log("shortcodes;modeluri:$modeluri;property:$property;input:$input");
 				}
 			}
+		}
+		else if ($op == "modelidbymd5")
+		{
+			// returns a (semi random) id of a model based upon the md5 index of an indexer variable
+
+			global $nxs_g_modelmanager;
+			
+			$schema = $attributes["schema"];
+			$modeluri = "singleton@listof{$schema}";
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
+			$ids = array();
+			$instances = $contentmodel[$schema]["instances"];
+			foreach ($instances as $instance)
+			{
+				$itemhumanmodelid = $instance["content"]["humanmodelid"];
+				$ids[] = $itemhumanmodelid;
+			}
+			
+			$max = count($ids);
+			$indexer = $attributes["indexer"];
+			$md5 = md5($indexer);
+			$inthash = intval(substr($md5, 0, 8), 16);
+			$index = $inthash % $max;
+			$input = $ids[$index];
+			
+			// error_log("modelidbymd5;" . count($ids) . ";$index;$input");
 		}
 		else if ($op == "test")
 		{

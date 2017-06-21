@@ -301,7 +301,8 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 								$toverify = "{$humanid}@{$modelschema}";
 								
 								// check if such model exists
-								$verified = $this->getmodel($toverify);
+								global $nxs_g_modelmanager;								
+								$verified = $nxs_g_modelmanager->getmodel($toverify);
 								if ($verified === false)
 								{
 									// error_log("model $toverify doesn't exist, it should result in a 404!");	

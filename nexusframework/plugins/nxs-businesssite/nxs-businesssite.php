@@ -681,15 +681,6 @@ class nxs_g_modelmanager
 				
 			$result[]= $newpost;
 			
-			// override the Yoast SEO 
-			if (true)
-			{
-				add_filter('wpseo_title', array($this, 'wpseo_title'), 99999);
-				add_filter('wpseo_metadesc', array($this, 'wpseo_metadesc'), 1999);
-				add_filter('wpseo_canonical', array($this, 'wpseo_canonical'), 99999);
-				add_filter('wpseo_robots', array($this, 'wpseo_robots'), 99999);
-			}
-			
 			// there can/may be only one match
 			return $result;
 		}
@@ -1151,28 +1142,34 @@ class nxs_g_modelmanager
 	{
 		$nxsposttype = $widgetargs["nxsposttype"];
 		$pagetemplate = $widgetargs["pagetemplate"];
-		
+	
+		if (nxs_enableconceptualwidgets())
+		{
+			$result[] = array("widgetid" => "entities");
+		}
+				
 		if ($nxsposttype == "post") 
 		{
 			$result[] = array("widgetid" => "list");
-			//$result[] = array("widgetid" => "entities");
 			$result[] = array("widgetid" => "embed");
 			
 			//$result[] = array("widgetid" => "socialaccounts");
 			//$result[] = array("widgetid" => "commercialmsgs");
+			
+
 		}
 		else if ($nxsposttype == "sidebar") 
 		{
 			$result[] = array("widgetid" => "list");
-			//$result[] = array("widgetid" => "entities");
 			$result[] = array("widgetid" => "embed");
 			
 			//$result[] = array("widgetid" => "socialaccounts");
 		}
 		else if ($nxsposttype == "header") 
 		{
-			$result[] = array("widgetid" => "phone");
-			$result[] = array("widgetid" => "buslogo");
+			$result[] = array("widgetid" => "list");
+			//$result[] = array("widgetid" => "phone");
+			//$result[] = array("widgetid" => "buslogo");
 			$result[] = array("widgetid" => "embed");
 			
 			//$result[] = array("widgetid" => "socialaccounts");
@@ -1181,7 +1178,7 @@ class nxs_g_modelmanager
 		
 		if ($pagetemplate == "pagedecorator") 
 		{
-			$result[] = array("widgetid" => "taxpageslider", "tags" => array("nexus"));		
+			//$result[] = array("widgetid" => "taxpageslider", "tags" => array("nexus"));		
 		}
 		
 		return $result;
@@ -1253,24 +1250,10 @@ class nxs_g_modelmanager
 			$mixedattributes = nxs_filter_translate_v2($translateargs);
 			
 			$nxs_gl_runtimeseoproperties = $mixedattributes;
-		}
-		
-		$canonicalurl = $nxs_gl_runtimeseoproperties["canonicalurl"];
-		$nxs_gl_runtimeseoproperties["canonicalurl"] = do_shortcode($canonicalurl);
-		
-		/*
-		if ($_REQUEST["wop"] == "v6")
-		{
-			$url = $nxs_gl_runtimeseoproperties["canonicalurl"];
-			var_dump($url);
-			$url = do_shortcode($url);
-			echo "<br />";
-			var_dump($url);
-			echo "<br />";
 			
-			die();
+			$canonicalurl = $nxs_gl_runtimeseoproperties["canonicalurl"];
+			$nxs_gl_runtimeseoproperties["canonicalurl"] = do_shortcode($canonicalurl);
 		}
-		*/
 		
 		return $nxs_gl_runtimeseoproperties;
 	}
@@ -1343,18 +1326,23 @@ class nxs_g_modelmanager
 	
 	function instance_init()
 	{
+		if (nxs_enableconceptualwidgets())
+		{
+			nxs_lazyload_plugin_widget(__FILE__, "entities");
+		}
+		
 		// widgets
 		nxs_lazyload_plugin_widget(__FILE__, "list");
-		//nxs_lazyload_plugin_widget(__FILE__, "entities");
+		
 		nxs_lazyload_plugin_widget(__FILE__, "embed");
 		
-		nxs_lazyload_plugin_widget(__FILE__, "phone");
-		nxs_lazyload_plugin_widget(__FILE__, "buslogo");
-		nxs_lazyload_plugin_widget(__FILE__, "socialaccounts");
-		nxs_lazyload_plugin_widget(__FILE__, "commercialmsgs");
+		//nxs_lazyload_plugin_widget(__FILE__, "phone");
+		//nxs_lazyload_plugin_widget(__FILE__, "buslogo");
+		//nxs_lazyload_plugin_widget(__FILE__, "socialaccounts");
+		//nxs_lazyload_plugin_widget(__FILE__, "commercialmsgs");
 
 		// page decorators
-		nxs_lazyload_plugin_widget(__FILE__, "taxpageslider");
+		//nxs_lazyload_plugin_widget(__FILE__, "taxpageslider");
 		
 		// handle bulk model prefetching
 		if (is_user_logged_in())
@@ -1514,6 +1502,15 @@ class nxs_g_modelmanager
 		add_action('admin_head', array($this, "instance_admin_head"), 30, 1);
 		add_filter('wp_nav_menu_objects', array($this, 'wp_nav_menu_objects'), 10, 3);
 		add_filter("the_posts", array($this, "businesssite_the_posts"), 1000, 2);
+		
+		// allow seo widgets to override SEO settings (Yoast)
+		if (true)
+		{
+			add_filter('wpseo_title', array($this, 'wpseo_title'), 99999);
+			add_filter('wpseo_metadesc', array($this, 'wpseo_metadesc'), 1999);
+			add_filter('wpseo_canonical', array($this, 'wpseo_canonical'), 99999);
+			add_filter('wpseo_robots', array($this, 'wpseo_robots'), 99999);
+		}
   }
   
 	/* ---------- */
