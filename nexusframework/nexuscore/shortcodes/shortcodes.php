@@ -622,6 +622,23 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = date("Y");
 		}
+		else if ($op == "explode")
+		{
+			$property = $attributes["property"];
+			if ($property == "")
+			{
+				$property = "fallback";
+			}
+			$newpieces = array();
+			$pieces = explode("|", $input);
+			foreach($pieces as $piece)
+			{
+				
+				$piece = '{"' . $property . '":"' . $piece . '"}';
+				$newpieces[] = $piece;
+			}
+			$input = implode(",", $newpieces);
+		}
 	}
 	
 	echo $input;

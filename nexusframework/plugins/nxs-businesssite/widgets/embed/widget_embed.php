@@ -208,6 +208,8 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
+	unset($mixedattributes["id"]);
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
@@ -334,6 +336,13 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			$url = nxs_addqueryparametertourl_v2($url, $id, $value, true, true);
 		}
 		
+			
+		if ($_REQUEST["gj"] == "30")
+		{
+			var_dump($url);
+			die();
+		}
+		
 		$prefix = "embed_tr_";
 		$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
 		
@@ -389,6 +398,8 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		$content = str_replace("XYZ", "template-XYZ", $content);
 		$content = str_replace("nxs-widget-", "template-widget-", $content);
 		$content = str_replace("nxs-widget", "template-widget", $content);
+		
+		$content = str_replace("nxs-placeholder", "template-placeholder", $content);
 		
 		$content = str_replace("nxs-containsimmediatehovermenu", "template-containsimmediatehovermenu", $content);
 		$content = str_replace("has-no-sidebar", "template-has-no-sidebar", $content);
