@@ -670,14 +670,9 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	// fill the lookups
 	$lookup = array();
 	
-			
-	
 	// first the lookup table as defined in the pagetemplaterules
 	if (true)
 	{
-		
-		
-		
 		$templateruleslookups = nxs_gettemplateruleslookups();
 		$lookup = array_merge($lookup, $templateruleslookups);
 	}
@@ -775,14 +770,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		// add the lookup values from the widget itself
 		$lookup = array_merge($lookup, $lookups_widget);
 		
-		
-		
-		// second, set (override) lookup key/values as defined within the widget itself
-		if ($item_lookups != "")
-		{
-			$lookup = array_merge($lookup, nxs_parse_keyvalues($item_lookups));
-		}
-		
 		if ($settype == "custom" || $settype == "complete")
 		{
 			// third, set (override) lookup key/values as defined by referenced models
@@ -807,17 +794,43 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$lookup = array_merge($lookup, $iteratorlookups);
 		}
 		
+		// set (override) lookup key/values as defined within the widget itself
+		if ($item_lookups != "")
+		{
+			$lookup = array_merge($lookup, nxs_parse_keyvalues($item_lookups));
+		}
+		
+		/*
 		if ($_REQUEST["gj"] == "25")
 		{
-			var_dump($settype);
-			die();
+			echo "STEP 1<br />";
+			foreach ($lookup as $key => $val)
+			{
+				echo "$key : $val <br />";
+			}
+			//var_dump($settype);
+			//die();
 		}
+		*/
 		
 		// apply lookups to one-self
 		if (true)
 		{
 			$lookup = nxs_lookups_blendlookupstoitselfrecursively($lookup);
 		}
+		
+		/*
+		if ($_REQUEST["gj"] == "25")
+		{
+			echo "STEP after nxs_lookups_blendlookupstoitselfrecursively<br />";
+			foreach ($lookup as $key => $val)
+			{
+				echo "$key : $val <br />";
+			}
+			//var_dump($settype);
+			die();
+		}
+		*/
 		
 		global $nxs_gl_sc_currentscope;
 		$nxs_gl_sc_currentscope["list.iterator.filter"] = true;

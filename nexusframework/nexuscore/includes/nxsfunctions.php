@@ -1677,11 +1677,19 @@ function nxs_lookups_blendlookupstoitselfrecursively($lookup)
 					$somethingchanged = ($val != $origval);
 					if ($somethingchanged)
 					{
-						// instantly apply the shortcode too if something changed
+						// try to apply shortcodes (if applicable)
 						$val = do_shortcode($val);
-						
-						$lookup[$key] = $val;
-						$didsomething = true;
+						$somethingchanged = ($val != $origval);
+						if ($somethingchanged)
+						{
+							$lookup[$key] = $val;
+							$didsomething = true;
+						}
+						else
+						{
+							// very theoretical scenario; the shortcode could have put the value back to how it was
+							// meaning that nothing did change...
+						}
 					}
 					else
 					{

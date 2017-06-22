@@ -231,7 +231,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			
 			// special case handling; 
-			if (nxs_stringcontains($input, "{{") || nxs_stringcontains($slug, "["))
+			if (nxs_stringcontains($input, "{{"))
 			{
 				// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
 				$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
@@ -273,6 +273,10 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "htmlentities")
 		{
 			$input = htmlentities($input);
+		}
+		else if ($op == "html_entity_decode")
+		{
+			$input = html_entity_decode($input);
 		}
 		else if ($op == "htmlspecialchars")
 		{
@@ -435,7 +439,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			
 			// special case handling; 
-			if (nxs_stringcontains($input, "{{") || nxs_stringcontains($slug, "["))
+			if (nxs_stringcontains($input, "{{"))
 			{
 				// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
 				$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
@@ -447,6 +451,26 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				global $nxs_g_modelmanager;
 				$modeluri = $attributes["modeluri"];
 				$property = $attributes["property"];
+				
+				// special case handling; 
+				if (nxs_stringcontains($modeluri, "{{"))
+				{
+					// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
+					$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
+					// note; an INSTANT return; don't proceed with any other possible operators
+					return $input;
+				}
+				
+				// special case handling; 
+				if (nxs_stringcontains($property, "{{"))
+				{
+					// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
+					$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
+					// note; an INSTANT return; don't proceed with any other possible operators
+					return $input;
+				}
+				
+				
 				// $property = $attributes["property"];
 				
 				$args = array
@@ -482,10 +506,30 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			
 			$max = count($ids);
 			$indexer = $attributes["indexer"];
+			
+			
 			$md5 = md5($indexer);
 			$inthash = intval(substr($md5, 0, 8), 16);
 			$index = $inthash % $max;
 			$input = $ids[$index];
+			
+			// if the skipindexer is set, we should
+			$skipindexer = $attributes["skipindexer"];
+			if (isset($skipindexer))
+			{
+				$md5 = md5($skipindexer);
+				$inthash = intval(substr($md5, 0, 8), 16);
+				$skipindex = $inthash % $max;
+				if ($index == $skipindex)
+				{
+					// skip to the next item
+					$newindex = $index + 1;
+					$newindex = $newindex % $max;
+					$newinput = $ids[$newindex];
+					
+					$input = $newinput;
+				}
+			}
 			
 			// error_log("modelidbymd5;" . count($ids) . ";$index;$input");
 		}
