@@ -1205,17 +1205,17 @@ class nxs_g_modelmanager
 			
 			// apply the lookups
 			$templateruleslookups = nxs_gettemplateruleslookups();
+			$parsedlookups = nxs_parse_keyvalues($mixedattributes["lookups"]);
+
+			$combined_lookups = array();
+			$combined_lookups = array_merge($combined_lookups, $templateruleslookups);
+			$combined_lookups = array_merge($combined_lookups, $parsedlookups);
 			
-			$lookups_widget = array();
-			$lookups = $mixedattributes["lookups"];
-			if ($lookups != "" || count($templateruleslookups) > 0)
+			if ($combined_lookups > 0)
 			{
-				$lookups_widget = nxs_parse_keyvalues($lookups);
-				$lookups_widget = array_merge($templateruleslookups, $lookups_widget);
-	
 				// evaluate the lookups widget values line by line
 				$sofar = array();
-				foreach ($lookups_widget as $key => $val)
+				foreach ($combined_lookups as $key => $val)
 				{
 					$sofar[$key] = $val;
 					//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
@@ -1235,7 +1235,7 @@ class nxs_g_modelmanager
 		
 					//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
 		
-					$lookups_widget[$key] = trim($val);
+					$combined_lookups[$key] = trim($val);
 				}
 			}
 			
@@ -1243,7 +1243,7 @@ class nxs_g_modelmanager
 			$magicfields = array("title", "metadescription", "canonicalurl");
 			$translateargs = array
 			(
-				"lookup" => $lookups_widget,
+				"lookup" => $combined_lookups,
 				"items" => $mixedattributes,
 				"fields" => $magicfields,
 			);
