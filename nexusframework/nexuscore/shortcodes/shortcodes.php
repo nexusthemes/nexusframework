@@ -152,8 +152,6 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		$content = $attributes["value"];
 	}
 	
-	nxs_ob_start();
-	
 	$input = $content;
 	
 	$ops = $attributes["ops"];
@@ -170,6 +168,14 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "up")
 		{
 			$input = strtoupper($input);
+		}
+		else if ($op == "str_replace")
+		{
+			$search = $attributes["search"];
+			$replace = $attributes["replace"];
+			$count = $attributes["count"];
+			
+			$input = str_replace($search, $replace, $input, $count);
 		}
 		else if ($op == "md5")
 		{
@@ -438,53 +444,102 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				return "modelproperty; modeluri:$modeluri;property:$property";
 			}
 			
-			// special case handling; 
-			if (nxs_stringcontains($input, "{{"))
+			global $nxs_g_modelmanager;
+			$modeluri = $attributes["modeluri"];		// the base modeluri for which the property will be retrieved
+			$property = $attributes["property"];		// the property to be retrieved
+			$relations = $attributes["relations"];	
+			
+			$ignorewhenlist = array($input, $modeluri, $property, $relations);
+			foreach ($ignorewhenlist as $ignorewhen)
 			{
-				// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
-				$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
-				// note; an INSTANT return; don't proceed with any other possible operators
-				return $input;
+				// special case handling; 
+				if (nxs_stringcontains($ignorewhen, "{{"))
+				{
+					// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
+					$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
+					// note; an INSTANT return; don't proceed with any other possible operators
+					return $input;
+				}
 			}
-			else
+			
+			if (isset($relations) && $relations != "")
 			{
-				global $nxs_g_modelmanager;
-				$modeluri = $attributes["modeluri"];
-				$property = $attributes["property"];
-				
-				// special case handling; 
-				if (nxs_stringcontains($modeluri, "{{"))
+				// update the modeluri to other modeluris based upon the relations specified
+				// for example "businesstypeinstance|businesstype_name|businesstype" or 
+				// for example "businesstypeinstancealtid@businesstypeinstance|businesstype_name|businesstype" or
+				// abstract "{{property}}@{{schema}}"
+				$relationpieces = explode(";", $relations);
+				foreach ($relationpieces as $relationpiece)
 				{
-					// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
-					$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
-					// note; an INSTANT return; don't proceed with any other possible operators
-					return $input;
+					
+					
+					$relationpiece = trim($relationpiece);
+					if ($relationpiece == "")
+					{
+						// ignore
+						continue;
+					}
+					
+					if (nxs_stringcontains($relationpiece, "@"))
+					{
+						// format is specified as "relationproperty@relationschema"
+						$subpieces = explode("@", $relationpiece, 2);
+						$relationproperty = trim($subpieces[0]);
+						$relationschema = trim($subpieces[1]);
+					}
+					else
+					{
+						// format is specified as "relationschema", the property is derived based on its value
+						$relationproperty = "{$relationpiece}_id";
+						$relationschema = $relationpiece;
+					}
+					
+					//error_log("relationpiece; fetching property ($relationproperty) for ($modeluri)");
+					
+					// fetch the value of the property; this will return the humanid of the relation
+					$args = array
+					(
+						"modeluri" => $modeluri,
+						"property" => $relationproperty,
+					);
+					$relationmodelid = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
+					$relationmodelid = trim($relationmodelid);
+
+					// error_log("relationpiece; fetching property ($relationproperty) for ($modeluri) returns ($relationmodelid)");
+					
+					if ($relationmodelid == "")
+					{
+						// it doesnt exist... return an error (action of the error is exposed by getmodeltaxonomyproperty
+
+						if (is_user_logged_in())
+						{
+							$input = "invalid.reference prop ($relationproperty) for ($modeluri) is empty/not found";
+						}
+						else
+						{
+							$input = "invalid.reference";
+						}
+						
+						return $input;
+					}
+					
+					// update the modeluri such that it will point to the related item
+					$modeluri = "{$relationmodelid}@{$relationschema}";
 				}
+			}
+			
+			// retrieve the property of the specified modeluri	
+			$args = array
+			(
+				"modeluri" => $modeluri,
+				"property" => $property,
+			);
+			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
+			$input = htmlentities($input);
 				
-				// special case handling; 
-				if (nxs_stringcontains($property, "{{"))
-				{
-					// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
-					$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
-					// note; an INSTANT return; don't proceed with any other possible operators
-					return $input;
-				}
-				
-				
-				// $property = $attributes["property"];
-				
-				$args = array
-				(
-					"modeluri" => $modeluri,
-					"property" => $property,
-				);
-				$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
-				$input = htmlentities($input);
-				
-				if ($attributes["errorlog"] == "true")
-				{
-					error_log("shortcodes;modeluri:$modeluri;property:$property;input:$input");
-				}
+			if ($attributes["errorlog"] == "true")
+			{
+				error_log("shortcodes;modeluri:$modeluri;property:$property;input:$input");
 			}
 		}
 		else if ($op == "modelidbymd5")
@@ -685,10 +740,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 	}
 	
-	echo $input;
-	
-	$output = nxs_ob_get_contents();
-	nxs_ob_end_clean();
+	$output = $input;
 		
 	return $output;
 }

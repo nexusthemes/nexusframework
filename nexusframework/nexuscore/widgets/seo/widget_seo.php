@@ -329,7 +329,7 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 		</div>
 	</div>
 	<script>
-		document.title = "<?php echo $title; ?>";
+		document.title = "<?php echo htmlentities($title); ?>";
 	</script>
 	<?php
 	
