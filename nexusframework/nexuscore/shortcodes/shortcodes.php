@@ -513,7 +513,14 @@ function nxs_sc_string($attributes, $content = null, $name='')
 
 						if (is_user_logged_in())
 						{
-							$input = "invalid.reference prop ($relationproperty) for ($modeluri) is empty/not found";
+							if (nxs_stringstartswith($relationproperty, "="))
+							{
+								$input = "invalid.reference prop ($relationproperty) for ($modeluri) is empty/not found; likely you used two equal signs in the lookup!";
+							}
+							else
+							{
+								$input = "invalid.reference prop ($relationproperty) for ($modeluri) is empty/not found";
+							}
 						}
 						else
 						{
@@ -553,6 +560,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
 			$ids = array();
 			$instances = $contentmodel[$schema]["instances"];
+			
+			if (count($instances) == 0)
+			{
+				nxs_webmethod_return_nack("unable to proceed; no instances found; check if the schema is correct and filled; schema;" . $schema);
+			}
+			
 			foreach ($instances as $instance)
 			{
 				$itemhumanmodelid = $instance["content"]["humanmodelid"];
@@ -584,6 +597,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 					
 					$input = $newinput;
 				}
+			}
+			
+			if ($input == "")
+			{
+				//
+				nxs_webmethod_return_nack("modelidbymd5; empty result; unable to proceed; " . json_encode($instances) . ";" . $indexer);
 			}
 			
 			// error_log("modelidbymd5;" . count($ids) . ";$index;$input");

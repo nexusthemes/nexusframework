@@ -14,13 +14,35 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
 		// adapt value
 		$value = $valueadapters[$value];
 	}
+	
+	// kudos to https://stackoverflow.com/questions/17772260/textarea-auto-height for autogrowing
+	
 	echo '
   <div class="content2">
     <div class="box">';
 			echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip);
 			echo '
       <div class="box-content">
-          <textarea style="display: block; height: inherit;" id="'. $id . '" name="content" cols="' . $cols . '" rows="' . $rows . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" >' . nxs_render_html_escape_gtlt($value) . '</textarea>
+      	<script>
+      		function nxs_js_textarea_autogrow(element)
+      		{
+      			element.style.height = "5px";
+    				element.style.height = (element.scrollHeight)+"px";
+      		}
+      	</script>
+      	<style>
+	      	nxs-textarea-autoresize.textarea {
+					    resize: none;
+					    overflow: hidden;
+					    min-height: 50px;
+					    max-height: 100px;
+					}
+      	</style>
+        <textarea class="nxs-textarea-autoresize" onkeyup="nxs_js_textarea_autogrow(this);" id="'. $id . '" name="content" cols="' . $cols . '" rows="' . $rows . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" >' . nxs_render_html_escape_gtlt($value) . '</textarea>
+        <script>
+        	// trigger autogrow for the first time it renders, after a short delay
+        	setTimeout(function(){ var element = document.getElementById("'. $id . '"); nxs_js_textarea_autogrow(element); }, 250);
+        </script>
       </div>
   </div>
   <div class="nxs-clear"></div>
