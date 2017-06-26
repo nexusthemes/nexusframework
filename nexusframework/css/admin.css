@@ -298,7 +298,7 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 .nxs-admin-wrap .box-content3 						{ width: 140px; float: right;}
 .nxs-admin-wrap .box textarea 						{ width: 100%; min-height: 25em; line-height: 1.5em; }
 .nxs-admin-wrap .box-content textarea,
-.nxs-admin-wrap textarea.list		 				{ width: 100%; min-height: 4em; }
+.nxs-admin-wrap textarea.list		 				{ width: 100%; min-height: 25em; }
 .nxs-admin-wrap .box-content .wrap 					{ width: 94%; min-height: 100px; overflow: auto; padding: .5em .9em; border: 1px solid #DFDFDF;	background-color: white; }
 .nxs-admin-wrap .box-content .wrap ul li 			{ line-height: 19px; }
 .nxs-admin-wrap .box-content input[type="text"] 	{ width: 100%; }

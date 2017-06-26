@@ -14,6 +14,10 @@ function nxs_widgets_pageslider_getunifiedstylinggroup() {
 	return "pagesliderwidget";
 }
 
+function nxs_widgets_pageslider_getunifiedcontentgroup() {
+	return "pagesliderwidget";
+}
+
 function nxs_widgets_pageslider_registerhooksforpagewidget($args)
 {
 	$pagedecoratorid = $args["pagedecoratorid"]; 
@@ -63,6 +67,7 @@ function nxs_widgets_pageslider_home_getoptions($args)
 		"sheeticonid" 		=> nxs_widgets_pageslider_geticonid(),
 		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_pageslider_getunifiedstylinggroup(),),
+		"unifiedcontent" 	=> array ("group" => nxs_widgets_pageslider_getunifiedcontentgroup(),),
 		"fields" => array
 		(
 			// SLIDES			
@@ -77,6 +82,7 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
 				"label" 			=> nxs_l18n__("Edit slides", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "item_durationvisibility",	
@@ -283,7 +289,8 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Button text goes here", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("Put a text on the call-to-action button.", "nxs_td")
+				"tooltip" 			=> nxs_l18n__("Put a text on the call-to-action button.", "nxs_td"),
+				"unicontentablefield" => true,
 			),	
 			array(
 				"id" 				=> "button_scale",
@@ -305,7 +312,7 @@ function nxs_widgets_pageslider_home_getoptions($args)
 		)
 	);
 
-	nxs_extend_widgetoptionfields($options, array("unistyle"));	
+	nxs_extend_widgetoptionfields($options, array("unistyle", "unicontent"));	
 	
 	return $options;
 }
@@ -331,6 +338,14 @@ function nxs_widgets_pageslider_render_webpart_render_htmlvisualization($args)
 		// blend unistyle properties
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_pageslider_getunifiedstylinggroup(), $unistyle);
 		$temp_array = array_merge($temp_array, $unistyleproperties);
+	}
+	
+	// Blend unicontent properties
+	$unicontent = $temp_array["unicontent"];
+	if (isset($unicontent) && $unicontent != "") {
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_pageslider_getunifiedcontentgroup(), $unicontent);
+		$temp_array = array_merge($temp_array, $unicontentproperties);
 	}
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
@@ -493,13 +508,21 @@ function nxs_widgets_pageslider_beforeend_head()
 	$pageslider_metadata = nxs_filter_translatelookup($pageslider_metadata, array("title","text", "button_text","destination_url"));	
 
 	
-		// Unistyle
+	// Unistyle
 	$unistyle = $pageslider_metadata["unistyle"];
 	if (isset($unistyle) && $unistyle != "") 
 	{
 		// blend unistyle properties
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_pageslider_getunifiedstylinggroup(), $unistyle);
 		$pageslider_metadata = array_merge($pageslider_metadata, $unistyleproperties);
+	}
+	
+	// Blend unicontent properties
+	$unicontent = $pageslider_metadata["unicontent"];
+	if (isset($unicontent) && $unicontent != "") {
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_pageslider_getunifiedcontentgroup(), $unicontent);
+		$pageslider_metadata = array_merge($pageslider_metadata, $unicontentproperties);
 	}
 	
 	extract($pageslider_metadata);
@@ -787,6 +810,14 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 		// blend unistyle properties
 		$unistyleproperties = nxs_unistyle_getunistyleproperties(nxs_widgets_pageslider_getunifiedstylinggroup(), $unistyle);
 		$pageslider_metadata = array_merge($pageslider_metadata, $unistyleproperties);
+	}
+	
+	// Blend unicontent properties
+	$unicontent = $pageslider_metadata["unicontent"];
+	if (isset($unicontent) && $unicontent != "") {
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_pageslider_getunifiedcontentgroup(), $unicontent);
+		$pageslider_metadata = array_merge($pageslider_metadata, $unicontentproperties);
 	}
 	
 	extract($pageslider_metadata);

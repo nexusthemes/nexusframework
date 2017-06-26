@@ -515,11 +515,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 						{
 							if (nxs_stringstartswith($relationproperty, "="))
 							{
-								$input = "invalid.reference prop ($relationproperty) for ($modeluri) is empty/not found; likely you used two equal signs in the lookup!";
+								$input = "<span style='color:red;'>invalid; referenced property ($relationproperty) for ($modeluri) is empty/not found; likely you used two equal signs in the lookup!</span>";
 							}
 							else
 							{
-								$input = "invalid.reference prop ($relationproperty) for ($modeluri) is empty/not found";
+								$input = "<span style='color:red;'>invalid; referenced property ($relationproperty) for ($modeluri) is empty/not found</span>";
 							}
 						}
 						else

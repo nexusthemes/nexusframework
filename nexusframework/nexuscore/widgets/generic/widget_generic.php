@@ -454,7 +454,39 @@ function nxs_widgets_generic_unistyle_getoptions($args)
 	return $options;
 }
 
-//
+// UNICONTENT
+function nxs_widgets_generic_unicontent_getoptions($args) 
+{
+	$options = array
+	(
+		"fields" => array
+		(
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"heading_cssclass"	=> "generic",
+				"label" 			=> nxs_l18n__("Advanced properties: unicontent", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+			
+			array(
+				"id" 				=> "unicontent",
+				"type" 				=> "unicontent",
+				"label" 			=> nxs_l18n__("Unicontent", "nxs_td"),
+				"tooltip" => nxs_l18n__("Re-use the content properties of this widget type on your site by entering the same unicontent.", "nxs_td"),
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+		)
+	);
+	
+	return $options;
+}
 
 function nxs_widgets_generic_metaview($optionvalues, $args, $runtimeblendeddata) 
 {

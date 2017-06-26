@@ -319,6 +319,7 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 		.nxs-can-err
 		{
 			color: red !important;
+			user-select: all;
 		}
 	</style>
 	<div class='nxs-hidewheneditorinactive'>
