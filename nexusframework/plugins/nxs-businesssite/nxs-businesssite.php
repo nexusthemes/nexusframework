@@ -1203,13 +1203,8 @@ class nxs_g_modelmanager
 			$seowidgets = nxs_getwidgetsmetadatainpost_v2($filterargs);
 			$mixedattributes = reset($seowidgets);
 			
-			// apply the lookups
-			$templateruleslookups = nxs_gettemplateruleslookups();
-			$parsedlookups = nxs_parse_keyvalues($mixedattributes["lookups"]);
-
-			$combined_lookups = array();
-			$combined_lookups = array_merge($combined_lookups, $templateruleslookups);
-			$combined_lookups = array_merge($combined_lookups, $parsedlookups);
+			$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+			$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
 			
 			if ($combined_lookups > 0)
 			{

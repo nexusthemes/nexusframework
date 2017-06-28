@@ -180,57 +180,45 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
-	if (true)
-	{
-		$templateruleslookups = nxs_gettemplateruleslookups();
-	}
-	
 	//
 	// Translate model magical fields
 	if (true)
 	{
 		global $nxs_g_modelmanager;
 		
-		// first the lookup table as defined in the pagetemplaterules
-		
-		$lookups_widget = array();
-		$lookups = $mixedattributes["lookups"];
-		if ($lookups != "" || count($templateruleslookups)>0)
-		{
-			$lookups_widget = nxs_parse_keyvalues($lookups);
-			$lookups_widget = array_merge($templateruleslookups, $lookups_widget);
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
 
-			// evaluate the lookups widget values line by line
-			$sofar = array();
-			foreach ($lookups_widget as $key => $val)
-			{
-				$sofar[$key] = $val;
-				//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
-	
-				//echo "step 2; about to evaluate lookup tables on; $val<br />";
-				// apply the lookup values
-				$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
-	
-				// apply shortcodes
-				$val = $sofar[$key];
-				//echo "step 3; result is $val<br />";
-	
-				//echo "step 4; about to evaluate shortcode on; $val<br />";
-	
-				$val = do_shortcode($val);
-				$sofar[$key] = $val;
-	
-				//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
-	
-				$lookups_widget[$key] = $val;
-			}
+		// evaluate the lookups widget values line by line
+		$sofar = array();
+		foreach ($combined_lookups as $key => $val)
+		{
+			$sofar[$key] = $val;
+			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+
+			//echo "step 2; about to evaluate lookup tables on; $val<br />";
+			// apply the lookup values
+			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+
+			// apply shortcodes
+			$val = $sofar[$key];
+			//echo "step 3; result is $val<br />";
+
+			//echo "step 4; about to evaluate shortcode on; $val<br />";
+
+			$val = do_shortcode($val);
+			$sofar[$key] = $val;
+
+			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+
+			$combined_lookups[$key] = $val;
 		}
 		
 		// apply the lookups and shortcodes to the customhtml
 		$magicfields = array("title", "metadescription", "canonicalurl");
 		$translateargs = array
 		(
-			"lookup" => $lookups_widget,
+			"lookup" => $combined_lookups,
 			"items" => $mixedattributes,
 			"fields" => $magicfields,
 		);

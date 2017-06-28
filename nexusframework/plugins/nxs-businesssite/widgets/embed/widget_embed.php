@@ -273,20 +273,12 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		$url = nxs_addqueryparametertourl_v2($url, "nxs_triggeredby", "embedwidget", true, true);
 		// add query parameters based upon the lookup tables of the widget (options)
 		
-		$thelookup = array();
-				
-		$sitelookups = nxs_lookuptable_getlookup_v2(true);
-		$thelookup = array_merge($thelookup, $sitelookups);
-		
-		$moreitems = nxs_gettemplateruleslookups();
-		$thelookup = array_merge($thelookup, $moreitems);
-		
-		$moreitems = nxs_parse_keyvalues($lookups);				
-		$thelookup = array_merge($thelookup, $moreitems);
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($lookups));
 		
 		// evaluate the thelookup values line by line
 		$sofar = array();
-		foreach ($thelookup as $key => $val)
+		foreach ($combined_lookups as $key => $val)
 		{
 			$sofar[$key] = $val;
 			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
@@ -306,7 +298,7 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 
 			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
 
-			$thelookup[$key] = $val;
+			$combined_lookups[$key] = $val;
 		}
 		
 		foreach ($fields as $field => $fieldmeta)
@@ -319,13 +311,13 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			{
 				
 				
-				//error_log("thelookup:" . json_encode($thelookup));
+				//error_log("thelookup:" . json_encode($combined_lookups));
 				//error_log("value before:" . $value);
 								
 				// interpret the iterator_datasource by applying the lookup tables from the pagetemplate_rules
 				$translateargs = array
 				(
-					"lookup" => $thelookup,
+					"lookup" => $combined_lookups,
 					"item" => $value,
 				);
 				$value = nxs_filter_translate_v2($translateargs);
@@ -407,8 +399,12 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		$content = str_replace("nxs-runtime-autocellsize", "template-runtime-autocellsize", $content);
 		
 		echo "<style>";
+		echo "@media (max-width: 400px) {  .template-placeholder-list { display: block; }}";
 		echo ".template-placeholder-list { display: flex; }";
-		echo ".template-ABC.nxs-height100 { height: 100% !important; }";
+		echo ".template-placeholder-list { display: flex; }";
+		echo ".template-placeholder { list-style: none; flex: 1; }";
+		
+		// echo ".template-ABC.nxs-height100 { height: 100% !important; }";
 		echo ".template-placeholder-list .nxs-one-whole { width: 100% !important; border-right: 0px !important; }";
 		echo "</style>";
 		

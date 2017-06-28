@@ -6406,6 +6406,24 @@ function nxs_lookuptable_persist($lookuptable)
 	nxs_mergesitemeta($metadata);
 }
 
+function nxs_lookups_getcombinedlookups_for_currenturl()
+{
+	global $nxs_gl_combinedlookups_for_url;
+	if (!isset($nxs_gl_combinedlookups_for_url))
+	{
+		$combined_lookups = array();
+		$combined_lookups = array_merge($combined_lookups, $_REQUEST);	// the weakest; query parameters
+		$combined_lookups = array_merge($combined_lookups, nxs_lookuptable_getlookup_v2(true));	// site-wide lookups
+		$combined_lookups = array_merge($combined_lookups, nxs_gettemplateruleslookups());	// lookups as defined in the page template rules
+		
+		// todo: perhaps already start evaluating/processing the items?
+		// todo: allow plugins to filter the result?
+		
+		$nxs_gl_combinedlookups_for_url = $combined_lookups;
+	}
+	return $nxs_gl_combinedlookups_for_url;
+}
+
 function nxs_lookuptable_getlookup()
 {
 	$includeruntimeitems = false;

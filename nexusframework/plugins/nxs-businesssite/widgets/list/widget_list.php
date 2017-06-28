@@ -484,40 +484,33 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	global $nxs_global_current_postid_being_rendered;
 	$posttype2 = get_post_type($nxs_global_current_postid_being_rendered);
 	
-	$trlookups = nxs_gettemplateruleslookups();
+	$combinedlookups_for_currenturl = nxs_lookups_getcombinedlookups_for_currenturl();
 	
-	$lookups_widget = array();
-	if ($lookups != "")
+	$lookups_widget = array_merge($combinedlookups_for_currenturl, nxs_parse_keyvalues($lookups));
+	
+	// evaluate the lookups widget values line by line
+	$sofar = array();
+	foreach ($lookups_widget as $key => $val)
 	{
-		$lookups_widget = nxs_parse_keyvalues($lookups);
-		
-		//
-		$lookups_widget = array_merge($trlookups, $lookups_widget);
-		
-		// evaluate the lookups widget values line by line
-		$sofar = array();
-		foreach ($lookups_widget as $key => $val)
-		{
-			$sofar[$key] = $val;
-			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+		$sofar[$key] = $val;
+		//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
 
-			//echo "step 2; about to evaluate lookup tables on; $val<br />";
-			// apply the lookup values
-			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+		//echo "step 2; about to evaluate lookup tables on; $val<br />";
+		// apply the lookup values
+		$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
 
-			// apply shortcodes
-			$val = $sofar[$key];
-			//echo "step 3; result is $val<br />";
+		// apply shortcodes
+		$val = $sofar[$key];
+		//echo "step 3; result is $val<br />";
 
-			//echo "step 4; about to evaluate shortcode on; $val<br />";
+		//echo "step 4; about to evaluate shortcode on; $val<br />";
 
-			$val = do_shortcode($val);
-			$sofar[$key] = $val;
+		$val = do_shortcode($val);
+		$sofar[$key] = $val;
 
-			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+		//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
 
-			$lookups_widget[$key] = $val;
-		}
+		$lookups_widget[$key] = $val;
 	}
 	
 	// interpret the iterator_datasource by applying the lookup tables from the pagetemplate_rules and the lookup table of the widget
@@ -726,14 +719,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// fill the lookups
-		$lookup = array();
-		
-		// first the lookup table as defined in the pagetemplaterules
-		if (true)
-		{
-			$templateruleslookups = nxs_gettemplateruleslookups();
-			$lookup = array_merge($lookup, $trlookups);
-		}
+		$lookup = nxs_lookups_getcombinedlookups_for_currenturl();
 		
 		// add the lookup values from the widget itself
 		$lookup = array_merge($lookup, $lookups_widget);
@@ -768,37 +754,11 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$lookup = array_merge($lookup, nxs_parse_keyvalues($item_lookups));
 		}
 		
-		/*
-		if ($_REQUEST["gj"] == "25")
-		{
-			echo "STEP 1<br />";
-			foreach ($lookup as $key => $val)
-			{
-				echo "$key : $val <br />";
-			}
-			//var_dump($settype);
-			//die();
-		}
-		*/
-		
 		// apply lookups to one-self
 		if (true)
 		{
 			$lookup = nxs_lookups_blendlookupstoitselfrecursively($lookup);
 		}
-		
-		/*
-		if ($_REQUEST["gj"] == "25")
-		{
-			echo "STEP after nxs_lookups_blendlookupstoitselfrecursively<br />";
-			foreach ($lookup as $key => $val)
-			{
-				echo "$key : $val <br />";
-			}
-			//var_dump($settype);
-			die();
-		}
-		*/
 		
 		global $nxs_gl_sc_currentscope;
 		$nxs_gl_sc_currentscope["list.iterator.filter"] = true;
