@@ -526,6 +526,7 @@ function nxs_ensure_sessionstarted()
   }
 }
 
+/*
 function nxs_framework_authentication_popup_top()
 {
 	?>
@@ -538,7 +539,9 @@ function nxs_framework_authentication_popup_top()
 	<?php
 }
 add_action('nxs_authentication_popup_top', 'nxs_framework_authentication_popup_top');
+*/
 
+/*
 add_action('login_head', 'nxs_framework_login_head');
 function nxs_framework_login_head()
 {
@@ -554,14 +557,18 @@ function nxs_framework_login_head()
   </style>
   <?php
 }
+*/
 
+/*
 add_action('login_headertitle', 'nxs_framework_login_headertitle');
 function nxs_framework_login_headertitle($result)
 {
 	$result = "Nexus Themes";
 	return $result;
 }
+*/
 
+/*
 add_action('login_headerurl', 'nxs_framework_login_headerurl');
 function nxs_framework_login_headerurl($result)
 {
@@ -569,6 +576,7 @@ function nxs_framework_login_headerurl($result)
 	$result = $meta["url"];
 	return $result;
 }
+*/
 
 //
 // sidebars (could have been any number, but 8 sounds like sufficient ...)

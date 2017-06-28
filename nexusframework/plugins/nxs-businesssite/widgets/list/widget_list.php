@@ -148,6 +148,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "lookups",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+				"footer" => "Want to use a grid? Use nxs_list_layout=flexauto columnsmin=3 columnsmax=4",
 			),
 			
 			// datasource
@@ -170,21 +171,24 @@ function nxs_widgets_list_home_getoptions($args)
       (
 				"id" 					=> "filter_items_indexconstrained_min",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Number of index items to ignore (blank=no skipping)", "nxs_td"),
+				"label" 			=> nxs_l18n__("Number of index items to ignore", "nxs_td"),
+				"footernote" => "<div>(blank=no skipping)</div>",
 			),
 			
 			array
       (
 				"id" 					=> "filter_items_indexconstrained_max",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Max index to process (blank=no skipping)", "nxs_td"),
+				"label" 			=> nxs_l18n__("Max index to process", "nxs_td"),
+				"footernote" => "<div>(blank=no skipping)</div>",
 			),
 			
 			array
       (
 				"id" 					=> "filter_pagination_pagesize",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Max number of items per page (blank=no paging)", "nxs_td"),
+				"label" 			=> nxs_l18n__("Max number of items per page", "nxs_td"),
+				"footernote" => "<div>(blank=no skipping)</div>",
 			),
 						
 			array
@@ -256,42 +260,6 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "widget_end_htmltemplate",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Widget end html (renders 1x below the items)", "nxs_td"),
-			),
-			
-			array
-      (
-				"id" 					=> "columnsmin",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Columns min", "nxs_td"),
-				"dropdown" 		=> array
-				(
-					"@@@empty@@@" => "Default",
-					"1" => "1",
-					"2" => "2",
-					"3" => "3",
-					"4" => "4",
-					"5" => "5",
-					"6" => "6",
-				),
-				"unistylablefield" => true,
-			),
-			
-			array
-      (
-				"id" 					=> "columnsmax",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Columns max", "nxs_td"),
-				"dropdown" 		=> array
-				(
-					"@@@empty@@@" => "Default",
-					"1" => "1",
-					"2" => "2",
-					"3" => "3",
-					"4" => "4",
-					"5" => "5",
-					"6" => "6",
-				),
-				"unistylablefield" => true,
 			),
 			
 			array
@@ -704,7 +672,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	// apply shortcodes
 	$widget_end_htmltemplate = do_shortcode($widget_end_htmltemplate);
 	
-	$shouldrendercolumns = $lookup["nxs_list_layout"] == "flexauto";
+	$shouldrendercolumns = $lookup["nxs_list_layout"] == "flexauto"; 
 	
 	if ($shouldrendercolumns)
 	{

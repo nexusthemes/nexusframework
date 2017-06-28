@@ -17,6 +17,11 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
 	
 	// kudos to https://stackoverflow.com/questions/17772260/textarea-auto-height for autogrowing
 	
+	if ($footer != "")
+	{
+		$footerhtml = "<div class='textarea-footer'>{$footer}</div>";
+	}
+	
 	echo '
   <div class="content2">
     <div class="box">';
@@ -39,6 +44,7 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
 					}
       	</style>
         <textarea class="nxs-textarea-autoresize" onkeyup="nxs_js_textarea_autogrow(this);" id="'. $id . '" name="content" cols="' . $cols . '" rows="' . $rows . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" >' . nxs_render_html_escape_gtlt($value) . '</textarea>
+        '.$footerhtml.'
         <script>
         	// trigger autogrow for the first time it renders, after a short delay
         	setTimeout(function(){ var element = document.getElementById("'. $id . '"); nxs_js_textarea_autogrow(element); }, 250);
