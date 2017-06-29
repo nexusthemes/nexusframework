@@ -380,6 +380,23 @@ function nxs_widgets_googlemap_home_getoptions($args)
 
 function nxs_widget_googlemap_getlatlng($address)
 {
+	$address = trim($address);
+	if ($address == "")
+	{
+		return array("found" => "false");
+	}
+	else if 
+	(
+		nxs_stringcontains($address, "{") || 
+		nxs_stringcontains($address, "}") || 
+		nxs_stringcontains($address, "[") || 
+		nxs_stringcontains($address, "]") || 
+		false
+	)
+	{
+		return array("found" => "false");
+	}
+	
 	if ($address != "")
 	{
 		// get cached lat/lng
@@ -482,12 +499,12 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 
 	$mixedattributes = array_merge($temp_array, $args);
 
-	
+	/*
 
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("address"));
 	
-	
+	*/
 
 	// Translate model magical fields
 	if (true)
@@ -496,7 +513,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 		
 		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
 		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
-			
+		
 		// evaluate the lookups widget values line by line
 		$sofar = array();
 		foreach ($combined_lookups as $key => $val)
@@ -522,7 +539,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 			$combined_lookups[$key] = $val;
 		}
 		
-		// apply the lookups and shortcodes to the customhtml
+		// apply the lookups and shortcodes
 		$magicfields = array("address");
 		$translateargs = array
 		(
@@ -533,27 +550,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
 	}
 
-
-	global $nxs_g_modelmanager;
-	$contentmodel = $nxs_g_modelmanager->getcontentmodel();
-	$addressline1 = $contentmodel["nxs_address"]["taxonomy"]["addressline1"];
-	$city = $contentmodel["nxs_address"]["taxonomy"]["city"];
-	$country = $contentmodel["nxs_address"]["taxonomy"]["country"];
-	$preferedaddressloouppossible = ($addressline1 != "" && $city != "");
-	$alternateaddressloouppossible = ($mixedattributes["address"] != "");
-	
-	if ($preferedaddressloouppossible)
-	{
-		$address = "{$addressline1} {$city} {$country}";
-	}
-	else if ($alternateaddressloouppossible)
-	{
-		$address = $mixedattributes["address"];
-	}
-	else
-	{
-		$address = "";	// some fallback address to use instead
-	}
+	$address = $mixedattributes["address"];
 	
 	// convert address to latlng
 	$latlng = nxs_widget_googlemap_getlatlng($address);
@@ -1196,7 +1193,6 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 		
 		function nxs_js_ext_widget_googlemap_update_hidden_fields()
 		{
-			/*
 			address = jQuery('#<?php echo $id; ?>').val();
     	//console.log("address is set to:" + address);
 			jQuery('#<?php echo $altid["address"]; ?>').val(address);
@@ -1214,7 +1210,6 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 			deltalng = <?php echo $olng; ?> - map_popup_<?php echo $placeholderid; ?>.getCenter().lng();    	
     	jQuery('#<?php echo $altid["deltalng"]; ?>').val(deltalng);
     	<?php } ?>
-    	*/
     	/*
     	var content = "[nxsgooglemap height=200 lat='<?php echo $lat; ?>' lng='<?php echo $lng; ?>' maptypeid='<?php echo $maptypeid; ?>' zoom='<?php echo $zoom; ?>']";
     	jQuery('.shortcodeholder').text(content);
@@ -1371,8 +1366,30 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	else 
 	{ 
 		// something is not ok
-		
-		if ($latlng["licensestatus"] == "NACK")
+		if ($address == "")
+		{
+			?>
+			<div class="content2">
+				Unable to render the map; no address specified?
+			</div>
+			<?php
+		}
+		else if 
+		(
+			nxs_stringcontains($address, "{") || 
+			nxs_stringcontains($address, "}") || 
+			nxs_stringcontains($address, "[") || 
+			nxs_stringcontains($address, "]") || 
+			false
+		)
+		{
+			?>
+			<div class="content2">
+				Unable to render the map; address contains variables; <?php echo htmlentities($address); ?>
+			</div>
+			<?php
+		}
+		else if ($latlng["licensestatus"] == "NACK")
 		{ 
 			?>
 			<div class="content2">

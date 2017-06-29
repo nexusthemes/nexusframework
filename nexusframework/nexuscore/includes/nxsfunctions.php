@@ -9426,7 +9426,7 @@ function nxs_busrules_getgenericoptions($args)
 			array(
 				"id" 				=> "custom",
 				"type" 				=> "custom",
-				"custom"	=> nxs_busrules_get_popuphtml("content_postid", "nxs_templatepart", "", "templatemapping"), 
+				"custom"	=> nxs_busrules_get_popuphtml("content_postid", "nxs_templatepart", "", "nxs.templates.templatemapping.public"), 
 				"label" 			=> nxs_l18n__("Main Content", "nxs_td"),
 			),
 						
@@ -11148,6 +11148,18 @@ function nxs_replicatepoststructure($replicatemetadata)
 // sanity checked for remote posts
 function nxs_get_images_in_post($postid)
 {
+	$args = array
+	(
+		"postid" => $postid,
+	);
+	$result = nxs_get_images_in_post_v2($args);
+	return $result;
+}
+
+function nxs_get_images_in_post_v2($args)
+{
+	$postid = $args["postid"];
+	
 	$isremotetemplate = nxs_isremotetemplate($postid);
 	if ($isremotetemplate) { nxs_webmethod_return_nack("nxs_get_images_in_post; can only be invoked on local posts"); }
 		
