@@ -1008,7 +1008,7 @@ class nxs_g_modelmanager
 		
 		if ($result["found"] === false)
 		{
-			error_log("getmodel_dbcache; {$modeluri}; not found");
+			// error_log("getmodel_dbcache; {$modeluri}; not found");
 			$result = false;
 		}
 		

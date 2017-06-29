@@ -2468,7 +2468,7 @@ function nxs_geturlcontents($args)
 	// first try curl (as file_get_contents is more likely to be blocked on hosts)
 	if (function_exists('curl_version'))
 	{
-		error_log("nxs; invoking curl; $url");
+		// error_log("nxs; invoking curl; $url");
 		
 		// note; function.php already ensures curl is available
 	  $session = curl_init();

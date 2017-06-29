@@ -51,7 +51,7 @@ function nxs_widgets_embed_home_getoptions($args)
 		if ($embeddabletypemodeluri == "")
 		{
 			
-			$iterator_datasource = "embeddable";
+			$iterator_datasource = "nxs.embeddables.public";
 			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
 			
 			global $nxs_g_modelmanager;
@@ -328,15 +328,15 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			$url = nxs_addqueryparametertourl_v2($url, $id, $value, true, true);
 		}
 		
-			
-		if ($_REQUEST["gj"] == "30")
+		if ($_REQUEST["gj"] == "30" && is_user_logged_in())
 		{
 			var_dump($url);
 			die();
 		}
 		
 		$prefix = "embed_tr_";
-		$cacheduration = 60 * 60 * 24 * 30; // 30 days cache
+		// todo:  cacheduration should be specified/determined by the model
+		$cacheduration = 0; // 60 * 60 * 24 * 30; // 30 days cache // forever
 		
 		do_action("nxs_a_usetransients", array("prefix" => $prefix, "title" => "Embed widget", "cacheduration" => $cacheduration));
 		

@@ -164,7 +164,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "iterator_datasource",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Iterator datasource", "nxs_td"),
-				"placeholder" => "For example 'foobar' to iterate over singleton@listoffoobar models, or a list like (foo@model;bar@model) for a specific set of models",
+				// "placeholder" => "",
 			),
 			
 			array
