@@ -1017,7 +1017,7 @@ class nxs_g_modelmanager
 	
 	function getmodel_actual($modeluri)
 	{
-		error_log("getmodel_actual; attempt; $modeluri");
+		// error_log("getmodel_actual; attempt; $modeluri");
 		
 		$isvalid = $this->isvalidmodeluri($modeluri);
 		if (!$isvalid)
@@ -1028,9 +1028,9 @@ class nxs_g_modelmanager
 		
 		// if modeluri is specified retrieve the model through the modeluri
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/model-by-uri/{$modeluri}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
-		$content = file_get_contents($url);
+		$content = nxs_geturlcontents(array("url" => $url));
 
-		error_log("getmodel_actual; returned content");
+		// error_log("getmodel_actual; returned content");
 		
 		$json = json_decode($content, true);
 		
@@ -1097,7 +1097,7 @@ class nxs_g_modelmanager
 		
 		// step 1; load the bulk model information
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/bulkmodels/{$singularschema}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
-		$content = file_get_contents($url);
+		$content = nxs_geturlcontents(array("url" => $url));
 		$json = json_decode($content, true);
 		
 		$itemcount = 0;
@@ -1135,7 +1135,7 @@ class nxs_g_modelmanager
 			set_transient($transientkey, $item, $cacheduration);
 		}
 		
-		error_log("cachebulkmodels; finished updating $itemcount items for $singularschema");
+		//error_log("cachebulkmodels; finished updating $itemcount items for $singularschema");
 	}
 	
 	function getwidgets($result, $widgetargs)

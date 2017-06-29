@@ -708,7 +708,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "filegetcontents")
 		{
 			$url = $attributes["url"];
-			$input = file_get_contents($url);
+			$input = nxs_geturlcontents(array("url" => $url));
 		}
 		else if ($op == "jsonsubvalues")
 		{

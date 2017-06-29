@@ -2460,66 +2460,78 @@ function url_get_contents($url)
 	return nxs_geturlcontents($args) ;
 }
 
+// nxs_file_get_contents
 function nxs_geturlcontents($args) 
 {
 	$url = $args["url"];
-	
-	// note; function.php already ensures curl is available
-  $session = curl_init();
-  curl_setopt($session, CURLOPT_URL, $url);
-  curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-  $timeoutsecs = $args["timeoutsecs"];
-  if (!$timeoutsecs)
-  {
-  	$timeoutsecs = 300;
-  }
-	curl_setopt($session, CURLOPT_TIMEOUT, $timeoutsecs);
-	curl_setopt($session, CURLOPT_USERAGENT, 'NexusService');
-	
-	curl_setopt($session, CURLOPT_FORBID_REUSE, 1);	// 1 means true
-	curl_setopt($session, CURLOPT_FRESH_CONNECT, 1);	// 1 means true
-	
-	$postargs = $args["postargs"];
-	if (isset($postargs))
+
+	// first try curl (as file_get_contents is more likely to be blocked on hosts)
+	if (function_exists('curl_version'))
 	{
-		curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
+		error_log("nxs; invoking curl; $url");
+		
+		// note; function.php already ensures curl is available
+	  $session = curl_init();
+	  curl_setopt($session, CURLOPT_URL, $url);
+	  curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+	  $timeoutsecs = $args["timeoutsecs"];
+	  if (!$timeoutsecs)
+	  {
+	  	$timeoutsecs = 300;
+	  }
+		curl_setopt($session, CURLOPT_TIMEOUT, $timeoutsecs);
+		curl_setopt($session, CURLOPT_USERAGENT, 'NexusService');
+		
+		curl_setopt($session, CURLOPT_FORBID_REUSE, 1);	// 1 means true
+		curl_setopt($session, CURLOPT_FRESH_CONNECT, 1);	// 1 means true
+		
+		$postargs = $args["postargs"];
+		if (isset($postargs))
+		{
+			curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
+		}
+		$output = curl_exec($session);
+		
+		$haserror = false;	
+		
+		if (FALSE === $output)
+		{
+			$haserror = true;
+			$curlerror = curl_error($session);
+			$curlerrorno = curl_errno($session);
+	  }
+		
+	  curl_close($session);
+	  
+	  if ($haserror)
+	  {
+	  	if ($curlerrorno == 28)
+	  	{
+	  		//echo "connection timeout, retrying";
+	  		
+	  		// connection time out
+	  		$args["connectiontimeoutretriesleft"] = $args["connectiontimeoutretriesleft"] - 1;
+	  		if ($args["connectiontimeoutretriesleft"] > 0)
+	  		{
+	  			// recursion
+	  			$output = nxs_geturlcontents($args);
+			  }
+			  else
+			  {
+			  	// fatal
+			  	error_log("Nxs; time out for $url;");
+			  	return false;
+			  }
+	  
+	  		// timeout
+	  	}
+	  }
 	}
-	$output = curl_exec($session);
-	
-	$haserror = false;	
-	
-	if (FALSE === $output)
+	else
 	{
-		$haserror = true;
-		$curlerror = curl_error($session);
-		$curlerrorno = curl_errno($session);
-  }
-	
-  curl_close($session);
-  
-  if ($haserror)
-  {
-  	if ($curlerrorno == 28)
-  	{
-  		//echo "connection timeout, retrying";
-  		
-  		// connection time out
-  		$args["connectiontimeoutretriesleft"] = $args["connectiontimeoutretriesleft"] - 1;
-  		if ($args["connectiontimeoutretriesleft"] > 0)
-  		{
-  			// recursion
-  			$output = nxs_geturlcontents($args);
-		  }
-		  else
-		  {
-		  	// fatal
-		  	error_log("Nxs; time out for $url;");
-		  	return false;
-		  }
-  
-  		// timeout
-  	}
-  }
+		// if curl not available, try file_get_contents
+		$output = file_get_contents($url);
+	}
   
   return $output;
 }
@@ -9437,22 +9449,6 @@ function nxs_busrules_getgenericoptions($args)
 				"id" 				=> "wrapper_template_end",
 				"type" 				=> "wrapperend"
 			),
-			array( 
-				"id" 				=> "wrapper_flowcontrol_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Models", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "templaterules_modeluris",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Model URIs", "nxs_td"),
-			),
-			array
-			( 
-				"id" 				=> "wrapper_template_end",
-				"type" 				=> "wrapperend"
-			),
 			array
 			( 
 				"id" 				=> "wrapper_flowcontrol_begin",
@@ -10314,6 +10310,7 @@ function nxs_connectivity_invoke_api_get($args)
 		return false;
 	}
 	
+	/*
 	$opts = array
 	(
   	'http'=>array
@@ -10327,7 +10324,8 @@ function nxs_connectivity_invoke_api_get($args)
 	);
 	$context = stream_context_create($opts);
 	$json = @file_get_contents($apiurl, false, $context);
-
+	*/
+	$json = nxs_geturlcontents(array("url" => $apiurl));	// first tries curl, else file_get_contents
 	if ($json == "")
 	{
 		$nxs_connectivity_errors++;
@@ -10528,7 +10526,10 @@ function nxs_remote_getpost_actual($postid)
 	// invoke webmethod; let remote server do the rendering bit
 	$invokeurl = "{$url}api/1/prod/getpost/{$postid}/?nxs=site-api&nxs_json_output_format=prettyprint";
 	//error_log($invokeurl);
-	$invokedresultstring = file_get_contents($invokeurl);
+	//$invokedresultstring = file_get_contents($invokeurl);
+	$invokedresultstring = nxs_geturlcontents(array("url" => $invokeurl));	// first tries curl, else file_get_contents
+	
+	
 	$invokedresult = json_decode($invokedresultstring, true);
 	
 	if ($invokedresult == "")

@@ -673,8 +673,19 @@ function nxs_pagetemplate_handlepagedecorator($pagedecoratorid)
 	}
 }
 
+function nxs_trackqueryparameters($args)
+{
+	global $nxs_gl_queryparameters;
+	$queryparameter = $args["queryparameter"];
+	$nxs_gl_queryparameters[$queryparameter] = $args;
+}
+
 function nxs_pagetemplate_blogentry_render($args)
-{	
+{
+	add_action("nxs_a_usesqueryparameter", "nxs_trackqueryparameters");
+	
+	nxs_ob_start();
+	
 	if (is_attachment())
 	{
 		$templateproperties = nxs_gettemplateproperties();
@@ -792,9 +803,37 @@ function nxs_pagetemplate_blogentry_render($args)
 	
 	nxs_pagetemplate_handlecontent();
 
-	//
-
-	//nxs_pagetemplate_handlefooter();
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	
+	if ($_REQUEST["api"] == "nxsqueryparameters")
+	{
+		global $nxs_gl_queryparameters;
+		$result = array();
+		
+		foreach ($nxs_gl_queryparameters as $queryparameter => $m)
+		{
+			$meta = array();
+			$meta["id"] = $queryparameter;
+			$meta["type"] = "input";
+			$label = $queryparameter;
+			$meta["label"] = $label;
+			$footernote = $m["description"];
+			if ($footernote != "")
+			{
+				$meta["footernote"] = $footernote;
+			}
+			
+			//$result["fields"][] = $meta;
+			$result[] = $meta;
+		}
+		nxs_webmethod_return_raw($result);
+		//var_dump($nxs_gl_queryparameters);
+		//echo "jaja2 :)";
+		//die();
+	}
+	
+	echo $html;
 }
 
 function nxs_pagetemplate_blogentry_renderpreview($args)

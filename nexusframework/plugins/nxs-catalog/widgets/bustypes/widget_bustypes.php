@@ -167,7 +167,7 @@ function nxs_widgets_bustypes_render_webpart_render_htmlvisualization($args)
 	// https://nexusthemes.com/api/1/prod/primary-businesstypes/?nxs=api&fingerprint=johan&lang=en&nxs_json_output_format=prettyprint
 
 	$url = "https://nexusthemes.com/api/1/prod/primary-businesstypes/?nxs=api&fingerprint=sitemap&lang=en&nxs_json_output_format=prettyprint";
-	$primarybusinesstypesjson = file_get_contents($url);
+	$primarybusinesstypesjson = nxs_geturlcontents(array("url" => $url));
 	$primarybusinesstypes = json_decode($primarybusinesstypesjson, true);
 	$primarybusinesstypes = $primarybusinesstypes["primary_businesstypes"];
 	

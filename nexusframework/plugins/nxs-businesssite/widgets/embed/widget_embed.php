@@ -362,7 +362,7 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		
 		if ($shouldrefreshdbcache)
 		{
-			$content = file_get_contents($url);
+			$content = nxs_geturlcontents(array("url" => $url));
 			
 			// update cache
 			set_transient($transientkey, $content, $cacheduration);
