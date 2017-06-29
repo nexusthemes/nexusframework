@@ -1,5 +1,5 @@
 <?php 
-
+// bump
 if (defined('NXS_FRAMEWORKLOADED'))
 {
 	echo "NXS_FRAMEWORKLOADED was already loaded?!";

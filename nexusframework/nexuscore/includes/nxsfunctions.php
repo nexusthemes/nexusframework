@@ -7300,7 +7300,7 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
 	
 	extract($args);
 	
-	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set (nxs_widgets_setgenericwidgethovermenu_v2)"); }
+	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set (nxs_widgets_setgenericwidgethovermenu_v2);" . nxs_geturlcurrentpage()); }
 	if (!isset($placeholderid)) { nxs_webmethod_return_nack("placeholderid not set"); }
 	if (!isset($placeholdertemplate)) { nxs_webmethod_return_nack("placeholdertemplate not set"); }
 	
