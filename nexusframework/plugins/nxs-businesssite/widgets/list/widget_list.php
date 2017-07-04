@@ -1014,7 +1014,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	
 		if ($reachedpaginationmax)
 		{
-			$html .= "<br/><div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;'>hint; reached pagination max, possibly additional items are not rendered</div>";
+			$html .= "<div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;'><br/>hint; reached pagination max, possibly additional items are not rendered</div>";
 		}
 		
 		$indexcount = count($modeluriset);

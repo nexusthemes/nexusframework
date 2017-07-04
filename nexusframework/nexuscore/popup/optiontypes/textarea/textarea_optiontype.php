@@ -31,7 +31,7 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
       	<script>
       		function nxs_js_textarea_autogrow(element)
       		{
-      			element.style.height = "5px";
+      			element.style.height = "auto";
     				element.style.height = (element.scrollHeight)+"px";
       		}
       	</script>
@@ -41,6 +41,7 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
 					    overflow: hidden;
 					    min-height: 50px;
 					    max-height: 100px;
+					    box-sizing: border-box;
 					}
       	</style>
         <textarea class="nxs-textarea-autoresize" onkeyup="nxs_js_textarea_autogrow(this);" id="'. $id . '" name="content" cols="' . $cols . '" rows="' . $rows . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" >' . nxs_render_html_escape_gtlt($value) . '</textarea>

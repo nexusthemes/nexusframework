@@ -580,7 +580,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// apply the lookups and shortcodes to the customhtml
-		$magicfields = array("title", "text", "destination_url", "image_src");
+		$magicfields = array("title", "text", "button_text", "destination_url", "image_src");
 		$translateargs = array
 		(
 			"lookup" => $combined_lookups,

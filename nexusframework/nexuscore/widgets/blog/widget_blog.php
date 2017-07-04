@@ -1386,13 +1386,35 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					}
 					
 					// find images used on page
-					$imgblocks = nxs_get_images_in_post($currentpostid);
-					// pick the first one
-					$item_image_imageid = $imgblocks[0];	//
+					$imgargs = array
+					(
+						"postid" => $currentpostid,
+						"includeexternalimgs" => "true"
+					);
+					$imgblocks = nxs_get_images_in_post_v2($imgargs);
 					
-					$item_image_alt = $currentposttitle;
-					$item_image_title = $currentposttitle;
-					$htmlforimage = nxs_gethtmlforimage($item_image_imageid, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title, $grayscale, $enlarge);
+					
+					$htmlforimage = "";
+					if (count($imgblocks) > 0)
+					{
+						$first = $imgblocks[0];
+						
+						if (nxs_stringstartswith($first, "http"))
+						{
+							$item_image_alt = $currentposttitle;
+							$item_image_title = $currentposttitle;
+							$htmlforimage = nxs_gethtmlforimage_v2("", $first, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title, $grayscale, $enlarge);
+						}
+						else
+						{
+							// pick the first one
+							$item_image_imageid = $imgblocks[0];	//
+							
+							$item_image_alt = $currentposttitle;
+							$item_image_title = $currentposttitle;
+							$htmlforimage = nxs_gethtmlforimage($item_image_imageid, $item_image_border_width, $item_image_size, $item_image_alignment, $item_image_shadow, $item_image_alt, $item_destination_articleid, $item_destination_url, $item_image_title, $grayscale, $enlarge);
+						}
+					}
 					
 					if ($post_password_required)
 					{

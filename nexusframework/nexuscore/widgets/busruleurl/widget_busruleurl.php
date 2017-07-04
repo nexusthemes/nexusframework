@@ -408,8 +408,11 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 					}
 					else
 					{
-						// static 1:1 comparison
-						if ($templatepiece === $uripiece)
+						if ($templatepiece === "*")
+						{
+							// ignore this fraction (a match)
+						}
+						else if ($templatepiece === $uripiece)
 						{
 							// yes its identical, continue to the next fragment
 						}

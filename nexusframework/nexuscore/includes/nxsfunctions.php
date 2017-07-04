@@ -8301,124 +8301,41 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 
 function nxs_gethtmlforbutton($button_text = "", $button_scale = "", $button_color = "", $destination_articleid = "", $destination_url = "", $destination_target = "", $button_alignment = "", $destination_js = "", $text_heightiq = "", $button_fontzen = "", $destination_relation = false)
 {
-	if ($button_text == "")
-	{
-		return "";
-	}
-	if ($destination_articleid == "" && $destination_url == "" && $destination_js == "")
-	{
-		return "";
-	}		
-
-	$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
-	$button_color = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
-	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
-	$button_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $button_fontzen);
-	
-	if ($destination_articleid != "")
-	{
-		$posttype = get_post_type($destination_articleid);
-		if ($posttype == "attachment")
-		{
-			$url = wp_get_attachment_url($destination_articleid);
-		}
-		else
-		{
-			$url = nxs_geturl_for_postid($destination_articleid);
-		}
-		$onclick = "";
-	}
-	else if ($destination_url != "")
-	{
-		if (nxs_stringstartswith($destination_url, "tel:"))
-		{
-			// a phone link; if parenthesis or spaces are used; absorb them
-			$url = $destination_url;
-			$url = str_replace(" ", "", $url);
-			$url = str_replace("(", "", $url);
-			$url = str_replace(")", "", $url);
-		}
-		else
-		{
-			// regular link
-			$url = $destination_url;
-		}
-		$onclick = "";
-	}
-	else if ($destination_js != "")
-	{
-		$url = "#";
-		$onclick = "onclick='" . nxs_render_html_escape_singlequote($destination_js) . "' ";
-	}
-	else
-	{
-		// unsupported
-		$url = "nxsunsupporteddestination";
-		$onclick = "";
-	}
-	
-	if ($onclick != "")
-	{
-		$onclick = " " . $onclick . " ";
- 	}
- 
- 	if ($destination_target == "@@@empty@@@" || $destination_target == "")
- 	{
- 		// auto
- 		if ($destination_articleid != "")
- 		{
- 			// local link = self
- 			$destination_target = "_self";
- 		}
- 		else
- 		{
- 			$homeurl = nxs_geturl_home();
- 			if (nxs_stringstartswith($url, $homeurl))
- 			{
- 				$destination_target = "_self";
- 			}
- 			else
- 			{
- 				$destination_target = "_blank";
- 			}
- 		}
- 	}
- 	if ($destination_target == "_self")
- 	{
- 		$destination_target = "_self";
- 	}
- 	else if ($destination_target == "_blank")
- 	{
- 		$destination_target = "_blank";
- 	}
- 	else
- 	{
- 		$destination_target = "_self";
-	}
-
-	$destination_relation_html = '';
-	if ($destination_relation == "nofollow") {
-		$destination_relation_html = 'rel="nofollow"';
-	}
-	
-	$result = '';
-	$result .= '<p class="' . $button_alignment . ' nxs-padding-bottom0">';
-	$result .= '<a target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '" href="' . $url . '">' . $button_text . '</a>';
-	$result .= '</p>';
-	
+	$args = array
+	(
+		"button_text" => $button_text,
+		"button_scale" => $button_scale,
+		"button_color" => $button_color,
+		"destination_articleid" => $destination_articleid,
+		"destination_url" => $destination_url,
+		"destination_target" => $destination_target,
+		"button_alignment" => $button_alignment,
+		"destination_js" => $destination_js,
+		"text_heightiq" => $text_heightiq,
+		"button_fontzen" => $button_fontzen,
+		"destination_relation" => $destination_relation
+	);
+	$result = nxs_gethtmlforbutton_v2($args);
 	return $result;
 }
 
-function nxs_gethtmlforbutton_mailchimp($button_text, $button_scale, $button_color, $button_alignment)
+// delegates the request to the frontendframework that is active 
+function nxs_gethtmlforbutton_v2($args)
 {
-	$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
-	$button_color = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
-	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
+	$frontendframework = $_REQUEST["frontendframework"];
+	if ($frontendframework == "")
+	{
+		$frontendframework = "nxs";
+	}
 	
-	$result = '';
-	$result .= '<p class="' . $button_alignment . '">';
-	$result .= '<a target="' . $destination_target . '" class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . '" href="#" onclick="nxs_js_mailchimpsubmit(this); return false;">' . $button_text . '</a>';
-	$result .= '</p>';
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	require_once($filetoinclude);
+	
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_gethtmlforbutton";
+	$result = call_user_func_array($functionnametoinvoke, array($args));
+	
+	//error_log("invoke; functionnametoinvoke; $functionnametoinvoke; $result");
+	//error_log("htmlbutton; invoke; " . json_encode($args));
 	
 	return $result;
 }
@@ -11201,6 +11118,18 @@ function nxs_get_images_in_post_v2($args)
 				if (!in_array($item, $result))
 				{
 					$result[] = $item;
+				}
+			}
+			
+			if ($args["includeexternalimgs"] == "true")
+			{
+				$item = strip_tags($placeholdermetadata["image_src"]);
+				if ($item != "")
+				{
+					if (!in_array($item, $result))
+					{
+						$result[] = $item;
+					}
 				}
 			}
 			

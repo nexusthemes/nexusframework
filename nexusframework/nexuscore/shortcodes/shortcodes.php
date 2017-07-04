@@ -169,6 +169,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = strtoupper($input);
 		}
+		else if ($op == "count")
+		{
+			$seperator = ";";
+			$input = explode($seperator, $input);
+			$input = count($input);
+		}
 		else if ($op == "str_replace")
 		{
 			$search = $attributes["search"];
@@ -263,18 +269,28 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			// thanks to https://stackoverflow.com/questions/19050890/find-youtube-link-in-php-string-and-convert-it-into-embed-code
 			$input = preg_replace(
         "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
-        "<br /><div class=\"container\"><iframe class=\"video\" width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/$2\" allowfullscreen></iframe></div><br />",
+        "<br /><div class=\"video-container\"><iframe class=\"video\" width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/$2\" allowfullscreen></iframe></div><br />",
         $input
     	);
 		}
 		else if ($op == "linkify")
 		{
+			if ($attributes["excludeyoutube"] == "true")
+			{
+				$input = str_replace("https://www.youtube", "*NXS*PLACEHOLDER*YOUTUBE*", $input);
+			}
+			
 			$input = preg_replace
 			(
         "~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~",
         "<a target=\"blank\" class=\"linkified\" href=\"\\0\">\\0</a>", 
         $input
       );
+
+			if ($attributes["excludeyoutube"] == "true")
+			{
+				$input = str_replace("*NXS*PLACEHOLDER*YOUTUBE*", "https://www.youtube", $input);
+			}
 		}
 		else if ($op == "htmlentities")
 		{
@@ -462,6 +478,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				}
 			}
 			
+			if ($attributes["errorlog"] == "true")
+			{
+				error_log("modelproperty; relations: {$relations}");
+			}
+			
 			if (isset($relations) && $relations != "")
 			{
 				// update the modeluri to other modeluris based upon the relations specified
@@ -504,6 +525,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 					);
 					$relationmodelid = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
 					$relationmodelid = trim($relationmodelid);
+					
+					if ($attributes["errorlog"] == "true")
+					{
+						error_log("modelproperty; relationwalker; modeluri:$modeluri prop:$relationproperty value:{$relationmodelid}@{$relationschema}");
+					}
 
 					// error_log("relationpiece; fetching property ($relationproperty) for ($modeluri) returns ($relationmodelid)");
 					
@@ -546,7 +572,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				
 			if ($attributes["errorlog"] == "true")
 			{
-				error_log("shortcodes;modeluri:$modeluri;property:$property;input:$input");
+				error_log("modelproperty; result;{$input}");
 			}
 		}
 		else if ($op == "modelidbymd5")
