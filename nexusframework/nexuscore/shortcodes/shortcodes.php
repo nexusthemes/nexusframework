@@ -594,24 +594,6 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			
 			// error_log("modelidbymd5;" . count($ids) . ";$index;$input");
 		}
-		else if ($op == "test")
-		{
-			$input = substr($input, 0, 10);// "aaa";
-			
-			$input = htmlspecialchars($input);
-			return $input;
-			//var_dump($input);
-			die();
-			
-			/*
-			if (nxs_stringcontains($input, "remove this from"))
-			{
-				var_dump($input);
-				die();
-			}
-			$input = str_replace("<!--", "", $input);
-			*/
-		}
 		else if ($op == "modeldump")
 		{
 			if (is_user_logged_in())
@@ -749,6 +731,15 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$index = $attributes["index"];
 				$pieces = explode($delimiter, $input);
 				$input = $pieces[$index];
+			}
+			else if ($return == "concatenateditemsblanksremoved")
+			{
+				$index = $attributes["index"];
+				$pieces = explode($delimiter, $input);
+				// remove blanks
+				$pieces = array_filter($pieces);
+				// reconstruct
+				$input = implode($delimiter, $pieces);
 			}
 			else if ($return == "")
 			{
@@ -1010,6 +1001,21 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			{
 				$input = "true";
 			}
+		}
+		else if ($op == "or")
+		{
+			// true if any of the item(s) is true, false otherwise
+			$pieces = explode(";", $input);
+			$input = "false";
+		  foreach ($pieces as $piece)
+		  {
+		  	$piece = trim($piece);
+		  	if ($piece == "true")
+		  	{
+		  		$input = "true";
+		  		break;
+		  	}
+		  }
 		}
 		else
 		{
