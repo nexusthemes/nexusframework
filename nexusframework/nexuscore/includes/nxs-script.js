@@ -478,12 +478,6 @@ function nxs_js_ui_pushscrollrevert()
 {
 	nxs_js_scrollstateidentifier++;
 	var value = { 'scrolltop' : jQ_nxs(window).scrollTop(), 'height' : jQ_nxs(window).height() };
-	/*
-	nxs_js_log('orig scroll pos:');
-	nxs_js_log(value.scrolltop);
-	nxs_js_log('orig height:');
-	nxs_js_log(value.height);
-	*/
 	nxs_js_scrollstatestack[nxs_js_scrollstateidentifier] = value;
 	return nxs_js_scrollstateidentifier;
 }
@@ -3088,7 +3082,10 @@ function nxs_js_redirect_top(url)
 				{
 					//nxs_js_log('executing actual refresh work');
 					// first we dequeue! 
+					
 					nxs_gui_set_runtime_dimensions_actualrequest();
+					
+					
 				},nxs_max_refresh_frequency_in_msecs
 			);
 		}
@@ -3167,9 +3164,42 @@ function nxs_js_redirect_top(url)
 			);
 		}
 		
+		// kudos to https://stackoverflow.com/questions/3514784/what-is-the-best-way-to-detect-a-mobile-device-in-jquery
+		// is_mobile is_handheld ishandheld
+		function nxs_js_ismobile()
+		{
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
+			{
+ 				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
 		function nxs_gui_set_runtime_dimensions_actualrequest()
 		{
-			var scrollrevertid = nxs_js_ui_pushscrollrevert();
+			var shouldrestorescrollposition = false;
+			
+			// 20170707; fixes annoying scrolling stall/hickup when scrolling up on mobiles
+			// only do this when logged in
+			if (nxs_js_isuserloggedin())
+			{
+				if (nxs_js_ismobile())
+				{
+					// dont
+				}
+				else
+				{
+					shouldrestorescrollposition = true;
+				}
+			}
+			
+			if (shouldrestorescrollposition)
+			{
+				var scrollrevertid = nxs_js_ui_pushscrollrevert();
+			}
 		
 			// todo: this can be optimized: the tagging of columns only has to occur when
 			// the page is loaded, and after the core structure of the page is modified
@@ -3532,7 +3562,10 @@ function nxs_js_redirect_top(url)
   		jQ_nxs(window).trigger('nxs_recalculateruntimedimensions');
   		jQ_nxs(document).trigger('nxs_dom_changed');
   		
-			nxs_js_ui_popscrollrevert(scrollrevertid);
+  		if (shouldrestorescrollposition)
+  		{
+				nxs_js_ui_popscrollrevert(scrollrevertid);
+			}
 		}
 		
 		function nxs_js_isrefreshtriggeredbyatleastoneof(trigger)

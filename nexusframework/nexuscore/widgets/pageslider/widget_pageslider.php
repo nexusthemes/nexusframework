@@ -27,6 +27,10 @@ function nxs_widgets_pageslider_registerhooksforpagewidget($args)
 	
 	if ($widget_metadata["hide_for_touchdevices"] != "" && nxs_ishandheld())
 	{
+		// note; it would be better to do this check client-side, if the page would be cached,
+		// while its first accessed on a touch device this will mean all subsequent pages will be server
+		// wrongly (and the other way around)...
+		
 		// ignore; not available on mobiles/tablets
 	}
 	else
