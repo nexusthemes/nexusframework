@@ -280,12 +280,37 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rules[] = "unsupportedtransformation";
 				echo "unsupported transformation; $transformation";
 				die();
-			}		
+			}
+			
+			//
+			
+			$comparecolorhex = $middle;
+			$comparecolorrgb = nxs_hextorgb($comparecolorhex);
+			$comparecolorhsl = nxs_rgbtohsl($comparecolorrgb);	
+			$lighttreshhold = 0.7;
+			$isbackgroundcolorrelativelydark = $comparecolorhsl["l"] < $lighttreshhold;
+			 
+			if ($isbackgroundcolorrelativelydark)
+			{
+				//var textcolor = csslookup["color_" + identification + "1_ll"];
+				//var textshadowcolor = csslookup["color_" + identification + "2_dd"];
+				$textcolor = "white";
+				$textshadowcolor = "black";
+			}
+			else
+			{
+				$textcolor = "black";
+				$textshadowcolor = "white";
+			}
+			
+			$rules[] = "color: $textcolor;";
+			$rules[] = "text-shadow: 1px 1px 1px $textshadowcolor;";
 		}
 		else if ($key == "button")
 		{
 			$rules[] = "border-width: 1px;";
     	$rules[] = "border-radius: 3px;";
+    	$rules[] = "cursor: pointer;";
 		}
 		else if ($key == "button_scale")
 		{

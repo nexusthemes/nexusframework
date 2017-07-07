@@ -184,11 +184,11 @@ function nxs_widgets_formbox_home_getoptions($args)
 		"unifiedstyling" 	=> array("group" => nxs_widgets_formbox_getunifiedstylinggroup(),),		
 		"fields" 			=> array
 		(
-			array
-			(
-				"id" 				=> "debug",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Debug", "nxs_td"),
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> "Lookups",
+				"initial_toggle_state"	=> "closed",
 			),
 			array
 			(
@@ -196,18 +196,12 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
 			),
-			array
-			(
-				"id" 				=> "debug_modeluri",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Modeluri (defines in which model will be stored)", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "debug_writeaccesstoken",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Access token (permission key to store data in the model)", "nxs_td"),
-			),
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),	
+			
+			
 									
 			// TITLE	
 			
@@ -434,6 +428,50 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
 			),
+			
+			
+			
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> "Persistence",
+				"initial_toggle_state"	=> "closed",
+			),
+			array
+			(
+				"id" 				=> "debug_modeluri",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Modeluri (defines in which model will be stored)", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "debug_writeaccesstoken",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Access token (permission key to store data in the model)", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),	
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> "Debug",
+				"initial_toggle_state"	=> "closed",
+			),
+			array
+			(
+				"id" 				=> "debug",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Debug", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),	
+			
 		)
 	);
 	

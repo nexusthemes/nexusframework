@@ -54,77 +54,6 @@ function nxs_sc_handlescope($attributes, $content = null, $name='')
 	return $result;
 }
 
-// spinner shortcodes
-function nxs_sc_spin($attributes, $content = null, $name='') 
-{
-	extract($attributes);
-	
-	nxs_ob_start();
-	
-	if ($modeluri == "")
-	{
-		$modeluri = "{$humanid}@{$schema}";
-	}
-	
-	$modeluri = "spinner:{$modeluri}";
-	
-	global $nxs_g_modelmanager;
-	
-	$lookupargs = array
-	(
-		"modeluris" => $modeluri,
-	);
-	$lookups = $nxs_g_modelmanager->getlookups_v2($lookupargs);
-	
-	$text = $lookups["spinner:text.textvalue"];
-	
-	//
-	$text = str_replace("[", "{{", $text);
-	$text = str_replace("]", "}}", $text);
-	
-	if (true)
-	{
-		$lookup = array();
-		foreach ($attributes as $key=>$val)
-		{
-			$shoulddecorate = false;
-			
-			if (is_user_logged_in())
-			{
-				if ($_REQUEST["spindecorate"] == "true")
-				{
-					$shoulddecorate = true;
-				}
-			}
-			
-			if ($shoulddecorate)
-			{
-				$lookup[$key] = "<b class='ph' style='color: white; text-shadow: none; background-color: #000; border-style: dotted; border-width: 1px; border-color: red; '>{$val}</b>";
-			}
-			else
-			{
-				$lookup[$key] = "{$val}";
-			}
-		}
-	
-		// use the attributes passed in to this shortcode as a lookup table
-		$translateargs = array
-		(
-			"lookup" => $lookup,
-			"item" => $text,
-		);
-		$text = nxs_filter_translate_v2($translateargs);
-	}
-	
-	echo $text;
-	
-	$output = nxs_ob_get_contents();
-	nxs_ob_end_clean();
-		
-	return $output;
-}
-add_shortcode('nxsspin', 'nxs_sc_spin');
-
 // for example [nxsstring ops="lo;x_"]plumber_wordpress_theme[/nxsstring]
 function nxs_sc_string($attributes, $content = null, $name='') 
 {
@@ -174,6 +103,19 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			$seperator = ";";
 			$input = explode($seperator, $input);
 			$input = count($input);
+		}
+		else if ($op == "min")
+		{
+			$input = str_replace("|", ";", $input);
+			$pieces = explode(";", $input);
+			$input = PHP_INT_MAX;
+			foreach ($pieces as $piece)
+			{
+				if ($piece < $input)
+				{
+					$input = $piece;
+				}
+			}
 		}
 		else if ($op == "str_replace")
 		{
@@ -344,6 +286,14 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$input = $replacement;
 			}
 		}
+		else if ($op == "getlatlng")
+		{
+			error_log("getlatlng for; $input");
+			nxs_requirewidget("googlemap");
+			$latlng = nxs_widget_googlemap_getlatlng($input); 
+			$input = $latlng["lat"] . ";" . $latlng["lng"] . ";" . $latlng["found"];
+			error_log("getlatlng result; $input");
+		}
 		else if ($op == "replaceempty")
 		{
 			// if the value is empty
@@ -433,6 +383,13 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "intval")
 		{
+			if ($attributes["strip"] == "allexceptdigits")
+			{
+				// only keep the digits
+				$input = preg_replace('/\D/', '', $input);
+				error_log("stripping; $input");
+			}
+			
 			// if thats true, replace it with whatever is set as the replacement in the shortcode
 			$replacement = intval($input);
 			$input = $replacement;
@@ -568,7 +525,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				"property" => $property,
 			);
 			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
+			
 			$input = htmlentities($input);
+			// 2017 07 06; the dollar sign is not properly replaced causing php to evaluate it to empty string
+			// if we wouldn't replace it here...
+			$input = str_replace('$', "&dollar;", $input);
 				
 			if ($attributes["errorlog"] == "true")
 			{
@@ -760,28 +721,52 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$orig = $input;
 			$input = strip_tags($input);
-			error_log("strip_tags; $orig becomes $input");
+			//error_log("strip_tags; $orig becomes $input");
 		}
 		else if ($op == "year" || $op == "currentyear")
 		{
 			$input = date("Y");
 		}
+		else if ($op == "currenturl")
+		{
+			$input = nxs_geturlcurrentpage();
+			if ($attributes["urlencode"] == "true")
+			{
+				$input = url_encode($input);
+			}
+		}
 		else if ($op == "explode")
 		{
-			$property = $attributes["property"];
-			if ($property == "")
+			$delimiter = $attributes["delimiter"];
+			if ($delimiter == "") { $delimiter = "|"; }
+			
+			$return = $attributes["return"];
+			if ($return == "valueatindex")
 			{
-				$property = "fallback";
-			}
-			$newpieces = array();
-			$pieces = explode("|", $input);
-			foreach($pieces as $piece)
-			{
+				//var_dump($input);
+				//die();
 				
-				$piece = '{"' . $property . '":"' . $piece . '"}';
-				$newpieces[] = $piece;
+				$index = $attributes["index"];
+				$pieces = explode($delimiter, $input);
+				$input = $pieces[$index];
 			}
-			$input = implode(",", $newpieces);
+			else if ($return == "")
+			{
+				$property = $attributes["property"];
+				if ($property == "")
+				{
+					$property = "fallback";
+				}
+				$newpieces = array();
+				$pieces = explode($delimiter, $input);
+				foreach($pieces as $piece)
+				{
+					
+					$piece = '{"' . $property . '":"' . $piece . '"}';
+					$newpieces[] = $piece;
+				}
+				$input = implode(",", $newpieces);
+			}
 		}
 	}
 	
@@ -1012,6 +997,20 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 				$input = "false";
 			}
 		}
+		else if ($op == "modelexists")
+		{
+			$modeluri = $attributes["modeluri"];
+			global $nxs_g_modelmanager;
+			$r = $nxs_g_modelmanager->getmodel($modeluri);
+			if ($r === false)
+			{
+				$input = "false";
+			}
+			else
+			{
+				$input = "true";
+			}
+		}
 		else
 		{
 			// bool operation to be implemented ...
@@ -1037,6 +1036,78 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 	return $output;
 }
 add_shortcode('nxsbool', 'nxs_sc_bool');
+
+
+// spinner shortcodes
+function nxs_sc_spin($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	nxs_ob_start();
+	
+	if ($modeluri == "")
+	{
+		$modeluri = "{$humanid}@{$schema}";
+	}
+	
+	$modeluri = "spinner:{$modeluri}";
+	
+	global $nxs_g_modelmanager;
+	
+	$lookupargs = array
+	(
+		"modeluris" => $modeluri,
+	);
+	$lookups = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+	
+	$text = $lookups["spinner:text.textvalue"];
+	
+	//
+	$text = str_replace("[", "{{", $text);
+	$text = str_replace("]", "}}", $text);
+	
+	if (true)
+	{
+		$lookup = array();
+		foreach ($attributes as $key=>$val)
+		{
+			$shoulddecorate = false;
+			
+			if (is_user_logged_in())
+			{
+				if ($_REQUEST["spindecorate"] == "true")
+				{
+					$shoulddecorate = true;
+				}
+			}
+			
+			if ($shoulddecorate)
+			{
+				$lookup[$key] = "<b class='ph' style='color: white; text-shadow: none; background-color: #000; border-style: dotted; border-width: 1px; border-color: red; '>{$val}</b>";
+			}
+			else
+			{
+				$lookup[$key] = "{$val}";
+			}
+		}
+	
+		// use the attributes passed in to this shortcode as a lookup table
+		$translateargs = array
+		(
+			"lookup" => $lookup,
+			"item" => $text,
+		);
+		$text = nxs_filter_translate_v2($translateargs);
+	}
+	
+	echo $text;
+	
+	$output = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+		
+	return $output;
+}
+add_shortcode('nxsspin', 'nxs_sc_spin');
 
 // widget specific shortcodes
 

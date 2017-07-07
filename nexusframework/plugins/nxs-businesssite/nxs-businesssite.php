@@ -1026,6 +1026,24 @@ class nxs_g_modelmanager
 			return false;
 		}
 		
+		global $nxs_gl_schemasgonewrong;
+		$schema = $this->getschema($modeluri);
+		$hammeringprotectiontreshhold = 3;
+		if ($nxs_gl_schemasgonewrong[$schema] > $hammeringprotectiontreshhold)
+		{
+			// todo: fire action here too
+			$json = array
+			(
+				"found" => false,
+				"err" => array
+				(
+					"scenario" => "toomanyfailedattemptswithinschemawithinruntime",
+					"content" => $content,
+				),
+			);
+			return $json;
+		}
+		
 		// if modeluri is specified retrieve the model through the modeluri
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/model-by-uri/{$modeluri}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
 		$content = nxs_geturlcontents(array("url" => $url));
@@ -1048,13 +1066,16 @@ class nxs_g_modelmanager
 					"content" => $content,
 				),
 			);
-			
-			return $json;
 		}
 		
 		if ($json["found"] === false)
 		{
 			do_action("nxs_a_modelnotfound", array("modeluri" => "$modeluripiece"));
+			
+			
+			// here we track within the runtime environment that something went wrong for this schema
+			$nxs_gl_schemasgonewrong[$schema]++;
+			
 			// error_log("getmodel_actual; not found; $url");
 			return $json;
 		}

@@ -526,6 +526,15 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	);
 	$iterator_datasource = nxs_filter_translate_v2($translateargs);
 	
+	// apply lookups on parameters
+	$translateargs = array
+	(
+		"item" => $filter_pagination_pagesize,
+		"lookup" => $dslookups,
+	);
+	$filter_pagination_pagesize = nxs_filter_translate_v2($translateargs);
+	
+	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 	
@@ -707,15 +716,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		{
 			// combine the iterator model together with any other additional models the template needs
 			$iteratormodeluri = "iterator:{$itemhumanmodelid}@{$itemschema}";
-			$combinedmodeluris = "{$iteratormodeluri}|{$item_modeluris}";
-			
-			// translates variables in the combinedmodeluris
-			$evaluateargs = array
-			(
-				"modeluris" => $combinedmodeluris,
-				"shouldapply_templaterules_lookups" => true,
-			);
-			$combinedmodeluris = $nxs_g_modelmanager->evaluatereferencedmodelsinmodeluris_v2($evaluateargs);
+			$combinedmodeluris = "{$iteratormodeluri}";
 		}
 		
 		// fill the lookups
@@ -856,6 +857,15 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		// replace the placeholders in the template
 		$subhtml = $item_htmltemplate_a;
 		
+		if ($_REQUEST["listcustom"] == "true")
+		{
+			var_dump($subhtml);
+			var_dump($lookup);
+			die();
+		}
+		
+		
+		
 		if ($datasource_isvalid)
 		{
 			// ----
@@ -900,6 +910,11 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		if ($shouldrendercolumns)
 		{
 			$html .= "</div>";
+		}
+		
+		if ($_REQUEST["lll"] == "3")
+		{
+			error_log("lll;".$filter_pagination_pagesize);
 		}
 		
 		// break the loop if this was the max pagesize
@@ -1018,7 +1033,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 		
 		$indexcount = count($modeluriset);
-		$html .= "<div class='nxs-hidewheneditorinactive' style'display: block;'>hint; iterated over $indexcount items, rendered $indexwithinfilter items</div><br />";
+		// $html .= "<div class='nxs-hidewheneditorinactive' style'display: block;'>hint; iterated over $indexcount items, rendered $indexwithinfilter items</div><br />";
 	
 		if (nxs_iswebmethodinvocation())
 		{
