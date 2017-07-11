@@ -1361,6 +1361,42 @@ class nxs_g_modelmanager
 		//nxs_lazyload_plugin_widget(__FILE__, "taxpageslider");
 		
 		// handle bulk model prefetching
+		
+		if ($_REQUEST["bulkmodels"] == "true")
+		{
+			if (!is_user_logged_in())
+			{
+				if ($_SERVER['REMOTE_ADDR'] == "52.21.12.12")
+				{
+					// if the content server triggers this, its ok
+				}
+				else
+				{
+					echo "sorry only available if you are logged in, or if you are the content server which you are not";
+					die();
+				}
+			}
+			else
+			{
+				// ok
+			}
+							
+			$singularschema = $_REQUEST["singularschema"];
+			if ($singularschema == "") { echo "singularschema not specified?"; die(); }
+			if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot refetch lists; refetch the singular model to refetch the list"; die(); }
+
+			// this function will itself also update the list
+			$this->cachebulkmodels($singularschema);
+			
+			// also expire the cache of the site
+			$path = nxs_cache_getcachefolder();
+			nxs_recursive_removedirectory($path);
+			
+			echo "Bulk fetching finished ($singularschema) cache wiped :)";
+			die();
+			// todo: output some json instead of text...
+		}
+		
 		if (is_user_logged_in())
 		{
 			$dumpmodeluri = $_REQUEST["dumpmodeluri"];
@@ -1371,23 +1407,7 @@ class nxs_g_modelmanager
 				echo json_encode($d);
 				die();
 			}
-			if ($_REQUEST["bulkmodels"] == "true")
-			{
-				if (!is_user_logged_in())
-				{
-					echo "sorry only available if you are logged in";
-				}
-								
-				$singularschema = $_REQUEST["singularschema"];
-				if ($singularschema == "") { echo "singularschema not specified?"; die(); }
-				if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot refetch lists; refetch the singular model to refetch the list"; die(); }
-
-				// this function will itself also update the list
-				$this->cachebulkmodels($singularschema);
-				
-				echo "Bulk fetching finished ($singularschema) :)";
-				die();
-			}
+			
 		}
 	}
 	

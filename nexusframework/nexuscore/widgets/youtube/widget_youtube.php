@@ -39,6 +39,28 @@ function nxs_widgets_youtube_home_getoptions($args)
 		"unifiedcontent" 	=> array("group" => nxs_widgets_youtube_getunifiedcontentgroup(),),
 		"fields" => array
 		(
+			// -------------------------------------------------------			
+			
+			// LOOKUPS
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
+			),
+			array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),			
+		
 			// TITLE
 			
 			array( 
@@ -87,14 +109,6 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("youtube settings", "nxs_td"),
 			),
-
-			array(
-				"id" 				=> "videoid",
-				"type" 				=> "input",
-				"visibility" 		=> "hidden",
-				"label" 			=> nxs_l18n__("Video ID", "nxs_td"),
-				"localizablefield"	=> true
-			),
 		
 			array(
 				"id" 				=> "videoid_visualization",
@@ -102,7 +116,17 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_youtube_videoid_popupcontent",
 				"label" 			=> nxs_l18n__("Video URL", "nxs_td"),
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
+				"unicontentablefield" => true
+			),
+			
+			array(
+				"id" 				=> "videoid",
+				"type" 				=> "input",
+				// "visibility" 		=> "hidden",
+				"label" 			=> nxs_l18n__("Video ID", "nxs_td"),
+				"localizablefield"	=> true,
+				"unicontentablefield" => true
 			),
 			
 			array(
@@ -110,14 +134,14 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Transcript language", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("For example: en", "nxs_td"),
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
 			),
 
 			array( 
 				"id" 				=> "autoplay",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Autoplay", "nxs_td"),
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
 			),
 
 			array(
@@ -125,7 +149,7 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"type" 				=> "input",
 				"visibility" 		=> "hidden",
 				"label" 			=> nxs_l18n__("Video ID", "nxs_td"),
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
 			),
 
 			array( 
@@ -134,7 +158,7 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_youtube_playsecs_popupcontent",
 				"label" 			=> nxs_l18n__("Play Start", "nxs_td"),
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
 			),
 
 			array(
@@ -142,7 +166,7 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"type" 				=> "input",
 				"visibility" 		=> "hidden",
 				"label" 			=> nxs_l18n__("Video ID", "nxs_td"),
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
 			),
 
 			array( 
@@ -151,13 +175,36 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_youtube_playsecs_popupcontent",
 				"label" 			=> nxs_l18n__("Play End", "nxs_td"),
-				"localizablefield"	=> true
+				"localizablefield"	=> true,
 			),
 			
 			array( 
 				"id" 				=> "wrapper_youtube_end",
 				"type" 				=> "wrapperend"
-			),		
+			),
+			
+			// MISCELLANEOUS
+			
+			array( 
+				"id" 				=> "wrapper_misc_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Miscellaneous", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "title_heightiq",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
+				"unistylablefield"	=> true
+			),	
+			
+			array( 
+				"id" 				=> "wrapper_youtube_end",
+				"type" 				=> "wrapperend"
+			),	
 		)
 	);
 	
@@ -184,6 +231,50 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
 	
 	$mixedattributes = array_merge($temp_array, $args);
+	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		
+		// evaluate the lookups widget values line by line
+		$sofar = array();
+		foreach ($combined_lookups as $key => $val)
+		{
+			$sofar[$key] = $val;
+			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+
+			//echo "step 2; about to evaluate lookup tables on; $val<br />";
+			// apply the lookup values
+			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+
+			// apply shortcodes
+			$val = $sofar[$key];
+			//echo "step 3; result is $val<br />";
+
+			//echo "step 4; about to evaluate shortcode on; $val<br />";
+
+			$val = do_shortcode($val);
+			$sofar[$key] = $val;
+
+			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+
+			$combined_lookups[$key] = $val;
+		}
+		
+		// apply the lookups and shortcodes to the customhtml
+		$magicfields = array("title", "videoid", "videoid_visualization");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
 	
 	extract($mixedattributes);
 	
@@ -252,8 +343,6 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		$renderBeheer = false;
 	}
 	
-	
-
 	if ($rendermode == "default")
 	{
 		if ($renderBeheer)
@@ -316,10 +405,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
             <iframe class="nxs-youtube-iframe" src="<?php echo $scheme; ?>://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
-
     <?php
-	
-
 	
 	if ($nxs_global_row_render_statebag == null)
 	{
@@ -506,42 +592,23 @@ function nxs_widgets_youtube_initplaceholderdata($args)
 	extract($args);
 	
 	$args["title"] = nxs_l18n__("title[sample]", "nxs_td");
+	$args['title_heightiq'] = "true";
 	$args["videoid"] = nxs_l18n__("videoid[youtube,sample,B6cg4ZoUwVU]", "nxs_td");
 	$args["videourl"] = nxs_l18n__("videourl[youtube,sample,http://www.youtube.com/watch?v=B6cg4ZoUwVU]", "nxs_td");
 	$args["language"] = nxs_l18n__("language[sample,youtube]", "nxs_td");
 	
-	nxs_widgets_youtube_updateplaceholderdata($args);
+	// current values as defined by unistyle prefail over the above "default" props
+	$unistylegroup = nxs_widgets_youtube_getunifiedstylinggroup();
+	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 
+	// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_youtube_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
+		
+	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
+	
 	$result = array();
 	$result["result"] = "OK";
 	
 	return $result;
 }
-
-//
-// wordt aangeroepen bij het opslaan van data van deze placeholder
-//
-function nxs_widgets_youtube_updateplaceholderdata($args)
-{
-	extract($args);
-	
-	$temp_array = array();
-	
-	// its required to also set the 'type' (used when dragging an item from the toolbox to existing placeholder)
-	$temp_array['type'] = 'youtube';
-	$temp_array['videoid'] = $videoid;
-	$temp_array['autoplay'] = $autoplay;
-	$temp_array['videourl'] = $videourl;
-	$temp_array['language'] = $language;
-	$temp_array['playstartsecs'] = $playstartsecs;
-	$temp_array['playendsecs'] = $playendsecs;
-	
-	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $temp_array);
-
-	$result = array();
-	$result["result"] = "OK";
-	
-	return $result;
-}
-
-?>

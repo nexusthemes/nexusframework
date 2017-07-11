@@ -1152,5 +1152,3 @@ function nxs_widgets_text_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

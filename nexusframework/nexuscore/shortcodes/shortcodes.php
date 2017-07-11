@@ -177,6 +177,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = strtoupper(substr($input, 0, 1)) . substr($input, 1);
 		}
+		// homeurl home_url homepage_url homepageurl gethome get_home site home site_home site_url homepage
+		else if ($op == "homeurl")
+		{
+			$input = nxs_geturl_home();
+		}
 		else if ($op == "urlprettyfy")
 		{
 			if ($attributes["debug"] == "true")
@@ -232,6 +237,22 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			if ($attributes["excludeyoutube"] == "true")
 			{
 				$input = str_replace("*NXS*PLACEHOLDER*YOUTUBE*", "https://www.youtube", $input);
+			}
+		}
+		else if ($op == "smartlinks")
+		{
+			$dictionary = array
+			(
+				"woocommerce" => "<a href='https://wordpress.org/plugins/woocommerce/'>WooCommerce</a>",
+			);
+			//
+			foreach ($dictionary as $needle => $replace)
+			{
+				$pos = stripos($input, $needle);
+				if ($pos !== false) 
+				{
+					$input = substr_replace($input, $replace, $pos, strlen($needle));
+				}
 			}
 		}
 		else if ($op == "htmlentities")
@@ -613,10 +634,58 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "listmodeluris")
 		{
+			global $nxs_g_modelmanager;
+			
 			$instanceuris = array();
 			
-			global $nxs_g_modelmanager;
-			$iterator_datasource = $attributes["singularschema"];
+			$datasourceprovidertype = $attributes["datasourceprovidertype"];
+			if ($datasourceprovidertype == "")
+			{
+				$iterator_datasource = $attributes["singularschema"];
+				if ($iterator_datasource == "")
+				{
+					return "$op; no singularschema specified?";
+				}
+			}
+			else if ($datasourceprovidertype == "segmented")
+			{
+				// to be used when you want to output a list of modeluris (ex. 1@a;2@a) from 
+				// a particular spreadsheet that is segmented (meaning that the entire spreadsheet
+				// is cut into parts; so for example instead of having a huge nxs.games.game spreadsheet,
+				// we have segmented them in nxs.games.gameboy.game and nxs.games.segasaturn.game etc.).
+				// this operator is used when the model to be used is derived through a "lookup" defined
+				// in another table (through a lookup)
+				
+				$instanceuris = array();
+				
+				global $nxs_g_modelmanager;
+				
+				// step 1; evaluate the singularschema to be used
+				$segmentschemaprovidertype = $attributes["segmentschemaprovidertype"];
+				if ($segmentschemaprovidertype == "modellookup")
+				{
+					// the singularschema to use is to be derived through a modellookup
+					$segmentschema_modellookupuri = $attributes["segmentschema_modellookupuri"];
+					$segmentschema_modellookupproperty = $attributes["segmentschema_modellookupproperty"];
+					
+					// get the property
+					$subargs = array
+					(
+						"modeluri" => $segmentschema_modellookupuri,
+						"segmentschema_modellookupproperty" => $segmentschema_modellookupproperty,
+					);
+					$iterator_datasource = $nxs_g_modelmanager->getmodeltaxonomyproperty($subargs);
+				}
+				else
+				{
+					return "$op; unsupported segmentschemaprovidertype; $segmentschemaprovidertype";
+				}
+			}
+			else
+			{
+				return "$op; unsupported sourcetype; $sourcetype";
+			}
+			
 			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
 			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
 			$instances = $contentmodel[$iterator_datasource]["instances"];
@@ -632,10 +701,14 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				if (!isset($nxs_g_modelrefreshphpruntime[$iterator_datasource]))
 				{
 					$nxs_g_modelrefreshphpruntime[$iterator_datasource] = true;
-					error_log("nxs_g_modelrefreshphpruntime refresh required for $iterator_datasource");
+					//error_log("nxs_g_modelrefreshphpruntime refresh required for $iterator_datasource");
 					// clear it!
 					$nxs_g_modelmanager->cachebulkmodels($iterator_datasource);
 				}
+			}
+			else
+			{
+				nxs_webmethod_return_nack("unsupported cachebehaviour; $cachebehaviour");
 			}
 			
 			// return "instances count:" . count($instances);
@@ -643,29 +716,50 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			{
 				$itemhumanmodelid = $instance["content"]["humanmodelid"];
 				$instanceuri = "{$itemhumanmodelid}@{$iterator_datasource}";
-				
-				$operatorproperty = $attributes["property"];
-				$operator = $attributes["operator"];
-				$operatorvalue = $attributes["value"];
-				
-				$conditionevaluation = false;
-				
-				if ($operator == "caseinsensitivelike")
+								
+				$conditionevaluation = true;
+
+				$conditionindexers = array("", "_1", "_2");	// add more conditionindexers here when needed...
+				foreach ($conditionindexers as $conditionindexer)
 				{
-					$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
-					$conditionevaluation = nxs_stringcontains_v2($fieldvalue, $operatorvalue, true);
-				}
-				else if ($operator == "equals")
-				{
-					$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
-					$conditionevaluation = ($fieldvalue == $operatorvalue);
-				}
-				else
-				{
-					return "unsupported operator $operator";
-					// not supported; evaluates to false
+					// operator
+					
+					$operatorproperty = $attributes["where_property{$conditionindexer}"] . $attributes["property"];
+					$operator = $attributes["where_operator{$conditionindexer}"] . $attributes["operator"];
+					$operatorvalue = $attributes["where_value{$conditionindexer}"] . $attributes["value"];
+	
+					if ($operator == "")
+					{
+						// ignore this one
+						continue;
+					}
+					else if ($operator == "caseinsensitivelike")
+					{
+						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+						$conditionevaluation = nxs_stringcontains_v2($fieldvalue, $operatorvalue, true);
+					}
+					else if ($operator == "equals")
+					{
+						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+						$conditionevaluation = ($fieldvalue == $operatorvalue);
+					}
+					else
+					{
+						return "$op; unsupported where operator ($operator)";
+						// not supported; evaluates to false
+					}
+					
+					//
+					if ($conditionevaluation === false)
+					{
+						// if one condition is false, break all (we use a logical AND operator here)
+						break;
+					}
+					
+					// loop; proceed evaluating the next condition
 				}
 				
+				// if condition evaluates to true, add the item to the resulting set
 				if ($conditionevaluation)
 				{
 					$instanceuris[] = $instanceuri;
@@ -820,7 +914,18 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			}
 			*/
 		}
-		if ($op == "is_numeric")
+		else if ($op == "isempty")
+		{
+			if (trim($input) == "")
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+		}
+		else if ($op == "is_numeric")
 		{
 			if (is_numeric($input))
 			{
@@ -1016,6 +1121,19 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		  		break;
 		  	}
 		  }
+		}
+		else if ($op == "in_array")
+		{
+			$array = $attributes["array"];
+			$pieces = explode(";", $array);
+			if (in_array($value, $pieces))
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
 		}
 		else
 		{

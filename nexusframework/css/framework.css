@@ -900,7 +900,7 @@ ul.nxs-menu li.nxs-touched ul li.height08					{ height: 40px; }
 /* WORDPRESS NATIVE MENU 
 ---------------------------------------------------------------------------------------------------- */
 
-.nxs-native-menu ul.menu li.menu-item-has-children > a		{ cursor: default; }
+.nxs-native-menu ul.menu li.menu-item-has-children > a		{ cursor: pointer; }
 
 /* Enabling center aligment 
 http://css-tricks.com/centering-list-items-horizontally-slightly-trickier-than-you-might-think/ */

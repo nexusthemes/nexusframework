@@ -1253,7 +1253,11 @@ function nxs_gettemplateproperties_internal()
 		if ($value != "")
 		{
 			$islocalreference = (intval($value) > 0);
-			if ($islocalreference)
+			if ($value == -1)
+			{
+				// do nothing?
+			}
+			else if ($islocalreference)
 			{
 				// local template; keep the id "as-is"
 			}
@@ -1274,7 +1278,7 @@ function nxs_gettemplateproperties_internal()
 					$maps_to = $nxs_g_modelmanager->getcontentmodelproperty($modeluri, "maps_to");
 					if ($maps_to == "")
 					{
-						echo "model not found <!-- {$modeluri} -->";
+						echo "nxsfunctions; model not found ($value) <!-- {$modeluri} -->";
 						die();
 					}
 					$result[$key] = $maps_to;
@@ -9839,6 +9843,11 @@ function nxs_recursive_removedirectory($directory)
 {
 	if ($directory == "")
 	{
+		return;
+	}
+	if ($directory == "/")
+	{
+		// in general a bad idea
 		return;
 	}
 	if (!file_exists($directory))
