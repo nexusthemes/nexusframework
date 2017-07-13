@@ -287,6 +287,9 @@ function nxs_widgets_menuitemcustom_desktop_render($args) {
     }
 
     $url = $placeholdermetadata["destination_url"];
+    $urlargs = array();
+    $url = apply_filters("nxs_f_geturl", $url, $urlargs);
+    
     $destination_target = $placeholdermetadata["destination_target"];
     $destination_relation = $placeholdermetadata["destination_relation"];
     $destination_relationatt = $destination_relation;

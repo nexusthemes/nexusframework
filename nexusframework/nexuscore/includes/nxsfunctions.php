@@ -3314,8 +3314,12 @@ function nxs_htmlunescape($input)
 // homeurl home_url homepage_url homepageurl gethome get_home site home site_home site_url homepage
 function nxs_geturl_home()
 {
-	$url = get_bloginfo('url') . "/";
-	return $url; 
+	$result = get_bloginfo('url') . "/";
+	
+	$args = array();
+	$result = apply_filters("nxs_f_geturl", $result, $args);
+	
+	return $result; 
 }
 
 function nxs_getsiteslug()
@@ -5321,6 +5325,7 @@ function nxs_geturicurrentpage($args = array())
   {
     $result = $_SERVER['REQUEST_URI'];
   }
+ 
   return $result;
 }
 
@@ -6463,7 +6468,8 @@ function nxs_lookuptable_getlookup_v2($includeruntimeitems)
 		$result["currentyear"] = date("Y");
 	}
 	
-	//
+	// allow plugins to extend and/or override this list
+	$result = apply_filters("nxs_f_lookuptable_getlookup", $result, $args);
 	
 	return $result;
 }
@@ -11407,6 +11413,9 @@ function nxs_geturl_for_postid($postid)
 			$result = get_permalink($postid);
 		}
 	}
+	
+	$args = array();
+	$result = apply_filters("nxs_f_geturl", $result, $args);
 	
 	return $result; 
 }
