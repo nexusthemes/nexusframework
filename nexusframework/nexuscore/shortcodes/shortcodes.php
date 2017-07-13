@@ -1,5 +1,10 @@
 <?php 
 
+function nxs_sc_reconstructshortcode_keyvalue($v, $k) 
+{ 
+	return sprintf("%s='%s'", $k, $v); 
+}
+
 function nxs_sc_reconstructshortcode($attributes, $content, $name)
 {
 	$implodedattributes = implode
@@ -7,7 +12,7 @@ function nxs_sc_reconstructshortcode($attributes, $content, $name)
 		' ', 
 		array_map
 		(
-    	function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
+    	"nxs_sc_reconstructshortcode_keyvalue",
     	$attributes,
     	array_keys($attributes)
 		)
