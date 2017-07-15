@@ -6437,8 +6437,9 @@ function nxs_lookups_getcombinedlookups_for_currenturl()
 		$combined_lookups = array_merge($combined_lookups, nxs_lookuptable_getlookup_v2(true));	// site-wide lookups
 		$combined_lookups = array_merge($combined_lookups, nxs_gettemplateruleslookups());	// lookups as defined in the page template rules
 		
+		$combined_lookups = apply_filters("nxs_f_lookups", $combined_lookups);
+		
 		// todo: perhaps already start evaluating/processing the items?
-		// todo: allow plugins to filter the result?
 		
 		$nxs_gl_combinedlookups_for_url = $combined_lookups;
 	}
@@ -10855,7 +10856,7 @@ function nxs_getwidgetsmetadatainpost_v2($filter)
 }
 
 // sanity checked for remote posts
-// posttitle
+// getposttitle, get_post_title
 function nxs_gettitle_for_postid($postid)
 {
 	$isremotetemplate = nxs_isremotetemplate($postid);
@@ -11170,7 +11171,7 @@ function nxs_get_key_imageid_in_post($postid)
 	return $result;
 }
 
-// sanity checked for remote posts
+// sanity checked for remote posts, get_content, postcontent, post_content, getcontent
 function nxs_getwpcontent_for_postid($postid)
 {
 	$isremotetemplate = nxs_isremotetemplate($postid);

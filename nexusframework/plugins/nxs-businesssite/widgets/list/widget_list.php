@@ -613,6 +613,8 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 		else if ($settype == "custom")
 		{
+			$modeluriset = array();
+			
 			$canonical_iterator_datasource = $iterator_datasource;
 			// iterator_datasource is for example (foobar1@bar,foobar2@bar)
 			$canonical_iterator_datasource = trim($canonical_iterator_datasource, "()");
@@ -625,8 +627,23 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			foreach ($pieces as $piece)
 			{
 				$itemhumanmodelid = trim($piece);
-				$modeluriset[] = $itemhumanmodelid;
+				if ($itemhumanmodelid != "")
+				{
+					$modeluriset[] = $itemhumanmodelid;
+					
+					if ($_REQUEST["debug99"] == "true")
+					{
+						echo "we voegen toe: ($itemhumanmodelid) afmeting is nu;" . count($modeluriset) . "<br />";
+					}
+				}
 			}
+			
+			if ($_REQUEST["debug99"] == "true")
+			{
+				var_dump($modeluriset);
+				die();
+			}
+
 		}
 		else if ($settype == "json")
 		{

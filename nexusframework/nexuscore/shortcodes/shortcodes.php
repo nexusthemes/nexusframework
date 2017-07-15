@@ -194,8 +194,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				return "urlprettyfy;debug;($content);($input);($value)";
 			}
 			
-			// special case handling; 
-			if (nxs_stringcontains($input, "{{"))
+			if (nxs_stringcontains($input, "http"))
+			{
+				// ignore; already handled
+			}
+			else if (nxs_stringcontains($input, "{{"))
 			{
 				// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
 				$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
@@ -816,6 +819,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$input = url_encode($input);
 			}
 		}
+		else if ($op == "addqueryparameter")
+		{
+			$queryparameter = $attributes["queryparameter"];
+			$queryparametervalue = $attributes["queryparametervalue"];
+			$input = nxs_addqueryparametertourl_v2($input, $queryparameter, $queryparametervalue, true, true);
+		}
 		else if ($op == "explode")
 		{
 			$delimiter = $attributes["delimiter"];
@@ -856,6 +865,27 @@ function nxs_sc_string($attributes, $content = null, $name='')
 					$newpieces[] = $piece;
 				}
 				$input = implode(",", $newpieces);
+			}
+		}
+		else if ($op == "get_posts_modeluris")
+		{
+			$args = $attributes;
+			$posts = get_posts($args);
+			$modeluris = array();
+			foreach ($posts as $post) 
+			{
+   			$modeluris[] = $post->ID . "@wp.post";
+			}
+			$input = implode(";", $modeluris);
+			$input .= ";";
+		}
+		else if ($op == "image_src_by_id")
+		{
+			if ($input != "")
+			{
+				$imagemetadata = nxs_wp_get_attachment_image_src($input, 'full', true);
+				$imageurl = $imagemetadata[0];
+				$input = nxs_img_getimageurlthemeversion($imageurl);
 			}
 		}
 	}

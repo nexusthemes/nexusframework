@@ -37,7 +37,15 @@ class nxs_g_modelmanager
 		$contentmodel = $this->getcontentmodel($modeluri);
 		$taxonomy = "properties";
 		$result = $contentmodel[$taxonomy]["taxonomy"][$property];
-		//error_log("model result:" . $result);
+		return $result;
+	}
+	
+	function getmodeltaxonomyproperties($args)
+	{
+		$modeluri = $args["modeluri"];
+		$contentmodel = $this->getcontentmodel($modeluri);
+		$taxonomy = "properties";
+		$result = $contentmodel[$taxonomy]["taxonomy"];
 		return $result;
 	}
 	
@@ -904,7 +912,14 @@ class nxs_g_modelmanager
 		{
 			if ($modeluri != "")
 			{
-				$nxs_g_model[$cachekey] = $this->getmodel_dbcache($modeluri);
+				if ($this->islocalmodelreference($modeluri))
+				{
+					$nxs_g_model[$cachekey] = $this->getmodel_local($modeluri);
+				}
+				else
+				{
+					$nxs_g_model[$cachekey] = $this->getmodel_dbcache($modeluri);
+				}
 			}
 			else
 			{
@@ -913,6 +928,98 @@ class nxs_g_modelmanager
 		}
 		$result = $nxs_g_model[$cachekey];
 		
+		return $result;
+	}
+	
+	function islocalmodelreference($modeluri = "")
+	{
+		$result = false;
+		if (nxs_stringcontains($modeluri, "@wp."))
+		{
+			// for example 10@wp.post
+			$result = true;
+		}
+		return $result;
+	}
+	
+	function getmodel_local($modeluri)
+	{
+		$pieces = explode("@", $modeluri);
+		$postid = $pieces[0];
+		// todo: get rendered html from the postid (for some reason this throws an error, to be investigated)
+		$blocks = nxs_get_text_blocks_on_page_v3($postid, "empty?", "before");
+		$text = implode(" ", $blocks);
+		
+		$imageid = nxs_get_key_imageid_in_post($postid);
+		
+		$keyvalues = array
+		(
+			"postid" => $postid,
+			"title" => nxs_gettitle_for_postid($postid),
+			"url" => nxs_geturl_for_postid($postid),
+			"text" => $text,
+			"featuredimgid" => $imageid,
+		);
+		
+				
+		if (true)
+		{
+			$extendedproperties = array();
+			foreach ($keyvalues as $key => $value)
+			{
+				$extendedproperties[$key] = array
+				(
+					"edittype" => "text",
+					"label" => $key,
+				);
+			}
+		}
+
+		// todo: derive from post
+		$revision = 1500017621.0597;	
+
+		// format 1@wp.post
+		$result = array
+		(
+			"schema" => "wp.post",
+			"contentmodel" => array
+			(
+				"properties" => array
+				(
+					"taxonomy" => $keyvalues,
+				),
+			),
+			"revision" => $revision,
+			"meta" => array
+			(
+				"schema" => array
+				(
+					"properties" => array
+					(
+						"title" => "properties",
+						"icon" => "tree",
+						"instance" => array
+						(
+							"defaultrendertype" => "text",
+						),
+						"show_ui" => true,
+						"arity" => 1,
+						"features" => array(),
+						"caninstancesbereferenced" => false,
+						"aritymaxinstancecount" => 999,
+						"instanceexistencecheckfield" => false,
+						"wpcreateinstructions" => array
+						(
+							"instances" => array
+							(
+								"type" => "page",
+							),
+						),
+						"taxonomyextendedproperties" => $extendedproperties,
+					),
+				),
+			),
+		);
 		return $result;
 	}
 	
@@ -934,6 +1041,8 @@ class nxs_g_modelmanager
 		$model = $this->getmodel($modeluri);
 		return $model["meta"]["schema"];
 	}
+	
+	
 	
 	function getmodel_dbcache($modeluri)
 	{
@@ -969,8 +1078,6 @@ class nxs_g_modelmanager
 		
 		if ($shouldrefreshdbcache)
 		{
-			
-			
 			$result = $this->getmodel_actual($modeluri);
 			
 			// update cache
@@ -1546,6 +1653,7 @@ class nxs_g_modelmanager
 			add_filter('wpseo_metadesc', array($this, 'wpseo_metadesc'), 1999);
 			add_filter('wpseo_canonical', array($this, 'wpseo_canonical'), 99999);
 			add_filter('wpseo_robots', array($this, 'wpseo_robots'), 99999);
+			
 		}
   }
   
