@@ -300,8 +300,9 @@
 	// This workaround solves this problem.
 	*/
 	?>
-	function nxs_js_get_adminurladminajax() { return "<?php 	
-		// fix 20141002; we should use the wpurl instead of url
+	function nxs_js_get_adminurladminajax() 
+	{ 
+		return "<?php 	
 		$result = get_bloginfo("wpurl");
 		if (!nxs_stringendswith($result, '/'))
 		{
@@ -311,9 +312,14 @@
 		
 		$result .= "index.php?nxs-webmethod-queryparameter=true";
 		$uricurrentpage = nxs_geturicurrentpage();
-		// get rid of any query parameters
-		$uricurrentpage = explode("?", $uricurrentpage);
-		$uricurrentpage = $uricurrentpage[0];
+		
+		if (!is_user_logged_in())
+		{
+			// get rid of any query parameters
+			$pieces = explode("?", $uricurrentpage);
+			$uricurrentpage = $pieces[0];
+		}
+		
 		$result .= "&uricurrentpage=" . urlencode($uricurrentpage);
 		
 		echo $result;

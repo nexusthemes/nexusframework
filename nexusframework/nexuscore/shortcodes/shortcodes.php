@@ -126,9 +126,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$search = $attributes["search"];
 			$replace = $attributes["replace"];
-			$count = $attributes["count"];
 			
-			$input = str_replace($search, $replace, $input, $count);
+			$input = str_replace($search, $replace, $input);
 		}
 		else if ($op == "md5")
 		{
@@ -151,6 +150,17 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$max = $attributes["max"];
 			}
 			$input = rand($min, $max);
+		}
+		else if ($op == "sitemapentry")
+		{
+			// todo: also support the changefreq and priority
+			$url = nxs_url_prettyfy($attributes["url"]);
+			$input = "<url><loc>{$url}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>";
+			
+			if (is_user_logged_in())
+			{
+				$input = htmlentities($input) . "<br />";
+			}
 		}
 		else if ($op == "randomstring")
 		{
@@ -317,11 +327,11 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "getlatlng")
 		{
-			error_log("getlatlng for; $input");
+			//error_log("getlatlng for; $input");
 			nxs_requirewidget("googlemap");
 			$latlng = nxs_widget_googlemap_getlatlng($input); 
 			$input = $latlng["lat"] . ";" . $latlng["lng"] . ";" . $latlng["found"];
-			error_log("getlatlng result; $input");
+			//error_log("getlatlng result; $input");
 		}
 		else if ($op == "replaceempty")
 		{
@@ -338,7 +348,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$input = $replacement;
 			}
 		}
-		else if ($op == "queryparameter" || $op == "usequeryparameter")
+		else if ($op == "queryparameter" || $op == "usequeryparameter" || $op == "getqueryparameter")
 		{
 			if (nxs_iswebmethodinvocation())
 			{
@@ -416,7 +426,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			{
 				// only keep the digits
 				$input = preg_replace('/\D/', '', $input);
-				error_log("stripping; $input");
+				// error_log("stripping; $input");
 			}
 			
 			// if thats true, replace it with whatever is set as the replacement in the shortcode
@@ -448,6 +458,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			
 			global $nxs_g_modelmanager;
 			$modeluri = $attributes["modeluri"];		// the base modeluri for which the property will be retrieved
+			if ($modeluri == "")
+			{
+				global $nxs_global_current_containerpostid_being_rendered;
+				$modeluri = "{$nxs_global_current_containerpostid_being_rendered}@wp.post";
+			}
+			
 			$property = $attributes["property"];		// the property to be retrieved
 			$relations = $attributes["relations"];	
 			
@@ -514,7 +530,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 					
 					if ($attributes["errorlog"] == "true")
 					{
-						error_log("modelproperty; relationwalker; modeluri:$modeluri prop:$relationproperty value:{$relationmodelid}@{$relationschema}");
+						$url = nxs_geturlcurrentpage();
+						error_log("modelproperty; relationwalker; $url; modeluri:$modeluri prop:$relationproperty value:{$relationmodelid}@{$relationschema}");
 					}
 
 					// error_log("relationpiece; fetching property ($relationproperty) for ($modeluri) returns ($relationmodelid)");
@@ -1196,6 +1213,63 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 }
 add_shortcode('nxsbool', 'nxs_sc_bool');
 
+function nxs_sc_command($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	if (isset($sc_scope))
+	{
+		$scoperesult = nxs_sc_handlescope($attributes, $content, $name);
+		if ($scoperesult !== false)
+		{
+			// we are outside the scope, exit
+			return $scoperesult;
+		}
+	}
+	
+	$origcontent = $content;
+	
+	$content = $content;
+	if ($content == "")
+	{
+		$content = $attributes["input"];
+	}
+	if ($content == "")
+	{
+		$content = $attributes["value"];
+	}
+	
+	$input = $content;
+	
+	$ops = $attributes["ops"];
+	$ops = str_replace(",","|", $ops);
+	$ops = str_replace(";","|", $ops);
+	$opslist = explode("|", $ops);
+	foreach ($opslist as $op)
+	{
+		$op = trim($op);
+		if ($op == "redirect301")
+		{
+			if (is_user_logged_in())
+			{
+				$output = "if you would not be logged in, this would redirect to <a href='$value'>$value</a>";
+			}
+			else
+			{
+				// cleanup output that was possibly produced before,
+				// if we won't this could cause output to not be json compatible
+				$existingoutput = nxs_outputbuffer_popall();
+	
+				header("HTTP/1.1 301 Moved Permanently"); 
+				header("Location: {$value}"); 
+				exit();
+			}
+		}
+	}
+	
+	return $output;
+}
+add_shortcode('nxscommand', 'nxs_sc_command');
 
 // spinner shortcodes
 function nxs_sc_spin($attributes, $content = null, $name='') 
@@ -1483,10 +1557,58 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		$pagerowid = $rowattributes["pagerowid"];
 		$rowidattribute = "id='nxs-pagerow-{$pagerowid}' ";
 		
-		$metadata = nxs_getpagerowmetadata($nxs_global_current_postid_being_rendered, $pagerowid);
-		$cssclass = nxs_getcssclassesforrow($metadata);
+		$mixedattributes = array();
+		$mixedattributes = array_merge($mixedattributes, nxs_getpagerowmetadata($nxs_global_current_postid_being_rendered, $pagerowid));
 		
-		if ($metadata["r_widescreen"] != "")
+		//
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["r_lookups"]));
+
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+		
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("r_enabled");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);		
+		
+		$cssclass = nxs_getcssclassesforrow($mixedattributes);
+		
+		$should_render_row = true;
+		$r_enabled = trim($mixedattributes["r_enabled"]);
+		if ($r_enabled == "")
+		{
+			// its enabled in all its glory :) (default)
+			$should_render_row = true;
+		}
+		else if ($r_enabled == "true")
+		{
+			// its enabled after evaluation
+			$should_render_row = true;
+			$cssclass .= " nxs-row-enabled-true"; 
+		}
+		else
+		{
+			$cssclass .= " nxs-row-enabled-false"; 
+			
+			if (is_user_logged_in())
+			{
+				// do show it (otherwise we wont be able to edit it)
+				// but tag it so we can visualize it in a spacial way
+				$should_render_row = true;
+				$cssclass .= " nxs-hidewheneditorinactive ";
+			}
+			else
+			{
+				$should_render_row = false;
+			}
+		}
+		
+		if ($mixedattributes["r_widescreen"] != "")
 		{
 			$upgradetofullwidth = "yes";
 		}
@@ -1573,9 +1695,60 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 						$onclick = "";
 						$title = nxs_l18n__("This row is not configurable (#34568793875)", "nxs_td");
 					}
+
+	      	if ($r_enabled != "")
+	      	{
+	      		
+	      		
+	      		
+	      		$circle_color = "#DFDFDF";
+	      		$text_color = "#000000";
+	      		if ($r_enabled == "true")
+	      		{
+	      			$circle_color = "#00EE00";
+	      			$text_color = "#FFFFFF";
+	      		}
+	      		else
+	      		{
+	      			$circle_color = "#FF0000";
+	      			$text_color = "#FFFFFF";
+	      		}
+	      		
+	      		$notificationargs = array
+	      		(
+	      			"link_growl" => "This indicates the row is enabled or disabled based upon a condition",
+	      			"circle_color" => $circle_color,
+	      			"text_color" => $text_color,
+	      			"text" => "C",
+	      		);
+	      		$notificationhtml = nxs_gethtmlfornotification($notificationargs);
+	      		
+	      		$output .= $notificationhtml;
+	      		
+	      		/*
+	      		$output .= '<style>';
+	      		$output .= '.character:hover { fill: #E9F1F9 !important; }';
+	      		$output .= '</style>';
+	      		*/
+	      		
+	      		/*
+	      		$output .= '<div class="conditional-indicator" style="position: absolute; top: -10px; left: 40px;">';
+	      		$output .= '<a onclick="nxs_js_alert(\'This indicates the row is enabled or disabled based upon a condition\'); return false;">';
+	      		$output .= '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100">';
+	      		$output .= '<g transform="translate(50,50)">';
+    				$output .= '<circle style="fill:'.$circle_color.'; stroke-width: 0px;" r="50" stroke="black" class="character" />';
+    				$output .= '<text text-anchor="middle" dominant-baseline="central" class="" style="fill: '.$text_color.'; stroke-width: 0px; font-size: 50px;">C</text>';
+  					$output .= '</g>';
+						$output .= '</svg>';
+						$output .= '</a>';
+						$output .= '</div>';
+						*/
+	      	}
 					
 	      	$output .= '<a href="#" ' . $onclick . ' title="' . $title . '">';
 	      	$output .= '<span class="nxs-icon-arrow-right"></span>';
+	      	
+	      	
 	        $output .= '</a>';
 					
 					//
@@ -1650,8 +1823,10 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		//
 		$output = "";
 	}
-	
-	
+	if ($should_render_row === false)
+	{
+		$output = "";
+	}
 	
 	return $output;
 }

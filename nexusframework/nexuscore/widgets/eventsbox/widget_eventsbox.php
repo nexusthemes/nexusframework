@@ -15,6 +15,11 @@ function nxs_widgets_eventsbox_getunifiedstylinggroup() {
 	return "eventsboxwidget";
 }
 
+// Unicontent
+function nxs_widgets_eventsbox_getunifiedcontentgroup() {
+	return "eventsboxwidget";
+}
+
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -28,10 +33,9 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 		"sheettitle" => nxs_widgets_eventsbox_gettitle(),
 		"sheeticonid" => nxs_widgets_eventsbox_geticonid(),
 		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
-		"unifiedstyling" => array
-		(
-			"group" => nxs_widgets_eventsbox_getunifiedstylinggroup(),
-		),
+		"unifiedstyling" 	=> array("group" => nxs_widgets_eventsbox_getunifiedstylinggroup(),),
+		"unifiedcontent" 	=> array ("group" => nxs_widgets_eventsbox_getunifiedcontentgroup(),),
+		
 		"fields" => array
 		(
 			// TITLE
@@ -49,6 +53,7 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 				"type"     			=> "input",
 				"label"    			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder"   	=> nxs_l18n__("Title goes here", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id"     			=> "title_heading",
@@ -70,7 +75,7 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 				"type"     			=> "select",
 				"label"    			=> nxs_l18n__("Override title fontsize", "nxs_td"),
 				"dropdown"    		=> nxs_style_getdropdownitems("fontsize"),
-				"unistylablefield"	=> true
+				"unistylablefield"	=> true,
 			),
 			array(
 				"id"     			=> "title_heightiq",
@@ -93,10 +98,12 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("General", "nxs_td"),
 			),
 			
-			array(
+			array
+			(
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
 				"label" 			=> nxs_l18n__("Edit events", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id"     			=> "eventitem_heading",
@@ -123,6 +130,7 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 			array( 
 				"id" 				=> "items_filter_hideeventsinpast",
 				"type" 				=> "checkbox",
+				"unistylablefield"	=> true,
 				"label" 			=> nxs_l18n__("Hide events in past", "nxs_td"),
 			),
 			
@@ -257,13 +265,20 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 		$temp_array = array_merge($temp_array, $unistyleproperties);
 	}
 	
+	// Blend unicontent properties
+	$unicontent = $temp_array["unicontent"];
+	if (isset($unicontent) && $unicontent != "") {
+		// blend unistyle properties
+		$unicontentproperties = nxs_unicontent_getunicontentproperties(nxs_widgets_eventsbox_getunifiedcontentgroup(), $unicontent);
+		$temp_array = array_merge($temp_array, $unicontentproperties);
+	}
+	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
-	
 	
 	global $nxs_global_row_render_statebag;
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-events" . " " . $cssclass;
@@ -584,6 +599,8 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 ----------------------------------------------------------------------------------------------------*/
 function nxs_widgets_eventsbox_initplaceholderdata($args)
 {
+	extract($args);
+	
 	// delegate to generic implementation
 	$widgetname = basename(dirname(__FILE__));
 	
@@ -597,11 +614,6 @@ function nxs_widgets_eventsbox_initplaceholderdata($args)
 	$subargs["titel"] = nxs_l18n__("Events items[title]", "nxs_td");
 	$subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
 	$subargs["postwizard"] = "defaultgenericlist";
-
-	// current values as defined by unistyle prefail over the above "default" props
-	$unistylegroup = nxs_widgets_eventsbox_getunifiedstylinggroup();
-	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
-	
 	$response = nxs_addnewarticle($subargs);
 	if ($response["result"] == "OK")
 	{
@@ -614,18 +626,17 @@ function nxs_widgets_eventsbox_initplaceholderdata($args)
 		nxs_webmethod_return_nack("unexpected result");
 	}
 	
-	$result = nxs_widgets_initplaceholderdatageneric($args, $widgetname);
-	return $result;
+	// current values as defined by unistyle prefail over the above "default" props
+	$unistylegroup = nxs_widgets_eventsbox_getunifiedstylinggroup();
+	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
+	
+	// current values as defined by unicontent prefail over the above "default" props
+	$unicontentgroup = nxs_widgets_eventsbox_getunifiedcontentgroup();
+	$args = nxs_unicontent_blendinitialunicontentproperties($args, $unicontentgroup);
+	
+	//
+	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
+	
+	$result = array();
+	$result["result"] = "OK";
 }
-
-/* UPDATING WIDGET DATA
-----------------------------------------------------------------------------------------------------*/
-function nxs_widgets_eventsbox_updateplaceholderdata($args) 
-{
-	// delegate to generic implementation
-	$widgetname = basename(dirname(__FILE__));
-	$result = nxs_widgets_updateplaceholderdatageneric($args, $widgetname);
-	return $result;
-}
-
-?>

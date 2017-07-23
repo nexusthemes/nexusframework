@@ -887,6 +887,14 @@ class nxs_g_modelmanager
 	
 	function getmodel($modeluri = "")
 	{
+		$args = array("modeluri" => $modeluri);
+		return $this->getmodel_v2($args);
+	}
+	
+	function getmodel_v2($args)
+	{
+		$modeluri = $args["modeluri"];
+		
 		// 
 		do_action("nxs_a_getmodel", array("modeluri" => $modeluri));
 		
@@ -918,7 +926,7 @@ class nxs_g_modelmanager
 				}
 				else
 				{
-					$nxs_g_model[$cachekey] = $this->getmodel_dbcache($modeluri);
+					$nxs_g_model[$cachekey] = $this->getmodel_dbcache_v2($args);
 				}
 			}
 			else
@@ -1036,16 +1044,52 @@ class nxs_g_modelmanager
 		return $value;
 	}
 	
+	function ismodelfoundincache($modeluri = "")
+	{
+		$transientkey = md5("modeldb_{$modeluri}");
+		$transient = get_transient($transientkey);
+		if ($transient === false)
+		{
+			// nope
+			$result = false;
+		}
+		else
+		{
+			if ($transient["found"] === false)
+			{
+				$result = false;
+			}
+			else
+			{
+				$result = true;
+			}
+		}
+		
+		if ($_REQUEST["cannapre"] == "true")
+		{
+			echo "ismodelfoundincache; $modeluri";
+			var_dump($result);
+		}
+		
+		return $result;
+	}
+	
 	function getcontentschema($modeluri = "")
 	{
 		$model = $this->getmodel($modeluri);
 		return $model["meta"]["schema"];
 	}
 	
-	
-	
 	function getmodel_dbcache($modeluri)
 	{
+		$args = array("modeluri" => $modeluri);
+		return $this->getmodel_dbcache_v2($args);
+	}
+	
+	function getmodel_dbcache_v2($args)
+	{
+		$modeluri = $args["modeluri"];
+		
 		//
 		$transientkey = md5("modeldb_{$modeluri}");
 		$result = get_transient($transientkey);
@@ -1211,12 +1255,12 @@ class nxs_g_modelmanager
 		if (!$this->isvalidschema($singularschema)) { echo "invalid singularschema $singularschema?"; die(); }
 		if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot cachebulkmodels lists; cachebulkmodels the singular model to refetch the list"; die(); }
 
-		// the fetching of the models
+		// the fetching of the models; this will load the singleton as well as the individual items
 		$this->cachebulkmodels_internal($singularschema);
 		
 		// the fetching of the list model conneced to it
-		$listofschema = "listof{$singularschema}";
-		$this->cachebulkmodels_internal($listofschema);
+		//$listofschema = "listof{$singularschema}";
+		//$this->cachebulkmodels_internal($listofschema);
 	}
 	
 	function cachebulkmodels_internal($singularschema)
@@ -1471,6 +1515,7 @@ class nxs_g_modelmanager
 		
 		if ($_REQUEST["bulkmodels"] == "true")
 		{
+			
 			if (!is_user_logged_in())
 			{
 				if ($_SERVER['REMOTE_ADDR'] == "52.21.12.12")
@@ -1487,8 +1532,10 @@ class nxs_g_modelmanager
 			{
 				// ok
 			}
-							
+
 			$singularschema = $_REQUEST["singularschema"];
+			echo "Bulk fetching ($singularschema)... <br />";
+			
 			if ($singularschema == "") { echo "singularschema not specified?"; die(); }
 			if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot refetch lists; refetch the singular model to refetch the list"; die(); }
 
@@ -1499,7 +1546,8 @@ class nxs_g_modelmanager
 			$path = nxs_cache_getcachefolder();
 			nxs_recursive_removedirectory($path);
 			
-			echo "Bulk fetching finished ($singularschema) cache wiped :)";
+			echo "cache wiped... <br />";
+			echo "done :)";
 			die();
 			// todo: output some json instead of text...
 		}
@@ -1512,9 +1560,29 @@ class nxs_g_modelmanager
 				echo "output for $dumpmodeluri:<br /><br />";
 				$d = $this->getmodel($dumpmodeluri);
 				echo json_encode($d);
+				echo "<br />so far :)";
 				die();
 			}
-			
+			$dumpmodel = $_REQUEST["dumpmodel"];
+			if ($dumpmodel != "")
+			{
+				echo "output for $dumpmodel:<br /><br />";
+				$iteratormodeluri = "singleton@listof{$dumpmodel}";
+				$contentmodel = $this->getcontentmodel($iteratormodeluri);
+				
+				$instances = $contentmodel[$dumpmodel]["instances"];
+				foreach ($instances as $instance)
+				{
+					$itemhumanmodelid = $instance["content"]["humanmodelid"];
+					$itemmodeluri = "{$itemhumanmodelid}@$dumpmodel";
+					echo "output for entry $itemmodeluri:<br />";
+					$d = $this->getmodel($itemmodeluri);
+					echo json_encode($d);
+					echo "<br /><br />";
+				}
+				echo "<br />so far :)";
+				die();
+			}
 		}
 	}
 	

@@ -25,8 +25,31 @@ function nxs_pagerow_home_getoptions($args)
 		),
 		"fields" => array
 		(
+			// -------------------------------------------------------			
+			
+			// LOOKUPS
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
+			),
+			array
+      (
+				"id" 					=> "r_lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table", "nxs_td"),
+				"footer"			=> "Evaluated line by line when the row renders",
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),
+		
 			// -------------------------------------------------------
-
+			
 			array( 
 				"id" 						=> "wrapper_styling_begin",
 				"type" 					=> "wrapperbegin",
@@ -118,14 +141,27 @@ function nxs_pagerow_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
-			array(
+			array
+			(
 				"id" 				=> "r_widescreen",
 				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Widescreen row (not available for rows next to sidebars,and if rows have more than 1 colum)", "nxs_td"),
+				"label" 			=> nxs_l18n__("Widescreen row", "nxs_td"),
+				"footernote" 			=> nxs_l18n__("Only applies if rows has 1 colum and if the sidebar is turned off for this page", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			
-			array( 
+			array
+			(
+				"id" 				=> "r_enabled",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Enabled", "nxs_td"),
+				"footernote" 			=> nxs_l18n__("blank or true if you want the row to be rendered, or something else otherwise", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			
+			array
+			( 
 				"id" 				=> "wrapper_styling_end",
 				"type" 				=> "wrapperend"
 			),

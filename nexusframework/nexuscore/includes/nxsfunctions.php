@@ -2489,6 +2489,13 @@ function nxs_geturlcontents($args)
 		curl_setopt($session, CURLOPT_FORBID_REUSE, 1);	// 1 means true
 		curl_setopt($session, CURLOPT_FRESH_CONNECT, 1);	// 1 means true
 		
+		// 2017 07 17
+		curl_setopt($session, CURLOPT_SSL_VERIFYPEER, FALSE);	//
+		//curl_setopt($session, CURLOPT_HEADER, false);
+		//curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
+		//curl_setopt($session, CURLOPT_REFERER, $url);	//
+		curl_setopt($session, CURLOPT_ENCODING, '');	// no weird encodings to be returned please, thanks :)
+		
 		$postargs = $args["postargs"];
 		if (isset($postargs))
 		{
@@ -5303,6 +5310,26 @@ function nxs_iswebmethodinvocation()
 	return $result;
 }
 
+function nxs_getqueryparameter($args)
+{
+	$key = $args["key"];
+	
+	if (nxs_iswebmethodinvocation())
+	{
+		$uricurrentpage = $_REQUEST["uricurrentpage"];
+		$pieces = explode("?", $uricurrentpage);
+		$tobeparsed = $pieces[1];
+		parse_str($tobeparsed, $queryparameters);
+		$result = $queryparameters[$key];
+	}
+	else
+	{
+		$result = $_REQUEST[$key];
+	}
+
+	return $result;
+}
+
 function nxs_geturicurrentpage($args = array())
 {
 	if ($args["rewritewebmethods"] == "true")
@@ -5329,6 +5356,7 @@ function nxs_geturicurrentpage($args = array())
   return $result;
 }
 
+// currenturl current_url url_current
 function nxs_geturlcurrentpage()
 {
 	// note; the "fragment" part (after "#"), is not available by definition;
@@ -6439,11 +6467,46 @@ function nxs_lookups_getcombinedlookups_for_currenturl()
 		
 		$combined_lookups = apply_filters("nxs_f_lookups", $combined_lookups);
 		
-		// todo: perhaps already start evaluating/processing the items?
+		// 20170716; begin
+		// [test] - already start evaluating/processing the items such that rows and widgets won't have to repeat
+		// the heavy lifting that can already be done here
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+		// 20170716; end
 		
 		$nxs_gl_combinedlookups_for_url = $combined_lookups;
 	}
 	return $nxs_gl_combinedlookups_for_url;
+}
+
+// applies lookups to the properties line by line
+function nxs_lookups_evaluate_linebyline($combined_lookups)
+{
+	// evaluate the lookups widget values line by line
+	$sofar = array();
+	foreach ($combined_lookups as $key => $val)
+	{
+		$sofar[$key] = $val;
+		//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+
+		//echo "step 2; about to evaluate lookup tables on; $val<br />";
+		// apply the lookup values
+		$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+
+		// apply shortcodes
+		$val = $sofar[$key];
+		//echo "step 3; result is $val<br />";
+
+		//echo "step 4; about to evaluate shortcode on; $val<br />";
+
+		$val = do_shortcode($val);
+		$sofar[$key] = $val;
+
+		//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+
+		$combined_lookups[$key] = $val;
+	}
+	
+	return $combined_lookups;
 }
 
 function nxs_lookuptable_getlookup()
@@ -7897,6 +7960,10 @@ function nxs_getrenderedwidget($args)
 		
 		nxs_webmethod_return_nack("function not found; " . $functionnametoinvoke);	
 	}
+	
+	// allow plugins to do something with the result
+	$filter_args = array();
+	$result = apply_filters("nxs_f_getrenderedwidget", $result, $filter_args);
  	
  	return $result;
 }
@@ -12941,4 +13008,50 @@ function nxs_cache_cleartransients($prefix)
 	error_log("clearing transients for '$prefix'");
 	global $wpdb;
 	$sqlquery = $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_{$prefix}%%'" );
+}
+
+function nxs_gethtmlfornotification($args)
+{
+	$circle_color = $args["circle_color"];
+	$text_color = $args["text_color"];
+	$text = $args["text"];
+	$position = $args["position"];
+	
+	if ($position == "topright-inside")
+	{
+		$style = "position: absolute; top: 0px; left: 40px;";
+	}
+	else
+	{
+		$style = "position: absolute; top: -3px; left: 40px;";
+	}
+	$link_growl = $args["link_growl"];
+	$linkset = ($link_growl != "");
+	
+	if (!$linkset)
+	{
+		$style .= "pointer-events: none;";
+	}
+	
+	$output .= '<div class="conditional-indicator" style="'.$style.'">';
+	if ($linkset)
+	{
+		if ($link_growl != "")
+		{
+			$output .= '<a onclick="nxs_js_alert(\'' . $link_growl . '\'); return false;">';
+		}
+	}
+	$output .= '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100">';
+	$output .= '<g transform="translate(50,50)">';
+	$output .= '<circle style="fill:'.$circle_color.'; stroke-width: 0px;" r="50" stroke="black" class="character" />';
+	$output .= '<text text-anchor="middle" dominant-baseline="central" class="" style="fill: '.$text_color.'; stroke-width: 0px; font-size: 50px;">'.$text.'</text>';
+	$output .= '</g>';
+	$output .= '</svg>';
+	if ($linkset)
+	{
+		$output .= '</a>';
+	}
+	$output .= '</div>';
+	
+	return $output;
 }

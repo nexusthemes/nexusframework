@@ -598,16 +598,29 @@
 				$licensekey = esc_attr(get_option('nxs_licensekey'));
 				if ($licensekey == "")
 				{
+					$shouldshow = true;
+					
 					if (NXS_FRAMEWORKSHARED === "true")
 					{
 						// nothing to do here
+						$shouldshow = false;
 					}
-					else
+					
+					if ($shouldshow)
 					{
 						$url = admin_url('admin.php?page=nxs_admin_license');
+						
+						$notificationargs = array
+						(
+							"circle_color" => "#FF0000", 
+							"text_color" => "#FFFFFF", 
+							"text" => "1"
+						);
+						$notification = nxs_gethtmlfornotification($notificationargs);
 						?>
 						<li class="nxs-hidewheneditorinactive">
-							<a href="<?php echo $url;?>" class='site blink' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
+							<?php echo $notification; ?>
+							<a href="<?php echo $url;?>" class='site' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
 								<span class='nxs-icon-key'></span>
 							</a>
 						</li>
@@ -618,10 +631,26 @@
 				{
 					$url = admin_url('admin.php?page=nxs_admin_update');
 					$themeupdate = get_transient("nxs_themeupdate");
+					
+					$shouldrender = false;
 					if ($themeupdate["nxs_updates"] == "yes")
 					{
+						$shouldrender = true;
+					}
+					
+					if ($shouldrender)
+					{
+						$notificationargs = array
+						(
+							"circle_color" => "#FF0000", 
+							"text_color" => "#FFFFFF", 
+							"text" => "1"
+						);
+						$notification = nxs_gethtmlfornotification($notificationargs);
+						
 						?>
-						<li class="nxs-hidewheneditorinactive blink">
+						<li class="nxs-hidewheneditorinactive">
+							<?php echo $notification; ?>
 							<a href="<?php echo $url; ?>" class='site' title="<?php nxs_l18n_e("Theme update available", "nxs_td"); ?>">
 								<span class='nxs-icon-loop2'></span>
 							</a>

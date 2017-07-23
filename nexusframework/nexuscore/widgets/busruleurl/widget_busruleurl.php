@@ -39,7 +39,8 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Operator", "nxs_td"),		
 				"dropdown" 			=> array(		
 					"contains"	=>"contains",		
-					"template"	=>"template",		
+					"template"	=>"template",
+					"path"	=>"path",
 				),		
 			),			
 			array
@@ -492,6 +493,98 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 				$result["stopruleprocessingonmatch"] = "true";
 			}
 		}
+	}
+	else if ($operator == "path")
+	{
+		global $nxs_g_modelmanager;
+				
+		// for example "{{name@model}}" will match if a name@model exists
+		
+		$pieces = parse_url($currenturl);
+		$path = $pieces["path"];	// "//www.example.com/path/bar/?googleguy=googley" would return "/path/bar/"
+		$path = trim($path, "/");	// "/path/bar" would become "path/bar"
+		$path = "/" . $path. "/";	// "path/bar" would become "/path/bar/"
+		$humanid = $path;
+		$humanid = $nxs_g_modelmanager->getnormalizedhumanmodelidentification($humanid);
+		
+		$p1 = str_replace("{", "", $p1);	// {{key@model}}
+		$p1 = str_replace("{", "", $p1);	// key@model}}
+		$p1 = str_replace("}", "", $p1);	// key@model
+		$pieces = explode("@", $p1);
+		$lookupkey = $pieces[0];
+		$modelschema = $pieces[1];
+		
+		$modeluri = "{$humanid}@{$modelschema}";
+		
+		if ($_REQUEST["canna"] == "true")
+		{
+			echo "checking for; " . $modeluri;
+			die();
+		}
+		
+		// check if the modeluri exists
+		if ($nxs_g_modelmanager->ismodelfoundincache($modeluri))
+		{
+			// ok, its there; the condition is valid apparently
+			error_log("busrule; yes, match; $modeluri");
+			
+			// yes, unless one of the fragments is a mismatch
+			$result["ismatch"] = "true";
+			
+			$derivedurlfragmentkeyvalues = "{$lookupkey}={$humanid}\r\n";
+			$url_fragment_variables[$lookupkey] = $humanid;
+			
+			// process configured site wide elements
+			$sitewideelements = nxs_pagetemplates_getsitewideelements();
+			foreach($sitewideelements as $currentsitewideelement)
+			{
+				$selectedvalue = $metadata[$currentsitewideelement];
+				if ($selectedvalue == $filter_authoremail)
+				{
+					// skip
+				} 
+				else if ($selectedvalue == "@leaveasis")
+				{
+					// skip
+				}
+				else if ($selectedvalue == "@suppressed")
+				{
+					// reset
+					$statebag["out"][$currentsitewideelement] = 0;
+				}
+				else
+				{
+					// set the value as selected
+					$statebag["out"][$currentsitewideelement] = $metadata[$currentsitewideelement];
+				}
+			}
+
+			// the following is UNIQUE for this specific rule;
+			// also add the url fragment keyvalues as derived from the url
+			// NOTE; its very important to add the derivedurlfragmentkeyvalues
+			// to the templaterules_lookups PRIOR to adding the templaterules_lookups
+			// as likely the templaterules_lookups use the variable. If this is done
+			// in the wrong order, its likely that modelproperty shortcodes
+			// will try to fetch a model with an unreplaced variable, resulting in empty
+			// values.
+			$statebag["out"]["templaterules_lookups"] .= "\r\n" . trim($derivedurlfragmentkeyvalues);
+			$statebag["out"]["url_fragment_variables"] = $url_fragment_variables;
+			
+			// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
+			$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
+			$statebag["out"]["templaterules_lookups"] .= "\r\n" . trim($metadata["templaterules_lookups"]);
+			
+			// instruct rule engine to stop further processing if configured to do so (=default)
+			$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
+			if ($flow_stopruleprocessingonmatch != "")
+			{
+				$result["stopruleprocessingonmatch"] = "true";
+			}
+		}
+		else
+		{
+			$result["ismatch"] = "false";
+		}		
 	}
 	else
 	{

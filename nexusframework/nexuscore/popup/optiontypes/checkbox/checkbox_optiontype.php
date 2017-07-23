@@ -44,6 +44,13 @@ function nxs_popup_optiontype_checkbox_renderhtmlinpopup($optionvalues, $args, $
 		        ?>
 	          <div class='nxs-float-left nxs-clear'>
 	              <input type='checkbox' id='<?php echo $id; ?>' name='<?php echo $id; ?>' <?php echo $option_is_checked; ?> />
+	              <?php 
+	              if ($footernote != "")
+	              {
+	              	echo "<br />";
+	              	echo $footernote; 
+	              }
+	              ?>
 	          </div>
 	      </div>
 	  	</div>
@@ -88,5 +95,3 @@ function nxs_popup_optiontype_checkbox_getpersistbehaviour()
 {
 	return "writeid";
 }
-
-?>
