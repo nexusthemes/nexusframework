@@ -587,6 +587,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-width97 												{ width: 97%; }
 .nxs-width100 												{ width: 100%; }
 .nxs-width200 												{ width: 200px; }
+.nxs-max-width100											{ max-width: 100%; }
 
 /* PADDING */
 .bg-padding-large											{ padding: 30px; }
@@ -631,6 +632,8 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-align-items-stretch									{ align-items: stretch; }
 .nxs-align-items-flex-start									{ align-items: flex-start; }
 .nxs-align-items-flex-end									{ align-items: flex-end; }
+
+.nxs-flex-center 											{ display: flex; align-items: center; justify-content: center; }
 
 /* KITCHEN SINK */
 .nxs-clear 													{ clear: both; }
