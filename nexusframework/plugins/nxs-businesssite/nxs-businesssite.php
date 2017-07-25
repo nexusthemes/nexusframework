@@ -49,6 +49,26 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	function gettaxonomypropertiesofallmodels($args)
+	{
+		$result = array();
+		
+		$singularschema = $args["singularschema"];
+		$iteratormodeluri = "singleton@listof{$singularschema}";
+			
+		$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+		$instances = $contentmodel[$iterator_datasource]["instances"];
+		foreach ($instances as $instance)
+		{
+			$itemhumanmodelid = $instance["content"]["humanmodelid"];
+			$itemmodeluri = "{$itemhumanmodelid}@{$singularschema}";
+			$itemargs = array("modeluri" => $itemmodeluri);
+			$result[] = getmodeltaxonomyproperties($itemargs);
+		}
+		
+		return $result;
+	}
+	
 	function evaluatereferencedmodelsinmodeluris($modeluris)
 	{
 		//error_log("evaluatereferencedmodelsinmodeluris (" . $modeluris . ")");
