@@ -197,7 +197,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = nxs_geturl_home();
 		}
-		else if ($op == "urlprettyfy")
+		else if ($op == "urlprettyfy" || $op == "urlprettify")
 		{
 			if ($attributes["debug"] == "true")
 			{
@@ -866,6 +866,24 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				// reconstruct
 				$input = implode($delimiter, $pieces);
 			}
+			else if ($return == "json")
+			{
+				$index = $attributes["index"];
+				$name = $attributes["name"];
+				if ($name == "")
+				{
+					$name = "value";
+				}
+				$pieces = explode($delimiter, $input);
+				$list = array();
+				foreach ($pieces as $piece)
+				{
+					$object = new stdClass();
+	        $object->$name = $piece;
+	        $list[] = $object;
+				}
+				$input = json_encode($list);
+			}
 			else if ($return == "")
 			{
 				$property = $attributes["property"];
@@ -1006,6 +1024,20 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			{
 				echo "shortcode condition [$input][$needle] evaluates to [$input]";
 				die();
+			}
+		}
+		else if ($op == "!contains")
+		{
+			$needle = $attributes["containsneedle"];
+			$ignorecase = $attributes["ignorecase"] === "true";
+			
+			if (nxs_stringcontains_v2($input, $needle, $ignorecase))
+			{
+				$input = "false";
+			}
+			else
+			{
+				$input = "true";
 			}
 		}
 		else if ($op == "equals")
@@ -1174,6 +1206,21 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		  	}
 		  }
 		}
+		else if ($op == "and")
+		{
+			// true if all of the item(s) are true, false otherwise
+			$pieces = explode(";", $input);
+			$input = "true";
+		  foreach ($pieces as $piece)
+		  {
+		  	$piece = trim($piece);
+		  	if ($piece == "false")
+		  	{
+		  		$input = "false";
+		  		break;
+		  	}
+		  }
+		}
 		else if ($op == "in_array")
 		{
 			$array = $attributes["array"];
@@ -1185,6 +1232,19 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			else
 			{
 				$input = "false";
+			}
+		}
+		else if ($op == "!in_array")
+		{
+			$array = $attributes["array"];
+			$pieces = explode(";", $array);
+			if (in_array($value, $pieces))
+			{
+				$input = "false";
+			}
+			else
+			{
+				$input = "true";
 			}
 		}
 		else

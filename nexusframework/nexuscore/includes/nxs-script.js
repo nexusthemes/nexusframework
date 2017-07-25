@@ -3938,8 +3938,24 @@ function nxs_js_redirect_top(url)
 			}
 		}
 		
+		// kudos to https://stackoverflow.com/questions/6234773/can-i-escape-html-special-chars-in-javascript
+		function nxs_js_escapehtml(unsafe) 
+		{
+    	return unsafe
+			         .replace(/&/g, "&amp;")
+			         .replace(/</g, "&lt;")
+			         .replace(/>/g, "&gt;")
+			         .replace(/"/g, "&quot;")
+			         .replace(/'/g, "&#039;");
+		}
+		
 		function nxs_js_postcomment(postid, containerpostid, placeholderid, parentcommentid, name, email, website, comment, invokewhenready, invokewhenfailed)
 		{
+			name = nxs_js_escapehtml(name);
+			email = nxs_js_escapehtml(email);
+			website = nxs_js_escapehtml(website);
+			comment = nxs_js_escapehtml(comment);
+			
 			// invoke ajax call
 			var ajaxurl = nxs_js_get_adminurladminajax();
 			jQ_nxs.ajax

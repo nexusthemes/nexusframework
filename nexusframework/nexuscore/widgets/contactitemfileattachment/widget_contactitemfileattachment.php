@@ -129,7 +129,8 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
 	?>
 	
   <label class="field_name" style="display: block;"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
-  <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" />
+  <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" style="display: none" />
+	<label for="<?php echo $key; ?>" class="nxs-file-upload-trigger">Select file</label>
 	<?php 
 	
 	$html = nxs_ob_get_contents();

@@ -206,6 +206,16 @@ input[type=submit]:hover										{ opacity: 0.8; }
 	background-color: #dddddd;
 	font-style: italic;
 }
+.nxs-form label.nxs-file-upload-trigger
+{
+	
+	cursor: pointer;
+	padding: 2px;
+	cursor: pointer;
+	width: 120px;
+	text-align: center;
+	box-shadow: 0px 0px 0px 1px grey inset;
+}
 
 /* DEFAULT FILLER */
 .nxs-filler													{ padding: 5px 0; }

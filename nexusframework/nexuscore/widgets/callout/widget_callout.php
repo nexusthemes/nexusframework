@@ -453,6 +453,30 @@ function nxs_widgets_callout_home_getoptions($args)
 				"type" 				=> "wrapperend"
 			),
 
+			// MISCELLANEOUS
+			
+			array( 
+				"id" 				=> "wrapper_misc_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Miscellaneous", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+				"unistylablefield"	=> true
+			),
+			
+			array(
+				"id" 				=> "subtitle_heightiq",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Row align subtitles", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, the widget's subtitle will participate in the subtitle alignment of other partipating widgets in this row", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+				
+			array
+			( 
+				"id" 				=> "wrapper_misc_end",
+				"type" 				=> "wrapperend",
+				"unistylablefield"	=> true
+			),
 		)
 	);
 	
@@ -569,6 +593,14 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	
 	// Widget specific variables
 	extract($mixedattributes);
+	
+	global $nxs_global_row_render_statebag;
+	$pagerowtemplate = $nxs_global_row_render_statebag["pagerowtemplate"];
+	if ($pagerowtemplate == "one")
+	{
+		$subtitle_heightiq = "";	// off!
+	}
+	
 	
 	if ($postid != "" && $placeholderid != "")
 	{
@@ -698,12 +730,17 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$subtitle_heading = "h1";
 	}
 	
-	// Subtitle heightiq, size, font
-	$heightiqprio = "p1";
-	$subtitle_heightiqgroup = "callout-subtitle";
+	// Subtitle size, font
 	$subtitle_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $subtitle_fontsize);
 	$subtitle_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $subtitle_fontzen);
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", "nxs-subtitle", $subtitle_fontsize_cssclass, $subtitle_fontzen_cssclass/*, "nxs-heightiq", "nxs-heightiq-".$heightiqprio."-".$title_heightiqgroup*/);
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", "nxs-subtitle", $subtitle_fontsize_cssclass, $subtitle_fontzen_cssclass);
+	
+	if ($subtitle_heightiq != "") 
+	{
+		$heightiqprio = "p1";
+		$text_heightiqgroup = "callout-subtitle";
+		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
+	}
 	
 	// Subitle
 	$htmlsubtitle = '<'.$subtitle_heading.' class="' . $cssclasses .'">'.$subtitle.'</'.$subtitle_heading.'>';	
@@ -922,13 +959,15 @@ function nxs_widgets_callout_initplaceholderdata($args)
 {
 	extract($args);
 
-    $args['image_position'] = "left top";
-    $args['image_size'] = "cover";
+  $args['image_position'] = "left top";
+  $args['image_size'] = "cover";
 	$args['button_color'] = "base2";
 	$args['title_heading'] = "1";
 	$args['subtitle_heading'] = "2";
 	$args['halign'] = "center";
 	$args['button_scale'] = "2-0";
+	
+	$args['subtitle_heightiq'] = "true";
 
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_callout_getunifiedstylinggroup();
@@ -945,5 +984,3 @@ function nxs_widgets_callout_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>
