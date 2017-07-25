@@ -1,50 +1,17 @@
-jQuery(window).load
-(
-	function()
-	{
-		if (typeof YoastSEO !== 'undefined') 
-		{
-			console.log('ignoring yoast bridge since the v3 YoastSEO plugin was found, proceeding...');	
-		}
-		else
-		{
-			console.log('ignoring yoast bridge since the v3 YoastSEO plugin was not found');
-			return;
-		}
-		
-		console.log('loading yoast bridge ...');
-		
-		ExamplePlugin = function() 
-		{
-		  YoastSEO.app.registerPlugin( 'examplePlugin', {status: 'ready'} );
-		
-		  /**
-		   * @param modification    {string}    The name of the filter
-		   * @param callable        {function}  The callable
-		   * @param pluginName      {string}    The plugin that is registering the modification.
-		   * @param priority        {number}    (optional) Used to specify the order in which the callables
-		   *                                    associated with a particular filter are called. Lower numbers
-		   *                                    correspond with earlier execution.
-		   */
-		  YoastSEO.app.registerModification( 'content', this.myContentModification, 'examplePlugin', 5 );
-		}
-		
-		/**
-		 * Adds some text to the data...
-		 *
-		 * @param data The data to modify
-		 */
-		ExamplePlugin.prototype.myContentModification = function(data) 
-		{
-			// get content of the page
-			if (nxs_seo_backend_content == '')
-			{
-				console.log('retrieving content...');
-				nxs_seo_backend_content = 'queued';
-
-				$("#wpseo_meta").hide();
-				
-				var ajaxurl = nxs_js_get_adminurladminajax();
+(function($) {
+ 
+    var MyYoastPlugin = function()
+    {
+        YoastSEO.app.registerPlugin('myYoastPlugin', {status: 'loading'});
+ 
+        this.getData();
+    };
+ 
+    MyYoastPlugin.prototype.getData = function()
+    {
+        var _self = this;
+        
+        var ajaxurl = nxs_js_get_adminurladminajax();
 				jQ_nxs.ajax
 				(
 					{
@@ -68,11 +35,19 @@ jQuery(window).load
 							if (response.result == "OK")
 							{
 								console.log('finished querying ...');
-								nxs_seo_backend_content = response.html;
+								//nxs_seo_backend_content = response.html;
 								
-								$("#wpseo_meta").show();
+								//$("#wpseo-pageanalysis").show();
 								// trigger a refresh of the analysis
-								YoastSEO.app.refresh();
+								//YoastSEO.app.refresh();
+								
+								// tell yoast to refresh again after 2 secs
+								
+								_self.custom_content = response.html;
+ 
+				        YoastSEO.app.pluginReady('myYoastPlugin');
+				 
+				        YoastSEO.app.registerModification('content', $.proxy(_self.getCustomContent, _self), 'myYoastPlugin', 5);
 							}
 							else
 							{
@@ -87,33 +62,19 @@ jQuery(window).load
 						}
 					}
 				);
-			}
-			else if (nxs_seo_backend_content == 'queued')
-			{
-				console.log('stop poking me ...');
-			}
-			else
-			{
-				console.log('using cached content ...');
-			}
-			
-			
-			// in the address bar of the page the post id could be set
-			// also in the page, the form's "post_ID" field could be set
-			
-			console.log('intercepting yoastbridge data;');
-			
-			if (nxs_seo_backend_content == '' || nxs_seo_backend_content == 'queued')
-			{
-				// perhaps inject some html in the DOM to indicate its loading ?
-				return data;
-			}
-			else
-			{
-				return data + nxs_seo_backend_content;
-			}
-		};
-		
-		new ExamplePlugin();
-	}
-);
+        
+       
+    };
+ 
+    MyYoastPlugin.prototype.getCustomContent = function (content)
+    {
+    	// var mceid = $('#acf-yoast_fancyeditor textarea').prop('id');
+      //return this.custom_content + tinymce.editors[mceid].getContent() + content;
+      return this.custom_content + content;
+    };
+ 
+    $(window).on('YoastSEO:ready', function ()
+    {
+      new MyYoastPlugin();
+    });
+})(jQuery);

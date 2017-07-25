@@ -3740,7 +3740,8 @@ function nxs_seo_getanalyticsua()
 
 function nxs_yoast_backend_enqueuescript()
 {	
-	wp_enqueue_script( 'yoastbackendbridge', nxs_getframeworkurl() . '/js/seo/yoastbackendbridge.js', array(), nxs_getthemeversion(), TRUE );	
+	$path = nxs_getframeworkurl() . '/js/seo/yoastbackendbridge.js';
+	wp_enqueue_script( 'yoastbackendbridge', $path, array('yoast-seo-admin-script'), nxs_getthemeversion(), TRUE );	
 }
 
 function nxs_addyoastseosupport()
