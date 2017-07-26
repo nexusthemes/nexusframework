@@ -122,7 +122,19 @@ function nxs_widgets_seo_home_getoptions($args)
 				"id" 					=> "canonicalurl_lookuppicker",
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
-			),			
+			),
+			
+			array
+			( 
+				"id" 				=> "robots",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("SEO robots", "nxs_td"),
+				"footer" 		=> "Possible values: blank (default=index,follow), <a href='#' onclick='jQuery(\"#robots\").val(\"index,follow\");return false;'>index,follow</a> | <a href='#' onclick='jQuery(\"#robots\").val(\"noindex,nofollow\");return false;'>noindex,nofollow</a>",
+				"tooltip" 			=> nxs_l18n__("For example index,follow", "nxs_td"),
+				//"unicontentablefield" => true,
+				//"localizablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
@@ -215,7 +227,7 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// apply the lookups and shortcodes to the customhtml
-		$magicfields = array("title", "metadescription", "canonicalurl");
+		$magicfields = array("title", "metadescription", "canonicalurl", "robots");
 		$translateargs = array
 		(
 			"lookup" => $combined_lookups,
@@ -302,6 +314,45 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 	{
 		$canonicalstate = "nxs-can-err";
 	}
+	$robots = trim($robots);
+	if ($robots == "")
+	{
+		if ($canonicalurl != "")
+		{
+			$robots_visualization = "index,follow (default)";
+		}
+		else
+		{
+			$robots_visualization = "(default)";
+		}
+	}
+	else 
+	{
+		$robots_visualization = $robots;
+		$expectedparts = array("noindex", "index", "follow", "nofollow", "none", "noarchive", "nosnippet", "noodp", "noodp");
+		$foundunexpected = false;
+		$pieces = explode(",", $robots_visualization);
+		foreach ($pieces as $piece)
+		{
+			$piece = trim($piece);
+			if (!in_array($piece, $expectedparts))
+			{
+				$foundunexpected = true;
+			}
+		}
+		if ($foundunexpected)
+		{
+			$robotsstate = "nxs-robots-err";
+		}
+		else 
+		{
+			if ($robots != "index,follow")
+			{
+				$robotsstate = "nxs-robots-custom";
+			}
+		}
+	}
+	
 	?>
 	<style>
 		.nxs-can-err
@@ -309,12 +360,21 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 			color: red !important;
 			user-select: all;
 		}
+		.nxs-robots-custom
+		{
+			color: orange !important;
+		}
+		.nxs-robots-err
+		{
+			color: red !important;
+		}
 	</style>
 	<div class='nxs-hidewheneditorinactive'>
 		<div style="background-color: white; border: 2px solid black; color: black; padding: 5px;">
 			seo title: <?php echo $title; ?><br />
 			seo description: <?php echo $metadescription; ?><br />
-			seo canonical url: <a class='<?php echo $canonicalstate; ?>' href='<?php echo $canonicalurl; ?>' target='_blank'><?php echo $canonicalurl; ?></a>
+			seo canonical url: <a class='<?php echo $canonicalstate; ?>' href='<?php echo $canonicalurl; ?>' target='_blank'><?php echo $canonicalurl; ?></a><br />
+			seo robots: <span class='<?php echo $robotsstate; ?>'><?php echo $robots_visualization; ?></span>
 		</div>
 	</div>
 	<script>

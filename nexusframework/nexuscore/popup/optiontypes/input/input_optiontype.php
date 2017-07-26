@@ -65,6 +65,11 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 		$autofocusattribute = "autofocus";
 	}
 	
+	if ($footernote == "" && $footer != "")
+	{
+		$footernote = $footer;
+	}
+	
 	echo '
 	<div class="content2" ' . $content2style . '>
 	    <div class="box">

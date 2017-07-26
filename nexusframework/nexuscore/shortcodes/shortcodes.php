@@ -457,17 +457,69 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			
 			global $nxs_g_modelmanager;
-			$modeluri = $attributes["modeluri"];		// the base modeluri for which the property will be retrieved
-			if ($modeluri == "")
+			
+			$source = $attributes["source"];
+			if ($source == "md5indexer")
 			{
-				global $nxs_global_current_containerpostid_being_rendered;
-				$modeluri = "{$nxs_global_current_containerpostid_being_rendered}@wp.post";
+				// the modeluri is derived based upon the md5 indexer of a specified schema
+				$schema = $attributes["schema"];
+				$property = $attributes["property"];
+				
+				$cachebehaviour = $attributes["cachebehaviour"];
+				if ($cachebehaviour == "none")
+				{
+				}
+				else if ($cachebehaviour == "refreshfirstphpruntime")
+				{
+					// refreshes the cache the first time this is requested in the php runtime duration
+					global $nxs_g_modelrefreshphpruntime;
+					if (!isset($nxs_g_modelrefreshphpruntime[$schema]))
+					{
+						$nxs_g_modelrefreshphpruntime[$schema] = true;
+						$nxs_g_modelmanager->cachebulkmodels($schema);
+					}
+				}
+				else
+				{
+					return "no, or invalid cachebehaviour (none|refreshfirstphpruntime)";
+				}
+				
+				$a = array("singularschema" => $schema);
+				$possibilities = $nxs_g_modelmanager->gettaxonomypropertiesofallmodels($a);
+
+				// grab the indexer
+				
+				$max = count($possibilities);
+				//error_log("modelproperty;md5indexer;max;".$max);
+
+				$indexer = $attributes["indexer"];
+				//error_log("modelproperty;md5indexer;indexer;".$indexer);
+				
+				$md5 = md5($indexer);
+				$inthash = intval(substr($md5, 0, 8), 16);
+				$index = $inthash % $max;
+				$modelid = $possibilities[$index]["{$schema}_id"];
+				$modeluri = "{$modelid}@{$schema}";
+				//error_log("modelproperty;md5indexer;".json_encode($possibilities[$index]));
+				//error_log("modelproperty;md5indexer;result;".$input);
+			}
+			else 
+			{
+				$modeluri = $attributes["modeluri"];		// the base modeluri for which the property will be retrieved
+				if ($modeluri == "")
+				{
+					global $nxs_global_current_containerpostid_being_rendered;
+					$modeluri = "{$nxs_global_current_containerpostid_being_rendered}@wp.post";
+				}
 			}
 			
 			$property = $attributes["property"];		// the property to be retrieved
-			$relations = $attributes["relations"];	
+			$relations = $attributes["relations"];
 			
-			$ignorewhenlist = array($input, $modeluri, $property, $relations);
+			//
+			$ignorewhenlist = array($modeluri, $property, $relations, $input);
+			
+			//$ignorewhenlist = array($input, $modeluri, $property, $relations);
 			foreach ($ignorewhenlist as $ignorewhen)
 			{
 				// special case handling; 
@@ -479,6 +531,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 					return $input;
 				}
 			}
+			
+			
 			
 			if ($attributes["errorlog"] == "true")
 			{

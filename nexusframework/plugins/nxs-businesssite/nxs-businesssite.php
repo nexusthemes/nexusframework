@@ -1429,7 +1429,7 @@ class nxs_g_modelmanager
 			}
 			
 			// apply the lookups and shortcodes to the customhtml
-			$magicfields = array("title", "metadescription", "canonicalurl");
+			$magicfields = array("title", "metadescription", "canonicalurl", "robots");
 			$translateargs = array
 			(
 				"lookup" => $combined_lookups,
@@ -1442,6 +1442,9 @@ class nxs_g_modelmanager
 			
 			$canonicalurl = $nxs_gl_runtimeseoproperties["canonicalurl"];
 			$nxs_gl_runtimeseoproperties["canonicalurl"] = do_shortcode($canonicalurl);
+			
+			$robots = $nxs_gl_runtimeseoproperties["robots"];
+			$nxs_gl_runtimeseoproperties["robots"] = do_shortcode($robots);
 		}
 		
 		return $nxs_gl_runtimeseoproperties;
@@ -1508,7 +1511,15 @@ class nxs_g_modelmanager
 		$canonicalurl = $runtimeseoproperties["canonicalurl"];		
 		if ($canonicalurl != "")
 		{
-			$result = "index,follow";
+			$robots = trim($runtimeseoproperties["robots"]);
+			if ($robots != "")
+			{
+				$result = $robots;
+			}
+			else
+			{
+				$result = "index,follow";
+			}
 		}
 		return $result;
 	}
