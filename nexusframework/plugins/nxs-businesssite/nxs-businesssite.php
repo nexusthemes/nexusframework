@@ -54,16 +54,18 @@ class nxs_g_modelmanager
 		$result = array();
 		
 		$singularschema = $args["singularschema"];
-		$iteratormodeluri = "singleton@listof{$singularschema}";
-			
-		$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
-		$instances = $contentmodel[$iterator_datasource]["instances"];
+		$iterator_datasource = "listof{$singularschema}";
+		$iteratormodeluri = "singleton@{$iterator_datasource}";
+		
+		$contentmodel = $this->getcontentmodel($iteratormodeluri);
+		
+		$instances = $contentmodel[$singularschema]["instances"];
 		foreach ($instances as $instance)
 		{
 			$itemhumanmodelid = $instance["content"]["humanmodelid"];
 			$itemmodeluri = "{$itemhumanmodelid}@{$singularschema}";
 			$itemargs = array("modeluri" => $itemmodeluri);
-			$result[] = getmodeltaxonomyproperties($itemargs);
+			$result[] = $this->getmodeltaxonomyproperties($itemargs);
 		}
 		
 		return $result;
