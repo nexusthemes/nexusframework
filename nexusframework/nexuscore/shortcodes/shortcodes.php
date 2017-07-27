@@ -765,10 +765,6 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				return "$op; unsupported sourcetype; $sourcetype";
 			}
 			
-			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
-			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
-			$instances = $contentmodel[$iterator_datasource]["instances"];
-			
 			$cachebehaviour = $attributes["cachebehaviour"];
 			if ($cachebehaviour == "")
 			{
@@ -789,6 +785,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			{
 				nxs_webmethod_return_nack("unsupported cachebehaviour; $cachebehaviour");
 			}
+			
+			// todo: rewrite using the new getall function 
+			
+			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+			$instances = $contentmodel[$iterator_datasource]["instances"];
 			
 			// return "instances count:" . count($instances);
 			foreach ($instances as $instance)
