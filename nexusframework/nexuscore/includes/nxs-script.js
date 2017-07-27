@@ -230,10 +230,8 @@ jQ_nxs(window).ready
 		nxs_js_hook_windowsresizeend_event();
 		
 		nxs_js_setupwindowscrolllistener();
-		nxs_js_hook_windowsscrolled_event();
 		nxs_js_setupviewportlistener();
 
-		
 		// after fonts are loaded, re-enable window events/ height-iq
 		jQ_nxs(window).bind("load", function() 
 		{
@@ -268,26 +266,57 @@ jQ_nxs(window).ready
 	}
 );
 
+function nxs_js_getdocheight() 
+{
+  var D = document;
+  return Math.max(
+      D.body.scrollHeight, D.documentElement.scrollHeight,
+      D.body.offsetHeight, D.documentElement.offsetHeight,
+      D.body.clientHeight, D.documentElement.clientHeight
+  );
+}
+
 function nxs_js_setupwindowscrolllistener()
 {
 	jQ_nxs(window).scroll
 	(
 		function() 		
 		{
-			if (this.scrollTO) clearTimeout(this.scrollTO);
+			var scrolltop = window.pageYOffset || document.documentElement.scrollTop;
+			
+			if (scrolltop == 0)
+			{
+				// "edge" case; if the scroll position is 0,
+				// it means we ended up at the top; this is -always- the end of the scrolling
+				//nxs_js_log("scroll;edge; TOP");
+				jQ_nxs(document).trigger('nxs_event_windowscrolled');
+			}
+			else if (jQ_nxs(window).scrollTop() + jQ_nxs(window).height() == nxs_js_getdocheight()) 
+			{
+				// "edge" case; if the scroll position is 100% at the bottom,
+				// it means we ended up at the top; this is -always- the end of the scrolling
+				//nxs_js_log("scroll;edge; BOTTOM");
+				jQ_nxs(document).trigger('nxs_event_windowscrolled');
+			}
+			else
+			{			
+				// fire that we're scrolling right NOW
+		  	nxs_js_invokethrottled("scrolling", 10, function(){
+		  		jQ_nxs(document).trigger('nxs_event_windowscrolling');
+		  	});
+		  			
+		  	// check if the scrolling stopped	
+				if (this.scrollTO) clearTimeout(this.scrollTO);
 		  	this.scrollTO = setTimeout
 		  	(
 		  		function() 
 		  		{
-		  			jQ_nxs(this).trigger('nxs_event_windowscrolled');
+		  			jQ_nxs(document).trigger('nxs_event_windowscrolled');
 		  		}
 		  		, 
-		  		100
+		  		50
 		  	);
-
-		  	nxs_js_invokethrottled("scrolling", 100, function(){
-		  		jQ_nxs(document).trigger('nxs_event_windowscrolling');
-		  	});
+		  }
 		}
 	);
 }
@@ -574,30 +603,6 @@ function nxs_js_getqueryparametervalue(name)
     return "";
   else
     return decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
-function nxs_js_hook_windowsscrolled_event()
-{
-	jQ_nxs(window).bind
-	(
-		'nxs_event_windowscrolled', 
-		function() 
-		{
-			// nxs_js_log('receiving nxs_event_windowscrolled event');
-			
-			// todo: make treshhold configurable by theme/plugin
-			
-			var windowscrolltop = jQ_nxs(window).scrollTop();
-			var windowheight = jQ_nxs(window).height();
-			var documentheight = jQ_nxs(document).height();
-			treshhold = windowheight * 0.5;	// 50% scherm hoogte
-			
-			if(windowscrolltop + windowheight + treshhold >= documentheight) 
-			{
-		   		jQ_nxs(this).trigger('nxs_event_windowscrolledbottom');
-			}
-		}
-	);
 }
 
 function nxs_js_hook_windowsresizeend_event()

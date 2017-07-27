@@ -23,26 +23,15 @@ function nxs_widgets_pagefixedheader_registerhooksforpagewidget($args)
 	global $nxs_pagefixedheader_pagedecoratorwidgetplaceholderid;
 	$nxs_pagefixedheader_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
 	
-	// $pagevideo_metadata = nxs_getwidgetmetadata($nxs_pagefixedheader_pagedecoratorid, $nxs_pagefixedheader_pagedecoratorwidgetplaceholderid);
-	// $condition_enable = $pagevideo_metadata["condition_enable"];
-	
-	add_action('nxs_beforeend_head', 'nxs_widgets_pagefixedheader_beforeend_head');
 	add_action('nxs_ext_betweenheadandcontent', 'nxs_widgets_pagefixedheader_betweenheadandcontent');
-}
-
-function nxs_widgets_pagefixedheader_beforeend_head()
-{
-	// do something useful here if thats needed
-	
-	?>
-	<?php
 }
 
 function nxs_widgets_pagefixedheader_betweenheadandcontent()
 {
 	// get meta of the slider itself (such as transition time, etc.)
 	global $nxs_pagefixedheader_pagedecoratorid;
-	global $nxs_pagefixedheader_pagedecoratorwidgetplaceholderid;	
+	global $nxs_pagefixedheader_pagedecoratorwidgetplaceholderid;
+	
 	$pagefixedheader_metadata = nxs_getwidgetmetadata($nxs_pagefixedheader_pagedecoratorid, $nxs_pagefixedheader_pagedecoratorwidgetplaceholderid);
 	
 	// Unistyle
@@ -115,8 +104,7 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 	{
 		$cssclass = nxs_getcssclassesforrowcontainer($header_postid);
 		?>
-
-		<div id="nxs-fixed-header" class="<?php echo $responsive_display; ?> nxs-fixed-header nxs-sitewide-element <?php echo $concatenatedcssclasses_container; ?>">
+		<div id="nxs-fixed-header" class="<?php echo $responsive_display; ?> nxs-fixed-header nxs-sitewide-element <?php echo $concatenatedcssclasses_container; ?>" style="display: block !important; visibility: hidden;">
 			<div id="nxs-fixed-header-container" class="nxs-sitewide-container nxs-fixed-header-container <?php echo $cssclass; ?>">
 				<?php 
 					if ($header_postid != "")
@@ -130,40 +118,39 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 				?>
 			</div>
 		</div>
-	  	<?php 
+	  <?php 
 	}
-
 	?>
-
 	<script type="text/javascript">
 
 		<?php
-			// if the offset is not set then their is no need for the nxs_js_show_fixedheader function
+			// if the offset is not set then their is no need for the nxs_js_update_fixedheader_visualization function
 			if ( $offset == '')
 			{
 				if ( $display == 'inline' )
 				{
-				?>
-
-					function nxs_js_set_fixedheader_padding() {
+					?>
+					function nxs_js_set_fixedheader_padding() 
+					{
 						var fixedheaderheight = jQ_nxs('.nxs-fixed-header').height();
 						jQ_nxs('body').css('paddingTop', fixedheaderheight);
 					}
 
-					jQuery(document).bind('nxs_event_resizeend', function() {
+					jQuery(document).bind('nxs_event_resizeend', function() 
+					{
 						nxs_js_set_fixedheader_padding();
 					});
 
-					jQ_nxs(document).ready(function(){
+					jQ_nxs(document).ready(function()
+					{
 						nxs_js_set_fixedheader_padding();
 					});
-
-				<?php
+					<?php
 				}
 			}
-			
-			else {
-			?>
+			else 
+			{
+				?>
 				var fixedheaderisvisible = false;
 				function nxs_js_fixedheader_gettoggleoffset()
 				{
@@ -188,50 +175,66 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 					return result;
 				}
 
-				function nxs_js_show_fixedheader() {
-                    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+				function nxs_js_update_fixedheader_visualization() 
+				{
+					nxs_js_log("fixedheader;updating visualization");
+					
+          var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     
-					if (scrollTop < nxs_js_fixedheader_gettoggleoffset()) {
-						if (fixedheaderisvisible == true) {
-							jQ_nxs("#nxs-fixed-header").fadeOut(200);
+					if (scrollTop < nxs_js_fixedheader_gettoggleoffset()) 
+					{
+						if (fixedheaderisvisible == true) 
+						{
+							jQ_nxs("#nxs-fixed-header").css("visibility", "hidden");
 							fixedheaderisvisible = false;
 						}
 					}
-					else {
-						if (fixedheaderisvisible == false) {
-							jQ_nxs("#nxs-fixed-header").fadeIn(200);
+					else 
+					{
+						if (fixedheaderisvisible == false) 
+						{
+							jQ_nxs("#nxs-fixed-header").css("visibility", "visible");
 							fixedheaderisvisible = true;
-                            
-                            // tell the layout engine to post process the layout
-                            // after the DOM is updated
-                            nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-framework-pagefixedheader-show');
 						}
 					}
 				}
 
-				setTimeout(function() {
-					nxs_js_show_fixedheader();
-				}, 1000);
+				// initial state
+				setTimeout
+				(
+					function() 
+					{
+						nxs_js_log("fixedheader;initializing visualization first time");
+						nxs_js_update_fixedheader_visualization();
+					}, 
+					1000
+				);
         
-                var browser = jQ_nxs.browser;
+        var browser = jQ_nxs.browser;
 			
 				<?php if ($offsetpixels) { ?>
+					jQ_nxs(document).bind
+					(
+						'nxs_event_windowscrolled.fixedheader',
+						function() { nxs_js_update_fixedheader_visualization(); }
+					);
+					
 					jQ_nxs(document).bind
 					(
 						'nxs_event_windowscrolling.fixedheader', 
 						function() 
 						{
-              // firefox got more trouble with the nxs_js_show_fixedheader
+              // firefox got more trouble with the nxs_js_update_fixedheader_visualization
               // this is because firefox got a harder time getting the scrollTop
               // so we put the throttle for firefox on 500ms
               
               if (browser.mozilla == true) 
               {
-              	nxs_js_invokethrottled("showfixedheader", 500, nxs_js_show_fixedheader)
+              	nxs_js_invokethrottled("showfixedheader", 500, nxs_js_update_fixedheader_visualization)
               } 
               else 
               {
-                nxs_js_invokethrottled("showfixedheader", 250, nxs_js_show_fixedheader)
+                nxs_js_invokethrottled("showfixedheader", 50, nxs_js_update_fixedheader_visualization)
               }
 						}
 					);
