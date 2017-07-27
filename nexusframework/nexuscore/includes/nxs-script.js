@@ -3941,6 +3941,10 @@ function nxs_js_redirect_top(url)
 		// kudos to https://stackoverflow.com/questions/6234773/can-i-escape-html-special-chars-in-javascript
 		function nxs_js_escapehtml(unsafe) 
 		{
+			if (unsafe == null)
+			{
+				return unsafe;
+			}
     	return unsafe
 			         .replace(/&/g, "&amp;")
 			         .replace(/</g, "&lt;")
