@@ -1020,6 +1020,10 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 .nxs-text ol li:first-child 								{ margin-top: 0px; }
 .nxs-text ul 												{ list-style: square; }
 
+/* GOOGLE MAP
+---------------------------------------------------------------------------------------------------- */
+.nxs-google-map * { text-shadow: initial !important; }
+
 /* Callout banner */
 .callout-banner {
 	padding: 5px;
