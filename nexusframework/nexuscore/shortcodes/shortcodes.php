@@ -713,6 +713,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "listmodeluris")
 		{
+			// todo: add support for ordering
+			
 			global $nxs_g_modelmanager;
 			
 			$instanceuris = array();
@@ -1695,7 +1697,7 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 		$cssclass = nxs_getcssclassesforrow($mixedattributes);
 		
 		$should_render_row = true;
-		$r_enabled = trim($mixedattributes["r_enabled"]);
+		$r_enabled = strtolower(trim($mixedattributes["r_enabled"]));
 		if ($r_enabled == "")
 		{
 			// its enabled in all its glory :) (default)
