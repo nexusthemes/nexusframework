@@ -411,7 +411,7 @@ function nxs_widget_googlemap_getlatlng($address)
 				$thememeta = nxs_theme_getmeta();
 				$args = array
 				(
-					"hostname" => "nexusthemes.com",
+					"hostname" => "shop.nexusthemes.com",
 					"apiurl" => "/latlng",
 					"queryparameters" => array
 					(
@@ -422,6 +422,7 @@ function nxs_widget_googlemap_getlatlng($address)
 					),
 				);
 				$latlng = nxs_connectivity_invoke_api_get($args);
+				
 				if ($latlng["licensestatus"] == "NACK")
 				{
 					//
@@ -453,6 +454,8 @@ function nxs_widget_googlemap_getlatlng($address)
 	{
 		// echo "no address entered";
 	}
+	
+	
 	
 	return $result;
 }
@@ -1120,6 +1123,7 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 
 	$latlng = nxs_widget_googlemap_getlatlng($translatedaddress);
 	$latlngavailable = ($latlng["licensestatus"] == "OK" && $latlng["found"] == "true");
+	
 	$olat = $latlng["lat"];
 	$olng = $latlng["lng"];
 	$lat = $olat - $deltalat;
@@ -1412,8 +1416,13 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 		{
 			?>
 			<div class="content2">
-				Unable to render the map
+				Unable to render the map<br />
 				<?php
+				var_dump($latlngavailable);
+				echo "<!-- ";
+				var_dump($latlng);
+				echo " -->";
+				
 				if ($latlng["debug"]["connectivity"]["errors"] == true)
 				{
 					echo "<div style='padding: 10px; margin: 10px; background-color: red; color: white;'>";
