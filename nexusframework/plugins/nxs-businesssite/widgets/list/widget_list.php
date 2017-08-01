@@ -1054,7 +1054,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	
 		if (nxs_iswebmethodinvocation())
 		{
-			$html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>You might need to refresh the page to get actual results</div><br />";
+			// $html .= "<div class='nxs-hidewheneditorinactive' style'display: block; background-color: red; color: white; margin: 2px; padding: 2px;'>You might need to refresh the page to get actual results</div><br />";
 		}
 		
 		if (!$datasource_isvalid)

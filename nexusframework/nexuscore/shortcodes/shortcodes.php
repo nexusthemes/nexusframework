@@ -197,6 +197,25 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		{
 			$input = nxs_geturl_home();
 		}
+		else if ($op == "mediasource")
+		{
+			// input = 123rf|27357367
+			$pieces = explode("|", $input);
+			$provider = $pieces[0];
+			$id = $pieces[1];
+			if ($provider == "123rf")
+			{
+				$input = "https://123rf.com/search.php?word={$id}&srch_lang=nl&imgtype=&Submit=+&t_word=&t_lang=nl&orderby=0";
+			}
+			else if ($provider == "pixabay")
+			{
+				$input = "https://pixabay.com/en/{$id}/";
+			}
+			else
+			{
+				$input = "https://example.org";
+			}
+		}
 		else if ($op == "urlprettyfy" || $op == "urlprettify")
 		{
 			if ($attributes["debug"] == "true")
@@ -851,7 +870,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			
 			$input = implode(";", $instanceuris);
 		}
-		else if ($op == "filegetcontents")
+		else if ($op == "file_get_contents" || $op == "filegetcontents")
 		{
 			$url = $attributes["url"];
 			$input = nxs_geturlcontents(array("url" => $url));
@@ -1100,6 +1119,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		}
 		else if ($op == "equals")
 		{
+			$i = $input;
 			$equalsvalue = $attributes["equalsvalue"];
 			
 			if ($input == $equalsvalue)
@@ -1108,12 +1128,15 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			}
 			else
 			{
-				//echo "shortcode condition [$input][$equalsvalue] evaluates to [$input]";
-				// error_log("shortcode condition [$input][$equalsvalue] evaluates to [$input]");
-		
 				$input = "false";
+				
+			
 			}
-
+			
+			if ($attributes["debug"])
+			{
+				$input = "'$i' vs '$equalsvalue' becomes '$input'";
+			}
 		}
 		else if ($op == "!equals" || $op == "notequals")
 		{
