@@ -23,8 +23,39 @@ function nxs_widgets_wpmenu_getunifiedstylinggroup() {
 // Define the properties of this widget
 function nxs_widgets_wpmenu_home_getoptions($args) 
 {
-	$menu_id = nxs_widgets_wpmenu_getmenuid();
-	$editurl = get_admin_url(get_current_blog_id(), 'nav-menus.php') . "?action=edit&menu={$menu_id}";
+	if (nxs_iswebmethodinvocation())
+	{
+		$clientpopupsessioncontext = $_REQUEST["clientpopupsessioncontext"];
+		$clientpopupsessiondata = $_REQUEST["clientpopupsessiondata"];
+		//
+		$postid = $clientpopupsessioncontext["postid"];
+		$placeholderid = $clientpopupsessioncontext["placeholderid"];
+		
+		// load the widget's data from the persisted db
+		$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+		$menu_name = $placeholdermetadata["menu_name"];
+		
+		// but allow it to be overriden in the session
+		if (isset($clientpopupsessiondata["menu_name"]))
+		{
+			$menu_name = $clientpopupsessiondata["menu_name"];
+		}
+		
+		if ($menu_name == "")
+		{
+			// fallback
+			$menu_name = "nxs-menu-generic";
+		}
+		
+		$locations = get_nav_menu_locations();
+		$menu_id = $locations[$menu_name];
+		
+		$editurl = get_admin_url(get_current_blog_id(), 'nav-menus.php') . "?action=edit&menu={$menu_id}";
+	}
+	else
+	{
+		// 
+	}
 	
 	// CORE WIDGET OPTIONS
 	
@@ -48,6 +79,18 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Configuration", "nxs_td"),
 			),
+
+			array
+			(
+				"id" => "menu_name",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Menu", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"nxs-menu-generic"	=> "Nexus Primary Menu", 
+					"nxs-menu-secondary" => "Nexus Secondary Menu",
+				),
+			),			
 			
 			/*
 			array(
@@ -152,6 +195,8 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
+			
+			
 			array
 			(
 				"id" 				=> "editsection",
@@ -229,14 +274,6 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------- */
-
-function nxs_widgets_wpmenu_getmenuid()
-{
-	$locations = get_nav_menu_locations();
-	$menu_name = 'nxs-menu-generic';
-	$menu_id = $locations[$menu_name];
-	return $menu_id;
-}
 
 function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args) 
 {	
@@ -326,21 +363,23 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	
 	nxs_ob_start();
 
-	$menu_id = nxs_widgets_wpmenu_getmenuid();
-	$nav_menu = wp_get_nav_menu_object($menu_id);
-	
-	if ($nav_menu == "")
+	// echo "menu is set to; $menu_name <br /><br />";
+
+	if ($menu_name == "")
 	{
-		// fallback; use the menu called "main menu"
-		$nav_menu = wp_get_nav_menu_object("main menu");
+		$menu_name = "nxs-menu-generic";
 	}
+	
+	$locations = get_nav_menu_locations();
+	$menu_id = $locations[$menu_name];
 	
 	$nav_menu_args = array
 	(
 		'fallback_cb' => '',
-		'menu'        => $nav_menu
+		'menu'        => $menu_id
 	);
-	wp_nav_menu( apply_filters( 'widget_nav_menu_args', $nav_menu_args, $nav_menu, $args, $instance ) );
+	//$x = apply_filters( 'widget_nav_menu_args', $nav_menu_args, $nav_menu, $args, $instance );
+	wp_nav_menu( $nav_menu_args );
 
 	$menuhtml = nxs_ob_get_contents();
 	nxs_ob_end_clean();
@@ -390,7 +429,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	---------------------------------------------------------------------------------------------------- */
 
 	if ($menuhtml == "") {
-			nxs_renderplaceholderwarning(nxs_l18n__("No widgets found in widget area[nxs:warning]", "nxs_td"));
+			nxs_renderplaceholderwarning(nxs_l18n__("No menu items found in the menu", "nxs_td"));
 		} else {
 			
 			// Default menu

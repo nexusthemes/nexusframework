@@ -3962,10 +3962,14 @@ function nxs_getdepth($postid, $placeholderid)
 function nxs_register_menus() 
 {
 	// we register the nav menu only to be able to show the menus in the backend
-	register_nav_menus(
-	array(
-		'nxs-menu-generic' => 'Generic Nexus Menu',
-	)
+	register_nav_menus
+	(
+		array
+		(
+			'nxs-menu-generic' => 'Nexus Primary Menu',
+			'nxs-menu-secondary' => 'Nexus Secondary Menu',
+			// add more as needed
+		)
 	);
 }
 
