@@ -504,7 +504,71 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				}
 				
 				$a = array("singularschema" => $schema);
-				$possibilities = $nxs_g_modelmanager->gettaxonomypropertiesofallmodels($a);
+				$unfilteredpossibilities = $nxs_g_modelmanager->gettaxonomypropertiesofallmodels($a);
+
+								
+				// optionally filter the possibilities
+				foreach ($unfilteredpossibilities as $possibility)
+				{
+					$conditionevaluation = true;
+	
+					$conditionindexers = array("", "_1", "_2");	// add more conditionindexers here when needed...
+					foreach ($conditionindexers as $conditionindexer)
+					{
+						// operator
+						
+						$operatorproperty = $attributes["where_property{$conditionindexer}"];
+						$operator = $attributes["where_operator{$conditionindexer}"];
+						$operatorvalue = $attributes["where_value{$conditionindexer}"];
+		
+						if ($operator == "")
+						{
+							// ignore this one
+							continue;
+						}
+						else if ($operator == "caseinsensitivelike")
+						{
+							$fieldvalue = $possibility[$operatorproperty];
+							$conditionevaluation = nxs_stringcontains_v2($fieldvalue, $operatorvalue, true);
+						}
+						else if ($operator == "equals")
+						{
+							//echo "<br />found equals operator<br />";
+							//echo "<br />operatorproperty is<br />";
+							//var_dump($operatorproperty);
+							//echo "<br />possibility is<br />";
+							//var_dump($possibility);
+							
+							$fieldvalue = $possibility[$operatorproperty];
+							//echo "<br />fieldvalue is<br />";
+							//var_dump($fieldvalue);
+							
+							$conditionevaluation = ($fieldvalue == $operatorvalue);
+							//echo "<br />conditionevaluation is<br />";
+							//var_dump($conditionevaluation);
+						}
+						else
+						{
+							return "$op; unsupported where operator ($operator)";
+							// not supported; evaluates to false
+						}
+						
+						//
+						if ($conditionevaluation === false)
+						{
+							// if one condition is false, break all (we use a logical AND operator here)
+							break;
+						}
+						
+						// loop; proceed evaluating the next condition
+					}
+					
+					// if condition evaluates to true, add the item to the resulting set
+					if ($conditionevaluation)
+					{
+						$possibilities[] = $possibility;
+					}					
+				}	
 
 				// grab the indexer
 				
