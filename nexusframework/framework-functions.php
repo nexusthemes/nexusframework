@@ -434,70 +434,6 @@ function nxs_seotab_pluginnotfound()
 }
 add_action('nxs_ext_seotab_pluginnotfound', 'nxs_seotab_pluginnotfound');	// default implementation, can be overruled
 
-//
-// framework css
-//
-function nxs_framework_theme_styles()
-{ 
-  // Register the style like this for a theme:  
-  // (First the unique name for the style (custom-style) then the src, 
-  // then dependencies and ver no. and media type)
-  
-  wp_register_style('nxs-framework-style-css-reset', 
-    nxs_getframeworkurl() . '/css/css-reset.css', 
-    array(), 
-    nxs_getthemeversion(),    
-    'all' );
-  
-  wp_register_style('nxs-framework-style', 
-    nxs_getframeworkurl() . '/css/framework.css', 
-    array(), 
-    nxs_getthemeversion(), 
-    'all' );
-
-
-  if (is_child_theme()) {
-  	wp_register_style('nxs-framework-style-child', 
-    nxs_getframeworkurl() . '/css/style.css', 
-    array(), 
-    nxs_getthemeversion(), 
-    'all' );
-
-  	// enqueing:
-    wp_enqueue_style('nxs-framework-style-child');
-
-}
-  
-	// enqueing:
-	
-	// indien we in de WP backend zitten, dan geen css reset!
-	$iswordpressbackendshowing = is_admin();
-	if (!$iswordpressbackendshowing)
-	{
-		wp_enqueue_style('nxs-framework-style-css-reset');
-	}
-	
-  wp_enqueue_style('nxs-framework-style');
-    
-	if (!$iswordpressbackendshowing)
-	{
-		$sitemeta = nxs_getsitemeta();  
-
-		wp_register_style('nxs-framework-style-responsive', 
-	    nxs_getframeworkurl() . '/css/framework-responsive.css', 
-	    array(), 
-	    nxs_getthemeversion(),
-	    'all' );
-	    
-	    wp_enqueue_style('nxs-framework-style-responsive');
-	}
-	
-	wp_enqueue_script( 'jquery-migrate', nxs_getframeworkurl() . '/js/migrate/jquery-migrate.js', array( 'jquery' ), nxs_getthemeversion(), TRUE );
-	
-  do_action('nxs_action_after_enqueue_baseframeworkstyles');
-}
-add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');
-
 function nxs_session_hasstartedactivesession()
 {
 	$r = isset($_COOKIE[session_name()]);
@@ -1568,7 +1504,7 @@ function nxs_render_postfooterlink()
 //add_action('init', 'nxs_performdataconsistencycheck');
 add_action('init', 'nxs_register_menus');
 add_action('init', 'nxs_create_post_types_and_taxonomies');
-add_action('init', 'nxs_clearunwantedscripts');
+
 
 function nxs_performdataconsistencycheck()
 {
@@ -1626,6 +1562,7 @@ function nxs_clearunwantedscripts()
   	add_action('admin_head','nxs_setjQ_nxs');
   }
 }
+add_action('init', 'nxs_clearunwantedscripts');
 
 
 function nxs_after_setup_theme()
@@ -2057,8 +1994,6 @@ function nxs_after_theme_activate_notice_admin()
 	echo $messagedata["html"];
 }
 
-add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');
-
 // ensures all templates are processed by our drag'drop system, 
 // enabling configurable (sub)headers, sidebars, (sub)footers and pagedecorators
 // uses nxs_gettemplateproperties()
@@ -2301,6 +2236,27 @@ function nxs_title_format($content)
 }
 add_filter('private_title_format', 'nxs_title_format');
 add_filter('protected_title_format', 'nxs_title_format');
+
+// ---
+
+function nxs_ext_initialize_frontendframework()
+{
+	$frontendframework = "nxs";
+	if ($_REQUEST["frontendframework"] != "")
+	{
+		$frontendframework = $_REQUEST["frontendframework"];
+	}
+	
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	if (file_exists($filetoinclude))
+	{
+		require_once($filetoinclude);
+	}
+}
+// todo: should probably be put in the "init" action, but for now, lets inject it straight away while loading the framework
+nxs_ext_initialize_frontendframework();
+
+// ---
 
 //
 nxs_load_plugins();

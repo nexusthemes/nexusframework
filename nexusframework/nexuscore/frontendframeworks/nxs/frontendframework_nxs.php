@@ -111,3 +111,74 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 	
 	return $result;
 }
+
+//
+// framework css
+//
+function nxs_framework_theme_styles()
+{
+	if ($_REQUEST["frontendframework"] != "")
+	{
+		echo "nxs_framework_theme_styles";
+		die();
+	}
+	
+  // Register the style like this for a theme:  
+  // (First the unique name for the style (custom-style) then the src, 
+  // then dependencies and ver no. and media type)
+  
+  wp_register_style('nxs-framework-style-css-reset', 
+    nxs_getframeworkurl() . '/css/css-reset.css', 
+    array(), 
+    nxs_getthemeversion(),    
+    'all' );
+  
+  wp_register_style('nxs-framework-style', 
+    nxs_getframeworkurl() . '/css/framework.css', 
+    array(), 
+    nxs_getthemeversion(), 
+    'all' );
+
+
+  if (is_child_theme()) 
+  {
+  	wp_register_style('nxs-framework-style-child', 
+    nxs_getframeworkurl() . '/css/style.css', 
+    array(), 
+    nxs_getthemeversion(), 
+    'all' );
+
+  	// enqueing:
+    wp_enqueue_style('nxs-framework-style-child');
+	}
+  
+	// enqueing:
+	
+	// indien we in de WP backend zitten, dan geen css reset!
+	$iswordpressbackendshowing = is_admin();
+	if (!$iswordpressbackendshowing)
+	{
+		wp_enqueue_style('nxs-framework-style-css-reset');
+	}
+	
+  wp_enqueue_style('nxs-framework-style');
+    
+	if (!$iswordpressbackendshowing)
+	{
+		$sitemeta = nxs_getsitemeta();  
+
+		wp_register_style('nxs-framework-style-responsive', 
+	    nxs_getframeworkurl() . '/css/framework-responsive.css', 
+	    array(), 
+	    nxs_getthemeversion(),
+	    'all' );
+	    
+	    wp_enqueue_style('nxs-framework-style-responsive');
+	}
+	
+	wp_enqueue_script( 'jquery-migrate', nxs_getframeworkurl() . '/js/migrate/jquery-migrate.js', array( 'jquery' ), nxs_getthemeversion(), TRUE );
+	
+  do_action('nxs_action_after_enqueue_baseframeworkstyles');
+}
+add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');
+add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');

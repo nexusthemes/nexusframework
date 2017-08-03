@@ -1178,7 +1178,7 @@ class nxs_g_modelmanager
 				error_log("getmodel;result;$modeluri;" . json_encode($result));
 			}
 		}
-		
+			
 		if (isset($result["found"]) && $result["found"] === false)
 		{
 			// error_log("getmodel_dbcache; {$modeluri}; not found");
@@ -1574,6 +1574,8 @@ class nxs_g_modelmanager
 
 			// this function will itself also update the list
 			$this->cachebulkmodels($singularschema);
+			
+			
 			
 			// also expire the cache of the site
 			$path = nxs_cache_getcachefolder();
