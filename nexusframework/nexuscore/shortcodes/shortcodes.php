@@ -2068,9 +2068,12 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	
 	$phdataattributeshtml = "";
 	$data_atts = $nxs_global_placeholder_render_statebag["data_atts"];
-	foreach ($data_atts as $key => $val)
+	if (isset($data_atts))
 	{
-		$phdataattributeshtml .= "data-{$key}='{$val}' ";
+		foreach ($data_atts as $key => $val)
+		{
+			$phdataattributeshtml .= "data-{$key}='{$val}' ";
+		}
 	}
 	
 	

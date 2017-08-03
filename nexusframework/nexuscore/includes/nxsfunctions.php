@@ -3966,9 +3966,9 @@ function nxs_register_menus()
 	(
 		array
 		(
-			'nxs-menu-generic' => 'Nexus Primary Menu',
-			'nxs-menu-secondary' => 'Nexus Secondary Menu',
-			// add more as needed
+			"nxs-menu-generic"	=> "Nexus Menu 1 (Primary)", 
+			"nxs-menu-2" => "Nexus Menu 2",
+			"nxs-menu-3" => "Nexus Menu 3",
 		)
 	);
 }

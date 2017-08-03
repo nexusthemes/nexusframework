@@ -87,8 +87,9 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Menu", "nxs_td"),
 				"dropdown" 			=> array
 				(
-					"nxs-menu-generic"	=> "Nexus Primary Menu", 
-					"nxs-menu-secondary" => "Nexus Secondary Menu",
+					"nxs-menu-generic"	=> "Nexus Menu 1 (Primary)", 
+					"nxs-menu-2" => "Nexus Menu 2",
+					"nxs-menu-3" => "Nexus Menu 3",
 				),
 			),			
 			
