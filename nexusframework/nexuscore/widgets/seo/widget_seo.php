@@ -370,7 +370,7 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 		}
 	</style>
 	<div class='nxs-hidewheneditorinactive'>
-		<div style="background-color: white; border: 2px solid black; color: black; padding: 5px;">
+		<div style="background-color: white; border: 2px solid black; color: black; padding: 5px;" class="nxs-default-p">
 			seo title: <?php echo $title; ?><br />
 			seo description: <?php echo $metadescription; ?><br />
 			seo canonical url: <a class='<?php echo $canonicalstate; ?>' href='<?php echo $canonicalurl; ?>' target='_blank'><?php echo $canonicalurl; ?></a><br />
