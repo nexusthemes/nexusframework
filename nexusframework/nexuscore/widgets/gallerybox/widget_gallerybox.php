@@ -110,6 +110,17 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 					"portrait"		=>"portrait",
 				),
 				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "direction",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Direction", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"normal"		=>"normal",
+					"reverse"		=>"reverse",
+				),
+				"unistylablefield"	=> true
 			),	
 			array(
 				"id" 				=> "numofcolumns",
@@ -211,6 +222,21 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 	---------------------------------------------------------------------------------------------------- */
 
 	$structure = nxs_parsepoststructure($items_genericlistid);
+	
+	if ($direction == "" || $direction == "normal")
+	{
+		// leave as-is; default
+	}
+	else if ($direction == "reverse")
+	{
+		// reverse the list
+		$structure = array_reverse($structure);
+	}
+	else
+	{
+		// unknown; leave as-is
+	}
+	
 	if (count($structure) == 0) {
 		$alternativemessage = nxs_l18n__("Warning:no items found", "nxs_td");
 	}
