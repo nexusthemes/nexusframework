@@ -732,7 +732,6 @@ function nxs_pagetemplate_handleheader()
 	<?php } ?>
 	
 	<?php do_action('nxs_bodybegin'); ?>
-	<?php include(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsmenu.php'); ?>
 	
 	<?php
 	// loading the frontendediting overrides the containerpostid,
@@ -740,7 +739,7 @@ function nxs_pagetemplate_handleheader()
 	global $nxs_global_current_containerpostid_being_rendered;
 	$nxs_global_current_containerpostid_being_rendered = $containerpostid;
 	?>
-	<?php require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php'); ?>
+	<?php do_action("nxs_render_frontendeditor"); ?>
 	<?php
 	// loading the frontendediting overrides the containerpostid?
 	$containerpostid = $nxs_global_current_containerpostid_being_rendered;

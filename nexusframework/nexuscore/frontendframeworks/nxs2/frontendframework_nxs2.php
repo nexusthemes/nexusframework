@@ -527,3 +527,87 @@ function disable_wp_emojicons() {
   add_filter( 'tiny_mce_plugins', 'disable_emojicons_tinymce' );
 }
 add_action( 'init', 'disable_wp_emojicons' );
+
+function nxs_frontendframework_nxs2_wp_footer()
+{
+	//echo "so far :)";
+	//die();
+	$css_embeds = array
+	(
+		NXS_FRAMEWORKPATH . "/css/css-reset.css",
+		NXS_FRAMEWORKPATH . "/css/framework.css",
+		NXS_FRAMEWORKPATH . "/css/framework-responsive.css",
+	);
+	foreach ($css_embeds as $embed)
+	{
+		?>
+		<style>
+			<?php
+			echo file_get_contents($embed);
+			?>
+		</style>
+		<?php
+	}
+}
+
+function nxs_clearunwantedscripts()
+{
+	// if we are in the frontend ...
+	if (!is_admin())
+	{
+		// the theme could break if pointing to an incompatible version
+		// therefore we remove jquery scripts added by third party plugins, such as NGG
+  	//wp_deregister_script('jquery');
+  	
+  	
+  	// 25 aug 2014; removed; woocommerce adds various scripts that are dependent upon
+  	// jquery, and we ignore those too when using the approach below...
+  	function nxs_modify_scripts() 
+  	{
+  		wp_deregister_script('jquery');
+			wp_deregister_script('jquery-ui');
+			wp_deregister_script('farbtastic');
+			wp_deregister_style('farbtastic');
+			wp_dequeue_style('farbtastic');
+		}
+		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
+		add_action('wp_footer','nxs_frontendframework_nxs2_wp_footer');
+  }
+  else
+  {
+  	//add_action('admin_head','nxs_setjQ_nxs');
+  }
+}
+add_action('init', 'nxs_clearunwantedscripts');
+
+function nxs_framework_theme_styles()
+{
+	wp_dequeue_style('farbtastic');
+	
+	/*
+	wp_register_style('nxs-framework-style-css-reset', 
+    nxs_getframeworkurl() . '/css/css-reset.css', 
+    array(), 
+    nxs_getthemeversion(),    
+    'all' );
+  
+  wp_register_style('nxs-framework-style', 
+    nxs_getframeworkurl() . '/css/framework.css', 
+    array(), 
+    nxs_getthemeversion(), 
+    'all' );
+  
+	wp_enqueue_style('nxs-framework-style-css-reset');
+	wp_enqueue_style('nxs-framework-style');
+    
+	wp_register_style('nxs-framework-style-responsive', 
+	    nxs_getframeworkurl() . '/css/framework-responsive.css', 
+	    array(), 
+	    nxs_getthemeversion(),
+	    'all' );
+	    
+	wp_enqueue_style('nxs-framework-style-responsive');
+	*/
+  do_action('nxs_action_after_enqueue_baseframeworkstyles');
+}
+add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');

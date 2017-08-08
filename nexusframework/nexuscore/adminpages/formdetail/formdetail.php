@@ -1,7 +1,4 @@
 <?php
-	//require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsfunctions.php');
-	//require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php');
-	
 	extract($_GET);
 	
 	$formsurl = home_url('/') . "?nxs_admin=admin&backendpagetype=forms";

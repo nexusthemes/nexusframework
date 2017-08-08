@@ -1,7 +1,8 @@
 <?php
 
 	require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsfunctions.php');
-	require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php');
+	//do_action("nxs_render_frontendeditor");
+	//require_once(NXS_FRAMEWORKPATH . '/nexuscore/frontendframeworks/nxs/frontendediting.php');
 	
 	extract($_GET);
 ?>

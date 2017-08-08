@@ -114,8 +114,7 @@
 	<?php } ?>
 	
 	<?php do_action('nxs_bodybegin'); ?>
-	<?php include(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsmenu.php'); ?>
-	<?php require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php'); ?>
+	<?php do_action("nxs_render_frontendeditor");?>
 	
 	<?php global $nxs_global_extendrootclass; ?>
  <div id="nxs-container" class="nxs-containsimmediatehovermenu nxs-no-click-propagation <?php echo $page_cssclass . " " . $nxs_global_extendrootclass; ?>">

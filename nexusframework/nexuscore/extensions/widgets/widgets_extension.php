@@ -237,7 +237,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "section", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "search", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "eventsbox", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "carousel", "tags" => array("nexus"));
+		
 		$result[] = array("widgetid" => "banner", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "flickr", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "seo", "tags" => array("nexus"));
@@ -260,6 +260,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 			
       $result[] = array("widgetid" => "pagination", "tags" => array("nexus"));
       $result[] = array("widgetid" => "template2", "tags" => array("johan"));
+      
+      $result[] = array("widgetid" => "carousel", "tags" => array("nexus"));
 		}
 		
 		// $result[] = array("widgetid" => "fbcomments");

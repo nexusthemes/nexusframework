@@ -6,8 +6,7 @@ function nxs_nexuscom_data_verification()
 		if ($_REQUEST["nxs"] == "dataverification")
 		{
 			?>
-			<?php include(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsmenu.php'); ?>
-			<?php require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php'); ?>
+			<?php do_action("nxs_render_frontendeditor"); ?>
 			<?php
 			
 			require_once("data-verification-impl.php");

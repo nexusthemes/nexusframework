@@ -32,7 +32,7 @@
 	{
 		global $nxs_global_overviewservicevalue;
 		
-		require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php');
+		do_action("nxs_render_frontendeditor");
 		
 		//
 		// two options; 
@@ -142,7 +142,7 @@
 		global $nxs_global_overviewservicevalue;
 		
 		$imageurl = nxs_getframeworkurl() . "/images/animations/waitwhileloading4.gif";
-		require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php'); 
+		do_action("nxs_render_frontendeditor");
 		?>
 		<div class='nxs-width100 nxs-align-center nxs-margin-top40'>
 			<h1><?php echo nxs_l18n__("Activating your theme", "nxs_td"); ?></h1>

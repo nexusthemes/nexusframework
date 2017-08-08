@@ -20,7 +20,6 @@
 	?>
 </head>
 <body <?php body_class("nxs-admin-wrap"); ?>>
-	<?php include(NXS_FRAMEWORKPATH . '/nexuscore/includes/nxsmenu.php'); ?>
-	<?php require_once(NXS_FRAMEWORKPATH . '/nexuscore/includes/frontendediting.php'); ?>
+	<?php do_action("nxs_render_frontendeditor");?>
 
 	<div id="admin-container" class="nxs-containsimmediatehovermenu nxs-no-click-propagation">
