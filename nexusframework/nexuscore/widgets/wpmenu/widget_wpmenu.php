@@ -12,7 +12,7 @@ function nxs_widgets_wpmenu_gettitle() {
 
 // Unistyle
 function nxs_widgets_wpmenu_getunifiedstylinggroup() {
-	return "textwidget";
+	return "menucontainerwidget";
 }
 
 /* WIDGET STRUCTURE
