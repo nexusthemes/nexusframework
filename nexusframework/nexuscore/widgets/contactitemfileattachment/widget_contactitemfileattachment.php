@@ -120,6 +120,8 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
 		$key = $prefix . $metadata_elementid;
 	}
 	
+	$button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata_button_color);
+	
 	//
 	// render actual control / html
 	//
@@ -130,7 +132,7 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
 	
   <label class="field_name" style="display: block;"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
   <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" style="display: none" />
-	<label for="<?php echo $key; ?>" class="nxs-file-upload-trigger">Select file</label>
+	<label for="<?php echo $key; ?>" class="nxs-file-upload-trigger <?php echo $button_color_cssclass; ?>">Select file</label>
 	<?php 
 	
 	$html = nxs_ob_get_contents();
@@ -266,7 +268,15 @@ function nxs_widgets_contactitemfileattachment_home_getoptions($args)
 			// 	"label" 			=> nxs_l18n__("Accepted file extensions", "nxs_td"),
 			// 	"dropdown" 			=> nxs_style_getdropdownitems("file_extensions"),
 			// ),
-			
+
+			array
+			( 
+				"id" 				=> "button_color",
+				"type" 				=> "colorzen", // "select",
+				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+						
 			array
 			( 
 				"id" 				=> "isrequired",
