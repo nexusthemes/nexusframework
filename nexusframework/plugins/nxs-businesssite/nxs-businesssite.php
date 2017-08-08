@@ -57,6 +57,12 @@ class nxs_g_modelmanager
 		$iterator_datasource = "listof{$singularschema}";
 		$iteratormodeluri = "singleton@{$iterator_datasource}";
 		
+		// refetch first if instructed to do so
+		if ($args["refetch"] === "true")
+		{		
+			$this->cachebulkmodels($singularschema);
+		}
+		
 		$contentmodel = $this->getcontentmodel($iteratormodeluri);
 		
 		$instances = $contentmodel[$singularschema]["instances"];
