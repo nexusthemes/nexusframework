@@ -1589,6 +1589,13 @@ class nxs_g_modelmanager
 			
 			echo "cache wiped... <br />";
 			echo "done :)";
+			
+			echo "<br />";
+			$viewurl = nxs_geturl_home();
+			$viewurl = nxs_addqueryparametertourl_v2($viewurl, "dumpmodel", $singularschema, true, true);
+			echo "<a href='{$viewurl}'>view</a>";
+			echo "<br />so far :)";
+			
 			die();
 			// todo: output some json instead of text...
 		}
@@ -1621,6 +1628,11 @@ class nxs_g_modelmanager
 					echo json_encode($d);
 					echo "<br /><br />";
 				}
+				echo "<br />";
+				$refetchurl = nxs_geturl_home();
+				$refetchurl = nxs_addqueryparametertourl_v2($refetchurl, "bulkmodels", "true", true, true);
+				$refetchurl = nxs_addqueryparametertourl_v2($refetchurl, "singularschema", $dumpmodel, true, true);
+				echo "<a href='{$refetchurl}'>refetch</a>";
 				echo "<br />so far :)";
 				die();
 			}
