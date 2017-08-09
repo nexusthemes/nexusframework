@@ -32,42 +32,44 @@ function nxs_widgets_embed_home_getoptions($args)
 		$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
 		$embeddabletypemodeluri = $placeholdermetadata["embeddabletypemodeluri"];
 		
-		/*
-		echo "before:";
-		var_dump($postid);
-		var_dump($placeholderid);
-		var_dump($placeholdermetadata);
-		die();
-		*/
-		
 		// but allow it to be overriden in the session
 		if (isset($clientpopupsessiondata["embeddabletypemodeluri"]))
 		{
 			$embeddabletypemodeluri = $clientpopupsessiondata["embeddabletypemodeluri"];
 		}
 		
-		
-
 		if ($embeddabletypemodeluri == "")
 		{
+			$iterator_datasources = array("nxs.embeddables.public");
 			
-			$iterator_datasource = "nxs.embeddables.public";
-			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+			// allow plugins to extend or tune the datasources
+			$filterargs = array();
+			$iterator_datasources = apply_filters("nxs_f_embed_datasources", $iterator_datasources, $filterargs);
 			
 			global $nxs_g_modelmanager;
-			
-			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
-			$instances = $contentmodel[$iterator_datasource]["instances"];
-			
+
 			$custompicker = "";
 			$custompicker .= "<div>";
-			foreach ($instances as $instance)
+			
+			foreach ($iterator_datasources as $iterator_datasource)
 			{
-				$itemhumanmodelid = $instance["content"]["humanmodelid"];
-				$itemuri = "{$itemhumanmodelid}@${iterator_datasource}";
-				$itemtitle = $nxs_g_modelmanager->getcontentmodelproperty($itemuri, "title");
-				$custompicker .= "<a href='#' onclick='nxs_js_popup_setsessiondata(\"embeddabletypemodeluri\", \"{$itemuri}\"); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;'>{$itemtitle}</a><br />";
+				$custompicker .= "<div>{$iterator_datasource}</div>";
+				
+				$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+				$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+				$instances = $contentmodel[$iterator_datasource]["instances"];
+				
+				foreach ($instances as $instance)
+				{
+					$itemhumanmodelid = $instance["content"]["humanmodelid"];
+					$itemuri = "{$itemhumanmodelid}@${iterator_datasource}";
+					$itemtitle = $nxs_g_modelmanager->getcontentmodelproperty($itemuri, "title");
+					$custompicker .= "<a href='#' onclick='nxs_js_popup_setsessiondata(\"embeddabletypemodeluri\", \"{$itemuri}\"); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;'>{$itemtitle}</a><br />";
+				}
 			}
+			
+			//
+			
 			$custompicker .= "</div>";
 			
 			// 
@@ -87,17 +89,7 @@ function nxs_widgets_embed_home_getoptions($args)
 					"label" 			=> nxs_l18n__("Embeddable", "nxs_td"),
 					"custom"	=> $custompicker,
 				),
-				/*
-				array
-				(
-					"id" 					=> "test",
-					"type" 				=> "modelpicker",
-					"label" 			=> nxs_l18n__("test", "nxs_td"),
-					"iterator_datasource" => "businesstype",
-					"textproperty" => "nexus_prim_bus_type",
-					"valueproperty" => "nexus_prim_bus_type",
-				),
-				*/
+				
 			);
 			
 			// this should be a read only / hidden field,
