@@ -868,8 +868,9 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 }
 @media only screen and ( max-width: 959px ) {
 /* FULLWIDTH */
-.nxs-one-fourth .nxs-logo img										{ max-width: 42.6em !important; }
+.nxs-one-fourth .nxs-logo img,
 .nxs-one-third .nxs-logo img,
+.nxs-one-half .nxs-logo img,
 .nxs-two-third .nxs-logo img										{ max-width: 88.8em !important; }
 /* MAIN */
 .nxs-main .nxs-one-fourth .nxs-logo img								{ max-width: 27.2em !important; }	
@@ -877,8 +878,6 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-two-third .nxs-logo img								{ max-width: 58.0em !important; }
 }
 @media only screen and ( max-width: 719px )	{
-/* FULLWIDTH */		
-.nxs-one-half .nxs-logo img											{ max-width: 88.8em !important; }
 /* MAIN */	
 .nxs-main .nxs-one-fourth .nxs-logo img,
 .nxs-main .nxs-one-third .nxs-logo img,
