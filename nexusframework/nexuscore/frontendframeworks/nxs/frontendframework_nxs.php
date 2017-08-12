@@ -217,8 +217,13 @@ add_action('init', 'nxs_clearunwantedscripts');
 
 function nxs_frontendframework_nxs_render_frontendeditor()
 {
-	require_once("nxsmenu.php");
+	if (!is_admin())
+	{
+		require_once("nxsmenu.php");
+	}
+	
 	require_once("frontendediting.php");
+	
 	/*
 	if ($_REQUEST["huh"] == "007")
 	{

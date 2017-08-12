@@ -4360,9 +4360,16 @@ function nxs_gethomeglobalid()
 
 function nxs_getmaintenancedurationinsecs()
 {
-	$meta = nxs_getsitemeta();
-	$result = $meta["maintenance_duration"];
-	if ($result == "-" || $result == "")
+	if (nxs_hassitemeta())
+	{
+		$meta = nxs_getsitemeta();
+		$result = $meta["maintenance_duration"];
+		if ($result == "-" || $result == "")
+		{
+			$result = 0;
+		}
+	}
+	else
 	{
 		$result = 0;
 	}

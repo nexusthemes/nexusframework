@@ -68,11 +68,14 @@ else
 
 function nxs_maintenance_getretryafter()
 {
+	/*
 	$maintenancedurationinsecs = nxs_getmaintenancedurationinsecs();
 	if (!isset($maintenancedurationinsecs) || $maintenancedurationinsecs == 0 || $maintenancedurationinsecs == "")
 	{
 		$maintenancedurationinsecs = 60 * 60;	// 1 hour
 	}
+	*/
+	$maintenancedurationinsecs = 60 * 60;	// 1 hour
 	return $maintenancedurationinsecs;
 }
 
