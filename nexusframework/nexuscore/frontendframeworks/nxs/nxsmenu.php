@@ -4,6 +4,10 @@
 		// gebruikers die niet zijn ingelogd hebben hier niets te zoeken...
 		return;
 	}
+	if (!nxs_hassitemeta())
+	{
+		return;
+	}
 	
  	$current_user = wp_get_current_user();
  	

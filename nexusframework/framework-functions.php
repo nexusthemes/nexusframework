@@ -2143,16 +2143,16 @@ function nxs_init_handledebug()
 
 function nxs_load_plugins()
 {
-	if (true) // nxs_hassitemeta())
+	// always load these
+	$plugins = array
+	(
+		"nxs-businesssite",
+	);
+
+	// dynamically inject additional plugins 
+	// based upon the configuration of the site
+	if (nxs_hassitemeta())
 	{
-		// always load these
-		$plugins = array
-		(
-			"nxs-businesssite",
-		);
-		
-		// dynamically inject additional plugins 
-		// based upon the configuration of the site
 		$includeruntimeitems = false;
 		$lookup = nxs_lookuptable_getlookup_v2($includeruntimeitems);
 		
@@ -2163,40 +2163,39 @@ function nxs_load_plugins()
 		// 
 		$moreplugins = explode(",", $nxs_plugins);
 		
-		
 		$plugins = array_merge($plugins, $moreplugins);
-		
-		$loaded = array();
-		foreach ($plugins as $plugin)
+	}
+	
+	$loaded = array();
+	foreach ($plugins as $plugin)
+	{
+		// get rid of spaces before and after
+		$plugin = trim($plugin);
+		if ($plugin != "")
 		{
-			// get rid of spaces before and after
-			$plugin = trim($plugin);
-			if ($plugin != "")
+			if (!in_array($plugin, $loaded))
 			{
-				if (!in_array($plugin, $loaded))
+				//
+				$path = NXS_FRAMEWORKPATH . "/plugins/{$plugin}/{$plugin}.php";
+				if (file_exists($path))
 				{
-					//
-					$path = NXS_FRAMEWORKPATH . "/plugins/{$plugin}/{$plugin}.php";
-					if (file_exists($path))
-					{
-						require_once($path);
-						$loaded[] = $path;
-					}
-					else
-					{
-						//echo "not found; $path";
-						//die();
-					}
+					require_once($path);
+					$loaded[] = $path;
 				}
 				else
 				{
-					// already had this one
-					//echo "duplicate; $path";
+					//echo "not found; $path";
 					//die();
 				}
 			}
-	
+			else
+			{
+				// already had this one
+				//echo "duplicate; $path";
+				//die();
+			}
 		}
+
 	}
 }
 
