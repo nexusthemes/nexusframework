@@ -49,23 +49,62 @@ function nxs_widgets_embed_home_getoptions($args)
 			global $nxs_g_modelmanager;
 
 			$custompicker = "";
+			$custompicker .= "<style>";
+			$custompicker .= ".widgetgroup { margin: 5px; padding: 5px; background-color: #EEE; border: 1px solid #ccc; }";
+			$custompicker .= ".widgetgroupheader { margin: 2px; padding-bottom: 20px; }";
+			$custompicker .= "</style>";
+			
 			$custompicker .= "<div>";
 			
 			foreach ($iterator_datasources as $iterator_datasource)
 			{
-				$custompicker .= "<div>{$iterator_datasource}</div>";
+				$custompicker .= "<div class='widgetgroup'>";
+				$custompicker .= "<div class='widgetgroupheader'>Widget Group - {$iterator_datasource}</div>";
 				
 				$iteratormodeluri = "singleton@listof{$iterator_datasource}";
 				$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
 				$instances = $contentmodel[$iterator_datasource]["instances"];
+				
+				$custompicker .= "<ul class='placeholder3 nxs-applylinkvarcolor isotope-grid'>";
 				
 				foreach ($instances as $instance)
 				{
 					$itemhumanmodelid = $instance["content"]["humanmodelid"];
 					$itemuri = "{$itemhumanmodelid}@${iterator_datasource}";
 					$itemtitle = $nxs_g_modelmanager->getcontentmodelproperty($itemuri, "title");
-					$custompicker .= "<a href='#' onclick='nxs_js_popup_setsessiondata(\"embeddabletypemodeluri\", \"{$itemuri}\"); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;'>{$itemtitle}</a><br />";
+					$itemicon = $nxs_g_modelmanager->getcontentmodelproperty($itemuri, "icon");
+					
+					$abbreviatedtitle = $itemtitle;
+										
+					$breakuplength = 12;
+					if (strlen($abbreviatedtitle) > $breakuplength)
+					{
+						if (!nxs_stringcontains($abbreviatedtitle, " "))
+						{
+							// te lang...
+							$abbreviatedtitle = substr($abbreviatedtitle, 0, $breakuplength - 1) . "-" . substr($abbreviatedtitle, $breakuplength - 1);
+						}
+					}
+					
+					$maxlength = 14;
+					if (strlen($abbreviatedtitle) > $maxlength)
+					{
+						// chop!
+						$abbreviatedtitle = substr($abbreviatedtitle, 0, $maxlength - 1) . "..";
+					}
+					
+					
+					$custompicker .= "<a href='#' onclick='nxs_js_popup_setsessiondata(\"embeddabletypemodeluri\", \"{$itemuri}\"); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;'>";
+					$custompicker .= "<li>";
+					$custompicker .= "<span title='{$itemtitle}' id='placeholdertemplate_<?php echo $widgetid; ?>' class='nxs-widget-icon {$itemicon}'></span>";
+					$custompicker .= "<p title='{$itemtitle}'>{$abbreviatedtitle}</p>";
+					$custompicker .= "</li>";
+					$custompicker .= "</a>";
 				}
+				
+				$custompicker .= "</ul>";
+				$custompicker .= "<br />";
+				$custompicker .= "</div>";
 			}
 			
 			//
@@ -95,7 +134,7 @@ function nxs_widgets_embed_home_getoptions($args)
 			// this should be a read only / hidden field,
 			// and there should be another custom field populated with content defined by the content provider
 			
-			$sheettitle = "What do you want to embed?";
+			$sheettitle = nxs_l18n__("Select an widget", "nxs_td");
 			$sheeticon = "nxs-icon-puzzle";
 		}
 		else
@@ -184,6 +223,8 @@ function nxs_widgets_embed_home_getoptions($args)
 
 function nxs_widgets_embed_render_webpart_render_htmlvisualization($args) 
 {
+	//error_log("render embed");
+	
 	// Importing variables
 	extract($args);
 	
@@ -242,7 +283,12 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	// OUTPUT
 	// ---------------------------------------------------------------------------------------------------- 
 	
-	if ($alternativemessage != "" && $alternativemessage != null)
+	if ($_REQUEST["customhtml"] == "off" && is_user_logged_in())
+	{
+		//
+		nxs_renderplaceholderwarning("embed widget");
+	}
+	else if ($alternativemessage != "" && $alternativemessage != null)
 	{
 		nxs_renderplaceholderwarning($alternativemessage);
 	} 
@@ -320,12 +366,6 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			$url = nxs_addqueryparametertourl_v2($url, $id, $value, true, true);
 		}
 		
-		if ($_REQUEST["gj"] == "30" && is_user_logged_in())
-		{
-			var_dump($url);
-			die();
-		}
-		
 		$prefix = "embed_tr_";
 		// todo:  cacheduration should be specified/determined by the model
 		$cacheduration = 0; // 60 * 60 * 24 * 30; // 30 days cache // forever
@@ -334,9 +374,18 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		
 		if ($_REQUEST["embed_transients"] == "refresh")
 		{
+			$isallowed = false;
+			
 			if (is_user_logged_in())
 			{
+				$isallowed = true;
+			}
+			
+			if ($isallowed)
+			{
 				nxs_cache_cleartransients($prefix);
+				//echo "cache wiped";
+				//die();
 			}
 		}
 		
@@ -354,15 +403,23 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		
 		if ($shouldrefreshdbcache)
 		{
+			error_log("embed fetching content for $url");
 			$content = nxs_geturlcontents(array("url" => $url));
+			
+			
 			
 			// update cache
 			set_transient($transientkey, $content, $cacheduration);
 		}
+		
+		
 
 		if ($_REQUEST["debugembed"] == "true" && is_user_logged_in())
 		{
 			echo $url;
+			echo "<br />";
+			echo "<br />";
+			var_dump($content);
 			die();
 		}
 		
@@ -402,7 +459,10 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		
 		echo $content;
 		
-		
+		if ($_REQUEST["embed"] == "where")
+		{
+			echo "right here";
+		}
 	}
 
 	// note, we set the generic widget hover menu AFTER rendering, as the blog widget

@@ -887,18 +887,22 @@ function nxs_init()
 		  }
 		  else if ($_REQUEST["nxs"] == "activesitesettings")
 		  {
+		  	echo "activesitesettings:<br /><br />";
 		  	echo "postid:<br />";
 		  	$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
 				var_dump($postids);
 				//echo "<br /><br />prettyprint:<br />";
-				//$sitemeta = nxs_getsitemeta_internal(false);
+				$sitemeta = nxs_getsitemeta_internal(false);
 				//echo nxs_prettyprint_array($sitemeta);
 				//echo "<br /><br />dumped:<br />"; 
 				//var_dump($sitemeta);
 
 				echo "<br /><br />json:<br />"; 
+				echo "<textarea>";
 				$jsonsitemeta = json_encode($sitemeta);
-				echo "$jsonsitemeta<br />";
+				echo "$jsonsitemeta";
+				echo "</textarea>";
+				echo "<br />";
 
 				echo "<br /><br />json2:<br />"; 
 				$jsonsitemeta = str_replace("\r\n", "<br class='nxsrnfix' />", $jsonsitemeta);
@@ -1051,7 +1055,7 @@ function nxs_init()
 			  		}
 			  		else
 			  		{
-			  			nxs_webmethod_return_nack("error; found $cnt postids for activesitesettings ?");
+			  			nxs_webmethod_return_nack("error; found $cnt postids for activesitesettings? (use fix=true)");
 			  		}
 			  	}
 			  	$postid = $postids[0];
@@ -2139,7 +2143,7 @@ function nxs_init_handledebug()
 
 function nxs_load_plugins()
 {
-	if (nxs_hassitemeta())
+	if (true) // nxs_hassitemeta())
 	{
 		// always load these
 		$plugins = array

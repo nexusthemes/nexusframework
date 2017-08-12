@@ -1580,14 +1580,18 @@ class nxs_g_modelmanager
 
 			// this function will itself also update the list
 			$this->cachebulkmodels($singularschema);
-			
-			
+			echo "reloaded {$singularschema} model entries... <br />";
 			
 			// also expire the cache of the site
 			$path = nxs_cache_getcachefolder();
 			nxs_recursive_removedirectory($path);
-			
 			echo "cache wiped... <br />";
+			
+			// also wipe the cached embeds
+			$prefix = "embed_tr_";
+			nxs_cache_cleartransients($prefix);
+			echo "embeddable transients wiped... <br />";
+			
 			echo "done :)";
 			
 			echo "<br />";

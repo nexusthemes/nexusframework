@@ -1322,6 +1322,17 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 				$input = "false";
 			}
 		}
+		else if ($op == "is_anonymous")
+		{
+			if (is_user_logged_in())
+			{
+				$input = "false";
+			}
+			else
+			{
+				$input = "true";
+			}
+		}
 		else if ($op == "modelexists")
 		{
 			$modeluri = $attributes["modeluri"];
@@ -1802,10 +1813,17 @@ function nxs_nxspagerow($rowattributes, $content = null, $name='')
 			
 			if (is_user_logged_in())
 			{
-				// do show it (otherwise we wont be able to edit it)
-				// but tag it so we can visualize it in a spacial way
-				$should_render_row = true;
-				$cssclass .= " nxs-hidewheneditorinactive ";
+				if (nxs_cap_hasdesigncapabilities())
+				{
+					// do show it (otherwise we wont be able to edit it)
+					// but tag it so we can visualize it in a spacial way
+					$should_render_row = true;
+					$cssclass .= " nxs-hidewheneditorinactive ";
+				}
+				else
+				{
+					$should_render_row = false;
+				}
 			}
 			else
 			{
