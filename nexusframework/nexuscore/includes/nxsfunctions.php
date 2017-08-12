@@ -11798,6 +11798,24 @@ function nxs_updatepoststructure($postid, $postcontents)
 	// we replace '\r\n' with '\r\' to prevent the import (when export/importing) from mis-interpreting the \r\rn resulting in empty structures
 	$postcontents = str_replace("\r\n", "\r", $postcontents);
 	
+	// 2017 08 12 GJ; on some rare number of (probably older) hosts the structure is not parsed properly 
+	// unless we clean things up first
+	if (true) // $_SERVER['REMOTE_ADDR'] == "143.177.32.9")
+	{
+		$pimped = $postcontents;
+		// 2017 08 12; further tuning of structure
+		$pimped = str_replace("\"", "'", $pimped);
+		$pimped = str_replace("\n", "", $pimped);
+		$pimped = str_replace("\r", "", $pimped);
+		$pimped = str_replace("\t", "", $pimped);
+		$pimped = str_replace("] [", "][", $pimped);
+		$pimped = str_replace("]  [", "][", $pimped);
+		$postcontents = $pimped;
+		
+		//error_log("result of poststructure would become; $pimped");
+		//die();
+	}
+	
 	$temp_array = array();
 	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
 	$temp_array["structure"] = $postcontents;
