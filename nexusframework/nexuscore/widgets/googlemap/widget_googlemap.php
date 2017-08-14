@@ -508,6 +508,12 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("address"));
 	
 	*/
+	
+	if ($mixedattributes["address"] == "")
+	{
+		// use fallback
+		$mixedattributes["address"] = "{{address}}";
+	}
 
 	// Translate model magical fields
 	if (true)
@@ -554,6 +560,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	}
 
 	$address = $mixedattributes["address"];
+	
 	
 	// convert address to latlng
 	$latlng = nxs_widget_googlemap_getlatlng($address);
