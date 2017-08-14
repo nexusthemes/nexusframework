@@ -623,6 +623,7 @@ function nxs_getfonts()
 	$nackwhenerror = false;
 	$sitemeta = nxs_getsitemeta_internal($nackwhenerror);
 	$googlewebfonts = $sitemeta["googlewebfonts"];
+	$googlewebfonts = str_replace("@@NXSNEWLINE@@", "\n", $googlewebfonts);
 	$googlewebfontspieces = explode("\n", $googlewebfonts);
 	foreach ($googlewebfontspieces as $googlewebfontspiece)
 	{

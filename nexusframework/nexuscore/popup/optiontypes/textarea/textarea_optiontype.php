@@ -15,6 +15,9 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
 		$value = $valueadapters[$value];
 	}
 	
+	// 
+	$value = str_replace("@@NXSNEWLINE@@", "\n", $value);
+	
 	// kudos to https://stackoverflow.com/questions/17772260/textarea-auto-height for autogrowing
 	
 	if ($footer != "")
@@ -78,5 +81,3 @@ function nxs_popup_optiontype_textarea_getpersistbehaviour()
 {
 	return "writeid";
 }
-
-?>

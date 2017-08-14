@@ -96,9 +96,12 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 	<select id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" value="<?php echo $value;?>">
 		
 		<?php
+		$metadata_selectables = str_replace("@@NXSNEWLINE@@", "\n", $metadata_selectables);
+		$metadata_selectables = str_replace("\r\n", "\n", $metadata_selectables);
+		
 		if (is_string($metadata_selectables))
 		{
-			$splitted = preg_split('/\r\n|[\r\n]/', $metadata_selectables);
+			$splitted = preg_split('/\n|[\n]/', $metadata_selectables);
 			foreach($splitted as $splittedpiece)
 			{
 				if ($splittedpiece == "")

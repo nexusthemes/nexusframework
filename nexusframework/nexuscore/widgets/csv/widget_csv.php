@@ -268,6 +268,8 @@ function nxs_csv_parsedata($mixedattributes)
 		}
 	}
 	
+	$csv_data = str_replace("@@NXSNEWLINE@@", "\n", $csv_data);
+	
 	if (!isset($line_seperator))
 	{
 		if (nxs_stringcontains($csv_data, "\n"))
@@ -413,7 +415,6 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " " . $cssclass;
 	
-	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */	
 	
@@ -467,12 +468,15 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	if ($shouldrenderalternative) {
+	if ($shouldrenderalternative) 
+	{
 		if ($alternativehint == "") {
 			$alternativehint = nxs_l18n__("Missing input", "nxs_td");
 		}
 		nxs_renderplaceholderwarning($alternativehint); 
-	} else {
+	} 
+	else 
+	{
 		$html = "";
 		$parsed = nxs_csv_parsedata($mixedattributes);
 		
@@ -505,7 +509,7 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 		---------------------------------------------------------------------------------------------------- */
 	
 		$html .= '<table id="table-' . $placeholderid . '" class="' . $responsive . '">';
-	    $html .= '<thead class="' . $headcssclass . '">';
+	  $html .= '<thead class="' . $headcssclass . '">';
 	    
 	    //
 	    foreach ($columns as $currentcolumn) {
@@ -636,5 +640,3 @@ function nxs_widgets_csv_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>

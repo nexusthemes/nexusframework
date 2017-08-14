@@ -10565,7 +10565,7 @@ function nxs_get_post_meta($postid, $key, $single)
 	}
 	else
 	{
-		$result = get_post_meta($postid, $key, single);
+		$result = get_post_meta($postid, $key, $single);
 	}
 	
 	return $result;
@@ -12311,7 +12311,7 @@ function nxs_mergewidgetmetadata_internal_v2($postid, $placeholderid, $updatedva
 	// determine the entire "set" of properties to store for this widget,
 	// this is the serialized properties combined with the updated key/values
 	//
-	$metadatakey = 'nxs_ph_' . $placeholderid;
+	$metadatakey = "nxs_ph_{$placeholderid}";
 	$result = array();
 	$existing = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
 	if ($existing == "")
