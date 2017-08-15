@@ -4048,7 +4048,8 @@ span.reviewer 															{ margin-left: 5px; }
 /* Solid Grid */
 .nxssolidgrid-column-1  					{ width: 100%; } 
 .nxssolidgrid-column-2  					{ width: 50%; } 
-.nxssolidgrid-column-3 						{ width: 33.33%; } 
+.nxssolidgrid-column-3 						{ width: 33.33%; }
+.nxssolidgrid-column-3-4					{ width: 75%; }
 .nxssolidgrid-column-4 						{ width: 25%; } 
 .nxssolidgrid-column-6 						{ width: 16.66%; }
 .nxssolidgrid-column-8 						{ width: 12.5%; } 
@@ -4073,10 +4074,12 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-viewport-lte-1199 .nxssolidgrid-column-6 	{ width: 33.33%; } 
 .nxs-viewport-lte-1199 .nxssolidgrid-column-8 	{ width: 25%; }
 .nxs-viewport-lte-959 .nxssolidgrid-column-3 	{ width: 100%; } 
+.nxs-viewport-lte-959 .nxssolidgrid-column-3-4,
 .nxs-viewport-lte-959 .nxssolidgrid-column-4 	{ width: 50%; } 
 .nxs-viewport-lte-959 .nxssolidgrid-column-6 	{ width: 100%; }
 .nxs-viewport-lte-959 .nxssolidgrid-column-8 	{ width: 50%; } 
 .nxs-viewport-lte-719 .nxssolidgrid-column-2,
+.nxs-viewport-lte-719 .nxssolidgrid-column-3-4,
 .nxs-viewport-lte-719 .nxssolidgrid-column-4,
 .nxs-viewport-lte-719 .nxssolidgrid-column-8 	{ width: 100%; }
 
