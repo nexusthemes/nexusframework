@@ -310,8 +310,7 @@
 			$result = $result . "/";
 		}
 		
-		//$result .= "index.php?nxs-webmethod-queryparameter=true";
-		$result .= "wp-admin/?nxs-webmethod-queryparameter=true";
+		$result .= "index.php?nxs-webmethod-queryparameter=true";
 		$uricurrentpage = nxs_geturicurrentpage();
 		
 		if (!is_user_logged_in())
