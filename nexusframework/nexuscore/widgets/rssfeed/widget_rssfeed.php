@@ -85,6 +85,12 @@ function nxs_widgets_rssfeed_echooutput($rss, $args = array())
 		}
 
 		$excerpt = esc_html( $excerpt );
+		
+		//
+		if ($item_text_truncatelength == 0)
+		{
+			$excerpt = "";
+		}
 
 		if ( $show_summary ) {
 			$summary = "$excerpt";
