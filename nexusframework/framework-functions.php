@@ -1142,6 +1142,9 @@ function nxs_init()
 				$exists = nxs_postexistsbyid($postid);
 				if ($exists) 
 				{
+					$poststatus = get_post_status($postid);
+					echo "poststatus: $poststatus<br />";
+					
 					$posttype = get_post_type($postid);
 					if ($posttype == "attachment")
 					{

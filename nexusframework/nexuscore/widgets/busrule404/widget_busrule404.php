@@ -173,6 +173,15 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 		}
 	}
 	
+	// special case at kattensite; 
+	if ($isnotfound === false)
+	{
+		if (is_404())
+		{
+			$isnotfound = true;
+		}
+	}
+	
 	if ($isnotfound)
 	{
 		$result["ismatch"] = "true";

@@ -4900,7 +4900,8 @@ function nxs_webmethod_return_nack($message)
 	$output = array
 	(
 		"result" => "NACK",
-		"message" => "Halted; " . $message
+		"message" => "Halted; " . $message,
+		"stacktrace" => nxs_getstacktrace(),
 	);
 	
 	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
