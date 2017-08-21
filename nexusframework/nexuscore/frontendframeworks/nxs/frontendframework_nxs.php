@@ -1147,9 +1147,12 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 {
 	$unwrapped_content = do_shortcode($content);
 	
+	$padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $atts["padding"]);
 	$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $atts["colorzen"]);
 	
-	$result = "<div class='{$colorzen_cssclass}'>{$unwrapped_content}</div>";
+	$cssclasses = nxs_concatenateargswithspaces($padding_cssclass, $colorzen_cssclass);
+	
+	$result = "<div class='{$cssclasses}'>{$unwrapped_content}</div>";
 	return $result;
 }
 add_shortcode('nxs_wrap', 'nxs_sc_wrap');

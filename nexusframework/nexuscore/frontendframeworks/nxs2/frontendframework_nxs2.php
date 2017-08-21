@@ -344,6 +344,28 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rules[] = "padding-bottom: unsupported_{$val};";
 			}
 		}
+		else if ($key == "padding")
+		{
+			if ($val == "")
+			{
+				// does not apply
+			}
+			else if (nxs_stringstartswith($val, "nxs-padding-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[2];
+				$fraction = $pieces[3];
+				$base = $whole + ($fraction / 10);
+				$factor = 30;
+				$value = $base * $factor;
+				$rules[] = "padding: {$value}px !important;";
+			}
+			else
+			{
+				// unknown?
+				$rules[] = "margin: unsupported_{$val};";
+			}
+		}		
 		else if ($key == "margin")
 		{
 			if ($val == "")
@@ -357,6 +379,16 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			else if ($val == "nxs-margin10")
 			{
 				$rules[] = "margin: 10px !important;";
+			}
+			else if (nxs_stringstartswith($val, "nxs-margin-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[2];
+				$fraction = $pieces[3];
+				$base = $whole + ($fraction / 10);
+				$factor = 30;
+				$value = $base * $factor;
+				$rules[] = "margin: {$value}px !important;";
 			}
 			else
 			{
@@ -551,6 +583,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
     		$rules[] = "padding-right: 18px;";
     		$rules[] = "padding-top: 11px;";
     		$rules[] = "padding-bottom: 11px;";
+				$rules[] = "line-height: 1.2em !important;";
 			}
 			else if ($val == "nxs-button-scale-2-0")
 			{
@@ -559,6 +592,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
     		$rules[] = "padding-right: 20px;";
     		$rules[] = "padding-top: 12px;";
     		$rules[] = "padding-bottom: 12px;";
+				$rules[] = "line-height: 1.2em !important;";
 			}
 			else
 			{
@@ -582,6 +616,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$value = $value * $factor;
 				
 				$rules[] = "font-size: {$value}px !important;";
+				$rules[] = "line-height: 1.2em !important;";
 			}
 			else if (nxs_stringcontains($val, "-"))
 			{
@@ -594,6 +629,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$value = $value * $factor;
 				
 				$rules[] = "font-size: {$value}px !important;";
+				$rules[] = "line-height: 1.2em !important;";
 			}
 			else
 			{
@@ -616,6 +652,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$factor = 15;
 				$value = $value * $factor;
 				$rules[] = "font-size: {$value}px !important;";
+				$rules[] = "line-height: 1.2em !important;";
 			}
 			else
 			{
@@ -932,7 +969,11 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 		}
 		else if ($title_heading == "4")
 		{
-			$title_fontsize_cssclass = "nxs-title-fontsize-1-4";	// 21px
+			$title_fontsize_cssclass = "nxs-title-fontsize-1-4";
+		}
+		else if ($title_heading == "5")
+		{
+			$title_fontsize_cssclass = "nxs-title-fontsize-1-2";
 		}
 		else
 		{
@@ -2259,9 +2300,11 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 	$unwrapped_content = do_shortcode($content);
 	
 	$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $atts["colorzen"]);
+	$padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $atts["padding"]);
 	
 	$styles = array();
 	$styles["colorzen"] = $colorzen_cssclass;
+	$styles["padding"] = $padding_cssclass;
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 	
