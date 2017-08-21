@@ -244,18 +244,21 @@ function nxs_pagetemplate_handlecontent()
 					// ---------------------------- BEGIN RENDER SHORTCUT TO ADD NEW ROW
 					//
 					
-					$shouldrenderaddnewrowoption = apply_filters('nxs_f_shouldrenderaddnewrowoption', $shouldrenderaddnewrowoption);
-					if ($shouldrenderaddnewrowoption)
+					if (false)
 					{
-						?>
-						<div class="nxs-hidewheneditorinactive">
-							<div class="nxs-clear"></div>
-							<div class="nxs-row-container">
-								<a class="nxsbutton1 nxs-float-left clear nxs-margin-left30" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $contentpostid;?>', 'dialogappendrow'); return false;">Add row</a>
+						$shouldrenderaddnewrowoption = apply_filters('nxs_f_shouldrenderaddnewrowoption', $shouldrenderaddnewrowoption);
+						if ($shouldrenderaddnewrowoption)
+						{
+							?>
+							<div class="nxs-hidewheneditorinactive">
+								<div class="nxs-clear"></div>
+								<div class="nxs-row-container">
+									<a class="nxsbutton1 nxs-float-left clear nxs-margin-left30" href="#" onclick="nxs_js_popup_page_neweditsession('<?php echo $contentpostid;?>', 'dialogappendrow'); return false;">Add row</a>
+								</div>
+								<div class="nxs-clear"></div>
 							</div>
-							<div class="nxs-clear"></div>
-						</div>
-						<?php
+							<?php
+						}
 					}
 					
 					//
@@ -761,9 +764,17 @@ function nxs_pagetemplate_handleheader()
 	if (isset($existingheaderid) && $existingheaderid != 0)
 	{
 		$cssclass = nxs_getcssclassesforrowcontainer($existingheaderid);
+
+		//		
+		$metadata = nxs_get_corepostmeta($existingheaderid);
+		$rc_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata["rc_colorzen"]);
+		$styles = array();
+		$styles["colorzen"] = $rc_colorzen;
+		$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+		
 		?>
 		<div id="nxs-header" class="nxs-containshovermenu1 nxs-sitewide-element <?php echo $widescreenclass; ?>">
-			<div id="nxs-header-container" class="nxs-sitewide-container nxs-header-container nxs-containshovermenu1 <?php echo $cssclass; ?>">
+			<div id="nxs-header-container" class="<?php echo $compiled[0]["id"]; ?> nxs-sitewide-container nxs-header-container nxs-containshovermenu1 <?php echo $cssclass; ?>">
 				<?php 
 					if ($existingheaderid != "")
 					{
@@ -778,6 +789,21 @@ function nxs_pagetemplate_handleheader()
 					}
 				?>
 	    </div>
+	    <?php
+	    foreach ($compiled as $id => $compiledresult)
+			{
+				$stylehtml = "";
+				$class = $compiledresult["id"];
+				$rules = $compiledresult["rules"];
+				if (count($rules) > 0)
+				{
+					$stylehtml .= '<style>';
+					$stylehtml .= ".{$class} { " . implode($rules) . " }";
+					$stylehtml .= '</style>';
+				}
+				echo $stylehtml;
+			}
+	    ?>
 	    <div class="nxs-clear"></div>
 	  </div> <!-- end #nxs-header -->
 	  <?php 

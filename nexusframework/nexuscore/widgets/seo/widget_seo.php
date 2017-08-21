@@ -303,7 +303,10 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 		global $nxs_global_row_render_statebag;
 		$nxs_global_row_render_statebag["etchrow"] = true;
 	}
-	
+
+	global $nxs_global_row_render_statebag;
+	$nxs_global_row_render_statebag["requiredcapabilities"][] = nxs_cap_getdesigncapability();
+
 	// this is needed... 
 	$canonicalurl = do_shortcode($canonicalurl);
 	$currenturl = nxs_geturlcurrentpage();

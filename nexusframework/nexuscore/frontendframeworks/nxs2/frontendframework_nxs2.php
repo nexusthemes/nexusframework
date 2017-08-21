@@ -218,8 +218,15 @@ function nxs_getflatalphabackgroundcolorcss($color, $alpha)
 	}
 	else
 	{
-		$result .= "background-color: rgba({$r}, {$g}, {$b}, todo);";
+		$alphavalue = str_replace("-", ".", $alpha);
+		$result .= "background-color: rgba({$r}, {$g}, {$b}, {$alphavalue});";
 	}
+	/*
+	else
+	{
+		$result .= "background-color: rgba({$r}, {$g}, {$b}, todo_{$alpha});";
+	}
+	*/
 	
 	return $result;
 }
@@ -257,9 +264,20 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		}
 		else if ($key == "maxheight")
 		{
-			if ($val == "nxs-maxheight-0-3")
+			if ($val == "")
 			{
-				$rules[] = "max-height: 30px;";
+				// default
+			}
+			else if (nxs_stringstartswith($val, "nxs-maxheight-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[2];
+				$fraction = $pieces[3];
+				$value = $whole + ($fraction / 10);
+				$factor = 100;
+				$value = $value * $factor;
+				
+				$rules[] = "max-height: {$value}px !important;";
 			}
 			else
 			{
@@ -269,19 +287,34 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		}
 		else if ($key == "padding_top")
 		{
-			if ($val == "nxs-padding-top-0-5")
+			if ($val == "")
 			{
-				$rules[] = "padding-top: 5px !important;";
+				// default
+			}
+			// factor = 30
+			else if (nxs_stringstartswith($val, "nxs-padding-top-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[3];
+				$fraction = $pieces[4];
+				$value = $whole + ($fraction / 10);
+				$factor = 30;
+				$value = $value * $factor;
+				$rules[] = "padding-top: {$value}px !important;";
 			}
 			else
 			{
 				// unknown?
-				$rules[] = "padding-bottom: unsupported_{$val};";
+				$rules[] = "padding-top: unsupported_{$val};";
 			}
 		}
 		else if ($key == "padding_bottom")
 		{
-			if ($val == "nxs-padding-bottom0")
+			if ($val == "")
+			{
+				// absorb
+			}
+			else if ($val == "nxs-padding-bottom0")
 			{
 				$rules[] = "padding-bottom: 0px !important;";
 			}
@@ -331,19 +364,62 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rules[] = "margin: unsupported_{$val};";
 			}
 		}
+		else if ($key == "margin_top")
+		{
+			if ($val == "")
+			{
+				// does not apply
+			}
+			/* static valued */
+			else if ($val == "nxs-margin-top0")
+			{
+				$rules[] = "margin-top: 0px !important;";
+			}
+			else if ($val == "nxs-margin-top10")
+			{
+				$rules[] = "margin-top: 10px !important;";
+			}
+			// factor (dynamic)
+			else if (nxs_stringstartswith($val, "nxs-margin-top-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[3];
+				$fraction = $pieces[4];
+				$value = $whole + ($fraction / 10);
+				$factor = 30;
+				$value = $value * $factor;
+				
+				$rules[] = "margin-top: {$value}px !important;";
+			}
+			else
+			{
+				// unknown?
+				$rules[] = "margin-bottom: unsupported_{$val};";
+			}
+		}
 		else if ($key == "margin_bottom")
 		{
 			if ($val == "")
 			{
 				// does not apply
 			}
-			else if ($val == "nxs-margin-bottom0")
+			// factor (dynamic)
+			else if (nxs_stringstartswith($val, "nxs-margin-bottom-"))
 			{
-				$rules[] = "margin-bottom: 0px !important;";
+				$pieces = explode("-", $val);
+				$whole = $pieces[3];
+				$fraction = $pieces[4];
+				$value = $whole + ($fraction / 10);
+				$factor = 30;
+				$value = $value * $factor;
+				
+				$rules[] = "margin-bottom: {$value}px !important;";
 			}
-			else if ($val == "nxs-margin-bottom10")
+			// hardcoded
+			else if (nxs_stringstartswith($val, "nxs-margin-bottom"))
 			{
-				$rules[] = "margin-bottom: 10px !important;";
+				$value = str_replace("nxs-margin-bottom", "", $val);
+				$rules[] = "margin-bottom: {$value}px !important;";
 			}
 			else
 			{
@@ -374,6 +450,21 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					if (isset($colorizationproperties[$thekey]))
 					{
 						$middle = $colorizationproperties[$thekey];	// bijv. "#4054BF"
+						/*
+						echo "key:";
+						var_dump($thekey);
+						echo "middle: $middle <br />";
+						var_dump($colorizationproperties);
+						echo "<br />";
+						var_dump($coloridentification);
+						die();
+						*/
+					}
+					
+					if ($coloridentification == "base2")
+					{
+						// overruled; always 100% black
+						$middle = "000000";
 					}
 				}
 				
@@ -416,10 +507,6 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					die();
 				}
 				
-				var_dump($hex);
-				die();
-	
-
 				//
 				
 				$comparecolorhex = $middle;
@@ -453,7 +540,11 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		}
 		else if ($key == "button_scale")
 		{
-			if ($val == "nxs-button-scale-1-8")
+			if ($val == "")
+			{
+				// default
+			}
+			else if ($val == "nxs-button-scale-1-8")
 			{
 				$rules[] = "font-size: 22px;";
 				$rules[] = "padding-left: 18px;";
@@ -474,37 +565,89 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rules[] = "unsupported_button_scale_{$key}:{$val}";
 			}
 		}
-		else if ($key == "title_fontsize")
+		else if ($key == "fontsize" || false)
+		{
+			if ($val == "")
+			{
+				// leave as-is (default)
+			}
+			else if (nxs_stringstartswith($val, "nxs-fontsize-"))
+			{
+				// format; nxs-fontsize-1-2
+				$pieces = explode("-", $val);
+				$whole = $pieces[2];
+				$fraction = $pieces[3];
+				$value = $whole + ($fraction / 10);
+				$factor = 15;
+				$value = $value * $factor;
+				
+				$rules[] = "font-size: {$value}px !important;";
+			}
+			else if (nxs_stringcontains($val, "-"))
+			{
+				// format; 1-2
+				$pieces = explode("-", $val);
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
+				$value = $whole + ($fraction / 10);
+				$factor = 15;
+				$value = $value * $factor;
+				
+				$rules[] = "font-size: {$value}px !important;";
+			}
+			else
+			{
+				$rules[] = "font-size: unsupported__{$val};";
+			}
+		}
+		else if ($key == "title_fontsize" || false)
 		{
 			// todo: derive automatically; factor * 15 = pixel size
 			if ($val == "")
 			{
 				// leave as-is (default)
 			}
-			else if ($val == "nxs-title-fontsize-1-5")
+			else if (nxs_stringstartswith($val, "nxs-title-fontsize-"))
 			{
-				$rules[] = "font-size: 22.5px;";
-			}
-			else if ($val == "nxs-title-fontsize-1-6")
-			{
-				$rules[] = "font-size: 24px;";
-			}
-			else if ($val == "nxs-title-fontsize-1-8")
-			{
-				$rules[] = "font-size: 27px;";
-			}
-			else if ($val == "nxs-title-fontsize-2-4")
-			{
-				$rules[] = "font-size: 36px;";
+				$pieces = explode("-", $val);
+				$whole = $pieces[3];
+				$fraction = $pieces[4];
+				$value = $whole + ($fraction / 10);
+				$factor = 15;
+				$value = $value * $factor;
+				$rules[] = "font-size: {$value}px !important;";
 			}
 			else
 			{
 				$rules[] = "unsupported__title_fontsize__{$key}:{$val};";
 			}
 		}
+		else if ($key == "fontzen" || false)
+		{
+			if ($val == "")
+			{
+				// leave as-is (default)
+			}
+			else if (nxs_stringstartswith($val, "nxs-fontzen-"))
+			{
+				$sitemeta = nxs_getsitemeta();
+				$pieces = explode("-", $val);
+				$fontzenid = $pieces[2];
+				$sanitizedfontfamily = str_replace("\'", "'", nxs_font_getcleanfontfam($sitemeta["vg_fontfam_{$fontzenid}"]));
+				$rules[] = "font-family: {$sanitizedfontfamily};";
+			}
+			else
+			{
+				$rules[] = "font-family: unsupported_{$key}_{$val};";
+			}
+		}
 		else if ($key == "border_radius")
 		{
-			if ($val == "nxs-border-radius-10-0")
+			if ($val == "")
+			{
+				// 
+			}
+			else if ($val == "nxs-border-radius-10-0")
 			{
 				$rules[] = "border-radius: 30px;";
 			}
@@ -525,7 +668,8 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		return;
 	}
 	
-	if (is_user_logged_in())
+	// there's 2 ways how the styles can be rendered; either inline, or in the footer
+	if (false) // is_user_logged_in())
 	{
 		// use inline styling, and unique class ids (less optimized)
 		
@@ -543,6 +687,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		global $nxs_gl_style_footer_cssrules;
 		if (!isset($nxs_gl_style_footer_cssrules))
 		{
+			// enqueue the styles in the footer (1x only)
 			add_action("wp_footer", "nxs_frontendframework_nxs2_footer");
 		}
 		
@@ -565,15 +710,12 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 		return "";
 	}
 	
-	
-
 	$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
 	$button_margin = nxs_getcssclassesforlookup("nxs-margin", $button_margin);
 	$button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
 	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
 	$button_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $button_fontzen);
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
-	
 	
 	if ($destination_articleid != "")
 	{
@@ -689,14 +831,26 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	$unique_style_combination_class_2 = $compiled[1]["id"];
 	//
 	
-	
+	if ($url != "")
+	{
+		if ($destination_target_html == 'target="_self"')
+		{
+			$onclick = " onClick=\"window.location.href='{$url}';\" ";
+		}
+		else
+		{
+			$onclick = " onClick=\"window.open('{$url}');\" ";
+		}
+	}
 	
 	//
 	
 	$result = '';
 	$result .= '<p class="' . $compiled[0]["id"] . '">';
-	$result .= '<button target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $button_fontzen_cssclass . '" href="' . $url . '">' . $button_text . '</button>';
+	$result .= '<button target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $button_fontzen_cssclass . '">' . $button_text . '</button>';
 	$result .= '</p>';
+	
+	
 	
 	foreach ($compiled as $id => $compiledresult)
 	{
@@ -722,14 +876,22 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 		return "";
 	}
 	
-	if ($destination_target == "_self") {
+	if ($destination_target == "_self") 
+	{
 		$destination_target_html = 'target="_self"';
-	} else if ($destination_target == "_blank") {
+	} 
+	else if ($destination_target == "_blank") 
+	{
 		$destination_target_html = 'target="_blank"';
-	} else {
-		if ($destination_articleid != "") {
+	} 
+	else 
+	{
+		if ($destination_articleid != "") 
+		{
 			$destination_target_html = 'target="_self"';
-		} else {
+		} 
+		else 
+		{
 			$homeurl = nxs_geturl_home();
  			if (nxs_stringstartswith($destination_url, $homeurl)) {
  				$destination_target_html = 'target="_self"';
@@ -753,7 +915,6 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	}
 	$title_heading = str_replace("h", "", $title_heading);
 	$headingelement = "h" . $title_heading;
-
 	
 	// Title alignment
 	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
@@ -764,6 +925,14 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 		if ($title_heading == "2")
 		{
 			$title_fontsize_cssclass = "nxs-title-fontsize-1-8";
+		}
+		else if ($title_heading == "3")
+		{
+			$title_fontsize_cssclass = "nxs-title-fontsize-1-6";
+		}
+		else if ($title_heading == "4")
+		{
+			$title_fontsize_cssclass = "nxs-title-fontsize-1-4";	// 21px
 		}
 		else
 		{
@@ -804,6 +973,12 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	$styles["colorzen"] = $title_color_cssclass;
 	$styles["margin"] = $title_margin_cssclass;
 	$styles["margin_bottom"] = $title_margin_bottom_cssclass;
+	if ($fontzen == "")
+	{
+		$fontzen = "2";
+	}
+	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
+	$styles["fontzen"] = $fontzen_cssclass;
 	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
@@ -856,8 +1031,25 @@ add_action( 'init', 'disable_wp_emojicons' );
 
 function nxs_frontendframework_nxs2_wp_footer()
 {
-	//echo "so far :)";
-	//die();
+	$frameworkurl = nxs_getframeworkurl();
+	
+	// js
+	$embeds = array
+	(
+		NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/nxs2/js/nxs2.js",
+	);
+	foreach ($embeds as $embed)
+	{
+		?>
+		<script>
+			<?php
+			echo file_get_contents($embed);
+			?>
+		</script>
+		<?php
+	}
+	
+	// css
 	$css_embeds = array
 	(
 		NXS_FRAMEWORKPATH . "/css/css-reset.css",
@@ -869,11 +1061,127 @@ function nxs_frontendframework_nxs2_wp_footer()
 		?>
 		<style>
 			<?php
-			echo file_get_contents($embed);
+			$contents = file_get_contents($embed);
+			// pimp the contents
+			// * fonts should be referenced by an absolute url, not relative
+			$contents = str_replace("../fonts/", "{$frameworkurl}/fonts/", $contents);
+			echo $contents;
 			?>
 		</style>
 		<?php
 	}
+	
+	?>
+	<script type="text/javascript" data-cfasync="false"  src="//www.google.com/jsapi"></script>
+	<script type="text/javascript" data-cfasync="false" >
+		google.load('webfont','1');
+	</script>
+	<?php
+		/* FONT HANDLING v2 START */
+		// fonts not used will not be loaded here, as this is nxs2 (optimized output, not editing features)
+		$sitemeta = nxs_getsitemeta();
+		$allfontfams = array();
+		$allfonts = nxs_getfonts();	// font fam => text
+		$fontidentifiers = nxs_font_getfontidentifiers();
+		
+		foreach ($allfonts as $currentfontid=>$meta)
+		{
+			$currentfontfams = nxs_getmappedfontfams($currentfontid);	// for example Oswald:400,300
+			foreach ($currentfontfams as $currentfontfam)
+			{
+				// for example Oswald:400,300
+				$fontfam_a = $currentfontfam;
+				$pieces = explode(":", $fontfam_a);
+				$fontfam_a = strtolower(trim($pieces[0]));	// for example Oswald
+				
+				// only include the font, if its actually being used
+				$isfontused = false;
+				foreach ($fontidentifiers as $fontzenid)
+				{
+					$fontfam_b = nxs_font_getcleanfontfam($sitemeta["vg_fontfam_{$fontzenid}"]);	// for example Oswald, sans-serif
+					$pieces = explode(",", $fontfam_b);
+					$fontfam_b = strtolower(trim($pieces[0]));
+					
+					if ($fontfam_a == $fontfam_b)
+					{
+						//echo "MATCH :); $fontfam_a loading $currentfontfam <br />";
+						$isfontused = true;
+						break;
+					}
+					else
+					{
+						//echo "mismatch; $currentfontfam != $sanitizedfontfamily <br />";
+					}
+				}
+				
+				if ($isfontused)
+				{
+					if (!in_array($currentfontfam, $allfontfams))
+					{
+						$allfontfams[] = $currentfontfam;
+					}
+					else
+					{
+						// ignore, dont load the same font multiple times
+					}
+				}
+			}
+		}
+		?>	
+	<script> 
+		
+		WebFont.load
+		(
+			{
+				google: 
+				{ 
+	      	families: 
+	      	[
+	      		<?php
+	      		// only load the fonts that are actually used
+	      		
+	      		// some fonts produce a 403 or 400, we skip these	
+	      		$skipfonts = nxs_font_getskipfonts();
+	      		foreach ($skipfonts as $skipfont)
+	      		{
+	      			if(($key = array_search($skipfont, $allfontfams)) !== false) 
+	      			{
+					   	 unset($allfontfams[$key]);
+							}
+						}
+	      		
+	      		$isfirstfont = true;
+	      		foreach ($allfontfams as $currentfont)
+	      		{
+	      			if ($isfirstfont == false)
+	      			{
+	      				echo ",";
+	      			}
+	      			else
+	      			{
+	      				$isfirstfont = false;
+	      			}
+	      			
+	      			if (nxs_stringcontains($currentfont, "'"))
+	      			{
+	      				echo "{$currentfont}";
+	      			}
+	      			else
+	      			{
+	      				// als het font al quotes bevat, dan niet wrappen in single QUOTES!!!!!
+	      				echo "'{$currentfont}'";
+	      			}
+	      		}
+	      		?>
+	      	] 
+	      }
+			}
+		); 
+	</script>
+	<?php
+	/* FONT HANDLING v2 END */
+
+	// 	
 }
 
 function nxs_clearunwantedscripts()
@@ -1088,26 +1396,7 @@ function nxs_sc_nxspagerow($rowattributes, $content = null, $name='')
 		}
 		else
 		{
-			$cssclass .= " nxs-row-enabled-false"; 
-			
-			if (is_user_logged_in())
-			{
-				if (nxs_cap_hasdesigncapabilities())
-				{
-					// do show it (otherwise we wont be able to edit it)
-					// but tag it so we can visualize it in a spacial way
-					$should_render_row = true;
-					$cssclass .= " nxs-hidewheneditorinactive ";
-				}
-				else
-				{
-					$should_render_row = false;
-				}
-			}
-			else
-			{
-				$should_render_row = false;
-			}
+			$should_render_row = false;
 		}
 		
 		if ($mixedattributes["r_widescreen"] != "")
@@ -1136,11 +1425,13 @@ function nxs_sc_nxspagerow($rowattributes, $content = null, $name='')
 	}
 	
 	$r_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $mixedattributes["r_colorzen"]);
+	$r_margin_top = nxs_getcssclassesforlookup("nxs-margin-top-", $mixedattributes["r_margin_top"]);
 	$r_padding_top = nxs_getcssclassesforlookup("nxs-padding-top-", $mixedattributes["r_padding_top"]);
 	
 	// 
 	$styles = array();
 	$styles["colorzen"] =  $r_colorzen;
+	$styles["margin_top"] =  $r_margin_top;
 	$styles["padding_top"] =  $r_padding_top;
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
@@ -1319,7 +1610,15 @@ function nxs_sc_nxspagerow($rowattributes, $content = null, $name='')
 			$output = ""; // "<!-- and its gone -->";
 		}
 	}
-
+	
+	// if you require any capability, this means you have to be logged in,
+	// and thus we hide it here (this frontendframework optimized output, noise should
+	// not be generated)
+	if ($nxs_global_row_render_statebag["requiredcapabilities"] != "")
+	{
+		$output = ""; // "<!-- and its gone (2) -->";
+	}
+	
 	// global variable no longer needed
 	$nxs_global_row_render_statebag = null;
 	
@@ -1418,19 +1717,23 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 					
 				}
 				
-				if ($gphs_menutopright != "")
+				if (false)
 				{
-					$menutopright .= "
-					<div class='nxs-hover-menu-positioner'>
-					<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
-					" . $gphs_menutopright . "
-					</div>
-					</div>
-					";
-				}
-				else
-				{
-					// no top right menu is needed
+					// nxs2 is optimized; all fluff is not rendered
+					if ($gphs_menutopright != "")
+					{
+						$menutopright .= "
+						<div class='nxs-hover-menu-positioner'>
+						<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
+						" . $gphs_menutopright . "
+						</div>
+						</div>
+						";
+					}
+					else
+					{
+						// no top right menu is needed
+					}
 				}
 			}
 			else
@@ -1485,16 +1788,19 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	
 	// ------------------------------------------ cursors
 	
-	if (nxs_has_adminpermissions())
+	if (false)
 	{
-		// het 'hover' element; als de muis boven de placeholder hangt, zien we dit element
-		$droplayerhtml = "<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'><span class='nxs-runtime-autocellsize'></span></div>";
-		$cursorlayerhtml = "<div title='" . nxs_l18n__("Edit[nxs:hovermenu,tooltip]", "nxs_td") ."' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'><span class='nxs-runtime-autocellsize'></span></div>";
-	}
-	else
-	{
-		$droplayerhtml = "";
-		$cursorlayerhtml = "";
+		if (nxs_has_adminpermissions())
+		{
+			// het 'hover' element; als de muis boven de placeholder hangt, zien we dit element
+			$droplayerhtml = "<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'><span class='nxs-runtime-autocellsize'></span></div>";
+			$cursorlayerhtml = "<div title='" . nxs_l18n__("Edit[nxs:hovermenu,tooltip]", "nxs_td") ."' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'><span class='nxs-runtime-autocellsize'></span></div>";
+		}
+		else
+		{
+			$droplayerhtml = "";
+			$cursorlayerhtml = "";
+		}
 	}
 
 	if ($nxs_global_current_render_mode == "default")
@@ -1599,10 +1905,14 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		
 		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgettype_cssclass, $ph_runtimecssclass);
 		
-		$output .= "<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "' {$phdataattributeshtml}>";
-		$output .= $menutopleft;	// will be empty if not allowed, or not needed
-		$output .= $menutopright;	// will be empty if not allowed, or not needed
-		$output .= $placeholdercursors;	// will be empty if not allowed, or not needed
+		$styles = array();
+		$styles["margin_bottom"] = $bottommarginclass;
+		$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+		
+		$output .= "<li class='" . $compiled[0]["id"] . " nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "' {$phdataattributeshtml}>";
+		//$output .= $menutopleft;	// will be empty if not allowed, or not needed
+		//$output .= $menutopright;	// will be empty if not allowed, or not needed
+		//$output .= $placeholdercursors;	// will be empty if not allowed, or not needed
 		
 		$concatenated_css = nxs_concatenateargswithspaces($ph_colorzen, $ph_linkcolorvar, $ph_border_radius, $ph_borderwidth);
 		
@@ -1625,6 +1935,18 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		$output .= "</div>";
 		
 		$output .= "</li>";
+		
+		foreach ($compiled as $id => $compiledresult)
+		{
+			$class = $compiledresult["id"];
+			$rules = $compiledresult["rules"];
+			if (count($rules) > 0)
+			{
+				$output .= '<style>';
+				$output .= ".{$class} { " . implode($rules) . " }";
+				$output .= '</style>';
+			}
+		}
 	}
 	
 	return $output;
@@ -1727,16 +2049,19 @@ function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='')
 	$nxs_global_placeholder_render_statebag["placeholdertemplate"] = $placeholdertemplate;
 	$nxs_global_placeholder_render_statebag["placeholderid"] = $placeholderid;
 	
-	if (nxs_has_adminpermissions())
+	if (false)
 	{
-		// het 'hover' element; als de muis boven de placeholder hangt, zien we dit element
-		$droplayerhtml = "<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'><span class='nxs-runtime-autocellsize'></span></div>";
-		$cursorlayerhtml = "<div title='" . nxs_l18n__("Edit[nxs:hovermenu,tooltip]", "nxs_td") ."' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'><span class='nxs-runtime-autocellsize'></span></div>";
-	}
-	else
-	{
-		$droplayerhtml = "";
-		$cursorlayerhtml = "";
+		if (nxs_has_adminpermissions())
+		{
+			// het 'hover' element; als de muis boven de placeholder hangt, zien we dit element
+			$droplayerhtml = "<div class='nxs-runtime-autocellsize nxs-cursor nxs-drop-cursor'><span class='nxs-runtime-autocellsize'></span></div>";
+			$cursorlayerhtml = "<div title='" . nxs_l18n__("Edit[nxs:hovermenu,tooltip]", "nxs_td") ."' class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'><span class='nxs-runtime-autocellsize'></span></div>";
+		}
+		else
+		{
+			$droplayerhtml = "";
+			$cursorlayerhtml = "";
+		}
 	}
 	
 	$widgetclass = "";
@@ -1928,3 +2253,106 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	
 	return $result;	
 }
+
+function nxs_sc_wrap($atts, $content = null, $name='') 
+{
+	$unwrapped_content = do_shortcode($content);
+	
+	$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $atts["colorzen"]);
+	
+	$styles = array();
+	$styles["colorzen"] = $colorzen_cssclass;
+	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+	$unique_style_combination_class_0 = $compiled[0]["id"];
+	
+	$result = "<div class='{$unique_style_combination_class_0}'>{$unwrapped_content}</div>";
+	
+	foreach ($compiled as $id => $compiledresult)
+	{
+		$class = $compiledresult["id"];
+		$rules = $compiledresult["rules"];
+		if (count($rules) > 0)
+		{
+			$result .= '<style>';
+			$result .= ".{$class} { " . implode($rules) . " }";
+			$result .= '</style>';
+		}
+	}
+	
+	return $result;
+}
+add_shortcode('nxs_wrap', 'nxs_sc_wrap');
+
+function nxs_frontendframework_nxs2_gethtmlfortext($args)
+{
+	extract($args);
+	
+	if ( $text == "")
+	{
+		return "";
+	}
+	
+	if ($wrappingelement == "") {
+	$wrappingelement = 'p';
+	}
+	
+	// Text styling
+	if ($text_showliftnote != "") { $text_showliftnote_cssclass = 'nxs-liftnote'; }
+	if ($text_showdropcap != "") { $text_showdropcap_cssclass = 'nxs-dropcap'; }
+	
+	$text_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $text_alignment);
+	$text_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $text_fontzen);
+	
+	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $text_alignment_cssclass, $text_showliftnote_cssclass, $text_showdropcap_cssclass, $text_fontzen_cssclass);
+	
+	if ($text_heightiq != "") 
+	{
+		$heightiqprio = "p1";
+		$text_heightiqgroup = "text";
+		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
+	}
+	
+	// apply shortcode on text widget
+	$text = do_shortcode($text);
+	
+	if ($fontzen == "")
+	{
+		$fontzen = "1";
+	}
+	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
+	
+	$styles = array();
+	$styles["fontsize"] = $fontsize;
+	$styles["fontzen"] = $fontzen_cssclass;
+	
+	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+	$unique_style_combination_class_0 = $compiled[0]["id"];
+		
+	$result .= '<'. $wrappingelement . ' class="' . $unique_style_combination_class_0 . ' ' . $cssclasses . '">' . $text . '</'. $wrappingelement . '>';
+	
+	foreach ($compiled as $id => $compiledresult)
+	{
+		$class = $compiledresult["id"];
+		$rules = $compiledresult["rules"];
+		if (count($rules) > 0)
+		{
+			$result .= '<style>';
+			$result .= ".{$class} { " . implode($rules) . " }";
+			$result .= '</style>';
+		}
+	}
+	
+	return $result;
+}
+
+function nxs_sc_text($atts, $content = null, $name='') 
+{
+	$args = array
+	(
+		"text" => $content,
+		"fontsize" => $atts["fontsize"],
+	);
+	$result = nxs_gethtmlfortext_v2($args);
+	return $result;
+}
+add_shortcode('nxs_text', 'nxs_sc_text');

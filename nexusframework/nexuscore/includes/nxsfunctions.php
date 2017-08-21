@@ -8065,34 +8065,34 @@ function nxs_gethtmlforfiller()
 
 function nxs_gethtmlfortext($text = "", $text_alignment = "", $text_showliftnote = "", $text_showdropcap = "", $wrappingelement = "", $text_heightiq = "", $text_fontzen = "")
 {
-	if ( $text == "")
+	$args = array
+	(
+		"text" => $text,
+		"text_alignment" => $text_alignment,
+		"text_showliftnote" => $text_showliftnote,
+		"text_showdropcap" => $text_showdropcap,
+		"wrappingelement" => $wrappingelement,
+		"text_heightiq" => $text_heightiq,
+		"text_fontzen" => $text_fontzen,
+	);
+	$result = nxs_gethtmlfortext_v2($args);
+	
+	return $result;
+}
+
+function nxs_gethtmlfortext_v2($args)
+{
+	$frontendframework = $_REQUEST["frontendframework"];
+	if ($frontendframework == "")
 	{
-	return "";
+		$frontendframework = "nxs";
 	}
 	
-	if ($wrappingelement == "") {
-	$wrappingelement = 'p';
-	}
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	require_once($filetoinclude);
 	
-	// Text styling
-	if ($text_showliftnote != "") { $text_showliftnote_cssclass = 'nxs-liftnote'; }
-	if ($text_showdropcap != "") { $text_showdropcap_cssclass = 'nxs-dropcap'; }
-	
-	$text_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $text_alignment);
-	$text_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $text_fontzen);
-	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $text_alignment_cssclass, $text_showliftnote_cssclass, $text_showdropcap_cssclass, $text_fontzen_cssclass);
-	
-	if ($text_heightiq != "") {
-		$heightiqprio = "p1";
-		$text_heightiqgroup = "text";
-		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
-	}
-	
-	// apply shortcode on text widget
-	$text = do_shortcode($text);
-		
-	$result .= '<'. $wrappingelement . ' class="' . $cssclasses . '">' . $text . '</'. $wrappingelement . '>';
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_gethtmlfortext";
+	$result = call_user_func_array($functionnametoinvoke, array($args));
 	
 	return $result;
 }
@@ -8126,84 +8126,6 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 	);
 	
 	$result = nxs_gethtmlfortitle_v4($args);
-	return $result;
-	
-	if ($title == "")
-	{
-		return "";
-	}
-	
-	if ($destination_target == "_self") {
-		$destination_target_html = 'target="_self"';
-	} else if ($destination_target == "_blank") {
-		$destination_target_html = 'target="_blank"';
-	} else {
-		if ($destination_articleid != "") {
-			$destination_target_html = 'target="_self"';
-		} else {
-			$homeurl = nxs_geturl_home();
- 			if (nxs_stringstartswith($destination_url, $homeurl)) {
- 				$destination_target_html = 'target="_self"';
- 			} else {
- 				$destination_target_html = 'target="_blank"';
- 			}
-		}
-	}
-
-	$destination_relation_html = '';
-	if ($destination_relation == "nofollow") {
-		$destination_relation_html = 'rel="nofollow"';
-	}
-	
-	// Title alignment
-	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
-	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
-	
-	$heading = "";
-	
-	// Title importance (H1 - H6)
-	if ($title_heading != "")
-	{
-		$headingelement = "h" . $title_heading;
-
-	}
-	else
-	{
-		// TODO: derive the title_importance based on the title_fontsize
-		//nxs_webmethod_return_nack("to be implemented; derive title_heading from title_fontsize");
-		$headingelement = "h1";
-	}
-	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_alignment_cssclass, $title_fontsize_cssclass);
-	if ($title_heightiq != "")
-	{
-		$heightiqprio = "p1";
-		$title_heightiqgroup = "title";
-		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
-	}
-	
-	if ($microdata != "")
-	{
-		$itemprop = "itemprop='name'";
-	}
-	else
-	{
-		$itemprop = "";
-	}
-	
-	$result = '<' . $headingelement . ' ' . $itemprop . ' class="' . $cssclasses . '">' . $title . '</' . $headingelement . '>';
-	
-	// link
-	if ($destination_articleid != "") 
-	{
-		$destination_url = nxs_geturl_for_postid($destination_articleid);
-		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
-	}
-	else if ($destination_url != "") 
-	{
-		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
-	}
-	
 	return $result;
 }
 
@@ -8406,7 +8328,7 @@ function nxs_getcssclassesforrowcontainer($rowcontainerid)
 {
 	$metadata = nxs_get_corepostmeta($rowcontainerid);
 	
-	$rc_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata["rc_colorzen"]);;
+	$rc_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata["rc_colorzen"]);
 	$rc_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $metadata["rc_linkcolorvar"]);
 	$rc_margin_top = nxs_getcssclassesforlookup("nxs-margin-top-", $metadata["rc_margin_top"]);
 	$rc_margin_bottom = nxs_getcssclassesforlookup("nxs-margin-bottom-", $metadata["rc_margin_bottom"]);

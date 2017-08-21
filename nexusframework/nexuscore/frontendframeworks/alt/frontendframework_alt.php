@@ -1,6 +1,8 @@
 <?php
 
-function nxs_frontendframework_nxs_gethtmlforbutton($args)
+// used by the embed widget
+
+function nxs_frontendframework_alt_gethtmlforbutton($args)
 {
 	extract($args);
 	
@@ -935,7 +937,7 @@ function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='')
 }
 add_shortcode('nxsplaceholder', 'nxs_nxsplaceholder');
 
-function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
+function nxs_frontendframework_alt_setgenericwidgethovermenu($args)
 {
 	// defaults
 	$enable_decoratewidget = false;
@@ -1154,7 +1156,7 @@ function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
 	$nxs_global_placeholder_render_statebag["menutopright"] = $menu;
 }
 
-function nxs_frontendframework_nxs_gethtmlforimage($args)
+function nxs_frontendframework_alt_gethtmlforimage($args)
 {
 	extract($args);
 	
@@ -1260,3 +1262,50 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	
 	return $result;	
 }
+
+function nxs_frontendframework_alt_gethtmlfortext($args)
+{
+	extract($args);
+	
+	if ( $text == "")
+	{
+		return "";
+	}
+	
+	if ($wrappingelement == "") {
+	$wrappingelement = 'p';
+	}
+	
+	// Text styling
+	if ($text_showliftnote != "") { $text_showliftnote_cssclass = 'nxs-liftnote'; }
+	if ($text_showdropcap != "") { $text_showdropcap_cssclass = 'nxs-dropcap'; }
+	
+	$text_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $text_alignment);
+	$text_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $text_fontzen);
+	
+	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $text_alignment_cssclass, $text_showliftnote_cssclass, $text_showdropcap_cssclass, $text_fontzen_cssclass);
+	
+	if ($text_heightiq != "") {
+		$heightiqprio = "p1";
+		$text_heightiqgroup = "text";
+		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
+	}
+	
+	// apply shortcode on text widget
+	$text = do_shortcode($text);
+		
+	$result .= '<'. $wrappingelement . ' class="' . $cssclasses . '">' . $text . '</'. $wrappingelement . '>';
+	
+	return $result;
+}
+
+function nxs_sc_text($atts, $content = null, $name='') 
+{
+	$args = array
+	(
+		"text" => $content,
+	);
+	$result = nxs_gethtmlfortext_v2($args);
+	return $result;
+}
+add_shortcode('nxs_text', 'nxs_sc_text');
