@@ -721,12 +721,28 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass/*, "nxs-heightiq", "nxs-heightiq-".$heightiqprio."-".$title_heightiqgroup*/);
 	
 	// Title
-	$htmltitle = '<'.$title_heading.' class="'.$cssclasses.'">'.$title.'</'.$title_heading.'>';
+	$a = array
+	(
+		"title" => $title,
+		"title_heading" => $title_heading,
+		"title_alignment" => $title_alignment,
+		"title_fontsize" => $title_fontsize,
+		"title_heightiq" => $title_heightiq,
+		"destination_articleid" => $destination_articleid,
+		"destination_url" => $destination_url,
+		"destination_target" => $destination_target,
+		"destination_relation" => $destination_relation,
+		"microdata" => $microdata,
+	);
+	$htmltitle = nxs_gethtmlfortitle_v4($a);
 	
 	// Subtitle heading
-	if ($subtitle_heading != "") {
+	if ($subtitle_heading != "") 
+	{
 		$subtitle_heading = "h" . $subtitle_heading;	
-	} else {
+	} 
+	else 
+	{
 		$subtitle_heading = "h1";
 	}
 	

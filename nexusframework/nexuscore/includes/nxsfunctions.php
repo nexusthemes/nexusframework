@@ -7372,223 +7372,23 @@ function nxs_print_filters_for($hook = '')
 
 function nxs_widgets_setgenericwidgethovermenu_v2($args)
 {
-	// defaults
-	$enable_decoratewidget = false;
-	$defaultwidgetclickhandler = "edit";
-	
-	// if (support
-	
-	$enable_editwidget = true;
-	$enable_movewidget = true;
-	$enable_deletewidget = true;
-	$enable_deleterow = false;
-	$enable_debugmeta = nxs_shoulddebugmeta();
-	$enable_addentity = false;
-	
-	extract($args);
-	
-	if (!isset($postid)) { nxs_webmethod_return_nack("postid not set (nxs_widgets_setgenericwidgethovermenu_v2);" . nxs_geturlcurrentpage()); }
-	if (!isset($placeholderid)) { nxs_webmethod_return_nack("placeholderid not set"); }
-	if (!isset($placeholdertemplate)) { nxs_webmethod_return_nack("placeholdertemplate not set"); }
-	
-	//
-	// 
-	//
-
-	// check permission
-	if (nxs_cap_hasdesigncapabilities())
+	// delegate rendering to the frontendframework
+	$frontendframework = $_REQUEST["frontendframework"];
+	if ($frontendframework == "")
 	{
-		// ok
-	}
-	else
-	{
-		$enable_movewidget = false;
-		$enable_deletewidget = false;
-		$enable_deleterow = false;
-		$lockedwidget = true;
+		$frontendframework = "nxs";
 	}
 	
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	require_once($filetoinclude);
 	
-
- 	$widgeticonid = nxs_getwidgeticonid($placeholdertemplate);
- 	
-	// Turn on output buffering
-	nxs_ob_start();
-	// --------------------------------------------------------------------------------------------------
-	$islocked = false;
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_setgenericwidgethovermenu";
+	$result = call_user_func_array($functionnametoinvoke, array($args));
 	
-	$metadata = $args["metadata"];
-	if (isset($metadata))
-	{
-		if ($metadata["lock"] == "locked")
-		{
-			$islocked = true;
-		}
-	}
+	//error_log("invoke; functionnametoinvoke; $functionnametoinvoke; $result");
+	//error_log("htmlbutton; invoke; " . json_encode($args));
 	
- 	if (!$islocked)
- 	{
-		?>
-	  <ul class="">
-	  	<?php
-	  	if ($enable_movewidget === "first")
-	  	{
-	  		?>
-		    <li title='<?php nxs_l18n_e("Move[tooltip]", "nxs_td"); ?>' class='nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder' id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
-	      	<span class='nxs-icon-move'></span>
-	        <div class="nxs-drag-helper" style='display: none;'>
-	          <div class='placeholder'>
-	          	<span class='<?php echo $widgeticonid; ?>'></span>
-	          </div>
-	        </div>
-	        <!-- li is closed further on -->
-		    <?php
-	  	}
-	  	else if ($enable_editwidget === true)
-	  	{
-		  	?>
-		    <li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
-		  		<a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' <?php if ($defaultwidgetclickhandler=='edit') { echo 'class="nxs-defaultwidgetclickhandler"'; } ?> onclick="nxs_js_edit_widget(this); return false;">
-		      	<span class='<?php echo $widgeticonid; ?>'></span>
-		      </a>
-		      <!-- li is closed further on -->
-		    <?php
-	  	}
-	  	else
-	  	{
-	  		nxs_webmethod_return_nack("unsupported first widget menu item");
-	  	}
-	    ?>
-	      <ul class="">
-	      	<?php
-	      	if ($enable_addentity === true)
-	      	{
-	      		// adding entities should be done in the modeleditor,
-	      		// not in wp
-	      	}
-	      	?>
-	      	<?php
-	      	if ($enable_editwidget === "second")
-	      	{
-	      		?>
-				    <li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
-				  		<a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' <?php if ($defaultwidgetclickhandler=='edit') { echo 'class="nxs-defaultwidgetclickhandler"'; } ?> onclick="nxs_js_edit_widget(this); return false;">
-				      	<span class='<?php echo $widgeticonid; ?>'></span>
-				      </a>
-						</li>	      		
-	      		<?php
-	      	}
-	      	?>
-      		<?php 
-      		if ($enable_decoratewidget === true)
-      		{
-      			echo nxs_render_widgetbackgroundstyler($placeholdertemplate); 
-      		}
-      		?>
-      		<?php
-      		if ($enable_movewidget === true)
-      		{
-      			$widgeticonid = nxs_getplaceholdericonid($placeholdertemplate);
-      			?>
-		        <li title='<?php nxs_l18n_e("Move[tooltip]", "nxs_td"); ?>' class='nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder' id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
-		        	<span class='nxs-icon-move'></span>
-	            <div class="nxs-drag-helper" style='display: none;'>
-                <div class='placeholder'>
-                	<span class='<?php echo $widgeticonid; ?>'></span>
-                </div>
-	            </div>					
-		        </li>
-		       	<?php
-		      }
-		      ?>
-		      <?php
-      		if ($enable_deletewidget === true)
-      		{
-      			?>
-	        	<a class='nxs-no-event-bubbling' href='#' onclick='nxs_js_popup_placeholder_wipe("<?php echo $postid; ?>", "<?php echo $placeholderid; ?>"); return false;'>
-	           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'>
-	           		<span class='nxs-icon-trash'></span>
-	           	</li>
-	        	</a>		
-	        	<?php
-	        }
-	        ?>
-	        <?php
-      		if ($enable_deleterow === true)
-      		{
-      			?>
-	        	<a class='nxs-no-event-bubbling nxs-defaultwidgetdeletehandler' href='#' onclick='nxs_js_row_remove(this); return false;'>
-	           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'><span class='nxs-icon-trash'></span></li>
-	        	</a>		
-	        	<?php
-	        }
-	        ?>
-	        <?php
-	        if ($enable_debugmeta === true)
-	        {
-	        	?>
-	         	<li title='<?php nxs_l18n_e("Debug[tooltip]", "nxs_td"); ?>'>
-	  	      	<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_edit_widget_v2(this, 'debug'); return false; return false;">
-		          		<span class='nxs-icon-search'></span>
-		        	</a>	
-	         	</li>    		
-	        	<?php
-	        }
-	        ?>
-		    </ul>	
-	  	</li>
-		</ul>
-		<?php
-	}
-	else
-	{
-		if (nxs_cap_hasdesigncapabilities())
-		{
-			?>
-		  <ul class="">
-			 	<li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
-		  		<a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>'  class="nxs-defaultwidgetclickhandler" onclick="nxs_js_edit_widget_v2(this, 'unlock'); return false;">
-		      	<span class='<?php echo $widgeticonid; ?>'></span>
-		      </a>
-	    	</li>
-	  		<li>
-		  		<a href='#' title='<?php nxs_l18n_e("Unlock", "nxs_td"); ?>' onclick="nxs_js_edit_widget_v2(this, 'unlock'); return false;">
-		      	<span class='nxs-icon-unlocked'></span>
-		      </a>
-		  	</li>
-			</ul>
-			<?php
-		}
-		else
-		{
-			// hide all icons
-			?>
-			<ul class="">
-			 	<li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
-		  		<a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>'  class="nxs-defaultwidgetclickhandler" onclick="nxs_js_alert('<?php nxs_l18n_e("This item is locked, only a webdesigner can modify it", "nxs_td"); ?>');">
-		      	<span class='<?php echo $widgeticonid; ?>'></span>
-		      </a>
-	    	</li>
-		  	<li>
-		  		<a href='#' title='<?php nxs_l18n_e("Locked", "nxs_td"); ?>' onclick="nxs_js_alert('<?php nxs_l18n_e("This item is locked, only a webdesigner can modify it", "nxs_td"); ?>');">
-		      	<span class='nxs-icon-lock'></span>
-		      </a>
-		  	</li>
-			</ul>
-			<?php
-		}
-	}
-	
-  // --------------------------------------------------------------------------------------------------
-    
-  // Setting the contents of the output buffer into a variable and cleaning up te buffer
-  $menu = nxs_ob_get_contents();
-  nxs_ob_end_clean();
-  
-  // Setting the contents of the variable to the appropriate array position
-  // The framework uses this array with its accompanying values to render the page
-  global $nxs_global_placeholder_render_statebag;
-	$nxs_global_placeholder_render_statebag["menutopright"] = $menu;
+	return $result;
 }
 
 function nxs_genericpopup_supportsoptions($args)
@@ -8311,6 +8111,23 @@ function nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title
 	
 function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $destination_target, $microdata, $destination_relation = false)
 {
+	$args = array
+	(
+		"title" => $title,
+		"title_heading" => $title_heading,
+		"title_alignment" => $title_alignment,
+		"title_fontsize" => $title_fontsize,
+		"title_heightiq" => $title_heightiq,
+		"destination_articleid" => $destination_articleid,
+		"destination_url" => $destination_url,
+		"destination_target" => $destination_target,
+		"microdata" => $microdata,
+		"destination_relation" => $destination_relation,
+	);
+	
+	$result = nxs_gethtmlfortitle_v4($args);
+	return $result;
+	
 	if ($title == "")
 	{
 		return "";
@@ -8390,6 +8207,23 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 	return $result;
 }
 
+function nxs_gethtmlfortitle_v4($args)
+{
+	$frontendframework = $_REQUEST["frontendframework"];
+	if ($frontendframework == "")
+	{
+		$frontendframework = "nxs";
+	}
+	
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	require_once($filetoinclude);
+	
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_gethtmlfortitle";
+	$result = call_user_func_array($functionnametoinvoke, array($args));
+	
+	return $result;
+}
+
 function nxs_gethtmlforbutton($button_text = "", $button_scale = "", $button_color = "", $destination_articleid = "", $destination_url = "", $destination_target = "", $button_alignment = "", $destination_js = "", $text_heightiq = "", $button_fontzen = "", $destination_relation = false)
 {
 	$args = array
@@ -8439,103 +8273,40 @@ function nxs_gethtmlforimage($image_imageid = "", $image_border_width = "", $ima
 
 function nxs_gethtmlforimage_v2($image_imageid = "", $image_src = "", $image_border_width = "", $image_size = "", $image_alignment = "", $image_shadow = "", $image_alt = "", $destination_articleid = "", $destination_url = "", $image_title = "", $grayscale = "", $enlarge = "")
 {
-	$image_alt = trim($image_alt);
-	$image_title = trim($image_title);
-
-	if ($image_size == "")
-	{
-		$image_size = "auto-fit";
-	}
-	
-	// Image metadata
-	if ($image_imageid == "" && $image_src == "") 
-	{
-		return "";
-	}
-	if (!nxs_isimagesizevisible($image_size))
-	{
-		return "";
-	}
-	
-	// Image shadow
-	if ($image_shadow != "") {
-		$image_shadow = 'nxs-shadow';
-	}
-	
-	// Hover effects
-	if ($enlarge != "") { $enlarge = 'nxs-enlarge'; }
-	if ($grayscale != "") {	$grayscale = 'nxs-grayscale'; }
-	
-	// escape quotes used in title and alt, preventing malformed html
-	$image_title = str_replace("\"", "&quote;", $image_title);
-	$image_alt = str_replace("\"", "&quote;", $image_alt);
-	
-	$wpsize = nxs_getwpimagesize($image_size);
-	
-	if ($image_imageid != "")
-	{
-		$imagemetadata= nxs_wp_get_attachment_image_src($image_imageid, $wpsize, true);
-	
-		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
-		$imageurl 		= $imagemetadata[0];
-		$imageurl = nxs_img_getimageurlthemeversion($imageurl);
-		$imagewidth 	= $imagemetadata[1] . "px";
-		$imageheight 	= $imagemetadata[2] . "px";	
-	}
-	else if ($image_src != "")
-	{
-		$imageurl = $image_src;
-	}
-	
-	$image_size_cssclass = nxs_getimagecsssizeclass($image_size);
-	$image_alignment_cssclass = nxs_getimagecssalignmentclass($image_alignment); // "nxs-icon-left";
-	
-	// Border size
-	$image_border_width = nxs_getcssclassesforlookup("nxs-border-width-", $image_border_width);
-	
-	// Image border
-	$image_border = '';
-	$image_border .= '<div class="nxs-image-wrapper ' . $image_shadow . ' ' . $image_size_cssclass . ' ' . $image_alignment_cssclass . ' ' . '">';
-	$image_border .= '<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="nxs-overflow ' . $image_border_width . '">';
-	// note the display: block is essential/required! else the containing div
-	// will have two additional pixels; kudos to http://stackoverflow.com/questions/8828215/css-a-2-pixel-line-appears-below-image-img-element
-	$image_border .= '<img class="' . $grayscale . ' ' . $enlarge . '" ';
-	$image_border .= 'src="' . $imageurl . '" ';
-	if ($image_alt != "")
-	{
-		$image_border .= 'alt="' . $image_alt . '" ';
-	}
-	if ($image_title != "")
-	{
-		$image_border .= 'title="' . $image_title . '" ';
-	}
-	$image_border .= '/>';
-	$image_border .= '</div>';
-	$image_border .= '</div>';
-	
-	// Image shadow
-	// TODO: make ddl too
-	if ($image_shadow != "") 				{ $image_shadow = 'nxs-shadow'; }
-	
-	// Image link
-	if ($destination_articleid != "") 
-	{
-		$destination_articleid = nxs_geturl_for_postid($destination_articleid);
-		$image_border = '<a href="' . $destination_articleid .'">' . $image_border . '</a>';
-	} else if ($destination_url != "") {
-		$image_border = '<a href="' . $destination_url .'" target="_blank">' . $image_border . '</a>';
-	}
-	
-	// Image
-	$result = '';
-	if ($image_imageid != "" || $image_src != "")
-	{
-		$result .= '<div class="nxs-relative">';
-		$result .= $image_border;
-		$result .= '</div>';
-	}
-	
+	$args = array
+	(
+		"image_imageid" => $image_imageid,
+		"image_src" => $image_src,
+		"image_border_width" => $image_border_width,
+		"image_size" => $image_size,
+		"image_alignment" => $image_alignment,
+		"image_shadow" => $image_shadow,
+		"image_alt" => $image_alt,
+		"destination_articleid" => $destination_articleid,
+		"destination_url" => $destination_url,
+		"image_title" => $image_title,
+		"grayscale" => $grayscale,
+		"enlarge" => $enlarge,
+	);
+	$result = nxs_gethtmlforimage_v3($args);
 	return $result;	
+}
+
+function nxs_gethtmlforimage_v3($args)
+{
+	$frontendframework = $_REQUEST["frontendframework"];
+	if ($frontendframework == "")
+	{
+		$frontendframework = "nxs";
+	}
+	
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	require_once($filetoinclude);
+	
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_gethtmlforimage";
+	$result = call_user_func_array($functionnametoinvoke, array($args));
+	
+	return $result;
 }
 
 function nxs_isimagesizevisible($value)

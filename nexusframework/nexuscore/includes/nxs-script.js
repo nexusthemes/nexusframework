@@ -7818,6 +7818,7 @@ function nxs_js_get_frameworkcsstemplate(csslookup)
   u += nxs_js_createcssstyling_fontsizeheading("H6", 1.0, fontscale, factor_textfontsize);
   
   u = u + ".nxs-image-wrapper img { width: 100%; display: block; }";
+  u = u + ".nxs-image-wrapper.nxs-ratio-original img { width: auto; display: block; }";
     
 	u += "/* end injected by framework */";
 	

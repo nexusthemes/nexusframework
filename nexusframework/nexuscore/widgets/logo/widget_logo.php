@@ -406,29 +406,28 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 
 	$alignment_image = "";
 	// Alignment: text and image
-	if ($halign != "") {
-				
-		if ($halign == "left") {
-			
+	if ($halign != "") 
+	{			
+		if ($halign == "left") 
+		{	
 			$alignment_image 		= "float: left; margin-right: 15px;";
 			$alignment_table_text 	= "display: table; float: left;";
 			$alignment_cell_text 	= "display: table-cell; vertical-align: middle; text-align: left;";
 			$alignment_imageheight	= $imageheight;
-		
-		} else if ($halign == "center") {
-		
+		} 
+		else if ($halign == "center") 
+		{
 			$alignment_image 		= "margin-left: auto; margin-right: auto";
 			$alignment_cell_text 	= "text-align: center;";
-		
-		} if ($halign == "right") {
-			
+		} 
+		else if ($halign == "right") 
+		{	
 			$alignment_image 		= "float: right; margin-left: 15px;";
 			$alignment_table_text 	= "display: table; float: right;";
 			$alignment_cell_text 	= "display: table-cell; vertical-align: middle; text-align: right;";
 			$alignment_imageheight	= $imageheight;
 		}
-		
-	} 
+	}
  
 	// Url
 	if ($destination_articleid != "") { 
@@ -490,15 +489,26 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 		$image_maxheight_cssclass = nxs_getcssclassesforlookup("nxs-maxheight-", $image_maxheight);
 		
 		$inlinemaxheightstyle = '';
-		if ($image_maxheight != '') {
+		if ($image_maxheight != '') 
+		{
 			$inlinemaxheightstyle = '';
 			$inlineheightstyle = '';
 		}
+		
+		//$htmlofimage = '<img '.$image_alt_attribute.' src="'.$imageurl.'" class="'.$image_maxheight_cssclass.' '.$logo_margin_cssclass.' '.$border_radius_cssclass.'" style="'.$alignment_image.' " />';
+		$a = array
+		(
+			"image_src" => $imageurl,
+			"image_alt" => $image_alt,
+			"image_maxheight" => $image_maxheight,
+			"image_margin" => $logo_margin,
+			"border_radius" => $border_radius,
+			"image_alignment" => $halign,	// not fully compatible i think?
+			"image_size" => "orig@contain",
+		);
+		$htmlofimage = nxs_gethtmlforimage_v3($a);
 
-		$logo = '
-			<div class="logo-image">
-				<img '.$image_alt_attribute.' src="'.$imageurl.'" class="'.$image_maxheight_cssclass.' '.$logo_margin_cssclass.' '.$border_radius_cssclass.'" style="'.$alignment_image.' " />
-			</div>';
+		$logo = "<div class='logo-image'>{$htmlofimage}</div>";
 	}
 	
 	// Image background
@@ -599,7 +609,6 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	return $result;
 }
 
-
 function nxs_widgets_logo_initplaceholderdata($args)
 {
 	extract($args);
@@ -619,5 +628,3 @@ function nxs_widgets_logo_initplaceholderdata($args)
 	
 	return $result;
 }
-
-?>
