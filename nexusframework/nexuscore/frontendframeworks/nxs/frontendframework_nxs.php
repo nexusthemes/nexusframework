@@ -1162,8 +1162,11 @@ function nxs_sc_text($atts, $content = null, $name='')
 	$args = array
 	(
 		"text" => $content,
+		"fontsize" => $atts["fontsize"],
+		"text_align" => $atts["text_align"],
+		"texttype" => $atts["texttype"]
 	);
-	$result = nxs_gethtmlfortext_v2($args);
+	$result = nxs_frontendframework_nxs_gethtmlfortext($args);
 	return $result;
 }
 add_shortcode('nxs_text', 'nxs_sc_text');
@@ -1516,16 +1519,27 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 	
 	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $text_alignment_cssclass, $text_showliftnote_cssclass, $text_showdropcap_cssclass, $text_fontzen_cssclass);
 	
-	if ($text_heightiq != "") {
+	if ($text_heightiq != "") 
+	{
 		$heightiqprio = "p1";
 		$text_heightiqgroup = "text";
 		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
 	}
 	
+	if ($texttype == "quote")
+	{
+		$styles .= "font-style: italic;";
+	}
+	
+	if ($text_align == "right")
+	{
+		$styles .= "display: flex; flex-direction: row; justify-content: flex-end;";
+	}
+	
 	// apply shortcode on text widget
 	$text = do_shortcode($text);
 		
-	$result .= '<'. $wrappingelement . ' class="' . $cssclasses . '">' . $text . '</'. $wrappingelement . '>';
+	$result .= '<'. $wrappingelement . ' class="' . $cssclasses . '" style="'.$styles.'">' . $text . '</'. $wrappingelement . '>';
 	
 	return $result;
 }

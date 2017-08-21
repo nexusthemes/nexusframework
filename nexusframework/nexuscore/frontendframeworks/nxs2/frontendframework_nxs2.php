@@ -1,5 +1,18 @@
 <?php
 
+function nxs_getlineheight($fontsize)
+{
+	// if the fontsize is bigger, the lineheight should be smaller
+	$result = 1.625;
+	
+	if ($fontsize > 18)
+	{
+		$result = 1.2;
+	}
+	
+	return "{$result}em";
+}
+
 function nxs_frontendframework_nxs2_footer()
 {
 	global $nxs_gl_style_footer_cssrules;
@@ -583,7 +596,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
     		$rules[] = "padding-right: 18px;";
     		$rules[] = "padding-top: 11px;";
     		$rules[] = "padding-bottom: 11px;";
-				$rules[] = "line-height: 1.2em !important;";
+				$rules[] = "line-height: " . nxs_getlineheight(22) . " !important;";
 			}
 			else if ($val == "nxs-button-scale-2-0")
 			{
@@ -592,7 +605,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
     		$rules[] = "padding-right: 20px;";
     		$rules[] = "padding-top: 12px;";
     		$rules[] = "padding-bottom: 12px;";
-				$rules[] = "line-height: 1.2em !important;";
+				$rules[] = "line-height: " . nxs_getlineheight(24) . " !important;";
 			}
 			else
 			{
@@ -616,7 +629,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$value = $value * $factor;
 				
 				$rules[] = "font-size: {$value}px !important;";
-				$rules[] = "line-height: 1.2em !important;";
+				$rules[] = "line-height: " . nxs_getlineheight($value) . " !important;";
 			}
 			else if (nxs_stringcontains($val, "-"))
 			{
@@ -629,7 +642,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$value = $value * $factor;
 				
 				$rules[] = "font-size: {$value}px !important;";
-				$rules[] = "line-height: 1.2em !important;";
+				$rules[] = "line-height: " . nxs_getlineheight($value) . " !important;";
 			}
 			else
 			{
@@ -652,7 +665,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$factor = 15;
 				$value = $value * $factor;
 				$rules[] = "font-size: {$value}px !important;";
-				$rules[] = "line-height: 1.2em !important;";
+				$rules[] = "line-height: " . nxs_getlineheight($value) . " !important;";
 			}
 			else
 			{
@@ -693,11 +706,38 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rules[] = "unsupported_border_radius_{$key}:{$val};";
 			}
 		}
+		else if ($key == "text-align")
+		{
+			if ($val == "")
+			{
+				// use default
+			}
+			else if ($val == "right")
+			{
+				$rules[] = "display: flex;";
+				$rules[] = "flex-direction: row;";
+				$rules[] = "justify-content: flex-end;";
+			}
+			else
+			{
+				$rules[] = "unsupported:{$key}__{$val};";
+			}
+		}
+		else if ($key == "texttype")
+		{
+			if ($val == "quote")
+			{
+				$rules[] = "font-style: italic;";
+			}
+		}
 		else
 		{
 			$rules[] = "unsupported_{$key}:{$val};";
 		}
 	}
+	
+	// remove duplicates
+	$rules = array_unique($rules);
 	
 	if (count($rules) == 0)
 	{
@@ -1023,6 +1063,7 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
+	
 	
 	$result = '<' . $headingelement . ' ' . $itemprop . ' class="'.$unique_style_combination_class_0.'">' . $title . '</' . $headingelement . '>';
 	
@@ -2367,6 +2408,8 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 	$styles = array();
 	$styles["fontsize"] = $fontsize;
 	$styles["fontzen"] = $fontzen_cssclass;
+	$styles["text-align"] = $text_align;
+	$styles["texttype"] = $texttype;
 	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
@@ -2394,8 +2437,10 @@ function nxs_sc_text($atts, $content = null, $name='')
 	(
 		"text" => $content,
 		"fontsize" => $atts["fontsize"],
+		"text_align" => $atts["text_align"],
+		"texttype" => $atts["texttype"]
 	);
-	$result = nxs_gethtmlfortext_v2($args);
+	$result = nxs_frontendframework_nxs2_gethtmlfortext($args);
 	return $result;
 }
 add_shortcode('nxs_text', 'nxs_sc_text');
