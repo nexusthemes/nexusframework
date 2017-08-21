@@ -34,8 +34,23 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
       	<script>
       		function nxs_js_textarea_autogrow(element)
       		{
-      			element.style.height = "auto";
-    				element.style.height = (element.scrollHeight)+"px";
+      			if (!element.classList.contains("nxs-maxheightreached")) 
+      			{
+    					// do some stuff
+  	    			element.style.height = "auto";
+  	    			var newheightfound = element.scrollHeight;
+  	    			if (newheightfound > 500)
+  	    			{
+  	    				// its getting too big; trim it!
+  	    				newheightfound = 500;
+  	    				element.classList.add("nxs-maxheightreached");
+  	    			}
+	    				element.style.height = (newheightfound)+"px";
+						}
+						else
+						{
+							// prevent wobbling; we keep the height as-is
+						}
       		}
       	</script>
       	<style>
