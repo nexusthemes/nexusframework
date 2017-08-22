@@ -131,8 +131,38 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
 	?>
 	
   <label class="field_name" style="display: block;"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
-  <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" style="display: none" />
+  <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" style="display: none" onchange="nxs_js_ci_a_updatestate_<?php echo $key; ?>();" />
 	<label for="<?php echo $key; ?>" class="nxs-file-upload-trigger <?php echo $button_color_cssclass; ?>">Select file</label>
+	<span id="state_<?php echo $key; ?>"></span>
+  <script>
+  	// invoked when the page renders for the first time, and when the user changes the file
+  	function nxs_js_ci_a_updatestate_<?php echo $key; ?>()
+  	{
+  		nxs_js_log("updating state");
+  		var thefileinput = document.getElementById('<?php echo $key; ?>');
+ 			var statevisualizer = document.getElementById("state_<?php echo $key; ?>");
+ 			nxs_js_log("length" + thefileinput.files.length);
+  		if (thefileinput.files.length > 0)
+  		{
+  			var name = thefileinput.files.item(0).name;
+  			if (name == '')
+  			{
+  				name = 'File selected';
+  			}
+  			statevisualizer.innerText = thefileinput.files.item(0).name;
+				/*
+	      alert('Selected file: ' + thefileinput.files.item(0).size);
+	      alert('Selected file: ' + thefileinput.files.item(0).type);
+	      */
+	    }
+	    else
+    	{
+  			statevisualizer.innerText = "No file selected";   		
+    	}
+    	nxs_js_log("so far");
+    }
+    nxs_js_ci_a_updatestate_<?php echo $key; ?>();
+  </script>
 	<?php 
 	
 	$html = nxs_ob_get_contents();
