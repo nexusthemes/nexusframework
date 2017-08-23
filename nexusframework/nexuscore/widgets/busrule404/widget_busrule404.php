@@ -215,12 +215,17 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 		$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
 		$statebag["out"]["templaterules_lookups"] .= "\r\n" . $metadata["templaterules_lookups"];		
 
+		/*
 		// instruct rule engine to stop further processing if configured to do so (=default)
 		$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
 		if ($flow_stopruleprocessingonmatch != "")
 		{
 			$result["stopruleprocessingonmatch"] = "true";
 		}
+		*/
+		
+		// always mark this as stop rule on match
+		$result["stopruleprocessingonmatch"] = "true";
 	}
 	else
 	{
