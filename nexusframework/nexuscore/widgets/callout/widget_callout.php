@@ -927,35 +927,43 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			echo '<a target="'.$destination_target.'" '.$destination_relation_html.' '.$onclick.' href="' . $url . '">';
 		}
 		
+		if (true)
+		{
+			nxs_ob_start();
+			
+			if ($title != "") 		{echo $htmltitle;}
+			
+			if ($title != "" && $subtitle != "") {
+				echo '<div class="nxs-clear nxs-filler"></div>';
+			}
+			
+			if ($subtitle != "")	{echo $htmlsubtitle;}
+			
+			if (($title != "" && $htmlbutton != "") || ($subtitle != "" && $htmlbutton != "")) {
+				echo '<div class="nxs-clear nxs-filler"></div>';
+			}
+			
+			if ($url != "")		{echo $htmlbutton;}
 		
+			echo '<div class="nxs-clear"></div>';
+	
+			$innercontent = nxs_ob_get_contents();
+			nxs_ob_end_clean();
+		}
 		
 			echo '
 			<div class="'.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
 				<div class="nxs-flex '.$hclass.' '.$flex_box_height.' '.$overlay_cssclass.'">
 					<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box_height.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">';
 						
-						echo '<div class="text-wrapper '.$bgcolor_cssclass.' '.$border_radius_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.'">';
+						$padding = $widgetmetadata["text_padding"];
+						$margin = $widgetmetadata["text_margin"];
+						$bgcolor = $widgetmetadata["bgcolor"];
+						$border_radius = $widgetmetadata["border_radius"];
 						
-							
-							
-							if ($title != "") 		{echo $htmltitle;}
-							
-							if ($title != "" && $subtitle != "") {
-								echo '<div class="nxs-clear nxs-filler"></div>';
-							}
-							
-							if ($subtitle != "")	{echo $htmlsubtitle;}
-							
-							if (($title != "" && $htmlbutton != "") || ($subtitle != "" && $htmlbutton != "")) {
-								echo '<div class="nxs-clear nxs-filler"></div>';
-							}
-							
-							if ($url != "")		{echo $htmlbutton;}
+						echo do_shortcode("[nxs_wrap border_radius='{$border_radius}' colorzen='{$bgcolor}' padding='{$padding}' margin='{$margin}']{$innercontent}[/nxs_wrap]");
 						
-							echo '<div class="nxs-clear"></div>';
-							
-						echo '</div>
-					</div>
+					echo '</div>
 				</div>
 				<div class="nxs-clear"></div>
 			</div>';

@@ -8097,6 +8097,7 @@ function nxs_gethtmlfortext_v2($args)
 	return $result;
 }
 
+
 function nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url)
 {
 	$microdata = "";

@@ -697,9 +697,15 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			{
 				// 
 			}
-			else if ($val == "nxs-border-radius-10-0")
+			else if (nxs_stringstartswith($val, "nxs-border-radius-"))
 			{
-				$rules[] = "border-radius: 30px;";
+				$pieces = explode("-", $val);
+				$whole = $pieces[2];
+				$fraction = $pieces[3];
+				$base = $whole + ($fraction / 10);
+				$factor = 3;
+				$value = $base * $factor;
+				$rules[] = "border-radius: {$value}px;";
 			}
 			else
 			{
@@ -2350,10 +2356,19 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 	
 	$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $atts["colorzen"]);
 	$padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $atts["padding"]);
+	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin-", $atts["margin"]);
+	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $atts["border_radius"]);
+	
+	//
 	
 	$styles = array();
 	$styles["colorzen"] = $colorzen_cssclass;
 	$styles["padding"] = $padding_cssclass;
+	$styles["margin"] = $margin_cssclass;
+	$styles["border_radius"] = $border_radius_cssclass;
+	
+	//
+	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 	

@@ -1162,9 +1162,12 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 	$unwrapped_content = do_shortcode($content);
 	
 	$padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $atts["padding"]);
+	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin-", $atts["margin"]);
 	$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $atts["colorzen"]);
+	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $atts["border_radius"]);
 	
-	$cssclasses = nxs_concatenateargswithspaces($padding_cssclass, $colorzen_cssclass);
+	
+	$cssclasses = nxs_concatenateargswithspaces($border_radius_cssclass, $margin_cssclass, $padding_cssclass, $colorzen_cssclass);
 	
 	$result = "<div class='{$cssclasses}'>{$unwrapped_content}</div>";
 	return $result;
