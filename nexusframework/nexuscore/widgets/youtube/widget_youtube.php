@@ -282,7 +282,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	global $nxs_seo_output;
 	if ($nxs_doing_seo === true)
 	{
-		$nxs_seo_output = "http://www.youtube.com/watch?v=u9hyOQEwB4c";
+		$nxs_seo_output = "https://www.youtube.com/watch?v=u9hyOQEwB4c";
 	}
 	
 	if ($language != "")
@@ -309,24 +309,20 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		$additionalparameters .= "&autoplay=0";
 	}
 	
-	//
-	if ($videoid == "" && $videourl != "")
+	if 
+	(
+		nxs_stringstartswith($videoid, "http") || 
+		nxs_stringstartswith($videoid, "https") ||
+		false
+	)
 	{
-		// when a template sets the videourl, the videoid should be derived from that
-		if (nxs_stringstartswith($translationtop, "http"))
-		{
-			// when its a url pointing to youtube
-			$parsedurl = parse_url($videourl, PHP_URL_QUERY);
-			parse_str($parsedurl, $params);
-			$videoid = $params["v"];
-		}
-		else
-		{
-			// assumed the id is specified
-			$videoid = $videourl;
-		}
+		// when its a url pointing to youtube
+		$parsedurl = parse_url($videoid, PHP_URL_QUERY);
+		parse_str($parsedurl, $params);
+		$videoid = $params["v"];
 	}
 	
+	// fallback scenario
 	if (nxs_has_adminpermissions())
 	{
 		if ($videoid == "")
@@ -366,15 +362,22 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 
 	global $nxs_global_placeholder_render_statebag;
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["enable_decoratewidget"] = false;
-	$hovermenuargs["enable_deletewidget"] = true;
-	$hovermenuargs["enable_deleterow"] = false;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["enable_decoratewidget"] = false;
+		$hovermenuargs["enable_deletewidget"] = true;
+		$hovermenuargs["enable_deleterow"] = false;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 	
 	if ($videoid == "")
 	{

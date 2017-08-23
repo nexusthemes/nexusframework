@@ -1736,3 +1736,55 @@ function nxs_sc_embed($attributes, $content = null, $name='')
 	return $renderresult["html"];
 }
 add_shortcode('nxsembed', 'nxs_sc_embed');
+
+
+
+function nxs_sc_video($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	if ($id == "")
+	{
+		global $nxs_sc_video_cnt;
+		$nxs_sc_video_cnt++;
+	
+		global $nxs_global_row_render_statebag;
+		global $nxs_global_current_containerpostid_being_rendered;
+		global $nxs_global_current_postid_being_rendered;
+		global $nxs_global_placeholder_render_statebag;
+		
+		$widgetmetadata = $nxs_global_placeholder_render_statebag["widgetmetadata"];
+		$postid = $widgetmetadata["postid"];
+		$placeholderid = $widgetmetadata["placeholderid"];
+		
+		$id = "scvid__{$postid}_{$placeholderid}_{$nxs_sc_video_cnt}";
+	}
+	
+	nxs_requirewidget("youtube");
+	nxs_ob_start();
+	
+	?>
+	<div class='ytwrap'>
+		<?php
+			
+			$overriden_args = array
+			(
+				"rendermode" => "anonymous",
+				"render_behaviour" => "code",
+				"placeholderid" => $id,
+			);
+			
+			$args = array_merge($attributes, $overriden_args);
+			
+			$renderresult = nxs_widgets_youtube_render_webpart_render_htmlvisualization($args);
+			echo $renderresult["html"];
+		?>
+	</div>
+	<?php
+	
+	$output = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	
+	return $output;
+}
+add_shortcode('nxs_video', 'nxs_sc_video');

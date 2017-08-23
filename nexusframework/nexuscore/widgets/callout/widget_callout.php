@@ -922,16 +922,22 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	} 
 	else
 	{
-		if ($url != ""){
+		if ($url != "")
+		{
 			echo '<a target="'.$destination_target.'" '.$destination_relation_html.' '.$onclick.' href="' . $url . '">';
 		}
+		
+		
 		
 			echo '
 			<div class="'.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
 				<div class="nxs-flex '.$hclass.' '.$flex_box_height.' '.$overlay_cssclass.'">
-					<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box_height.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">
-						<div class="text-wrapper '.$bgcolor_cssclass.' '.$border_radius_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.'">';
+					<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box_height.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">';
 						
+						echo '<div class="text-wrapper '.$bgcolor_cssclass.' '.$border_radius_cssclass.' '.$text_padding_cssclass.' '.$text_margin_cssclass.'">';
+						
+							
+							
 							if ($title != "") 		{echo $htmltitle;}
 							
 							if ($title != "" && $subtitle != "") {
@@ -946,9 +952,9 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 							
 							if ($url != "")		{echo $htmlbutton;}
 						
-						echo '
-						<div class="nxs-clear"></div>
-						</div>
+							echo '<div class="nxs-clear"></div>';
+							
+						echo '</div>
 					</div>
 				</div>
 				<div class="nxs-clear"></div>

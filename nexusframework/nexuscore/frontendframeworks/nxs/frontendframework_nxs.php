@@ -186,7 +186,20 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 		$itemprop = "";
 	}
 	
-	$result = '<' . $headingelement . ' ' . $itemprop . ' class="' . $cssclasses . '">' . $title . '</' . $headingelement . '>';
+	if ($content_justify == "start")
+	{
+		$styles .= "display: flex; flex-direction: row; justify-content: flex-start;";
+	}
+	else if ($content_justify == "center")
+	{
+		$styles .= "display: flex; flex-direction: row; justify-content: center;";
+	}
+	else if ($content_justify == "end")
+	{
+		$styles .= "display: flex; flex-direction: row; justify-content: flex-end;";
+	}
+	
+	$result = '<' . $headingelement . ' ' . $itemprop . ' class="' . $cssclasses . '" style="'.$styles.'">' . $title . '</' . $headingelement . '>';
 	
 	// link
 	if ($destination_articleid != "") 
@@ -717,6 +730,7 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	global $nxs_global_current_render_mode;
 		
 	$nxs_global_placeholder_render_statebag = array();
+	
 	
 	// perform actual render of the placeholder (delegates to widget)
 	$content = nxs_applyshortcodes($content);
@@ -1497,6 +1511,16 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	return $result;	
 }
 
+function nxs_sc_image($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	$result = nxs_frontendframework_nxs_gethtmlforimage($attributes);
+	return $result;
+}
+add_shortcode('nxs_image', 'nxs_sc_image');
+
+
 function nxs_frontendframework_nxs_gethtmlfortext($args)
 {
 	extract($args);
@@ -1506,8 +1530,9 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 		return "";
 	}
 	
-	if ($wrappingelement == "") {
-	$wrappingelement = 'p';
+	if ($wrappingelement == "") 
+	{
+		$wrappingelement = 'p';
 	}
 	
 	// Text styling
@@ -1531,7 +1556,15 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 		$styles .= "font-style: italic;";
 	}
 	
-	if ($text_align == "right")
+	if ($content_justify == "start")
+	{
+		$styles .= "display: flex; flex-direction: row; justify-content: flex-start;";
+	}
+	else if ($content_justify == "center")
+	{
+		$styles .= "display: flex; flex-direction: row; justify-content: center;";
+	}
+	else if ($content_justify == "end")
 	{
 		$styles .= "display: flex; flex-direction: row; justify-content: flex-end;";
 	}

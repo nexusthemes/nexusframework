@@ -706,13 +706,25 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rules[] = "unsupported_border_radius_{$key}:{$val};";
 			}
 		}
-		else if ($key == "text-align")
+		else if ($key == "content_justify")
 		{
 			if ($val == "")
 			{
 				// use default
 			}
-			else if ($val == "right")
+			else if ($val == "start")
+			{
+				$rules[] = "display: flex;";
+				$rules[] = "flex-direction: row;";
+				$rules[] = "justify-content: flex-start;";
+			}
+			else if ($val == "center")
+			{
+				$rules[] = "display: flex;";
+				$rules[] = "flex-direction: row;";
+				$rules[] = "justify-content: center;";
+			}
+			else if ($val == "end")
 			{
 				$rules[] = "display: flex;";
 				$rules[] = "flex-direction: row;";
@@ -1042,28 +1054,24 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	{
 		$itemprop = "";
 	}
-	
-	//
-	$styles = array();
-	
-	$styles["title_fontsize"] = $title_fontsize_cssclass;
-	
-	//var_dump($title_fontsize_cssclass);
-	//die();
-	
-	$styles["colorzen"] = $title_color_cssclass;
-	$styles["margin"] = $title_margin_cssclass;
-	$styles["margin_bottom"] = $title_margin_bottom_cssclass;
+
 	if ($fontzen == "")
 	{
 		$fontzen = "2";
 	}
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
+	
+	//
+	$styles = array();
+	$styles["title_fontsize"] = $title_fontsize_cssclass;
+	$styles["content_justify"] = $content_justify;
+	$styles["colorzen"] = $title_color_cssclass;
+	$styles["margin"] = $title_margin_cssclass;
+	$styles["margin_bottom"] = $title_margin_bottom_cssclass;
 	$styles["fontzen"] = $fontzen_cssclass;
 	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
-	
 	
 	$result = '<' . $headingelement . ' ' . $itemprop . ' class="'.$unique_style_combination_class_0.'">' . $title . '</' . $headingelement . '>';
 	

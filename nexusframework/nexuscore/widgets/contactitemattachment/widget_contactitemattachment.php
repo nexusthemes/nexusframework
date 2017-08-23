@@ -1,5 +1,11 @@
 <?php
 
+/*
+
+DEPRECATED; USE CONTACTITEMFILEATTACHMENT INSTEAD!!
+
+*/
+
 function nxs_widgets_contactitemattachment_geticonid()
 {
 	$widget_name = basename(dirname(__FILE__));

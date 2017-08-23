@@ -638,7 +638,7 @@ function nxs_pagetemplate_handleheader()
 	<?php
 
 	//
-	nxs_render_headstyles();
+	// nxs_render_headstyles(); // not needed for nxs2
 	nxs_analytics_handleanalytics();
 	
 	if (is_user_logged_in()) { ?>
