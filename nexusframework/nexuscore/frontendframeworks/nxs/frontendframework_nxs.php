@@ -4,7 +4,26 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 {
 	extract($args);
 	
-	if ($button_text == "")
+	if ($_REQUEST["check"] == "atts")
+	{
+		foreach ($args as $k=>$v)
+		{
+			if ($k == "color")
+			{
+				echo "o no deprecated key found in shortcode?!"; 
+				echo $k . " / " . $v;
+			}
+			else if (nxs_stringstartswith($k, "button_"))
+			{
+				echo "o no deprecated key found in shortcode?!"; 
+				echo $k . " / " . $v;
+				//die();
+			}
+		}
+	}
+	
+	
+	if ($text == "")
 	{
 		return "";
 	}
@@ -13,12 +32,12 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		return "";
 	}		
 
-	$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
-	$button_color = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
-	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
-	$button_margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $button_margin);
+	$alignment = nxs_getcssclassesforlookup("nxs-align-", $alignment);
+	$colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $colorzen);
+	$scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $scale);
+	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $margin);
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
-	$button_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $button_fontzen);
+	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	
 	if ($destination_articleid != "")
 	{
@@ -107,8 +126,8 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 	}
 	
 	$result = '';
-	$result .= '<p class="' . $button_alignment . ' nxs-padding-bottom0">';
-	$result .= '<a target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $button_scale_cssclass . ' ' . $border_radius_cssclass . ' ' . $button_margin_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '" href="' . $url . '">' . $button_text . '</a>';
+	$result .= '<p class="' . $alignment . ' nxs-padding-bottom0">';
+	$result .= '<a target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $scale_cssclass . ' ' . $border_radius_cssclass . ' ' . $margin_cssclass . ' ' . $colorzen . ' ' . $fontzen_cssclass . '" href="' . $url . '">' . $text . '</a>';
 	$result .= '</p>';
 	
 	return $result;
@@ -117,6 +136,24 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 function nxs_frontendframework_nxs_gethtmlfortitle($args)
 {
 	extract($args);
+	
+	if ($_REQUEST["check"] == "atts")
+	{
+		foreach ($args as $k=>$v)
+		{
+			if ($k == "color")
+			{
+				echo "o no deprecated key found in shortcode?!"; 
+				echo $k . " / " . $v;
+			}
+			else if (nxs_stringstartswith($k, "text_"))
+			{
+				echo "o no deprecated key found in shortcode?!"; 
+				echo $k . " / " . $v;
+				//die();
+			}
+		}
+	}
 	
 	if ($title == "")
 	{
@@ -146,35 +183,33 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 	}
 	
 	// Title alignment
-	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
-	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
+	$alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $align);
+	$fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $fontsize);
 	
-	$title_margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $title_margin);
-	$title_margin_bottom_cssclass = nxs_getcssclassesforlookup("nxs-margin-bottom", $title_margin_bottom);
+	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $margin);
+	$margin_bottom_cssclass = nxs_getcssclassesforlookup("nxs-margin-bottom", $margin_bottom);
 	
-	$heading = "";
-	
-	$title_heading = str_replace("h", "", $title_heading);
+	$heading = str_replace("h", "", $heading);
 	
 	// Title importance (H1 - H6)
-	if ($title_heading != "")
+	if ($heading != "")
 	{
-		$headingelement = "h" . $title_heading;
+		$headingelement = "h" . $heading;
 
 	}
 	else
 	{
-		// TODO: derive the title_importance based on the title_fontsize
-		//nxs_webmethod_return_nack("to be implemented; derive title_heading from title_fontsize");
+		// TODO: derive the importance based on the fontsize
+		//nxs_webmethod_return_nack("to be implemented; derive heading from fontsize");
 		$headingelement = "h1";
 	}
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_alignment_cssclass, $title_fontsize_cssclass, $title_margin_cssclass, $title_margin_bottom_cssclass);
-	if ($title_heightiq != "")
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $alignment_cssclass, $fontsize_cssclass, $margin_cssclass, $margin_bottom_cssclass);
+	if ($heightiq != "")
 	{
 		$heightiqprio = "p1";
-		$title_heightiqgroup = "title";
-		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
+		$heightiqgroup = "title";
+		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$heightiqgroup}");
 	}
 	
 	if ($microdata != "")
@@ -1166,27 +1201,12 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 	$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $atts["colorzen"]);
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $atts["border_radius"]);
 	
-	
 	$cssclasses = nxs_concatenateargswithspaces($border_radius_cssclass, $margin_cssclass, $padding_cssclass, $colorzen_cssclass);
 	
 	$result = "<div class='{$cssclasses}'>{$unwrapped_content}</div>";
 	return $result;
 }
 add_shortcode('nxs_wrap', 'nxs_sc_wrap');
-
-function nxs_sc_text($atts, $content = null, $name='') 
-{
-	$args = array
-	(
-		"text" => $content,
-		"fontsize" => $atts["fontsize"],
-		"text_align" => $atts["text_align"],
-		"texttype" => $atts["texttype"]
-	);
-	$result = nxs_frontendframework_nxs_gethtmlfortext($args);
-	return $result;
-}
-add_shortcode('nxs_text', 'nxs_sc_text');
 
 function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
 {
@@ -1528,7 +1548,25 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 {
 	extract($args);
 	
-	if ( $text == "")
+	if ($_REQUEST["check"] == "atts")
+	{
+		foreach ($args as $k=>$v)
+		{
+			if ($k == "color")
+			{
+				echo "o no deprecated key found in shortcode?!"; 
+				echo $k . " / " . $v;
+			}
+			else if (nxs_stringstartswith($k, "text_"))
+			{
+				echo "o no deprecated key found in shortcode?!"; 
+				echo $k . " / " . $v;
+				//die();
+			}
+		}
+	}
+	
+	if ($text == "")
 	{
 		return "";
 	}
@@ -1539,19 +1577,20 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 	}
 	
 	// Text styling
-	if ($text_showliftnote != "") { $text_showliftnote_cssclass = 'nxs-liftnote'; }
-	if ($text_showdropcap != "") { $text_showdropcap_cssclass = 'nxs-dropcap'; }
+	if ($showliftnote != "") { $showliftnote_cssclass = 'nxs-liftnote'; }
+	if ($showdropcap != "") { $showdropcap_cssclass = 'nxs-dropcap'; }
 	
-	$text_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $text_alignment);
-	$text_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $text_fontzen);
+	$alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $align);
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $text_alignment_cssclass, $text_showliftnote_cssclass, $text_showdropcap_cssclass, $text_fontzen_cssclass);
+	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	
-	if ($text_heightiq != "") 
+	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
+	
+	if ($heightiq != "") 
 	{
 		$heightiqprio = "p1";
-		$text_heightiqgroup = "text";
-		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
+		$heightiqgroup = "text";
+		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$heightiqgroup}");
 	}
 	
 	if ($texttype == "quote")
@@ -1572,6 +1611,46 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 		$styles .= "display: flex; flex-direction: row; justify-content: flex-end;";
 	}
 	
+	if (nxs_stringcontains($fontsize, "-"))
+	{
+		// format; nxs-fontsize-1-2
+		$val = $fontsize;
+		$val = str_replace("nxs-fontsize-", "", $val);
+		
+		$pieces = explode("-", $val);
+		$whole = $pieces[0];
+		$fraction = $pieces[1];
+		$value = $whole + ($fraction / 10);
+		$factor = 15;
+		$value = $value * $factor;
+		
+		$styles .= "font-size: {$value}px !important;";
+	}
+	
+	if ($line_height == "")
+	{
+		// default
+	}
+	else if (nxs_stringcontains($line_height, "-"))
+	{
+		// format; nxs-line-height-1-0
+		$val = $line_height;
+		$val = str_replace("nxs-line-height-", "", $val);
+		
+		$pieces = explode("-", $val);
+		$whole = $pieces[0];
+		$fraction = $pieces[1];
+		$value = $whole + ($fraction / 10);
+		$factor = 1.625;
+		$value = $value * $factor;
+		
+		$styles .= "line-height: {$value}em !important;";
+	}
+	else
+	{
+		$styles .= "line-height: unsupported_$val;";
+	}
+	
 	// apply shortcode on text widget
 	$text = do_shortcode($text);
 		
@@ -1579,3 +1658,4 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 	
 	return $result;
 }
+

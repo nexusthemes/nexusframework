@@ -5,20 +5,20 @@ function nxs_sc_reconstructshortcode_keyvalue($v, $k)
 	return sprintf("%s='%s'", $k, $v); 
 }
 
-function nxs_sc_reconstructshortcode($attributes, $content, $name)
+function nxs_sc_reconstructshortcode($atts, $content, $name)
 {
-	$implodedattributes = implode
+	$implodedatts = implode
 	(
 		' ', 
 		array_map
 		(
     	"nxs_sc_reconstructshortcode_keyvalue",
-    	$attributes,
-    	array_keys($attributes)
+    	$atts,
+    	array_keys($atts)
 		)
 	);
 	
-	$reconstructed = "[{$name} {$implodedattributes}]";
+	$reconstructed = "[{$name} {$implodedatts}]";
 	if ($content !== null && $content !== "")
 	{
 		$reconstructed .= "{$content}[/{$name}]";
@@ -33,9 +33,9 @@ function nxs_sc_reconstructshortcode($attributes, $content, $name)
 // and it shsould transform the shortcode when the condition is met
 // to facilitate this we use the following function
 // sample; sc_scope="list.iterator.filter"
-function nxs_sc_handlescope($attributes, $content = null, $name='')
+function nxs_sc_handlescope($atts, $content = null, $name='')
 {
-	extract($attributes);
+	extract($atts);
 	
 	$result = false;
 	
@@ -52,7 +52,7 @@ function nxs_sc_handlescope($attributes, $content = null, $name='')
 			// NOTE; we don't "just" return the value, we  return the entire shortcode as-is
 			// such that it can be re-evaluated by this same shortcode when we -are- executing in
 			// the right scope
-			$result = nxs_sc_reconstructshortcode($attributes, $content, $name);
+			$result = nxs_sc_reconstructshortcode($atts, $content, $name);
 		}
 	}
 	
@@ -60,13 +60,13 @@ function nxs_sc_handlescope($attributes, $content = null, $name='')
 }
 
 // for example [nxsstring ops="lo;x_"]plumber_wordpress_theme[/nxsstring]
-function nxs_sc_string($attributes, $content = null, $name='') 
+function nxs_sc_string($atts, $content = null, $name='') 
 {
-	extract($attributes);
+	extract($atts);
 	
 	if (isset($sc_scope))
 	{
-		$scoperesult = nxs_sc_handlescope($attributes, $content, $name);
+		$scoperesult = nxs_sc_handlescope($atts, $content, $name);
 		if ($scoperesult !== false)
 		{
 			// we are outside the scope, exit
@@ -79,16 +79,16 @@ function nxs_sc_string($attributes, $content = null, $name='')
 	$content = $content;
 	if ($content == "")
 	{
-		$content = $attributes["input"];
+		$content = $atts["input"];
 	}
 	if ($content == "")
 	{
-		$content = $attributes["value"];
+		$content = $atts["value"];
 	}
 	
 	$input = $content;
 	
-	$ops = $attributes["ops"];
+	$ops = $atts["ops"];
 	$ops = str_replace(",","|", $ops);
 	$ops = str_replace(";","|", $ops);
 	$opslist = explode("|", $ops);
@@ -124,8 +124,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "str_replace")
 		{
-			$search = $attributes["search"];
-			$replace = $attributes["replace"];
+			$search = $atts["search"];
+			$replace = $atts["replace"];
 			
 			$input = str_replace($search, $replace, $input);
 		}
@@ -140,21 +140,21 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "rand")
 		{
 			$min = 0;
-			if (isset($attributes["min"]))
+			if (isset($atts["min"]))
 			{
-				$min = $attributes["min"];
+				$min = $atts["min"];
 			}
 			$max = getrandmax();
-			if (isset($attributes["max"]))
+			if (isset($atts["max"]))
 			{
-				$max = $attributes["max"];
+				$max = $atts["max"];
 			}
 			$input = rand($min, $max);
 		}
 		else if ($op == "sitemapentry")
 		{
 			// todo: also support the changefreq and priority
-			$url = nxs_url_prettyfy($attributes["url"]);
+			$url = nxs_url_prettyfy($atts["url"]);
 			$input = "<url><loc>{$url}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>";
 			
 			if (is_user_logged_in())
@@ -165,20 +165,20 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "randomstring")
 		{
 			$length = 10;
-			if (isset($attributes["length"]))
+			if (isset($atts["length"]))
 			{
-				$length = $attributes["length"];
+				$length = $atts["length"];
 			}
 			$input = nxs_generaterandomstring($length);
 		}
 		else if ($op == "md5stringpicker")
 		{
-			//error_log("md5stringpicker;" . json_encode($attributes));
+			//error_log("md5stringpicker;" . json_encode($atts));
 			
-			$options = $attributes["options"];
+			$options = $atts["options"];
 			$pieces = explode("|", $options);
 			$max = count($pieces);
-			$indexer = $attributes["indexer"];
+			$indexer = $atts["indexer"];
 			$md5 = md5($indexer);
 			$inthash = intval(substr($md5, 0, 8), 16);
 			$index = $inthash % $max;
@@ -218,7 +218,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "urlprettyfy" || $op == "urlprettify")
 		{
-			if ($attributes["debug"] == "true")
+			if ($atts["debug"] == "true")
 			{
 				return "urlprettyfy;debug;($content);($input);($value)";
 			}
@@ -230,7 +230,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			else if (nxs_stringcontains($input, "{{"))
 			{
 				// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
-				$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
+				$input = nxs_sc_reconstructshortcode($atts, $origcontent, $name);
 				// note; an INSTANT return; don't proceed with any other possible operators
 				return $input;
 			}
@@ -259,7 +259,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "linkify")
 		{
-			if ($attributes["excludeyoutube"] == "true")
+			if ($atts["excludeyoutube"] == "true")
 			{
 				$input = str_replace("https://www.youtube", "*NXS*PLACEHOLDER*YOUTUBE*", $input);
 			}
@@ -271,7 +271,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
         $input
       );
 
-			if ($attributes["excludeyoutube"] == "true")
+			if ($atts["excludeyoutube"] == "true")
 			{
 				$input = str_replace("*NXS*PLACEHOLDER*YOUTUBE*", "https://www.youtube", $input);
 			}
@@ -314,9 +314,9 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "trim")
 		{
-			if (isset($attributes["trimchars"]))
+			if (isset($atts["trimchars"]))
 			{
-				$character_mask = $attributes["trimchars"];
+				$character_mask = $atts["trimchars"];
 				$input = trim($input, $character_mask);
 			}
 			else
@@ -340,7 +340,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			if ($shouldbereplaced)
 			{
 				// if thats true, replace it with whatever is set as the replacement in the shortcode
-				$replacement = $attributes["modellookupmismatchreplacement"];
+				$replacement = $atts["modellookupmismatchreplacement"];
 				$input = $replacement;
 			}
 		}
@@ -363,7 +363,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			if ($shouldbereplaced)
 			{
 				// if thats true, replace it with whatever is set as the replacement in the shortcode
-				$replacement = $attributes["emptyreplacement"];
+				$replacement = $atts["emptyreplacement"];
 				$input = $replacement;
 			}
 		}
@@ -391,8 +391,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			
 			// if thats true, replace it with whatever is set as the replacement in the shortcode
-			$queryparameter = $attributes["queryparameter"];
-			$description = $attributes["description"];
+			$queryparameter = $atts["queryparameter"];
+			$description = $atts["description"];
 			
 			// expose to the outside world this queryparameter is used and what it does
 			// so code that invokes the page will know what input parameters to use
@@ -410,9 +410,9 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			else
 			{
-				if (isset($attributes["fallback"]))
+				if (isset($atts["fallback"]))
 				{
-					$fallback = $attributes["fallback"];
+					$fallback = $atts["fallback"];
 				}
 				else
 				{
@@ -422,7 +422,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$input = $fallback;
 			}
 			
-			if ($attributes["quotesfix"] == "true")
+			if ($atts["quotesfix"] == "true")
 			{
 				$input = str_replace('\"', '"', $input);
 			}
@@ -436,12 +436,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "multiply")
 		{
 			// if thats true, replace it with whatever is set as the replacement in the shortcode
-			$replacement = $input * $attributes["multiplyfactor"];
+			$replacement = $input * $atts["multiplyfactor"];
 			$input = $replacement;
 		}
 		else if ($op == "intval")
 		{
-			if ($attributes["strip"] == "allexceptdigits")
+			if ($atts["strip"] == "allexceptdigits")
 			{
 				// only keep the digits
 				$input = preg_replace('/\D/', '', $input);
@@ -466,25 +466,25 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "modelproperty")
 		{
-			if ($attributes["errorlog"] == "true")
+			if ($atts["errorlog"] == "true")
 			{
 				error_log("shortcodes errorlog;modeluri:$modeluri;property:$property");
 			}
-			if ($attributes["debug"] == "true")
+			if ($atts["debug"] == "true")
 			{
 				return "modelproperty; modeluri:$modeluri;property:$property";
 			}
 			
 			global $nxs_g_modelmanager;
 			
-			$source = $attributes["source"];
+			$source = $atts["source"];
 			if ($source == "md5indexer")
 			{
 				// the modeluri is derived based upon the md5 indexer of a specified schema
-				$schema = $attributes["schema"];
-				$property = $attributes["property"];
+				$schema = $atts["schema"];
+				$property = $atts["property"];
 				
-				$cachebehaviour = $attributes["cachebehaviour"];
+				$cachebehaviour = $atts["cachebehaviour"];
 				if ($cachebehaviour == "none")
 				{
 				}
@@ -517,9 +517,9 @@ function nxs_sc_string($attributes, $content = null, $name='')
 					{
 						// operator
 						
-						$operatorproperty = $attributes["where_property{$conditionindexer}"];
-						$operator = $attributes["where_operator{$conditionindexer}"];
-						$operatorvalue = $attributes["where_value{$conditionindexer}"];
+						$operatorproperty = $atts["where_property{$conditionindexer}"];
+						$operator = $atts["where_operator{$conditionindexer}"];
+						$operatorvalue = $atts["where_value{$conditionindexer}"];
 		
 						if ($operator == "")
 						{
@@ -575,7 +575,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				$max = count($possibilities);
 				//error_log("modelproperty;md5indexer;max;".$max);
 
-				$indexer = $attributes["indexer"];
+				$indexer = $atts["indexer"];
 				//error_log("modelproperty;md5indexer;indexer;".$indexer);
 				
 				$md5 = md5($indexer);
@@ -588,7 +588,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			else 
 			{
-				$modeluri = $attributes["modeluri"];		// the base modeluri for which the property will be retrieved
+				$modeluri = $atts["modeluri"];		// the base modeluri for which the property will be retrieved
 				if ($modeluri == "")
 				{
 					global $nxs_global_current_containerpostid_being_rendered;
@@ -596,8 +596,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				}
 			}
 			
-			$property = $attributes["property"];		// the property to be retrieved
-			$relations = $attributes["relations"];
+			$property = $atts["property"];		// the property to be retrieved
+			$relations = $atts["relations"];
 			
 			//
 			$ignorewhenlist = array($modeluri, $property, $relations, $input);
@@ -609,7 +609,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				if (nxs_stringcontains($ignorewhen, "{{"))
 				{
 					// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
-					$input = nxs_sc_reconstructshortcode($attributes, $origcontent, $name);
+					$input = nxs_sc_reconstructshortcode($atts, $origcontent, $name);
 					// note; an INSTANT return; don't proceed with any other possible operators
 					return $input;
 				}
@@ -617,7 +617,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			
 			
 			
-			if ($attributes["errorlog"] == "true")
+			if ($atts["errorlog"] == "true")
 			{
 				error_log("modelproperty; relations: {$relations}");
 			}
@@ -665,7 +665,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 					$relationmodelid = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
 					$relationmodelid = trim($relationmodelid);
 					
-					if ($attributes["errorlog"] == "true")
+					if ($atts["errorlog"] == "true")
 					{
 						$url = nxs_geturlcurrentpage();
 						error_log("modelproperty; relationwalker; $url; modeluri:$modeluri prop:$relationproperty value:{$relationmodelid}@{$relationschema}");
@@ -714,7 +714,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			// if we wouldn't replace it here...
 			$input = str_replace('$', "&dollar;", $input);
 				
-			if ($attributes["errorlog"] == "true")
+			if ($atts["errorlog"] == "true")
 			{
 				error_log("modelproperty; result;{$input}");
 			}
@@ -725,7 +725,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 
 			global $nxs_g_modelmanager;
 			
-			$schema = $attributes["schema"];
+			$schema = $atts["schema"];
 			$modeluri = "singleton@listof{$schema}";
 			$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
 			$ids = array();
@@ -743,7 +743,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			
 			$max = count($ids);
-			$indexer = $attributes["indexer"];
+			$indexer = $atts["indexer"];
 			
 			
 			$md5 = md5($indexer);
@@ -752,7 +752,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			$input = $ids[$index];
 			
 			// if the skipindexer is set, we should
-			$skipindexer = $attributes["skipindexer"];
+			$skipindexer = $atts["skipindexer"];
 			if (isset($skipindexer))
 			{
 				$md5 = md5($skipindexer);
@@ -782,7 +782,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			if (is_user_logged_in())
 			{
 				global $nxs_g_modelmanager;
-				$modeluri = $attributes["modeluri"];
+				$modeluri = $atts["modeluri"];
 				$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
 				$taxonomy = "properties";
 				$props = $contentmodel[$taxonomy]["taxonomy"];
@@ -802,10 +802,10 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			
 			$instanceuris = array();
 			
-			$datasourceprovidertype = $attributes["datasourceprovidertype"];
+			$datasourceprovidertype = $atts["datasourceprovidertype"];
 			if ($datasourceprovidertype == "")
 			{
-				$iterator_datasource = $attributes["singularschema"];
+				$iterator_datasource = $atts["singularschema"];
 				if ($iterator_datasource == "")
 				{
 					return "$op; no singularschema specified?";
@@ -825,12 +825,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				global $nxs_g_modelmanager;
 				
 				// step 1; evaluate the singularschema to be used
-				$segmentschemaprovidertype = $attributes["segmentschemaprovidertype"];
+				$segmentschemaprovidertype = $atts["segmentschemaprovidertype"];
 				if ($segmentschemaprovidertype == "modellookup")
 				{
 					// the singularschema to use is to be derived through a modellookup
-					$segmentschema_modellookupuri = $attributes["segmentschema_modellookupuri"];
-					$segmentschema_modellookupproperty = $attributes["segmentschema_modellookupproperty"];
+					$segmentschema_modellookupuri = $atts["segmentschema_modellookupuri"];
+					$segmentschema_modellookupproperty = $atts["segmentschema_modellookupproperty"];
 					
 					// get the property
 					$subargs = array
@@ -850,7 +850,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				return "$op; unsupported sourcetype; $sourcetype";
 			}
 			
-			$cachebehaviour = $attributes["cachebehaviour"];
+			$cachebehaviour = $atts["cachebehaviour"];
 			if ($cachebehaviour == "")
 			{
 			}
@@ -890,9 +890,9 @@ function nxs_sc_string($attributes, $content = null, $name='')
 				{
 					// operator
 					
-					$operatorproperty = $attributes["where_property{$conditionindexer}"] . $attributes["property"];
-					$operator = $attributes["where_operator{$conditionindexer}"] . $attributes["operator"];
-					$operatorvalue = $attributes["where_value{$conditionindexer}"] . $attributes["value"];
+					$operatorproperty = $atts["where_property{$conditionindexer}"] . $atts["property"];
+					$operator = $atts["where_operator{$conditionindexer}"] . $atts["operator"];
+					$operatorvalue = $atts["where_value{$conditionindexer}"] . $atts["value"];
 	
 					if ($operator == "")
 					{
@@ -936,12 +936,12 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "file_get_contents" || $op == "filegetcontents")
 		{
-			$url = $attributes["url"];
+			$url = $atts["url"];
 			$input = nxs_geturlcontents(array("url" => $url));
 		}
 		else if ($op == "jsonsubvalues")
 		{
-			$key = $attributes["key"];
+			$key = $atts["key"];
 			$json = json_decode($input, true);
 			$json = $json[$key];
 			$input = json_encode($json);
@@ -949,14 +949,14 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "ifthenelse")
 		{
 			//error_log("condition for $input");
-			$condition = $attributes["condition"];
+			$condition = $atts["condition"];
 			if ($condition == "true")
 			{
-				$input = $attributes["then"];
+				$input = $atts["then"];
 			}
 			else
 			{
-				$input = $attributes["else"];
+				$input = $atts["else"];
 			}
 		}
 		else if ($op == "strip_tags")
@@ -972,35 +972,35 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		else if ($op == "currenturl")
 		{
 			$input = nxs_geturlcurrentpage();
-			if ($attributes["urlencode"] == "true")
+			if ($atts["urlencode"] == "true")
 			{
 				$input = url_encode($input);
 			}
 		}
 		else if ($op == "addqueryparameter")
 		{
-			$queryparameter = $attributes["queryparameter"];
-			$queryparametervalue = $attributes["queryparametervalue"];
+			$queryparameter = $atts["queryparameter"];
+			$queryparametervalue = $atts["queryparametervalue"];
 			$input = nxs_addqueryparametertourl_v2($input, $queryparameter, $queryparametervalue, true, true);
 		}
 		else if ($op == "explode")
 		{
-			$delimiter = $attributes["delimiter"];
+			$delimiter = $atts["delimiter"];
 			if ($delimiter == "") { $delimiter = "|"; }
 			
-			$return = $attributes["return"];
+			$return = $atts["return"];
 			if ($return == "valueatindex")
 			{
 				//var_dump($input);
 				//die();
 				
-				$index = $attributes["index"];
+				$index = $atts["index"];
 				$pieces = explode($delimiter, $input);
 				$input = $pieces[$index];
 			}
 			else if ($return == "concatenateditemsblanksremoved")
 			{
-				$index = $attributes["index"];
+				$index = $atts["index"];
 				$pieces = explode($delimiter, $input);
 				// remove blanks
 				$pieces = array_filter($pieces);
@@ -1009,8 +1009,8 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			else if ($return == "json")
 			{
-				$index = $attributes["index"];
-				$name = $attributes["name"];
+				$index = $atts["index"];
+				$name = $atts["name"];
 				if ($name == "")
 				{
 					$name = "value";
@@ -1027,7 +1027,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 			}
 			else if ($return == "")
 			{
-				$property = $attributes["property"];
+				$property = $atts["property"];
 				if ($property == "")
 				{
 					$property = "fallback";
@@ -1045,7 +1045,7 @@ function nxs_sc_string($attributes, $content = null, $name='')
 		}
 		else if ($op == "get_posts_modeluris")
 		{
-			$args = $attributes;
+			$args = $atts;
 			$posts = get_posts($args);
 			$modeluris = array();
 			foreach ($posts as $post) 
@@ -1073,13 +1073,13 @@ function nxs_sc_string($attributes, $content = null, $name='')
 add_shortcode('nxsstring', 'nxs_sc_string');
 
 // for example [nxsbool ops="isnotempty" value="aap"]
-function nxs_sc_bool($attributes, $content = null, $name='') 
+function nxs_sc_bool($atts, $content = null, $name='') 
 {
-	extract($attributes);
+	extract($atts);
 	
 	if (isset($sc_scope))
 	{
-		$scoperesult = nxs_sc_handlescope($attributes, $content, $name);
+		$scoperesult = nxs_sc_handlescope($atts, $content, $name);
 		if ($scoperesult !== false)
 		{
 			// we are outside the scope, exit
@@ -1092,14 +1092,14 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 	$input = $content;
 	if ($input == "")
 	{
-		$input = $attributes["input"];
+		$input = $atts["input"];
 	}
 	if ($input == "")
 	{
-		$input = $attributes["value"];
+		$input = $atts["value"];
 	}
 	
-	$ops = $attributes["ops"];
+	$ops = $atts["ops"];
 	$ops = str_replace(",","|", $ops);
 	$ops = str_replace(";","|", $ops);
 	$opslist = explode("|", $ops);
@@ -1149,8 +1149,8 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		}
 		else if ($op == "contains")
 		{
-			$needle = $attributes["containsneedle"];
-			$ignorecase = $attributes["ignorecase"] === "true";
+			$needle = $atts["containsneedle"];
+			$ignorecase = $atts["ignorecase"] === "true";
 			
 			if (nxs_stringcontains_v2($input, $needle, $ignorecase))
 			{
@@ -1169,8 +1169,8 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		}
 		else if ($op == "!contains")
 		{
-			$needle = $attributes["containsneedle"];
-			$ignorecase = $attributes["ignorecase"] === "true";
+			$needle = $atts["containsneedle"];
+			$ignorecase = $atts["ignorecase"] === "true";
 			
 			if (nxs_stringcontains_v2($input, $needle, $ignorecase))
 			{
@@ -1184,7 +1184,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		else if ($op == "equals")
 		{
 			$i = $input;
-			$equalsvalue = $attributes["equalsvalue"];
+			$equalsvalue = $atts["equalsvalue"];
 			
 			if ($input == $equalsvalue)
 			{
@@ -1197,14 +1197,14 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			
 			}
 			
-			if ($attributes["debug"])
+			if ($atts["debug"])
 			{
 				$input = "'$i' vs '$equalsvalue' becomes '$input'";
 			}
 		}
 		else if ($op == "!equals" || $op == "notequals")
 		{
-			$equalsvalue = $attributes["equalsvalue"];
+			$equalsvalue = $atts["equalsvalue"];
 			$orig = $input;
 			if ($input == $equalsvalue)
 			{
@@ -1218,7 +1218,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		}
 		else if ($op == "httpok")
 		{
-			$webmethodoverrideresult = $attributes["webmethodoverrideresult"];
+			$webmethodoverrideresult = $atts["webmethodoverrideresult"];
 			if (nxs_iswebmethodinvocation() && $webmethodoverrideresult != "")
 			{
 				// if the list is very long, its very annoying if the configuration of the list widget
@@ -1229,7 +1229,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 			}
 			else
 			{
-				$url = $attributes["url"];
+				$url = $atts["url"];
 				if ($url == "")
 				{
 					// error_log("url httpok check for; $url; no url specified?");
@@ -1238,7 +1238,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 				
 				$isactualretrievalrequired = true;
 				
-				$cache = $attributes["cache"];
+				$cache = $atts["cache"];
 				$key = "httpheaderresponse_" . md5($url);
 				if ($cache == "")
 				{
@@ -1335,7 +1335,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		}
 		else if ($op == "modelexists")
 		{
-			$modeluri = $attributes["modeluri"];
+			$modeluri = $atts["modeluri"];
 			global $nxs_g_modelmanager;
 			$r = $nxs_g_modelmanager->getmodel($modeluri);
 			if ($r === false)
@@ -1379,7 +1379,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		}
 		else if ($op == "in_array")
 		{
-			$array = $attributes["array"];
+			$array = $atts["array"];
 			$pieces = explode(";", $array);
 			if (in_array($value, $pieces))
 			{
@@ -1392,7 +1392,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 		}
 		else if ($op == "!in_array")
 		{
-			$array = $attributes["array"];
+			$array = $atts["array"];
 			$pieces = explode(";", $array);
 			if (in_array($value, $pieces))
 			{
@@ -1418,7 +1418,7 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 	if (isset($sc_scope))
 	{
 		echo "prior to evaluation;";
-		var_dump($attributes);
+		var_dump($atts);
 		var_dump($content);
 		var_dump($output);
 		echo "----<br />";
@@ -1429,13 +1429,13 @@ function nxs_sc_bool($attributes, $content = null, $name='')
 }
 add_shortcode('nxsbool', 'nxs_sc_bool');
 
-function nxs_sc_command($attributes, $content = null, $name='') 
+function nxs_sc_command($atts, $content = null, $name='') 
 {
-	extract($attributes);
+	extract($atts);
 	
 	if (isset($sc_scope))
 	{
-		$scoperesult = nxs_sc_handlescope($attributes, $content, $name);
+		$scoperesult = nxs_sc_handlescope($atts, $content, $name);
 		if ($scoperesult !== false)
 		{
 			// we are outside the scope, exit
@@ -1448,16 +1448,16 @@ function nxs_sc_command($attributes, $content = null, $name='')
 	$content = $content;
 	if ($content == "")
 	{
-		$content = $attributes["input"];
+		$content = $atts["input"];
 	}
 	if ($content == "")
 	{
-		$content = $attributes["value"];
+		$content = $atts["value"];
 	}
 	
 	$input = $content;
 	
-	$ops = $attributes["ops"];
+	$ops = $atts["ops"];
 	$ops = str_replace(",","|", $ops);
 	$ops = str_replace(";","|", $ops);
 	$opslist = explode("|", $ops);
@@ -1488,9 +1488,9 @@ function nxs_sc_command($attributes, $content = null, $name='')
 add_shortcode('nxscommand', 'nxs_sc_command');
 
 // spinner shortcodes
-function nxs_sc_spin($attributes, $content = null, $name='') 
+function nxs_sc_spin($atts, $content = null, $name='') 
 {
-	extract($attributes);
+	extract($atts);
 	
 	nxs_ob_start();
 	
@@ -1518,7 +1518,7 @@ function nxs_sc_spin($attributes, $content = null, $name='')
 	if (true)
 	{
 		$lookup = array();
-		foreach ($attributes as $key=>$val)
+		foreach ($atts as $key=>$val)
 		{
 			$shoulddecorate = false;
 			
@@ -1540,7 +1540,7 @@ function nxs_sc_spin($attributes, $content = null, $name='')
 			}
 		}
 	
-		// use the attributes passed in to this shortcode as a lookup table
+		// use the atts passed in to this shortcode as a lookup table
 		$translateargs = array
 		(
 			"lookup" => $lookup,
@@ -1560,21 +1560,51 @@ add_shortcode('nxsspin', 'nxs_sc_spin');
 
 // widget specific shortcodes
 
-function nxs_sc_title($attributes, $content = null)
+function nxs_sc_title($atts, $content = null)
 {
-	return nxs_gethtmlfortitle_v4($attributes);
+	if ($content == "" && $atts["title"] != "")
+	{
+		$content = $atts["title"];
+	}
+	
+	$args_overriden = array
+	(
+		"title" => $content,
+	);
+	$args = array_merge($atts, $args_overriden);
+	
+	//
+	//
+	//
+	
+	// delegate rendering to the frontendframework
+	$frontendframework = $_REQUEST["frontendframework"];
+	if ($frontendframework == "")
+	{
+		$frontendframework = "nxs";
+	}
+	
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	require_once($filetoinclude);
+	
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_gethtmlfortitle";
+	$result = call_user_func_array($functionnametoinvoke, array($args));
+	
+	return $result;
 }
 add_shortcode("nxstitle", "nxs_sc_title");
+add_shortcode("nxs_title", "nxs_sc_title");
 
-function nxs_sc_button($attributes, $content = null)
+function nxs_sc_button($atts, $content = null)
 {
-	return nxs_gethtmlforbutton_v2($attributes);
+	return nxs_gethtmlforbutton_v2($atts);
 }
 add_shortcode("nxsbutton", "nxs_sc_button");
+add_shortcode("nxs_button", "nxs_sc_button");
 
-function nxs_sc_googlemap($attributes, $content = null, $name='') 
+function nxs_sc_googlemap($atts, $content = null, $name='') 
 {
-	extract($attributes);
+	extract($atts);
 	
 	global $nxs_sc_googlemap_cnt;
 	$nxs_sc_googlemap_cnt++;
@@ -1719,9 +1749,9 @@ function nxs_vimeo_shortcode( $atts )
 }
 add_shortcode('vimeo', 'nxs_vimeo_shortcode');
 
-function nxs_sc_embed($attributes, $content = null, $name='') 
+function nxs_sc_embed($atts, $content = null, $name='') 
 {
-	extract($attributes);
+	extract($atts);
 	
 	nxs_requirewidget("embed");
 
@@ -1730,7 +1760,7 @@ function nxs_sc_embed($attributes, $content = null, $name='')
 		"render_behaviour" => "code",
 	);
 	// blend the parameters given
-	$args = array_merge($args, $attributes);
+	$args = array_merge($args, $atts);
 	
 	$renderresult = nxs_widgets_embed_render_webpart_render_htmlvisualization($args);
 	return $renderresult["html"];
@@ -1739,9 +1769,9 @@ add_shortcode('nxsembed', 'nxs_sc_embed');
 
 
 
-function nxs_sc_video($attributes, $content = null, $name='') 
+function nxs_sc_video($atts, $content = null, $name='') 
 {
-	extract($attributes);
+	extract($atts);
 	
 	if ($id == "")
 	{
@@ -1774,7 +1804,7 @@ function nxs_sc_video($attributes, $content = null, $name='')
 				"placeholderid" => $id,
 			);
 			
-			$args = array_merge($attributes, $overriden_args);
+			$args = array_merge($atts, $overriden_args);
 			
 			$renderresult = nxs_widgets_youtube_render_webpart_render_htmlvisualization($args);
 			echo $renderresult["html"];
@@ -1788,3 +1818,37 @@ function nxs_sc_video($attributes, $content = null, $name='')
 	return $output;
 }
 add_shortcode('nxs_video', 'nxs_sc_video');
+
+function nxs_sc_text($atts, $content = null, $name='') 
+{
+	if ($content == "" && $atts["text"] != "")
+	{
+		$content = $atts["text"];
+	}
+	
+	$args_overriden = array
+	(
+		"text" => $content,
+	);
+	$args = array_merge($atts, $args_overriden);
+	
+	//
+	//
+	//
+	
+	// delegate rendering to the frontendframework
+	$frontendframework = $_REQUEST["frontendframework"];
+	if ($frontendframework == "")
+	{
+		$frontendframework = "nxs";
+	}
+	
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	require_once($filetoinclude);
+	
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_gethtmlfortext";
+	$result = call_user_func_array($functionnametoinvoke, array($args));
+	
+	return $result;
+}
+add_shortcode('nxs_text', 'nxs_sc_text');

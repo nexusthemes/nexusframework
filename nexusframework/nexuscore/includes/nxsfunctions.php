@@ -8115,10 +8115,10 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 	$args = array
 	(
 		"title" => $title,
-		"title_heading" => $title_heading,
-		"title_alignment" => $title_alignment,
-		"title_fontsize" => $title_fontsize,
-		"title_heightiq" => $title_heightiq,
+		"heading" => $title_heading,
+		"alignment" => $title_alignment,
+		"fontsize" => $title_fontsize,
+		"heightiq" => $title_heightiq,
 		"destination_articleid" => $destination_articleid,
 		"destination_url" => $destination_url,
 		"destination_target" => $destination_target,

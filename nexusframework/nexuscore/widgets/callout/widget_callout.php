@@ -724,10 +724,10 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	$a = array
 	(
 		"title" => $title,
-		"title_heading" => $title_heading,
-		"title_alignment" => $title_alignment,
-		"title_fontsize" => $title_fontsize,
-		"title_heightiq" => $title_heightiq,
+		"heading" => $title_heading,
+		"align" => $title_alignment,
+		"fontsize" => $title_fontsize,
+		"heightiq" => $title_heightiq,
 		"destination_articleid" => $destination_articleid,
 		"destination_url" => $destination_url,
 		"destination_target" => $destination_target,

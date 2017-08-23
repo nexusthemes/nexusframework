@@ -1,18 +1,5 @@
 <?php
 
-function nxs_getlineheight($fontsize)
-{
-	// if the fontsize is bigger, the lineheight should be smaller
-	$result = 1.625;
-	
-	if ($fontsize > 18)
-	{
-		$result = 1.2;
-	}
-	
-	return "{$result}em";
-}
-
 function nxs_frontendframework_nxs2_footer()
 {
 	global $nxs_gl_style_footer_cssrules;
@@ -224,22 +211,13 @@ function nxs_getflatalphabackgroundcolorcss($color, $alpha)
 	$g = $rgb["g"];
 	$b = $rgb["b"];
 	
-	if ($alpha == "0-0")
+	$alphavalue = str_replace("-", ".", $alpha);
+	if ($alphavalue == "0.0")
 	{
-		$result .= "background-color: rgba({$r}, {$g}, {$b}, 0);";
-		// skip it, its fully transparent!
+		$alphavalue = 0;
 	}
-	else
-	{
-		$alphavalue = str_replace("-", ".", $alpha);
-		$result .= "background-color: rgba({$r}, {$g}, {$b}, {$alphavalue});";
-	}
-	/*
-	else
-	{
-		$result .= "background-color: rgba({$r}, {$g}, {$b}, todo_{$alpha});";
-	}
-	*/
+	
+	$result .= "background-color: rgba({$r}, {$g}, {$b}, {$alphavalue});";
 	
 	return $result;
 }
@@ -250,22 +228,25 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 	foreach ($styles as $key => $val)
 	{
 		$val = trim($val);		
+		
+		
 		$concatenated .= "{$key}{$val}";
-		if ($key == "button_alignment")
+		if ($key == "align")
 		{
+			$val = str_replace("nxs-align-", "", $val);
 			if ($val == "")
 			{
 				$rules[] = "text-align: center;";
 			}
-			else if ($val == "nxs-align-left")
+			else if ($val == "left")
 			{
 				$rules[] = "text-align: left;";
 			}
-			else if ($val == "nxs-align-center")
+			else if ($val == "center")
 			{
 				$rules[] = "text-align: center;";
 			}
-			else if ($val == "nxs-align-right")
+			else if ($val == "right")
 			{
 				$rules[] = "text-align: right;";
 			}
@@ -474,17 +455,18 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		}
 		else if ($key == "colorzen")
 		{
+			// nxs-colorzen nxs-colorzen-c12-dm => // nxs-colorzen-c12-dm
 			$rules[] = "border-style: solid;";
 			
-			// nxs-colorzen nxs-colorzen-c12-dm => // nxs-colorzen-c12-dm
 			$val = str_replace("nxs-colorzen ", "", $val);
+			$val = str_replace("nxs-colorzen-", "", $val);
 			
 			if ($val != "")
 			{
 				// nxs-colorzen-c12-dm
-				$parts = explode("-", $val, 4);	
+				$parts = explode("-", $val, 2);	
 				
-				$coloridentification = $parts[2];		// c12
+				$coloridentification = $parts[0];		// c12
 				
 				$middle = "777777";
 				if (nxs_hassitemeta())
@@ -511,9 +493,14 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 						// overruled; always 100% black
 						$middle = "000000";
 					}
+					else if ($coloridentification == "base1")
+					{
+						// overruled; always 100% white
+						$middle = "FFFFFF";
+					}
 				}
 				
-				$transformation = $parts[3];
+				$transformation = $parts[1];
 		
 				$delta = 0.2;
 		
@@ -542,6 +529,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					// background is alpha (flat)
 					$hex = $middle;
 					$alpha = substr($transformation, 1);
+					
 					$rules[] = nxs_getflatalphabackgroundcolorcss($hex, $alpha);
 				}
 				else
@@ -583,7 +571,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
     	$rules[] = "border-radius: 3px;";
     	$rules[] = "cursor: pointer;";
 		}
-		else if ($key == "button_scale")
+		else if ($key == "scale")
 		{
 			if ($val == "")
 			{
@@ -596,7 +584,6 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
     		$rules[] = "padding-right: 18px;";
     		$rules[] = "padding-top: 11px;";
     		$rules[] = "padding-bottom: 11px;";
-				$rules[] = "line-height: " . nxs_getlineheight(22) . " !important;";
 			}
 			else if ($val == "nxs-button-scale-2-0")
 			{
@@ -605,31 +592,19 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
     		$rules[] = "padding-right: 20px;";
     		$rules[] = "padding-top: 12px;";
     		$rules[] = "padding-bottom: 12px;";
-				$rules[] = "line-height: " . nxs_getlineheight(24) . " !important;";
 			}
 			else
 			{
-				$rules[] = "unsupported_button_scale_{$key}:{$val}";
+				$rules[] = "unsupported_scale_{$key}:{$val}";
 			}
 		}
 		else if ($key == "fontsize" || false)
 		{
+			$val = str_replace("nxs-fontsize-", "", $val);
+			
 			if ($val == "")
 			{
 				// leave as-is (default)
-			}
-			else if (nxs_stringstartswith($val, "nxs-fontsize-"))
-			{
-				// format; nxs-fontsize-1-2
-				$pieces = explode("-", $val);
-				$whole = $pieces[2];
-				$fraction = $pieces[3];
-				$value = $whole + ($fraction / 10);
-				$factor = 15;
-				$value = $value * $factor;
-				
-				$rules[] = "font-size: {$value}px !important;";
-				$rules[] = "line-height: " . nxs_getlineheight($value) . " !important;";
 			}
 			else if (nxs_stringcontains($val, "-"))
 			{
@@ -641,63 +616,43 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$factor = 15;
 				$value = $value * $factor;
 				
+				if ($value == 0)
+				{
+					echo "huh? $val";
+				}
+				
 				$rules[] = "font-size: {$value}px !important;";
-				$rules[] = "line-height: " . nxs_getlineheight($value) . " !important;";
 			}
 			else
 			{
 				$rules[] = "font-size: unsupported__{$val};";
 			}
 		}
-		else if ($key == "title_fontsize" || false)
-		{
-			// todo: derive automatically; factor * 15 = pixel size
-			if ($val == "")
-			{
-				// leave as-is (default)
-			}
-			else if (nxs_stringstartswith($val, "nxs-title-fontsize-"))
-			{
-				$pieces = explode("-", $val);
-				$whole = $pieces[3];
-				$fraction = $pieces[4];
-				$value = $whole + ($fraction / 10);
-				$factor = 15;
-				$value = $value * $factor;
-				$rules[] = "font-size: {$value}px !important;";
-				$rules[] = "line-height: " . nxs_getlineheight($value) . " !important;";
-			}
-			else
-			{
-				$rules[] = "unsupported__title_fontsize__{$key}:{$val};";
-			}
-		}
 		else if ($key == "fontzen" || false)
 		{
+			$val = str_replace("nxs-fontzen-", "", $val);
+			
 			if ($val == "")
 			{
 				// leave as-is (default)
 			}
-			else if (nxs_stringstartswith($val, "nxs-fontzen-"))
+			else 
 			{
 				$sitemeta = nxs_getsitemeta();
-				$pieces = explode("-", $val);
-				$fontzenid = $pieces[2];
+				$fontzenid = $val;
 				$sanitizedfontfamily = str_replace("\'", "'", nxs_font_getcleanfontfam($sitemeta["vg_fontfam_{$fontzenid}"]));
 				$rules[] = "font-family: {$sanitizedfontfamily};";
-			}
-			else
-			{
-				$rules[] = "font-family: unsupported_{$key}_{$val};";
 			}
 		}
 		else if ($key == "border_radius")
 		{
+			$val = str_replace("nxs-border-radius-", "", $val);
+			
 			if ($val == "")
 			{
 				// 
 			}
-			else if (nxs_stringstartswith($val, "nxs-border-radius-"))
+			else if (nxs_stringcontains($val, "-"))
 			{
 				$pieces = explode("-", $val);
 				$whole = $pieces[2];
@@ -748,6 +703,31 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rules[] = "font-style: italic;";
 			}
 		}
+		else if ($key == "line_height")
+		{
+			$val = str_replace("nxs-line-height-", "", $val);
+				
+			if ($val == "")
+			{
+				// default
+			}
+			else if (nxs_stringcontains($val, "-"))
+			{
+				// format; 1-0
+				$pieces = explode("-", $val);
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
+				$value = $whole + ($fraction / 10);
+				$factor = 1.625;
+				$value = $value * $factor;
+				
+				$rules[] = "line-height: {$value}em !important;";
+			}
+			else
+			{
+				$rules[] = "line-height: unsupported_$val;";
+			}
+		}
 		else
 		{
 			$rules[] = "unsupported_{$key}:{$val};";
@@ -796,7 +776,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 {
 	extract($args);
 	
-	if ($button_text == "")
+	if ($text == "")
 	{
 		return "";
 	}
@@ -805,11 +785,9 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 		return "";
 	}
 	
-	$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
-	$button_margin = nxs_getcssclassesforlookup("nxs-margin", $button_margin);
-	$button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
-	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
-	$button_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $button_fontzen);
+	$margin = nxs_getcssclassesforlookup("nxs-margin", $margin);
+	$scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $scale);
+	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
 	
 	if ($destination_articleid != "")
@@ -900,17 +878,18 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	}
 
 	$styles = array();
-	$styles["button_alignment"] = $button_alignment;
+	$styles["align"] = $align;
 	$styles["padding_bottom"] = "nxs-padding-bottom0";
-	$styles["margin"] = $button_margin;
+	$styles["margin"] = $margin;
+	$styles["line_height"] = "0-8";
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_1 = $compiled[0]["id"];
 	//
 	
 	$styles = array();
-	$styles["colorzen"] = $button_color_cssclass; // "nxs-colorzen-c12-dm";
-	$styles["button"] = "";
-	$styles["button_scale"] = $button_scale_cssclass;
+	$styles["colorzen"] = $colorzen;
+	$styles["button"] = "";	// ?
+	$styles["scale"] = $scale_cssclass;
 	$styles["border_radius"] = $border_radius_cssclass;
 	
 	if ($_REQUEST["debugbutton"] == "true")
@@ -942,7 +921,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	
 	$result = '';
 	$result .= '<p class="' . $compiled[0]["id"] . '">';
-	$result .= '<button target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $button_fontzen_cssclass . '">' . $button_text . '</button>';
+	$result .= '<button target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $fontzen_cssclass . '">' . $text . '</button>';
 	$result .= '</p>';
 	
 	
@@ -1001,55 +980,46 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 		$destination_relation_html = 'rel="nofollow"';
 	}
 	
-	$heading = "";
-	
 	// Title importance (H1 - H6)
-	if ($title_heading == "")
+	if ($heading == "")
 	{
-		$title_heading = "1";
+		$heading = "1";
 	}
-	$title_heading = str_replace("h", "", $title_heading);
-	$headingelement = "h" . $title_heading;
+	$heading = str_replace("h", "", $heading);
+	$headingelement = "h" . $heading;
 	
 	// Title alignment
-	$title_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $title_alignment);
-	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-title-fontsize-", $title_fontsize);
-	if ($title_fontsize_cssclass == "")
+	if ($fontsize == "")
 	{
 		// derive the fontsize based upon the heading type (h1, h2, ...)
-		if ($title_heading == "2")
+		if ($heading == "2")
 		{
-			$title_fontsize_cssclass = "nxs-title-fontsize-1-8";
+			$fontsize = "1-8";
 		}
-		else if ($title_heading == "3")
+		else if ($heading == "3")
 		{
-			$title_fontsize_cssclass = "nxs-title-fontsize-1-6";
+			$fontsize = "1-6";
 		}
-		else if ($title_heading == "4")
+		else if ($heading == "4")
 		{
-			$title_fontsize_cssclass = "nxs-title-fontsize-1-4";
+			$fontsize = "1-4";
 		}
-		else if ($title_heading == "5")
+		else if ($heading == "5")
 		{
-			$title_fontsize_cssclass = "nxs-title-fontsize-1-2";
+			$fontsize = "1-2";
 		}
 		else
 		{
-			echo "unsupported title_heading; $title_heading";
+			echo "unsupported heading; $heading";
 		}
 	}
+	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $margin);
 	
-	$title_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $title_color);
-	
-	$title_margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $title_margin);
-	$title_margin_bottom_cssclass = nxs_getcssclassesforlookup("nxs-margin-bottom", $title_margin_bottom);
-	
-	// $cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_alignment_cssclass, $title_fontsize_cssclass, $title_margin_cssclass, $title_margin_bottom_cssclass);
-	if ($title_heightiq != "")
+	if ($heightiq != "")
 	{
 		$heightiqprio = "p1";
-		$title_heightiqgroup = "title";
-		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$title_heightiqgroup}");
+		$heightiqgroup = "title";
+		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$heightiqgroup}");
 	}
 	
 	if ($microdata != "")
@@ -1065,16 +1035,17 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	{
 		$fontzen = "2";
 	}
-	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	
 	//
 	$styles = array();
-	$styles["title_fontsize"] = $title_fontsize_cssclass;
+	$styles["fontsize"] = $fontsize;
 	$styles["content_justify"] = $content_justify;
-	$styles["colorzen"] = $title_color_cssclass;
-	$styles["margin"] = $title_margin_cssclass;
-	$styles["margin_bottom"] = $title_margin_bottom_cssclass;
-	$styles["fontzen"] = $fontzen_cssclass;
+	$styles["colorzen"] = $colorzen;
+	$styles["margin"] = $margin;
+	$styles["margin_bottom"] = $margin_bottom;
+	$styles["fontzen"] = $fontzen;
+	$styles["line_height"] = "0-8";
+	$styles["align"] = $align;
 	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
@@ -2290,8 +2261,6 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 
-	
-	//$image_border .= '<img class="' . $grayscale . ' ' . $enlarge . ' ' . $image_maxheight_cssclass . ' ' . $border_radius_cssclass . ' ' . $image_margin_cssclass . '" ';
 	$image_border .= '<img class="' . $compiled[0]["id"] . '" ';
 	
 	$image_border .= 'src="' . $imageurl . '" ';
@@ -2352,20 +2321,17 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 
 function nxs_sc_wrap($atts, $content = null, $name='') 
 {
-	$unwrapped_content = do_shortcode($content);
+	extract($atts);
 	
-	$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $atts["colorzen"]);
-	$padding_cssclass = nxs_getcssclassesforlookup("nxs-padding-", $atts["padding"]);
-	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin-", $atts["margin"]);
-	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $atts["border_radius"]);
+	$unwrapped_content = do_shortcode($content);
 	
 	//
 	
 	$styles = array();
-	$styles["colorzen"] = $colorzen_cssclass;
-	$styles["padding"] = $padding_cssclass;
-	$styles["margin"] = $margin_cssclass;
-	$styles["border_radius"] = $border_radius_cssclass;
+	$styles["colorzen"] = $colorzen;
+	$styles["padding"] = $padding;
+	$styles["margin"] = $margin;
+	$styles["border_radius"] = $border_radius;
 	
 	//
 	
@@ -2374,6 +2340,7 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 	
 	$result = "<div class='{$unique_style_combination_class_0}'>{$unwrapped_content}</div>";
 	
+	// render style
 	foreach ($compiled as $id => $compiledresult)
 	{
 		$class = $compiledresult["id"];
@@ -2404,19 +2371,20 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 	}
 	
 	// Text styling
-	if ($text_showliftnote != "") { $text_showliftnote_cssclass = 'nxs-liftnote'; }
-	if ($text_showdropcap != "") { $text_showdropcap_cssclass = 'nxs-dropcap'; }
+	if ($showliftnote != "") { $showliftnote_cssclass = 'nxs-liftnote'; }
+	if ($showdropcap != "") { $showdropcap_cssclass = 'nxs-dropcap'; }
 	
-	$text_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $text_alignment);
-	$text_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $text_fontzen);
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $text_alignment_cssclass, $text_showliftnote_cssclass, $text_showdropcap_cssclass, $text_fontzen_cssclass);
+	$alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $align);
+	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	
-	if ($text_heightiq != "") 
+	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
+	
+	if ($heightiq != "") 
 	{
 		$heightiqprio = "p1";
-		$text_heightiqgroup = "text";
-		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
+		$heightiqgroup = "text";
+		$cssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$heightiqgroup}");
 	}
 	
 	// apply shortcode on text widget
@@ -2430,9 +2398,11 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 	
 	$styles = array();
 	$styles["fontsize"] = $fontsize;
+	$styles["colorzen"] = $colorzen;
 	$styles["fontzen"] = $fontzen_cssclass;
-	$styles["text-align"] = $text_align;
+	$styles["align"] = $align;
 	$styles["texttype"] = $texttype;
+	$styles["line_height"] = $line_height;
 	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
@@ -2453,17 +2423,3 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 	
 	return $result;
 }
-
-function nxs_sc_text($atts, $content = null, $name='') 
-{
-	$args = array
-	(
-		"text" => $content,
-		"fontsize" => $atts["fontsize"],
-		"text_align" => $atts["text_align"],
-		"texttype" => $atts["texttype"]
-	);
-	$result = nxs_frontendframework_nxs2_gethtmlfortext($args);
-	return $result;
-}
-add_shortcode('nxs_text', 'nxs_sc_text');
