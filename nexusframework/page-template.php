@@ -123,7 +123,19 @@ function nxs_handle_404()
 		$_SERVER['REDIRECT_STATUS'] = 404;
 		
 		$templateproperties = nxs_gettemplateproperties();
-		if ($templateproperties["lastmatchingrule"] == "busrule404")
+
+		//
+		$ishandledby404rule = false;
+		foreach ($templateproperties["trace"] as $i => $traceitemmeta)
+		{
+			if ($traceitemmeta["placeholdertype"] == "busrule404" && $traceitemmeta["ismatch"] == "true")
+			{
+				$ishandledby404rule = true;
+				break;
+			}
+		}
+		
+		if ($ishandledby404rule)
 		{
 			// the templateproperties will render the correct output
 		}
