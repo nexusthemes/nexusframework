@@ -34,6 +34,7 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
       	<script>
       		function nxs_js_textarea_autogrow(element)
       		{
+      			
       			if (!element.classList.contains("nxs-maxheightreached")) 
       			{
     					// do some stuff
@@ -62,7 +63,7 @@ function nxs_popup_optiontype_textarea_renderhtmlinpopup($optionvalues, $args, $
 					    box-sizing: border-box;
 					}
       	</style>
-        <textarea class="nxs-textarea-autoresize" onkeyup="nxs_js_textarea_autogrow(this);" id="'. $id . '" name="content" cols="' . $cols . '" rows="' . $rows . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" >' . nxs_render_html_escape_gtlt($value) . '</textarea>
+        <textarea class="nxs-textarea-autoresize" onpaste="nxs_js_popup_sessiondata_make_dirty(); nxs_js_textarea_autogrow(this);" onkeyup="nxs_js_textarea_autogrow(this);" id="'. $id . '" name="content" cols="' . $cols . '" rows="' . $rows . '" placeholder="' . nxs_render_html_escape_doublequote($placeholder) . '" >' . nxs_render_html_escape_gtlt($value) . '</textarea>
         '.$footerhtml.'
         <script>
         	// trigger autogrow for the first time it renders, after a short delay
