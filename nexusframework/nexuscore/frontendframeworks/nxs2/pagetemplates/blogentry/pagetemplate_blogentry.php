@@ -168,8 +168,24 @@ function nxs_pagetemplate_handlecontent()
 		{
 			$shouldrenderaddnewrowoption = true;
 		}
+	
+		// compile style for site level
+		$metadata = nxs_getsitemeta();
+		
+		$styles = array();
+		$styles["colorzen"] = $metadata["site_page_colorzen"];
+		//$site_page_linkcolorvar = nxs_getcssclassesforlookup("nxs-linkcolorvar-", $metadata["site_page_linkcolorvar"]);
+		$styles["margin_top"] = $metadata["site_page_margin_top"];
+		$styles["padding_top"] = $metadata["site_page_padding_top"];
+		$styles["margin_bottom"] = $metadata["site_page_margin_bottom"];
+		$styles["padding_bottom"] = $metadata["site_page_padding_bottom"];
+		$styles["border_top_width"] = $metadata["site_page_border_top_width"];
+		$styles["border_bottom_width"] = $metadata["site_page_border_bottom_width"];
+		$styles["border_radius"] = $metadata["site_page_border_radius"];
+		
+		$compiled = nxs_frontendframework_nxs2_compilestyle($styles);
 		?>
-		<div id="nxs-content" class="nxs-sitewide-element <?php echo $cssclass; ?>">
+		<div id="nxs-content" class="nxs-sitewide-element <?php echo $compiled["id"]; ?> <?php echo $cssclass; ?>">
 			<?php 
 			$hassidebar = ($existingsidebarid != ""); 
 			if ($hassidebar)
@@ -227,13 +243,22 @@ function nxs_pagetemplate_handlecontent()
 				if ($renderdelegatedcontent)
 				{
 					$cssclass = nxs_getcssclassesforrowcontainer($contentpostid);
+					
+					
+					//		
+					$metadata = nxs_get_corepostmeta($contentpostid);
+					$rc_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata["rc_colorzen"]);
+					$styles = array();
+					$styles["colorzen"] = $rc_colorzen;
+					$compiled = nxs_frontendframework_nxs2_compilestyle($styles);		
+					
 
 					if (nxs_iseditor())
 					{
 						$cssclass.= " nxs-layout-editor-editable";
 					}
 					?>
-					<div class='nxs-article-container <?php echo $cssclass; ?>'>
+					<div class='nxs-article-container aa <?php echo $compiled["id"]; ?> <?php echo $cssclass; ?>'>
 						<?php
 				  	echo nxs_getrenderedhtml($contentpostid, "default");
 				  	?>

@@ -408,16 +408,19 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		}
 		else if ($key == "padding_top")
 		{
+			$val = str_replace("nxs-padding-top-", "", $val);
+			$val = str_replace("nxs-padding-top", "", $val);
+			
 			if ($val == "")
 			{
 				// default
 			}
 			// factor = 30
-			else if (nxs_stringstartswith($val, "nxs-padding-top-"))
+			else if (nxs_stringcontains($val, "-"))
 			{
 				$pieces = explode("-", $val);
-				$whole = $pieces[3];
-				$fraction = $pieces[4];
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
 				$value = $whole + ($fraction / 10);
 				$factor = 30;
 				$value = $value * $factor;
@@ -425,44 +428,33 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			}
 			else
 			{
-				// unknown?
-				$rulesbypseudo[$pseudoselector][] = "padding-top: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "padding-top: {$val}px !important;";
 			}
 		}
 		else if ($key == "padding_bottom")
 		{
+			$val = str_replace("nxs-padding-bottom-", "", $val);
+			$val = str_replace("nxs-padding-bottom", "", $val);
+			
 			if ($val == "")
 			{
-				// absorb
+				// default
 			}
-			else if ($val == "nxs-padding-bottom0")
+			else if (nxs_stringcontains($val, "-"))
 			{
-				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 0px !important;";
+				// factor-based
+				$pieces = explode("-", $val);
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
+				$base = $whole + ($fraction / 10);
+				$factor = 30;
+				$value = $base * $factor;
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: {$value}px !important;";
 			}
-			else if ($val == "nxs-padding-bottom10")
+			else 
 			{
-				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 10px !important;";
-			}
-			else if ($val == "nxs-padding-bottom20")
-			{
-				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 20px !important;";
-			}
-			else if ($val == "nxs-padding-bottom30")
-			{
-				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 30px !important;";
-			}
-			else if ($val == "nxs-padding-bottom40")
-			{
-				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 40px !important;";
-			}
-			else if ($val == "nxs-padding-bottom50")
-			{
-				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 50px !important;";
-			}
-			else
-			{
-				// unknown?
-				$rulesbypseudo[$pseudoselector][] = "padding-bottom: unsupported_{$val};";
+				// hardcoded
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: {$val}px !important;";
 			}
 		}
 		else if ($key == "padding")
@@ -515,25 +507,19 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		}
 		else if ($key == "margin_top")
 		{
+			$val = str_replace("nxs-margin-top-", "", $val);
+			$val = str_replace("nxs-margin-top", "", $val);
+			
 			if ($val == "")
 			{
 				// does not apply
 			}
-			/* static valued */
-			else if ($val == "nxs-margin-top0")
-			{
-				$rulesbypseudo[$pseudoselector][] = "margin-top: 0px !important;";
-			}
-			else if ($val == "nxs-margin-top10")
-			{
-				$rulesbypseudo[$pseudoselector][] = "margin-top: 10px !important;";
-			}
 			// factor (dynamic)
-			else if (nxs_stringstartswith($val, "nxs-margin-top-"))
+			else if (nxs_stringcontains($val, "-"))
 			{
 				$pieces = explode("-", $val);
-				$whole = $pieces[3];
-				$fraction = $pieces[4];
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
 				$value = $whole + ($fraction / 10);
 				$factor = 30;
 				$value = $value * $factor;
@@ -542,22 +528,25 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			}
 			else
 			{
-				// unknown?
-				$rulesbypseudo[$pseudoselector][] = "margin-bottom: unsupported_{$val};";
+				// hardcoded?
+				$rulesbypseudo[$pseudoselector][] = "margin-top: {$val}px !important;";
 			}
 		}
 		else if ($key == "margin_bottom")
 		{
+			$val = str_replace("nxs-margin-bottom-", "", $val);
+			$val = str_replace("nxs-margin-bottom", "", $val);
+			
 			if ($val == "")
 			{
 				// does not apply
 			}
 			// factor (dynamic)
-			else if (nxs_stringstartswith($val, "nxs-margin-bottom-"))
+			else if (nxs_stringcontains($val, "-"))
 			{
 				$pieces = explode("-", $val);
-				$whole = $pieces[3];
-				$fraction = $pieces[4];
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
 				$value = $whole + ($fraction / 10);
 				$factor = 30;
 				$value = $value * $factor;
@@ -565,15 +554,9 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rulesbypseudo[$pseudoselector][] = "margin-bottom: {$value}px !important;";
 			}
 			// hardcoded
-			else if (nxs_stringstartswith($val, "nxs-margin-bottom"))
+			else 
 			{
-				$value = str_replace("nxs-margin-bottom", "", $val);
-				$rulesbypseudo[$pseudoselector][] = "margin-bottom: {$value}px !important;";
-			}
-			else
-			{
-				// unknown?
-				$rulesbypseudo[$pseudoselector][] = "margin-bottom: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "margin-bottom: {$val}px !important;";
 			}
 		}
 		else if ($key == "colorzen")
@@ -761,6 +744,30 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		else if ($key == "border_radius")
 		{
 			$val = str_replace("nxs-border-radius-", "", $val);
+			$val = str_replace("nxs-border-radius", "", $val);
+			
+			if ($val == "")
+			{
+				// 
+			}
+			else if (nxs_stringcontains($val, "-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
+				$base = $whole + ($fraction / 10);
+				$factor = 3;
+				$value = $base * $factor;
+				$rulesbypseudo[$pseudoselector][] = "border-radius: {$value}px;";
+			}
+			else
+			{
+				$rulesbypseudo[$pseudoselector][] = "unsupported_border_radius_{$key}:{$val};";
+			}
+		}
+		else if ($key == "border_top_width")
+		{
+			$val = str_replace("nxs-border-top-width-", "", $val);
 			
 			if ($val == "")
 			{
@@ -772,13 +779,36 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$whole = $pieces[2];
 				$fraction = $pieces[3];
 				$base = $whole + ($fraction / 10);
-				$factor = 3;
+				$factor = 1;
 				$value = $base * $factor;
-				$rulesbypseudo[$pseudoselector][] = "border-radius: {$value}px;";
+				$rulesbypseudo[$pseudoselector][] = "border-top-width: {$value}px;";
 			}
 			else
 			{
-				$rulesbypseudo[$pseudoselector][] = "unsupported_border_radius_{$key}:{$val};";
+				$rulesbypseudo[$pseudoselector][] = "unsupported__{$key}__{$val};";
+			}
+		}
+		else if ($key == "border_bottom_width")
+		{
+			$val = str_replace("nxs-border-bottom-width-", "", $val);
+			
+			if ($val == "")
+			{
+				// 
+			}
+			else if (nxs_stringcontains($val, "-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[2];
+				$fraction = $pieces[3];
+				$base = $whole + ($fraction / 10);
+				$factor = 1;
+				$value = $base * $factor;
+				$rulesbypseudo[$pseudoselector][] = "border-bottom-width: {$value}px;";
+			}
+			else
+			{
+				$rulesbypseudo[$pseudoselector][] = "unsupported__{$key}__{$val};";
 			}
 		}
 		else if ($key == "flex_direction")
@@ -1092,6 +1122,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	$styles["padding_bottom"] = "nxs-padding-bottom0";
 	$styles["margin"] = $margin;
 	$styles["line_height"] = "0-8";
+	$styles["border_radius"] = $border_radius;
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_1 = $compiled[0]["id"];
 	//
@@ -1681,9 +1712,18 @@ function nxs_sc_nxspagerow($rowattributes, $content = null, $name='')
 	
 	// 
 	$styles = array();
-	$styles["colorzen"] =  $r_colorzen;
-	$styles["margin_top"] =  $r_margin_top;
-	$styles["padding_top"] =  $r_padding_top;
+	$styles["colorzen"] =  $mixedattributes["r_colorzen"];
+	$styles["margin_top"] =  $mixedattributes["r_margin_top"];
+	$styles["padding_top"] =  $mixedattributes["r_padding_top"];
+	$styles["margin_bottom"] =  $mixedattributes["r_margin_bottom"];
+	$styles["padding_bottom"] =  $mixedattributes["r_padding_bottom"];
+	$styles["border_top_width"] =  $mixedattributes["r_border_top_width"];
+	$styles["border_bottom_width"] =  $mixedattributes["r_border_bottom_width"];
+	$styles["border_radius"] =  $mixedattributes["r_border_radius"];
+	
+	
+	
+	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 	
@@ -2505,7 +2545,7 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 	// Text styling
 	if ($showliftnote != "") { $showliftnote_cssclass = 'nxs-liftnote'; }
 	if ($showdropcap != "") { $showdropcap_cssclass = 'nxs-dropcap'; }
-	
+	if ($align == "") { $align = "left"; }
 	
 	$alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $align);
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
@@ -2566,6 +2606,8 @@ function nxs2_nav_menu_link_attributes($result, $item, $args, $depth)
 	if ($menuitem_height == "1") { $menuitem_height = "1-0"; }
 	if ($menuitem_height == "") { $menuitem_height = "1-0"; } 
 	
+	
+	
 	$styles = array();
 	$styles["content_justify"] = "center";
 	$styles["align_items"] = "center";
@@ -2591,6 +2633,13 @@ function nxs2_nav_menu_link_attributes($result, $item, $args, $depth)
 		}
 		
 		$styles["colorzen:hover"] = $menuitem_hover_color;
+		
+		$menu_fontsize = $nxs_gl_currentmenuwidget_mixedattributes["menu_fontsize"];
+		$menu_fontsize = str_replace(".", "-", $menu_fontsize);
+		$menu_fontsize = str_replace("x", "", $menu_fontsize);
+		if ($menu_fontsize == "1") { $menu_fontsize = "1-0"; }
+		if ($menu_fontsize == "") { $menu_fontsize = "1-0"; } 
+		$styles["fontsize"] = $menu_fontsize;
 	}
 	else if ($depth > 0)
 	{
