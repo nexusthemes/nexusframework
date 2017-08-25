@@ -699,7 +699,6 @@ function nxs_pagetemplate_handleheader()
 	do_action('nxs_beforeend_head');
 	?>
 </head>
-
 <body <?php body_class(); ?> <?php do_action('nxs_render_bodyatts'); ?>>
 	<?php
 	// Google Tag Manager; OLD STYLE

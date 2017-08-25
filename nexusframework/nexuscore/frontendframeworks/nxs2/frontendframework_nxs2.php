@@ -2631,3 +2631,14 @@ function nxs2_nav_menu_submenu_css_class( $result )
   return $result;
 }
 add_filter( 'nav_menu_submenu_css_class', 'nxs2_nav_menu_submenu_css_class' );
+
+function nxs2_body_classes($result)
+{
+	$styles = array();
+	$styles["fontzen"] = "1";
+	$compiled = nxs_frontendframework_nxs2_compilestyle($styles);
+  $result[] = $compiled["id"];
+	
+  return $result;
+}
+add_filter('body_class', 'nxs2_body_classes');
