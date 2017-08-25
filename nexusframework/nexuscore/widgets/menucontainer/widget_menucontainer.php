@@ -880,13 +880,9 @@ function nxs_menu_enrichtitle($title, $currentdepth) {
     return $result;
 }
 
-/**
- * Rendered menu items popup
- * @param $postid
- * @return string
- */
-function nxs_page_render_popup_getrenderedmenuitems($postid) {
-
+/*
+function nxs_page_render_popup_getrenderedmenuitems($postid) 
+{
     $poststructure = nxs_parsepoststructure($postid);
     $cache = "";
 
@@ -951,49 +947,51 @@ function nxs_page_render_popup_getrenderedmenuitems($postid) {
 
     return $cache;
 }
+*/
 
 /**
  * Default data - wordt aangeroepen bij het opslaan van data van deze placeholder
  * @param $args
  * @return array
  */
-function nxs_widgets_menucontainer_initplaceholderdata($args) {
-    extract($args);
+function nxs_widgets_menucontainer_initplaceholderdata($args) 
+{
+  extract($args);
 
-    // create a new menu set custom post type
+  // create a new menu set custom post type
 
-    $subargs = array();
-    $subargs["nxsposttype"] = "menu";
-    $subargs["poststatus"] = "publish";
-    $subargs["titel"] = nxs_l18n__("Menu items", "nxs_td");
-    $subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
-    $subargs["postwizard"] = "defaultmenu";
+  $subargs = array();
+  $subargs["nxsposttype"] = "menu";
+  $subargs["poststatus"] = "publish";
+  $subargs["titel"] = nxs_l18n__("Menu items", "nxs_td");
+  $subargs["slug"] = $subargs["titel"] . " " . nxs_generaterandomstring(6);
+  $subargs["postwizard"] = "defaultmenu";
 
-    $response = nxs_addnewarticle($subargs);
-    if ($response["result"] == "OK") {
-        $args["menu_menuid"] = $response["postid"];
-        $args["menu_menuid_globalid"] = nxs_get_globalid($response["postid"], true);
-    }
-    else {
-        var_dump($response);
-        nxs_webmethod_return_nack("unexpected response");
-    }
+  $response = nxs_addnewarticle($subargs);
+  if ($response["result"] == "OK") {
+      $args["menu_menuid"] = $response["postid"];
+      $args["menu_menuid_globalid"] = nxs_get_globalid($response["postid"], true);
+  }
+  else {
+      var_dump($response);
+      nxs_webmethod_return_nack("unexpected response");
+  }
 
-    $args['orientation'] = "horizontal";
-    $args['menuitem_color'] = "base2";
-    $args['menuitem_active_color'] = "base1";
-    $args['menuitem_hover_color'] = "base1";
-    $args['menuitem_sub_color'] = "base2";
-    $args['menuitem_sub_active_color'] = "base1";
-    $args['menuitem_sub_hover_color'] = "base1";
-    $args['minified_label'] = "Menu";
-    $args['ph_margin_bottom'] = "0-0";
-    $args['responsive_display'] = "display960";
+  $args['orientation'] = "horizontal";
+  $args['menuitem_color'] = "base2";
+  $args['menuitem_active_color'] = "base1";
+  $args['menuitem_hover_color'] = "base1";
+  $args['menuitem_sub_color'] = "base2";
+  $args['menuitem_sub_active_color'] = "base1";
+  $args['menuitem_sub_hover_color'] = "base1";
+  $args['minified_label'] = "Menu";
+  $args['ph_margin_bottom'] = "0-0";
+  $args['responsive_display'] = "display960";
 
-    nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
+  nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 
-    $result = array();
-    $result["result"] = "OK";
+  $result = array();
+  $result["result"] = "OK";
 
-    return $result;
+  return $result;
 }

@@ -563,17 +563,23 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 			$alternativehint = nxs_l18n__("Missing input", "nxs_td");
 		}
 		nxs_renderplaceholderwarning($alternativehint); 
-	} else {
+	} 
+	else 
+	{
 		echo '	
 		<div class="'.$image_background_cssclass.' '.$table.' '.$aligning_content.'" style="'.$image_background.' '.$min_height.'">
 			
 			<div class="wrapper nxs-applylinkvarcolor '.$table_cell.' '.$bgcolor_cssclass.'">';
 				
-				if ($url != "") { echo '<a class="'.$stop_absolute.' '.$absolute.'" style="'.$top.' '.$left.'" '.$target.' '.$destination_relation_html.' href="'.$url.'">'; }
+				if ($url != "") 
+				{ 
+					echo '<a class="'.$stop_absolute.' '.$absolute.'" style="'.$top.' '.$left.'" '.$target.' '.$destination_relation_html.' href="'.$url.'">'; 
+				}
 				
 				echo $logo; 
 				
-				if ($title != "" || $subtitle != "") {
+				if ($title != "" || $subtitle != "") 
+				{
 					echo '
 					<div class="title-wrapper '.$image_maxheight_cssclass.' '.$logo_margin_cssclass.'" style="height: '.$alignment_imageheight.'; '.$inlinemaxheightstyle.' '.$alignment_table_text.'">
 						<div style="'. $alignment_cell_text.'">';
@@ -583,7 +589,6 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 						'</div>
 					</div>';
 				}
-				
 				
 				if ($url != "") { echo '</a>'; }
 				

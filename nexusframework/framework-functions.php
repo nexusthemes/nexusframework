@@ -2213,12 +2213,7 @@ add_filter('protected_title_format', 'nxs_title_format');
 
 function nxs_ext_initialize_frontendframework()
 {
-	$frontendframework = "nxs";
-	if ($_REQUEST["frontendframework"] != "")
-	{
-		$frontendframework = $_REQUEST["frontendframework"];
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	if (file_exists($filetoinclude))
 	{

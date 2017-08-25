@@ -10,14 +10,22 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		{
 			if ($k == "color")
 			{
-				echo "o no deprecated key found in shortcode?!"; 
+				echo "o no (aa); deprecated key found in shortcode?!:";
 				echo $k . " / " . $v;
+				
+				echo "<br />";
+				
 			}
 			else if (nxs_stringstartswith($k, "button_"))
 			{
-				echo "o no deprecated key found in shortcode?!"; 
+				echo "o no deprecated key found in shortcode?!: "; 
 				echo $k . " / " . $v;
+				echo "<br />";
 				//die();
+			}
+			else
+			{
+				echo "OK:" . $k . " / " . $v . "<br />";;
 			}
 		}
 	}
@@ -32,7 +40,7 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		return "";
 	}		
 
-	$alignment = nxs_getcssclassesforlookup("nxs-align-", $alignment);
+	$align = nxs_getcssclassesforlookup("nxs-align-", $align);
 	$colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $colorzen);
 	$scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $scale);
 	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $margin);
@@ -126,7 +134,7 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 	}
 	
 	$result = '';
-	$result .= '<p class="' . $alignment . ' nxs-padding-bottom0">';
+	$result .= '<p class="' . $align . ' nxs-padding-bottom0">';
 	$result .= '<a target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $scale_cssclass . ' ' . $border_radius_cssclass . ' ' . $margin_cssclass . ' ' . $colorzen . ' ' . $fontzen_cssclass . '" href="' . $url . '">' . $text . '</a>';
 	$result .= '</p>';
 	

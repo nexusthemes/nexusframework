@@ -789,21 +789,6 @@ function nxs_pagetemplate_handleheader()
 					}
 				?>
 	    </div>
-	    <?php
-	    foreach ($compiled as $id => $compiledresult)
-			{
-				$stylehtml = "";
-				$class = $compiledresult["id"];
-				$rules = $compiledresult["rules"];
-				if (count($rules) > 0)
-				{
-					$stylehtml .= '<style>';
-					$stylehtml .= ".{$class} { " . implode($rules) . " }";
-					$stylehtml .= '</style>';
-				}
-				echo $stylehtml;
-			}
-	    ?>
 	    <div class="nxs-clear"></div>
 	  </div> <!-- end #nxs-header -->
 	  <?php 

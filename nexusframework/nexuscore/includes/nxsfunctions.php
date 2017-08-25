@@ -7373,12 +7373,7 @@ function nxs_print_filters_for($hook = '')
 function nxs_widgets_setgenericwidgethovermenu_v2($args)
 {
 	// delegate rendering to the frontendframework
-	$frontendframework = $_REQUEST["frontendframework"];
-	if ($frontendframework == "")
-	{
-		$frontendframework = "nxs";
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
 	
@@ -8082,12 +8077,7 @@ function nxs_gethtmlfortext($text = "", $text_alignment = "", $text_showliftnote
 
 function nxs_gethtmlfortext_v2($args)
 {
-	$frontendframework = $_REQUEST["frontendframework"];
-	if ($frontendframework == "")
-	{
-		$frontendframework = "nxs";
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
 	
@@ -8132,12 +8122,7 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 
 function nxs_gethtmlfortitle_v4($args)
 {
-	$frontendframework = $_REQUEST["frontendframework"];
-	if ($frontendframework == "")
-	{
-		$frontendframework = "nxs";
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
 	
@@ -8151,16 +8136,16 @@ function nxs_gethtmlforbutton($button_text = "", $button_scale = "", $button_col
 {
 	$args = array
 	(
-		"button_text" => $button_text,
-		"button_scale" => $button_scale,
-		"button_color" => $button_color,
+		"text" => $button_text,
+		"scale" => $button_scale,
+		"colorzen" => $button_color,
 		"destination_articleid" => $destination_articleid,
 		"destination_url" => $destination_url,
 		"destination_target" => $destination_target,
-		"button_alignment" => $button_alignment,
+		"align" => $button_alignment,
 		"destination_js" => $destination_js,
 		"text_heightiq" => $text_heightiq,
-		"button_fontzen" => $button_fontzen,
+		"fontzen" => $button_fontzen,
 		"destination_relation" => $destination_relation
 	);
 	$result = nxs_gethtmlforbutton_v2($args);
@@ -8170,12 +8155,7 @@ function nxs_gethtmlforbutton($button_text = "", $button_scale = "", $button_col
 // delegates the request to the frontendframework that is active 
 function nxs_gethtmlforbutton_v2($args)
 {
-	$frontendframework = $_REQUEST["frontendframework"];
-	if ($frontendframework == "")
-	{
-		$frontendframework = "nxs";
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
 	
@@ -8217,12 +8197,7 @@ function nxs_gethtmlforimage_v2($image_imageid = "", $image_src = "", $image_bor
 
 function nxs_gethtmlforimage_v3($args)
 {
-	$frontendframework = $_REQUEST["frontendframework"];
-	if ($frontendframework == "")
-	{
-		$frontendframework = "nxs";
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
 	
@@ -12779,4 +12754,16 @@ function nxs_gethtmlfornotification($args)
 	$output .= '</div>';
 	
 	return $output;
+}
+
+function nxs_frontendframework_getfrontendframework()
+{
+	$result = "nxs";
+	
+	if ($_REQUEST["frontendframework"] != "")
+	{
+		$result = $_REQUEST["frontendframework"];
+	}
+	
+	return $result;
 }

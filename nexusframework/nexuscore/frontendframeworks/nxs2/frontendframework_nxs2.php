@@ -6,9 +6,25 @@ function nxs_frontendframework_nxs2_footer()
 	if (count($nxs_gl_style_footer_cssrules) > 0)
 	{
 		echo "<style>";
-		foreach ($nxs_gl_style_footer_cssrules as $id => $rules)
+		foreach ($nxs_gl_style_footer_cssrules as $id => $rulesbypseudo)
 		{
-			echo ".{$id}{" . implode($rules) . "}";
+			foreach ($rulesbypseudo as $pseudoid => $rules)
+			{
+				if($pseudoid == "none")
+				{
+					echo ".{$id}{" . implode($rules) . "}";
+				}
+				else if ($pseudoid == "hover")
+				{
+					echo ".{$id}:hover{" . implode($rules) . "}";
+				}
+				else
+				{
+					//
+					echo "unsupported pseudoid; $pseudoid";
+					die();
+				}
+			}
 		}
 		echo "</style>";
 	}
@@ -224,36 +240,86 @@ function nxs_getflatalphabackgroundcolorcss($color, $alpha)
 
 function nxs_frontendframework_nxs2_compilestyle($styles)
 {
-	$rules = array();
+	$rulesbypseudo = array();
+	
 	foreach ($styles as $key => $val)
 	{
+		// derive pseudoselector
+		
+		// colorzen or hover:colorzen
+		$pseudoselector = "none";
+		if (nxs_stringcontains($key, ":"))
+		{
+			$keypieces = explode(":", $key);
+			$key = $keypieces[0];
+			$pseudoselector = $keypieces[1];
+		}
+		
 		$val = trim($val);		
 		
-		
-		$concatenated .= "{$key}{$val}";
 		if ($key == "align")
 		{
 			$val = str_replace("nxs-align-", "", $val);
 			if ($val == "")
 			{
-				$rules[] = "text-align: center;";
+				$rulesbypseudo[$pseudoselector][] = "text-align: center;";
 			}
 			else if ($val == "left")
 			{
-				$rules[] = "text-align: left;";
+				$rulesbypseudo[$pseudoselector][] = "text-align: left;";
 			}
 			else if ($val == "center")
 			{
-				$rules[] = "text-align: center;";
+				$rulesbypseudo[$pseudoselector][] = "text-align: center;";
 			}
 			else if ($val == "right")
 			{
-				$rules[] = "text-align: right;";
+				$rulesbypseudo[$pseudoselector][] = "text-align: right;";
 			}
 			else
 			{
 				// unknown?
-				$rules[] = "text-align: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "text-align: unsupported_{$val};";
+			}
+		}
+		else if ($key == "cursor")
+		{
+			if ($val == "")
+			{
+				// default
+			}
+			else if ($val == "default")
+			{
+				$rulesbypseudo[$pseudoselector][] = "cursor: default !important;";
+			}
+			else if ($val == "pointer")
+			{
+				$rulesbypseudo[$pseudoselector][] = "cursor: pointer !important;";
+			}
+			else
+			{
+				// unknown?
+				$rulesbypseudo[$pseudoselector][] = "cursor: unsupported_{$val};";
+			}
+		}
+		else if ($key == "white_space")
+		{
+			if ($val == "")
+			{
+				// default
+			}
+			else if ($val == "nowrap")
+			{
+				$rulesbypseudo[$pseudoselector][] = "white-space: nowrap !important;";
+			}
+			else if ($val == "pointer")
+			{
+				$rulesbypseudo[$pseudoselector][] = "cursor: pointer !important;";
+			}
+			else
+			{
+				// unknown?
+				$rulesbypseudo[$pseudoselector][] = "cursor: unsupported_{$val};";
 			}
 		}
 		else if ($key == "maxheight")
@@ -271,12 +337,73 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$factor = 100;
 				$value = $value * $factor;
 				
-				$rules[] = "max-height: {$value}px !important;";
+				$rulesbypseudo[$pseudoselector][] = "max-height: {$value}px !important;";
 			}
 			else
 			{
 				// unknown?
-				$rules[] = "max-height: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "max-height: unsupported_{$val};";
+			}
+		}
+		else if ($key == "width")
+		{
+			if ($val == "")
+			{
+				// default
+			}
+			else if ($val == "inherit")
+			{
+				$rulesbypseudo[$pseudoselector][] = "width: inherit !important;";
+			}
+			else
+			{
+				// unknown?
+				$rulesbypseudo[$pseudoselector][] = "{$key}: unsupported_{$val};";
+			}
+		}
+		else if ($key == "height")
+		{
+			if ($val == "")
+			{
+				// default
+			}
+			else if (nxs_stringcontains($val, "-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
+				$value = $whole + ($fraction / 10);
+				$factor = 50;	// used by menus; 1.2 = 60px
+				$value = $value * $factor;
+				
+				$rulesbypseudo[$pseudoselector][] = "height: {$value}px !important;";
+			}
+			else
+			{
+				// unknown?
+				$rulesbypseudo[$pseudoselector][] = "max-height: unsupported_{$val};";
+			}
+		}
+		else if ($key == "padding_left")
+		{
+			if ($val == "")
+			{
+				// default
+			}
+			else 
+			{
+				$rulesbypseudo[$pseudoselector][] = "padding-left: {$val}px !important;";
+			}
+		}
+		else if ($key == "padding_right")
+		{
+			if ($val == "")
+			{
+				// default
+			}
+			else 
+			{
+				$rulesbypseudo[$pseudoselector][] = "padding-right: {$val}px !important;";
 			}
 		}
 		else if ($key == "padding_top")
@@ -294,12 +421,12 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$value = $whole + ($fraction / 10);
 				$factor = 30;
 				$value = $value * $factor;
-				$rules[] = "padding-top: {$value}px !important;";
+				$rulesbypseudo[$pseudoselector][] = "padding-top: {$value}px !important;";
 			}
 			else
 			{
 				// unknown?
-				$rules[] = "padding-top: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "padding-top: unsupported_{$val};";
 			}
 		}
 		else if ($key == "padding_bottom")
@@ -310,84 +437,80 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			}
 			else if ($val == "nxs-padding-bottom0")
 			{
-				$rules[] = "padding-bottom: 0px !important;";
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 0px !important;";
 			}
 			else if ($val == "nxs-padding-bottom10")
 			{
-				$rules[] = "padding-bottom: 10px !important;";
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 10px !important;";
 			}
 			else if ($val == "nxs-padding-bottom20")
 			{
-				$rules[] = "padding-bottom: 20px !important;";
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 20px !important;";
 			}
 			else if ($val == "nxs-padding-bottom30")
 			{
-				$rules[] = "padding-bottom: 30px !important;";
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 30px !important;";
 			}
 			else if ($val == "nxs-padding-bottom40")
 			{
-				$rules[] = "padding-bottom: 40px !important;";
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 40px !important;";
 			}
 			else if ($val == "nxs-padding-bottom50")
 			{
-				$rules[] = "padding-bottom: 50px !important;";
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: 50px !important;";
 			}
 			else
 			{
 				// unknown?
-				$rules[] = "padding-bottom: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: unsupported_{$val};";
 			}
 		}
 		else if ($key == "padding")
 		{
+			$val = str_replace("nxs-padding-", "", $val);
+			$val = str_replace("nxs-padding", "", $val);
+			
 			if ($val == "")
 			{
 				// does not apply
 			}
-			else if (nxs_stringstartswith($val, "nxs-padding-"))
+			else if (nxs_stringcontains($val, "-"))
 			{
 				$pieces = explode("-", $val);
-				$whole = $pieces[2];
-				$fraction = $pieces[3];
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
 				$base = $whole + ($fraction / 10);
 				$factor = 30;
 				$value = $base * $factor;
-				$rules[] = "padding: {$value}px !important;";
+				$rulesbypseudo[$pseudoselector][] = "padding: {$value}px !important;";
 			}
-			else
+			else 
 			{
-				// unknown?
-				$rules[] = "margin: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "padding: {$val}px !important;";
 			}
 		}		
 		else if ($key == "margin")
 		{
+			$val = str_replace("nxs-margin-", "", $val);
+			$val = str_replace("nxs-margin", "", $val);
+			
 			if ($val == "")
 			{
 				// does not apply
 			}
-			else if ($val == "nxs-margin5")
-			{
-				$rules[] = "margin: 5px !important;";
-			}
-			else if ($val == "nxs-margin10")
-			{
-				$rules[] = "margin: 10px !important;";
-			}
-			else if (nxs_stringstartswith($val, "nxs-margin-"))
+			else if (nxs_stringcontains($val, "-"))
 			{
 				$pieces = explode("-", $val);
-				$whole = $pieces[2];
-				$fraction = $pieces[3];
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
 				$base = $whole + ($fraction / 10);
 				$factor = 30;
 				$value = $base * $factor;
-				$rules[] = "margin: {$value}px !important;";
+				$rulesbypseudo[$pseudoselector][] = "margin: {$value}px !important;";
 			}
-			else
+			else 
 			{
-				// unknown?
-				$rules[] = "margin: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "margin: {$val}px !important;";
 			}
 		}
 		else if ($key == "margin_top")
@@ -399,11 +522,11 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			/* static valued */
 			else if ($val == "nxs-margin-top0")
 			{
-				$rules[] = "margin-top: 0px !important;";
+				$rulesbypseudo[$pseudoselector][] = "margin-top: 0px !important;";
 			}
 			else if ($val == "nxs-margin-top10")
 			{
-				$rules[] = "margin-top: 10px !important;";
+				$rulesbypseudo[$pseudoselector][] = "margin-top: 10px !important;";
 			}
 			// factor (dynamic)
 			else if (nxs_stringstartswith($val, "nxs-margin-top-"))
@@ -415,12 +538,12 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$factor = 30;
 				$value = $value * $factor;
 				
-				$rules[] = "margin-top: {$value}px !important;";
+				$rulesbypseudo[$pseudoselector][] = "margin-top: {$value}px !important;";
 			}
 			else
 			{
 				// unknown?
-				$rules[] = "margin-bottom: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "margin-bottom: unsupported_{$val};";
 			}
 		}
 		else if ($key == "margin_bottom")
@@ -439,24 +562,24 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$factor = 30;
 				$value = $value * $factor;
 				
-				$rules[] = "margin-bottom: {$value}px !important;";
+				$rulesbypseudo[$pseudoselector][] = "margin-bottom: {$value}px !important;";
 			}
 			// hardcoded
 			else if (nxs_stringstartswith($val, "nxs-margin-bottom"))
 			{
 				$value = str_replace("nxs-margin-bottom", "", $val);
-				$rules[] = "margin-bottom: {$value}px !important;";
+				$rulesbypseudo[$pseudoselector][] = "margin-bottom: {$value}px !important;";
 			}
 			else
 			{
 				// unknown?
-				$rules[] = "margin-bottom: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "margin-bottom: unsupported_{$val};";
 			}
 		}
 		else if ($key == "colorzen")
 		{
 			// nxs-colorzen nxs-colorzen-c12-dm => // nxs-colorzen-c12-dm
-			$rules[] = "border-style: solid;";
+			$rulesbypseudo[$pseudoselector][] = "border-style: solid;";
 			
 			$val = str_replace("nxs-colorzen ", "", $val);
 			$val = str_replace("nxs-colorzen-", "", $val);
@@ -477,15 +600,6 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					if (isset($colorizationproperties[$thekey]))
 					{
 						$middle = $colorizationproperties[$thekey];	// bijv. "#4054BF"
-						/*
-						echo "key:";
-						var_dump($thekey);
-						echo "middle: $middle <br />";
-						var_dump($colorizationproperties);
-						echo "<br />";
-						var_dump($coloridentification);
-						die();
-						*/
 					}
 					
 					if ($coloridentification == "base2")
@@ -509,20 +623,20 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					// dark to middle
 					$hex_from = nxs_getlighterhexcolor($middle, -$delta);
 					$hex_to = $middle;
-					$rules[] = nxs_getlineairgradientcss($hex_from, $hex_to);
+					$rulesbypseudo[$pseudoselector][] = nxs_getlineairgradientcss($hex_from, $hex_to);
 				}
 				else if ($transformation == "ml")
 				{
 					// middle to light
 					$hex_from = $middle;
 					$hex_to = nxs_getlighterhexcolor($middle, $delta);
-					$rules[] = nxs_getlineairgradientcss($hex_from, $hex_to);
+					$rulesbypseudo[$pseudoselector][] = nxs_getlineairgradientcss($hex_from, $hex_to);
 				}
 				else if ($transformation == "")
 				{
 					// flat
 					$hex = $middle;
-					$rules[] = nxs_getflatbackgroundcolorcss($hex);
+					$rulesbypseudo[$pseudoselector][] = nxs_getflatbackgroundcolorcss($hex);
 				}
 				else if ($transformation[0] == "a")
 				{
@@ -530,11 +644,11 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					$hex = $middle;
 					$alpha = substr($transformation, 1);
 					
-					$rules[] = nxs_getflatalphabackgroundcolorcss($hex, $alpha);
+					$rulesbypseudo[$pseudoselector][] = nxs_getflatalphabackgroundcolorcss($hex, $alpha);
 				}
 				else
 				{
-					$rules[] = "unsupportedtransformation;";
+					$rulesbypseudo[$pseudoselector][] = "unsupportedtransformation;";
 					echo "unsupported transformation; $transformation; parts; val: $val <br />";
 					var_dump($parts);
 					die();
@@ -561,15 +675,15 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					$textshadowcolor = "white";
 				}
 				
-				$rules[] = "color: $textcolor;";
-				$rules[] = "text-shadow: 1px 1px 1px $textshadowcolor;";
+				$rulesbypseudo[$pseudoselector][] = "color: $textcolor;";
+				$rulesbypseudo[$pseudoselector][] = "text-shadow: 1px 1px 1px $textshadowcolor;";
 			}
 		}
 		else if ($key == "button")
 		{
-			$rules[] = "border-width: 1px;";
-    	$rules[] = "border-radius: 3px;";
-    	$rules[] = "cursor: pointer;";
+			$rulesbypseudo[$pseudoselector][] = "border-width: 1px;";
+    	$rulesbypseudo[$pseudoselector][] = "border-radius: 3px;";
+    	$rulesbypseudo[$pseudoselector][] = "cursor: pointer;";
 		}
 		else if ($key == "scale")
 		{
@@ -579,23 +693,23 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			}
 			else if ($val == "nxs-button-scale-1-8")
 			{
-				$rules[] = "font-size: 22px;";
-				$rules[] = "padding-left: 18px;";
-    		$rules[] = "padding-right: 18px;";
-    		$rules[] = "padding-top: 11px;";
-    		$rules[] = "padding-bottom: 11px;";
+				$rulesbypseudo[$pseudoselector][] = "font-size: 22px;";
+				$rulesbypseudo[$pseudoselector][] = "padding-left: 18px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-right: 18px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-top: 11px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-bottom: 11px;";
 			}
 			else if ($val == "nxs-button-scale-2-0")
 			{
-				$rules[] = "font-size: 24px;";
-				$rules[] = "padding-left: 20px;";
-    		$rules[] = "padding-right: 20px;";
-    		$rules[] = "padding-top: 12px;";
-    		$rules[] = "padding-bottom: 12px;";
+				$rulesbypseudo[$pseudoselector][] = "font-size: 24px;";
+				$rulesbypseudo[$pseudoselector][] = "padding-left: 20px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-right: 20px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-top: 12px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-bottom: 12px;";
 			}
 			else
 			{
-				$rules[] = "unsupported_scale_{$key}:{$val}";
+				$rulesbypseudo[$pseudoselector][] = "unsupported_scale_{$key}:{$val}";
 			}
 		}
 		else if ($key == "fontsize" || false)
@@ -621,11 +735,11 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					echo "huh? $val";
 				}
 				
-				$rules[] = "font-size: {$value}px !important;";
+				$rulesbypseudo[$pseudoselector][] = "font-size: {$value}px !important;";
 			}
 			else
 			{
-				$rules[] = "font-size: unsupported__{$val};";
+				$rulesbypseudo[$pseudoselector][] = "font-size: unsupported__{$val};";
 			}
 		}
 		else if ($key == "fontzen" || false)
@@ -641,7 +755,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$sitemeta = nxs_getsitemeta();
 				$fontzenid = $val;
 				$sanitizedfontfamily = str_replace("\'", "'", nxs_font_getcleanfontfam($sitemeta["vg_fontfam_{$fontzenid}"]));
-				$rules[] = "font-family: {$sanitizedfontfamily};";
+				$rulesbypseudo[$pseudoselector][] = "font-family: {$sanitizedfontfamily};";
 			}
 		}
 		else if ($key == "border_radius")
@@ -660,11 +774,45 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$base = $whole + ($fraction / 10);
 				$factor = 3;
 				$value = $base * $factor;
-				$rules[] = "border-radius: {$value}px;";
+				$rulesbypseudo[$pseudoselector][] = "border-radius: {$value}px;";
 			}
 			else
 			{
-				$rules[] = "unsupported_border_radius_{$key}:{$val};";
+				$rulesbypseudo[$pseudoselector][] = "unsupported_border_radius_{$key}:{$val};";
+			}
+		}
+		else if ($key == "flex_direction")
+		{
+			if ($val == "")
+			{
+				// use default
+			}
+			else if ($val == "row")
+			{
+				$rulesbypseudo[$pseudoselector][] = "flex-direction: row;";
+			}
+			else if ($val == "column")
+			{
+				$rulesbypseudo[$pseudoselector][] = "flex-direction: column;";
+			}
+			else
+			{
+				$rulesbypseudo[$pseudoselector][] = "unsupported:{$key}__{$val};";
+			}
+		}
+		else if ($key == "display")
+		{
+			if ($val == "")
+			{
+				// use default
+			}
+			else if ($val == "flex")
+			{
+				$rulesbypseudo[$pseudoselector][] = "display: flex !important;";
+			}
+			else
+			{
+				$rulesbypseudo[$pseudoselector][] = "unsupported:{$key}__{$val};";
 			}
 		}
 		else if ($key == "content_justify")
@@ -675,32 +823,60 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			}
 			else if ($val == "start")
 			{
-				$rules[] = "display: flex;";
-				$rules[] = "flex-direction: row;";
-				$rules[] = "justify-content: flex-start;";
+				$rulesbypseudo[$pseudoselector][] = "display: flex !important;";
+				$rulesbypseudo[$pseudoselector][] = "justify-content: flex-start;";
 			}
 			else if ($val == "center")
 			{
-				$rules[] = "display: flex;";
-				$rules[] = "flex-direction: row;";
-				$rules[] = "justify-content: center;";
+				$rulesbypseudo[$pseudoselector][] = "display: flex !important;";
+				$rulesbypseudo[$pseudoselector][] = "justify-content: center;";
 			}
 			else if ($val == "end")
 			{
-				$rules[] = "display: flex;";
-				$rules[] = "flex-direction: row;";
-				$rules[] = "justify-content: flex-end;";
+				$rulesbypseudo[$pseudoselector][] = "display: flex !important;";
+				$rulesbypseudo[$pseudoselector][] = "justify-content: flex-end;";
 			}
 			else
 			{
-				$rules[] = "unsupported:{$key}__{$val};";
+				$rulesbypseudo[$pseudoselector][] = "unsupported:{$key}__{$val};";
+			}
+		}
+		else if ($key == "align_items")
+		{
+			if ($val == "")
+			{
+				// use default
+			}
+			else if ($val == "start")
+			{
+				$rulesbypseudo[$pseudoselector][] = "align-items: flex-start;";
+			}
+			else if ($val == "end")
+			{
+				$rulesbypseudo[$pseudoselector][] = "align-items: flex-end;";
+			}
+			else if ($val == "center")
+			{
+				$rulesbypseudo[$pseudoselector][] = "align-items: center;";
+			}
+			else if ($val == "baseline")
+			{
+				$rulesbypseudo[$pseudoselector][] = "align-items: baseline;";
+			}
+			else if ($val == "stretch")
+			{
+				$rulesbypseudo[$pseudoselector][] = "align-items: stretch;";
+			}
+			else
+			{
+				$rulesbypseudo[$pseudoselector][] = "unsupported:{$key}__{$val};";
 			}
 		}
 		else if ($key == "texttype")
 		{
 			if ($val == "quote")
 			{
-				$rules[] = "font-style: italic;";
+				$rulesbypseudo[$pseudoselector][] = "font-style: italic;";
 			}
 		}
 		else if ($key == "line_height")
@@ -721,41 +897,74 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$factor = 1.625;
 				$value = $value * $factor;
 				
-				$rules[] = "line-height: {$value}em !important;";
+				$rulesbypseudo[$pseudoselector][] = "line-height: {$value}em !important;";
 			}
 			else
 			{
-				$rules[] = "line-height: unsupported_$val;";
+				$rulesbypseudo[$pseudoselector][] = "line-height: unsupported_$val;";
 			}
 		}
 		else
 		{
-			$rules[] = "unsupported_{$key}:{$val};";
+			$rulesbypseudo[$pseudoselector][] = "unsupported_{$key}:{$val};";
 		}
 	}
 	
 	// remove duplicates
-	$rules = array_unique($rules);
-	
-	if (count($rules) == 0)
+	if (true)
 	{
-		// no impact, no rules nor id :)
-		return;
+		foreach ($rulesbypseudo as $pseudoselector => $rules)
+		{
+			$rules = array_unique($rules);
+			$rulesbypseudo[$pseudoselector] = $rules;
+			$cnt += count($rules);
+		}
+	}
+
+	// return if no rules are set
+	if (true)
+	{
+		$cnt = 0;
+		foreach ($rulesbypseudo as $pseudoselector => $rules)
+		{
+			$cnt += count($rules);
+		}	
+		if ($cnt == 0)
+		{
+			// no impact, no rules nor id :)
+			return;
+		}
 	}
 	
-	// there's 2 ways how the styles can be rendered; either inline, or in the footer
-	if (false) // is_user_logged_in())
+	// create hash
+	if (true)
 	{
-		// use inline styling, and unique class ids (less optimized)
-		
-		$result["id"] = "nxs-s-" . md5($concatenated);
-		$result["rules"] = $rules;
+		$hashsource = "";
+		foreach ($rulesbypseudo as $pseudoselector => $rules)
+		{
+			$hashsource .= $pseudoselector;
+			foreach ($rules as $rule)
+			{
+				$hashsource .= $rule;
+			}
+		}
+		$md5 = md5($hashsource);
+	}
+	
+	global $nxs_gl_style_hashtoid;
+	if ($nxs_gl_style_hashtoid[$md5] != "")
+	{
+		// we already have this one, dont make a new one, but return this one instead
+		$result["id"] = $nxs_gl_style_hashtoid[$md5];
 	}
 	else
 	{
+		// its a new one, create a new id, store it
+	
 		global $nxs_gl_style_id;
 		$nxs_gl_style_id++;
 		$id = "nxs-s-" . $nxs_gl_style_id;
+		$nxs_gl_style_hashtoid[$md5] = $id;
 		$result["id"] = $id;
 		
 		// ensure we hook to the footer to inject the derived styles
@@ -766,9 +975,10 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			add_action("wp_footer", "nxs_frontendframework_nxs2_footer");
 		}
 		
-		$nxs_gl_style_footer_cssrules[$id] = $rules;
+		$nxs_gl_style_footer_cssrules[$id] = $rulesbypseudo;
 	}
 
+	// the only thing returned is the unique id of the compiled result
 	return $result;
 }
 
@@ -924,20 +1134,6 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	$result .= '<button target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $fontzen_cssclass . '">' . $text . '</button>';
 	$result .= '</p>';
 	
-	
-	
-	foreach ($compiled as $id => $compiledresult)
-	{
-		$class = $compiledresult["id"];
-		$rules = $compiledresult["rules"];
-		if (count($rules) > 0)
-		{
-			$result .= '<style>';
-			$result .= ".{$class} { " . implode($rules) . " }";
-			$result .= '</style>';
-		}
-	}
-		
 	return $result;
 }
 
@@ -1063,19 +1259,6 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
 	}
 	
-	// inject the generated css inline
-	foreach ($compiled as $id => $compiledresult)
-	{
-		$class = $compiledresult["id"];
-		$rules = $compiledresult["rules"];
-		if (count($rules) > 0)
-		{
-			$result .= '<style>';
-			$result .= ".{$class} { " . implode($rules) . " }";
-			$result .= '</style>';
-		}
-	}
-
 	return $result;
 }
 
@@ -1122,6 +1305,7 @@ function nxs_frontendframework_nxs2_wp_footer()
 		NXS_FRAMEWORKPATH . "/css/css-reset.css",
 		NXS_FRAMEWORKPATH . "/css/framework.css",
 		NXS_FRAMEWORKPATH . "/css/framework-responsive.css",
+		NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/nxs2/css/nxs2.css",
 	);
 	foreach ($css_embeds as $embed)
 	{
@@ -1656,18 +1840,6 @@ function nxs_sc_nxspagerow($rowattributes, $content = null, $name='')
 		$output .= "</div>";
 	}
 
-	foreach ($compiled as $id => $compiledresult)
-	{
-		$class = $compiledresult["id"];
-		$rules = $compiledresult["rules"];
-		if (count($rules) > 0)
-		{
-			$output .= '<style>';
-			$output .= ".{$class} { " . implode($rules) . " }";
-			$output .= '</style>';
-		}
-	}
-
 	// widgets have the capability to tell the row to etch itself
 	// (for example entities widgets)
 	if ($nxs_global_row_render_statebag["etchrow"] === true)
@@ -2002,18 +2174,6 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		$output .= "</div>";
 		
 		$output .= "</li>";
-		
-		foreach ($compiled as $id => $compiledresult)
-		{
-			$class = $compiledresult["id"];
-			$rules = $compiledresult["rules"];
-			if (count($rules) > 0)
-			{
-				$output .= '<style>';
-				$output .= ".{$class} { " . implode($rules) . " }";
-				$output .= '</style>';
-			}
-		}
 	}
 	
 	return $output;
@@ -2276,21 +2436,6 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	
 	$image_border .= $htmlforimage;
 	
-	foreach ($compiled as $id => $compiledresult)
-	{
-		$class = $compiledresult["id"];
-		$rules = $compiledresult["rules"];
-		if (count($rules) > 0)
-		{
-			$image_border .= '<style>';
-			$image_border .= ".{$class} { " . implode($rules) . " }";
-			$image_border .= '</style>';
-		}
-	}
-
-
-
-	
 	$image_border .= '</div>';
 	$image_border .= '</div>';
 	
@@ -2339,19 +2484,6 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 	
 	$result = "<div class='{$unique_style_combination_class_0}'>{$unwrapped_content}</div>";
-	
-	// render style
-	foreach ($compiled as $id => $compiledresult)
-	{
-		$class = $compiledresult["id"];
-		$rules = $compiledresult["rules"];
-		if (count($rules) > 0)
-		{
-			$result .= '<style>';
-			$result .= ".{$class} { " . implode($rules) . " }";
-			$result .= '</style>';
-		}
-	}
 	
 	return $result;
 }
@@ -2409,17 +2541,93 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 		
 	$result .= '<'. $wrappingelement . ' class="' . $unique_style_combination_class_0 . ' ' . $cssclasses . '">' . $text . '</'. $wrappingelement . '>';
 	
-	foreach ($compiled as $id => $compiledresult)
+	return $result;
+}
+
+// injecting of styles of menus
+function nxs2_nav_menu_link_attributes($result, $item, $args, $depth)
+{
+	$isactive = in_array('current-menu-item', $item->classes);
+	// todo: if not active, re-check if current url is url of item, then also consider isactive?
+
+	global $nxs_gl_currentmenuwidget_mixedattributes;
+	
+	$menuitem_color = $nxs_gl_currentmenuwidget_mixedattributes["menuitem_color"];
+	$menuitem_active_color = $nxs_gl_currentmenuwidget_mixedattributes["menuitem_active_color"];
+	$menuitem_hover_color = $nxs_gl_currentmenuwidget_mixedattributes["menuitem_hover_color"];
+	
+	$menuitem_sub_color = $nxs_gl_currentmenuwidget_mixedattributes["menuitem_sub_color"];
+	$menuitem_sub_active_color = $nxs_gl_currentmenuwidget_mixedattributes["menuitem_sub_active_color"];
+	$menuitem_sub_hover_color = $nxs_gl_currentmenuwidget_mixedattributes["menuitem_sub_hover_color"];
+	
+	$menuitem_height = $nxs_gl_currentmenuwidget_mixedattributes["parent_height"];
+	$menuitem_height = str_replace(".", "-", $menuitem_height);
+	$menuitem_height = str_replace("x", "", $menuitem_height);
+	if ($menuitem_height == "1") { $menuitem_height = "1-0"; }
+	if ($menuitem_height == "") { $menuitem_height = "1-0"; } 
+	
+	$styles = array();
+	$styles["content_justify"] = "center";
+	$styles["align_items"] = "center";
+	$styles["height"] = $menuitem_height;
+	$styles["fontzen"] = "1";
+	$styles["padding_left"] = "20";
+	$styles["padding_right"] = "20";
+	
+	if ($isactive)
 	{
-		$class = $compiledresult["id"];
-		$rules = $compiledresult["rules"];
-		if (count($rules) > 0)
-		{
-			$result .= '<style>';
-			$result .= ".{$class} { " . implode($rules) . " }";
-			$result .= '</style>';
-		}
+		$styles["cursor"] = "default";	// it should not look clickable although it is...		
 	}
+	
+	if ($depth == 0)
+	{
+		if ($isactive)
+		{
+			$styles["colorzen"] = $menuitem_active_color;
+		}
+		else
+		{
+			$styles["colorzen"] = $menuitem_color;
+		}
+		
+		$styles["colorzen:hover"] = $menuitem_hover_color;
+	}
+	else if ($depth > 0)
+	{
+		if ($isactive)
+		{
+			$styles["colorzen"] = $menuitem_sub_active_color;
+		}
+		else
+		{
+			$styles["colorzen"] = $menuitem_sub_color;
+		}
+		
+		$styles["colorzen:hover"] = $menuitem_sub_hover_color;
+	}
+	
+	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+	if ($result['class'] != "")
+	{
+		$result['class'].=" ";
+	}
+	$result['class'].= $compiled[0]["id"];
 	
 	return $result;
 }
+add_filter( 'nav_menu_link_attributes', 'nxs2_nav_menu_link_attributes', 10, 4);
+
+// requires wp 4.8 ...
+function nxs2_nav_menu_submenu_css_class( $result ) 
+{
+	$styles = array();
+	$styles["display"] = "flex";
+	$styles["flex_direction"] = "column";
+	$styles["white_space"] = "nowrap";
+	$styles["width"] = "inherit";
+	$compiled = nxs_frontendframework_nxs2_compilestyle($styles);
+  $result[] = $compiled["id"];
+	
+  return $result;
+}
+add_filter( 'nav_menu_submenu_css_class', 'nxs2_nav_menu_submenu_css_class' );

@@ -261,7 +261,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			if ($atts["excludeyoutube"] == "true")
 			{
-				$input = str_replace("https://www.youtube", "*NXS*PLACEHOLDER*YOUTUBE*", $input);
+				$input = str_replace("https://www.youtube/watch", "*NXS*PLACEHOLDER*YOUTUBE*", $input);
 			}
 			
 			$input = preg_replace
@@ -273,7 +273,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 
 			if ($atts["excludeyoutube"] == "true")
 			{
-				$input = str_replace("*NXS*PLACEHOLDER*YOUTUBE*", "https://www.youtube", $input);
+				$input = str_replace("*NXS*PLACEHOLDER*YOUTUBE*", "https://www.youtube/watch", $input);
 			}
 		}
 		else if ($op == "smartlinks")
@@ -1578,12 +1578,7 @@ function nxs_sc_title($atts, $content = null)
 	//
 	
 	// delegate rendering to the frontendframework
-	$frontendframework = $_REQUEST["frontendframework"];
-	if ($frontendframework == "")
-	{
-		$frontendframework = "nxs";
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
 	
@@ -1837,12 +1832,7 @@ function nxs_sc_text($atts, $content = null, $name='')
 	//
 	
 	// delegate rendering to the frontendframework
-	$frontendframework = $_REQUEST["frontendframework"];
-	if ($frontendframework == "")
-	{
-		$frontendframework = "nxs";
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
 	

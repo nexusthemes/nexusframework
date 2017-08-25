@@ -1098,7 +1098,10 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 
 	$html = nxs_ob_get_contents();
 	
-	if ($_REQUEST["frontendframework"] == "alt")
+	// todo; this is not optimal; the shortcode itself should be implemented in the 
+	// frontend framework instead of this implementation
+	$frontendframework = nxs_frontendframework_getfrontendframework();
+	if ($frontendframework == "alt")
 	{
 		// $html = "<div>alt map :) [nxsstring ops='up' value='aap']</div>";
 		$html = "[nxsgooglemap height='stretch' maptypeid='{$maptypeid}' zoom='{$zoom}' address='{$address}']";

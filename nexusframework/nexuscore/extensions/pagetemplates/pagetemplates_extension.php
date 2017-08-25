@@ -34,17 +34,8 @@ function nxs_ext_lazyload_pagetemplate($pagetemplate)
 
 function nxs_ext_inject_pagetemplate($pagetemplate)
 {
-	// $filetobeincluded = NXS_FRAMEWORKPATH . '/nexuscore/pagetemplates/' . $pagetemplate . '/pagetemplate_' . $pagetemplate . '.php';
-	
-	$frontendframework = "nxs";
-	
-	if ($_REQUEST["frontendframework"] != "")
-	{
-		$frontendframework = $_REQUEST["frontendframework"];
-	}
-	
+	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetobeincluded = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/pagetemplates/{$pagetemplate}/pagetemplate_{$pagetemplate}.php";
-	
 	require_once($filetobeincluded);
 }
 

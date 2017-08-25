@@ -374,12 +374,15 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	$locations = get_nav_menu_locations();
 	$menu_id = $locations[$menu_name];
 	
+	global $nxs_gl_currentmenuwidget_mixedattributes;
+	$nxs_gl_currentmenuwidget_mixedattributes = $mixedattributes;
+	
 	$nav_menu_args = array
 	(
 		'fallback_cb' => '',
-		'menu'        => $menu_id
+		'menu'        => $menu_id,
+		'menu_class'	=> 'menu nxs-menu',
 	);
-	//$x = apply_filters( 'widget_nav_menu_args', $nav_menu_args, $nav_menu, $args, $instance );
 	wp_nav_menu( $nav_menu_args );
 
 	$menuhtml = nxs_ob_get_contents();
@@ -490,6 +493,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 			<?php
 			// Script
 			echo $script;
+			
 		}
 		
 	/* ------------------------------------------------------------------------------------------------- */

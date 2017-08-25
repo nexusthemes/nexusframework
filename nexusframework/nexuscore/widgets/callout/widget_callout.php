@@ -896,16 +896,25 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Button
-	if ($url != "" && $button_text != ""){
+	if ($url != "" && $button_text != "")
+	{
 		$button_alignment = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
 		$button_color = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
 		$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
 		$button_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $button_fontzen);
 		
+		
+		/*
 		$htmlbutton = '
+		
 		<p class="' . $button_alignment . ' nxs-padding-bottom0">
 			<span class="nxs-button ' . $button_scale_cssclass . ' ' . $button_color . ' ' . $button_fontzen_cssclass . '">' . $button_text . '</span>
 		</p>';
+		*/
+		
+		$destination_js_escaped = esc_attr($destination_js);
+		$x = "[nxs_button text='{$button_text}' destination_articleid='{$destination_articleid}' destination_url='{$destination_url}' destination_js='{$destination_js_escaped}' destination_target='{$destination_target}' colorzen='{$button_color}' scale='{$button_scale}']";
+		$htmlbutton = do_shortcode($x);
 	}
 
 	
@@ -922,10 +931,12 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	} 
 	else
 	{
+		/*
 		if ($url != "")
 		{
 			echo '<a target="'.$destination_target.'" '.$destination_relation_html.' '.$onclick.' href="' . $url . '">';
 		}
+		*/
 		
 		if (true)
 		{
@@ -951,26 +962,28 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			nxs_ob_end_clean();
 		}
 		
-			echo '
-			<div class="'.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
-				<div class="nxs-flex '.$hclass.' '.$flex_box_height.' '.$overlay_cssclass.'">
-					<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box_height.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">';
-						
-						$padding = $widgetmetadata["text_padding"];
-						$margin = $widgetmetadata["text_margin"];
-						$bgcolor = $widgetmetadata["bgcolor"];
-						$border_radius = $widgetmetadata["border_radius"];
-						
-						echo do_shortcode("[nxs_wrap border_radius='{$border_radius}' colorzen='{$bgcolor}' padding='{$padding}' margin='{$margin}']{$innercontent}[/nxs_wrap]");
-						
-					echo '</div>
-				</div>
-				<div class="nxs-clear"></div>
-			</div>';
+		echo '
+		<div class="'.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
+			<div class="nxs-flex '.$hclass.' '.$flex_box_height.' '.$overlay_cssclass.'">
+				<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box_height.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">';
+					
+					$padding = $widgetmetadata["text_padding"];
+					$margin = $widgetmetadata["text_margin"];
+					$bgcolor = $widgetmetadata["bgcolor"];
+					$border_radius = $widgetmetadata["border_radius"];
+					
+					echo do_shortcode("[nxs_wrap border_radius='{$border_radius}' colorzen='{$bgcolor}' padding='{$padding}' margin='{$margin}']{$innercontent}[/nxs_wrap]");
+					
+				echo '</div>
+			</div>
+			<div class="nxs-clear"></div>
+		</div>';
 		
+		/*
 		if ($url != ""){
 			echo '</a>';
 		}
+		*/
 	} 
 	
 	/* ------------------------------------------------------------------------------------------------- */

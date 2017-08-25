@@ -1,0 +1,15 @@
+.sub-menu
+{
+	display: flex;
+	
+}
+
+.sub-menu > li
+{
+	height: inherit !important;
+}
+
+.sub-menu li
+{
+	padding: inherit !important;
+}
