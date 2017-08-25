@@ -754,6 +754,9 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
     ?>
     </div> <!-- END nxs-menu-mini-nav-expander -->
+    <?php
+    nxs_ob_start();
+    ?>
     <script>
       jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
       jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function(){
@@ -772,7 +775,16 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
           return false;
       });
     </script>
-
+		<?php
+			$script2 = nxs_ob_get_contents();
+			nxs_ob_end_clean();
+			
+			$framework = nxs_frontendframework_getfrontendframework();
+			if ($framework == "nxs")
+			{
+				echo $script2;
+			}
+		?>
     </div> <!-- END nxs-menu-minified -->
 
     <?php

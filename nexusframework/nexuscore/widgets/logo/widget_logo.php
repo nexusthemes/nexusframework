@@ -503,6 +503,7 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 			"image_maxheight" => $image_maxheight,
 			"image_margin" => $logo_margin,
 			"border_radius" => $border_radius,
+			//"align" => $halign,	// not fully compatible i think?
 			"image_alignment" => $halign,	// not fully compatible i think?
 			"image_size" => "orig@contain",
 		);

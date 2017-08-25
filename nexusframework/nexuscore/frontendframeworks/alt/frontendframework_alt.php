@@ -1298,14 +1298,3 @@ function nxs_frontendframework_alt_gethtmlfortext($args)
 	
 	return $result;
 }
-
-function nxs_sc_text($atts, $content = null, $name='') 
-{
-	$args = array
-	(
-		"text" => $content,
-	);
-	$result = nxs_gethtmlfortext_v2($args);
-	return $result;
-}
-add_shortcode('nxs_text', 'nxs_sc_text');

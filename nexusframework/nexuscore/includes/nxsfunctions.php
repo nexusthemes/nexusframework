@@ -7967,6 +7967,12 @@ function nxs_getimagecssalignmentclass($value)
 		// default
 		$result = "nxs-icon-right";
 	}
+	else 
+	{
+		// default
+		$result = "nxs-icon-center";
+	}
+	
 	return $result;
 }
 

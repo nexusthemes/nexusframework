@@ -466,34 +466,51 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 					
 				echo '
 				</div> <!-- END nxs-menu-mini-nav-expander -->';
+				
+				nxs_ob_start();
 				?>
 				<script>
+						// wpmenu
             jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
             jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function()
             {
             	nxs_js_log('wpmenu mini expand click');
               nxs_js_menu_mini_expand(this, '<?php echo $placeholderid; ?>');
-              nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+             	nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
 
               var self = this;
 
               jQ_nxs(document).off('nxs_event_resizeend.menu_mini_expand');
               jQ_nxs(document).on('nxs_event_resizeend.menu_mini_expand', function(){
                   nxs_js_change_menu_mini_expand_height(self, '<?php echo $placeholderid; ?>');
-                  nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+                 	nxs_gui_set_runtime_dimensions_enqueuerequest('nxs-menu-toggled');
+                  
                   return false;
               });
               return false;
             });
         </script>
+				<?php
+				$script2 = nxs_ob_get_contents();
+				nxs_ob_end_clean();
 				
+				$framework = nxs_frontendframework_getfrontendframework();
+				if ($framework == "nxs")
+				{
+					echo $script2;
+				}
+				?>	
 			</div> <!-- END nxs-menu-minified -->
 			
 			<div class="nxs-clear"></div>
 			<?php
 			// Script
-			echo $script;
 			
+			$framework = nxs_frontendframework_getfrontendframework();
+			if ($framework == "nxs")
+			{
+				echo $script;
+			}
 		}
 		
 	/* ------------------------------------------------------------------------------------------------- */

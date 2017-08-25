@@ -541,9 +541,14 @@ function nxs_pagetemplate_handlefooter()
 
 	if ($existingfooterid != "")
 	{
+		$metadata = nxs_get_corepostmeta($existingfooterid);
+		$rc_colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $metadata["rc_colorzen"]);
+		$styles = array();
+		$styles["colorzen"] = $rc_colorzen;
+		$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 		?>
 		<div id="nxs-footer" class="nxs-containsimmediatehovermenu nxs-sitewide-element <?php echo $widescreenclass; ?>">
-	    <div id="nxs-footer-container" class="nxs-sitewide-container nxs-footer-container <?php echo $cssclass; ?>">
+	    <div id="nxs-footer-container" class="<?php echo $compiled[0]["id"]; ?> nxs-sitewide-container nxs-footer-container <?php echo $cssclass; ?>">
 				<?php 
 				if ($existingfooterid != "")
 				{
