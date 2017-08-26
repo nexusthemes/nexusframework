@@ -430,23 +430,27 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	}
  
 	// Url
-	if ($destination_articleid != "") { 
+	if ($destination_articleid != "") 
+	{ 
 		$url = nxs_geturl_for_postid($destination_articleid);
 		$target = 'target="_self"'; 
 	} 
 	
-	if ($destination_url != "") {
+	if ($destination_url != "") 
+	{
 		$url = $destination_url;
 		$target = 'target="_blank"';
 		
 	}
 
-	if ($destination_target != "@@@empty@@@") {
+	if ($destination_target != "@@@empty@@@" && $destination_target != "") 
+	{
 		$target = "target='".$destination_target."'";
 	}
 
 	$destination_relation_html = '';
-	if ($destination_relation == "nofollow") {
+	if ($destination_relation == "nofollow") 
+	{
 		$destination_relation_html = 'rel="nofollow"';
 	}
 
