@@ -102,3 +102,31 @@ window.addEventListener
 	  nxs_js_tagviewports();
 	}
 );
+
+function nxs_js_menu_mini_expand_v2(obj, placeholderid, action) 
+{
+	if (action == "toggle")
+	{
+		//show the collapser
+		var id = "a_nav_collapser_" + placeholderid;
+		var e = document.getElementById(id);
+		if (e.style.display == "none")
+		{
+			e.style.display = "block";
+			
+			var id = "icon_nav_" + placeholderid;
+			var e = document.getElementById(id);
+			e.style.transition = "0.4s";
+			e.style.transform = "rotate(180deg)";
+		}
+		else if (e.style.display == "block")
+		{
+			e.style.display = "none";
+
+			var id = "icon_nav_" + placeholderid;
+			var e = document.getElementById(id);
+			e.style.transition = "0.4s";
+			e.style.transform = "rotate(-180deg)";
+		}		
+	}
+}

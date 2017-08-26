@@ -444,21 +444,26 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 				</div>
 			</div>';
 			
+			if (nxs_frontendframework_getfrontendframework() == "nxs2")
+			{
+				$nxs2anchorcode = "onclick='nxs_js_menu_mini_expand_v2(this, \"$placeholderid\", \"toggle\");'";
+			}
+			
 			echo '
 			<div style="display:none" class="nxs-menu-minified nxs-applylinkvarcolor responsive-' . $responsive_display . '">';
 			
 				// Minified anchor
 				echo '			
-				<a href="#" class="nxs_js_menu_mini_expand-' . $placeholderid . '">
+				<a href="#" id="a_nav_expander_' . $placeholderid . '" class="nxs_js_menu_mini_expand-' . $placeholderid . '" ' . $nxs2anchorcode . '>
 					<div style="text-align: center">
-						<span class="nxs-icon-menucontainer"></span>
+						<span id="icon_nav_' . $placeholderid . '" class="nxs-icon-menucontainer"></span>
 						<span>' . $minified_label . '</span>
 					</div>
 				</a>';
 				
 				// Minified expander
 				echo '
-                <div class="nxs-menu-mini-nav-expander-' . $placeholderid . '" style="display: none;">
+          <div id="a_nav_collapser_' . $placeholderid . '" class="nxs-menu-mini-nav-expander-' . $placeholderid . '" style="display: none;">
 
 					<div class="nxs-native-menu ' . $responsive . '" >
 						<ul>' . $menuhtml . '</ul>
@@ -470,6 +475,12 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 				nxs_ob_start();
 				?>
 				<script>
+					
+					elem.onclick = function() 
+					{
+		        alert("hello");
+		        return false;
+			    };
 						// wpmenu
             jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
             jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function()

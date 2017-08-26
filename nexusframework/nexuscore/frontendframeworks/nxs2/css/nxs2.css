@@ -13,3 +13,38 @@
 {
 	padding: inherit !important;
 }
+
+.responsive .nxs-menu, .responsive .sub-menu
+{
+	display: flex !important;
+	flex-direction: column;
+	position: inherit !important;
+	visibility: visible !important;
+	box-shadow: none !important;
+	opacity: 1.0 !important;
+}
+
+.responsive .sub-menu li
+{
+	visibility: visible !important;
+}
+
+.responsive li a
+{
+	justify-content: start !important;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+}
+
+.responsive li > a.nxs-depth-0 { padding-left: 20px !important; }
+.responsive li > a.nxs-depth-1 { padding-left: 40px !important; }
+.responsive li > a.nxs-depth-2 { padding-left: 60px !important; }
+.responsive li > a.nxs-depth-3 { padding-left: 80px !important; }
+.responsive li > a.nxs-depth-4 { padding-left: 100px !important; }
+
+.nxs-placeholder .nxs-logo img
+{
+	max-width: 98% !important;
+}
+

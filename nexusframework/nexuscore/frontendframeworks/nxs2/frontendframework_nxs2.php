@@ -2640,6 +2640,7 @@ function nxs2_nav_menu_link_attributes($result, $item, $args, $depth)
 		if ($menu_fontsize == "1") { $menu_fontsize = "1-0"; }
 		if ($menu_fontsize == "") { $menu_fontsize = "1-0"; } 
 		$styles["fontsize"] = $menu_fontsize;
+		
 	}
 	else if ($depth > 0)
 	{
@@ -2653,6 +2654,14 @@ function nxs2_nav_menu_link_attributes($result, $item, $args, $depth)
 		}
 		
 		$styles["colorzen:hover"] = $menuitem_sub_hover_color;
+		
+		// 
+		$menu_fontsize = $nxs_gl_currentmenuwidget_mixedattributes["submenu_fontsize"];
+		$menu_fontsize = str_replace(".", "-", $menu_fontsize);
+		$menu_fontsize = str_replace("x", "", $menu_fontsize);
+		if ($menu_fontsize == "1") { $menu_fontsize = "1-0"; }
+		if ($menu_fontsize == "") { $menu_fontsize = "1-0"; } 
+		$styles["fontsize"] = $menu_fontsize;
 	}
 	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
@@ -2660,7 +2669,7 @@ function nxs2_nav_menu_link_attributes($result, $item, $args, $depth)
 	{
 		$result['class'].=" ";
 	}
-	$result['class'].= $compiled[0]["id"];
+	$result['class'].= $compiled[0]["id"] . " " . "nxs-depth-$depth";
 	
 	return $result;
 }
