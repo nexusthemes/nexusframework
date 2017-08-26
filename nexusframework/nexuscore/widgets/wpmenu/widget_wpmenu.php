@@ -475,12 +475,6 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 				nxs_ob_start();
 				?>
 				<script>
-					
-					elem.onclick = function() 
-					{
-		        alert("hello");
-		        return false;
-			    };
 						// wpmenu
             jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').off('click.menu_mini_expand');
             jQ_nxs('a.nxs_js_menu_mini_expand-<?php echo $placeholderid; ?>').on('click.menu_mini_expand', function()
