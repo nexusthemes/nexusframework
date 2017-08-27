@@ -756,6 +756,8 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$htmltext = "";
 	}
 	
+	
+	
 	$button_heightiq = "";
 	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $button_heightiq, $button_fontzen, $destination_relation);
 	$htmlfiller = nxs_gethtmlforfiller();

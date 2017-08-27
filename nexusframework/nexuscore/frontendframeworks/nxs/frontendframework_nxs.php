@@ -261,7 +261,7 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 //
 // framework css
 //
-function nxs_framework_theme_styles()
+function nxs_frontendframework_nxs_theme_styles()
 {
 	// Register the style like this for a theme:  
   // (First the unique name for the style (custom-style) then the src, 
@@ -320,8 +320,6 @@ function nxs_framework_theme_styles()
 	
   do_action('nxs_action_after_enqueue_baseframeworkstyles');
 }
-add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');
-add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');
 
 function nxs_frontendframework_nxs_clearunwantedscripts()
 {
@@ -356,6 +354,15 @@ function nxs_frontendframework_nxs_clearunwantedscripts()
 
 function nxs_frontendframework_nxs_init()
 {
+	add_action('wp_enqueue_scripts', 'nxs_frontendframework_nxs_theme_styles');
+	add_action('admin_enqueue_scripts', 'nxs_frontendframework_nxs_theme_styles');
+	add_action('nxs_render_frontendeditor', 'nxs_frontendframework_nxs_render_frontendeditor');
+	add_shortcode('nxspagerow', 'nxs_frontendframework_nxs_sc_nxspagerow');
+	add_shortcode('nxsphcontainer', 'nxs_frontendframework_nxs_sc_nxsphcontainer');
+	add_shortcode('nxsplaceholder', 'nxs_frontendframework_nxs_sc_nxsplaceholder');
+	add_shortcode('nxs_wrap', 'nxs_frontendframework_nxs_sc_wrap');
+	add_shortcode('nxs_image', 'nxs_frontendframework_nxs_sc_image');
+
 	nxs_frontendframework_nxs_clearunwantedscripts();
 }
 
@@ -376,7 +383,6 @@ function nxs_frontendframework_nxs_render_frontendeditor()
 	}
 	*/
 }
-add_action('nxs_render_frontendeditor', 'nxs_frontendframework_nxs_render_frontendeditor');
 
 //
 //
@@ -384,7 +390,7 @@ add_action('nxs_render_frontendeditor', 'nxs_frontendframework_nxs_render_fronte
 
 // layout specific shortcodes
 
-function nxs_sc_nxspagerow($rowattributes, $content = null, $name='') 
+function nxs_frontendframework_nxs_sc_nxspagerow($rowattributes, $content = null, $name='') 
 {
 	extract
 	(
@@ -754,9 +760,8 @@ function nxs_sc_nxspagerow($rowattributes, $content = null, $name='')
 	
 	return $output;
 }
-add_shortcode('nxspagerow', 'nxs_sc_nxspagerow');
 
-function nxs_nxsphcontainer($atts, $content = null, $name='') 
+function nxs_frontendframework_nxs_sc_nxsphcontainer($atts, $content = null, $name='') 
 {
 	extract(shortcode_atts(array(
 		"id" => '',
@@ -1049,9 +1054,8 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	
 	return $output;
 }
-add_shortcode('nxsphcontainer', 'nxs_nxsphcontainer');
 
-function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='') 
+function nxs_frontendframework_nxs_sc_nxsplaceholder($inlinepageattributes, $content = null, $name='') 
 {
 	extract(shortcode_atts(array(
 		"id" => '',
@@ -1202,9 +1206,8 @@ function nxs_nxsplaceholder($inlinepageattributes, $content = null, $name='')
 	
 	return $result;	
 }
-add_shortcode('nxsplaceholder', 'nxs_nxsplaceholder');
 
-function nxs_sc_wrap($atts, $content = null, $name='') 
+function nxs_frontendframework_nxs_sc_wrap($atts, $content = null, $name='') 
 {
 	$unwrapped_content = do_shortcode($content);
 	
@@ -1218,7 +1221,6 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 	$result = "<div class='{$cssclasses}'>{$unwrapped_content}</div>";
 	return $result;
 }
-add_shortcode('nxs_wrap', 'nxs_sc_wrap');
 
 function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
 {
@@ -1546,15 +1548,13 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	return $result;	
 }
 
-function nxs_sc_image($attributes, $content = null, $name='') 
+function nxs_frontendframework_nxs_sc_image($attributes, $content = null, $name='') 
 {
 	extract($attributes);
 	
 	$result = nxs_frontendframework_nxs_gethtmlforimage($attributes);
 	return $result;
 }
-add_shortcode('nxs_image', 'nxs_sc_image');
-
 
 function nxs_frontendframework_nxs_gethtmlfortext($args)
 {
@@ -1670,4 +1670,3 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 	
 	return $result;
 }
-

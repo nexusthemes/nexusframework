@@ -489,6 +489,11 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		echo "@media (max-width: 400px) {  .template-placeholder-list { display: block; }}";
 		echo ".template-placeholder-list { display: flex; justify-content: space-between; }";
 		echo ".template-placeholder { display:flex; list-style: none; margin-bottom: 30px; }";
+		echo ".template-placeholder.nxs-margin-bottom-0-0 { margin-bottom: 0px; }";
+		echo ".template-ABC { width: 100%; }";
+		// echo ".template-XYZ { width: 100%; }";
+		echo ".template-sitewide-element { margin: 0 !important; padding: 0 !important; }";
+		
 		
 		// echo ".template-ABC.nxs-height100 { height: 100% !important; }";
 		echo ".template-placeholder-list .nxs-one-whole { width: 100% !important; border-right: 0px !important; }";
