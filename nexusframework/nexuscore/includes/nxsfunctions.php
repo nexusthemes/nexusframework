@@ -987,6 +987,9 @@ function nxs_gettemplateproperties()
 				
 				// store the lookup table
 				$nxs_gl_cache_templateprops["templaterules_lookups_lookup"] = $parsed_templaterules_lookups;
+				
+				// only at this moment we can initialize the frontendframework...
+				nxs_ext_initialize_frontendframework();
 			}
 		}
 	}
@@ -1147,7 +1150,6 @@ function nxs_gettemplateproperties_internal()
 	
 	if (!$ishandled)
 	{	
-		$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
 			
 		$statebag = array();
 		$statebag["vars"] = array();
@@ -1170,6 +1172,7 @@ function nxs_gettemplateproperties_internal()
 		{
 		}
 		
+		$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
 		if ($query->have_posts()) 	
 		{
 			$postid = $query->posts[0]->ID;
@@ -1279,6 +1282,10 @@ function nxs_gettemplateproperties_internal()
 					if ($maps_to == "")
 					{
 						echo "nxsfunctions; model not found ($value) <!-- {$modeluri} -->";
+						echo "<br />query:<br />";
+						var_dump($query);
+						echo "<br /><br />";
+						var_dump($result);
 						die();
 					}
 					$result[$key] = $maps_to;
@@ -12764,8 +12771,19 @@ function nxs_gethtmlfornotification($args)
 
 function nxs_frontendframework_getfrontendframework()
 {
+	if (nxs_iswebmethodinvocation())
+	{
+		return "nxs";
+	}
+	
 	$result = "nxs";
 	
+	$trl = nxs_gettemplateruleslookups();
+	if ($trl["customfrontendframework"] != "")
+	{
+		$result = $trl["customfrontendframework"];
+	}
+
 	if ($_REQUEST["frontendframework"] != "")
 	{
 		$result = $_REQUEST["frontendframework"];

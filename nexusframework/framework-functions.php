@@ -1395,6 +1395,7 @@ function nxs_action_webmethod_init_recontructmainwploop()
 	}
 }
 add_action("nxs_action_webmethod_init", "nxs_action_webmethod_init_recontructmainwploop");
+add_action("nxs_action_webmethod_init", "nxs_ext_initialize_frontendframework");
 
 add_action('add_meta_boxes', 'nxs_add_metaboxes');
 function nxs_add_metaboxes()
@@ -2213,15 +2214,29 @@ add_filter('protected_title_format', 'nxs_title_format');
 
 function nxs_ext_initialize_frontendframework()
 {
+	// initialization happens AFTER the pagetemplate rules are derived,
+	// and when performing a webmethod (GUI editing)
+	
+	// only one time...
+	if (defined('NXS_FRONTENDFRAMEWORK_INITIALIZED'))
+	{
+		return;
+	}
+	define('NXS_FRONTENDFRAMEWORK_INITIALIZED', true);
+
+	//
+	
 	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	if (file_exists($filetoinclude))
 	{
 		require_once($filetoinclude);
 	}
+	
+	// invoke the init of the framework
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_init";
+	$result = call_user_func_array($functionnametoinvoke, array($args));
 }
-// todo: should probably be put in the "init" action, but for now, lets inject it straight away while loading the framework
-nxs_ext_initialize_frontendframework();
 
 // ---
 

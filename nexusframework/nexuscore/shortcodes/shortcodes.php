@@ -1601,6 +1601,9 @@ function nxs_sc_googlemap($atts, $content = null, $name='')
 {
 	extract($atts);
 	
+	//$debug = json_encode($atts);
+	//return "map :) $debug";
+	
 	global $nxs_sc_googlemap_cnt;
 	$nxs_sc_googlemap_cnt++;
 	
@@ -1640,6 +1643,11 @@ function nxs_sc_googlemap($atts, $content = null, $name='')
 	
 	?>
 	<style>
+		.template-widgettype-googlemap 
+		{
+			display: block;
+			position: relative;
+		}
 		
 	</style>
 	<div class='nice'>
@@ -1659,6 +1667,7 @@ function nxs_sc_googlemap($atts, $content = null, $name='')
 			echo $renderresult["html"];
 		?>
 	</div>
+	
 	<script>
 		jQuery(".nice").parent().parent().css("position", "absolute").css("width", "100%").css("height", "100%");
 		jQuery(".nice").parent().css("position", "absolute").css("width", "100%").css("height", "100%");

@@ -323,7 +323,7 @@ function nxs_framework_theme_styles()
 add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');
 add_action('admin_enqueue_scripts', 'nxs_framework_theme_styles');
 
-function nxs_clearunwantedscripts()
+function nxs_frontendframework_nxs_clearunwantedscripts()
 {
 	// if we are in the frontend ...
 	if (!is_admin())
@@ -353,7 +353,11 @@ function nxs_clearunwantedscripts()
   	add_action('admin_head','nxs_setjQ_nxs');
   }
 }
-add_action('init', 'nxs_clearunwantedscripts');
+
+function nxs_frontendframework_nxs_init()
+{
+	nxs_frontendframework_nxs_clearunwantedscripts();
+}
 
 function nxs_frontendframework_nxs_render_frontendeditor()
 {

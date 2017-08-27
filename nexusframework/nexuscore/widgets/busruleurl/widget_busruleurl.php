@@ -516,12 +516,6 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 		
 		$modeluri = "{$humanid}@{$modelschema}";
 		
-		if ($_REQUEST["canna"] == "true")
-		{
-			echo "checking for; " . $modeluri;
-			die();
-		}
-		
 		// check if the modeluri exists
 		if ($nxs_g_modelmanager->ismodelfoundincache($modeluri))
 		{
@@ -589,6 +583,12 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 	else
 	{
 		$result["ismatch"] = "false";
+	}
+	
+	if ($result["ismatch"] === "true")
+	{
+		global $wp_query;
+		$wp_query->is_404 = false;
 	}
 	
 	return $result;

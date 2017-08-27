@@ -1002,7 +1002,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		if (!isset($nxs_gl_style_footer_cssrules))
 		{
 			// enqueue the styles in the footer (1x only)
-			add_action("wp_footer", "nxs_frontendframework_nxs2_footer");
+			add_action("wp_footer", "nxs_frontendframework_nxs2_footer", 1);
 		}
 		
 		$nxs_gl_style_footer_cssrules[$id] = $rulesbypseudo;
@@ -1162,7 +1162,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	
 	$result = '';
 	$result .= '<p class="' . $compiled[0]["id"] . '">';
-	$result .= '<button target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $fontzen_cssclass . '">' . $text . '</button>';
+	$result .= '<button ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $fontzen_cssclass . '">' . $text . '</button>';
 	$result .= '</p>';
 	
 	return $result;
@@ -1308,7 +1308,42 @@ function disable_wp_emojicons() {
   // filter to remove TinyMCE emojis
   add_filter( 'tiny_mce_plugins', 'disable_emojicons_tinymce' );
 }
-add_action( 'init', 'disable_wp_emojicons' );
+
+function nxs_frontendframework_nxs2_optimizecontent($embedcontent)
+{
+	// optimize output
+	$embedcontent = str_replace("\t", " ", $embedcontent);
+	$embedcontent = str_replace("\r\n", "\n", $embedcontent);
+	$optimizedembedcontent = "";
+	$rows = explode("\n", $embedcontent);
+	foreach ($rows as $row)
+	{
+		$canbeoptimized = true;
+		if (nxs_stringcontains("/*", $row))
+		{
+			$canbeoptimized = false;
+		}
+		else if (nxs_stringcontains("*/", $row))
+		{
+			$canbeoptimized = false;
+		}
+		
+		if ($canbeoptimized)
+		{
+			$rowpieces = explode("//", $row);
+			$row = $rowpieces[0] . " ";
+		}
+		else
+		{
+		}
+		
+		// multi space to single space
+		//$row = preg_replace("/ {2,}/", " ", $row);
+		$optimizedembedcontent .= $row;
+	}
+	
+	return $optimizedembedcontent;
+}
 
 function nxs_frontendframework_nxs2_wp_footer()
 {
@@ -1324,7 +1359,8 @@ function nxs_frontendframework_nxs2_wp_footer()
 		?>
 		<script>
 			<?php
-			echo file_get_contents($embed);
+			$embedcontent = file_get_contents($embed);
+			echo nxs_frontendframework_nxs2_optimizecontent($embedcontent);
 			?>
 		</script>
 		<?php
@@ -1347,6 +1383,7 @@ function nxs_frontendframework_nxs2_wp_footer()
 			// pimp the contents
 			// * fonts should be referenced by an absolute url, not relative
 			$contents = str_replace("../fonts/", "{$frameworkurl}/fonts/", $contents);
+			//echo nxs_frontendframework_nxs2_optimizecontent($contents);
 			echo $contents;
 			?>
 		</style>
@@ -1462,8 +1499,6 @@ function nxs_frontendframework_nxs2_wp_footer()
 	</script>
 	<?php
 	/* FONT HANDLING v2 END */
-
-	// 	
 }
 
 function nxs_clearunwantedscripts()
@@ -1487,43 +1522,24 @@ function nxs_clearunwantedscripts()
 			wp_dequeue_style('farbtastic');
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
-		add_action('wp_footer','nxs_frontendframework_nxs2_wp_footer');
+		add_action('wp_footer','nxs_frontendframework_nxs2_wp_footer', 10);
   }
   else
   {
   	//add_action('admin_head','nxs_setjQ_nxs');
   }
 }
-add_action('init', 'nxs_clearunwantedscripts');
+
+function nxs_frontendframework_nxs2_init()
+{
+	disable_wp_emojicons();
+	nxs_clearunwantedscripts();
+}
 
 function nxs_framework_theme_styles()
 {
 	wp_dequeue_style('farbtastic');
 	
-	/*
-	wp_register_style('nxs-framework-style-css-reset', 
-    nxs_getframeworkurl() . '/css/css-reset.css', 
-    array(), 
-    nxs_getthemeversion(),    
-    'all' );
-  
-  wp_register_style('nxs-framework-style', 
-    nxs_getframeworkurl() . '/css/framework.css', 
-    array(), 
-    nxs_getthemeversion(), 
-    'all' );
-  
-	wp_enqueue_style('nxs-framework-style-css-reset');
-	wp_enqueue_style('nxs-framework-style');
-    
-	wp_register_style('nxs-framework-style-responsive', 
-	    nxs_getframeworkurl() . '/css/framework-responsive.css', 
-	    array(), 
-	    nxs_getthemeversion(),
-	    'all' );
-	    
-	wp_enqueue_style('nxs-framework-style-responsive');
-	*/
   do_action('nxs_action_after_enqueue_baseframeworkstyles');
 }
 add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');

@@ -446,7 +446,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 			
 			if (nxs_frontendframework_getfrontendframework() == "nxs2")
 			{
-				$nxs2anchorcode = "onclick='nxs_js_menu_mini_expand_v2(this, \"$placeholderid\", \"toggle\");'";
+				$nxs2anchorcode = "onclick='nxs_js_menu_mini_expand_v2(this, \"$placeholderid\", \"toggle\"); return false;'";
 			}
 			
 			echo '

@@ -59,13 +59,22 @@ function nxs_widgets_embed_home_getoptions($args)
 			foreach ($iterator_datasources as $iterator_datasource)
 			{
 				$custompicker .= "<div class='widgetgroup'>";
-				$custompicker .= "<div class='widgetgroupheader'>Widget Group - {$iterator_datasource}</div>";
+				
+				
+				$refresh_url = nxs_geturlcurrentpage();
+				$refresh_url = nxs_addqueryparametertourl_v2($refresh_url,"bulkmodels", "true", true, true);
+				$refresh_url = nxs_addqueryparametertourl_v2($refresh_url,"singularschema", $iterator_datasource, true, true);
+				
+				$clearcache_html = "<a target='_blank' href='{$refresh_url}'>Clear cache</a><br />";
+
+				
+				$custompicker .= "<div class='widgetgroupheader'>Widget Group - {$iterator_datasource} {$clearcache_html}</div>";
 				
 				$iteratormodeluri = "singleton@listof{$iterator_datasource}";
 				$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
 				$instances = $contentmodel[$iterator_datasource]["instances"];
 				
-				$custompicker .= "<ul class='placeholder3 nxs-applylinkvarcolor isotope-grid'>";
+				$custompicker .= "<div style='display: flex;'>";
 				
 				foreach ($instances as $instance)
 				{
@@ -93,23 +102,28 @@ function nxs_widgets_embed_home_getoptions($args)
 						$abbreviatedtitle = substr($abbreviatedtitle, 0, $maxlength - 1) . "..";
 					}
 					
-					
+					$custompicker .= "<div class='item' style='border-color: #ddd; border-style: solid; border-width: 1px; margin: 3px; padding: 3px;'>";
 					$custompicker .= "<a href='#' onclick='nxs_js_popup_setsessiondata(\"embeddabletypemodeluri\", \"{$itemuri}\"); nxs_js_popup_sessiondata_make_dirty(); nxs_js_popup_refresh(); return false;'>";
-					$custompicker .= "<li>";
+					$custompicker .= "<div>";
 					$custompicker .= "<span title='{$itemtitle}' id='placeholdertemplate_<?php echo $widgetid; ?>' class='nxs-widget-icon {$itemicon}'></span>";
-					$custompicker .= "<p title='{$itemtitle}'>{$abbreviatedtitle}</p>";
-					$custompicker .= "</li>";
+					$custompicker .= "<p title='{$itemtitle}' style='text-align:center'>{$abbreviatedtitle}</p>";
+					$custompicker .= "</div>";
 					$custompicker .= "</a>";
+					$custompicker .= "</div>";
 				}
 				
-				$custompicker .= "</ul>";
-				$custompicker .= "<br />";
+				$custompicker .= "</div>";
+				
+				
 				$custompicker .= "</div>";
 			}
 			
 			//
 			
 			$custompicker .= "</div>";
+			
+			
+			
 			
 			// 
 			$fields = array
@@ -134,7 +148,7 @@ function nxs_widgets_embed_home_getoptions($args)
 			// this should be a read only / hidden field,
 			// and there should be another custom field populated with content defined by the content provider
 			
-			$sheettitle = nxs_l18n__("Select an widget", "nxs_td");
+			$sheettitle = nxs_l18n__("Select a widget", "nxs_td");
 			$sheeticon = "nxs-icon-puzzle";
 		}
 		else
@@ -191,12 +205,35 @@ function nxs_widgets_embed_home_getoptions($args)
 					"type" 				=> "wrapperend"
 				),
 			);
+			$refresh_url = nxs_geturlcurrentpage();
+			$refresh_url = nxs_addqueryparametertourl_v2($refresh_url, "embed_transients", "refresh", true, true);
+			
+			$propertiesrefreshcachefields = array
+			(
+				array
+				( 
+					"id" 				=> "wrapper_cache_begin",
+					"type" 				=> "wrapperbegin",
+					"label" 			=> nxs_l18n__("Cache", "nxs_td"),
+				),
+				array
+				( 
+					"id" 				=> "cache_custom",
+					"type" 				=> "custom",
+					"customcontent" => "<button onclick='location.href=\"{$refresh_url}\"; return false;'>Refresh (clear cache)</button>",
+				),
+				array( 
+					"id" 				=> "wrapper_cache_end",
+					"type" 				=> "wrapperend"
+				),
+			);
 			
 			$fields = array();	
 			$fields = array_merge($fields, $lookupfields);
 			$fields = array_merge($fields, $propertiesheaderfields);
 			$fields = array_merge($fields, $specificfields);
 			$fields = array_merge($fields, $propertiesfooterfields);
+			$fields = array_merge($fields, $propertiesrefreshcachefields);
 		}
 	}
 	else
@@ -308,6 +345,7 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		
 		$url = $templateurl;
 		$url = nxs_addqueryparametertourl_v2($url, "frontendframework", "alt", true, true);
+		//$url = nxs_addqueryparametertourl_v2($url, "frontendframework", "nxs2", true, true);
 		$url = nxs_addqueryparametertourl_v2($url, "nxs_triggeredby", "embedwidget", true, true);
 		// add query parameters based upon the lookup tables of the widget (options)
 		
@@ -449,9 +487,8 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		
 		echo "<style>";
 		echo "@media (max-width: 400px) {  .template-placeholder-list { display: block; }}";
-		echo ".template-placeholder-list { display: flex; }";
-		echo ".template-placeholder-list { display: flex; }";
-		echo ".template-placeholder { list-style: none; flex: 1; }";
+		echo ".template-placeholder-list { display: flex; justify-content: space-between; }";
+		echo ".template-placeholder { display:flex; list-style: none; margin-bottom: 30px; }";
 		
 		// echo ".template-ABC.nxs-height100 { height: 100% !important; }";
 		echo ".template-placeholder-list .nxs-one-whole { width: 100% !important; border-right: 0px !important; }";
