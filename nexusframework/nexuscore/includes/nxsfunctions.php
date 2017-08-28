@@ -1178,15 +1178,26 @@ function nxs_gettemplateproperties_internal()
 			$postid = $query->posts[0]->ID;
 			$result["templaterulespostid"] = $postid;
 			$businessrules = nxs_parsepoststructure($postid);
-					
+
+			// allow a filter to extend the (page)businessrules?		
+			$businessrules = apply_filters("nxs_f_businessrules", $businessrules, $a);
+			
 			$index = 0;
 			foreach ($businessrules as $currentbusinessrule) 
 			{
-				$content = $currentbusinessrule["content"];
-				$businessruleelementid = nxs_parsepagerow($content);
-				$placeholdermetadata = nxs_getwidgetmetadata($postid, $businessruleelementid);
-				$placeholdertype = $placeholdermetadata["type"];					
-				
+				if ($currentbusinessrule["propertyevaluation"] == "done")
+				{
+					$placeholdertype = $currentbusinessrule["placeholdertype"];
+					$placeholdermetadata = $currentbusinessrule["placeholdermetadata"];
+				}
+				else
+				{				
+					$content = $currentbusinessrule["content"];
+					$businessruleelementid = nxs_parsepagerow($content);
+					$placeholdermetadata = nxs_getwidgetmetadata($postid, $businessruleelementid);
+					$placeholdertype = $placeholdermetadata["type"];
+				}
+					
 				if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) 
 				{
 					// empty row / rule, ignore it

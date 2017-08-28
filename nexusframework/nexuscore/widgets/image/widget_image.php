@@ -530,7 +530,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	if ($image_size == 'original') { $max_width = $imagewidth; }
 	
 	// Image alignment
-	if ($image_size == 'original' && $image_alignment == 'center') { $image_alignment = "nxs-margin-auto"; } else
+	if ($image_size == 'original' && $image_alignment == 'center') { $image_alignment = "nxs-margin-auto nxs-icon-center"; } else
 	if ($image_size == 'original' && $image_alignment == 'right') { $image_alignment = "nxs-margin-auto-right"; }
 	
 	

@@ -520,7 +520,7 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 		if ($nxs_g_modelmanager->ismodelfoundincache($modeluri))
 		{
 			// ok, its there; the condition is valid apparently
-			error_log("busrule; yes, match; $modeluri");
+			// error_log("busrule; yes, match; $modeluri");
 			
 			// yes, unless one of the fragments is a mismatch
 			$result["ismatch"] = "true";
@@ -589,6 +589,11 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 	{
 		global $wp_query;
 		$wp_query->is_404 = false;
+		
+		if ($metadata["the_content_invoke"] != "")
+		{
+			add_action('nxs_action_rendercontent', $metadata["the_content_invoke"]);
+		}
 	}
 	
 	return $result;
