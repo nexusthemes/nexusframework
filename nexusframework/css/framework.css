@@ -2524,8 +2524,16 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .entry-content dl 											{ margin-bottom: 24px; }
 .entry-content dt 											{ font-weight: bold; }
 .entry-content dd 											{ margin-bottom: 24px; } 
+
+.entry-content ul											{ list-style: disc outside; }
+.entry-content ol											{ list-style: decimal outside; }
+.entry-content ul, 
+.entry-content ol 											{ margin: 0 0 1.714285714rem; line-height: 1.714285714; }
 .entry-content li > ul, 
 .entry-content li > ol 										{ margin: 10px 0 0 20px; }
+.entry-content li											{ margin: 0 0 0 2.571428571rem; }
+
+
 
 /* custom styling */
 .entry-content blockquote:before 							{ content: "\e64c"; position: absolute; font-family: 'nexus'; font-size: 200%; top: -6px; }
