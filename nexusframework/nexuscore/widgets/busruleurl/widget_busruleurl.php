@@ -590,9 +590,41 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 		global $wp_query;
 		$wp_query->is_404 = false;
 		
-		if ($metadata["the_content_invoke"] != "")
+		$nxs_action_rendercontent = $metadata["nxs_action_rendercontent"];
+		if ($nxs_action_rendercontent != "")
 		{
-			add_action('nxs_action_rendercontent', $metadata["the_content_invoke"]);
+			add_action('nxs_action_rendercontent', $nxs_action_rendercontent);
+		}
+		
+		$the_content = $metadata["the_content"];
+		if ($the_content != "")
+		{
+			add_filter('the_content', $the_content);
+		}
+		
+		$the_content = $metadata["the_content"];
+		if ($the_content != "")
+		{
+			add_filter('the_content', $the_content);
+		}
+		
+		$addnewrowoption = $metadata["addnewrowoption"];
+		if ($addnewrowoption != "")
+		{
+			add_filter('nxs_f_shouldrenderaddnewrowoption', $addnewrowoption);
+		}
+		
+		$renderdelegatedcontent = $metadata["renderdelegatedcontent"];
+		if ($renderdelegatedcontent != "")
+		{
+			add_filter('nxs_f_renderdelegatedcontent', $renderdelegatedcontent);
+		}
+		
+		// allow the plugin to add or tune specific lookups when needed
+		$lookups_filter = $metadata["lookups_filter"];
+		if ($lookups_filter != "")
+		{
+			add_filter('nxs_f_lookups', $lookups_filter);
 		}
 	}
 	

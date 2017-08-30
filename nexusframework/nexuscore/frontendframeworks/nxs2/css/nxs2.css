@@ -48,3 +48,8 @@
 	max-width: 98% !important;
 }
 
+/* dont show images that are (not yet) lazy loaded */
+img:not([src]) {
+    visibility: hidden;
+    min-height: 40px;
+}

@@ -162,6 +162,8 @@ function nxs_pagetemplate_handlecontent()
 			}
 		}
 		
+		$renderdelegatedcontent = apply_filters('nxs_f_renderdelegatedcontent', $renderdelegatedcontent);
+		
 		$shouldrenderaddnewrowoption = false;
 		$isremotetemplate = nxs_isremotetemplate($contentpostid);
 		if (nxs_has_adminpermissions() && $contentpostid != "SUPPRESSED" && $contentpostid != -999001 && !$isremotetemplate)
@@ -185,8 +187,7 @@ function nxs_pagetemplate_handlecontent()
 			
 			?>
 			<div id="nxs-content-container" class="nxs-containsimmediatehovermenu <?php echo $cssclass; ?>">
-				
-				<?php
+				<?php				
 				if ($toonsidebar)  
 				{ 
 					echo "<div class='nxs-main'>";
@@ -226,20 +227,22 @@ function nxs_pagetemplate_handlecontent()
 				
 				if ($renderdelegatedcontent)
 				{
-					$cssclass = nxs_getcssclassesforrowcontainer($contentpostid);
-
-					if (nxs_iseditor())
+					if ($contentpostid != 0)
 					{
-						$cssclass.= " nxs-layout-editor-editable";
-					}
-					?>
-					<div class='nxs-article-container <?php echo $cssclass; ?>'>
-						<?php
-				  	echo nxs_getrenderedhtml($contentpostid, "default");
-				  	?>
-				  </div> <!-- END nxs-article-container -->
-				  <?php
+						$cssclass = nxs_getcssclassesforrowcontainer($contentpostid);
 					
+						if (nxs_iseditor())
+						{
+							$cssclass.= " nxs-layout-editor-editable";
+						}
+						?>
+						<div class='nxs-article-container <?php echo $cssclass; ?>'>
+							<?php
+					  	echo nxs_getrenderedhtml($contentpostid, "default");
+					  	?>
+					  </div> <!-- END nxs-article-container -->
+					  <?php
+					}
 					//
 					// ---------------------------- BEGIN RENDER SHORTCUT TO ADD NEW ROW
 					//

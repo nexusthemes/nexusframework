@@ -1903,7 +1903,8 @@ table.ui-datepicker-calendar .ui-datepicker-unselectable {
 .nxs-gallerypopup img										{ 
 	display: block; 
 	margin: 0 auto; 
-	border: 3px solid white; 
+	border: 3px solid white;
+	box-sizing: border-box; 
 	box-shadow: 		rgba(0,0,0,1) 0 4px 30px;
 	-moz-box-shadow: 	rgba(0,0,0,1) 0 4px 30px;
 	-khtml-box-shadow: 	rgba(0,0,0,1) 0 4px 30px;

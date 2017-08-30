@@ -1345,7 +1345,7 @@ class nxs_g_modelmanager
 	
 		if (nxs_enableconceptualwidgets())
 		{
-			$result[] = array("widgetid" => "entities");
+			// $result[] = array("widgetid" => "entities");
 		}
 				
 		if ($nxsposttype == "post") 
@@ -1534,7 +1534,7 @@ class nxs_g_modelmanager
 	{
 		if (nxs_enableconceptualwidgets())
 		{
-			nxs_lazyload_plugin_widget(__FILE__, "entities");
+			// nxs_lazyload_plugin_widget(__FILE__, "entities");
 		}
 		
 		// widgets

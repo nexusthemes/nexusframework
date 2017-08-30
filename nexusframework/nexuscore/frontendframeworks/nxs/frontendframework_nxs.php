@@ -357,7 +357,7 @@ function nxs_frontendframework_nxs_init()
 	add_action('wp_enqueue_scripts', 'nxs_frontendframework_nxs_theme_styles');
 	add_action('admin_enqueue_scripts', 'nxs_frontendframework_nxs_theme_styles');
 	add_action('nxs_render_frontendeditor', 'nxs_frontendframework_nxs_render_frontendeditor');
-	add_shortcode('nxspagerow', 'nxs_frontendframework_nxs_sc_nxspagerow');
+	add_shortcode("nxspagerow", 'nxs_frontendframework_nxs_sc_nxspagerow');
 	add_shortcode('nxsphcontainer', 'nxs_frontendframework_nxs_sc_nxsphcontainer');
 	add_shortcode('nxsplaceholder', 'nxs_frontendframework_nxs_sc_nxsplaceholder');
 	add_shortcode('nxs_wrap', 'nxs_frontendframework_nxs_sc_wrap');
@@ -1501,15 +1501,30 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	$image_border_width = nxs_getcssclassesforlookup("nxs-border-width-", $image_border_width);
 	
 	$image_margin_cssclass = nxs_getcssclassesforlookup("nxs-margin-", $image_margin);
+	$margin_bottom_cssclass = nxs_getcssclassesforlookup("nxs-margin-bottom-", $margin_bottom);
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
+	
+	$img_style = "";
 	
 	// Image border
 	$image_border = '';
 	$image_border .= '<div class="nxs-image-wrapper ' . $image_shadow . ' ' . $image_size_cssclass . ' ' . $image_alignment_cssclass . ' ' . '">';
 	$image_border .= '<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="nxs-overflow ' . $image_border_width . '">';
+	
+	$id_att = "";
+	if ($id != "")
+	{
+		$id_att = "id=\"{$id_att}\"";
+	}
+	
 	// note the display: block is essential/required! else the containing div
 	// will have two additional pixels; kudos to http://stackoverflow.com/questions/8828215/css-a-2-pixel-line-appears-below-image-img-element
-	$image_border .= '<img class="' . $grayscale . ' ' . $enlarge . ' ' . $image_maxheight_cssclass . ' ' . $border_radius_cssclass . ' ' . $image_margin_cssclass . '" ';
+	
+	$classes = nxs_concatenateargswithspaces("nxs_imgsc3", $grayscale, $enlarge, $image_maxheight_cssclass, $border_radius_cssclass, $margin_bottom_cssclass, $image_margin_cssclass, $class); 
+	 
+	$class_att = implode(" ", $classes);
+	
+	$image_border .= '<img ' . $id_att . ' style="' . $img_style . '" class="'.$classes.'" ';
 	$image_border .= 'src="' . $imageurl . '" ';
 	if ($image_alt != "")
 	{
@@ -1527,13 +1542,52 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	// TODO: make ddl too
 	if ($image_shadow != "") 				{ $image_shadow = 'nxs-shadow'; }
 	
+	if ($destination_target == "@@@empty@@@" || $destination_target == "")
+ 	{
+ 		// auto
+ 		if ($destination_articleid != "")
+ 		{
+ 			// local link = self
+ 			$destination_target = "_self";
+ 		}
+ 		else
+ 		{
+ 			$homeurl = nxs_geturl_home();
+ 			if (nxs_stringstartswith($url, $homeurl))
+ 			{
+ 				$destination_target = "_self";
+ 			}
+ 			else
+ 			{
+ 				$destination_target = "_blank";
+ 			}
+ 		}
+ 	}
+ 	if ($destination_target == "_self")
+ 	{
+ 		$destination_target = "_self";
+ 	}
+ 	else if ($destination_target == "_blank")
+ 	{
+ 		$destination_target = "_blank";
+ 	}
+ 	else
+ 	{
+ 		$destination_target = "_self";
+	}
+
+	$destination_relation_html = '';
+	if ($destination_relation == "nofollow") {
+		$destination_relation_html = 'rel="nofollow"';
+	}
+	
 	// Image link
 	if ($destination_articleid != "") 
 	{
 		$destination_articleid = nxs_geturl_for_postid($destination_articleid);
-		$image_border = '<a href="' . $destination_articleid .'">' . $image_border . '</a>';
+		$image_border = '<a target="' . $destination_target . '" ' . $destination_relation_html . ' href="' . $destination_articleid .'">' . $image_border . '</a>';
 	} else if ($destination_url != "") {
-		$image_border = '<a href="' . $destination_url .'" target="_blank">' . $image_border . '</a>';
+		$image_border = '<a target="' . $destination_target . '" ' . $destination_relation_html . ' href="' . $destination_url .'" target="_blank">' . $image_border . '</a>';
 	}
 	
 	// Image

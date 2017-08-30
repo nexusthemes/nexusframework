@@ -138,4 +138,3 @@ function nxs_webmethod_addnewrowwithtemplate()
 	
 	nxs_webmethod_return_ok($responseargs);
 }
-?>

@@ -54,7 +54,7 @@ function nxs_gallerybox_detail_rendersheet($args)
 	$placeholdertype = $placeholdermetadata["type"];
 	
 	nxs_requirewidget($placeholdertype);
-	$fullimageurl = nxs_function_invokefunction("nxs_widgets_{$placeholdertype}_getfullsizeurl", $placeholdermetadata);
+	$detailhtml = nxs_function_invokefunction("nxs_widgets_{$placeholdertype}_getgallerydetailhtml", $placeholdermetadata);
 
 	$result = array();
 	
@@ -66,32 +66,29 @@ function nxs_gallerybox_detail_rendersheet($args)
 	
 	<div class="nxs-table" style='opacity: 0'>
 		<div class="nxs-table-cell">
-			            
-            <img id='galleryimg' class='nxs-gallery-image' src="<?php echo $fullimageurl; ?>" />
-			
-            <ul class="icon-font-list nxs-center">
+			<?php echo $detailhtml; ?>
+      <ul class="icon-font-list nxs-center">
 				<li>
 					<a href='#' onclick="nxs_js_gal_left(); return false;">
 						<span class="nxs-icon-arrow-left"></span>
 					</a>
 				</li>
-                <li></li>
+        <li></li>
 				<!-- todo: add social media buttons here -->			
 				<!-- next -->
-                <li>
-                    <a class="nxs-popupcloser" href='#' onclick="nxs_js_closepopup_unconditionally_if_not_dirty(); return false;">
-                        <span class="nxs-icon-close"></span>
-                    </a>
+        <li>
+	        <a class="nxs-popupcloser" href='#' onclick="nxs_js_closepopup_unconditionally_if_not_dirty(); return false;">
+	        	<span class="nxs-icon-close"></span>
+	        </a>
 				</li>
-                <li></li>
+        <li></li>
 				<li>
 					<a href='#' onclick="nxs_js_gal_right(); return false;">
 						<span class="nxs-icon-arrow-right"></span>
 					</a>
 				</li>
 			</ul>
-		
-        </div>
+		</div>
 	</div>
 	
 	<script type='text/javascript'>

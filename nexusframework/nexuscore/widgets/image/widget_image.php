@@ -521,9 +521,9 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	
 	// Original vs stretched images
 	if ($image_size == 'original') {
-		$html = '<img src="'.$imageurl.'" class=" '.$grayscale.' '.$enlarge.'" style="display: block; '.$border_radius.'" alt="'.$image_alt.'">';
+		$html = '<img src="'.$imageurl.'" class="v1 '.$grayscale.' '.$enlarge.'" style="display: block; align-self:center;'.$border_radius.'" alt="'.$image_alt.'">';
 	} else {
-		$html = '<img src="'.$imageurl.'" class="nxs-stretch '.$grayscale.' '.$enlarge.'" style="display: block; '.$border_radius.'" alt="'.$image_alt.'">';
+		$html = '<img src="'.$imageurl.'" class="v2 nxs-stretch '.$grayscale.' '.$enlarge.'" style="display: block; align-self:center; '.$border_radius.'" alt="'.$image_alt.'">';
 	}
 
 	// Image max size

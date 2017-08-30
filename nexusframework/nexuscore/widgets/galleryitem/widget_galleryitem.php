@@ -126,7 +126,80 @@ function nxs_widgets_galleryitem_home_getoptions($args)
 				"unicontentablefield" => true,				
 				"localizablefield"	=> true
 			),
-		)
+			
+			// ---
+			
+			/* LINK
+			---------------------------------------------------------------------------------------------------- */
+			
+			array( 
+				"id" 				=> "wrapper_begin_link",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Link", "nxs_td"),
+			),
+			
+			array(
+				"id" 				=> "destination_articleid",
+				"type" 				=> "article_link",
+				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array(
+				"id" 				=> "destination_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("External link", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			array
+      (
+				"id" 					=> "destination_url_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+			
+			array(
+				"id" 				=> "destination_js",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Javascript", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Apply javascript when the button is pressed.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true,
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+		
+			array(
+				"id" 				=> "destination_target",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "destination_relation", 
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Link relation", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("link_relation"),
+			),	
+			
+			array( 
+				"id" 				=> "wrapper_end_link",
+				"type" 				=> "wrapperend",
+			),
+			
+			//
+			
+		),
+		
+		
 	);
 	
 	//nxs_extend_widgetoptionfields($options, array("backgroundstyle"));
@@ -147,14 +220,26 @@ function nxs_widgets_galleryitem_initplaceholderdata($args)
 }
 
 // invoked by gallerybox contextprocessor
-function nxs_widgets_galleryitem_getfullsizeurl($placeholdermetadata)
+function nxs_widgets_galleryitem_getgallerydetailhtml($placeholdermetadata)
 {
+	extract($placeholdermetadata);
+	
+	
+	
 	$imageid = $placeholdermetadata['image_imageid'];
-	$lookup = nxs_wp_get_attachment_image_src($imageid, 'full', true);
-	$fullimageurl = $lookup[0];
-	$fullimageurl = nxs_img_getimageurlthemeversion($fullimageurl);
-
-	return $fullimageurl;
+	//$lookup = nxs_wp_get_attachment_image_src($imageid, 'full', true);
+	//$fullimageurl = $lookup[0];
+	//$fullimageurl = nxs_img_getimageurlthemeversion($fullimageurl);
+	nxs_ob_start();
+	?>
+	<img id='galleryimg' class='nxs-gallery-image' src="<?php echo $fullimageurl; ?>" />
+	<?php
+	$html = nxs_ob_get_contents();
+	
+	$html = do_shortcode("[nxs_img image_imageid='{$image_imageid}' destination_articleid='{$destination_articleid}' destination_url='{$destination_url}' destination_target='{$destination_target}' image_size='original']");
+	
+	nxs_ob_end_clean();
+	return $html;
 }
 
 function nxs_widgets_galleryitem_renderingallery($args)
@@ -259,5 +344,3 @@ function nxs_widgets_galleryitem_renderingallery($args)
 		</a>
 	</div>';
 }
-
-?>

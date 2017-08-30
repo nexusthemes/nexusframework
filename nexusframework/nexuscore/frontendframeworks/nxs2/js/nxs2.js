@@ -42,7 +42,6 @@ function nxs_js_deriveactiveviewport()
 	return biggest;
 }
 
-
 function nxs_js_tagviewports()
 {
 	var element = document.body.parentNode;	// html element
@@ -91,17 +90,20 @@ function nxs_js_tagviewports()
 	element.classList.add(classname);
 }
 
-// tag it firs the first time
-nxs_js_tagviewports();
+document.addEventListener("DOMContentLoaded", function() {
+  // tag it firs the first time
+	nxs_js_tagviewports();
 
-window.addEventListener
-(
-	'resize', function(event)
-	{
-		// todo: are throttling
-	  nxs_js_tagviewports();
-	}
-);
+	window.addEventListener
+	(
+		'resize', function(event)
+		{
+			// todo: are throttling
+		  nxs_js_tagviewports();
+		}
+	);
+});
+
 
 function nxs_js_menu_mini_expand_v2(obj, placeholderid, action) 
 {

@@ -1597,6 +1597,12 @@ function nxs_sc_button($atts, $content = null)
 add_shortcode("nxsbutton", "nxs_sc_button");
 add_shortcode("nxs_button", "nxs_sc_button");
 
+function nxs_sc_img($atts, $content = null)
+{
+	return nxs_gethtmlforimage_v3($atts);
+}
+add_shortcode("nxs_img", "nxs_sc_img");
+
 function nxs_sc_googlemap($atts, $content = null, $name='') 
 {
 	extract($atts);

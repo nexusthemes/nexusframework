@@ -1520,6 +1520,7 @@ function nxs_clearunwantedscripts()
 			wp_deregister_script('farbtastic');
 			wp_deregister_style('farbtastic');
 			wp_dequeue_style('farbtastic');
+			wp_deregister_script('wp-embed');
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
 		add_action('wp_footer','nxs_frontendframework_nxs2_wp_footer', 10);
@@ -1929,7 +1930,7 @@ function nxs_sc_nxspagerow($rowattributes, $content = null, $name='')
 	
 	return $output;
 }
-add_shortcode('nxspagerow', 'nxs_sc_nxspagerow');
+add_shortcode("nxspagerow", "nxs_sc_nxspagerow");
 
 function nxs_nxsphcontainer($atts, $content = null, $name='') 
 {
@@ -2461,6 +2462,8 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	
 	$styles = array();
 	$styles["maxheight"] = $image_maxheight_cssclass;
+	$styles["margin_bottom"] = $margin_bottom;
+	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 
@@ -2474,12 +2477,21 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	
 	$styles = array();
 	$styles["maxheight"] = $image_maxheight_cssclass;
+	$styles["margin_bottom"] = $margin_bottom;
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 
 	$image_border .= '<img class="' . $compiled[0]["id"] . '" ';
 	
-	$image_border .= 'src="' . $imageurl . '" ';
+	if ($loadbehaviour == "lazyload")
+	{
+		$image_border .= "data-original='{$imageurl}' ";
+	}
+	else
+	{
+		$image_border .= 'src="' . $imageurl . '" ';
+	}
+	
 	if ($image_alt != "")
 	{
 		$image_border .= 'alt="' . $image_alt . '" ';
@@ -2517,7 +2529,33 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 		$result .= '</div>';
 	}
 	
+	if ($loadbehaviour == "lazyload")
+	{
+		global $nxs_gl_lazylibloaded;
+		if  (!isset($nxs_gl_lazylibloaded))
+		{
+			$nxs_gl_lazylibloaded = "true";
+			add_action("wp_footer", "nxs_frontendframework_nxs2_injectlazylib", 9999);
+		}
+	}
+	
 	return $result;	
+}
+
+function nxs_frontendframework_nxs2_injectlazylib()
+{
+	// https://github.com/verlok/lazyload
+	?>
+	<script>
+		window.lazyLoadOptions = 
+		{
+		    /* your lazyload options */
+		};
+	</script>
+
+	<!-- Download the script and execute it after lazyLoadOptions is defined -->
+	<script async src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/9.0.0/lazyload.min.js"></script>
+	<?php
 }
 
 function nxs_sc_wrap($atts, $content = null, $name='') 

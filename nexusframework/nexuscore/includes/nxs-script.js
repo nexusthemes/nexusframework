@@ -4673,6 +4673,8 @@ function nxs_js_redirect_top(url)
 				
 				function nxs_js_updaterow(response)
 				{
+					nxs_js_log("update row function invoked");
+					
 					var postid = response.postid;
 					var rowindex = response.rowindex;
 					var html = response.html;
@@ -7818,7 +7820,8 @@ function nxs_js_get_frameworkcsstemplate(csslookup)
   u += nxs_js_createcssstyling_fontsizeheading("H6", 1.0, fontscale, factor_textfontsize);
   
   u = u + ".nxs-image-wrapper img { width: 100%; display: block; }";
-  u = u + ".nxs-image-wrapper.nxs-ratio-original img { width: auto; display: block; }";
+  // scenario 1; logo accountant website template
+  u = u + ".nxs-image-wrapper.nxs-ratio-original img { width: inherit; max-width: 100%; display: block; }";
     
 	u += "/* end injected by framework */";
 	
