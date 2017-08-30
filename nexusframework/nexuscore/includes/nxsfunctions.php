@@ -987,9 +987,6 @@ function nxs_gettemplateproperties()
 				
 				// store the lookup table
 				$nxs_gl_cache_templateprops["templaterules_lookups_lookup"] = $parsed_templaterules_lookups;
-				
-				// only at this moment we can initialize the frontendframework...
-				nxs_ext_initialize_frontendframework();
 			}
 		}
 	}
@@ -1304,6 +1301,9 @@ function nxs_gettemplateproperties_internal()
 			}
 		}
 	}
+	
+	// only at this moment we can initialize the frontendframework...
+	nxs_ext_initialize_frontendframework();
 	
 	return $result;
 }
