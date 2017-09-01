@@ -8112,7 +8112,7 @@ function nxs_gethtmlfortext_v2($args)
 }
 
 
-function nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url)
+function nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url = "")
 {
 	$microdata = "";
 	return nxs_gethtmlfortitle_v2($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url, $microdata);
