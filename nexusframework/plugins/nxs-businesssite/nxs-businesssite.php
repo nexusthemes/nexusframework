@@ -661,7 +661,7 @@ class nxs_g_modelmanager
 			// mimic a post by creating a virtual post
 			
 			// derived the seo title
-			$title = $this->wpseo_title();	
+			$title = $this->wpseo_title("");	
 			$excerpt = "";	// intentionally left blank; not practical to fill this
 			$content = "";  // intentionally left blank; lets use the front end instead
 			$rightnow = current_time('mysql');

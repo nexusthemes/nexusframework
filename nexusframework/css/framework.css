@@ -217,6 +217,18 @@ input[type=submit]:hover										{ opacity: 0.8; }
 	box-shadow: 0px 0px 0px 1px grey inset;
 }
 
+.nxs-widgettype-formbox select
+{
+	max-width: 100%;
+}
+
+.nxs-widgettype-formbox .g-recaptcha 
+{ 
+	transform:scale(0.77); 
+	transform-origin:0 0;
+}
+
+
 /* DEFAULT FILLER */
 .nxs-filler													{ padding: 5px 0; }
 

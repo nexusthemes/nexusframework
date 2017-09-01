@@ -623,7 +623,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$canonical_iterator_datasource = str_replace(",", ";", $canonical_iterator_datasource);
 			$canonical_iterator_datasource = str_replace("|", ";", $canonical_iterator_datasource);
 			$canonical_iterator_datasource = str_replace(" ", ";", $canonical_iterator_datasource);
-			$pieces = split(";", $canonical_iterator_datasource);
+			$pieces = explode(";", $canonical_iterator_datasource);
 			foreach ($pieces as $piece)
 			{
 				$itemhumanmodelid = trim($piece);
@@ -725,7 +725,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		
 		//
 		
-		$pieces = split("@", $modeluri);
+		$pieces = explode("@", $modeluri);
 		$itemhumanmodelid = $pieces[0];
 		$itemschema = $pieces[1];
 

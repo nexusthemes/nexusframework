@@ -499,7 +499,7 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 			$inlineheightstyle = '';
 		}
 		
-		//$htmlofimage = '<img '.$image_alt_attribute.' src="'.$imageurl.'" class="'.$image_maxheight_cssclass.' '.$logo_margin_cssclass.' '.$border_radius_cssclass.'" style="'.$alignment_image.' " />';
+		//$htmlofimage = '<img '.$image_alt_attribute.' src="'.$imageurl.'" class="nxs-ratio-original '.$image_maxheight_cssclass.' '.$logo_margin_cssclass.' '.$border_radius_cssclass.'" style="'.$alignment_image.' " />';
 		$a = array
 		(
 			"image_src" => $imageurl,
