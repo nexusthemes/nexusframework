@@ -1644,7 +1644,7 @@ class nxs_g_modelmanager
 	}
 	
 	// kudos to https://teleogistic.net/2013/02/11/dynamically-add-items-to-a-wp_nav_menu-list/
-	function wp_nav_menu_objects($result, $menu, $args)
+	function wp_nav_menu_objects($result, $menu, $args = array())
 	{
 		if (true) //$_REQUEST["nxs"] == "debugmenu2")
     {
