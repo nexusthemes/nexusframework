@@ -8087,7 +8087,8 @@ function nxs_gethtmlfortext($text = "", $text_alignment = "", $text_showliftnote
 	$args = array
 	(
 		"text" => $text,
-		"text_alignment" => $text_alignment,
+		//"text_alignment" => $text_alignment,	// obsolete; see align below
+		"align" => $text_alignment,
 		"text_showliftnote" => $text_showliftnote,
 		"text_showdropcap" => $text_showdropcap,
 		"wrappingelement" => $wrappingelement,
@@ -8774,13 +8775,13 @@ function nxs_loadplugin_twittertweets()
 function nxs_addfeedsupport()
 {
 	// text
-	add_filter("the_content_feed", "nxs_the_content_feed");
+	add_filter("the_content_feed", "nxs_the_content_feed", 10, 2);
 	add_filter("the_excerpt_rss", "nxs_the_excerpt_rss");
 	// image
-	add_filter("the_content_feed", "nxs_ext_feed_img");
+	add_filter("the_content_feed", "nxs_ext_feed_img", 10, 2);
 	add_filter("the_excerpt_rss", "nxs_ext_feed_img");
 	// title
-	add_filter("the_content_feed", "nxs_ext_feed_title");
+	add_filter("the_content_feed", "nxs_ext_feed_title", 10, 2);
 	add_filter("the_excerpt_rss", "nxs_ext_feed_title");
 }
 
@@ -8839,7 +8840,7 @@ function nxs_the_excerpt_rss($content)
 	return $content;
 }
 
-function nxs_the_content_feed($content, $feedtype)
+function nxs_the_content_feed($content, $feedtype = "")
 {
 	$origcontent = $content;
 	
