@@ -248,11 +248,20 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 	if ($destination_articleid != "") 
 	{
 		$destination_url = nxs_geturl_for_postid($destination_articleid);
-		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
 	}
-	else if ($destination_url != "") 
+	
+	if (nxs_stringstartswith($destination_url, "tel:"))
 	{
-		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
+		// a phone link; if parenthesis or spaces are used; absorb them
+		$destination_url = str_replace(" ", "", $destination_url);
+		$destination_url = str_replace("(", "", $destination_url);
+		$destination_url = str_replace(")", "", $destination_url);
+	}
+	
+	if ($destination_url != "") 
+	{
+		$result = '<span class="nxs-applylinkvarcolor"><a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a></span>';
+		
 	}
 	
 	return $result;
