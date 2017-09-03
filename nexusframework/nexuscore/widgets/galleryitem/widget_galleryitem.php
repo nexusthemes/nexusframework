@@ -1,5 +1,7 @@
 <?php
 
+nxs_requirewidget("generic");
+
 function nxs_widgets_galleryitem_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
 	return "nxs-icon-image"; // . $widget_name;
