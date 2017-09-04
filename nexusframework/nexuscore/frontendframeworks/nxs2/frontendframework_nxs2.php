@@ -381,7 +381,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			else
 			{
 				// unknown?
-				$rulesbypseudo[$pseudoselector][] = "max-height: unsupported_{$val};";
+				$rulesbypseudo[$pseudoselector][] = "height: unsupported_{$val};";
 			}
 		}
 		else if ($key == "padding_left")
