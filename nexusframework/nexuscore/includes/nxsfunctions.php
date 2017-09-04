@@ -8131,7 +8131,7 @@ function nxs_gethtmlfortitle_v3($title, $title_heading, $title_alignment, $title
 	(
 		"title" => $title,
 		"heading" => $title_heading,
-		"alignment" => $title_alignment,
+		"align" => $title_alignment,
 		"fontsize" => $title_fontsize,
 		"heightiq" => $title_heightiq,
 		"destination_articleid" => $destination_articleid,

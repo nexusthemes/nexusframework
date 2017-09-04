@@ -830,6 +830,9 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	// Title
 	$titlehtml = "<{$title_heading} {$title_schemaorg_attribute} class='{$concatenatedcssclasses}'>{$title}</{$title_heading}>";
 	
+	// new implementation delegates rendering of the title to the frontendframework
+	
+	
 	
 	if ($destination_target == "_self") {
 		$destination_target_html = 'target="_self"';
@@ -881,6 +884,21 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	if ($top_info_color_cssclass == "") { 
 		$titlehtml = '<div class="nxs-applylinkvarcolor">'.$titlehtml.'</div>'; 
 	}
+	
+	// new implementation delegates rendering the title to the frontendframework
+	$a = array
+	(
+		"title" => $title,
+		"heading" => $title_heading,
+		"align" => $title_alignment,
+		"fontsize" => $title_fontsize,
+		"heightiq" => "title",
+		"destination_articleid" => $destination_articleid,
+		"destination_target" => $destination_target,
+		"destination_relation" => $destination_relation,
+		// "microdata" => 
+	);
+	$titlehtml = nxs_gethtmlfortitle_v4($a);
 	
 	/* IMAGE
 	---------------------------------------------------------------------------------------------------- */

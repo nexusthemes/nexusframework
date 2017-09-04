@@ -2219,9 +2219,16 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 		}
 		
 		$output .= "<div class='ABC $heightclass $concatenated_css'>";
+		
+		//
+		$styles = array();
+		$styles["padding"] = $ph_padding;
+		$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+		$unique_style_combination_class_0 = $compiled[0]["id"];
+		
 
 		$concatenated_css = nxs_concatenateargswithspaces($ph_padding, $ph_valign);
-		$output .= '<div class="XYZ ' . $concatenated_css . '">';
+		$output .= '<div class="XYZ ' . $unique_style_combination_class_0 . ' ' . $concatenated_css . '">';
 		
 		$output .= "<div class='nxs-placeholder-content-wrap " . $cropwidgetclass . "'>";
 		$output .= $content;
