@@ -728,10 +728,12 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		"align" => $title_alignment,
 		"fontsize" => $title_fontsize,
 		"heightiq" => $title_heightiq,
-		"destination_articleid" => $destination_articleid,
-		"destination_url" => $destination_url,
-		"destination_target" => $destination_target,
-		"destination_relation" => $destination_relation,
+		// IMPORTANT; 20170908; we do NO LONGER allopw links for the titles, as in that case the linkcolor applies, which
+		// causes trouble on many sites
+		//"destination_articleid" => $destination_articleid,
+		//"destination_url" => $destination_url,
+		//"destination_target" => $destination_target,
+		//"destination_relation" => $destination_relation,
 		"microdata" => $microdata,
 		// 
 	);
