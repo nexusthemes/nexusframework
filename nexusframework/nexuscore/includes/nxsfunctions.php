@@ -681,6 +681,9 @@ function nxs_init_themeboot()
 {
 	if (is_admin())
 	{
+		// 
+		nxs_ext_initialize_frontendframework();
+		
  		if ($_REQUEST["reimportsource"] == "true")
  		{
  			check_admin_referer('reimportresource');
