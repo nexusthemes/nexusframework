@@ -18,7 +18,7 @@ function nxs_widgets_contactboxitem_getformitemsubmitresult($widget, $args)
 		{
 			$result = array
 			(
-				"result" => "OK";
+				"result" => "OK",
 			);
 		}
 		else
