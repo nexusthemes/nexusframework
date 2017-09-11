@@ -2543,7 +2543,7 @@ http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-betw
 .entry-content ul											{ list-style: disc outside; }
 .entry-content ol											{ list-style: decimal outside; }
 .entry-content ul, 
-.entry-content ol 											{ margin: 0 0 1.714285714rem; line-height: 1.714285714; }
+.entry-content ol 											{ line-height: 1.714285714; }
 .entry-content li > ul, 
 .entry-content li > ol 										{ margin: 10px 0 0 20px; }
 .entry-content li											{ line-height: 1.625em; font-size: 15px; }
