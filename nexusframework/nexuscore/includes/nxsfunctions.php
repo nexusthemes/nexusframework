@@ -11508,6 +11508,9 @@ function nxs_updatepoststructure($postid, $postcontents)
 		$pimped = str_replace("\t", "", $pimped);
 		$pimped = str_replace("] [", "][", $pimped);
 		$pimped = str_replace("]  [", "][", $pimped);
+		//
+		//$pimped = str_replace("'", "", $pimped);
+		//$pimped = str_replace('"', "", $pimped);
 		$postcontents = $pimped;
 		
 		//error_log("result of poststructure would become; $pimped");
@@ -11516,10 +11519,18 @@ function nxs_updatepoststructure($postid, $postcontents)
 	
 	$temp_array = array();
 	$temp_array = maybe_unserialize(get_post_meta($postid, $metadatakey, true));
-	$temp_array["structure"] = $postcontents;
-	$result = array_merge((array)$temp_array, (array)$modifiedmetadata);
 	
-	update_post_meta($postid, $metadatakey, nxs_get_backslashescaped($result));
+	if ($temp_array === "")
+	{
+		$temp_array = array();
+	}
+	
+	$temp_array["structure"] = $postcontents;
+	$result = $temp_array;
+
+	$result = nxs_get_backslashescaped($result);
+	
+	update_post_meta($postid, $metadatakey, $result);
 }
 
 // sanity checked for remote posts
