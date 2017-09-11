@@ -212,7 +212,12 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 		$headingelement = "h1";
 	}
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $alignment_cssclass, $fontsize_cssclass, $margin_cssclass, $margin_bottom_cssclass);
+	if ($fontzen != "")
+	{
+		$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $fontzen);
+	}
+	
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $alignment_cssclass, $fontsize_cssclass, $margin_cssclass, $margin_bottom_cssclass, $fontzen_cssclass);
 	if ($heightiq != "")
 	{
 		$heightiqprio = "p1";
@@ -260,8 +265,12 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 	
 	if ($destination_url != "") 
 	{
-		$result = '<span class="nxs-applylinkvarcolor"><a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a></span>';
+		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
 		
+		if ($shouldapplylinkvarcolor == true)
+		{
+			$result = "<span class='nxs-applylinkvarcolor'>{$result}</span";
+		}
 	}
 	
 	return $result;
