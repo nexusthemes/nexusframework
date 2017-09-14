@@ -846,7 +846,11 @@ class Nexus_Import extends WP_Importer {
 		}
 
 		foreach ( $item['postmeta'] as $meta )
-			$$meta['key'] = $meta['value'];
+		{
+			// php7 fix
+			$metakeyprop = $meta['key'];
+			$$metakeyprop = $meta['value'];
+		}
 
 		if ( 'taxonomy' == $_menu_item_type && isset( $this->processed_terms[intval($_menu_item_object_id)] ) ) {
 			$_menu_item_object_id = $this->processed_terms[intval($_menu_item_object_id)];

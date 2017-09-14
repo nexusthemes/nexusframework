@@ -1120,12 +1120,26 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	extract($optionvalues);
 	extract($args);
 	extract($runtimeblendeddata);
-
-	$address = $$altid["address"];
-	$maptypeid = $$altid["maptypeid"];
-	$zoom = $$altid["zoom"];
-	$deltalat = $$altid["deltalat"];
-	$deltalng = $$altid["deltalng"];
+	
+	$addressprop = $altid["address"];
+	$address = $$addressprop;
+	// $address = $$altid["address"];
+	
+	$maptypeidprop = $altid["maptypeid"];
+	$maptypeid = $$maptypeidprop;
+	// $maptypeid = $$altid["maptypeid"];
+	
+	$zoomprop = $altid["zoom"];
+	$zoom = $$zoomprop;
+	//$zoom = $$altid["zoom"];
+	
+	$deltalatprop = $altid["deltalat"];
+	$deltalat = $$deltalatprop;
+	//$deltalat = $$altid["deltalat"];
+	
+	$deltalngprop = $altid["deltalng"];
+	$deltalng = $$$deltalngprop;
+	//$deltalng = $$altid["deltalng"];
 	
 	$translated = array("address" => $address);
 	$translated = nxs_filter_translatelookup($translated, array("address"));
