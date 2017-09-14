@@ -274,7 +274,7 @@
 																		$foundatleastone = true;
 																		
 																		echo'
-																			<div class="block nxs-width200 nxs-float-left nxs-margin-right10">
+																			<div class="block disablednxs-width200 nxs-float-left nxs-margin-right10">
 																				<div class="content2">
 																					<div class="box">';
 																						
@@ -323,7 +323,7 @@
 									              <!-- <?php echo $identification; ?> color -->
 					                      
 				                      <div class="nxs-float-left nxs-margin-right10" <?php echo $hidecolorboxstyle; ?>>
-			                          <div class="block nxs-width200">
+			                          <div class="block disablednxs-width200">
 																<?php
 															
 															$palettename = nxs_colorization_getactivepalettename();
