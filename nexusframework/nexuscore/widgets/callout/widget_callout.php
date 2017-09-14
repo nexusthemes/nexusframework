@@ -728,12 +728,20 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		"align" => $title_alignment,
 		"fontsize" => $title_fontsize,
 		"heightiq" => $title_heightiq,
-		"destination_articleid" => $destination_articleid,
-		"destination_url" => $destination_url,
-		"destination_target" => $destination_target,
-		"destination_relation" => $destination_relation,
+		// ------
+		// IMPORTANT; these links should NOT be set; in call out widgets the titles are NOT links (oposed to text widgets).
+		// if it would, the links colors would apply (see the issue reported by Kacem; 
+		// [13/09/2017, 13:43:57] Kacem TALEB: i have another customer complaining on the link color issue that i raised last time
+		// as can be seen in https://www.laforge45.org
+		// [13/09/2017, 13:44:08] Kacem TALEB: at the call out widget
+		// "destination_articleid" => $destination_articleid,
+		// "destination_url" => $destination_url,
+		// "destination_target" => $destination_target,
+		// "destination_relation" => $destination_relation,
+		// -----
 		"shouldapplylinkvarcolor" => false,		
 		"microdata" => $microdata,
+		"colorzen" => $derived_colorzen,
 		// 
 	);
 	$htmltitle = nxs_gethtmlfortitle_v4($a);

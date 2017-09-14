@@ -217,7 +217,13 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 		$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen nxs-fontzen-", $fontzen);
 	}
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $alignment_cssclass, $fontsize_cssclass, $margin_cssclass, $margin_bottom_cssclass, $fontzen_cssclass);
+
+	if ($colorzen != "")
+	{
+		$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $colorzen);
+	}
+
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $alignment_cssclass, $fontsize_cssclass, $margin_cssclass, $margin_bottom_cssclass, $fontzen_cssclass, $colorzen_cssclass);
 	if ($heightiq != "")
 	{
 		$heightiqprio = "p1";
