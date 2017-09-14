@@ -512,7 +512,8 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-margin-top-0											{ margin-top: 0px !important; }
 .nxs-margin-top3											{ margin-top: 3px; }
 .nxs-margin-top5 											{ margin-top: 5px !important; }
-.nxs-margin													{ margin-top: 10px; }
+.nxs-margin,
+.nxs-margin-top10											{ margin-top: 10px; }
 .nxs-margin-top20 											{ margin-top: 20px; }
 .nxs-margin-top30 											{ margin-top: 30px; }
 .nxs-margin-top40 											{ margin-top: 40px; }
@@ -527,6 +528,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-margin-bottom50										{ margin-bottom: 50px; }
 /* right */
 .nxs-margin-right0											{ margin-right: 0px; }
+.nxs-margin-right5											{ margin-right: 5px; }
 .nxs-margin-right10											{ margin-right: 10px; }
 .nxs-margin-right15											{ margin-right: 15px; }
 /* left */
@@ -610,7 +612,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-width90												{ width: 90% !important; }
 .nxs-width97 												{ width: 97%; }
 .nxs-width100 												{ width: 100%; }
-.nxs-width200 												{ width: 200px; }
+.nxs-width200 												{ width: 200%; }
 .nxs-max-width100											{ max-width: 100%; }
 
 /* PADDING */
@@ -4272,6 +4274,14 @@ p.link {
 
 
 
+
+
+
+@media (min-width: 100px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 140px; min-width: 70px; background-color: rgb(238, 238, 238);}}
+@media (min-width: 360px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 160px; }}
+@media (min-width: 414px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 180px; }}
+@media (min-width: 768px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 250px; }}
+@media (min-width: 900px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 280px; }}
 
 
 /* kudos to https://gist.github.com/unruthless/413930 */
