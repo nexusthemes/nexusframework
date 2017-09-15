@@ -275,7 +275,8 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 		
 		if ($shouldapplylinkvarcolor == true)
 		{
-			$result = "<span class='nxs-applylinkvarcolor'>{$result}</span";
+			// this is needed for http://www.sylviedeloge.fr/identite-visuelle/ (link color specified on the widget)
+			$result = "<span class='nxs-applylinkvarcolor'>{$result}</span>";
 		}
 	}
 	

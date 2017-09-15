@@ -883,10 +883,11 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	$shouldapplylinkvarcolor = false;
 	
 	// Applying link colors to title
-	//if ($top_info_color_cssclass == "") 
-	//{
-	//	$shouldapplylinkvarcolor = true; 
-	//}
+	if ($top_info_color_cssclass == "") 
+	{
+		// applicable here; http://www.sylviedeloge.fr/identite-visuelle/
+		$shouldapplylinkvarcolor = true; 
+	}
 	
 	// new implementation delegates rendering the title to the frontendframework
 	$a = array
@@ -905,6 +906,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		"fontzen" => $title_fontzen,
 	);
 	$titlehtml = nxs_gethtmlfortitle_v4($a);
+	
 	
 	/* IMAGE
 	---------------------------------------------------------------------------------------------------- */
