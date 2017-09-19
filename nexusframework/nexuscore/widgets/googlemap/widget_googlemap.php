@@ -1138,7 +1138,7 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	//$deltalat = $$altid["deltalat"];
 	
 	$deltalngprop = $altid["deltalng"];
-	$deltalng = $$$deltalngprop;
+	$deltalng = $$deltalngprop;
 	//$deltalng = $$altid["deltalng"];
 	
 	$translated = array("address" => $address);

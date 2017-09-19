@@ -388,8 +388,9 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 		$verifydestinationcount++;
 	}
 	
-	if ($destination_articleid != "") {
-		$$verifydestinationcount++;
+	if ($destination_articleid != "") 
+	{
+		$verifydestinationcount++;
 	}
 	
 	if ($verifydestinationcount > 1) {

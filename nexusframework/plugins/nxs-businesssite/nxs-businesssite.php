@@ -987,6 +987,7 @@ class nxs_g_modelmanager
 		$text = implode(" ", $blocks);
 		
 		$imageid = nxs_get_key_imageid_in_post($postid);
+		$posttype = get_post_type($postid);
 		
 		$keyvalues = array
 		(
@@ -997,10 +998,19 @@ class nxs_g_modelmanager
 			"featuredimgid" => $imageid,
 		);
 		
-				
+		$filterargs = array
+		(
+			"postid" => $postid,
+			"posttype" => $posttype,
+		);
+		$keyvalues = apply_filters("nxs_f_localmodal_keyvalues", $keyvalues, $filterargs);
+		
+		// the localmodal's properties are determined by the type of the post (CPTs)
+		
 		if (true)
 		{
 			$extendedproperties = array();
+			
 			foreach ($keyvalues as $key => $value)
 			{
 				$extendedproperties[$key] = array

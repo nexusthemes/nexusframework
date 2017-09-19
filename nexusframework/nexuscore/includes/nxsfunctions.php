@@ -2551,7 +2551,7 @@ function nxs_geturlcontents($args)
 			  else
 			  {
 			  	// fatal
-			  	error_log("Nxs; time out for $url;");
+			  	error_log("Nxs; time out for $url; $timeoutsecs");
 			  	return false;
 			  }
 	  
