@@ -1126,6 +1126,17 @@ function nxs_getbusinessruleimpact($metadata)
 
 function nxs_gettemplateproperties_internal()
 {
+	// to allow the conditional tags to work, we have to rewind the posts, and to invoke the_post on the individual post (if its there)
+	if (true)
+	{
+		rewind_posts();
+		if (is_singular())
+		{
+			// enable conditional tags
+			the_post();
+		}
+	}
+		
 	$result = array();
 	
 	$ishandled = false;
