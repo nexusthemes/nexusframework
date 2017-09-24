@@ -555,6 +555,8 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 			</div>';
 	}
 	
+	
+	
 	// Filler
 	$filler = '<div class="nxs-clear nxs-filler"></div>';
 		
@@ -568,21 +570,45 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 			$alternativehint = nxs_l18n__("Missing input", "nxs_td");
 		}
 		nxs_renderplaceholderwarning($alternativehint);
-	} else {
+	} 
+	else 
+	{
+		$fef = nxs_frontendframework_getfrontendframework();
 		
-		// logo class is necessary to enable autoscaling for "original" sized images
-		echo '<div class="nxs-applylinkvarcolor nxs-logo">';
-	
+		if ($fef == "nxs2")
+		{
+			extract($mixedattributes);
+			
+			$a = array
+			(
+				"image_imageid" => $image_imageid,
+				"image_src" => $imageurl,
+				"image_alt" => $image_alt,
+				"image_maxheight" => $image_maxheight,
+				"image_margin" => $logo_margin,
+				"image_border_width" => $image_border_width,
+				"border_radius" => $border_radius,
+				"border_style" => "solid",
+				"image_shadow" => $image_shadow,
+				//"align" => $halign,	// not fully compatible i think?
+				"image_alignment" => $halign,	// not fully compatible i think?
+				"image_size" => $image_size,
+			);
+			echo nxs_gethtmlforimage_v3($a);
+		}
+		else
+		{
+			// original implementation
+			
+			// logo class is necessary to enable autoscaling for "original" sized images
+			echo '<div class="nxs-applylinkvarcolor nxs-logo">';	
 			echo $htmltitle;
 			if ($htmltitle != "" && $image_imageid != "") { 
 				echo $filler; 
 			}
 			echo $image_imageid;
-			
-		echo '</div>';
-		
-		
-		      
+			echo '</div>';
+		}   
 	} 
 	
 	/* ------------------------------------------------------------------------------------------------- */

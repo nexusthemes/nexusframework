@@ -182,6 +182,12 @@ function nxs_rgbtohex($rgb)
 	return $result;
 }
 
+function nxs_getdarkerhexcolor($hex, $delta)
+{
+	$result = nxs_getlighterhexcolor($hex, -$delta);
+	return $result;
+}
+
 function nxs_getlighterhexcolor($hex, $delta)
 {
 	$rgb = nxs_hextorgb($hex);
@@ -321,6 +327,29 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				// unknown?
 				$rulesbypseudo[$pseudoselector][] = "cursor: unsupported_{$val};";
 			}
+		}
+		else if ($key == "image_shadow")
+		{
+			if ($val != "")
+			{
+				$rulesbypseudo[$pseudoselector][] = "box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6);";
+			}
+		}
+		else if ($key == "image_size")
+		{
+			if ($val == "stretch")
+			{
+				$rulesbypseudo[$pseudoselector][] = "width: 100% !important; height: auto !important;";
+			}
+			
+		}
+		else if ($key == "display")
+		{
+			if ($val == "block")
+			{
+				$rulesbypseudo[$pseudoselector][] = "display: {$val};";
+			}
+			
 		}
 		else if ($key == "maxheight")
 		{
@@ -560,7 +589,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			}
 		}
 		else if ($key == "colorzen")
-		{
+		{ 
 			// nxs-colorzen nxs-colorzen-c12-dm => // nxs-colorzen-c12-dm
 			$rulesbypseudo[$pseudoselector][] = "border-style: solid;";
 			
@@ -588,12 +617,12 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 					if ($coloridentification == "base2")
 					{
 						// overruled; always 100% black
-						$middle = "000000";
+						$middle = "#000000";
 					}
 					else if ($coloridentification == "base1")
 					{
 						// overruled; always 100% white
-						$middle = "FFFFFF";
+						$middle = "#FFFFFF";
 					}
 				}
 				
@@ -604,7 +633,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				if ($transformation == "dm")
 				{
 					// dark to middle
-					$hex_from = nxs_getlighterhexcolor($middle, -$delta);
+					$hex_from = nxs_getdarkerhexcolor($middle, $delta);
 					$hex_to = $middle;
 					$rulesbypseudo[$pseudoselector][] = nxs_getlineairgradientcss($hex_from, $hex_to);
 				}
@@ -660,6 +689,13 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				
 				$rulesbypseudo[$pseudoselector][] = "color: $textcolor;";
 				$rulesbypseudo[$pseudoselector][] = "text-shadow: 1px 1px 1px $textshadowcolor;";
+				
+				if ($_REQUEST["bc"] == "true")
+				{
+					$delta = 0.2;
+					$borderhex = nxs_getdarkerhexcolor($middle, $delta);
+					$rulesbypseudo[$pseudoselector][] = "border-color: $borderhex;";
+				}
 			}
 		}
 		else if ($key == "button")
@@ -765,6 +801,51 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				$rulesbypseudo[$pseudoselector][] = "unsupported_border_radius_{$key}:{$val};";
 			}
 		}
+		else if ($key == "box_sizing")
+		{
+			if ($val == "border-box")
+			{
+				$rulesbypseudo[$pseudoselector][] = "box-sizing: {$val};";
+			}
+			else
+			{
+				$rulesbypseudo[$pseudoselector][] = "unsupported_{$key}:{$val};";
+			}
+		}
+		else if ($key == "border_style")
+		{
+			if ($val == "solid")
+			{
+				$rulesbypseudo[$pseudoselector][] = "border-style: {$val};";
+			}
+			else
+			{
+				$rulesbypseudo[$pseudoselector][] = "unsupported_{$key}:{$val};";
+			} 
+		}
+		else if ($key == "border_width")
+		{
+			$val = str_replace("nxs-border-width-", "", $val);
+			
+			if ($val == "")
+			{
+				// 
+			}
+			else if (nxs_stringcontains($val, "-"))
+			{
+				$pieces = explode("-", $val);
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
+				$base = $whole + ($fraction / 10);
+				$factor = 1;
+				$value = $base * $factor;
+				$rulesbypseudo[$pseudoselector][] = "border-width: {$value}px;";
+			}
+			else
+			{
+				$rulesbypseudo[$pseudoselector][] = "unsupported__{$key}__{$val};";
+			}
+		}
 		else if ($key == "border_top_width")
 		{
 			$val = str_replace("nxs-border-top-width-", "", $val);
@@ -776,8 +857,8 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			else if (nxs_stringcontains($val, "-"))
 			{
 				$pieces = explode("-", $val);
-				$whole = $pieces[2];
-				$fraction = $pieces[3];
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
 				$base = $whole + ($fraction / 10);
 				$factor = 1;
 				$value = $base * $factor;
@@ -799,8 +880,8 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			else if (nxs_stringcontains($val, "-"))
 			{
 				$pieces = explode("-", $val);
-				$whole = $pieces[2];
-				$fraction = $pieces[3];
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
 				$base = $whole + ($fraction / 10);
 				$factor = 1;
 				$value = $base * $factor;
@@ -936,7 +1017,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		}
 		else
 		{
-			$rulesbypseudo[$pseudoselector][] = "unsupported_{$key}:{$val};";
+			$rulesbypseudo[$pseudoselector][] = "unsupported_KEY_{$key}:{$val};";
 		}
 	}
 	
@@ -2218,7 +2299,17 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 			$heightclass = "nxs-height100";
 		}
 		
-		$output .= "<div class='ABC $heightclass $concatenated_css'>";
+		//
+		$styles = array();
+
+		$styles["colorzen"] = $ph_colorzen;
+		$styles["border_radius"] = $ph_border_radius;
+		$styles["border_width"] = $ph_borderwidth;
+
+		$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+		$unique_style_combination_class_0 = $compiled[0]["id"];
+		
+		$output .= '<div class="ABC ' . $unique_style_combination_class_0 . ' ' . $concatenated_css . '">';
 		
 		//
 		$styles = array();
@@ -2470,21 +2561,38 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	$styles = array();
 	$styles["maxheight"] = $image_maxheight_cssclass;
 	$styles["margin_bottom"] = $margin_bottom;
-	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 
 	
-	// Image border
 	$image_border = '';
-	$image_border .= '<div class="nxs-image-wrapper ' . $image_shadow . ' ' . $image_size_cssclass . ' ' . $image_alignment_cssclass . ' ' . '">';
-	$image_border .= '<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="nxs-overflow ' . $image_border_width . '">';
+	
+	// handle image shadow
+	$styles = array();
+	$styles["image_shadow"] = $image_shadow;
+	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+	$unique_style_combination_class_0 = $compiled[0]["id"];
+	
+	$image_border .= "<div class='{$unique_style_combination_class_0}'>";
+	
+	$styles = array();
+	
+	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
+	$unique_style_combination_class_0 = $compiled[0]["id"];
+	
+	// $image_border .= '<div style="right: 0; left: 0; top: 0; bottom: 0; border-style: solid;" class="nxs-overflow ' . $image_border_width . ' ' . $unique_style_combination_class_0 . '">';
 	// note the display: block is essential/required! else the containing div
 	// will have two additional pixels; kudos to http://stackoverflow.com/questions/8828215/css-a-2-pixel-line-appears-below-image-img-element
 	
 	$styles = array();
 	$styles["maxheight"] = $image_maxheight_cssclass;
 	$styles["margin_bottom"] = $margin_bottom;
+	$styles["image_size"] = $image_size;
+	$styles["border_width"] = $image_border_width;
+	$styles["border_style"] = "solid";
+	$styles["box_sizing"] = "border-box";
+	$styles["display"] = "block";
+	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 
@@ -2511,7 +2619,7 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	
 	$image_border .= $htmlforimage;
 	
-	$image_border .= '</div>';
+	//$image_border .= '</div>';
 	$image_border .= '</div>';
 	
 	// Image shadow
