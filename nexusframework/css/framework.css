@@ -4312,3 +4312,11 @@ sub {
      half as far down as the superscript moved up */
   bottom: -0.25em;
 }
+
+#pagepopupiframe p {
+    padding-bottom: 1.625em !important;
+}
+
+#pagepopupiframe b, #pagepopupiframe strong {
+    font-weight: bold;
+}
