@@ -1777,6 +1777,28 @@ function nxs_sc_embed($atts, $content = null, $name='')
 }
 add_shortcode('nxsembed', 'nxs_sc_embed');
 
+function nxs_sc_widget($atts, $content = null, $name='') 
+{
+	extract($atts);
+	
+	$type = $atts["type"];
+	nxs_requirewidget($type);
+
+	$args = array
+	(
+		"render_behaviour" => "code",
+	);
+	// blend the parameters given
+	$args = array_merge($args, $atts);
+	
+	//$renderresult = nxs_widgets_embed_render_webpart_render_htmlvisualization($args);
+	
+	$functionnametoinvoke = "nxs_widgets_{$type}_render_webpart_render_htmlvisualization";
+	$renderresult = call_user_func_array($functionnametoinvoke, array($args));
+	
+	return $renderresult["html"];
+}
+add_shortcode('nxs_widget', 'nxs_sc_widget');
 
 
 function nxs_sc_video($atts, $content = null, $name='') 
