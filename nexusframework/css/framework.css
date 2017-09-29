@@ -2652,6 +2652,7 @@ table.shop_attributes .nxs-default-p						{ padding-bottom: 0px; }
 /* WOOCOMMERCE SHOP PAGE 
 ---------------------------------------------------------------------------------------------------- */
 .nxs-wooprodlist mark										{ background-color: transparent; }
+.nxs-wooprodlist ul li .price .woocommerce-price-suffix span { display: inline; }
 
 /* WOOCOMMERCE CART PAGE 
 ---------------------------------------------------------------------------------------------------- */
@@ -4129,6 +4130,11 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-justify-content-flex-start { justify-content: flex-start; }
 .nxs-justify-content-space-between { justify-content: space-between }
 .nxs-flex-box-center { display: flex; align-items: center; justify-content: center; }
+
+.flex-list { display: flex; flex-wrap: wrap; }
+ 
+
+
 
 /* MOBILE FRIENDLY TEST
 ---------------------------------------------------------------------------------------------------- */
