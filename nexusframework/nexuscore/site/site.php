@@ -1934,7 +1934,19 @@ function nxs_site_newposthome_rendersheet($args)
       	{
       		// default behaviour for posts is to create those in the WP backend,
       		// plugins can change that behaviour
-	      	$behaviour = apply_filters("nxs_postwizard_newblogbehaviour", "backend");
+      		$behaviour = apply_filters("nxs_postwizard_newblogbehaviour", "backend");
+      		if (nxs_hassitemeta())
+      		{
+      			$lookup = nxs_lookuptable_getlookup();
+      			if ($lookup["nxs_postwizard_newblogbehaviour"] != "")
+      			{
+      				$behaviour = $lookup["nxs_postwizard_newblogbehaviour"];
+      			}
+      		}
+      		else
+      		{
+      			
+      		}
 	      }
       	if ($behaviour == "backend")
       	{
