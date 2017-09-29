@@ -922,6 +922,8 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		*/
 		
 		$destination_js_escaped = esc_attr($destination_js);
+		$button_text = esc_attr($button_text);
+		
 		$x = "[nxs_button text='{$button_text}' destination_articleid='{$destination_articleid}' destination_url='{$destination_url}' destination_js='{$destination_js_escaped}' destination_target='{$destination_target}' colorzen='{$button_color}' scale='{$button_scale}']";
 		$htmlbutton = do_shortcode($x);
 	}
