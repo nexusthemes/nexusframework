@@ -1486,8 +1486,23 @@ function nxs_render_postfooterlink()
 			{
 				// user is not logged in
 				
+				$behaviour = "frontend";
 				if (has_action("login_form"))
 				{
+					$behaviour = "backend";
+				}
+    		$behaviour = apply_filters("nxs_login_newloginbehaviour", $behaviour);
+    		if (nxs_hassitemeta())
+    		{
+    			$lookup = nxs_lookuptable_getlookup();
+    			if ($lookup["nxs_login_newloginbehaviour"] != "")
+    			{
+    				$behaviour = $lookup["nxs_login_newloginbehaviour"];
+    			}
+    		}
+    		
+    		if ($behaviour == "backend")
+    		{
 					$currenturl = get_permalink();
 					$url = wp_login_url($currenturl);
 					$authenticatelink = "<a href=\"{$url}\">Login</a>";
