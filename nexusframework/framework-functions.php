@@ -2036,52 +2036,64 @@ add_filter("nxs_f_getheadmeta", "nxs_framework_getheadmeta");
 add_filter('get_header', 'nxs_template_getheader');
 function nxs_template_getheader($name)
 {
-	if (true)
+	global $nxs_global_row_render_statebag;
+	if ($nxs_global_row_render_statebag != null)
 	{
-		if (!defined('NXS_TEMPLATEINCLUDED'))
+		// nothing to do here
+		return;
+	}
+	
+	if (!defined('NXS_TEMPLATEINCLUDED'))
+	{
+		// if we reach this stage, it means some plugin used
+		// the template_redirect 
+		
+		if (is_singular())
 		{
-			// if we reach this stage, it means some plugin used
-			// the template_redirect 
-			
-			if (is_singular())
-			{
-				// the containerpostid is the id of the (one and only) post
-				global $post;
-				$containerpostid = $post->ID;
-			}
-			else if (is_archive())
-			{
-				$containerpostid = "ARCHIVE";
-			}
-			else
-			{
-				// this happens if a plugin has a specific URL 
-				// rewritten to a specific template include.
-				// in that case we will render that specific content,
-				// even though the front end editor features will be suppressed
-				$containerpostid = "SUPPRESSED";
-			}
-			
-			global $nxs_global_current_containerpostid_being_rendered;
-			$nxs_global_current_containerpostid_being_rendered = $containerpostid;
-			
-			require_once(NXS_FRAMEWORKPATH . '/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php');
-			nxs_pagetemplate_handleheader();
-			
-			do_action('nxs_ext_betweenheadandcontent');
-			
-			nxs_pagetemplate_handlecontent_fraction("top");
+			// the containerpostid is the id of the (one and only) post
+			global $post;
+			$containerpostid = $post->ID;
+		}
+		else if (is_archive())
+		{
+			$containerpostid = "ARCHIVE";
 		}
 		else
 		{
-			// echo "template included :)";
+			// this happens if a plugin has a specific URL 
+			// rewritten to a specific template include.
+			// in that case we will render that specific content,
+			// even though the front end editor features will be suppressed
+			$containerpostid = "SUPPRESSED";
 		}
+		
+		global $nxs_global_current_containerpostid_being_rendered;
+		$nxs_global_current_containerpostid_being_rendered = $containerpostid;
+		
+		require_once(NXS_FRAMEWORKPATH . '/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php');
+		nxs_pagetemplate_handleheader();
+		
+		do_action('nxs_ext_betweenheadandcontent');
+		
+		nxs_pagetemplate_handlecontent_fraction("top");
+	}
+	else
+	{
+		// echo "template included :)";
 	}
 }
 
+
 add_filter('get_footer', 'nxs_template_getfooter');
 function nxs_template_getfooter($name)
-{
+{	
+	global $nxs_global_row_render_statebag;
+	if ($nxs_global_row_render_statebag != null)
+	{
+		// nothing to do here
+		return;
+	}
+	
 	if (true)
 	{
 		if (!defined('NXS_TEMPLATEINCLUDED'))
