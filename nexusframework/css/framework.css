@@ -4326,3 +4326,8 @@ sub {
 #pagepopupiframe b, #pagepopupiframe strong {
     font-weight: bold;
 }
+
+fieldset
+{
+	width: 100%;
+}

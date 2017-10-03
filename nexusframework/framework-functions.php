@@ -2265,6 +2265,12 @@ function nxs_ext_initialize_frontendframework()
 	$result = call_user_func_array($functionnametoinvoke, array($args));
 }
 
+// kudos to https://wordpress.org/support/topic/wpseoselect2locale-javascript-reference-error/
+function yoast_bug_fix() {
+    echo '<script type="text/javascript">var wpseoSelect2Locale = wpseoSelect2Locale || "en";</script>';
+}
+add_action('admin_footer', 'yoast_bug_fix');
+
 // ---
 
 //
