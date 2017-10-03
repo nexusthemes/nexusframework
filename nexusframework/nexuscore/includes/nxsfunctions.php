@@ -1136,19 +1136,17 @@ function nxs_gettemplateproperties_internal()
 			the_post();
 		}
 	}
-		
+	
 	$result = array();
 	
 	$ishandled = false;
 	
-	if (is_singular())
+	if (!$ishandled)
 	{
-		// users can overrule the layout engine
-		$postid = get_the_ID();
-		
-		$nxs_semanticlayout = nxs_get_post_meta($postid, 'nxs_semanticlayout', true);
-		if ($nxs_semanticlayout == "landingpage")
+		if (is_user_logged_in() && !is_admin() && $_REQUEST["nxs_templatepart"] != "")
 		{
+			// editing a template part i the front-end, this should disable headers, sidebars, etc.
+			$postid = get_the_ID();
 			$ishandled = true;
 			$result = array
 			(
@@ -1156,6 +1154,27 @@ function nxs_gettemplateproperties_internal()
 				"wpcontenthandler" => "@template@onlywhenset",
 				"result" => "OK",
 			);
+		}
+	}
+	
+	if (!$ishandled)
+	{
+		if (is_singular())
+		{
+			// users can overrule the layout engine
+			$postid = get_the_ID();
+			
+			$nxs_semanticlayout = nxs_get_post_meta($postid, 'nxs_semanticlayout', true);
+			if ($nxs_semanticlayout == "landingpage")
+			{
+				$ishandled = true;
+				$result = array
+				(
+					"content_postid" => $postid,
+					"wpcontenthandler" => "@template@onlywhenset",
+					"result" => "OK",
+				);
+			}
 		}
 	}
 	
@@ -1183,10 +1202,24 @@ function nxs_gettemplateproperties_internal()
 		{
 		}
 		
-		$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
-		if ($query->have_posts()) 	
+		// hier op crasht ie
+		if ($_REQUEST["huh"] == "123")
 		{
-			$postid = $query->posts[0]->ID;
+			error_log("busrules debug 1");
+		}
+
+		// cannot use this query, as for some unclear reason on the EU server,
+		// the where clause gets corrupted;
+		/*
+		[02-Oct-2017 13:36:25 UTC] WordPress database error Unknown column 'wp_postmeta.meta_value' in 'order clause' for query SELECT   wp_posts.* FROM wp_posts  WHERE 1=1  AND wp_posts.post_name = 'pagetemplaterules' AND wp_posts.post_type = 'nxs_busrulesset'  ORDER BY wp_postmeta.meta_value+0 DESC, wp_posts.post_date DESC  made by require('wp-blog-header.php'), wp, WP->main, WP->query_posts, WP_Query->query, WP_Query->get_posts, apply_filters_ref_array, WP_Hook->apply_filters, nxs_g_modelmanager->businesssite_the_posts, nxs_gettemplateproperties, nxs_gettemplateproperties_internal, WP_Query->__construct, WP_Query->query, WP_Query->get_posts
+		*/
+		//$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
+		global $wpdb;
+		$name = nxs_templates_getslug();
+		$qr = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE 1=1  AND wp_posts.post_name = '$name' AND wp_posts.post_type = 'nxs_busrulesset' ");
+		if (count($qr) > 0)
+		{
+			$postid = $postid = $qr[0]->ID;
 			$result["templaterulespostid"] = $postid;
 			$businessrules = nxs_parsepoststructure($postid);
 
@@ -1267,6 +1300,10 @@ function nxs_gettemplateproperties_internal()
 		}
 		else
 		{
+			if ($_REQUEST["huh"] == "123")
+			{
+				error_log("busrules debug;' NOT FOUND");
+			}
 			$result["result"] = "NACK";
 		}
 	}
@@ -4763,6 +4800,7 @@ function nxs_getthemeid()
 
 function nxs_getsearchresults($searchargs)
 {
+	
 	$searchphrase = $searchargs["phrase"];
 	$itemsperpage = $searchargs["itemsperpage"];
 	if ($itemsperpage == "")
@@ -4792,15 +4830,38 @@ function nxs_getsearchresults($searchargs)
 		$skipserp_postid = -1;
 	}
 	
-	//echo "search...";
-	$args = array
-	(
-		"public" => true,
-		"exclude_from_search" => false,
-	);
+	if (is_user_logged_in())
+	{
+		$args = array
+		(
+		 	// "public" => '',
+			"exclude_from_search" => false,
+		);
+	}
+	else
+	{
+		//echo "search...";
+		$args = array
+		(
+			// "public" => true,
+			"exclude_from_search" => false,
+		);
+	}
+	
+	
+	
 	$output = "names";
 	$operator = "and";
 	$posttypes = get_post_types($args, $output, $operator);
+	
+	if ($_REQUEST["debugsearch"] == "true")
+	{
+		echo "nxs_getsearchresults :)";
+		var_dump($posttypes);
+		die();
+	}
+	
+	
 	$posttypevalues = array_values($posttypes);
 	$posttypelist = "'" . implode("','", $posttypevalues) . "'";
 	$posttypelist = str_replace("''", "", $posttypelist);
