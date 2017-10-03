@@ -151,5 +151,3 @@ function nxs_popup_optiontype_categories_getpersistbehaviour()
 {
 	return "writeid";
 }
-
-?>
