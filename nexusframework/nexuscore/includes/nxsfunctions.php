@@ -1216,7 +1216,8 @@ function nxs_gettemplateproperties_internal()
 		//$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
 		global $wpdb;
 		$name = nxs_templates_getslug();
-		$qr = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE 1=1  AND wp_posts.post_name = '$name' AND wp_posts.post_type = 'nxs_busrulesset' ");
+		$qr = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE 1=1 AND post_name = '{$name}' AND post_type = 'nxs_busrulesset' ");
+		
 		if (count($qr) > 0)
 		{
 			$postid = $postid = $qr[0]->ID;
@@ -2560,6 +2561,9 @@ function nxs_geturlcontents($args)
 		
 		// 2017 07 17
 		curl_setopt($session, CURLOPT_SSL_VERIFYPEER, FALSE);	//
+		// 2017 10 06
+		curl_setopt($session, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
 		//curl_setopt($session, CURLOPT_HEADER, false);
 		//curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
 		//curl_setopt($session, CURLOPT_REFERER, $url);	//
@@ -4834,7 +4838,7 @@ function nxs_getsearchresults($searchargs)
 	{
 		$args = array
 		(
-		 	// "public" => '',
+		 	//"public" => '',
 			"exclude_from_search" => false,
 		);
 	}
@@ -4843,7 +4847,7 @@ function nxs_getsearchresults($searchargs)
 		//echo "search...";
 		$args = array
 		(
-			// "public" => true,
+			//"public" => true,
 			"exclude_from_search" => false,
 		);
 	}
@@ -10092,21 +10096,6 @@ function nxs_connectivity_invoke_api_get($args)
 		return false;
 	}
 	
-	/*
-	$opts = array
-	(
-  	'http'=>array
-  	(
-    	'header'=>array
-    	(
-    		"Referer: $referer\r\n",
-    	),
-    	'timeout' => $timeout,
-   	),
-	);
-	$context = stream_context_create($opts);
-	$json = @file_get_contents($apiurl, false, $context);
-	*/
 	$json = nxs_geturlcontents(array("url" => $apiurl));	// first tries curl, else file_get_contents
 	if ($json == "")
 	{
