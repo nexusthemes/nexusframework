@@ -337,11 +337,14 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		}
 		else if ($key == "image_size")
 		{
-			if ($val == "stretch")
+			if ($val == "stretch" )
 			{
 				$rulesbypseudo[$pseudoselector][] = "width: 100% !important; height: auto !important;";
 			}
-			
+			else if ($val == "auto-fit")
+			{
+				$rulesbypseudo[$pseudoselector][] = "max-width: 100% !important; height: auto !important;";
+			}
 		}
 		else if ($key == "display")
 		{
