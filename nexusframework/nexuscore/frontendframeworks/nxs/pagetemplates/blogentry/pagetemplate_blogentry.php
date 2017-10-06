@@ -12,8 +12,11 @@ function nxs_render_loginforpasswordprotectedcontent()
 	$enhanced_html = $html;
 	// class="post-password-form" => class="post-password-form nxs-form"
 	$enhanced_html = str_replace("post-password-form", "nxs-form post-password-form", $enhanced_html);
+	
+	$cssclass = nxs_getcssclassesforsitepage();
+	
 	?>
-	<div id="nxs-content" class="nxs-sitewide-element">
+	<div id="nxs-content" class="nxs-sitewide-element <?php echo $cssclass; ?>">
 		<div id="nxs-content-container" class="has-no-sidebar">
 			<div class="nxs-article-container nxs-elements-container">
 				<div class="nxs-postrows">
