@@ -129,6 +129,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 			
 			$input = str_replace($search, $replace, $input);
 		}
+		else if ($op == "esc_attr")
+		{
+			$input = esc_attr($input);
+		}
 		else if ($op == "md5")
 		{
 			$input = md5($input);
