@@ -212,6 +212,14 @@ function nxs_widgets_callout_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "halign_text",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("Overrule text alignment", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("halign"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "valign", 
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Vertical alignment", "nxs_td"),
@@ -682,6 +690,17 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	} 
 	else if ($halign == "right") { 
 		$hclass = "nxs-justify-content-flex-end";
+		$text_align = "nxs-align-right"; 
+	}
+	
+	// horizontal alignment text
+	if 		($halign_text == "left") {  
+		$text_align = "nxs-align-left"; 
+	} 
+	else if ($halign_text == "center") { 
+		$text_align = "nxs-align-center"; 
+	} 
+	else if ($halign_text == "right") { 
 		$text_align = "nxs-align-right"; 
 	}
 	
