@@ -118,10 +118,12 @@ Because we're working with ems we set a font-size for each viewport. */
 .nxs-placeholder 													{ display: list-item; float: left; }
 }
 @media only screen and ( max-width: 719px )	{
-/* removing desktop margins for mobile devices */
+/* removed css based on support question 
+removing desktop margins for mobile devices 
+
 #nxs-content,
 #nxs-header-container,
-#nxs-footer-container												{ margin-bottom: 0px; margin-top: 0px; }
+#nxs-footer-container												{ margin-bottom: 0px; margin-top: 0px; } */
 #nxs-content														{ border-radius: 0px; }
 
 .nxs-main															{ width: 96em; }
