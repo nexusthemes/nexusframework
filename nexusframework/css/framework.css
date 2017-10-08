@@ -4334,3 +4334,14 @@ fieldset
 {
 	width: 100%;
 }
+
+#nxs-widget-passwordidentifier input[type="submit"]
+{
+	background-color: #000;
+  color:#fff;
+  border: 0;
+  margin: 0;
+  height: 33px;
+  padding: 0px 6px 6px 6px;
+  cursor: pointer;
+}

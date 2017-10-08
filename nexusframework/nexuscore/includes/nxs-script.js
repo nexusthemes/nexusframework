@@ -1135,7 +1135,13 @@ function nxs_js_redirect_top(url)
 					//nxs_js_log("contentWidth:");
 					//nxs_js_log(contentWidth);
 					
-					var minwidth = nxs_js_popup_get_minwidth();	// can be overriden
+					var minwidth = 2048;
+					
+					if(typeof nxs_js_popup_get_minwidth == 'function')
+					{
+						minwidth = nxs_js_popup_get_minwidth();	// can be overriden
+					}
+					
 					if (contentWidth < minwidth)
 					{
 						contentWidth = minwidth;
