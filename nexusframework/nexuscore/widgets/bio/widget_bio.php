@@ -849,6 +849,12 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 	// Image alignment
 	$image_alignment = "left";
 	
+	// sanitize $text; it can contain potential javascript
+	if (nxs_has_adminpermissions() && $_REQUEST["customhtml"] == "escape")
+	{
+		$text = esc_html($text);
+	}
+	
 	// Default HTML
 	$htmltext = nxs_gethtmlfortext($text, $text_alignment, $text_showliftnote, $text_showdropcap, $wrappingelement, $text_heightiq);
 	$htmlforimage = nxs_gethtmlforimage_v2($image_imageid, $image_src, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, "", "", $image_title, "", "");
