@@ -11463,6 +11463,20 @@ function nxs_wp_get_attachment_image_src($attachment_id, $size, $icon)
 	return $result;
 }
 
+function nxs_wp_get_attachment_url($attachment_id)
+{
+	$isremotetemplate = nxs_isremotetemplate($attachment_id);
+	if ($isremotetemplate)
+	{
+		nxs_webmethod_return_nack("nxs_wp_get_attachment_url is only allowed on local posts; $attachment_id");
+	}
+	else
+	{
+		$result = wp_get_attachment_url($attachment_id);
+	}
+	
+	return $result;
+}
 
 // sanity checked for remote posts
 function nxs_getpagetemplateforpostid($postid)

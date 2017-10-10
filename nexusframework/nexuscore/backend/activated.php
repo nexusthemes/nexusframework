@@ -342,11 +342,7 @@
 				// no thanks
 				return;
 			}
-			
-			//nxs_js_log('trying for maintask:' + maintask);
-			//nxs_js_log('trying for step:' + currentstep);
-			
-			// todo: add condition whether we should do this in the first place ...
+
 			if (!busy)
 			{
 				//nxs_js_log('not busy, there we go');
@@ -354,8 +350,6 @@
 
 				if (moresteps)
 				{
-					//nxs_js_log('more steps, there we go');
-					
 					var ajaxurl = nxs_js_get_adminurladminajax();
 					jQ_nxs.ajax
 					(
