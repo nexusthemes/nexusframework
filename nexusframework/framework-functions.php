@@ -514,12 +514,48 @@ function nxs_framework_login_headerurl($result)
 }
 */
 
-//
-// sidebars (could have been any number, but 8 sounds like sufficient ...)
-//
+function nxs_widgets_gettotalwidgetareacount()
+{
+	//
+	// sidebars (could have been any number, but 8 sounds like sufficient ...)
+	//
+	$result = 8;
+	$result = apply_filters("nxs_f_widgets_gettotalwidgetareacount", $result);
+	return $result;
+}
+
+function nxs_widgets_emptyallwidgetareas()
+{
+	error_log("debug; widget; empty; 1");
+	
+	$widgets = get_option( 'sidebars_widgets', array());
+
+	error_log("debug; widget; empty; 2");
+	
+	// get backups
+	$backupwidgets = get_option( 'nxs_sidebars_widgets_backup', array() );
+	$backupwidgets[] = $widgets;
+	
+	error_log("debug; widget; empty; 3");
+
+	// add previous one to backups
+	update_option('nxs_sidebars_widgets_backup', $backupwidgets);
+	
+	error_log("debug; widget; empty; 4");
+
+	
+	$count = nxs_widgets_gettotalwidgetareacount();
+	for ($areaindex = 1; $areaindex <= $count; $areaindex++)
+	{
+		$widgets["sidebar-{$areaindex}"] = array();
+	}
+	update_option('sidebars_widgets', $widgets);
+}
+
 if (function_exists('register_sidebar'))
 {
-	register_sidebars(8, array('name' => 'WordPress Backend Widget Area %d'));
+	$count = nxs_widgets_gettotalwidgetareacount();
+	register_sidebars($count, array('name' => 'WordPress Backend Widget Area %d'));
 }
 
 //
@@ -594,6 +630,20 @@ function nxs_init()
   		{
   			$rules = get_option('rewrite_rules');
   			echo nxs_prettyprint_array($rules);
+  			die();
+  		}
+  		else if ($_REQUEST["nxs"] == "debug_widgets")
+  		{
+  			echo "sidebars:<br />";
+  			$sidebars = get_option( 'sidebars_widgets', array() );
+  			var_dump($sidebars);
+  			
+  			echo "<br />backups:<br />";
+  			
+  			$backups = get_option( 'nxs_sidebars_widgets_backup', array() );
+  			var_dump($backups);
+  			
+  			echo "<br />so far :)";
   			die();
   		}
   		else if ($_REQUEST["nxs"] == "fix_rules")

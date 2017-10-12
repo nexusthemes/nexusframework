@@ -2657,12 +2657,11 @@ function nxs_storemedia($args)
 		
 		if ($result === false)
 		{
-			error_log("storing image from filter failed, using fallback implementation; $sourcefile");
-		 	
 		 	$sourcefile = get_template_directory() . "/resources/data/";
 			if (file_exists($sourcefile))
 			{
-				//error_log("found data directory in theme, using that one; $sourcefile");
+				error_log("found data directory in theme, using that one; $sourcefile");
+				
 				// if the data folder exists, import from that directory
 				$result = nxs_storemedia_fromtheme($args);
 				
@@ -2679,6 +2678,10 @@ function nxs_storemedia($args)
 				error_log("did NOT find a data directory in theme, using fallback implementation; $sourcefile");
 			 	$result = nxs_storemedia_remotehttpdownload($args);
 			}
+		}
+		else
+		{
+			// happy flow
 		}
 	}
 	else
