@@ -2660,7 +2660,7 @@ function nxs_storemedia($args)
 		 	$sourcefile = get_template_directory() . "/resources/data/";
 			if (file_exists($sourcefile))
 			{
-				error_log("found data directory in theme, using that one; $sourcefile");
+				//error_log("found data directory in theme, using that one; $sourcefile");
 				
 				// if the data folder exists, import from that directory
 				$result = nxs_storemedia_fromtheme($args);
@@ -8102,6 +8102,11 @@ function nxs_getimagecsssizeclass($value)
 		$factor = $splitted[1];	// for example 1-0 (for factor 1.0)
 		$result = "nxs-icon-width-" . $factor;
 	}
+	else if ($value == "inherit")
+	{
+		// nothing
+	}
+	
 	return $result;
 }
 

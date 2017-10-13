@@ -2598,8 +2598,11 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
+	
+	$class = $args["class"];
+	if ($class != "") { $class = " {$class}"; }
 
-	$image_border .= '<img class="' . $compiled[0]["id"] . '" ';
+	$image_border .= '<img class="' . $compiled[0]["id"] . $class . '" ';
 	
 	if ($loadbehaviour == "lazyload")
 	{
@@ -2695,7 +2698,17 @@ function nxs_sc_wrap($atts, $content = null, $name='')
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 	
-	$result = "<div class='{$unique_style_combination_class_0}'>{$unwrapped_content}</div>";
+	if ($class != "")
+	{
+		$extraclass = " " . $class;
+	}
+	else
+	{
+		$extraclass = "";
+	}
+	
+	
+	$result = "<div class='{$unique_style_combination_class_0} {$extraclass}'>{$unwrapped_content}</div>";
 	
 	return $result;
 }

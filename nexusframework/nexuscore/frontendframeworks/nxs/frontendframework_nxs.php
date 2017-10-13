@@ -1240,8 +1240,9 @@ function nxs_frontendframework_nxs_sc_wrap($atts, $content = null, $name='')
 	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin-", $atts["margin"]);
 	$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $atts["colorzen"]);
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $atts["border_radius"]);
+	$class = $atts["class"];
 	
-	$cssclasses = nxs_concatenateargswithspaces($border_radius_cssclass, $margin_cssclass, $padding_cssclass, $colorzen_cssclass);
+	$cssclasses = nxs_concatenateargswithspaces($class, $border_radius_cssclass, $margin_cssclass, $padding_cssclass, $colorzen_cssclass);
 	
 	$result = "<div class='{$cssclasses}'>{$unwrapped_content}</div>";
 	return $result;
@@ -1545,7 +1546,7 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	// note the display: block is essential/required! else the containing div
 	// will have two additional pixels; kudos to http://stackoverflow.com/questions/8828215/css-a-2-pixel-line-appears-below-image-img-element
 	
-	$classes = nxs_concatenateargswithspaces("nxs_imgsc3", $grayscale, $enlarge, $image_maxheight_cssclass, $border_radius_cssclass, $margin_bottom_cssclass, $image_margin_cssclass, $class); 
+	$classes = nxs_concatenateargswithspaces($grayscale, $enlarge, $image_maxheight_cssclass, $border_radius_cssclass, $margin_bottom_cssclass, $image_margin_cssclass, $class); 
 	 
 	$class_att = implode(" ", $classes);
 	
