@@ -600,6 +600,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-margin-20-percent										{ margin: 0 20%; }
 
 /* WIDTH PERCENTAGE */
+.nxs-widthauto												{ width: auto !important; }
 .nxs-width5													{ width: 5%; }
 .nxs-width10												{ width: 10% !important; }
 .nxs-width20												{ width: 20% !important; }
@@ -682,6 +683,9 @@ to 			{ -webkit-transform: rotate(360deg); }
 .nxs-overflow												{ overflow: hidden; }
 .nxs-display-none											{ display: none; }
 .nxs-border-solid											{ border-style: solid; }
+
+.nxs-icon-height-3-0										{ height: 96px; }
+
 
 /* Used to delineate an undefined. Styling taken over by the unistyle styling
 .nxs-border-dash											{ border: 1px dashed #666666; }*/
@@ -1920,7 +1924,8 @@ table.ui-datepicker-calendar .ui-datepicker-unselectable {
 .nxs-gallerypopup .nxs-popup-content-canvas-cropper,
 .nxs-gallerypopup .nxs-table								{ margin: 0 auto; }
 .nxs-gallerypopup img										{ 
-	display: block; 
+	display: block;
+	width: auto !important; 
 	margin: 0 auto; 
 	border: 3px solid white;
 	box-sizing: border-box; 
@@ -1931,6 +1936,7 @@ table.ui-datepicker-calendar .ui-datepicker-unselectable {
 }
 .nxs-gallerypopup ul.icon-font-list 						{ margin-top: 10px; }
 .nxs-gallerypopup ul.icon-font-list li a					{ color: white; text-shadow: 1px 1px 1px black; }
+
 
 /* Server gallery lazyload spinner */
 .nxs-spinner span											{ font-size: 64px; color: white; text-shadow: 0px 0px 10px gray; }
