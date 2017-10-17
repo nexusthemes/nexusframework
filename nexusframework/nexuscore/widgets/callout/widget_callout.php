@@ -472,6 +472,14 @@ function nxs_widgets_callout_home_getoptions($args)
 			),
 			
 			array(
+				"id" 				=> "title_heightiq",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, the widget's titles will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array(
 				"id" 				=> "subtitle_heightiq",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Row align subtitles", "nxs_td"),
@@ -587,6 +595,9 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
 	}
 	
+	
+
+	
 	// allow plugins to decorate (and also do something with) the mixedattributes 
 	// (an example of "doing something" would be for example to apply QA rules)
 	$filterargs = array
@@ -602,13 +613,45 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
+	// fallback scenario to improve downwards compatibility
+	// in the old versions the title was always linked,
+	// in the new implementation thats no longer the case; only buttons link
+	if ($destination_articleid != "" || $destination_url != "")
+	{
+		if ($button_text == "")
+		{
+			$format = "sign";
+			$wordcount = str_word_count($title);
+			$charcount = strlen($title);
+			if ($wordcount <= 4 && $charcount < 64)
+			{
+				$format = "text";
+			}
+			
+			if ($format == "text")
+			{
+				$button_text = $title;
+				$button_text = str_replace("<br />", "", $button_text);
+				$button_text = str_replace("<br>", "", $button_text);
+			}
+			else if ($format == "sign")
+			{
+				$button_text = "&gt;";
+			}
+			else
+			{
+				$button_text = "&gt;";
+			}
+		}
+	}
+	
 	global $nxs_global_row_render_statebag;
 	$pagerowtemplate = $nxs_global_row_render_statebag["pagerowtemplate"];
 	if ($pagerowtemplate == "one")
 	{
+		$title_heightiq = "";	// off!
 		$subtitle_heightiq = "";	// off!
 	}
-	
 	
 	if ($postid != "" && $placeholderid != "")
 	{
@@ -992,6 +1035,11 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			nxs_ob_end_clean();
 		}
 		
+		if ($flex_box_height != "")
+		{
+			$min_height = "";
+		}
+		
 		echo '
 		<div class="'.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
 			<div class="nxs-flex '.$hclass.' '.$flex_box_height.' '.$overlay_cssclass.'">
@@ -1002,7 +1050,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 					$bgcolor = $widgetmetadata["bgcolor"];
 					$border_radius = $widgetmetadata["border_radius"];
 					
-					echo do_shortcode("[nxs_wrap border_radius='{$border_radius}' colorzen='{$bgcolor}' padding='{$padding}' margin='{$margin}']{$innercontent}[/nxs_wrap]");
+					echo do_shortcode("[nxs_wrap class='nxs-width100' border_radius='{$border_radius}' colorzen='{$bgcolor}' padding='{$padding}' margin='{$margin}']{$innercontent}[/nxs_wrap]");
 					
 				echo '</div>
 			</div>
@@ -1041,6 +1089,7 @@ function nxs_widgets_callout_initplaceholderdata($args)
 	$args['halign'] = "center";
 	$args['button_scale'] = "2-0";
 	
+	$args['title_heightiq'] = "true";
 	$args['subtitle_heightiq'] = "true";
 
 	// current values as defined by unistyle prefail over the above "default" props
