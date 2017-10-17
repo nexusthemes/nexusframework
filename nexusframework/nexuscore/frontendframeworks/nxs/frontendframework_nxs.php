@@ -1,5 +1,25 @@
 <?php
 
+function nxs_frontendframework_nxs_renderplaceholderwarning()
+{
+	if (nxs_has_adminpermissions())
+	{
+		?>
+		<div class="empty nxs-border-dash nxs-admin-wrap nxs-hidewheneditorinactive autosize-smaller">
+			<div class='placeholder-warning'>
+				<p><?php echo $message; ?></p>
+			</div>
+		</div>
+		<?php
+	}
+	else
+	{
+		?>
+		<!-- warning detected; please sign in to see the warning -->
+		<?php
+	}
+}
+
 function nxs_frontendframework_nxs_gethtmlforbutton($args)
 {
 	extract($args);

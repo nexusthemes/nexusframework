@@ -706,22 +706,14 @@ function nxs_init_themeboot()
 
 function nxs_renderplaceholderwarning($message)
 {
-	if (nxs_has_adminpermissions())
-	{
-		?>
-		<div class="empty nxs-border-dash nxs-admin-wrap nxs-hidewheneditorinactive autosize-smaller">
-			<div class='placeholder-warning'>
-				<p><?php echo $message; ?></p>
-			</div>
-		</div>
-		<?php
-	}
-	else
-	{
-		?>
-		<!-- warning detected; please sign in to see the warning -->
-		<?php
-	}
+	// delegate to frontendframework
+	$frontendframework = nxs_frontendframework_getfrontendframework();
+	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
+	require_once($filetoinclude);
+	
+	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_renderplaceholderwarning";
+	$args = array("message" => $message);
+	$result = call_user_func_array($functionnametoinvoke, array($args));
 }
 
 function nxs_date_todatestring($timestamp)

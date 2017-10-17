@@ -1,5 +1,10 @@
 <?php
 
+function nxs_frontendframework_nxs2_renderplaceholderwarning()
+{
+	// nothing to do here; all warning are absorbed in the nxs2 framework
+}
+
 function nxs_frontendframework_nxs2_footer()
 {
 	global $nxs_gl_style_footer_cssrules;
