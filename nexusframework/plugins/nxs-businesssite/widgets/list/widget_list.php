@@ -624,7 +624,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			if ($_REQUEST["debug99"] == "true")
 			{
 				var_dump($modeluriset);
-				die();
+				//die();
 			}
 
 		}
@@ -1016,7 +1016,8 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 					}
 					else
 					{
-						$html .= "<div>No {$iterator_datasource} items found</div>";
+						$html .= nxs_getplaceholderwarning("<div>No {$iterator_datasource} items found</div>");
+						// $html .= "<div>No {$iterator_datasource} items found</div>";
 						$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
 					}
 				}
@@ -1029,7 +1030,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	
 		if ($reachedpaginationmax)
 		{
-			$html .= "<div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;'><br/>hint; reached pagination max, possibly additional items are not rendered</div>";
+			$html .= nxs_getplaceholderwarning("<div class='nxs-hidewheneditorinactive' style='background-color: red; color: white; padding: 2px; margin: 2px;'><br/>hint; reached pagination max, possibly additional items are not rendered</div>");
 		}
 		
 		$indexcount = count($modeluriset);

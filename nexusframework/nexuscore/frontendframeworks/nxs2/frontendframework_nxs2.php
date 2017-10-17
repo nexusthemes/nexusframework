@@ -1,6 +1,6 @@
 <?php
 
-function nxs_frontendframework_nxs2_renderplaceholderwarning()
+function nxs_frontendframework_nxs2_renderplaceholderwarning($message)
 {
 	// nothing to do here; all warning are absorbed in the nxs2 framework
 }

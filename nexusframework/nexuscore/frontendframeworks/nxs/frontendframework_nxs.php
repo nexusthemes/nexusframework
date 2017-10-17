@@ -1,6 +1,6 @@
 <?php
 
-function nxs_frontendframework_nxs_renderplaceholderwarning()
+function nxs_frontendframework_nxs_renderplaceholderwarning($message)
 {
 	if (nxs_has_adminpermissions())
 	{

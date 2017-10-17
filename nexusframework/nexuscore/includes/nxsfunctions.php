@@ -712,8 +712,8 @@ function nxs_renderplaceholderwarning($message)
 	require_once($filetoinclude);
 	
 	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_renderplaceholderwarning";
-	$args = array("message" => $message);
-	$result = call_user_func_array($functionnametoinvoke, array($args));
+	
+	$result = call_user_func($functionnametoinvoke, $message);
 }
 
 function nxs_date_todatestring($timestamp)
@@ -9521,8 +9521,13 @@ function nxs_filter_translate_v2($args)
 	return $result;
 }
 
-function nxs_url_prettyfy($slug)
+function nxs_url_prettyfy($slug, $homeurl = "")
 {
+	if ($homeurl == "")
+	{
+		$homeurl = nxs_geturl_home();
+	}
+	
 	// 
 	for ($cnt = 0; $cnt < 3; $cnt++)
 	{
@@ -9548,7 +9553,7 @@ function nxs_url_prettyfy($slug)
 				$slug = str_replace("--", "-", $slug);
 			}
 			// 
-			$slug = str_replace("//", nxs_geturl_home(), $slug);
+			$slug = str_replace("//", $homeurl, $slug);
 			
 			if (!nxs_stringendswith($slug, "/"))
 			{
