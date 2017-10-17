@@ -1290,7 +1290,7 @@ class nxs_g_modelmanager
 	function cachebulkmodels($singularschema)
 	{
 		if ($singularschema == "") { echo "singularschema not specified?"; die(); }
-		if (!$this->isvalidschema($singularschema)) { echo "invalid singularschema $singularschema?"; die(); }
+		if (!$this->isvalidschema($singularschema)) { echo "invalid singularschema $singularschema?"; return; /* die(); */ }
 		if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot cachebulkmodels lists; cachebulkmodels the singular model to refetch the list"; die(); }
 
 		// the fetching of the models; this will load the singleton as well as the individual items
