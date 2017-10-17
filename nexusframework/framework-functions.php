@@ -1254,8 +1254,14 @@ function nxs_init()
 			else if ($_REQUEST["nxs"] == "dumpmodel")
 			{
 				global $nxs_g_modelmanager;
-				$contentmodel = $nxs_g_modelmanager->getcontentmodel();
-				echo nxs_prettyprint_array($contentmodel);
+				$modeluri = $_REQUEST["modeluri"];
+				if ($modeluri == "")
+				{
+					echo "modeluri not set";
+					die();
+				}
+				$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
+				var_dump($contentmodel);
 				die();
 			}
 			else if ($_REQUEST["nxs"] == "parsepost")
