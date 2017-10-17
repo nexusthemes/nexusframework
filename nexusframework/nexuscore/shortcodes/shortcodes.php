@@ -240,7 +240,9 @@ function nxs_sc_string($atts, $content = null, $name='')
 			}
 			else
 			{
-				$input = nxs_url_prettyfy($input);
+				$homeurl = "";
+				if (isset($atts["homeurl"])) { $homeurl = $atts["homeurl"]; }
+				$input = nxs_url_prettyfy($input, $homeurl);
 			}
 		}
 		else if ($op == "urlfraction")
@@ -781,6 +783,120 @@ function nxs_sc_string($atts, $content = null, $name='')
 			
 			// error_log("modelidbymd5;" . count($ids) . ";$index;$input");
 		}
+		else if ($op == "modelurisbymd5")
+		{
+			// returns a distinct char seperated string of "n" (semi random) ids of a model based upon 
+			// the md5 index of an indexer variable, for example "1@model;5@model;2@model"
+
+			global $nxs_g_modelmanager;
+			
+			$schema = $atts["schema"];
+			if ($schema == "") { return "modelurisbymd5; schema not specified"; }
+			
+			// handle cache refresh of schema
+			if (true)
+			{
+				$cachebehaviour = $atts["cachebehaviour"];
+				if ($cachebehaviour == "")
+				{
+				}
+				else if ($cachebehaviour == "refreshfirstphpruntime")
+				{
+					// refreshes the cache the first time this is requested in the php runtime duration
+					global $nxs_g_modelrefreshphpruntime;
+					if (!isset($nxs_g_modelrefreshphpruntime[$schema]))
+					{
+						$nxs_g_modelrefreshphpruntime[$schema] = true;
+						//error_log("nxs_g_modelrefreshphpruntime refresh required for $schema");
+						// clear it!
+						$nxs_g_modelmanager->cachebulkmodels($schema);
+					}
+				}
+				else
+				{
+					nxs_webmethod_return_nack("unsupported cachebehaviour; $cachebehaviour");
+				}
+			}
+			
+			$modeluri = "singleton@listof{$schema}";
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel($modeluri);
+			$ids = array();
+			$instances = $contentmodel[$schema]["instances"];
+			
+			//
+			
+			$min = $atts["min"];
+			$max = $atts["max"];
+			$count = $min;
+		
+			if ($min != $max) { return "modelurisbymd5; not yet implemented; for now min and max should be equal"; }
+			if ($min == "") { return "modelurisbymd5; min not specified"; }
+			if ($min <= 0) { return "modelurisbymd5; min should be > 0"; }
+			if ($min > $max) { return "modelurisbymd5; min should be < max"; }
+
+			//
+					
+			$indexer = $atts["indexer"];
+			if ($indexer == "") { return "modelurisbymd5; indexer not specified"; }
+			
+			$result = array();
+			
+			if (count($instances) == 0)
+			{
+				nxs_webmethod_return_nack("unable to proceed; no instances found; check if the schema is correct and filled; schema;" . $schema);
+			}
+			
+			foreach ($instances as $instance)
+			{
+				$itemhumanmodelid = $instance["content"]["humanmodelid"];
+				$ids[] = $itemhumanmodelid;
+			}
+			
+			$totalitemsavailable = count($ids);
+			
+			//
+			$succeeded = false;
+			$triesleft = 999; // randomly picked, should be enough?
+			while ($triesleft > 0)
+			{
+				$triesleft--;
+			
+				$currentindexer = $indexer . $triesleft;
+				
+				//
+				$md5 = md5($currentindexer);
+				$inthash = intval(substr($md5, 0, 8), 16);
+				$index = $inthash % $totalitemsavailable;
+				$input = $ids[$index] . '@' . $schema;
+				
+				if (!in_array($input, $result)) 
+				{
+					$result[] = $input;
+					
+					if (count($result) == $count)
+					{
+						// fully loaded, lets return
+						$succeeded = true;	
+						break;
+					}
+				}
+				else
+				{
+					// we dont allow duplicates
+				}
+			}
+			
+			if (!$succeeded)
+			{
+				//
+				return "modelurisbymd5; insufficient items returned (is max set too high?)?!";
+			}
+			
+			$glue = ";";
+			$input = implode($glue, $result);
+			
+			// error_log("modelidbymd5;" . count($ids) . ";$index;$input");
+		}
 		else if ($op == "modeldump")
 		{
 			if (is_user_logged_in())
@@ -807,7 +923,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$instanceuris = array();
 			
 			$datasourceprovidertype = $atts["datasourceprovidertype"];
-			if ($datasourceprovidertype == "")
+			if ($datasourceprovidertype == "" || $datasourceprovidertype == "singularschema")
 			{
 				$iterator_datasource = $atts["singularschema"];
 				if ($iterator_datasource == "")
