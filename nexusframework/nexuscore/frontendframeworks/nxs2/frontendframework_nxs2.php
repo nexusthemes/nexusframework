@@ -2739,8 +2739,9 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 	
 	$alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $align);
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
+	$class = $atts["class"];
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
+	$cssclasses = nxs_concatenateargswithspaces($class, "nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
 	
 	if ($heightiq != "") 
 	{
