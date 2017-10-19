@@ -148,7 +148,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "lookups",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
-				"footer" => "Want to use a grid? Use nxs_list_layout=flexauto columnsmin=3 columnsmax=4",
+				// "footer" => "Want to use a grid? Use nxs_list_layout=flexauto columnsmin=3 columnsmax=4",
 			),
 			
 			// datasource
@@ -553,8 +553,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			// output some dummy items to at least show something to the administrator
 			$modeluriset = array
 			(
-				"0", "0", "0", "0", 
-				"0", 
+				//"0", "0", "0", "0", "0", 
 			);
 		}
 		else
@@ -1016,7 +1015,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 					}
 					else
 					{
-						$html .= nxs_getplaceholderwarning("<div>No {$iterator_datasource} items found</div>");
+						$html .= nxs_getplaceholderwarning("<div>No {$iterator_datasource} items found (indexwithinfilter:{$indexwithinfilter}, valid? " . json_encode($datasource_isvalid) . ")</div>");
 						// $html .= "<div>No {$iterator_datasource} items found</div>";
 						$nxs_global_row_render_statebag["hidewheneditorinactive"] = true;
 					}
