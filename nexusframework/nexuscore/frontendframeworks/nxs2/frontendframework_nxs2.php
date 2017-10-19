@@ -1105,6 +1105,11 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 {
 	extract($args);
 	
+	if ($visible == "false")
+	{
+		return "";
+	}
+	
 	if ($text == "")
 	{
 		return "";
@@ -1304,7 +1309,6 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	$heading = str_replace("h", "", $heading);
 	$headingelement = "h" . $heading;
 	
-	// Title alignment
 	if ($fontsize == "")
 	{
 		// derive the fontsize based upon the heading type (h1, h2, ...)
@@ -2569,6 +2573,7 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	$styles = array();
 	$styles["maxheight"] = $image_maxheight_cssclass;
 	$styles["margin_bottom"] = $margin_bottom;
+	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 

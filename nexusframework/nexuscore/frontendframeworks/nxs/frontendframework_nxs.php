@@ -50,6 +50,10 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		}
 	}
 	
+	if ($visible == "false")
+	{
+		return "";
+	}
 	
 	if ($text == "")
 	{
