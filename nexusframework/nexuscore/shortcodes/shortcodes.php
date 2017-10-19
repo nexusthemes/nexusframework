@@ -141,6 +141,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = time();
 		}
+		else if ($op == "nxs_getplaceholderwarning")
+		{
+			$input = nxs_getplaceholderwarning($input);
+		}
 		else if ($op == "rand")
 		{
 			$min = 0;
@@ -621,8 +625,6 @@ function nxs_sc_string($atts, $content = null, $name='')
 				}
 			}
 			
-			
-			
 			if ($atts["errorlog"] == "true")
 			{
 				error_log("modelproperty; relations: {$relations}");
@@ -913,6 +915,39 @@ function nxs_sc_string($atts, $content = null, $name='')
 				// hidden for anonymous users
 				$input = "";
 			}
+		}
+		else if ($op == "modeluriscount")
+		{
+			global $nxs_g_modelmanager;
+			
+			$iterator_datasource = $atts["singularschema"];
+			
+			$cachebehaviour = $atts["cachebehaviour"];
+			if ($cachebehaviour == "")
+			{
+			}
+			else if ($cachebehaviour == "refreshfirstphpruntime")
+			{
+				// refreshes the cache the first time this is requested in the php runtime duration
+				global $nxs_g_modelrefreshphpruntime;
+				if (!isset($nxs_g_modelrefreshphpruntime[$iterator_datasource]))
+				{
+					$nxs_g_modelrefreshphpruntime[$iterator_datasource] = true;
+					//error_log("nxs_g_modelrefreshphpruntime refresh required for $iterator_datasource");
+					// clear it!
+					$nxs_g_modelmanager->cachebulkmodels($iterator_datasource);
+				}
+			}
+			else
+			{
+				nxs_webmethod_return_nack("unsupported cachebehaviour; $cachebehaviour");
+			}
+			
+			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+			$instances = $contentmodel[$iterator_datasource]["instances"];
+						
+			$input = count($instances);
 		}
 		else if ($op == "listmodeluris")
 		{
