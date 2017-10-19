@@ -573,7 +573,7 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 		/* Rendering of individual table
 		---------------------------------------------------------------------------------------------------- */
 	
-		$html .= '<table id="table-' . $placeholderid . '" class="' . $responsive . '">';
+		$html .= '<table id="table-' . $placeholderid . '" class="' . $responsive . ' nxs-applylinkvarcolor">';
 	  $html .= '<thead class="' . $headcssclass . '">';
 	    
 	    //
@@ -631,7 +631,7 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 					
 					if ($skip === false)
 					{
-						$columnmeta = array(); // nxs_ext_sportlinkpack_getarticlevariationoutputcolumnmeta($articlevariation, $key);
+						$columnmeta = array();
 						$type = $columnmeta["type"];
 						if (!isset($type))
 						{
@@ -640,11 +640,11 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 						
 						if ($type == "string" || $type == "clocktime" || $type == "integer")
 						{
-							$html .= "<td>" . nxs_render_html_escape_singlequote($value) . "</td>";
+							$html .= "<td>" . $value . "</td>";
 						}
 						else
 						{
-							$html .= "<td>" . "[" . $type . "]" . nxs_render_html_escape_singlequote($value) . "</td>";
+							$html .= "<td>" . "[" . $type . "]" . $value . "</td>";
 						}
 					}
 					else
