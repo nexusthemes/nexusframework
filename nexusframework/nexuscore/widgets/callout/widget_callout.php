@@ -613,6 +613,8 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
+	$alternativeclick = false;
+	
 	// fallback scenario to improve downwards compatibility
 	// in the old versions the title was always linked,
 	// in the new implementation thats no longer the case; only buttons link
@@ -620,6 +622,9 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	{
 		if ($button_text == "")
 		{
+			/*
+			// this implementation is far from perfect; instead we now go for the alternativeclick option,
+			// which uses a window.location effect
 			$format = "sign";
 			$wordcount = str_word_count($title);
 			$charcount = strlen($title);
@@ -642,6 +647,8 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			{
 				$button_text = "&gt;";
 			}
+			*/
+			$alternativeclick = true;
 		}
 	}
 	
@@ -774,13 +781,20 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$title_heading = "h1";
 	}
 	
+	if (!isset($title_heightiq))
+	{
+		$title_heightiq = "true";
+	}
+	
+	
+	
 	// Title heightiq, size, font
 	$heightiqprio = "p1";
 	$title_heightiqgroup = "callout-title";
 	$title_fontsize_cssclass = nxs_getcssclassesforlookup("nxs-head-fontsize-", $title_fontsize);
 	$title_fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $title_fontzen);
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass/*, "nxs-heightiq", "nxs-heightiq-".$heightiqprio."-".$title_heightiqgroup*/);
+	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $title_fontsize_cssclass, $title_fontzen_cssclass);
 	
 	// Title
 	$a = array
@@ -1042,7 +1056,44 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		
 		echo '
 		<div class="'.$fixed_font.'" style="'.$image_background.' '.$overflow.' '.$min_height.'">
-			<div class="nxs-flex '.$hclass.' '.$flex_box_height.' '.$overlay_cssclass.'">
+			<div class="nxs-flex '.$hclass.' '.$flex_box_height.' '.$overlay_cssclass.'">';
+		
+		if ($alternativeclick)
+		{
+			// used to render http://surfingwordpresstheme.en.websitesexamples.com/?catalogitem_personalize=select in a more pretty way
+			if ($destination_articleid != "") 
+			{
+				$url = nxs_geturl_for_postid($destination_articleid);
+			} 
+			else if ($destination_url != "") 
+			{
+				if (nxs_stringstartswith($destination_url, "tel:")) {
+					// a phone link; if parenthesis or spaces are used; absorb them
+					$url = $destination_url;
+					$url = str_replace(" ", "", $url);
+					$url = str_replace("(", "", $url);
+					$url = str_replace(")", "", $url);
+				} else {
+					// regular link
+					$url = $destination_url;
+				}
+				$onclick = "";
+			}
+			
+			if ($destination_target == "_blank")
+			{
+				echo "<div style='cursor: pointer;' onclick='window.open(\"{$url}\", \"_blank\");'>";
+			}
+			else
+			{
+				echo "<div style='cursor: pointer;' onclick='location.href=\"{$url}\";'>";
+			}
+			
+			
+			
+		}
+		
+		echo '
 				<div class="gradient-wrapper nxs-flex '.$vclass.' '.$hclass.' '.$flex_box_height.' '.$text_align.' '.$linear_gradient_cssclass.' '.$callout_text_width.'">';
 					
 					$padding = $widgetmetadata["text_padding"];
@@ -1052,7 +1103,14 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 					
 					echo do_shortcode("[nxs_wrap class='nxs-width100' border_radius='{$border_radius}' colorzen='{$bgcolor}' padding='{$padding}' margin='{$margin}']{$innercontent}[/nxs_wrap]");
 					
-				echo '</div>
+		echo '</div>';
+				
+		if ($alternativeclick)
+		{
+			echo '</div>';
+		}
+				
+	echo '
 			</div>
 			<div class="nxs-clear"></div>
 		</div>';
