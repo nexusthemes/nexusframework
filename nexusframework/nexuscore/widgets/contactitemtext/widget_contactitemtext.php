@@ -93,12 +93,6 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 		$value = $pimped_initialtext;
 	}
 	
-	//
-	// render actual control / html
-	//
-	
-	nxs_ob_start();
-
 	$colorzencssclass = "";
 	if ($form_metadata["items_colorzen"] != "")
 	{
@@ -110,11 +104,26 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 	{
 		$readonlyattribute = "readonly";
 	}
+	
+	$label_postfix = "";
+	if ($metadata_isrequired != "")
+	{
+		$label_postfix .= " *";
+	}
+	
+	if ($metadata_ishidden != "")
+	{
+		$label_postfix .= " (hidden)";
+	}
+	
+	//
+	// render actual control / html
+	//
+	
+	nxs_ob_start();
 
 	?>
-	
-  <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
-  
+  <label class="field_name"><?php echo $metadata_formlabel;?><?php echo $label_postfix; ?></label>
   <?php
   if ($metadata_numofrows == "" || $metadata_numofrows == 0 || $metadata_numofrows == 1)
   {
@@ -129,11 +138,22 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 	  <textarea <?php echo $readonlyattribute; ?> style='min-height: 0px;' rows="<?php echo $metadata_numofrows; ?>" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" placeholder="<?php echo $metadata_placeholder; ?>"><?php echo $value;?></textarea>
 		<?php 
 	}
-	
-	// var_dump($args);
-	
 	$html = nxs_ob_get_contents();
 	nxs_ob_end_clean();
+	
+	//
+	if ($metadata_ishidden != "")
+	{
+		if (is_user_logged_in())
+		{
+			$html = "<div class='nxs-hidewheneditorinactive'>$html</div>";
+		}
+		else
+		{
+			$html = "<div style='display: none;'>$html</div>";
+		}
+		//$html .= nxs_getplaceholderwarning("Hidden text input $metadata_formlabel - $value");
+	}
 
 	
 	$result["html"] = $html;	
@@ -266,6 +286,13 @@ function nxs_widgets_contactitemtext_home_getoptions($args)
 				"id" 				=> "isreadonly",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Is readonly", "nxs_td"),
+			),
+			
+			array
+			( 
+				"id" 				=> "ishidden",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Is hidden", "nxs_td"),
 			),
 
 			array
