@@ -269,9 +269,32 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "linkify")
 		{
+			$input = html_entity_decode($input);
+			
 			if ($atts["excludeyoutube"] == "true")
 			{
 				$input = str_replace("https://www.youtube/watch", "*NXS*PLACEHOLDER*YOUTUBE*", $input);
+			}
+			if ($atts["exclude"] != "")
+			{
+				$exclude = $atts["exclude"];
+				$excludeitems = explode(";", $exclude);
+				foreach ($excludeitems as $excludeitem)
+				{
+					$excludeitem = trim($excludeitem);
+					if ($excludeitem == "mediamanager")
+					{
+						$input = str_replace("https://mediamanager", "*NXS*PLACEHOLDER*MEDIA*", $input);
+					}
+					if ($excludeitem == "nxsmedia")
+					{
+						$input = str_replace("nxsmedia://", "*NXS*PLACEHOLDER*NXSMEDIA*", $input);
+					}
+					else if ($excludeitem == "youtube")
+					{
+						$input = str_replace("https://www.youtube/watch", "*NXS*PLACEHOLDER*YOUTUBE*", $input);
+					}
+				}
 			}
 			
 			$input = preg_replace
@@ -281,10 +304,9 @@ function nxs_sc_string($atts, $content = null, $name='')
         $input
       );
 
-			if ($atts["excludeyoutube"] == "true")
-			{
-				$input = str_replace("*NXS*PLACEHOLDER*YOUTUBE*", "https://www.youtube/watch", $input);
-			}
+			$input = str_replace("*NXS*PLACEHOLDER*YOUTUBE*", "https://www.youtube/watch", $input);
+			$input = str_replace("*NXS*PLACEHOLDER*MEDIA*", "https://mediamanager", $input);
+			$input = str_replace("*NXS*PLACEHOLDER*NXSMEDIA*", "nxsmedia://", $input);
 		}
 		else if ($op == "smartlinks")
 		{
