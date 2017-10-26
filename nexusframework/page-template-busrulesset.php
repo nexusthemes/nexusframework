@@ -30,7 +30,7 @@
 			Should you decide to proceed, you will void your warrantee / license.<br />
 			<br />
 			<a href=\'<?php echo $homeurl; ?>\' class=\'nxsbutton1\'>Back to safety</a>
-			<a target=\'_blank\' href=\'https://nexusthemes.com/support/nexus-themes-implementation-partners/\' class=\'nxsbutton1\'>Find a reseller</a>
+			<a target=\'_blank\' href=\'https://nexusthemes.com/implementation-partners/\' class=\'nxsbutton1\'>Find a reseller</a>
 			<a href=\'#\' class=\'nxsbutton2\' onclick=\'nxs_js_voidwarrantee(); return false;\'>Proceed; void my warrantee</a>
 		</div>		
 		<?php

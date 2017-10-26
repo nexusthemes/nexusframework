@@ -308,6 +308,23 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$input = str_replace("*NXS*PLACEHOLDER*MEDIA*", "https://mediamanager", $input);
 			$input = str_replace("*NXS*PLACEHOLDER*NXSMEDIA*", "nxsmedia://", $input);
 		}
+		else if ($op == "listify")
+		{
+			$seperator = $atts["seperator"];
+			$pieces = explode($seperator, $input);
+			$input = "";
+			$input .= "<ul>";
+			foreach ($pieces as $piece)
+			{
+				$piece = trim($piece);
+				if ($piece == "")
+				{
+					continue;
+				}
+				$input .= "<li>{$piece}{$seperator}</li>";
+			}
+			$input .= "</ul>";
+		}
 		else if ($op == "smartlinks")
 		{
 			$dictionary = array

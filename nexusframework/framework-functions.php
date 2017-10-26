@@ -689,6 +689,13 @@ function nxs_init()
 				echo "now switch to 2015 and back and the re-activation should start :)";
 				die();
   		}
+  		else if ($_REQUEST["nxs"] == "getoption")
+  		{
+  			$key = $_REQUEST["key"];
+  			$r = get_option($key);
+  			var_dump($r);
+  			die();
+  		} 
   		else if ($_REQUEST["nxs"] == "urlinfo")
   		{
   			echo "siteurl:" . get_site_url() . "<br />";
