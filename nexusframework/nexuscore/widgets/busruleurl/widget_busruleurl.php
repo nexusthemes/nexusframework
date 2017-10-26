@@ -38,9 +38,10 @@ function nxs_widgets_busruleurl_home_getoptions($args)
 				"type" 				=> "select",		
 				"label" 			=> nxs_l18n__("Operator", "nxs_td"),		
 				"dropdown" 			=> array(		
-					"contains"	=>"contains",		
+					"contains"	=>"url contains",		
 					"template"	=>"template",
-					"path"	=>"path",
+					"path"	=>"path equals model id",
+					"path_equals"	=>"path equals",
 				),		
 			),			
 			array
@@ -567,6 +568,61 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 			// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
 			$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
 			$statebag["out"]["templaterules_lookups"] .= "\r\n" . trim($metadata["templaterules_lookups"]);
+			
+			// instruct rule engine to stop further processing if configured to do so (=default)
+			$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
+			if ($flow_stopruleprocessingonmatch != "")
+			{
+				$result["stopruleprocessingonmatch"] = "true";
+			}
+		}
+		else
+		{
+			$result["ismatch"] = "false";
+		}		
+	}
+	else if ($operator == "path_equals")
+	{
+		$compareto = $p1;
+		
+		$pieces = parse_url($currenturl);
+		$path = $pieces["path"];	// "//www.example.com/path/bar/?googleguy=googley" would return "/path/bar/"
+		$path = trim($path, "/");	// "/path/bar" would become "path/bar"
+		$path = "/" . $path. "/";	// "path/bar" would become "/path/bar/"
+		
+		if ($path == $compareto)
+		{
+			// yes, unless one of the fragments is a mismatch
+			$result["ismatch"] = "true";
+			
+			// process configured site wide elements
+			$sitewideelements = nxs_pagetemplates_getsitewideelements();
+			foreach($sitewideelements as $currentsitewideelement)
+			{
+				$selectedvalue = $metadata[$currentsitewideelement];
+				if ($selectedvalue == $filter_authoremail)
+				{
+					// skip
+				} 
+				else if ($selectedvalue == "@leaveasis")
+				{
+					// skip
+				}
+				else if ($selectedvalue == "@suppressed")
+				{
+					// reset
+					$statebag["out"][$currentsitewideelement] = 0;
+				}
+				else
+				{
+					// set the value as selected
+					$statebag["out"][$currentsitewideelement] = $metadata[$currentsitewideelement];
+				}
+			}
+			
+			// concatenate the modeluris and modelmapping (do NOT yet evaluate them; this happens in stage 2, see #43856394587)
+			$statebag["out"]["templaterules_modeluris"] .= "\r\n" . $metadata["templaterules_modeluris"];
+			$statebag["out"]["templaterules_lookups"] .= "\r\n" . $metadata["templaterules_lookups"];
 			
 			// instruct rule engine to stop further processing if configured to do so (=default)
 			$flow_stopruleprocessingonmatch = $metadata["flow_stopruleprocessingonmatch"];
