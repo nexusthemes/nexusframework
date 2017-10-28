@@ -1179,7 +1179,8 @@ class nxs_g_modelmanager
 			// check for greedy fetch request
 			if ($result["meta"]["greedyfetchsupport"])
 			{
-				error_log("found greedyfetchsupport instruction when fetching $modeluri :)");
+				$url = nxs_geturlcurrentpage();
+				error_log("found greedyfetchsupport instruction when fetching $modeluri (url: $url)");
 				// 
 				$schema = $this->getschema($modeluri);
 				$this->cachebulkmodels($schema);
