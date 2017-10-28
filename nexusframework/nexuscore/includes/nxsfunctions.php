@@ -6256,6 +6256,11 @@ function nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup)
 		$unistyleproperties = nxs_unistyle_getunistyleproperties($unistylegroup, $unistyle);
 		$args = array_merge($args, $unistyleproperties);
 	}
+	
+	// 20171028; disable the unistyle of the new widget now that we hav set the initial properties
+	// this is to prevent people from messing up the existing styles of the site
+	$args['unistyle'] = "";
+	
 	return $args;
 }
 
