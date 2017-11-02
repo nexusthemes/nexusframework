@@ -89,20 +89,37 @@ blockquote {
 .nxs-stretch img,
 .nxs-stretch												{ width: 100% !important; height: auto !important; }
 .nxs-stretch.nxs-icon-left									{ float: none; }
-.nxs-size-contain { max-width: 100%; }
-.nxs-ratio-original { width: auto !important; height: auto !important; }
-.nxs-img-width-1-0 { width: 40px !important; }
-.nxs-img-width-2-0 { width: 80px !important; }
-.nxs-img-width-3-0 { width: 120px !important; }
-.nxs-img-width-4-0 { width: 160px !important; }
-.nxs-img-width-5-0 { width: 200px !important; }
-.nxs-img-width-6-0 { width: 240px !important; }
-.nxs-img-width-7-0 { width: 280px !important; }
-.nxs-img-width-8-0 { width: 320px !important; }
-.nxs-img-width-9-0 { width: 360px !important; }
-.nxs-img-width-10-0 { width: 400px !important; }
-.nxs-img-width-15-0 { width: 600px !important; }
-.nxs-img-width-22-0 { width: 880px !important; }
+.nxs-size-contain 											{ max-width: 100%; }
+.nxs-ratio-original 										{ width: auto !important; height: auto !important; }
+
+.nxs-img-width-1-0 											{ width: 40px !important; }
+.nxs-img-width-2-0 											{ width: 80px !important; }
+.nxs-img-width-3-0 											{ width: 120px !important; }
+.nxs-img-width-5-0 											{ width: 200px !important; }
+.nxs-img-width-6-0 											{ width: 240px !important; }
+.nxs-img-width-7-0 											{ width: 280px !important; }
+.nxs-img-width-8-0 											{ width: 320px !important; }
+.nxs-img-width-9-0 											{ width: 360px !important; }
+.nxs-img-width-12-0											{ width: 480px !important; }
+.nxs-img-width-18-0											{ width: 720px !important; }
+
+/* Placeholder widths
+The options in the image widget are based on a 40px multiplier which is inconsistent with the responsive grid.
+This results in an assymetrical layout. The following CSS maps the options to the layout.
+1/4 - 292.5
+1/3 - 408
+1/2 - 639 
+2/3 - 870 
+*/
+.nxs-img-width-4-0 											{ width: 160px !important; } 
+.nxs-img-width-10-0 										{ width: 408px !important; }
+.nxs-img-width-15-0 										{ width: 639px !important; }
+.nxs-img-width-22-0 										{ width: 870px !important; }
+
+@media (max-width: 1199px) { .nxs-img-width-22-0 { width: 88.8em !important; margin-left: 0px !important; } }
+@media (max-width: 959px)  { .nxs-img-width-15-0 { width: 88.8em !important; margin-left: 0px !important; } }
+@media (max-width: 719px)  { .nxs-img-width-10-0 { width: 88.8em !important; margin-left: 0px !important; } }
+
 
 /* backface visibility */
 .backface {
@@ -294,8 +311,7 @@ ul.icon-font-list .nxs-comments-count						{ position: absolute; color: white; w
 
 
 /* DEFAULT LIST */
-ul.nxs-default-list				 							{ margin-bottom: 20px; }
-ul.nxs-default-list											{ line-height: 1.625em; font-size: 15px; margin-top: 10px; }
+ul.nxs-default-list				 							{ margin-bottom: 20px; line-height: 1.625em; font-size: 15px; margin-top: 10px; }
 
 /* HIDE DOWNLOAD ICON ON TOUCHDEVICES*/
 .nxs-m-touch ul.icon-font-list li.download,
@@ -733,6 +749,7 @@ html.nxs-pageslider p#nxs-copyright												{ padding-bottom: 60px; }
 #nxs-container table,
 .nxs-datepicker table 										{ border: 1px solid #DFDFDF !important; background-color: #F9F9F9; width: 100%; border-collapse: separate !important; }
 #nxs-container table th,
+#nxs-container table td,
 .nxs-datepicker th 											{ color: #333333; text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0; overflow: hidden; text-align: left; line-height: 36px; font-size: 15px; }
 #nxs-container thead,
 .nxs-datepicker thead,
@@ -2608,7 +2625,7 @@ h3#order_review_heading,
 
 /* WOOCOMMERCE PRODUCT DETAIL 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-subplaceholder 										{ position: relative; border-right: 3.6em solid transparent; float: left; margin-bottom: 30px; }
+.nxs-subplaceholder 										{ position: relative; border-right: 3.6em solid transparent; float: left; margin-bottom: 30px; width: 100%; }
 
 /* Sale */
 .woocommerce .onsale 										{ text-transform: uppercase; font-size: 15px; z-index: 100; }
@@ -2644,6 +2661,13 @@ table.shop_attributes .nxs-default-p						{ padding-bottom: 0px; }
 .woocommerce-tabs .tabs span.nxs-icon-arrow-right-light		{ display: none; }
 .woocommerce-tabs .tabs .active span 						{ display: inline-block; position: absolute; top: 0; right: 0; }
 .woocommerce-tabs .panel ol									{ list-style: none; }
+
+.woocommerce-tabs .woocommerce-Tabs-panel ol,
+.woocommerce-tabs .woocommerce-Tabs-panel ul				{ margin-bottom: 20px; margin-left: 20px !important; line-height: 1.625em; font-size: 15px; float: left; }
+.woocommerce-tabs .woocommerce-Tabs-panel ol				{ list-style: decimal; }
+.woocommerce-tabs .woocommerce-Tabs-panel ul				{ list-style: disc; }
+
+
 .nxs-woominicart .nxs-image,
 .woocommerce-tabs .panel .comment .nxs-image				{ width: 40px !important; position: absolute; right: 0px; top: 0px; }
 .woocommerce-tabs .panel #reviews p.stars					{ padding-bottom: 0px; }
@@ -2762,6 +2786,17 @@ span.reviewer 															{ margin-left: 5px; }
 .widget_shopping_cart p.total											{ margin-bottom: 20px; }
 .widget_shopping_cart p.buttons .wc-forward								{ display: block; margin-top: 10px; padding-left: 25px; position: relative;}
 .widget_shopping_cart p.buttons .wc-forward:before 						{ content: "\e201"; font-family: 'nexus'; font-size: 16px; position: absolute; left: 0px; }
+
+
+/* WOOCOMMERCE ACCOUNT
+---------------------------------------------------------------------------------------------------- */
+.woocommerce-orders-table__cell-order-actions a { display: block; }
+@media (max-width: 959px) {
+.nxs-viewport-lte-959 .woocommerce-orders-table th { display: none; }
+.nxs-viewport-lte-959 .woocommerce-orders-table td { display: block; }
+}
+
+
 
 /* ICON FONTS
 ----------------------------------------------------------------------------------------------------
