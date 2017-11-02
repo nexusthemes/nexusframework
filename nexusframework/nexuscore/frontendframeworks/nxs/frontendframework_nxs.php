@@ -1636,7 +1636,9 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	{
 		$destination_articleid = nxs_geturl_for_postid($destination_articleid);
 		$image_border = '<a target="' . $destination_target . '" ' . $destination_relation_html . ' href="' . $destination_articleid .'">' . $image_border . '</a>';
-	} else if ($destination_url != "") {
+	} 
+	else if ($destination_url != "") 
+		{
 		$image_border = '<a target="' . $destination_target . '" ' . $destination_relation_html . ' href="' . $destination_url .'" target="_blank">' . $image_border . '</a>';
 	}
 	
