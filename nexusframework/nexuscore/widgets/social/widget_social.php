@@ -371,6 +371,17 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
 	}
 	
+	// improve dummy urls; "dummy" will result in an ugly 404, link to the homepage of the site instead
+	if ($rss_url == "dummy") { $rss_url = nxs_geturl_home(); }
+	if ($twitter_url == "dummy") { $twitter_url = nxs_geturl_home(); }
+	if ($facebook_url == "dummy") { $facebook_url = nxs_geturl_home(); }
+	if ($linkedin_url == "dummy") { $linkedin_url = nxs_geturl_home(); }
+	if ($googleplus_url == "dummy") { $googleplus_url = nxs_geturl_home(); }
+	if ($youtube_url == "dummy") { $youtube_url = nxs_geturl_home(); }
+	if ($pinterest_url == "dummy") { $pinterest_url = nxs_geturl_home(); }
+	if ($instagram_url == "dummy") { $instagram_url = nxs_geturl_home(); }
+	if ($custom_1_url == "dummy") { $custom_1_url = nxs_geturl_home(); }
+	
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
