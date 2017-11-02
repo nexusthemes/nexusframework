@@ -62,6 +62,80 @@ function nxs_widgets_quote_home_getoptions($args)
 				"type" 				=> "wrapperend"
 			),
 
+
+// IMAGE
+			
+			array( 
+				"id" 				=> "wrapper_image_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Image", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
+			array( 
+				"id" 				=> "image_imageid",
+				"type" 				=> "image",
+				"allow_featuredimage" => true,
+				"label" 			=> nxs_l18n__("Choose image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),			
+			array(
+				"id" 				=> "image_alignment",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Image alignment", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("image_halignment"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "image_size",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Image size", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("image_size"),
+				"unistylablefield"	=> true
+			),		
+			array( 
+				"id" 				=> "image_shadow",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Image shadow", "nxs_td"),
+				"unistylablefield"	=> true
+			),		
+			array(
+				"id" 				=> "image_alt",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image alt text", "nxs_td"),
+				"placeholder" => nxs_l18n__("imagealtplaceholder", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true,
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+			array(
+				"id" 				=> "image_border_width",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Image border width", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("border_width"),
+				"unistylablefield"	=> true
+			),	
+			array
+			( 
+				"id" 				=> "image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),				
+			array
+      (
+				"id" 					=> "image_src_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+			array( 
+				"id" 				=> "wrapper_image_begin",
+				"type" 				=> "wrapperend"
+			),
+
 			//
 			
 			array( 
@@ -85,6 +159,9 @@ function nxs_widgets_quote_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			
+			
+			
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
@@ -338,23 +415,30 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	
 	if ($stars != 0) { $stars = $rating_text . " " . $full_star_html.$half_star_html.$empty_star_html; }
 	
-	// Stars and source
-	if ($source != "" && $destination_url == ""){ 
-
-		$source_textsize = nxs_getcssclassesforlookup("nxs-quote-fontsize", $source_textsize);
-
-		$source = '
-			<p class="nxs-default-p source nxs-padding-bottom0">
-				<strong>'.$stars.'</strong>
-				<strong><span class="source '.$source_textsize.'">' . $source . '</span></strong>
-			</p>'; 
-	} else if ($source != "" && $destination_url != ""){
-		$source = '		
-			<p class="nxs-default-p source nxs-padding-bottom0">
-				<strong>'.$stars.'</strong>
-				<a href="' . $destination_url . '" target="_new"><strong><span class="source '.$source_textsize.'">' . $source . '</span></strong></a>
-			</p>'; 
-}
+	if (true)
+	{	
+		// Stars and source
+		if ($source != "" && $destination_url == ""){ 
+	
+			$source_textsize = nxs_getcssclassesforlookup("nxs-quote-fontsize", $source_textsize);
+	
+			$source = '
+				<p class="nxs-default-p source nxs-padding-bottom0">
+					<strong>'.$stars.'</strong>
+					<strong><span class="source '.$source_textsize.'">' . $source . '</span></strong>
+				</p>'; 
+		} 
+		else if ($source != "" && $destination_url != "")
+		{
+			$source = '		
+				<p class="nxs-default-p source nxs-padding-bottom0">
+					<strong>'.$stars.'</strong>
+					<a href="' . $destination_url . '" target="_new"><strong><span class="source '.$source_textsize.'">' . $source . '</span></strong></a>
+				</p>'; 
+		}
+	}
+	
+	
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -364,12 +448,24 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 			$alternativehint = nxs_l18n__("Missing input", "nxs_td");
 		}
 		nxs_renderplaceholderwarning($alternativehint); 
-	} else {
+	} 
+	else 
+	{
+
+		if ($image_imageid != "" || $image_src != "")
+		{
+			
+			$image_html = do_shortcode("[nxs_img image_imageid='{$image_imageid}' image_src='{$image_src}' destination_articleid='{$destination_articleid}' destination_url='{$destination_url}' destination_target='{$destination_target}' margin_bottom='0-5' image_size='{$image_size}' image_alignment='{$image_alignment}' image_border_width='{$image_border_width}' image_shadow='{$image_shadow}']");
+			echo $image_html;
+		}
 		
 		echo '<div class="nxs-applylinkvarcolor nxs-relative ' . $quote_alignment . '" style="' . $quote_width . '">';
-			echo $text;
-			echo '<div class="nxs-clear nxs-padding-bottom10"></div>';
-			echo $source;
+		
+		
+		
+		echo $text;
+		echo '<div class="nxs-clear nxs-padding-bottom10"></div>';
+		echo $source;
 		echo '</div>
 		<div class="nxs-clear"></div>';			
 			
