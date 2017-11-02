@@ -744,7 +744,7 @@ function nxs_license_handlealtflow($response_data)
 	{
 		?>
 		<p>
-			Operation failed. No help info supplied. Please <a target='_blank' href='mailto:info@nexusthemes.com'>contact us</a> at <a target='_blank' href='mailto:info@nexusthemes.com'>info@nexusthemes.com</a>.
+			Operation failed. No help info supplied. Please <a target='_blank' href='mailto:support@nexusthemes.com'>contact us</a> at <a target='_blank' href='mailto:support@nexusthemes.com'>support@nexusthemes.com</a>.
 			<!-- <?php echo $response_data["altflowid"]; ?> -->
 		</p>
 		<?php
