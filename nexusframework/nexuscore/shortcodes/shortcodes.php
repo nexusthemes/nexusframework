@@ -1344,6 +1344,10 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		else if ($op == "contains")
 		{
 			$needle = $atts["containsneedle"];
+			if ($needle == "")
+			{
+				$needle = $atts["needle"];
+			}
 			$ignorecase = $atts["ignorecase"] === "true";
 			
 			if (nxs_stringcontains_v2($input, $needle, $ignorecase))
@@ -1596,6 +1600,10 @@ function nxs_sc_bool($atts, $content = null, $name='')
 			{
 				$input = "true";
 			}
+		}
+		else if ($op == "is_home")
+		{
+			$input = is_home() ? "true" : "false";
 		}
 		else
 		{
