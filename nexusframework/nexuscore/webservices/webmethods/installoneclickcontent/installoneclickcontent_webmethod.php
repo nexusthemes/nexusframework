@@ -147,7 +147,19 @@ function nxs_webmethod_installoneclickcontent()
 
 	if ($currentstep == 1) 
 	{
-		echo "<h2>Checking, installing and activating dependent plugins</h2>";
+		$isok = true;
+		echo "<h2>Checking dependencies</h2>";
+		if(!function_exists("zip_open"))
+		{
+			error_log("function zip_open not found; install /enable/ the php-zip module to fix this problem");
+			echo "Error; function zip_open not found. Unable to proceed. <a href='https://www.wpsupporthelp.com/answer/i-get-error-quot-function-zip-open-not-found-quot-php-zip-module-not-in-1513/'  target='_blank'>Click here to learn how to fix this</a>";
+			$isok = false;
+		}
+		
+		if ($isok)
+		{		
+			echo "<h2>Checking, installing and activating dependent plugins</h2>";
+		}
 	}
 	else if ($currentstep == 2) 
 	{
@@ -158,7 +170,7 @@ function nxs_webmethod_installoneclickcontent()
 			$pluginscount = count($plugins);
 			
 			if ($pluginscount > 0)
-			{
+			{				
 				echo "<h2>Installing $pluginscount plugin(s) :)</h2>";
 				
 				foreach ($plugins as $plugin)

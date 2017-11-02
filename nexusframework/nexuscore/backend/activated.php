@@ -422,7 +422,7 @@
 		
 		function nxs_js_handleunexpectederrorwhileactivating(response)
 		{
-			nxs_js_alert_sticky("<?php echo nxs_l18n__("Bad news; an error occured while activating the theme. Please first check our <a target='_blank' href='http://nexusthemes.com/support/how-to-install-a-wordpress-theme/'>installation guide</a>. The good news is that we can try to help you out, if you <a target='_blank' href='http://www.nexusthemes.com'>contact us</a>.", "nxs_td"); ?>");
+			nxs_js_alert_sticky("<?php echo nxs_l18n__("An error occured while activating the theme. Check our <a target='_blank' href='https://www.wpsupporthelp.com/wordpress-questions/activating-installing-wordpress-questions-11/'>activating and installation questions</a> to learn how to resolve this.", "nxs_td"); ?>");
 			maintask = -999;
 			jQuery("#waitwrap").hide();
 			jQuery("#errorwrap").show();
@@ -447,7 +447,7 @@
 					}
 					else
 					{
-						nxs_js_alert_sticky("<?php echo nxs_l18n__("Sorry, no hint available", "nxs_td"); ?>");
+						// nxs_js_alert_sticky("<?php echo nxs_l18n__("Sorry, no hint available", "nxs_td"); ?>");
 					}
 				}
 			}
