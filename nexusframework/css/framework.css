@@ -311,8 +311,7 @@ ul.icon-font-list .nxs-comments-count						{ position: absolute; color: white; w
 
 
 /* DEFAULT LIST */
-ul.nxs-default-list				 							{ margin-bottom: 20px; }
-ul.nxs-default-list											{ line-height: 1.625em; font-size: 15px; margin-top: 10px; }
+ul.nxs-default-list				 							{ margin-bottom: 20px; line-height: 1.625em; font-size: 15px; margin-top: 10px; }
 
 /* HIDE DOWNLOAD ICON ON TOUCHDEVICES*/
 .nxs-m-touch ul.icon-font-list li.download,
@@ -2626,7 +2625,7 @@ h3#order_review_heading,
 
 /* WOOCOMMERCE PRODUCT DETAIL 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-subplaceholder 										{ position: relative; border-right: 3.6em solid transparent; float: left; margin-bottom: 30px; }
+.nxs-subplaceholder 										{ position: relative; border-right: 3.6em solid transparent; float: left; margin-bottom: 30px; width: 100%; }
 
 /* Sale */
 .woocommerce .onsale 										{ text-transform: uppercase; font-size: 15px; z-index: 100; }
@@ -2662,6 +2661,13 @@ table.shop_attributes .nxs-default-p						{ padding-bottom: 0px; }
 .woocommerce-tabs .tabs span.nxs-icon-arrow-right-light		{ display: none; }
 .woocommerce-tabs .tabs .active span 						{ display: inline-block; position: absolute; top: 0; right: 0; }
 .woocommerce-tabs .panel ol									{ list-style: none; }
+
+.woocommerce-tabs .woocommerce-Tabs-panel ol,
+.woocommerce-tabs .woocommerce-Tabs-panel ul				{ margin-bottom: 20px; margin-left: 20px !important; line-height: 1.625em; font-size: 15px; float: left; }
+.woocommerce-tabs .woocommerce-Tabs-panel ol				{ list-style: decimal; }
+.woocommerce-tabs .woocommerce-Tabs-panel ul				{ list-style: disc; }
+
+
 .nxs-woominicart .nxs-image,
 .woocommerce-tabs .panel .comment .nxs-image				{ width: 40px !important; position: absolute; right: 0px; top: 0px; }
 .woocommerce-tabs .panel #reviews p.stars					{ padding-bottom: 0px; }
