@@ -608,20 +608,25 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	$button_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
 	$button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
 	
-	
-	
 	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_formbox_send(&quot;" .  $postid . "&quot;, &quot;" . $placeholderid . "&quot;);');";
+
+	$imageurl = nxs_getframeworkurl() . "/images/animations/waitwhileloading4.gif";
+	$htmlwaitwhileloading = "<span class='nxs-form-wwl' style='display: none; position: fixed;'><img style='border: 0px;' src='{$imageurl}' /></span>";
+
 
 	// Button
 	$htmlbutton = '
 	<p class="' . $button_alignment_cssclass . '">
 		<a rel="nofollow" id="' . $placeholderid . '_button" 
-			class="nxs-button ' . $button_color_cssclass . ' ' . $button_scale_cssclass . '" 
+			class="nxs-form-submit nxs-button ' . $button_color_cssclass . ' ' . $button_scale_cssclass . '" 
 			href="#" 
 			onclick="' . $invoke . '; return false;">' 
 			. $button_text . ' 
 		</a>
+		&nbsp;' . $htmlwaitwhileloading . '
+		
 	</p>';
+	
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
@@ -840,6 +845,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		
 		echo $htmlfiller;
 		echo $htmlbutton;
+		
 		
 		echo "</div>";	// end of nxs-form
 		

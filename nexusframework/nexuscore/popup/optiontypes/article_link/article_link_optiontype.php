@@ -1,6 +1,8 @@
 <?php
 function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $args, $runtimeblendeddata) 
 {
+	$enable_mediaselect = true;
+	
 	extract($optionvalues);
 	extract($args);
 	extract($runtimeblendeddata);
@@ -99,14 +101,19 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 										
 										<!-- allow user to pick a media item -->';
 										
-										echo '
+										if ($enable_mediaselect === true)
+										{
+											echo '
+											
+											<div>';
+											?>
+												<a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select media item</a>
+											<?php
+											echo '
+											</div>';
+										}
 										
-										<div>';
-										?>
-											<a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select media item</a>
-										<?php
 										echo '
-										</div>
 										
 									</div>
 								</div>

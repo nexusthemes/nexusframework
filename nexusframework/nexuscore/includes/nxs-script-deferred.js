@@ -258,7 +258,6 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 	);
 }
 
-
 function nxs_js_popup_render_inner(waitgrowltoken, response)
 {
 	nxs_js_alert_wait_finish(waitgrowltoken);
@@ -420,7 +419,9 @@ function nxs_js_popup_render_inner(waitgrowltoken, response)
 				// stop het progageren van het event (bind("click") om te voorkomen dat onderliggende
 				// elementen het click event gaan afhandelen (zoals het event dat de body click altijd opvangt...)
 				e.stopPropagation();
-			})
+			});
+			
+			jQuery('#nxsbox_window').removeClass('nxs-gallerypopup');
 			
 			// if a nxs_js_execute_after_popup_shows function is present in the dom (optionally), execute it!
 			if(typeof nxs_js_execute_after_popup_shows == 'function') 
@@ -480,6 +481,8 @@ function nxs_js_popup_render_inner(waitgrowltoken, response)
 	}
 }
 
+
+
 function nxs_js_popupsession_startnewcontext()
 {
 	// note! shortscope data remains!
@@ -492,6 +495,53 @@ function nxs_js_popupsession_startnewcontext()
 	// each request always passes the #2389724
 	nxs_js_popup_setsessioncontext("urlencodedjsonencodedquery_vars", nxs_js_geturlencodedjsonencodedquery_vars());
 }
+
+function nxs_js_popup_push()
+{
+	console.log("popup; push");
+	if (nxs_js_popupshows)
+	{
+		// push a new level on the stack of popups
+		var o = 
+		{
+			'nxs_js_popupsessiondata' : nxs_js_popupsessiondata,
+			'nxs_js_shortscopedata' : nxs_js_shortscopedata,
+			'nxs_js_popupsessioncontext' : nxs_js_popupsessioncontext,
+		}
+		nxs_js_popup_stack.push(o);
+	}
+	else
+	{
+		// nothing to push
+		console.log("popup; push; nothing to push (no popup shows)");
+	}
+}
+
+function nxs_js_popup_pop()
+{
+	console.log("popup; pop");
+
+	// pops a level on the stack of popups
+	var o = nxs_js_popup_stack.pop();
+	
+	console.log(o);
+	
+	if (o != null)
+	{
+		nxs_js_popupsessiondata = o.nxs_js_popupsessiondata;
+		nxs_js_shortscopedata = o.nxs_js_shortscopedata;
+		nxs_js_popupsessioncontext = o.nxs_js_popupsessioncontext;
+		
+		// rerender the new context
+		nxs_js_popup_navigateto_v2(nxs_js_popup_getcurrentsheet(), true); 
+	}
+	else
+	{
+		// tear down anything that is left
+		nxs_js_closepopup_unconditionally();
+	}
+}
+
 
 // voids all variables existing in the existing popup session
 function nxs_js_popupsession_data_clear()

@@ -46,6 +46,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 	$destination_url = nxs_addqueryparametertourl_v2($destination_url, "nxs_impersonate", "anonymous", false, true);
 	
 	$trigger_on_exit = false;
+	$trigger_on_js = false;
 
 	if ($popup_trigger != "")
 	{
@@ -54,7 +55,11 @@ function nxs_widgets_pagepopup_beforeend_head()
 			$trigger_on_exit = true;
 			$delaypopup_milliseconds = 0;
 		}
-
+		else if ($popup_trigger == "js")
+		{
+			$trigger_on_js = true;
+			$delaypopup_milliseconds = 0;
+		}
 		else
 		{
 			$delaypopup_milliseconds = $popup_trigger * 1000;
@@ -188,6 +193,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 			{
 				var shouldshow = true;	// todo: filter based on device?
 				var triggerOnExit = <?php echo ($trigger_on_exit) ? 'true' : 'false'; ?>;
+				var triggerOnJS  = <?php echo ($trigger_on_js) ? 'true' : 'false'; ?>;
 				
 				if ((jQuery(window).width() * 0.9) < <?php echo $width; ?>)
 				{
@@ -217,6 +223,11 @@ function nxs_widgets_pagepopup_beforeend_head()
 							}
 						});
 					}
+					else if (triggerOnJS) 
+					{
+						//
+						var triggered = false;
+					}
 					else
 					{
 						setTimeout(function() { nxs_js_pagepopup_activate() }, <?php echo $delaypopup_milliseconds; ?>);
@@ -241,19 +252,16 @@ function nxs_widgets_pagepopup_beforeend_head()
 				return;
 			}
 			
-			nxs_js_log('prefetched data is available');
+			//nxs_js_log('prefetched data is available');
 			
 			var response = prefetchedresult.response;
-			
-			nxs_js_log(response);
+			// nxs_js_log(response);
 			if (response.result == "OK")
 			{
-				//nxs_js_log("BOOM!");
-			
 				// step 1; if specified, set a cookie to indicate the popup was shown before
 				if (response.setcookie != null && !nxs_js_stringisblank(response.setcookie))
 				{
-					// expirte cookie in a week
+					// expire cookie in a week
 					expiretime = 7 * 24 * 60 * 60 * 1000;
 
 					// set cookie
@@ -274,46 +282,54 @@ function nxs_widgets_pagepopup_beforeend_head()
 					nxs_js_popup_setsessiondata("nxs_customhtml_popupheadertitle", "<?php echo $popuptitle; ?>");
 					// nxs_js_popup_setsessiondata("minwidth", minwidth);
 
-					var fillbackgroundcolor = 'white'; // 'yellow';
+					var fillbackgroundcolor = 'white';
 					
-					var html = "";
-					html += "<div id='pagepopup_<?php echo $placeholderid; ?>' style=\"margin: 0 auto; display: table;\">";	// horizontal alignment
-					// note; the height of the iframe is 5 pixels too big; therefore we set the backgroundcolor of
-					// the wrapping div to the same backgound color
-					
-					var semiborder = "";
-					// "padding-top: 5px; -moz-border-radius: 15px; border-radius: 15px; border: 10px solid rgb(127, 127, 127); border: 10px solid rgba(127, 127, 127, .5); -webkit-background-clip: padding-box; /* for Safari */ background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */";
-
-					html += "<div style=\"padding-top: 10px;\">";	// padding 
-					
-					html += "<div style=\"position:relative;\"><a href=\"#\" onclick=\"nxs_js_closepopup_unconditionally(); return false;\"><span style=\"color: white; position: absolute; right: 0px; top: -10px;\" class=\"nxs-icon-remove-sign\"></span></a></div>";
-					html += "<div style=\"" + semiborder + ";xbackground-color: " + fillbackgroundcolor + "\">";	// surrounding shade
+					if (response.tuned == null)
+					{
+						response.tuned = true;
+						var html = "";
+						html += "<div id='pagepopup_<?php echo $placeholderid; ?>' class='nxs-pagepopup-wrap' style=\"margin: 0 auto; display: table;\">";
+	
+						var semiborder = "";
+	
+						html += "<div style=\"padding-top: 10px;\">";	// padding 
 						
-					html += "<div id=\"pagepopupiframe\" style=\"width:" + width + "px\">";
-					html += prefetchedresult.response.html;
-					html += "</div>";
 						
-					// html += "<iframe id=\"pagepopupiframe\" ALLOWTRANSPARENCY=\"true\" width=\"" + width + "px\" frameborder=\"0\" onload=\"nxs_js_iframeloadedpagepopup();\" style=\"-webkit-transform: translate3d(0px, 0px, 0px); border: none; xbackground-color: " + fillbackgroundcolor + ";\" src=\"<?php echo $url; ?>\"></iframe>";
-					html += "</div>";	// end surrounding shade
-					html += "</div>";	// end horizontal alignment
-
-					html += "</div>";	// end padding
-
-					// the script below is cut off in a stupid way
-					// since otherwise the browsers are not able to 
-					// interpret it correctly ... (script in script)
-					html += "<" + "script>";
-					html += "f" + "unction nxs_js_execute_after_popup_shows() { ";
-					html += "j" + "Query('#nxsbox_window').addClass('nxs-gallerypopup'); }";
-					html += "</" + "script>";
+						html += "<div style=\"position:relative;\"><a href=\"#\" onclick=\"nxs_js_closepopup_unconditionally(); return false;\"><span style=\"color: white; position: absolute; right: 0px; top: -10px;\" class=\"sign123 nxs-icon-remove-sign\"></span></a></div>";
+						html += "<div style=\"" + semiborder + ";xbackground-color: " + fillbackgroundcolor + "\">";	// surrounding shade
+							
+						html += "<div id=\"pagepopupiframe\" style=\"width:" + width + "px\">";
+						html += prefetchedresult.response.html;
+						html += "</div>";
+							
+						html += "</div>";	// end surrounding shade
+						html += "</div>";	// end horizontal alignment
+	
+						html += "</div>";	// end padding
+	
+						// the script below is cut off in a stupid way
+						// since otherwise the browsers are not able to 
+						// interpret it correctly ... (script in script)					
+						html += "<" + "script>";
+						html += "f" + "unction nxs_js_execute_after_popup_shows() { ";
+						html += "j" + "Query('#nxsbox_window').addClass('nxs-gallerypopup'); }";
+						html += "</" + "script>";
+						
+						//var l = html.length;
+						//console.log("popup html length; " + l);
+						
+						// update the html
+						response.html = html;
+					}
 					
-					// update the html
-					response.html = html;
+					console.log("page popup; about to render popup");
 					
 					nxs_js_popup_setsessiondata("nxs_customhtml_scaffoldingtype", "nothing");
-					nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", html);
+					nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", response.html);
+					nxs_js_popup_navigateto("customhtml");
 					
-					nxs_js_popup_render_inner(null, response);
+					
+					// nxs_js_popup_render_inner(null, response);
 					
 					//
 					nxs_js_pagepopup_tagshowing();
@@ -325,19 +341,6 @@ function nxs_widgets_pagepopup_beforeend_head()
 					//nxs_js_log("server told us not to show the popup");
 				}
 			}
-		}
-		
-		function nxs_js_iframeloadedpagepopup()
-		{
-			var element = jQuery("#pagepopupiframe");
-			var height = jQ_nxs(element).contents().height();	// this only works if the iframe's page is of the same domain
-			if (height > <?php echo $maxheight; ?>)
-			{
-				height = <?php echo $maxheight; ?>;
-			}
-			jQ_nxs(element).height(height); 
-			nxs_js_reset_popup_dimensions();	// required to vertical align the lightbox
-			jQ_nxs(element).niceScroll();
 		}
 		
 	</script>
@@ -352,6 +355,44 @@ function nxs_widgets_pagepopup_beforeend_head()
 // Define the properties of this widget
 function nxs_widgets_pagepopup_home_getoptions($args) 
 {
+	$field_selectedtrigger_help = null;
+	
+	if (nxs_iswebmethodinvocation())
+	{
+		$clientpopupsessioncontext = $_REQUEST["clientpopupsessioncontext"];
+		$clientpopupsessiondata = $_REQUEST["clientpopupsessiondata"];
+		//
+		$postid = $clientpopupsessioncontext["postid"];
+		$placeholderid = $clientpopupsessioncontext["placeholderid"];
+		
+		error_log("pagepopup; $postid $placeholderid");
+		
+		// load the widget's data from the persisted db
+		$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+		$popup_trigger = $placeholdermetadata["popup_trigger"];
+		
+		error_log("pagepopup; popup_trigger; $popup_trigger");
+		
+		// but allow it to be overriden in the session
+		if ($clientpopupsessiondata["popup_trigger"] != "")
+		{
+			$popup_trigger = $clientpopupsessiondata["popup_trigger"];
+		}
+		
+		error_log("pagepopup; popup_trigger; $popup_trigger");
+	
+		if ($popup_trigger == "js")
+		{	
+			$field_selectedtrigger_help = array
+			(
+				"id" 				=> "popup_trigger_tip",
+				"type" 				=> "custom",
+				"custom"	=> "<div>Click <a target='_blank' href='https://www.wpsupporthelp.com/answer/how-to-trigger-page-popups-in-wordpress-using-javascript-1526/'>here</a> to learn how to use this trigger</div>",
+			);
+		}
+		
+	}
+	
 	$options = array
 	(
 		"sheettitle" => nxs_widgets_pagepopup_gettitle(),
@@ -369,16 +410,21 @@ function nxs_widgets_pagepopup_home_getoptions($args)
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
-				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
+				"label" 			=> nxs_l18n__("Content", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("The post or page to be rendered in the popup", "nxs_td"),
+				"enable_mediaselect" => false,
 			),
 			array(
 				"id"     			=> "popup_trigger",
 				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Delay popup", "nxs_td"),
+				"popuprefreshonchange" => "true",
+				"label"    			=> nxs_l18n__("Popup trigger", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("popup_trigger"),
 				"unistylablefield"	=> true
 			),
+			
+			$field_selectedtrigger_help,
+			
 			array(
 				"id"     			=> "repeatpopup_scope",
 				"type"     			=> "select",
@@ -387,16 +433,6 @@ function nxs_widgets_pagepopup_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
-			/*
-			array(
-				"id" 				=> "destination_url",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("External link", "nxs_td"),
-				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
-				"localizablefield"	=> true
-			),
-			*/
 			array( 
 				"id" 				=> "wrapper_input_end",
 				"type" 				=> "wrapperend"

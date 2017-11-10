@@ -1,5 +1,40 @@
+function nxs_js_formbox_handlestartprocessing(postid, placeholderid)
+{
+	// growl
+	//nxs_js_alert_veryshort("...");
+	
+	// show waiting animation
+	jQuery("#nxs-widget-" + placeholderid).find(".nxs-form-wwl").css('display', 'inline');
+	jQuery("#nxs-widget-" + placeholderid).find(".nxs-form-submit").css('opacity', 0.5);
+	
+	//
+	jQuery("#nxs-widget-" + placeholderid).find(".nxs-form-submit").addClass('nxs-being-processed');
+}
+
+function nxs_js_formbox_handlefinishedprocessing(postid, placeholderid)
+{
+	// show waiting animation
+	jQuery("#nxs-widget-" + placeholderid).find(".nxs-form-wwl").css('display', 'none');
+	jQuery("#nxs-widget-" + placeholderid).find(".nxs-form-submit").css('opacity', 1.0);
+	
+	// re-enable 
+	jQuery("#nxs-widget-" + placeholderid).find(".nxs-form-submit").removeClass('nxs-being-processed');
+}
+
+
 function nxs_js_formbox_send(postid, placeholderid)
 {
+	if (jQuery("#nxs-widget-" + placeholderid).find(".nxs-form-submit").hasClass('nxs-being-processed'))
+	{
+		console.log("stop poking me!");
+		return;
+	}
+	
+	//
+	
+	
+	nxs_js_formbox_handlestartprocessing(postid, placeholderid);
+	
 	var datatopost = new FormData();
 
 	datatopost.append("action", "nxs_ajax_webmethods");
@@ -14,7 +49,7 @@ function nxs_js_formbox_send(postid, placeholderid)
 		function(i)
 		{
 			var newid = jQuery(this).attr("id");
-			nxs_js_log(newid);
+			//nxs_js_log(newid);
 
 			var newvalue;
 			if (jQuery('#' + newid).is(':checkbox'))
@@ -84,7 +119,7 @@ function nxs_js_formbox_send(postid, placeholderid)
 			cache: false,
 			dataType: 'JSON',
 			processData: false, // Don't process the files
-        	contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+      contentType: false, // Set content type to false as jQuery will tell the server its a query string request
 			url: ajaxurl, 
 			beforeSend: function(XHR)
 			{
@@ -95,6 +130,8 @@ function nxs_js_formbox_send(postid, placeholderid)
 			},
 			success: function(response) 
 			{
+				nxs_js_formbox_handlefinishedprocessing(postid, placeholderid);
+				
 				nxs_js_log(response);
 				if (response.result == "OK")
 				{
@@ -122,7 +159,10 @@ function nxs_js_formbox_send(postid, placeholderid)
 						
 						msg += "<p>&nbsp;</p>";
 						
-						msg += "<a href=\"#\" onclick=\"nxs_js_closepopup_unconditionally_if_not_dirty(); return  false;\" class=\"nxsbutton1\">OK</a>";
+						msg += "<a href=\"#\" onclick=\"nxs_js_popup_pop(); return  false;\" class=\"nxsbutton1\">OK</a>";
+						
+						// push the existing popupcontext
+						nxs_js_popup_push();
 						
 						nxs_js_htmldialogmessageok(response.validationerrorhead, msg);
 						
@@ -146,6 +186,8 @@ function nxs_js_formbox_send(postid, placeholderid)
 			},
 			error: function(response)
 			{
+				nxs_js_formbox_handlefinishedprocessing(postid, placeholderid);
+				
 				// knop weer tonen zodat gebruiker het nogmaals kan proberen...
 				jQuery("#" + placeholderid + "_button").show();
 				nxs_js_popup_notifyservererror();

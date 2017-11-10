@@ -171,6 +171,9 @@ function nxs_js_okforscreenshot()
 	return nxs_allloaded;
 }
 
+var nxs_js_popup_stack = [];
+
+
 // the popupsessiondata is empty initially.
 // by filling this variable from the client (js),
 // a state is constructed that is accessible by both the client (js) as well as 
@@ -1553,12 +1556,12 @@ function nxs_js_redirect_top(url)
 			var isInAnchor = e.target.nodeName == "A" || (jQuery(e.target).closest('a').length > 0);
 			var isHandledOutsideFramework = isButton || isSelect || isInput || isTextArea || isInAnchor;
 			
-			nxs_js_log("isHandledOutsideFramework; " + isHandledOutsideFramework);
-			nxs_js_log("isSelect? " + isSelect);
-			nxs_js_log("isButton? " + isButton);
-			nxs_js_log("isInput? " + isInput);
-			nxs_js_log("isTextArea? " + isTextArea);
-			nxs_js_log("isInAnchor? " + isInAnchor);
+			//nxs_js_log("isHandledOutsideFramework; " + isHandledOutsideFramework);
+			//nxs_js_log("isSelect? " + isSelect);
+			//nxs_js_log("isButton? " + isButton);
+			//nxs_js_log("isInput? " + isInput);
+			//nxs_js_log("isTextArea? " + isTextArea);
+			//nxs_js_log("isInAnchor? " + isInAnchor);
 			
 			if (isHandledOutsideFramework)
 			{
