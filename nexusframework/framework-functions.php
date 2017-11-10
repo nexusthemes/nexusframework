@@ -1460,6 +1460,16 @@ function nxs_action_webmethod_init_recontructmainwploop()
 add_action("nxs_action_webmethod_init", "nxs_action_webmethod_init_recontructmainwploop");
 add_action("nxs_action_webmethod_init", "nxs_ext_initialize_frontendframework");
 
+add_filter('wpseo_robots', 'nxs_webmethod_robots');
+function nxs_webmethod_robots($result)
+{
+	if (nxs_iswebmethodinvocation())
+	{
+		$result = "noindex";
+	}
+	return $result;
+}
+
 add_action('add_meta_boxes', 'nxs_add_metaboxes');
 function nxs_add_metaboxes()
 {
@@ -1572,7 +1582,7 @@ function nxs_render_postfooterlink()
 				}
 				else
 				{
-					$authenticatelink = "<a href=\"#\" onclick=\"nxs_js_popup_site_neweditsession('loginhome'); return false;\">Login</a>";
+					$authenticatelink = "<a href=\"#\" rel=\"nofollow\" onclick=\"nxs_js_popup_site_neweditsession('loginhome'); return false;\">Login</a>";
 				}
 			}
 			
