@@ -989,6 +989,7 @@ class nxs_g_modelmanager
 		$imageid = nxs_get_key_imageid_in_post($postid);
 		$posttype = get_post_type($postid);
 		
+		//
 		$keyvalues = array
 		(
 			"postid" => $postid,
@@ -998,6 +999,23 @@ class nxs_g_modelmanager
 			"featuredimgid" => $imageid,
 		);
 		
+		/*
+		$pm = get_post_meta($postid);
+		foreach ($pm as $key => $val)
+		{
+			if (is_array($val))
+			{
+				$extendedproperties[$key] = $val[0];
+				$keyvalues[$key] = $val[0];
+			}
+			else
+			{
+				$extendedproperties[$key] = $val;
+				$keyvalues[$key] = $val;
+			}
+		}
+		*/
+
 		$filterargs = array
 		(
 			"postid" => $postid,
@@ -1011,6 +1029,8 @@ class nxs_g_modelmanager
 		{
 			$extendedproperties = array();
 			
+			
+			
 			foreach ($keyvalues as $key => $value)
 			{
 				$extendedproperties[$key] = array
@@ -1019,6 +1039,8 @@ class nxs_g_modelmanager
 					"label" => $key,
 				);
 			}
+			
+
 		}
 
 		// todo: derive from post
@@ -1066,6 +1088,9 @@ class nxs_g_modelmanager
 				),
 			),
 		);
+		
+		// error_log("model; ". json_encode( $keyvalues));
+		
 		return $result;
 	}
 	
@@ -1538,6 +1563,12 @@ class nxs_g_modelmanager
 				$result = "index,follow";
 			}
 		}
+		
+		if (nxs_iswebmethodinvocation())
+		{
+			$result = "noindex";
+		}
+		
 		return $result;
 	}
 	
