@@ -637,6 +637,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 			}
 			else 
 			{
+				if ($atts["errorlog"] == "true")
+				{
+					error_log("modelproperty; source not set");
+				}
+				
 				$modeluri = $atts["modeluri"];		// the base modeluri for which the property will be retrieved
 				if ($modeluri == "")
 				{
