@@ -402,6 +402,13 @@ function nxs_storecacheoutput($buffer)
 		$nocacheexplanations[] = "session is set/active";
 	}
 	
+	// dont store webmethods
+	if (nxs_iswebmethodinvocation())
+	{
+		$shouldstore = false;
+		$nocacheexplanations[] = "is webmethod";
+	}
+	
 	// dont store urls with weird chars
 	if ($shouldstore)
 	{
@@ -6565,15 +6572,36 @@ function nxs_lookuptable_persist($lookuptable)
 	nxs_mergesitemeta($metadata);
 }
 
+function nxs_f_lookups_includerequestlookups($result = array())
+{
+	$result = array_merge($result, $_REQUEST);
+	return $result;
+}
+add_filter("nxs_f_lookups", "nxs_f_lookups_includerequestlookups", 10, 1);
+
+function nxs_f_lookups_includesitewidelookups($result = array())
+{
+	$result = array_merge($result, nxs_lookuptable_getlookup_v2());
+	return $result;
+}
+add_filter("nxs_f_lookups", "nxs_f_lookups_includesitewidelookups", 20, 1);
+
+function nxs_f_lookups_includepagetemplateruleslookups($result = array())
+{
+	$result = array_merge($result, nxs_gettemplateruleslookups());
+	return $result;
+}
+add_filter("nxs_f_lookups", "nxs_f_lookups_includepagetemplateruleslookups", 30, 1);
+
 function nxs_lookups_getcombinedlookups_for_currenturl()
 {
 	global $nxs_gl_combinedlookups_for_url;
 	if (!isset($nxs_gl_combinedlookups_for_url))
 	{
 		$combined_lookups = array();
-		$combined_lookups = array_merge($combined_lookups, $_REQUEST);	// the weakest; query parameters
-		$combined_lookups = array_merge($combined_lookups, nxs_lookuptable_getlookup_v2(true));	// site-wide lookups
-		$combined_lookups = array_merge($combined_lookups, nxs_gettemplateruleslookups());	// lookups as defined in the page template rules
+		//$combined_lookups = array_merge($combined_lookups, $_REQUEST);	// the weakest; query parameters
+		//$combined_lookups = array_merge($combined_lookups, nxs_lookuptable_getlookup_v2(true));	// site-wide lookups
+		//$combined_lookups = array_merge($combined_lookups, nxs_gettemplateruleslookups());	// lookups as defined in the page template rules
 		
 		$combined_lookups = apply_filters("nxs_f_lookups", $combined_lookups);
 		
@@ -6626,7 +6654,7 @@ function nxs_lookuptable_getlookup()
 	return $result;
 }
 
-function nxs_lookuptable_getlookup_v2($includeruntimeitems)
+function nxs_lookuptable_getlookup_v2($includeruntimeitems = false)
 {
 	$sitemeta = nxs_getsitemeta();
 	$metakey = "lookuptable";
@@ -7250,6 +7278,12 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
           
           foreach ($fields as $key => $optionvalues) 
           {
+          	if ($optionvalues == null)
+          	{
+          		// skip
+          		continue;
+          	}
+          	
           	$shouldshowfield = true;
           
 						// derive visibility based on capabilities
@@ -7292,9 +7326,9 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
           	{
 		    	// delegate behaviour to the specific option (pluggable)
 				$type = $optionvalues["type"];
-		    	nxs_requirepopup_optiontype($type);
+		    nxs_requirepopup_optiontype($type);
 		    	
-		    	$functionnametoinvoke = "nxs_popup_optiontype_" . $type . "_renderhtmlinpopup";
+		    $functionnametoinvoke = "nxs_popup_optiontype_" . $type . "_renderhtmlinpopup";
 				if (function_exists($functionnametoinvoke))
 				{
 					call_user_func($functionnametoinvoke, $optionvalues, $args, $runtimewidgetmetadata);
@@ -7340,6 +7374,11 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
       <?php 
 			foreach ($fields as $key => $value) 
 			{	
+				if ($value === null)
+				{
+					continue;
+				}
+				
 	    	// delegate behaviour to the specific option (pluggable)
 				$type = $value["type"];
 	    	nxs_requirepopup_optiontype($type);
