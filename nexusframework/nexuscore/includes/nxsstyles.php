@@ -113,7 +113,7 @@ function nxs_getstyletypeoptions() {
 		),
 		"popup_trigger" => array (
 			"subtype" 			=> "textlookup",
-			"values" 			=> array("0"=>nxs_l18n__("Show instantly", "nxs_td"), "exit"=>nxs_l18n__("Show on exit intent", "nxs_td"), "5"=>nxs_l18n__("Show after 5 seconds delay", "nxs_td"), "20"=>nxs_l18n__("Show after 20 seconds delay", "nxs_td"), "js"=>nxs_l18n__("Show on Javascript trigger", "nxs_td"))
+			"values" 			=> array("0"=>nxs_l18n__("Show instantly", "nxs_td"), "exit"=>nxs_l18n__("Show on exit intent", "nxs_td"), "5"=>nxs_l18n__("Show after 5 seconds delay", "nxs_td"), "20"=>nxs_l18n__("Show after 20 seconds delay", "nxs_td"))
 		),
 		"repeatpopup_scope" => array (
 			"subtype" 			=> "textlookup",

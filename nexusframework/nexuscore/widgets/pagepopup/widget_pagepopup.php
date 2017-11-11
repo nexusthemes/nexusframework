@@ -397,6 +397,8 @@ function nxs_widgets_pagepopup_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_pagepopup_gettitle(),
 		"sheeticonid" => nxs_widgets_pagepopup_geticonid(),
+		"footerfiller" => true,	// add some space at the bottom
+		
 	
 		"fields" => array
 		(
@@ -410,8 +412,9 @@ function nxs_widgets_pagepopup_home_getoptions($args)
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
+				"posttypes" => array("nxs_templatepart","page", "post"),
 				"label" 			=> nxs_l18n__("Content", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("The post or page to be rendered in the popup", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("The content template, post or page to be rendered in the popup", "nxs_td"),
 				"enable_mediaselect" => false,
 			),
 			array(
