@@ -59,7 +59,7 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 	{
 		return "";
 	}
-	if ($destination_articleid == "" && $destination_url == "" && $destination_js == "")
+	if ($destination_articleid == "" && $destination_popuparticleid == "" && $destination_url == "" && $destination_js == "")
 	{
 		return "";
 	}		
@@ -84,6 +84,14 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		}
 		$onclick = "";
 	}
+	else if ($destination_popuparticleid != "")
+	{
+		$domid = "nxs_popups_template_{$destination_popuparticleid}";
+		nxs_popup_renderpopuptemplate($destination_popuparticleid, $domid);
+		$url = "#";
+		$destination_js = "nxs_js_popup_setsessioncontext('currentpopuptemplateid', '{$domid}'); nxs_js_popup_render_inner(-1, {'result':'OK','rendertemplateid':'{$domid}'});return false;";
+		$onclick = "onclick='" . nxs_render_html_escape_singlequote($destination_js) . "' ";
+	} 
 	else if ($destination_url != "")
 	{
 		if (nxs_stringstartswith($destination_url, "tel:"))

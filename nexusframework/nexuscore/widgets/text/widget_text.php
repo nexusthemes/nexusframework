@@ -340,6 +340,16 @@ function nxs_widgets_text_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
 				"unicontentablefield" => true,
 			),
+			
+			array(
+				"id" 				=> "destination_popuparticleid",
+				"type" 				=> "article_link",
+				"posttypes" => array("nxs_templatepart","page", "post"),
+				"label" 			=> nxs_l18n__("Popup content", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("The content template, post or page to be rendered in the popup", "nxs_td"),
+				"enable_mediaselect" => false,
+			),
+						
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
@@ -719,7 +729,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("Button: both external URL and article reference are set (ambiguous URL)", "nxs_td");
 	}
 	
-	if ($destination_url == "" && $destination_articleid == "" && $destination_js == "" && $button_text != "") 
+	if ($destination_url == "" && $destination_articleid == "" && $destination_popuparticleid == "" && $destination_js == "" && $button_text != "") 
 	{
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Button: button is set, but no reference is set (no URL)", "nxs_td");
@@ -756,10 +766,25 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$htmltext = "";
 	}
 	
-	
-	
 	$button_heightiq = "";
-	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $button_heightiq, $button_fontzen, $destination_relation);
+	
+	$buttonargs = array
+	(
+		"text" => $button_text,
+		"scale" => $button_scale,
+		"colorzen" => $button_color,
+		"destination_articleid" => $destination_articleid,
+		"destination_popuparticleid" => $destination_popuparticleid,
+		"destination_url" => $destination_url,
+		"destination_target" => $destination_target,
+		"align" => $button_alignment,
+		"destination_js" => $destination_js,
+		"text_heightiq" => $text_heightiq,
+		"fontzen" => $button_fontzen,
+		"destination_relation" => $destination_relation
+	);
+	$htmlforbutton = nxs_gethtmlforbutton_v2($buttonargs);
+	
 	$htmlfiller = nxs_gethtmlforfiller();
 	
 	// Callout color
@@ -834,18 +859,29 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	
 	
-	if ($destination_target == "_self") {
+	if ($destination_target == "_self") 
+	{
 		$destination_target_html = 'target="_self"';
-	} else if ($destination_target == "_blank") {
+	} 
+	else if ($destination_target == "_blank") 
+	{
 		$destination_target_html = 'target="_blank"';
-	} else {
-		if ($destination_articleid != "") {
+	} 
+	else 
+	{
+		if ($destination_articleid != "") 
+		{
 			$destination_target_html = 'target="_self"';
-		} else {
+		} 
+		else 
+		{
 			$homeurl = nxs_geturl_home();
- 			if (nxs_stringstartswith($destination_url, $homeurl)) {
+ 			if (nxs_stringstartswith($destination_url, $homeurl)) 
+ 			{
  				$destination_target_html = 'target="_self"';
- 			} else {
+ 			} 
+ 			else 
+ 			{
  				$destination_target_html = 'target="_blank"';
  			}
 		}
@@ -874,9 +910,12 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Linked title
-	if ($destination_articleid != "") {
+	if ($destination_articleid != "") 
+	{
 		$titlehtml = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';
-	} else if ($destination_url != "") {
+	} 
+	else if ($destination_url != "") 
+	{
 		$titlehtml = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$titlehtml.'</a>';
 	}
 	
@@ -959,9 +998,12 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		</div>';
 	
 	// Linked image
-	if ($destination_articleid != "") {
+	if ($destination_articleid != "") 
+	{
 		$image = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$image.'</a>';
-	} else if ($destination_url != "") {
+	} 
+	else if ($destination_url != "") 
+	{
 		$image = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$image.'</a>';
 	}
 	
@@ -975,9 +1017,12 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// Linked default image
-	if ($destination_articleid != "") {
+	if ($destination_articleid != "") 
+	{
 		$default_image = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$default_image.'</a>';
-	} else if ($destination_url != "") {
+	} 
+	else if ($destination_url != "") 
+	{
 		$default_image = '<a '.$destination_target_html.' '.$destination_relation_html.' href="'.$destination_url .'">'.$default_image.'</a>';
 	}
 	
