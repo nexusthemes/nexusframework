@@ -57,7 +57,13 @@ function nxs_widgets_undefined_render_webpart_render_htmlvisualization($args)
 	 
 		<!-- -->
 		<div class="empty nxs-runtime-autocellsize">
-			<div class="nxs-border-dash nxs-runtime-autocellsize absolute border-radius autosize-smaller" style="left: 0; right: 0; top: 0; bottom: 0;">
+			<div class="nxs-border-dash nxs-runtime-autocellsize absolute border-radius autosize-smaller" style="left: 0; right: 0; top: 0; bottom: 0; display: grid;">
+				
+					<div style="display: flex; grow: 1; padding: 20px; box-sizing: border-box; border: 1px dashed black;">
+			
+					</div>			
+
+				
 			</div>
 		</div>			
 		
