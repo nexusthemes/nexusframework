@@ -13041,3 +13041,71 @@ function nxs_frontendframework_getfrontendframework()
 	
 	return $result;
 }
+
+function nxs_popup_renderpopuptemplate($destination_popuparticleid, $domid)
+{
+	nxs_renderstack_push();
+	$templatehtml = nxs_getrenderedhtml($destination_popuparticleid, "anonymous");
+	nxs_renderstack_pop();
+	?>
+	<template id='<?php echo $domid; ?>'>
+		<div style='display: flex; justify-content: center;'>
+			<div id="pagepopupiframe">
+				<div class="nxs-postrows">
+					<div class="nxs-row nxs-not-unistyled  nxs-rowtemplate-one nxs-default-p " style="padding-bottom: 0px">
+						<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1">
+							<div class="nxs-one-whole" style="text-align: right; margin-bottom: 2px;">
+								<a href="#" onclick="nxs_js_closepopup_unconditionally(); return false;">
+									<span style="color: white; z-index:9999;" class="sign123 nxs-icon-remove-sign"></span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>						
+				<?php echo $templatehtml; ?>
+			</div>
+		</div>
+		<script>
+			function nxs_js_execute_after_popup_shows() 
+			{
+				jQuery('#nxsbox_window').addClass('nxs-gallerypopup');
+			}
+		</script>
+		<style>
+			#pagepopupiframe .nxs-one-whole  
+			{
+				width: 300px;
+			}
+			.nxs-viewport-gt-319	#pagepopupiframe .nxs-one-whole  
+			{
+				width: 300px;
+			}
+			.nxs-viewport-gt-479 	#pagepopupiframe .nxs-one-whole 
+			{
+				width: 470px;
+			}
+			.nxs-viewport-gt-719 	#pagepopupiframe .nxs-one-whole 
+			{
+				width: 673px;
+			}
+			.nxs-viewport-gt-959 	#pagepopupiframe .nxs-one-whole 
+			{
+				width: 673px;
+			}
+			.nxs-viewport-gt-1199 	#pagepopupiframe .nxs-one-whole 
+			{
+				width: 673px;
+			}
+			.nxs-viewport-gt-1439	#pagepopupiframe .nxs-one-whole 
+			{
+				width: 673px;
+			}
+			#pagepopupiframe img
+			{
+				box-shadow: none !important;
+				-webkit-box-shadow: none !important;
+			}
+		</style>
+	</template>
+	<?php
+}

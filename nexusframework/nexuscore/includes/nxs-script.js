@@ -48,7 +48,8 @@ var nxs_js_queuestatelookup = {};
 function nxs_js_popup_showhtml(html)
 {
 	nxs_js_popupsession_startnewcontext();
-						
+	
+	
 	nxs_js_popup_setsessioncontext("popup_current_dimensions", "gallerybox");
 	nxs_js_popup_setsessioncontext("contextprocessor", "site");
 	nxs_js_popup_setsessiondata("nxs_customhtml_popupheadertitle", "popup title");

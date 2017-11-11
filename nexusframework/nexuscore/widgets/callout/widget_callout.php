@@ -938,74 +938,11 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	}
 	else if ($destination_popuparticleid != "")
 	{
-		nxs_renderstack_push();
-		$templatehtml = nxs_getrenderedhtml($destination_popuparticleid, "anonymous");
-		nxs_renderstack_pop();
-		?>
-		<template id='nxs_popups_template_<?php echo $destination_popuparticleid; ?>'>
-			
-			<div id='pagepopup_aap' style='margin: 0 auto; display: table;'>
-				<div style="padding-top: 10px;">
-					<div style="position:relative;">
-						<a href="#" onclick="nxs_js_closepopup_unconditionally(); return false;">
-							<span style="color: white; position: absolute; right: 0px; top: -10px;" class="sign123 nxs-icon-remove-sign"></span>
-						</a>
-					</div>
-					<div id="pagepopupiframe">
-						<?php echo $templatehtml; ?>
-					</div>
-				</div>
-			</div>
-			<script>
-				function nxs_js_execute_after_popup_shows() 
-				{
-					jQuery('#nxsbox_window').addClass('nxs-gallerypopup');
-				}
-			</script>
-			<style>
-				#pagepopupiframe .nxs-one-whole  
-				{
-					width: 300px;
-				}
-				.nxs-viewport-gt-319	#pagepopupiframe .nxs-one-whole  
-				{
-					width: 300px;
-				}
-				.nxs-viewport-gt-479 	#pagepopupiframe .nxs-one-whole 
-				{
-					width: 470px;
-				}
-				.nxs-viewport-gt-719 	#pagepopupiframe .nxs-one-whole 
-				{
-					width: 673px;
-				}
-				.nxs-viewport-gt-959 	#pagepopupiframe .nxs-one-whole 
-				{
-					width: 673px;
-				}
-				.nxs-viewport-gt-1199 	#pagepopupiframe .nxs-one-whole 
-				{
-					width: 673px;
-				}
-				.nxs-viewport-gt-1439	#pagepopupiframe .nxs-one-whole 
-				{
-					width: 673px;
-				}
-				#pagepopupiframe img
-				{
-					box-shadow: none !important;
-					-webkit-box-shadow: none !important;
-				}
-			</style>
-		</template>
-		<?php
-		
-		// echo "<template id='aap'>{$templatehtml}</template>";
+		$domid = "nxs_popups_template_{$destination_popuparticleid}";
+		nxs_popup_renderpopuptemplate($destination_popuparticleid, $domid);
 		$url = "#";
-		$destination_js = "nxs_js_popup_render_inner(-1, {'result':'OK','rendertemplateid':'nxs_popups_template_{$destination_popuparticleid}'});return false;";
+		$destination_js = "nxs_js_popup_setsessioncontext('currentpopuptemplateid', '{$domid}'); nxs_js_popup_render_inner(-1, {'result':'OK','rendertemplateid':'{$domid}'});return false;";
 		$onclick = "onclick='" . nxs_render_html_escape_singlequote($destination_js) . "' ";
-		
-		
 	} 
 	else 
 	{

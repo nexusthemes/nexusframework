@@ -256,6 +256,7 @@ function nxs_js_popup_navigateto_v2(sheet, shouldgrowl)
 			}
 		}
 	);
+
 }
 
 function nxs_js_popup_render_inner(waitgrowltoken, response)
@@ -519,6 +520,7 @@ function nxs_js_popup_push()
 			'nxs_js_popupsessiondata' : nxs_js_popupsessiondata,
 			'nxs_js_shortscopedata' : nxs_js_shortscopedata,
 			'nxs_js_popupsessioncontext' : nxs_js_popupsessioncontext,
+			
 		}
 		nxs_js_popup_stack.push(o);
 	}
@@ -544,8 +546,17 @@ function nxs_js_popup_pop()
 		nxs_js_shortscopedata = o.nxs_js_shortscopedata;
 		nxs_js_popupsessioncontext = o.nxs_js_popupsessioncontext;
 		
-		// rerender the new context
-		nxs_js_popup_navigateto_v2(nxs_js_popup_getcurrentsheet(), true); 
+		var currentpopuptemplateid = nxs_js_popup_getsessioncontext("currentpopuptemplateid");
+		if (currentpopuptemplateid != null)
+		{
+			// rerender the specified template
+			nxs_js_popup_render_inner(-1, {'result':'OK','rendertemplateid':currentpopuptemplateid});
+		}
+		else
+		{		
+			// rerender the new context
+			nxs_js_popup_navigateto_v2(nxs_js_popup_getcurrentsheet(), true);
+		}
 	}
 	else
 	{

@@ -288,7 +288,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 					{
 						response.tuned = true;
 						var html = "";
-						html += "<div id='pagepopup_<?php echo $placeholderid; ?>' class='nxs-pagepopup-wrap' style=\"margin: 0 auto; display: table;\">";
+						html += "<div id='pagepopup_<?php echo $placeholderid; ?>' style=\"margin: 0 auto; display: table;\">";
 	
 						var semiborder = "";
 	
@@ -322,14 +322,9 @@ function nxs_widgets_pagepopup_beforeend_head()
 						response.html = html;
 					}
 					
-					console.log("page popup; about to render popup");
-					
 					nxs_js_popup_setsessiondata("nxs_customhtml_scaffoldingtype", "nothing");
 					nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", response.html);
 					nxs_js_popup_navigateto("customhtml");
-					
-					
-					// nxs_js_popup_render_inner(null, response);
 					
 					//
 					nxs_js_pagepopup_tagshowing();
