@@ -379,6 +379,11 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 		
 		foreach ($fields as $field => $fieldmeta)
 		{
+			if ($fieldmeta == null)
+			{
+				continue;
+			}
+			
 			$id = $fieldmeta["id"];
 			$value = $$id;
 			

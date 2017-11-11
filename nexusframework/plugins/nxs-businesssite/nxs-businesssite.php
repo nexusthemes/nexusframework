@@ -1379,11 +1379,6 @@ class nxs_g_modelmanager
 		$nxsposttype = $widgetargs["nxsposttype"];
 		$pagetemplate = $widgetargs["pagetemplate"];
 	
-		if (nxs_enableconceptualwidgets())
-		{
-			// $result[] = array("widgetid" => "entities");
-		}
-				
 		if ($nxsposttype == "post") 
 		{
 			$result[] = array("widgetid" => "list");
@@ -1574,11 +1569,6 @@ class nxs_g_modelmanager
 	
 	function instance_init()
 	{
-		if (nxs_enableconceptualwidgets())
-		{
-			// nxs_lazyload_plugin_widget(__FILE__, "entities");
-		}
-		
 		// widgets
 		nxs_lazyload_plugin_widget(__FILE__, "list");
 		

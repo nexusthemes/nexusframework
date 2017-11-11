@@ -2,6 +2,7 @@
 function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $args, $runtimeblendeddata) 
 {
 	$enable_mediaselect = true;
+	$posttypes = array("post", "page");
 	
 	extract($optionvalues);
 	extract($args);
@@ -11,7 +12,7 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 	$publishedargs = array();
 	$publishedargs["post_status"] 	= array("publish", "private");
 	
-	$posttypes = array("post", "page");
+	
 	$posttypes = apply_filters("nxs_links_getposttypes", $posttypes);
 	$publishedargs["post_type"] = $posttypes;
 	
@@ -41,7 +42,7 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 										{
 											$selected = "";
 										}
-										echo "<option value='' $selected >" . nxs_l18n__("No article selected[nxs:heading]", "nxs_td") . "</option>";
+										echo "<option value='' $selected ></option>";
 										
 										foreach ($items as $currentpost) 
 										{

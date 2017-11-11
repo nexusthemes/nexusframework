@@ -5587,6 +5587,12 @@ function nxs_genericpopup_getinitialoptionsvalues($args)
 	// loop over options
   foreach ($fields as $key => $optionvalues) 
   {
+  	// skip 
+  	if ($optionvalues == null)
+  	{
+  		continue;
+  	}
+  	
   	$type = $optionvalues["type"];
   	$persistbehaviouroftype = nxs_optiontype_getpersistbehaviour($type);
   	if ($persistbehaviouroftype == "writeid")
@@ -5631,6 +5637,11 @@ function nxs_genericpopup_getderivedglobalmetadata($args, $metadata)
 	// loop over each option
   foreach ($fields as $key => $currentoptionvalues) 
   {
+  	if ($currentoptionvalues == null)
+  	{
+  		continue;
+  	}
+  	
   	// get id of the option
     $id = $currentoptionvalues["id"];
     if (array_key_exists($id, $metadata))
@@ -5685,6 +5696,11 @@ function nxs_genericpopup_getunenrichedmetadataforcontext($args)
 	// Popup specific variables
   foreach ($fields as $key => $propertiesofcurrentoption) 
   {
+  	if ($propertiesofcurrentoption == null)
+  	{
+  		continue;
+  	}
+  	
     $id = $propertiesofcurrentoption["id"];
     if (array_key_exists($id, $args))
     {
@@ -5975,6 +5991,11 @@ function nxs_localization_getlocalizablefieldids($options)
 	$fields = $options["fields"];
   foreach ($fields as $key => $optionvalues) 
   {
+  	if ($optionvalues == null)
+  	{
+  		continue;
+  	}
+  	
   	$localizablefield = $optionvalues["localizablefield"];
   	if (isset($localizablefield) && $localizablefield === true)
   	{
@@ -6519,6 +6540,11 @@ function nxs_unistyle_getunistyleablefieldids($options)
 	$fields = $options["fields"];
   foreach ($fields as $key => $optionvalues) 
   {
+  	if ($optionvalues == null)
+  	{
+  		continue;
+  	}
+  	
   	$unistylablefield = $optionvalues["unistylablefield"];
   	if (isset($unistylablefield) && $unistylablefield === true)
   	{
@@ -6996,6 +7022,11 @@ function nxs_unicontent_getunicontentablefieldids($options)
 	$fields = $options["fields"];
   foreach ($fields as $key => $optionvalues) 
   {
+  	if ($optionvalues == null)
+  	{
+  		continue;
+  	}
+  	
   	$unicontentablefield = $optionvalues["unicontentablefield"];
   	if (isset($unicontentablefield) && $unicontentablefield === true)
   	{
@@ -7515,9 +7546,6 @@ function nxs_widgets_setgenericwidgethovermenu_v2($args)
 	
 	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_setgenericwidgethovermenu";
 	$result = call_user_func_array($functionnametoinvoke, array($args));
-	
-	//error_log("invoke; functionnametoinvoke; $functionnametoinvoke; $result");
-	//error_log("htmlbutton; invoke; " . json_encode($args));
 	
 	return $result;
 }
@@ -9337,6 +9365,11 @@ function nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixt
 	
 	foreach ($fields as $currentfield)
 	{
+		if ($currentfield == null)
+  	{
+  		continue;
+  	}
+		
 		$source = $metadata[$currentfield];
 		if (isset($source))
 		{
@@ -9479,6 +9512,11 @@ function nxs_filter_translatemodel_v2($metadata, $fields, $args)
 	{
 		foreach ($fields as $field)
 		{
+			if ($field == null)
+			{
+				continue;
+			}
+			
 			$metadata[$field] = do_shortcode($metadata[$field]);
 		}
 	}
@@ -11656,6 +11694,68 @@ function nxs_updatepoststructure($postid, $postcontents)
 	
 	update_post_meta($postid, $metadatakey, $result);
 }
+
+function nxs_renderstack_push()
+{
+	global $nxs_global_renderstack;
+	if ($nxs_global_renderstack == null) { $nxs_global_renderstack = array(); }
+	
+	$maxallowed = 3;
+	if (count($nxs_global_renderstack) > $maxallowed) {nxs_webmethod_return_nack("renderstack; to many pushes ($maxallowed); recursive loop?"); }
+
+	global $nxs_global_current_nxsposttype_being_rendered;
+	global $nxs_global_current_postid_being_rendered;
+	global $nxs_global_current_postmeta_being_rendered;
+	global $nxs_global_current_render_mode;
+	global $nxs_global_current_rowindex_being_rendered;
+	global $nxs_global_row_render_statebag;
+	global $nxs_global_placeholder_render_statebag;
+	
+	$o = array
+	(
+		"nxs_global_current_nxsposttype_being_rendered" => $nxs_global_current_nxsposttype_being_rendered,
+		"nxs_global_current_postid_being_rendered" => $nxs_global_current_postid_being_rendered,
+		"nxs_global_current_postmeta_being_rendered" => $nxs_global_current_postmeta_being_rendered,
+		"nxs_global_current_render_mode" => $nxs_global_current_render_mode,
+		"nxs_global_current_rowindex_being_rendered" => $nxs_global_current_rowindex_being_rendered,
+		"nxs_global_row_render_statebag" => $nxs_global_row_render_statebag,
+		"nxs_global_placeholder_render_statebag" => $nxs_global_placeholder_render_statebag,
+	);	
+	array_push($nxs_global_renderstack, $o);
+	
+	$nxs_global_current_nxsposttype_being_rendered = null;
+	$nxs_global_current_postid_being_rendered = null;
+	$nxs_global_current_postmeta_being_rendered = null;
+	$nxs_global_current_render_mode = null;
+	$nxs_global_current_rowindex_being_rendered = null;
+	$nxs_global_row_render_statebag = null;
+	$nxs_global_placeholder_render_statebag = null;
+}
+
+function nxs_renderstack_pop()
+{
+	global $nxs_global_renderstack;
+	if ($nxs_global_renderstack == null) { nxs_webmethod_return_nack("renderstack; nothing to pop"); }
+
+	global $nxs_global_current_nxsposttype_being_rendered;
+	global $nxs_global_current_postid_being_rendered;
+	global $nxs_global_current_postmeta_being_rendered;
+	global $nxs_global_current_render_mode;
+	global $nxs_global_current_rowindex_being_rendered;
+	global $nxs_global_row_render_statebag;
+	global $nxs_global_placeholder_render_statebag;
+	
+	$o = array_pop($nxs_global_renderstack);
+		
+	$nxs_global_current_nxsposttype_being_rendered = $o["nxs_global_current_nxsposttype_being_rendered"];
+	$nxs_global_current_postid_being_rendered = $o["nxs_global_current_postid_being_rendered"];
+	$nxs_global_current_postmeta_being_rendered = $o["nxs_global_current_postmeta_being_rendered"];
+	$nxs_global_current_render_mode = $o["nxs_global_current_render_mode"];
+	$nxs_global_current_rowindex_being_rendered = $o["nxs_global_current_rowindex_being_rendered"];
+	$nxs_global_row_render_statebag = $o["nxs_global_row_render_statebag"];
+	$nxs_global_placeholder_render_statebag = $o["nxs_global_placeholder_render_statebag"];
+}
+
 
 // sanity checked for remote posts
 function nxs_getrenderedrowhtmlforparsedpoststructure($postid, $rowindex, $rendermode, $parsedpoststructure)

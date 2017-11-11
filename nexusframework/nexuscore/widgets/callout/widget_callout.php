@@ -291,9 +291,19 @@ function nxs_widgets_callout_home_getoptions($args)
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
 				"unicontentablefield" => true,
-				"label" 			=> nxs_l18n__("Button link", "nxs_td"),
+				"label" 			=> nxs_l18n__("Internal link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the callout button to an article on your site .", "nxs_td")
 			),
+			
+			array(
+				"id" 				=> "destination_popuparticleid",
+				"type" 				=> "article_link",
+				"posttypes" => array("nxs_templatepart","page", "post"),
+				"label" 			=> nxs_l18n__("Popup content", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("The content template, post or page to be rendered in the popup", "nxs_td"),
+				"enable_mediaselect" => false,
+			),
+			
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
@@ -618,36 +628,10 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	// fallback scenario to improve downwards compatibility
 	// in the old versions the title was always linked,
 	// in the new implementation thats no longer the case; only buttons link
-	if ($destination_articleid != "" || $destination_url != "")
+	if ($destination_articleid != "" || $destination_url != "" || $destination_popuparticleid != "")
 	{
 		if ($button_text == "")
 		{
-			/*
-			// this implementation is far from perfect; instead we now go for the alternativeclick option,
-			// which uses a window.location effect
-			$format = "sign";
-			$wordcount = str_word_count($title);
-			$charcount = strlen($title);
-			if ($wordcount <= 4 && $charcount < 64)
-			{
-				$format = "text";
-			}
-			
-			if ($format == "text")
-			{
-				$button_text = $title;
-				$button_text = str_replace("<br />", "", $button_text);
-				$button_text = str_replace("<br>", "", $button_text);
-			}
-			else if ($format == "sign")
-			{
-				$button_text = "&gt;";
-			}
-			else
-			{
-				$button_text = "&gt;";
-			}
-			*/
 			$alternativeclick = true;
 		}
 	}
@@ -713,17 +697,24 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	$verifydestinationcount = 0;
 	if ($destination_url != "") {
 		$verifydestinationcount++;
-	} if ($destination_articleid != "") {
+	} 
+	if ($destination_popuparticleid != "")
+	{
 		$verifydestinationcount++;
-	} if ($destination_js != "") {
+	}
+	if ($destination_articleid != "") {
 		$verifydestinationcount++;
-	} if ($verifydestinationcount > 1) {
+	} 
+	if ($destination_js != "") {
+		$verifydestinationcount++;
+	} 
+	if ($verifydestinationcount > 1) {
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Button: both external URL and article reference are set (ambiguous URL)", "nxs_td");
 	}
 	
 	// if both external and article link are set
-	if ($destination_url == "" && $destination_articleid == "" && $destination_js == "" && $button_text != "") {
+	if ($destination_url == "" && $destination_popuparticleid == "" && $destination_articleid == "" && $destination_js == "" && $button_text != "") {
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Button: button is set, but no reference is set (no URL)", "nxs_td");
 	}
@@ -917,16 +908,18 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	else if ( $linear_gradient == "dark" && $halign == "left" )   { $linear_gradient_cssclass = "nxs-linear-leftright-dark"; }
 	else if ( $linear_gradient == "light" && $halign == "right" ) { $linear_gradient_cssclass = "nxs-linear-rightleft-light"; }
 	else if ( $linear_gradient == "dark" && $halign == "right" )  { $linear_gradient_cssclass = "nxs-linear-rightleft-dark"; }
-	  
-	
 	
 	/* LINK
 	---------------------------------------------------------------------------------------------------- */
-	if ($destination_articleid != "") {
+	if ($destination_articleid != "") 
+	{
 		$url = nxs_geturl_for_postid($destination_articleid);
 		$onclick = "";
-	} else if ($destination_url != "") {
-		if (nxs_stringstartswith($destination_url, "tel:")) {
+	} 
+	else if ($destination_url != "") 
+	{
+		if (nxs_stringstartswith($destination_url, "tel:")) 
+		{
 			// a phone link; if parenthesis or spaces are used; absorb them
 			$url = $destination_url;
 			$url = str_replace(" ", "", $url);
@@ -937,10 +930,85 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			$url = $destination_url;
 		}
 		$onclick = "";
-	} else if ($destination_js != "") {
+	} 
+	else if ($destination_js != "") 
+	{
 		$url = "#";
 		$onclick = "onclick='" . nxs_render_html_escape_singlequote($destination_js) . "' ";
-	} else {
+	}
+	else if ($destination_popuparticleid != "")
+	{
+		nxs_renderstack_push();
+		$templatehtml = nxs_getrenderedhtml($destination_popuparticleid, "anonymous");
+		nxs_renderstack_pop();
+		?>
+		<template id='nxs_popups_template_<?php echo $destination_popuparticleid; ?>'>
+			
+			<div id='pagepopup_aap' style='margin: 0 auto; display: table;'>
+				<div style="padding-top: 10px;">
+					<div style="position:relative;">
+						<a href="#" onclick="nxs_js_closepopup_unconditionally(); return false;">
+							<span style="color: white; position: absolute; right: 0px; top: -10px;" class="sign123 nxs-icon-remove-sign"></span>
+						</a>
+					</div>
+					<div id="pagepopupiframe">
+						<?php echo $templatehtml; ?>
+					</div>
+				</div>
+			</div>
+			<script>
+				function nxs_js_execute_after_popup_shows() 
+				{
+					jQuery('#nxsbox_window').addClass('nxs-gallerypopup');
+				}
+			</script>
+			<style>
+				#pagepopupiframe .nxs-one-whole  
+				{
+					width: 300px;
+				}
+				.nxs-viewport-gt-319	#pagepopupiframe .nxs-one-whole  
+				{
+					width: 300px;
+				}
+				.nxs-viewport-gt-479 	#pagepopupiframe .nxs-one-whole 
+				{
+					width: 470px;
+				}
+				.nxs-viewport-gt-719 	#pagepopupiframe .nxs-one-whole 
+				{
+					width: 673px;
+				}
+				.nxs-viewport-gt-959 	#pagepopupiframe .nxs-one-whole 
+				{
+					width: 673px;
+				}
+				.nxs-viewport-gt-1199 	#pagepopupiframe .nxs-one-whole 
+				{
+					width: 673px;
+				}
+				.nxs-viewport-gt-1439	#pagepopupiframe .nxs-one-whole 
+				{
+					width: 673px;
+				}
+				#pagepopupiframe img
+				{
+					box-shadow: none !important;
+					-webkit-box-shadow: none !important;
+				}
+			</style>
+		</template>
+		<?php
+		
+		// echo "<template id='aap'>{$templatehtml}</template>";
+		$url = "#";
+		$destination_js = "nxs_js_popup_render_inner(-1, {'result':'OK','rendertemplateid':'nxs_popups_template_{$destination_popuparticleid}'});return false;";
+		$onclick = "onclick='" . nxs_render_html_escape_singlequote($destination_js) . "' ";
+		
+		
+	} 
+	else 
+	{
 		// unsupported
 		$url = "";
 		$onclick = "";

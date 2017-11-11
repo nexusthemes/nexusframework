@@ -265,7 +265,7 @@ function nxs_js_popup_render_inner(waitgrowltoken, response)
 	nxs_js_log(response);
 	if (response.result == "OK")
 	{
-		if (response.html != null && !nxs_js_stringisblank(response.html))
+		if (true)
 		{
 			// OK
 			var elementidlastfocussed = nxs_js_popup_getshortscopedata('elementidlastfocussed');
@@ -284,7 +284,23 @@ function nxs_js_popup_render_inner(waitgrowltoken, response)
 			// a workaround).
 			jQ_nxs("#nxsbox_window.nxs-active").removeClass("nxs-active");
 			
-			jQ_nxs('.nxs-popup-dyncontentcontainer').html(response.html);
+			if (response.html != null && !nxs_js_stringisblank(response.html))
+			{
+				jQ_nxs('.nxs-popup-dyncontentcontainer').html(response.html);
+			}
+			else if (response.rendertemplateid != null)
+			{
+				var t = document.querySelector('#' + response.rendertemplateid);
+				var clone = document.importNode(t.content, true);
+				jQ_nxs(clone).appendTo(".nxs-popup-dyncontentcontainer");
+			}
+			else
+			{
+				nxs_js_popup_notifyservererror();
+				nxs_js_log('html is null or empty?');
+				nxs_js_log(html);
+				return;
+			}
 										
 			// width=1, see #1283672893762
 			nxsbox_show(response.title, "#nxsbox_inline?height=1&width=1&inlineId=nxs_ajax_nxsbox&modal=true", "");
@@ -469,9 +485,7 @@ function nxs_js_popup_render_inner(waitgrowltoken, response)
 		}
 		else
 		{
-			nxs_js_popup_notifyservererror();
-			nxs_js_log('html is null or empty?');
-			nxs_js_log(html);
+			
 		}
 	}
 	else
@@ -480,8 +494,6 @@ function nxs_js_popup_render_inner(waitgrowltoken, response)
 		nxs_js_log(response);
 	}
 }
-
-
 
 function nxs_js_popupsession_startnewcontext()
 {

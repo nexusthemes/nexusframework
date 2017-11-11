@@ -45,6 +45,18 @@ var nxs_js_scrollstateidentifier = 0;
 var nxs_js_lazyloadinggrowl = false;
 var nxs_js_queuestatelookup = {};
 
+function nxs_js_popup_showhtml(html)
+{
+	nxs_js_popupsession_startnewcontext();
+						
+	nxs_js_popup_setsessioncontext("popup_current_dimensions", "gallerybox");
+	nxs_js_popup_setsessioncontext("contextprocessor", "site");
+	nxs_js_popup_setsessiondata("nxs_customhtml_popupheadertitle", "popup title");
+	nxs_js_popup_setsessiondata("nxs_customhtml_scaffoldingtype", "nothing");
+	nxs_js_popup_setsessiondata("nxs_customhtml_customhtmlcanvascontent", html);
+	nxs_js_popup_navigateto("customhtml");
+}
+
 function nxs_js_replaceall(find, replace, str) 
 {
   return str.replace(new RegExp(find, 'g'), replace);

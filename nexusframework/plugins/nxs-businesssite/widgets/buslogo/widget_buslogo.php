@@ -147,6 +147,11 @@ function nxs_widgets_buslogo_home_getoptions($args)
 	$indextoberemoved = array();
 	foreach ($fields as $currentfield)
 	{
+		if ($currentfield == null)
+		{
+			continue;
+		}
+		
 		//
 		if (in_array($currentfield["id"], $fieldids_to_remove))
 		{
@@ -156,6 +161,11 @@ function nxs_widgets_buslogo_home_getoptions($args)
 	// also get rid of all content-fields
 	foreach ($fields as $currentfield)
 	{
+		if ($currentfield == null)
+		{
+			continue;
+		}
+		
 		if ($currentfield["unicontentablefield"] === true)
 		{
 			$indextoberemoved[] = $index;
