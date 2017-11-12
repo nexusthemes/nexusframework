@@ -34,6 +34,26 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 		),
 		"fields" => array
 		(
+			// LOOKUPS
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
+			),
+			array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),		
+		
 			// TITLE	
 			
 			array( 
@@ -87,6 +107,35 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 				"type" 				=> "wrapperend"
 			),			
 			
+			// DATASOURCE
+			
+			array( 
+				"id" 				=> "wrapper_selection_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Data source", "nxs_td"),
+			),
+						
+			array
+			(
+				"id" 				=> "items_genericlistid",
+				"type" 				=> "staticgenericlist_link",
+				"label" 			=> nxs_l18n__("Photos", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			
+			array
+			(
+				"id" 				=> "items_data",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Data", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),			
+			
 			// IMAGE
 			
 			array( 
@@ -95,12 +144,7 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
 			),
 			
-			array(
-				"id" 				=> "items_genericlistid",
-				"type" 				=> "staticgenericlist_link",
-				"label" 			=> nxs_l18n__("Photos", "nxs_td"),
-				"unicontentablefield" => true,
-			),
+			
 			array(
 				"id" 				=> "orientation",
 				"type" 				=> "select",
@@ -189,12 +233,58 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
+	// Apply magic fields
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		
+		// evaluate the lookups widget values line by line
+		$sofar = array();
+		foreach ($combined_lookups as $key => $val)
+		{
+			$sofar[$key] = $val;
+			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+
+			//echo "step 2; about to evaluate lookup tables on; $val<br />";
+			// apply the lookup values
+			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+
+			// apply shortcodes
+			$val = $sofar[$key];
+			//echo "step 3; result is $val<br />";
+
+			//echo "step 4; about to evaluate shortcode on; $val<br />";
+
+			$val = do_shortcode($val);
+			$sofar[$key] = $val;
+
+			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+
+			$combined_lookups[$key] = $val;
+		}
+		
+		// apply the lookups and shortcodes to the fields
+		$magicfields = array("items_data");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
+	
+	// Widget specific variables
+	extract($mixedattributes);
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
 	
-	// Widget specific variables
-	extract($mixedattributes);
 	
 	$hovermenuargs = array();
 	$hovermenuargs["postid"] = $postid;
@@ -214,10 +304,7 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 		
 	// Appending custom widget class
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-gallery ";
-	
-	
-	
-	
+		
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 
@@ -237,7 +324,8 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 		// unknown; leave as-is
 	}
 	
-	if (count($structure) == 0) {
+	if (count($structure) == 0 && $items_data == "") 
+	{
 		$alternativemessage = nxs_l18n__("Warning:no items found", "nxs_td");
 	}
 		
@@ -245,17 +333,18 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 		$alternativemessage = nxs_l18n__("Warning:please move the gallerybox to a row that has exactly 1 column", "nxs_td");
 	}
 	
-	
-	
 	// Default HMTL rendering
 	$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "");
 
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 	
-	if ($alternativemessage != "" && $alternativemessage != null) {
+	if ($alternativemessage != "" && $alternativemessage != null) 
+	{
 		nxs_renderplaceholderwarning($alternativemessage);
-	} else {
+	} 
+	else 
+	{
 		$nxs_global_row_render_statebag["rrs_cssclass"].= " row-no-border-right ";
 		
 		?>
@@ -276,6 +365,8 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 				var galleryid = galleryitemid.split("-")[2];
 				var index = galleryitemid.split("-")[3];
 				var imageid = galleryitemid.split("-")[4];
+				var gi = jQuery(element).closest(".nxs-galleryitem")[0];
+				var items_data = jQuery(gi).data("items_data");
 				
 				// initiate a new popupsession data as this is a new session
 				nxs_js_popupsession_startnewcontext();
@@ -287,6 +378,7 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 				nxs_js_popup_setsessioncontext("imageid", imageid);
 				nxs_js_popup_setsessioncontext("index", '' + index + '');
 				nxs_js_popup_setsessioncontext("containerpostid", nxs_js_getcontainerpostid());
+				nxs_js_popup_setsessioncontext("items_data", '' + items_data + '');
 				
 				// show the popup
 				nxs_js_popup_navigateto_v2("detail", false);
@@ -325,12 +417,37 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 				$args["item_title_heading"] = $item_title_heading;
 				$args["remove_image_shadow"] = $remove_image_shadow;
 				$args["image_border_width"] = $image_border_width;
+				$args["items_data"] = $items_data;
 				nxs_function_invokefunction($functionnametoinvoke, $args);
 			}
 			else
 			{
 				// ignore
 			}
+		}
+		
+		$otheritems = explode("|", $items_data);
+		foreach ($otheritems as $otheritem)
+		{
+			$index = $index + 1;
+			$placeholdertype = "galleryitem";
+			nxs_requirewidget($placeholdertype);
+			$args = array();
+			$args["placeholdermetadata"] = array
+			(
+				"image_imageid" => $otheritem,
+				"title" => "",
+				"text" => "",
+			);
+			$args["orientation"] = $orientation;
+			$args["numofcolumns"] = $numofcolumns;
+			$args["index"] = $index;
+			$args["items_genericlistid"] = $items_genericlistid;
+			$args["item_title_heading"] = $item_title_heading;
+			$args["remove_image_shadow"] = $remove_image_shadow;
+			$args["image_border_width"] = $image_border_width;
+			$args["items_data"] = $items_data;
+			nxs_function_invokefunction($functionnametoinvoke, $args);
 		}
 		
 		echo "<div class='nxs-clear'></div>";
@@ -390,16 +507,6 @@ function nxs_widgets_gallerybox_initplaceholderdata($args)
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 	
 	$result = nxs_widgets_initplaceholderdatageneric($args, $widgetname);
-	return $result;
-}
-
-/* UPDATING WIDGET DATA
-----------------------------------------------------------------------------------------------------*/
-function nxs_widgets_gallerybox_updateplaceholderdata($args) 
-{
-	// delegate to generic implementation
-	$widgetname = basename(dirname(__FILE__));
-	$result = nxs_widgets_updateplaceholderdatageneric($args, $widgetname);
 	return $result;
 }
 

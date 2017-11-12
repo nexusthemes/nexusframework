@@ -11,7 +11,8 @@ function nxs_widgets_galleryitem_gettitle() {
 	return nxs_l18n__("Gallery item", "nxs_td");
 }
 
-function nxs_widgets_galleryitem_render_webpart_render_htmlvisualization($args) {
+function nxs_widgets_galleryitem_render_webpart_render_htmlvisualization($args) 
+{
 	
 	//
 	extract($args);
@@ -227,7 +228,6 @@ function nxs_widgets_galleryitem_getgallerydetailhtml($placeholdermetadata)
 	extract($placeholdermetadata);
 	
 	
-	
 	$imageid = $placeholdermetadata['image_imageid'];
 	//$lookup = nxs_wp_get_attachment_image_src($imageid, 'full', true);
 	//$fullimageurl = $lookup[0];
@@ -307,7 +307,7 @@ function nxs_widgets_galleryitem_renderingallery($args)
 	$image_border_width_cssclass = nxs_getcssclassesforlookup("nxs-border-width-", $image_border_width);
 	
 	echo '
-	<div id="nxs-galleryitem-'.$items_genericlistid .'-'.$index.'-'.$imageid.'" class="nxs-galleryitem '.$orientation.' '.$firstinrow.' numofcolumns'.$numofcolumns.'">
+	<div id="nxs-galleryitem-'.$items_genericlistid .'-'.$index.'-'.$imageid.'" class="nxs-galleryitem '.$orientation.' '.$firstinrow.' numofcolumns'.$numofcolumns.'" data-items_data="'.$items_data.'">
 		<a href="#" onclick="nxs_js_opengalleryitemlightbox(this); return false;">';
 		
 			// Title

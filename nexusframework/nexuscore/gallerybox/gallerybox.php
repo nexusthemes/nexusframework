@@ -15,12 +15,15 @@ function nxs_gallerybox_detail_rendersheet($args)
 	$index = intval($index);
 
 	$structure = nxs_parsepoststructure($galleryid);
+	$moreitems = explode("|", $items_data);
 	
+	//	error_log("gallerbybox; items_data: $items_data");
+		
 	if ($galleryaction == "next")
 	{
 		//echo $index;
 		$index = $index + 1;
-		$maxcount = count($structure);
+		$maxcount = count($structure) + count($moreitems);
 		//echo "/";
 		//echo $maxcount;
 		if ($index >= $maxcount)
@@ -33,9 +36,9 @@ function nxs_gallerybox_detail_rendersheet($args)
 		$index = $index - 1;
 		if ($index < 0)
 		{
-			if (count($structure) > 0)
+			if ((count($structure) + count($moreitems)) > 0)
 			{
-				$index = count($structure) - 1;
+				$index = count($structure) + count($moreitems) - 1;
 			} 
 			else
 			{
@@ -44,17 +47,36 @@ function nxs_gallerybox_detail_rendersheet($args)
 		}
 	}
 	
-	$numofitems = count($structure);
+	$numofitems = count($structure) + count($moreitems);
 	
-	$pagerow = $structure[$index];
-	
-	$rowcontent = $pagerow["content"];
-	$placeholderid = nxs_parsepagerow($rowcontent);
-	$placeholdermetadata = nxs_getwidgetmetadata($galleryid, $placeholderid);
-	$placeholdertype = $placeholdermetadata["type"];
-	
-	nxs_requirewidget($placeholdertype);
-	$detailhtml = nxs_function_invokefunction("nxs_widgets_{$placeholdertype}_getgallerydetailhtml", $placeholdermetadata);
+	if (isset($structure[$index]))
+	{
+		$pagerow = $structure[$index];
+		$rowcontent = $pagerow["content"];
+		$placeholderid = nxs_parsepagerow($rowcontent);
+		$placeholdermetadata = nxs_getwidgetmetadata($galleryid, $placeholderid);
+		$placeholdertype = $placeholdermetadata["type"];
+		
+		nxs_requirewidget($placeholdertype);
+		$detailhtml = nxs_function_invokefunction("nxs_widgets_{$placeholdertype}_getgallerydetailhtml", $placeholdermetadata);
+	}
+	else
+	{
+		$image_imageid = $moreitems[$index - count($structure)];
+		
+		$lookup = nxs_wp_get_attachment_image_src($image_imageid, 'full', true);
+		$fullimageurl = $lookup[0];
+		$fullimageurl = nxs_img_getimageurlthemeversion($fullimageurl);
+		
+		$placeholdertype = "galleryitem";
+		nxs_requirewidget($placeholdertype);
+		$a = array
+		(
+			"image_imageid" => $moreitems[$index - count($structure)],
+			"fullimageurl" => $fullimageurl,
+		);
+		$detailhtml = nxs_function_invokefunction("nxs_widgets_{$placeholdertype}_getgallerydetailhtml", $a);
+	}
 
 	$result = array();
 	
