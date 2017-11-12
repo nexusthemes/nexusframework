@@ -322,6 +322,26 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		$videoid = $params["v"];
 	}
 	
+	if ($videoid == "" || nxs_stringcontains($videoid, "{{") || nxs_stringcontains($videoid, "}}"))
+	{
+		nxs_ob_start();
+		?>	
+		<div class="nxs-border-dash nxs-runtime-autocellwidth nxs-runtime-autocellsize border-radius autosize-smaller nxs-hidewheneditorinactive">
+			<div class='placeholder-warning'>
+				<p>No video</p>
+			</div>
+		</div>
+		<?php
+		$html = nxs_ob_get_contents();
+		nxs_ob_end_clean();
+	
+		$result["html"] =  $html;	
+		$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
+		return $result;
+	}
+	
+	
+	
 	// fallback scenario
 	if (nxs_has_adminpermissions())
 	{
@@ -469,23 +489,31 @@ function nxs_youtube_videoid_popupcontent($optionvalues, $args, $runtimeblendedd
 			var video = "";
 			
 			try
-			{ 
+			{
+				//
 				var videourl = jQuery('.videourl-<?php echo $id; ?>').val();
-				var urlitems = parseUri(videourl);
-
-				var video = "";
-				if (urlitems.host == "youtu.be")
+				
+				if (videourl.startsWith("{{"))
 				{
-					if (urlitems.path != "")
-					{
-						video = urlitems.path.substr(1);
-					}
+					video = videourl;
 				}
 				else
 				{
-					video = urlitems.queryKey.v;
+					var urlitems = parseUri(videourl);
+	
+					var video = "";
+					if (urlitems.host == "youtu.be")
+					{
+						if (urlitems.path != "")
+						{
+							video = urlitems.path.substr(1);
+						}
+					}
+					else
+					{
+						video = urlitems.queryKey.v;
+					}
 				}
-
 				jQuery('#<?php echo $altid; ?>').val(video);
 			}
 			catch (err)
