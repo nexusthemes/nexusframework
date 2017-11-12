@@ -7096,7 +7096,7 @@ function nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblen
 	
 	$result = "";
 	$result .= "<div class='box-title'>";
-	$result .= "<h4>" . $label . $isrequiredhtml . "</h4>";
+	$result .= "<h4 style='flex-grow: 1;'>" . $label . $isrequiredhtml . "</h4>";
 	
 	//var_dump($optionvalues);
 	
@@ -7110,34 +7110,35 @@ function nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblen
 			</span>";
 	}
 	
-	if ($optionvalues["unistylablefield"] == true) {
-		if ($runtimeblendeddata["unistyle"] != "") {
-			$result .= "
-				<span class='nxs-icon-pagedecorator info'>
-					<div>Style modifications will be synced automatically to other widgets on your site having the &quot;<strong>" . $runtimeblendeddata["unistyle"] . "</strong>&quot; unistyle configuration.</div>
-				</span>";
-		} else {
-			$result .= "
-				<span class='nxs-icon-pagedecorator info'>
-					<div>This is a <strong>styling</strong> option. You can automatically fill this option by creating a new <strong>unistyle</strong> instance or use an existing one for this widget. That way you are able to reuse and update the styling for unistyled widgets instantly throughout your website.<br/>
-					<a href='http://www.youtube.com/watch?v=2jIgUNg71Uo#t=210' target='_new'><strong>Click here to watch a Youtube movie about this feature</strong></a></div>
-				</span>";
+	if ($optionvalues["unistylablefield"] == true) 
+	{
+		$unistyle = $runtimeblendeddata["unistyle"];
+		$unicontent = $runtimeblendeddata["unicontent"];
+		$title = "";
+		$helpurl = "https://www.wpsupporthelp.com/answer/what-is-the-the-unistyle-wordpress-feature-i-want-to-add-more-w-1065/";
+		$icon = "nxs-icon-pagedecorator";
+		$opacity = "0.5";
+		if ($unistyle != "") 
+		{
+			$opacity = "1.0";
+			$title = "This style property is shared ($unistyle)";
 		}
+		$result .= "<a href='{$helpurl}' target='_blank' title='{$title}'><span class='{$icon}' style='opacity: {$opacity};'></span></a>";
 	}
 	
-	if ($optionvalues["unicontentablefield"] == true) {		
-		if ($runtimeblendeddata["unicontent"] != "") {
-			$result .= "
-				<span class='nxs-icon-pen info'>
-					<div>Content modifications will be synced automatically to other widgets on your site having the &quot;<strong>" . $runtimeblendeddata["unicontent"] . "</strong>&quot; unicontent configuration.</div>
-				</span>";
-		} else {
-			$result .= "
-				<span class='nxs-icon-pen info'>
-					<div>This is a <strong>content</strong> option. You can automatically fill this option by creating a new <strong>unicontent</strong> instance or use an existing one for this widget. That way you are able to reuse and update the content for unicontented widgets instantly throughout your website.<br/>
-					<a href='http://www.youtube.com/watch?v=bCoiu02YCko#t=387' target='_new'><strong>Click here to watch a Youtube movie about this feature</strong></a></div>
-				</span>";
+	if ($optionvalues["unicontentablefield"] == true) 
+	{
+		$unicontent = $runtimeblendeddata["unicontent"];
+		$title = "";
+		$helpurl = "https://www.wpsupporthelp.com/answer/how-to-share-the-same-content-widgets-between-2-seperate-sideb-1073/";
+		$icon = "nxs-icon-pen";
+		$opacity = "0.5";
+		if ($unicontent != "") 
+		{
+			$opacity = "1.0";
+			$title = "This content property is shared ($unicontent)";
 		}
+		$result .= "<a href='{$helpurl}' target='_blank' title='{$title}'><span class='{$icon}' style='opacity: {$opacity};'></span></a>";
 	}
 	
   $result .= "</div>";

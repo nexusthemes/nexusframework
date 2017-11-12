@@ -288,7 +288,7 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 }
 .nxs-admin-wrap .box-content ul li.nxs-icon a:hover span		{ font-size: 48px; }
 
-.nxs-admin-wrap .box-title 							{ width: 28%; float: left; font-family: sans-serif !important; }
+.nxs-admin-wrap .box-title 							{ width: 28%; float: left; font-family: sans-serif !important; display: flex; }
 .nxs-admin-wrap .box-title p						{ display: inline; }
 .nxs-admin-wrap .box-title2							{ width: 80px; float: left; line-height: 22px; }
 .nxs-admin-wrap .box-content 						{ width: 70%; float: right;}
