@@ -112,14 +112,16 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_selection_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Data source", "nxs_td"),
+				"label" 			=> nxs_l18n__("Gallery Items (datasource)", "nxs_td"),
 			),
 						
 			array
 			(
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
-				"label" 			=> nxs_l18n__("Photos", "nxs_td"),
+				"preview_theme" => "gallerythumbs",
+				"label" 			=> nxs_l18n__("Images (manual selection)", "nxs_td"),
+				
 				"unicontentablefield" => true,
 			),
 			
@@ -127,7 +129,7 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 			(
 				"id" 				=> "items_data",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Data", "nxs_td"),
+				"label" 			=> nxs_l18n__("Images (programmatic)", "nxs_td"),
 				"unicontentablefield" => true,
 			),
 			
@@ -141,7 +143,7 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_selection_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Image", "nxs_td"),
+				"label" 			=> nxs_l18n__("Styling", "nxs_td"),
 			),
 			
 			
@@ -190,7 +192,8 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 			array( 
 				"id" 				=> "remove_image_shadow",
 				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Remove image shadow", "nxs_td"),
+				"inverse_mode" => "true",
+				"label" 			=> nxs_l18n__("Image shadow", "nxs_td"),
 				"unistylablefield"	=> true
 			),	
 			
@@ -432,6 +435,8 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 			$index = $index + 1;
 			$placeholdertype = "galleryitem";
 			nxs_requirewidget($placeholdertype);
+			
+			$functionnametoinvoke = "nxs_widgets_{$placeholdertype}_renderingallery";
 			$args = array();
 			$args["placeholdermetadata"] = array
 			(

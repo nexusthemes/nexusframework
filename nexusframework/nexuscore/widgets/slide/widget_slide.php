@@ -40,7 +40,6 @@ function nxs_widgets_slide_home_getoptions($args)
 				"id" 				=> "image_imageid",
 				"type" 				=> "image",
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),

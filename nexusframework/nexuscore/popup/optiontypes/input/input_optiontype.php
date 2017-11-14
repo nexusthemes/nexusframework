@@ -53,7 +53,7 @@ function nxs_popup_optiontype_input_renderhtmlinpopup($optionvalues, $args, $run
 			{
 				$lookuphelphtml .= nxs_l18n__("'{$orig}' translates to '{$translatesto}'") . " ";
 			}
-			$lookuphelphtml .= "<a href='http://nexusthemes.com/support/content-lookup-tables/' target='_blank'>" . nxs_l18n__("Learn more") . "</a>";
+			$lookuphelphtml .= "<a href='https://www.wpsupporthelp.com/wordpress-questions/lookup-tables-wordpress-questions-40/' target='_blank'>" . nxs_l18n__("Learn more") . "</a>";
 			$lookuphelphtml = '<div class="content" style="font-size: smaller; font-style: italic;">' . $lookuphelphtml . '</div>';
 		}
 	}

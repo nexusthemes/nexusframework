@@ -155,7 +155,6 @@ function nxs_widgets_image_home_getoptions($args)
 				"type" 				=> "image",
 				"allow_featuredimage" => true,
 				"label" 			=> nxs_l18n__("Image", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your bio profile use this option.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
