@@ -6607,7 +6607,7 @@ add_filter("nxs_f_lookups", "nxs_f_lookups_includerequestlookups", 10, 1);
 
 function nxs_f_lookups_includesitewidelookups($result = array())
 {
-	$result = array_merge($result, nxs_lookuptable_getlookup_v2());
+	$result = array_merge($result, nxs_lookuptable_getlookup_v2(true));
 	return $result;
 }
 add_filter("nxs_f_lookups", "nxs_f_lookups_includesitewidelookups", 20, 1);
