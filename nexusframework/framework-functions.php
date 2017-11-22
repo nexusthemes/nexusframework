@@ -695,7 +695,29 @@ function nxs_init()
   			$r = get_option($key);
   			var_dump($r);
   			die();
-  		} 
+  		}
+  		else if ($_REQUEST["nxs"] == "nxs_reset_globalidtovalue")
+  		{
+  			$postid = $_REQUEST["postid"];
+  			$value = $_REQUEST["value"];
+  			if ($postid != "")
+  			{
+  				echo "resetting globalid for postid $postid<br />";
+  				if ($value == "")
+  				{
+  					nxs_reset_globalid($postid);
+  				}
+  				else
+  				{
+  					nxs_reset_globalidtovalue($postid, $value);
+  				}
+  			}
+  			else
+  			{
+  				echo "no postid set?";
+  			}
+  			die();
+  		}
   		else if ($_REQUEST["nxs"] == "urlinfo")
   		{
   			echo "siteurl:" . get_site_url() . "<br />";
