@@ -168,6 +168,14 @@ function nxs_widgets_image_home_getoptions($args)
 			),
 			array
 			( 
+				"id" 				=> "image_data",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image (programmatic)", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			
+			array
+			( 
 				"id" 				=> "image_shadow",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Image shadow", "nxs_td"),
@@ -363,7 +371,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		}
 		
 		// apply the lookups and shortcodes to the customhtml
-		$magicfields = array("title", "text", "destination_url", "image_src");
+		$magicfields = array("title", "text", "destination_url", "image_src", "image_data");
 		$translateargs = array
 		(
 			"lookup" => $combined_lookups,
@@ -415,6 +423,19 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		$image_imageid = get_post_thumbnail_id($containerpostid);
 	}
 	
+	// the image_data field is already evaluated by the magic field if we end up here
+	if ($image_data != "")
+	{
+		if (is_numeric($image_data))
+		{
+			$image_imageid = $image_data;
+		}
+		else
+		{
+			$image_src = $image_data;
+		}
+	}
+	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 	// Check if specific variables are empty
@@ -424,6 +445,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	(
 		$image_src == "" &&
 		$image_imageid == "" &&
+		$image_data == "" && 
 		$title == "" &&
 		nxs_has_adminpermissions()
 	) 
