@@ -341,6 +341,27 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = $temp_array;
 	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+		
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("title", "rss_url", "twitter_url", "facebook_url", "linkedin_url", "googleplus_url", "youtube_url", "pinterest_url", "instagram_url", "custom_1_url");
+		
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
