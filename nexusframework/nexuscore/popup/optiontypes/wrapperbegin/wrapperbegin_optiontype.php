@@ -13,6 +13,25 @@ function nxs_popup_optiontype_wrapperbegin_renderhtmlinpopup($optionvalues, $arg
 	{
 		$nxs_toggled_cssclass = "nxs-toggled-open";
 	}
+	else if ($initial_toggle_state == "closed-if-empty")
+	{
+		if ($initial_toggle_state_id == "")
+		{
+			$nxs_toggled_cssclass = "nxs-toggled-open";
+		}
+		else
+		{
+			$checkvalue = $$initial_toggle_state_id;
+			if ($checkvalue != "")
+			{
+				$nxs_toggled_cssclass = "nxs-toggled-open";
+			}
+			else
+			{
+				$nxs_toggled_cssclass = "nxs-toggled-closed";
+			}
+		}
+	}
 	else
 	{
 		$nxs_toggled_cssclass = "nxs-toggled-closed";
