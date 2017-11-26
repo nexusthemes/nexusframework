@@ -733,7 +733,6 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$shouldrenderalternative = true;
 		$alternativehint = nxs_l18n__("Button: button is set, but no reference is set (no URL)", "nxs_td");
 	}
-
 	
 	// If image alt isn't filled revert to title alt
 	$image_title = $image_alt;

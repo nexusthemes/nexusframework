@@ -6625,21 +6625,27 @@ function nxs_lookups_getcombinedlookups_for_currenturl()
 	if (!isset($nxs_gl_combinedlookups_for_url))
 	{
 		$combined_lookups = array();
-		//$combined_lookups = array_merge($combined_lookups, $_REQUEST);	// the weakest; query parameters
-		//$combined_lookups = array_merge($combined_lookups, nxs_lookuptable_getlookup_v2(true));	// site-wide lookups
-		//$combined_lookups = array_merge($combined_lookups, nxs_gettemplateruleslookups());	// lookups as defined in the page template rules
-		
 		$combined_lookups = apply_filters("nxs_f_lookups", $combined_lookups);
-		
-		// 20170716; begin
-		// [test] - already start evaluating/processing the items such that rows and widgets won't have to repeat
-		// the heavy lifting that can already be done here
 		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
-		// 20170716; end
-		
 		$nxs_gl_combinedlookups_for_url = $combined_lookups;
+		
+		if ($nxs_gl_combinedlookups_for_url == null)
+		{
+			$nxs_gl_combinedlookups_for_url = array();
+		}
 	}
+	
+	
+	
 	return $nxs_gl_combinedlookups_for_url;
+}
+
+function nxs_lookups_getlookups_for_context($context)
+{
+	$result = array();
+	$result = apply_filters("nxs_f_lookups_context", $result, $context);
+	
+	return $result;
 }
 
 // applies lookups to the properties line by line

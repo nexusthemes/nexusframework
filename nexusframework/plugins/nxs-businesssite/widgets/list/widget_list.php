@@ -144,12 +144,25 @@ function nxs_widgets_list_home_getoptions($args)
 		"fields" => array
 		(
 			array
+			(
+        "id" 				=> "wrapper_items_begin",
+        "type" 				=> "wrapperbegin",
+        "label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+      	"initial_toggle_state" => "closed-if-empty",
+      	"initial_toggle_state_id" => "lookups",
+      ),
+			array
       (
 				"id" 					=> "lookups",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 				// "footer" => "Want to use a grid? Use nxs_list_layout=flexauto columnsmin=3 columnsmax=4",
 			),
+				array
+			(
+        "id" 				=> "wrapper_items_end",
+        "type" 				=> "wrapperend",
+      ),
 			
 			// datasource
 			array
@@ -168,10 +181,24 @@ function nxs_widgets_list_home_getoptions($args)
 			),
 			
 			array
+			(
+        "id" 				=> "wrapper_items_end",
+        "type" 				=> "wrapperend",
+      ),
+      
+      array
+			(
+          "id" 				=> "wrapper_items_begin",
+          "type" 				=> "wrapperbegin",
+          "label" 			=> nxs_l18n__("Pagination", "nxs_td"),
+          "initial_toggle_state" => "closed",
+      ),
+			
+			array
       (
 				"id" 					=> "filter_items_indexconstrained_min",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Number of index items to ignore", "nxs_td"),
+				"label" 			=> nxs_l18n__("Number of index items to skip", "nxs_td"),
 				"footernote" => "<div>(blank=no skipping)</div>",
 			),
 			
@@ -180,7 +207,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "filter_items_indexconstrained_max",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Max index to process", "nxs_td"),
-				"footernote" => "<div>(blank=no skipping)</div>",
+				"footernote" => "<div>(blank=process all)</div>",
 			),
 			
 			array
@@ -188,7 +215,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "filter_pagination_pagesize",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Max number of items per page", "nxs_td"),
-				"footernote" => "<div>(blank=no skipping)</div>",
+				"footernote" => "<div>(blank=no pagination)</div>",
 			),
 						
 			array
@@ -203,6 +230,8 @@ function nxs_widgets_list_home_getoptions($args)
         "id" 				=> "wrapper_items_begin",
         "type" 				=> "wrapperbegin",
         "label" 			=> nxs_l18n__("Item lookup table", "nxs_td"),
+        "initial_toggle_state" => "closed-if-empty",
+        "initial_toggle_state_id" => "item_lookups",
       ),
       array
       (
@@ -222,6 +251,8 @@ function nxs_widgets_list_home_getoptions($args)
         "id" 				=> "wrapper_items_begin",
         "type" 				=> "wrapperbegin",
         "label" 			=> nxs_l18n__("Filters", "nxs_td"),
+        "initial_toggle_state" => "closed-if-empty",
+        "initial_toggle_state_id" => "filter_items_where",
       ),
       array
       (
@@ -241,7 +272,9 @@ function nxs_widgets_list_home_getoptions($args)
 			(
         "id" 				=> "wrapper_items_begin",
         "type" 				=> "wrapperbegin",
-        "label" 			=> nxs_l18n__("Design", "nxs_td"),
+        "label" 			=> nxs_l18n__("Before Template", "nxs_td"),
+        "initial_toggle_state" => "closed-if-empty",
+        "initial_toggle_state_id" => "widget_start_htmltemplate",
       ),
       array
       (
@@ -249,12 +282,39 @@ function nxs_widgets_list_home_getoptions($args)
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Widget start html (renders 1x above the items)", "nxs_td"),
 			),
+
+			array
+			(
+        "id" 				=> "wrapper_items_end",
+        "type" 				=> "wrapperend",
+      ),
+			array
+			(
+        "id" 				=> "wrapper_items_begin",
+        "type" 				=> "wrapperbegin",
+        "label" 			=> nxs_l18n__("Item template", "nxs_td"),
+      ),
+			
       array
       (
 				"id" 					=> "item_htmltemplate_a",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Template (renders for each iterated item)", "nxs_td"),
 			),
+			
+			array
+			(
+        "id" 				=> "wrapper_items_end",
+        "type" 				=> "wrapperend",
+      ),
+			array
+			(
+        "id" 				=> "wrapper_items_begin",
+        "type" 				=> "wrapperbegin",
+        "label" 			=> nxs_l18n__("After template", "nxs_td"),
+        "initial_toggle_state" => "closed-if-empty",
+        "initial_toggle_state_id" => "widget_end_htmltemplate",
+      ),			
 			 array
       (
 				"id" 					=> "widget_end_htmltemplate",
@@ -269,12 +329,14 @@ function nxs_widgets_list_home_getoptions($args)
       ),
 			
 			
+			
 			// --- ANY WIDGET SPECIFIC STYLING; COLORS & TEXT
 			
       array
       (
           "id" 				=> "any_wrapper_colorstext_begin",
           "type" 				=> "wrapperbegin",
+          "initial_toggle_state" => "closed",
           "label" 			=> nxs_l18n__("Child colors & text", "nxs_td"),
       ),
       
@@ -721,6 +783,16 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		// fill the lookups
 		$lookup = nxs_lookups_getcombinedlookups_for_currenturl();
 		
+		// add the lookup values from pluggable sources
+		$context = array
+		(
+			"prefix" => "i.",
+			"modeluri" => $modeluri,
+		);
+		$add = nxs_lookups_getlookups_for_context($context);
+		
+		$lookup = array_merge($lookup, $add);
+		
 		// add the lookup values from the widget itself
 		$lookup = array_merge($lookup, $lookups_widget);
 		
@@ -862,9 +934,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			var_dump($lookup);
 			die();
 		}
-		
-		
-		
+	
 		if ($datasource_isvalid)
 		{
 			// ----
@@ -909,11 +979,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		if ($shouldrendercolumns)
 		{
 			$html .= "</div>";
-		}
-		
-		if ($_REQUEST["lll"] == "3")
-		{
-			error_log("lll;".$filter_pagination_pagesize);
 		}
 		
 		// break the loop if this was the max pagesize
@@ -1053,9 +1118,6 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		$html = "<div>ITEMS</div>";
 	}
 	
-	
-	
-
 	echo $html;
 	
 	// 
