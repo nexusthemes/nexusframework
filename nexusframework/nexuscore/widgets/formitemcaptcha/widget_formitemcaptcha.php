@@ -3,7 +3,7 @@
 function nxs_widgets_formitemcaptcha_geticonid()
 {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-search";
+	return "nxs-icon-user";
 }
 
 function nxs_widgets_formitemcaptcha_gettitle()
@@ -197,7 +197,7 @@ function nxs_widgets_formitemcaptcha_render_webpart_render_htmlvisualization($ar
 		<div class="content2">
 			<div class="box">
 	      <div class="box-title">
-	      	<span class="nxs-icon-search" style="font-size: 16px;">ReCaptcha2.0</span>
+	      	<span class="nxs-icon-user" style="font-size: 16px;">ReCaptcha2.0</span>
 				</div>
 				<div class="box-content"></div>
 			</div>
