@@ -596,6 +596,19 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	);
 	$filter_pagination_pagesize = nxs_filter_translate_v2($translateargs);
 	
+	// handle fallbacks / ease of use scenarios
+	if (is_archive())
+	{
+		if ($iterator_datasource == "")
+		{
+			$iterator_datasource = do_shortcode("[nxs_string ops=archive_modeluris]");
+		}
+		if ($item_htmltemplate_a == "")
+		{
+			$item_htmltemplate_a = "[nxs_title heading=2 destination_articleid={{i.postid}} title='{{i.post_title}}']";
+		}
+	}
+	
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
