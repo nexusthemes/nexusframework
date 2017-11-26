@@ -6192,7 +6192,7 @@ function nxs_colorization_paletteexists($palettename)
 	return $result;
 }
 
-function nxs_colorization_getunallocatedpalettename($palettename)
+function nxs_colorization_getunallocatedpalettename()
 {
 	$result = "";
 	$triesleft = 100;
