@@ -610,7 +610,7 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 		{
 			var e = jQuery(".nxs-layout-editable .nxs-postrows")[0];
 			
-			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding slide[nxs:growl]","nxs_td"); ?>");
+			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding item","nxs_td"); ?>");
 			
 			var totalrows = jQuery(document).find(".nxs-row").length;
 			nxs_js_log("totalrows:" + totalrows);
@@ -1332,7 +1332,7 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 		{
 			var e = jQuery(".nxs-layout-editable .nxs-postrows")[0];
 			
-			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding slide[nxs:growl]","nxs_td"); ?>");
+			var waitgrowltoken = nxs_js_alert_wait_start("<?php nxs_l18n_e("Adding item","nxs_td"); ?>");
 			
 			var totalrows = jQuery(document).find(".nxs-row").length;
 			nxs_js_log("totalrows:" + totalrows);
