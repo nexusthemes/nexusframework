@@ -1254,6 +1254,22 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$input = implode(";", $modeluris);
 			$input .= ";";
 		}
+		else if ($op == "archive_modeluris")
+		{
+			$input = "";
+			global $wp_query;
+			$posts = $wp_query->get_posts();
+			
+			foreach ($posts as $post)
+			{
+				$postids[]= $post->ID . "@wp.post";	
+			}
+			$input = implode(";", $postids);
+			$input .= ";";
+			
+			//var_dump($input);
+			//die();
+		}
 		else if ($op == "image_src_by_id")
 		{
 			if ($input != "")
@@ -1269,7 +1285,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 		
 	return $output;
 }
-add_shortcode('nxsstring', 'nxs_sc_string');
+add_shortcode('nxsstring', 'nxs_sc_string');	// deprecated ... use nxs_string instead...
+add_shortcode('nxs_string', 'nxs_sc_string');
 
 // for example [nxsbool ops="isnotempty" value="aap"]
 function nxs_sc_bool($atts, $content = null, $name='') 
