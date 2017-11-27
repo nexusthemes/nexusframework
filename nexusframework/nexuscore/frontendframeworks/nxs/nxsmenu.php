@@ -718,18 +718,9 @@
 			      	</a>
 			      </li>
 			      <?php
-		      	$templateproperties = nxs_gettemplateproperties();
-		      	$rulesid = $templateproperties["templaterulespostid"];
-		      	if ($rulesid == 0)
-		      	{
-		      		$url = nxs_geturl_home();
-							$url = nxs_addqueryparametertourl_v2($url, "nxserr", "nxsnotemplateproperties", true, true);
-		      	}
-		      	else
-		      	{
-		      		$url = nxs_geturl_for_postid($rulesid);
-		      	}
-			      ?>
+			     	$url = nxs_geturl_home();
+						$url = nxs_addqueryparametertourl_v2($url, "nxs_busrulesset", "pagetemplaterules", true, true);
+		      	?>
 			      <li>
 	     		  	<a href="<?php echo $url; ?>" title="<?php nxs_l18n_e("Business rules", "nxs_td"); ?>" class="site">
 					  		<span class='nxs-icon-wand'></span>

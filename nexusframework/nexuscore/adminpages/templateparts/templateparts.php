@@ -229,13 +229,13 @@
                 
                 <div class="nxs-float-left actions">
 					    		<select id='create_types_picker' name="create_types_picker">
-					    			<option value=""><?php nxs_l18n_e("Create new...", "nxs_td"); ?></option>
+					    			<option value=""><?php nxs_l18n_e("Create new ...", "nxs_td"); ?></option>
 					    			<option value="nieuwheaderhome"><?php nxs_l18n_e("Header", "nxs_td"); ?></option>
 					    			<option value="nieuwsubheaderhome"><?php nxs_l18n_e("Subheader", "nxs_td"); ?></option>
 					    			<option value="nieuwsidebarhome"><?php nxs_l18n_e("Sidebar", "nxs_td"); ?></option>
 					    			<option value="nieuwsubfooterhome"><?php nxs_l18n_e("Subfooter", "nxs_td"); ?></option>
 					    			<option value="nieuwfooterhome"><?php nxs_l18n_e("Footer", "nxs_td"); ?></option>
-					    			<option value="newcontentparthome"><?php nxs_l18n_e("Content", "nxs_td"); ?></option>
+					    			<option value="newcontentparthome"><?php nxs_l18n_e("Content template", "nxs_td"); ?></option>
 								 	</select>
 								</div>
 								<a href='#' class="nxs-float-left nxsbutton1" onclick="nxs_js_createnewtype(jQ_nxs('#create_types_picker').val()); return false;"><?php nxs_l18n_e("Create", "nxs_td"); ?></a>
@@ -465,7 +465,7 @@
 			                                </span>
 			                                <span>
 			                                	<a href="#" title="<?php nxs_l18n_e("Restore", "nxs_td"); ?>" class='nxs-float-right nxs-margin-right10' onclick='nxs_js_restore_article("<?php echo $postid; ?>"); nxs_js_refreshcurrentpage(); return false;'>
-			                                		<span class='nxsiconbutton nxs-icon-checkmark'></span>
+			                                		<span class='nxsiconbutton nxs-icon-undo'></span>
 			                                	</a>
 			                                </span>
 			                                                        

@@ -416,7 +416,7 @@
 			                                </span>
 			                                <span>
 			                                	<a href="#" title="<?php nxs_l18n_e("Restore", "nxs_td"); ?>" class='nxs-float-right nxs-margin-right10' onclick='nxs_js_restore_article("<?php echo $postid; ?>"); nxs_js_refreshcurrentpage(); return false;'>
-			                                		<span class='nxsiconbutton nxs-icon-checkmark'></span>
+			                                		<span class='nxsiconbutton nxs-icon-undo'></span>
 			                                	</a>
 			                                </span>
 			                                                        
