@@ -8341,12 +8341,26 @@ function nxs_gethtmlforbutton_v2($args)
 	$frontendframework = nxs_frontendframework_getfrontendframework();
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
+
+	if ($args["destination_postid"] != "")
+	{
+		$args["destination_articleid"] = $args["destination_postid"];
+	}
+	if ($args["scale"] == "")
+	{
+		$args["scale"] = "1-8";
+	}
+	if ($args["colorzen"] == "")
+	{
+		$args["colorzen"] = "c22";
+	}
+	if ($args["destination_articleid"] == "" && $args["destination_url"] == ""  && $args["destination_js"] == "" && $args["destination_popuparticleid"] == "")
+	{
+		$args["destination_url"] = nxs_geturl_home();
+	}
 	
 	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_gethtmlforbutton";
 	$result = call_user_func_array($functionnametoinvoke, array($args));
-	
-	//error_log("invoke; functionnametoinvoke; $functionnametoinvoke; $result");
-	//error_log("htmlbutton; invoke; " . json_encode($args));
 	
 	return $result;
 }
