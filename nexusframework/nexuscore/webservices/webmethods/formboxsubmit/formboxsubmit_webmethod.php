@@ -52,8 +52,6 @@ function nxs_webmethod_formboxsubmit()
  	// ensure the widget exists
  	$widgetmetadata = nxs_getwidgetmetadata($postid, $placeholderid);
  	
- 	
- 	
  	$items_genericlistid = $widgetmetadata["items_genericlistid"];
  	$structure = nxs_parsepoststructure($items_genericlistid);
 	if (count($structure) == 0) 
@@ -100,11 +98,11 @@ function nxs_webmethod_formboxsubmit()
 		 	{
 		 		$submitargs = array();
 		 		// 
+		 		$submitargs["containerpostid"] = $containerpostid;
 		 		$submitargs["postid"] = $postid;
 		 		$submitargs["placeholderid"] = $placeholderid;
 		 		$submitargs["metadata"] = $currentplaceholdermetadata;
 		 		//
-
 
 		 		// gets results from here
 		 		$subresult = nxs_widgets_formboxitem_getformitemsubmitresult($widget, $submitargs);
@@ -170,6 +168,9 @@ function nxs_webmethod_formboxsubmit()
 		// Lookup translation
 		$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("internal_email", "sender_email"));
 		
+		
+		
+		
 		// ** START
 		// these lines are required, as otherwise the {{email}} is not properly interpreted/returned
 		$templateproperties = nxs_gettemplateproperties();
@@ -186,8 +187,18 @@ function nxs_webmethod_formboxsubmit()
 		global $nxs_g_modelmanager;
 		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
 		
+		// phase 3; blend the properties of the containerpostid
+		// add the lookup values from pluggable sources
+		$modeluri = "{$containerpostid}@wp.post";
+		$context = array
+		(
+			"prefix" => "",
+			"modeluri" => $modeluri,
+		);
+		$add = nxs_lookups_getlookups_for_context($context);
+		$lookup = array_merge($lookup, $add);
 		
-		error_log("formboxsubmit;".json_encode($lookup));
+		// error_log("add;".json_encode($add));
 		
 		$magicfields = array("internal_email", "sender_email");
 		$translateargs = array

@@ -516,6 +516,22 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	);
 	global $nxs_g_modelmanager;
 	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
+	
+	global $post;
+	$containerpostid = $post->ID;
+	// phase 3; add fields of the containerpostid
+	// add the lookup values from pluggable sources
+	$modeluri = "{$containerpostid}@wp.post";
+	$context = array
+	(
+		"prefix" => "",
+		"modeluri" => $modeluri,
+	);
+	$add = nxs_lookups_getlookups_for_context($context);
+	
+	$lookup = array_merge($lookup, $add);
+
+	
 	$magicfields = array("title", "button_text", "internal_email", "sender_email");
 	$translateargs = array
 	(
