@@ -294,6 +294,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 					{
 						$input = str_replace("https://www.youtube/watch", "*NXS*PLACEHOLDER*YOUTUBE*", $input);
 					}
+					else if ($excludeitem == "example.org")
+					{
+						$input = str_replace("http://example.org", "*NXS*PLACEHOLDER*HTTPEXAMPLEORG*", $input);
+						$input = str_replace("https://example.org", "*NXS*PLACEHOLDER*HTTPSEXAMPLEORG*", $input);
+					}
 				}
 			}
 			
@@ -307,6 +312,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$input = str_replace("*NXS*PLACEHOLDER*YOUTUBE*", "https://www.youtube/watch", $input);
 			$input = str_replace("*NXS*PLACEHOLDER*MEDIA*", "https://mediamanager", $input);
 			$input = str_replace("*NXS*PLACEHOLDER*NXSMEDIA*", "nxsmedia://", $input);
+			$input = str_replace("*NXS*PLACEHOLDER*HTTPEXAMPLEORG*", "http://example.org", $input);
+			$input = str_replace("*NXS*PLACEHOLDER*HTTPSEXAMPLEORG*", "https://example.org", $input);
 		}
 		else if ($op == "listify")
 		{
@@ -1816,6 +1823,16 @@ add_shortcode("nxs_title", "nxs_sc_title");
 
 function nxs_sc_button($atts, $content = null)
 {
+	if ($atts["output"] == "shortcode")
+	{
+		// unset($atts["output"]);
+		$result = nxs_sc_reconstructshortcode($atts, $content, "nxs&#95;button");
+		$result = str_replace("[ ", "&#91;", $result);
+		$result = str_replace("]", "&#93;", $result);
+		$result = str_replace("=", "&#61;", $result);
+		
+		return $result;
+	}
 	return nxs_gethtmlforbutton_v2($atts);
 }
 add_shortcode("nxsbutton", "nxs_sc_button");
