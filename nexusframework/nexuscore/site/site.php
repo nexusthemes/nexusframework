@@ -606,7 +606,7 @@ function nxs_site_newcontentparthome_rendersheet($args)
 		              <h4><?php nxs_l18n_e("Title[nxs:popup,label]", "nxs_td"); ?></h4>
 		           </div>
 		          <div class="box-content">
-		          	<input type='text' placeholder='<?php nxs_l18n_e("Title of the new contentpart[nxs:placeholder]", "nxs_td"); ?>'' id='pagetitle' value='' class="nxs_defaultenter" />
+		          	<input type='text' placeholder='<?php nxs_l18n_e("Title", "nxs_td"); ?>'' id='pagetitle' value='' class="nxs_defaultenter" />
 		          </div>
 		        </div>
 		        <div class="nxs-clear"></div>
