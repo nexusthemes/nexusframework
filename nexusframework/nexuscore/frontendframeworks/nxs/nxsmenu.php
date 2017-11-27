@@ -773,7 +773,12 @@
 		  
 		  <?php 
 		  
-		  if (in_array($nxsposttype, array("post", "service")) && is_singular())
+	  	global $post;
+	  	if ($post != null && $post->post_type == "nxs_vtemplate")
+	  	{
+	  	  $wordpressbackendurl = get_admin_url();
+	  	}
+		  else if (in_array($nxsposttype, array("post", "service")) && is_singular())
 		  {
 				$wordpressbackendurl = get_edit_post_link($postid, array());	
 		  } 
@@ -796,7 +801,7 @@
 				}
 			 	else
 			 	{
-			 		$wordpressbackendurl = get_admin_url();	
+			 		$wordpressbackendurl = get_admin_url();
 				}
 		  }
 		  else

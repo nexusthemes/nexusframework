@@ -203,7 +203,7 @@
 			    			<option value="sidebar" <?php if ($filter_types == "sidebar") { echo 'selected="selected"'; } ?>><?php nxs_l18n_e("Sidebars only", "nxs_td"); ?></option>
 			    			<option value="subfooter" <?php if ($filter_types == "subfooter") { echo 'selected="selected"'; } ?>><?php nxs_l18n_e("Subfooters only", "nxs_td"); ?></option>
 			    			<option value="footer" <?php if ($filter_types == "footer") { echo 'selected="selected"'; } ?>><?php nxs_l18n_e("Footers only", "nxs_td"); ?></option>
-			    			<option value="content" <?php if ($filter_types == "content") { echo 'selected="selected"'; } ?>><?php nxs_l18n_e("Contents only", "nxs_td"); ?></option>
+			    			<option value="content" <?php if ($filter_types == "content") { echo 'selected="selected"'; } ?>><?php nxs_l18n_e("Content templates only", "nxs_td"); ?></option>
 						 	</select>
 						</div>
 						<a href='#' class="nxs-float-left nxsbutton1" onclick="jQ_nxs('#filter_types').val(jQ_nxs('#filter_types_picker').val()); jQ_nxs('#theform').submit(); return false;">Go</a>
