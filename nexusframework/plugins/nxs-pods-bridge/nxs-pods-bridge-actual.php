@@ -33,20 +33,23 @@
 		$fields = $pod_meta["fields"];	// alle attributes van de entiteit
 		$metas = get_post_meta($postid);
 		
+		/*
+		if ($_REQUEST["peek"] == "true")
+		{
+			var_dump($metas);
+		}
+		*/
+		
 		$add = array();
 		
 		// todo: this part should probably be moved into the nexus framework as it will apply for
 		// all posts
 		$add["{$prefix}postid"] = $postid;
 		$add["{$prefix}post_title"] = get_the_title($postid);
-		
+		$add["{$prefix}thumbnail_id"] = $metas["_thumbnail_id"][0];
 		$wpcontent = nxs_getwpcontent_for_postid($postid);
 		$wpcontent = apply_filters('the_content', $wpcontent);
-		
 		$add["{$prefix}wpcontent"] = $wpcontent;
-		// todo: the following lines should probably be replaced with a 
-		$add["{$prefix}featuredimage.thumb"] = get_the_post_thumbnail_url($postid);
-		$add["{$prefix}featuredimage.full"] = get_the_post_thumbnail_url($postid, "full");
 		
 		foreach ($fields as $field)
 		{			
