@@ -2273,6 +2273,7 @@ function nxs_load_plugins()
 	$plugins = array
 	(
 		"nxs-businesssite",
+		"nxs-pods-bridge",
 	);
 
 	// dynamically inject additional plugins 
