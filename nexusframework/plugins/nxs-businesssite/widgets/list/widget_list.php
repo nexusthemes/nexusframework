@@ -609,11 +609,13 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
-	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 	
 	$datasource_isvalid = true;
+	
+	// perhaps someone used a shortcode directly; if so, replace it!
+	$iterator_datasource = do_shortcode($iterator_datasource);
 	
 	if ($iterator_datasource == "" || nxs_stringcontains($iterator_datasource, "{{"))
 	{
