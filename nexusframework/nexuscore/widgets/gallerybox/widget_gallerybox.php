@@ -432,6 +432,10 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 		$otheritems = explode("|", $items_data);
 		foreach ($otheritems as $otheritem)
 		{
+			if ($otheritem == "")
+			{
+				continue;
+			}
 			$index = $index + 1;
 			$placeholdertype = "galleryitem";
 			nxs_requirewidget($placeholdertype);
@@ -454,6 +458,7 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 			$args["items_data"] = $items_data;
 			nxs_function_invokefunction($functionnametoinvoke, $args);
 		}
+		
 		
 		echo "<div class='nxs-clear'></div>";
 	} 
