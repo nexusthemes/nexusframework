@@ -423,6 +423,13 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "button_border_radius",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Button border radius", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("border_radius"),
+				"unistylablefield"	=> true
+			),
 
 			array( 
 				"id" 				=> "wrapper_end",
@@ -622,7 +629,12 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		
 	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
 	$button_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
+	$button_border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $button_border_radius);
 	$button_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $button_color);
+	
+	// combine
+	
+	$buttoncssclasses = nxs_concatenateargswithspaces("nxs-form-submit", "nxs-button", $button_color_cssclass, $button_scale_cssclass, $button_border_radius_cssclass);
 	
 	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_formbox_send(&quot;" .  $postid . "&quot;, &quot;" . $placeholderid . "&quot;);');";
 
@@ -633,10 +645,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	// Button
 	$htmlbutton = '
 	<p class="' . $button_alignment_cssclass . '" style="display: flex; flex-orientation: row;">
-		<a rel="nofollow" id="' . $placeholderid . '_button" 
-			class="nxs-form-submit nxs-button ' . $button_color_cssclass . ' ' . $button_scale_cssclass . '" 
-			href="#" 
-			onclick="' . $invoke . '; return false;">' 
+		<a rel="nofollow" id="' . $placeholderid . '_button" class="' . $buttoncssclasses . '" href="#" onclick="' . $invoke . '; return false;">' 
 			. $button_text . ' 
 		</a>
 		&nbsp;' . $htmlwaitwhileloading . '
