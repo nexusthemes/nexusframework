@@ -2017,6 +2017,7 @@ function nxs_sc_embed($atts, $content = null, $name='')
 	return $renderresult["html"];
 }
 add_shortcode('nxsembed', 'nxs_sc_embed');
+add_shortcode('nxs_embed', 'nxs_sc_embed');
 
 function nxs_sc_widget($atts, $content = null, $name='') 
 {
@@ -2120,3 +2121,14 @@ function nxs_sc_text($atts, $content = null, $name='')
 	return $result;
 }
 add_shortcode('nxs_text', 'nxs_sc_text');
+
+function nxs_sc_icon($atts, $content = null, $name='') 
+{
+	extract($atts);
+	
+	$result = "<span class='nxs-icon-{$icon}'></span>";
+	return $result;
+	
+	return $renderresult["html"];
+}
+add_shortcode('nxs_icon', 'nxs_sc_icon');
