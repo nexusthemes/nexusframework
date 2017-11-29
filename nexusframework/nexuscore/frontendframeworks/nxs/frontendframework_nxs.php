@@ -55,6 +55,8 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		return "";
 	}
 	
+	$text = do_shortcode($text);
+	
 	if ($text == "")
 	{
 		return "";
