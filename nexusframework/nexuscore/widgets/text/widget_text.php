@@ -335,7 +335,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
-				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
+				"label" 			=> nxs_l18n__("Link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
 				"unicontentablefield" => true,
 			),
@@ -344,7 +344,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"id" 				=> "destination_popuparticleid",
 				"type" 				=> "article_link",
 				"posttypes" => array("nxs_templatepart","page", "post"),
-				"label" 			=> nxs_l18n__("Popup content", "nxs_td"),
+				"label" 			=> nxs_l18n__("Link (popup)", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("The content template, post or page to be rendered in the popup", "nxs_td"),
 				"enable_mediaselect" => false,
 			),
@@ -352,12 +352,21 @@ function nxs_widgets_text_home_getoptions($args)
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("External link", "nxs_td"),
+				"label" 			=> nxs_l18n__("Link (url)", "nxs_td"),
 				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			
+			array
+			( 
+				"id" 				=> "destination_data",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Link (programmatic)", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			
 			array
       (
 				"id" 					=> "destination_url_lookuppicker",
@@ -526,7 +535,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	if ($render_behaviour == "code")
 	{
 		//
-		$temp_array = array();
+		$temp_array = $args;
 	}
 	else
 	{
@@ -565,7 +574,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
 		
 		// replace values in mixedattributes with the lookup dictionary
-		$magicfields = array("title", "text", "button_text", "destination_url", "image_src");
+		$magicfields = array("title", "text", "button_text", "destination_url", "image_src", "destination_data");
 		$translateargs = array
 		(
 			"lookup" => $combined_lookups,
@@ -635,9 +644,12 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$text_heightiq = "";	// off!
 	}
 
-	if ($postid != "" && $placeholderid != "")
+	if ($render_behaviour == "code")
 	{
 		//
+	}
+	else
+	{
 		$hovermenuargs = array();
 		$hovermenuargs["postid"] = $postid;
 		$hovermenuargs["placeholderid"] = $placeholderid;
@@ -715,23 +727,31 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$verifydestinationcount++;
 	}
 	
-	if ($destination_articleid != "") {
+	if ($destination_data != "")
+	{
 		$verifydestinationcount++;
 	}
 	
-	if ($destination_js != "") {
+	if ($destination_articleid != "") 
+	{
 		$verifydestinationcount++;
 	}
 	
-	if ($verifydestinationcount > 1) {
-		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Button: both external URL and article reference are set (ambiguous URL)", "nxs_td");
+	if ($destination_js != "") 
+	{
+		$verifydestinationcount++;
 	}
 	
-	if ($destination_url == "" && $destination_articleid == "" && $destination_popuparticleid == "" && $destination_js == "" && $button_text != "") 
+	if ($verifydestinationcount > 1) 
 	{
 		$shouldrenderalternative = true;
-		$alternativehint = nxs_l18n__("Button: button is set, but no reference is set (no URL)", "nxs_td");
+		$alternativehint = nxs_l18n__("Button: multiple link destinations are set; please only configure one", "nxs_td");
+	}
+	
+	if ($button_text != "" && $destination_url == "" && $destination_articleid == "" && $destination_popuparticleid == "" && $destination_js == "" && $destination_data == "") 
+	{
+		$shouldrenderalternative = true;
+		$alternativehint = nxs_l18n__("Button: button is set, but no destination is set (no URL)", "nxs_td");
 	}
 	
 	// If image alt isn't filled revert to title alt
@@ -765,6 +785,20 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	}
 	
 	$button_heightiq = "";
+	
+	//
+	// the image_data field is already evaluated by the magic field if we end up here
+	if ($destination_data != "")
+	{
+		if (is_numeric($destination_data))
+		{
+			$destination_articleid = $destination_data;
+		}
+		else
+		{
+			$destination_url = $destination_data;
+		}
+	}
 	
 	$buttonargs = array
 	(
