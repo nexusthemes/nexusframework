@@ -448,7 +448,8 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	}
 	
 	// ICON FONT
-	if ($use_icon) {
+	if ($use_icon) 
+	{
 		if ($rss_url) 			{ $rss_url = 		'<li><a target="_blank" href="' . $rss_url . '">		<span class="nxs-icon-rss"></span></a></li>'; }
 		if ($twitter_url) 		{ $twitter_url = 	'<li><a target="_blank" href="' . $twitter_url . '">	<span class="nxs-icon-twitter-2"></span></a></li>'; }
 		if ($facebook_url) 		{ $facebook_url = 	'<li><a target="_blank" href="' . $facebook_url . '">	<span class="nxs-icon-facebook"></span></a></li>'; }
@@ -457,11 +458,15 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		if ($youtube_url) 		{ $youtube_url = 	'<li><a target="_blank" href="' . $youtube_url . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
 		if ($pinterest_url) 	{ $pinterest_url = 	'<li><a target="_blank" href="' . $pinterest_url . '">	<span class="nxs-icon-pinterest"></span></a></li>'; }
 		if ($instagram_url) 	{ $instagram_url = 	'<li><a target="_blank" href="' . $instagram_url . '">	<span class="nxs-icon-instagram"></span></a></li>'; }
-		if ($custom_1_icon)		{
-			if ($custom_1_url)	{ $custom_1_url = 	'<li><a target="_blank" href="' . $custom_1_url . '">	<span class="nxs-social-custom ' . $custom_1_icon . '"></span></a></li>'; }
-		} else {
-			$custom_1_url = '';
-		}
+		if ($custom_1_url)	
+		{
+			if ($custom_1_icon == "")
+			{
+				$custom_1_icon = "nxs-icon-earth";
+			}
+			$custom_1_url = 	'<li><a target="_blank" href="' . $custom_1_url . '">	<span class="nxs-social-custom ' . $custom_1_icon . '"></span></a></li>';
+		} 
+		
 	
 		if 		($halign == 'left') 	{ $alignment = ''; } 
 		else if ($halign == 'center') 	{ $alignment = 'nxs-center'; } 
