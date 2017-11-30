@@ -127,12 +127,21 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
 	//
 	
 	nxs_ob_start();
+	
+	if ($metadata_button_text == "")
+	{
+		$metadata_button_text = "Select file";
+	}
+	
+	if ($metadata_no_file_selected_text == "")
+	{
+		$metadata_no_file_selected_text = "No file selected";
+	}
 
 	?>
-	
   <label class="field_name" style="display: block;"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
   <input type="file" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" style="display: none" onchange="nxs_js_ci_a_updatestate_<?php echo $key; ?>();" />
-	<label for="<?php echo $key; ?>" class="nxs-file-upload-trigger <?php echo $button_color_cssclass; ?>">Select file</label>
+	<label for="<?php echo $key; ?>" class="nxs-file-upload-trigger <?php echo $button_color_cssclass; ?>"><?php echo $metadata_button_text; ?></label>
 	<span id="state_<?php echo $key; ?>"></span>
   <script>
   	// invoked when the page renders for the first time, and when the user changes the file
@@ -147,17 +156,14 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
   			var name = thefileinput.files.item(0).name;
   			if (name == '')
   			{
+  				// probably never gonna reach this condition, as a file will always have a name?
   				name = 'File selected';
   			}
   			statevisualizer.innerText = thefileinput.files.item(0).name;
-				/*
-	      alert('Selected file: ' + thefileinput.files.item(0).size);
-	      alert('Selected file: ' + thefileinput.files.item(0).type);
-	      */
 	    }
 	    else
     	{
-  			statevisualizer.innerText = "No file selected";   		
+  			statevisualizer.innerText = "<?php echo $metadata_no_file_selected_text; ?>";   		
     	}
     	nxs_js_log("so far");
     }
@@ -306,7 +312,23 @@ function nxs_widgets_contactitemfileattachment_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Button color", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-						
+			
+			array
+			( 
+				"id" 				=> "button_text",
+				"type" 				=> "input", // "select",
+				"label" 			=> nxs_l18n__("Button text", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
+			array
+			( 
+				"id" 				=> "no_file_selected_text",
+				"type" 				=> "input", // "select",
+				"label" 			=> nxs_l18n__("No file selected text", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+		
 			array
 			( 
 				"id" 				=> "isrequired",
