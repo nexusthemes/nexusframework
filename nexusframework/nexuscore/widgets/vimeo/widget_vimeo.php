@@ -23,57 +23,6 @@ function nxs_widgets_vimeo_home_getoptions($args)
 		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"fields" => array
 		(
-			/* TITLE
-			
-			array( 
-				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
-			),
-			
-			array
-			( 
-				"id" 				=> "title",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
-				"localizablefield"	=> true
-			),
-			array(
-				"id" 				=> "title_heading",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("title_heading")
-			),
-			
-			array(
-				"id" 				=> "title_alignment",
-				"type" 				=> "radiobuttons",
-				"subtype" 			=> "halign",
-				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
-			),
-						
-			array(
-				"id" 				=> "title_fontsize",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("fontsize")
-			),
-			array(
-				"id" 				=> "title_heightiq",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td")
-			),
-		
-			array( 
-				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
-			),
-			*/
-			
-			
 			// CONFIGURATION
 			
 			array( 
