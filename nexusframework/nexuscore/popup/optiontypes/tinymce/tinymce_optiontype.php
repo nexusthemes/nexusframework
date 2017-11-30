@@ -212,6 +212,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							tinymce.init
 							(
 								{
+									extended_valid_elements: 'span[*]',
 									entity_encoding : "named",
 									width: "100%",
 									baseURL: "<?php echo includes_url() . "/js/tinymce"; ?>",
@@ -236,6 +237,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							    setup: nxs_tinymce_registereventhandlers,							    
 							    autoresize_min_height: <?php echo $autoresize_min_height; ?>,
 							    autoresize_max_height: <?php echo $autoresize_max_height; ?>,
+							    content_css : '<?php echo nxs_getframeworkurl() . "/css/framework.css"; ?>', 
 								}
 							);
 								
