@@ -309,16 +309,23 @@ function nxs_widgets_social_home_getoptions($args)
 ---------------------------------------------------------------------------------------------------- */
 
 function nxs_widgets_social_render_webpart_render_htmlvisualization($args) 
-{	
+{
 	// Importing variables
 	extract($args);
 
 	// Setting the widget name variable to the folder name
 	$widget_name = basename(dirname(__FILE__));
 
-	// Every widget needs it's own unique id for all sorts of purposes
-	// The $postid and $placeholderid are used when building the HTML later on
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	if ($render_behaviour == "code")
+	{
+		//
+		$temp_array = $args;
+	}
+	else
+	{
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	}
+	
 	unset($temp_array["postid"]);
 	unset($temp_array["placeholderid"]);
 	
@@ -373,23 +380,37 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	// postid; in that case, 
 	//$postid = $args["postid"];
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 	
 	
 	// Turn on output buffering
 	nxs_ob_start();
 		
-	global $nxs_global_placeholder_render_statebag;
-	if ($shouldrenderalternative == true) {
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
-	} else {
-		// Appending custom widget class
-		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		global $nxs_global_placeholder_render_statebag;
+		if ($shouldrenderalternative == true) {
+			$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . "-warning ";
+		} else {
+			// Appending custom widget class
+			$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-" . $widget_name . " ";
+		}
 	}
 	
 	// improve dummy urls; "dummy" will result in an ugly 404, link to the homepage of the site instead
