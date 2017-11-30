@@ -44,11 +44,10 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 			</div>
 		</div>
 		<div class="nxs-clear"></div>
-		<div>
-		<div style="display: flex">
+		<div style="display: flex; background-color: #f0f0f0; background-image: linear-gradient(to bottom, #fdfdfd, #ddd); background-repeat: repeat-x;">
 			<div style='    border-radius: 3px; border-width: 1px 0 1px 0; border: 1px solid #b1b1b1;'>
 				<div style="padding: 4px 10px; font-size: 14px; line-height: 20px; cursor: pointer; color: #333; text-align: center;">
-					<a target='_blank' href='https://www.wpsupporthelp.com/answer/which-icons-are-there-in-the-system-1534/' padding: 3px; background-color: #777;>
+					<a target='_blank' href='https://www.wpsupporthelp.com/answer/which-icons-are-there-in-the-system-1534/' style='color: #333;'>
 						<?php echo do_shortcode("[nxs_icon icon='happy' output=default]"); ?>
 					</a>
 				</div>
