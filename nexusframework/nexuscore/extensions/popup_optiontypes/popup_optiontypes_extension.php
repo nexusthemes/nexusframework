@@ -93,3 +93,4 @@ nxs_ext_lazyload_popup_optiontype("halign");
 nxs_ext_lazyload_popup_optiontype("radiobuttons");
 nxs_ext_lazyload_popup_optiontype("shape");
 nxs_ext_lazyload_popup_optiontype("modelpicker");
+nxs_ext_lazyload_popup_optiontype("shortcodegenerator");

@@ -382,6 +382,28 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 				"requirecapability" => nxs_cap_getdesigncapability(),
 			),
 
+			// SHORTCODE
+			
+			array( 
+				"id"				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"heading_cssclass"	=> "generic",
+				"label" 			=> nxs_l18n__("Advanced properties: shortcode", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+			
+			array(
+				"type" 				=> "shortcodegenerator",
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+
 		)
 	);
 	
