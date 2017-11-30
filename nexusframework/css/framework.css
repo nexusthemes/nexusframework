@@ -3919,8 +3919,6 @@ span.reviewer 															{ margin-left: 5px; }
 
 /* NT PRODUCT IMAGES
 ---------------------------------------------------------------------------------------------------- */
-.prod-img1 { /* background: url(http://89.18.175.44/nexusthemesv4/wp-content/uploads/sites/22/2015/07/digital-agency-wordpress-theme.png?quality=100.3014122909390); */ }
-.prod-img2 { /*background: url(http://89.18.175.44/nexusthemesv4/wp-content/uploads/sites/22/2015/07/responsive-digital-agency-wordpress-theme.png?quality=100.3014122909390);*/ }
 
 /* bg shadows */
 .prod-img1 .dark-shadow 							{ background-image: radial-gradient(circle at bottom center, #808080, transparent 29.3em); } 
