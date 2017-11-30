@@ -2124,7 +2124,20 @@ add_shortcode('nxs_text', 'nxs_sc_text');
 
 function nxs_sc_icon($atts, $content = null, $name='') 
 {
+	if ($atts["output"] == "shortcode")
+	{
+		// unset($atts["output"]);
+		$result = nxs_sc_reconstructshortcode($atts, $content, "nxs&#95;icon");
+		$result = str_replace("[ ", "&#91;", $result);
+		$result = str_replace("]", "&#93;", $result);
+		$result = str_replace("=", "&#61;", $result);
+		
+		return $result;
+	}
+	
 	extract($atts);
+	
+	
 	
 	$result = "<span class='nxs-icon-{$icon}'></span>";
 	return $result;
