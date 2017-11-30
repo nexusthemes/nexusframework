@@ -971,7 +971,11 @@ http://css-tricks.com/centering-list-items-horizontally-slightly-trickier-than-y
 .nxs-sharing .nxs-share										{ margin: 0 15px 10px 0; ; float: left; height: 62px; }
 #nxs-social-icons img 										{ float: left; margin-right: 5px; width: 20px; height: 20px; }
 .nxs-sharing .nxs-share.nxs-pinterest						{ margin-top: 10px; height: 30px; }
-
+.nxs-text ul.nxs-social-list, .nxs-text ul.icon-font-list
+{
+	list-style: none;
+	margin: inherit;
+}
 
 /* SLIDESHOW 
 ---------------------------------------------------------------------------------------------------- */
