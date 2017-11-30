@@ -502,13 +502,6 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 
 	$mixedattributes = array_merge($temp_array, $args);
 
-	/*
-
-	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("address"));
-	
-	*/
-	
 	if ($mixedattributes["address"] == "")
 	{
 		// use fallback
