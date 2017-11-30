@@ -342,9 +342,10 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"heading_cssclass"	=> "generic",
+				
 				"label" 			=> nxs_l18n__("Advanced properties: CSS class", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
-				"unistylablefield"	=> true
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "ph_cssclass",
 			),
 			array(
 				"id" 				=> "ph_cssclass",
@@ -357,7 +358,6 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
-				"unistylablefield"	=> true
 			),
 
 			// LOCK
