@@ -67,6 +67,8 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "title",
 			),
 			
 			array(

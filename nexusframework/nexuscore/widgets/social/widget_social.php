@@ -44,7 +44,8 @@ function nxs_widgets_social_home_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
-				"initial_toggle_state" 	=> "closed",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "title",
 			),
 		
 			array
@@ -465,9 +466,22 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		if 		($halign == 'left') 	{ $alignment = ''; } 
 		else if ($halign == 'center') 	{ $alignment = 'nxs-center'; } 
 		else if ($halign == 'right') 	{ $alignment = 'nxs-float-right'; }
+		
+		
+		if ($render_behaviour == "code")
+		{
+			$wrapperbegin = '';
+			$wrapperend = '';
+		}
+		else
+		{
+			$wrapperbegin = '<div class="nxs-applylinkvarcolor ' . $alignment . '">';
+			$wrapperend = '</div>';
+		}
+		
+		
 
 		$icon_font_list ='
-			<div class="nxs-applylinkvarcolor ' . $alignment . '">	
 				<ul class="icon-font-list">'
 					. $rss_url  
 					. $twitter_url
@@ -479,9 +493,9 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 					. $instagram_url
 					. $custom_1_url
 					. '
-				</ul>
-			</div>
-		';
+				</ul>';
+				
+		$icon_font_list = "{$wrapperbegin}{$icon_font_list}{$wrapperend}";
 	}
 	
 	// RSS
@@ -741,13 +755,17 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	} else {	
 	
 		echo $htmltitle;
-		echo '<div class="nxs-clear"></div>';
+		if ($htmltitle != "")
+		{
+			echo '<div class="nxs-clear"></div>';
+		}
 		
 		if ($use_icon != "") {
 			echo $icon_font_list;
 		} else {
 			echo $social_list;	
 		}
+		
 		echo '<div class="nxs-clear"></div>';    
 	} 
 	
