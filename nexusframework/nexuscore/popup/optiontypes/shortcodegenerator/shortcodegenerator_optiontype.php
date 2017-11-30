@@ -46,13 +46,15 @@ function nxs_popup_optiontype_shortcodegenerator_renderhtmlinpopup($optionvalues
 	$unistyle = $placeholdermetadata["unistyle"];
 	if ($unistyle == "")
 	{
-		foreach ($content_ids_array as $field)
+		foreach ($style_ids_array as $field)
 		{
 			$value = $placeholdermetadata[$field];
 			if ($value != "")
 			{
 				$generatedshortcode .= "{$field}='" . esc_html($value) . "' ";
 			}
+			
+			// $generatedshortcode .= "{$field}='" . esc_html($value) . "' ";
 		}
 	}
 	else
