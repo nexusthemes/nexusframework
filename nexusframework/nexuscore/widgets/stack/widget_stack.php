@@ -176,13 +176,20 @@ function nxs_widgets_stack_render_webpart_render_htmlvisualization($args)
 	$html = nxs_ob_get_contents();
 	nxs_ob_end_clean();
 	
-	// overrule generic widget hover menu, as set by inner-widgets :)
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		// overrule generic widget hover menu, as set by inner-widgets :)
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;

@@ -774,7 +774,11 @@
 		  <?php 
 		  
 	  	global $post;
-	  	if ($post != null && $post->post_type == "nxs_vtemplate")
+	  	if ($_REQUEST["nxs_templatepart"] != "")
+	  	{
+	  		$wordpressbackendurl = get_admin_url();
+	  	}
+	  	else if ($post != null && $post->post_type == "nxs_vtemplate")
 	  	{
 	  	  $wordpressbackendurl = get_admin_url();
 	  	}

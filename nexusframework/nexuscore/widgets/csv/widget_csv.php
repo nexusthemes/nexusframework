@@ -398,13 +398,20 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 		// Lookup atts
 		$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title"));
 		
-		$hovermenuargs = array();
-		$hovermenuargs["postid"] = $postid;
-		$hovermenuargs["placeholderid"] = $placeholderid;
-		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-		$hovermenuargs["metadata"] = $mixedattributes;
-		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
-
+		if ($render_behaviour == "code")
+		{
+			//
+		}
+		else
+		{
+			//	
+			$hovermenuargs = array();
+			$hovermenuargs["postid"] = $postid;
+			$hovermenuargs["placeholderid"] = $placeholderid;
+			$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+			$hovermenuargs["metadata"] = $mixedattributes;
+			nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
+		}
 	}
 	
 	// Translate model magical fields

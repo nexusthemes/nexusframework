@@ -313,16 +313,24 @@ function nxs_widgets_pageslidetotop_render_webpart_render_htmlvisualization($arg
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	// popup menu
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["enable_decoratewidget"] = false;
-	$hovermenuargs["enable_deletewidget"] = false;
-	$hovermenuargs["enable_deleterow"] = true;
-	$hovermenuargs["metadata"] = $mixedattributes;	
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		//	
+		// popup menu
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["enable_decoratewidget"] = false;
+		$hovermenuargs["enable_deletewidget"] = false;
+		$hovermenuargs["enable_deleterow"] = true;
+		$hovermenuargs["metadata"] = $mixedattributes;	
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 	
 	// Turn on output buffering
 	nxs_ob_start();

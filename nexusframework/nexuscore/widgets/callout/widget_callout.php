@@ -644,9 +644,13 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		$subtitle_heightiq = "";	// off!
 	}
 	
-	if ($postid != "" && $placeholderid != "")
+	if ($render_behaviour == "code")
 	{
 		//
+	}
+	else
+	{
+		//	
 		$hovermenuargs = array();
 		$hovermenuargs["postid"] = $postid;
 		$hovermenuargs["placeholderid"] = $placeholderid;

@@ -501,8 +501,15 @@ function nxs_widgets_bio_render_webpart_render_htmlvisualization($args)
 		$image_src = "https://d3mwusvabcs8z9.cloudfront.net/?nxs_imagecropper=true&requestedwidth={$width}&requestedheight={$height}&debug=tru&url={$media}&scope=lazydetect";
 	}
 	
-	if ($postid != "" && $placeholderid != "")
+	global $nxs_global_placeholder_render_statebag;
+
+	if ($render_behaviour == "code")
 	{
+		//
+	}
+	else
+	{
+		//	
 		$hovermenuargs = array();
 		$hovermenuargs["postid"] = $postid;
 		$hovermenuargs["placeholderid"] = $placeholderid;

@@ -232,8 +232,13 @@ function nxs_widgets_radial_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	if ($postid != "" && $placeholderid != "")
+	if ($render_behaviour == "code")
 	{
+		//
+	}
+	else
+	{
+		//	
 		$hovermenuargs = array();
 		$hovermenuargs["postid"] = $postid;
 		$hovermenuargs["placeholderid"] = $placeholderid;

@@ -120,16 +120,23 @@ function nxs_widgets_busrulearchivetype_render_webpart_render_htmlvisualization(
 	// Widget specific variables
 	extract($mixedattributes);
 
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["enable_decoratewidget"] = false;
-	$hovermenuargs["enable_deletewidget"] = false;
-	$hovermenuargs["enable_deleterow"] = true;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
-
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		//	
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["enable_decoratewidget"] = false;
+		$hovermenuargs["enable_deletewidget"] = false;
+		$hovermenuargs["enable_deleterow"] = true;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 	
 	// Turn on output buffering
 	nxs_ob_start();

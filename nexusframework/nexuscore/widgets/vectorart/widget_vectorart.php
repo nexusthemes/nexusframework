@@ -175,9 +175,13 @@ function nxs_widgets_vectorart_render_webpart_render_htmlvisualization($args)
 	global $nxs_global_row_render_statebag;
 	$pagerowtemplate = $nxs_global_row_render_statebag["pagerowtemplate"];
 	
-	if ($postid != "" && $placeholderid != "")
+	if ($render_behaviour == "code")
 	{
 		//
+	}
+	else
+	{
+		//	
 		$hovermenuargs = array();
 		$hovermenuargs["postid"] = $postid;
 		$hovermenuargs["placeholderid"] = $placeholderid;

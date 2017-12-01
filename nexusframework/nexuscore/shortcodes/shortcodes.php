@@ -1286,6 +1286,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$input = nxs_img_getimageurlthemeversion($imageurl);
 			}
 		}
+		else if ($op == "truncate")
+		{
+			$length = $atts["length"];
+			$input = nxs_truncate_string($input, $length);
+		}
 	}
 	
 	$output = $input;

@@ -177,7 +177,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "iterator_datasource",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Iterator datasource", "nxs_td"),
-				// "placeholder" => "",
+				"unicontentablefield" => true,
 			),
 			
 			array
@@ -281,6 +281,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "widget_start_htmltemplate",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Widget start html (renders 1x above the items)", "nxs_td"),
+				"unistylablefield"	=> true,
 			),
 
 			array
@@ -299,6 +300,7 @@ function nxs_widgets_list_home_getoptions($args)
       (
 				"id" 					=> "item_htmltemplate_a",
 				"type" 				=> "textarea",
+				"unistylablefield"	=> true,
 				"label" 			=> nxs_l18n__("Template (renders for each iterated item)", "nxs_td"),
 			),
 			
@@ -320,6 +322,7 @@ function nxs_widgets_list_home_getoptions($args)
 				"id" 					=> "widget_end_htmltemplate",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Widget end html (renders 1x below the items)", "nxs_td"),
+				"unistylablefield"	=> true,
 			),
 			
 			array
@@ -528,7 +531,11 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		$list_heightiq = "";	// off!
 	}
 
-	if ($postid != "" && $placeholderid != "")
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
 	{
 		//
 		$hovermenuargs = array();

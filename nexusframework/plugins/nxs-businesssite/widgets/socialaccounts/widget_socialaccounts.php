@@ -219,8 +219,13 @@ function nxs_widgets_socialaccounts_render_webpart_render_htmlvisualization($arg
 	// postid; in that case, 
 	//$postid = $args["postid"];
 	
-	if ($postid != "" && $placeholderid != "")
+	if ($render_behaviour == "code")
 	{
+		//
+	}
+	else
+	{
+		//	
 		$hovermenuargs = array();
 		$hovermenuargs["postid"] = $postid;
 		$hovermenuargs["placeholderid"] = $placeholderid;

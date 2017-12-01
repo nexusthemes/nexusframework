@@ -330,15 +330,18 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	// Widget specific variables
 	extract($mixedattributes);
 
-	//
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	
-	if ($postid != "" && $placeholderid != "")
+	if ($render_behaviour == "code")
 	{
+		//
+	}
+	else
+	{
+		//	
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
 		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	}
 	

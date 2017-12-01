@@ -260,12 +260,20 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		$currentpostdate = $currentpost->post_date;
 	}
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		//	
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
+	}
 
 	global $nxs_global_placeholder_render_statebag;
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-wordpress-title";

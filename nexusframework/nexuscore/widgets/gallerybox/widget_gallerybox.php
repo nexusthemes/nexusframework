@@ -288,14 +288,21 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 	$result = array();
 	$result["result"] = "OK";
 	
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		//		
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
+	}
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs); 
-		
 	// Turn on output buffering
 	nxs_ob_start();
 	

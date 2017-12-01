@@ -152,18 +152,23 @@ function nxs_widgets_pagevideo_render_webpart_render_htmlvisualization($args)
 	
 	$items_genericlistid = $mixedattributes['items_genericlistid'];
 
-	/* ADMIN PAGE HOVER MENU HTML
-	---------------------------------------------------------------------------------------------------- */
-	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["enable_decoratewidget"] = false;
-	$hovermenuargs["enable_deletewidget"] = false;
-	$hovermenuargs["enable_deleterow"] = true;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		//	
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["enable_decoratewidget"] = false;
+		$hovermenuargs["enable_deletewidget"] = false;
+		$hovermenuargs["enable_deleterow"] = true;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 	
 	/* ADMIN EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */

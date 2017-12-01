@@ -139,15 +139,23 @@ function nxs_widgets_formitemcheckbox_render_webpart_render_htmlvisualization($a
 
 	global $nxs_global_placeholder_render_statebag;
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["enable_decoratewidget"] = false;
-	$hovermenuargs["enable_deletewidget"] = false;
-	$hovermenuargs["enable_deleterow"] = true;
-	$hovermenuargs["metadata"] = $mixedattributes;
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);	
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		//	
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["enable_decoratewidget"] = false;
+		$hovermenuargs["enable_deletewidget"] = false;
+		$hovermenuargs["enable_deleterow"] = true;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);	
+	}
 	
 	/* ADMIN EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */

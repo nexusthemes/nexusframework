@@ -189,17 +189,25 @@ function nxs_widgets_menuitemcustom_render_webpart_render_htmlvisualization($arg
 		nxs_webmethod_return_nack("unsupported rendermode;" . $rendermode);
 	}
 
-    $paddingleft = 30 * ($depthindex - 1);
+  $paddingleft = 30 * ($depthindex - 1);
 	
-	$hovermenuargs = array();
-	$hovermenuargs["postid"] = $postid;
-	$hovermenuargs["placeholderid"] = $placeholderid;
-	$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
-	$hovermenuargs["enable_decoratewidget"] = false;
-	$hovermenuargs["enable_deletewidget"] = false;
-	$hovermenuargs["enable_deleterow"] = true;
-	$hovermenuargs["metadata"] = $mixedattributes;	
-	nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		//	
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["enable_decoratewidget"] = false;
+		$hovermenuargs["enable_deletewidget"] = false;
+		$hovermenuargs["enable_deleterow"] = true;
+		$hovermenuargs["metadata"] = $mixedattributes;	
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 
 	// render actual control / html
 	

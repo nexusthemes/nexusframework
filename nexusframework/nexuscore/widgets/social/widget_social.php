@@ -395,7 +395,6 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	}
 	
-	
 	// Turn on output buffering
 	nxs_ob_start();
 		
