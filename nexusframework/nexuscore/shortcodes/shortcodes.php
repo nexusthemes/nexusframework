@@ -1171,6 +1171,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$input = strip_tags($input);
 			//error_log("strip_tags; $orig becomes $input");
 		}
+		else if ($op == "substract")
+		{
+			$input = ($initial - $input);
+		}
 		else if ($op == "year" || $op == "currentyear")
 		{
 			$input = date("Y");
