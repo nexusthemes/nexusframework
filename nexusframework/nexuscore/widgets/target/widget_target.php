@@ -37,6 +37,27 @@ function nxs_widgets_target_home_getoptions($args)
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_target_getunifiedcontentgroup(),),
 		"fields" => array
 		(
+			// -------------------------------------------------------			
+			
+			// LOOKUPS
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state" => "closed",
+			),
+			array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),
 			
 			/* TITLE
 			---------------------------------------------------------------------------------------------------- */
@@ -323,12 +344,32 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text"));
 	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+		
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("title", "text", "button_text", "destination_url", "image_src", "destination_data");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}	
+		
+	// Widget specific variables
+	extract($mixedattributes);
+
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
-	
-	// Widget specific variables
-	extract($mixedattributes);
 
 	if ($render_behaviour == "code")
 	{
