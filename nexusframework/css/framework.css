@@ -204,6 +204,9 @@ button:hover,
 input[type=submit]:hover										{ opacity: 0.8; }
 
 /* DEFAULT FORM STYLING */
+
+input[type=text] { border: 1px solid #ccc; }
+
 .nxs-form input[type=submit] {text-indent: 0px; box-shadow: none; height: auto; font-size: auto; }
 .nxs-form input[type=text],.nxs-form input[type=email] { width: 100%; }
 .nxs-form label,
