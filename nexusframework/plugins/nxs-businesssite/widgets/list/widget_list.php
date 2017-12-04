@@ -969,12 +969,32 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			);
 			$subhtml = nxs_filter_translate_v2($translateargs);
 			
+			// auto generate nested templates (nxs_embed's of local wp posts)
+			// to re-use the properties of the item we are iterating over
+			$lookupscontext = "listwidget_{$postid}_{$placeholderid}_listitem";
+			
+			// add the lookup values from pluggable sources prior to applying the shortcodes
+			if (true)
+			{
+				$context = array
+				(
+					"prefix" => "parent.",
+					"modeluri" => $modeluri,
+				);
+				$sublookups = nxs_lookups_getlookups_for_context($context);
+				nxs_lookups_context_adddynamiclookups($lookupscontext, $sublookups);
+			}
+			
 			// apply shortcodes
 			$subhtml = do_shortcode($subhtml);
 			
+			// remove properties of nested template
+			if (true)
+			{
+				nxs_lookups_context_removedynamiclookups($lookupscontext);
+			}
+			
 			// ----
-			
-			
 		}
 		
 		$styleatt = "";

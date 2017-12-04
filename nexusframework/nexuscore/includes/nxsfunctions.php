@@ -6635,9 +6635,38 @@ function nxs_lookups_getcombinedlookups_for_currenturl()
 		}
 	}
 	
+	$result = $nxs_gl_combinedlookups_for_url;
+	$lfc = nxs_lookups_getlookups_for_context(array());
+	$result = array_merge($result, $lfc);
 	
-	
-	return $nxs_gl_combinedlookups_for_url;
+	return $result;
+}
+
+// 
+function nxs_f_lookups_context_includedynamiclookups($result = array(), $context = array())
+{
+	global $nxs_gl_dynamiclookups;
+	foreach ($nxs_gl_dynamiclookups as $key => $lookups)
+	{
+		if ($lookups != "")
+		{
+			$result = array_merge($result, $lookups);
+		}
+	}
+	return $result;
+}
+add_filter("nxs_f_lookups_context", "nxs_f_lookups_context_includedynamiclookups", 10, 2);
+
+function nxs_lookups_context_adddynamiclookups($key, $lookups)
+{
+	global $nxs_gl_dynamiclookups;
+	$nxs_gl_dynamiclookups[$key] = $lookups;
+}
+
+function nxs_lookups_context_removedynamiclookups($key)
+{
+	global $nxs_gl_dynamiclookups;
+	unset($nxs_gl_dynamiclookups[$key]);
 }
 
 function nxs_lookups_getlookups_for_context($context)
