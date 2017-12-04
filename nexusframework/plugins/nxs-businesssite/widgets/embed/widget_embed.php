@@ -329,6 +329,52 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 	{
 		nxs_renderplaceholderwarning($alternativemessage);
 	} 
+	else if (nxs_stringendswith($embeddabletypemodeluri, "@wp.post"))
+	{
+		$pieces = explode("@", $embeddabletypemodeluri);
+		$templatepostid = $pieces[0];
+		$rendermode = "anonymous";
+
+		$lookupscontext = "embedwidget_{$postid}_{$placeholderid}";
+		nxs_lookups_context_adddynamiclookups($lookupscontext, $args);
+
+		nxs_renderstack_push();
+		$content =  nxs_getrenderedhtml($templatepostid, "anonymous");
+		nxs_renderstack_pop();
+		
+		nxs_lookups_context_removedynamiclookups($lookupscontext);		
+		
+		// strip stuff		
+		$content = str_replace("nxs-sitewide-element", "template-sitewide-element", $content);
+		$content = str_replace("nxs-content-container", "template-content-container", $content);
+		$content = str_replace("nxs-article-container", "template-article-container", $content);
+		$content = str_replace("nxs-postrows", "template-postrows", $content);
+		$content = str_replace("nxs-row", "template-row", $content);
+		$content = str_replace("nxs-placeholder-list", "template-placeholder-list", $content);
+		$content = str_replace("ABC", "template-ABC", $content);
+		$content = str_replace("XYZ", "template-XYZ", $content);
+		$content = str_replace("nxs-widget-", "template-widget-", $content);
+		$content = str_replace("nxs-widget", "template-widget", $content);
+		$content = str_replace("nxs-placeholder", "template-placeholder", $content);
+		$content = str_replace("nxs-containsimmediatehovermenu", "template-containsimmediatehovermenu", $content);
+		$content = str_replace("has-no-sidebar", "template-has-no-sidebar", $content);
+		$content = str_replace("nxs-elements-container", "template-XYZ", $content);
+		$content = str_replace("nxs-runtime-autocellsize", "template-runtime-autocellsize", $content);
+		
+		echo "<style>";
+		echo "@media (max-width: 400px) {  .template-placeholder-list { display: block; }}";
+		echo ".template-placeholder-list { display: flex; justify-content: space-between; }";
+		echo ".template-placeholder { display:flex; list-style: none; margin-bottom: 30px; }";
+		echo ".template-placeholder.nxs-margin-bottom-0-0 { margin-bottom: 0px; }";
+		echo ".template-ABC { width: 100%; }";
+		echo ".template-sitewide-element { margin: 0 !important; padding: 0 !important; }";
+		echo ".template-placeholder-list .nxs-one-whole { width: 100% !important; border-right: 0px !important; }";
+		echo "</style>";
+		
+		echo $content;
+		
+		// echo "attributes;" . var_dump($args);
+	}
 	else 
 	{
 		//
@@ -455,8 +501,6 @@ function nxs_widgets_embed_render_webpart_render_htmlvisualization($args)
 			set_transient($transientkey, $content, $cacheduration);
 		}
 		
-		
-
 		if ($_REQUEST["debugembed"] == "true" && is_user_logged_in())
 		{
 			echo $url;
