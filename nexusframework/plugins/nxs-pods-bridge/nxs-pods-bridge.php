@@ -1,4 +1,5 @@
 <?php
+
 add_action('plugins_loaded', 'nxs_pods_bridge_plugins_loaded');
 function nxs_pods_bridge_plugins_loaded()
 {

@@ -18,6 +18,8 @@
 	
 	function nxs_pods_bridge_lookups_recursive_getpost_props($postid, $prefix, $recursionsleft = 3)
 	{
+		// die();
+	
 		$posttype = get_post_type($postid);
 		
 		$pod_meta = pods_api()->load_pod($posttype, false);
@@ -57,12 +59,17 @@
 			
 			$count = count($metas[$fieldname]);
 			
+
+			
 			if ($count == 0)
 			{
 				$add["{$prefix}{$fieldname}"] = "";
 			}
 			else if ($count == 1)
 			{
+				
+						
+		
 				$add["{$prefix}{$fieldname}"] = $metas[$fieldname][0];	// first
 				
 				// if field is recursive reference
@@ -91,6 +98,10 @@
 						{
 							// 
 						}
+						
+						
+						
+						$add["{$prefox}{$fieldname}"] = "{$related_postid}@wp.post";
 					}
 				}
 			}
