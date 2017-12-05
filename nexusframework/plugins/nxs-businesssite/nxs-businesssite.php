@@ -1383,6 +1383,7 @@ class nxs_g_modelmanager
 		{
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "embed");
+			$result[] = array("widgetid" => "embedrepeater");
 			
 			//$result[] = array("widgetid" => "socialaccounts");
 			//$result[] = array("widgetid" => "commercialmsgs");
@@ -1393,6 +1394,7 @@ class nxs_g_modelmanager
 		{
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "embed");
+			 
 			
 			//$result[] = array("widgetid" => "socialaccounts");
 		}
@@ -1573,6 +1575,8 @@ class nxs_g_modelmanager
 		nxs_lazyload_plugin_widget(__FILE__, "list");
 		
 		nxs_lazyload_plugin_widget(__FILE__, "embed");
+		
+		nxs_lazyload_plugin_widget(__FILE__, "embedrepeater");
 		
 		//nxs_lazyload_plugin_widget(__FILE__, "phone");
 		//nxs_lazyload_plugin_widget(__FILE__, "buslogo");
