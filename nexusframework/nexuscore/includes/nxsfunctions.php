@@ -13095,7 +13095,19 @@ function nxs_frontendframework_getfrontendframework()
 function nxs_popup_renderpopuptemplate($destination_popuparticleid, $domid)
 {
 	nxs_renderstack_push();
-	$templatehtml = nxs_getrenderedhtml($destination_popuparticleid, "anonymous");
+	
+	$mime = get_post_mime_type($destination_popuparticleid);
+	
+	if (nxs_stringstartswith($mime, "image"))
+	{
+		$url = wp_get_attachment_url($destination_popuparticleid);
+		$templatehtml = "<img style='max-width: 90vw; max-height: 90vh;' src='$url' />";
+	}
+	else
+	{
+		$templatehtml = nxs_getrenderedhtml($destination_popuparticleid, "anonymous");
+	}
+	
 	nxs_renderstack_pop();
 	?>
 	<template id='<?php echo $domid; ?>'>
