@@ -239,7 +239,7 @@ jQ_nxs(window).ready
 		nxs_js_initiatemenustate();
 		
 		// no background scrolling when hovering over admin top menu
-		nxs_js_disabledocumentscrollwhenhoveringoverelement("#vg_manualcss");
+		//nxs_js_disabledocumentscrollwhenhoveringoverelement("#vg_manualcss");
 		
 		nxs_js_reenable_all_window_events();
 		nxs_js_register_windowresizedend_event();
@@ -408,7 +408,7 @@ function nxs_js_disabledocumentscrollwhenhoveringoverelement(e)
         up = delta > 0;
 
     var prevent = function() {
-    	nxs_js_log("no propagation (7)");
+    	nxs_js_log("no propagation (7b)");
         ev.stopPropagation();
         ev.preventDefault();
         ev.returnValue = false;
@@ -4415,9 +4415,9 @@ function nxs_js_redirect_top(url)
 		{
 			// opens the popup window for this widget, defaults to the "home" sheet if not specified
 			var postid = nxs_js_findclosestpostid_for_dom(domelementinwidget);
-			var widget = jQ_nxs(domelementinwidget).closest(".nxs-placeholder").first();
+			var widget = jQ_nxs(domelementinwidget).closest(".nxs-placeholder").first();		
 			var placeholderid = nxs_js_getfirstplaceholderid_in_dom(widget);
-			var rowindex = nxs_js_getrowindex(widget);
+			var rowindex = nxs_js_getrowindex(widget);	
 			//
 			nxs_js_popup_placeholder_neweditsession(postid, placeholderid, rowindex, sheet);
 		}
