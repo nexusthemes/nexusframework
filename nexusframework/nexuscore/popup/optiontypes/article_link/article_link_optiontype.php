@@ -9,6 +9,16 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 	extract($runtimeblendeddata);
 	$value = $$id;	// $id is the parametername, $$id is the value of that parameter
 	
+	if (isset($popuprefreshonchange) && $popuprefreshonchange == "true")
+	{
+		$popuprefreshonchangeaction = "nxs_js_setpopupdatefromcontrols();nxs_js_popup_refresh_v2(true);";
+	}
+	else
+	{
+		$popuprefreshonchangeaction = "nxs_js_popup_sessiondata_make_dirty();";
+	}
+	
+	
 	$publishedargs = array();
 	$publishedargs["post_status"] 	= array("publish", "private");
 	
@@ -29,10 +39,10 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 								<div class="box">
 									' . nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip) . '
 									<div class="box-content">
-										<!-- ' . $id . ' -->
-										<select id="'. $id .'" class="chosen-select" name="'. $id .'" onchange="nxs_js_popup_sessiondata_make_dirty();">
-										';
-										 
+										<!-- ' . $id . ' -->';
+										?>										
+										<select id="<?php echo $id; ?>" class="chosen-select" name="<?php echo $id; ?>" onchange="nxs_js_popup_setsessiondata('<?php echo $id; ?>', jQ_nxs(this).val()); <?php echo $popuprefreshonchangeaction; ?> ">
+										<?php
 										if ($value == "" || $value == "0" || $post == null) 
 										{
 											$selected = "selected='selected'";
@@ -108,7 +118,7 @@ function nxs_popup_optiontype_article_link_renderhtmlinpopup($optionvalues, $arg
 											
 											<div>';
 											?>
-												<a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right">Select media item</a>
+												<a href="#" onclick='nxs_js_setpopupdatefromcontrols(); nxs_js_popup_setsessiondata("nxs_mediapicker_invoker", nxs_js_popup_getcurrentsheet()); nxs_js_popup_setsessiondata("nxs_mediapicker_targetvariable", "<?php echo $id;?>"); nxs_js_popup_navigateto("mediapicker"); return false;' class="nxsbutton1 nxs-float-right" style="margin-top: 10px;">Select media item</a>
 											<?php
 											echo '
 											</div>';
