@@ -24,6 +24,8 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 {
 	extract($args);
 	
+	$render_errors = array();
+	
 	if ($_REQUEST["check"] == "atts")
 	{
 		foreach ($args as $k=>$v)
@@ -72,6 +74,20 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $margin);
 	$border_radius_cssclass = nxs_getcssclassesforlookup("nxs-border-radius-", $border_radius);
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
+	
+	if ($destination_target == "_nxspopup")
+ 	{
+ 		if ($destination_popuparticleid == "")
+ 		{
+ 			$destination_popuparticleid = $destination_articleid;
+ 			$destination_articleid = "";
+ 		}
+ 		else
+ 		{
+ 			// add error to the list render_errors
+ 		}
+ 	}
+	
 	
 	if ($destination_articleid != "")
 	{
@@ -156,6 +172,18 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
  	else if ($destination_target == "_blank")
  	{
  		$destination_target = "_blank";
+ 	}
+ 	else if ($destination_target == "_nxspopup")
+ 	{
+ 		if ($destination_popuparticleid == "")
+ 		{
+ 			$destination_popuparticleid = $destination_articleid;
+ 			$destination_articleid = "";
+ 		}
+ 		else
+ 		{
+ 			// add error to the list render_errors
+ 		}
  	}
  	else
  	{
