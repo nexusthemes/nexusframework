@@ -88,7 +88,6 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
  		}
  	}
 	
-	
 	if ($destination_articleid != "")
 	{
 		$posttype = get_post_type($destination_articleid);
@@ -1537,6 +1536,23 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	$image_title = trim($image_title);
 	$image_maxheight_cssclass = nxs_getcssclassesforlookup("nxs-maxheight-", $image_maxheight);
 
+	if ($destination_target == "_nxspopup")
+ 	{
+		if ($destination_popuparticleid == "")
+ 		{
+ 			$destination_popuparticleid = $destination_articleid;
+ 			$domid = "nxs_popups_template_{$destination_popuparticleid}";
+			nxs_popup_renderpopuptemplate($destination_popuparticleid, $domid);
+			$url = "#";
+			$destination_js = "nxs_js_popup_setsessioncontext('currentpopuptemplateid', '{$domid}'); ";
+ 			$destination_articleid = "";
+ 		}
+ 		else
+ 		{
+ 			// add error to the list render_errors
+ 		}
+ 	}
+
 	if ($image_size == "")
 	{
 		$image_size = "auto-fit";
@@ -1659,6 +1675,10 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
  	{
  		$destination_target = "_blank";
  	}
+ 	else if ($destination_target == "_nxspopup")
+ 	{
+ 		$destination_target = "_nxspopup";
+ 	}
  	else
  	{
  		$destination_target = "_self";
@@ -1676,8 +1696,13 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 		$image_border = '<a target="' . $destination_target . '" ' . $destination_relation_html . ' href="' . $destination_articleid .'">' . $image_border . '</a>';
 	} 
 	else if ($destination_url != "") 
-		{
+	{
 		$image_border = '<a target="' . $destination_target . '" ' . $destination_relation_html . ' href="' . $destination_url .'" target="_blank">' . $image_border . '</a>';
+	}
+	else if ($destination_js != "")
+	{
+		$onclick = "onclick='" . nxs_render_html_escape_singlequote($destination_js) . "' ";
+		$image_border = "<a href='#' target='_blank' $onclick>{$image_border}</a>";
 	}
 	
 	// Image
