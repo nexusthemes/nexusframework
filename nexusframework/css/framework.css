@@ -3568,7 +3568,7 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-angieslist:before				{ content: "\e641";	}
 .nxs-icon-snapchat:before				{ content: "\e642";	}
 .nxs-icon-nexus:before					{ content: "\e643";	}
-.nxs-icon-marketingmadness:before		{ content: "\e644";	}
+.nxs-icon-github:before					{ content: "\e644";	}
 
 /* Crappicons */
 .nxs-icon-cockroach:before 				{ content: "\e900"; }
