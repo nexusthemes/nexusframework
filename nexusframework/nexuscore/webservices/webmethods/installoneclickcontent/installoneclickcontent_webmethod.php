@@ -149,6 +149,15 @@ function nxs_webmethod_installoneclickcontent()
 	{
 		$isok = true;
 		echo "<h2>Checking dependencies</h2>";
+		
+		$ver = (float)phpversion();
+		if ($ver < 5.6) 
+		{
+			error_log("theme; requires php 5.6 or above");
+			echo "Error; this theme requires at least PHP 5.6 (found: $ver). Please contact your hosting provider and ask them to upgrade the PHP version.";
+			$isok = false;
+		}
+		
 		if(!function_exists("zip_open"))
 		{
 			error_log("function zip_open not found; install /enable/ the php-zip module to fix this problem");
