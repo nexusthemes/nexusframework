@@ -31,6 +31,8 @@ body														{ height: 100%; }
 	overflow: visible;
 }
 
+.nxs-custom-html * { box-sizing: border-box; } 
+
 .nxs-postrows {
 	/* the "padding-top and margin-top; property is necessary to prevent parent div's to move when a margin is set on the child div */
 	/* normally the overflow: auto; on the nxs-container should fix this problem, but not in firefox */
@@ -205,7 +207,7 @@ input[type=submit]:hover										{ opacity: 0.8; }
 
 /* DEFAULT FORM STYLING */
 
-input[type=text] { border: 1px solid #ccc; }
+input[type=text], input[type=tel], input[type=email] { border: 1px solid #ccc; padding: 1px; }
 
 .nxs-form input[type=submit] {text-indent: 0px; box-shadow: none; height: auto; font-size: auto; }
 .nxs-form input[type=text],.nxs-form input[type=email] { width: 100%; }
