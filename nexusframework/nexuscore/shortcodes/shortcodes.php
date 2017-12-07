@@ -1165,6 +1165,17 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$input = $atts["else"];
 			}
 		}
+		else if ($op == "map")
+		{
+			if (isset($atts[$input]))
+			{
+				$input = $atts[$input];
+			}
+			else
+			{
+				$input = $atts["fallback"];
+			}
+		}
 		else if ($op == "strip_tags")
 		{
 			$orig = $input;
