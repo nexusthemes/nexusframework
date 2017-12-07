@@ -652,6 +652,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"snapchat",
 										"angieslist",
 										"nexus",
+										"github",
 									);
 										
 									foreach($icontypes as $currenticontype)
