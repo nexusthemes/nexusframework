@@ -194,9 +194,15 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		$destination_relation_html = 'rel="nofollow"';
 	}
 	
+	$title_att = "";
+	if ($title != "")
+	{
+		$title_att = "title='" . esc_html($title) . "'";
+	}
+	
 	$result = '';
 	$result .= '<p class="' . $align . ' nxs-padding-bottom0">';
-	$result .= '<a target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $scale_cssclass . ' ' . $border_radius_cssclass . ' ' . $margin_cssclass . ' ' . $colorzen . ' ' . $fontzen_cssclass . '" href="' . $url . '">' . $text . '</a>';
+	$result .= '<a '.$title_att.' target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $scale_cssclass . ' ' . $border_radius_cssclass . ' ' . $margin_cssclass . ' ' . $colorzen . ' ' . $fontzen_cssclass . '" href="' . $url . '">' . $text . '</a>';
 	$result .= '</p>';
 	
 	return $result;

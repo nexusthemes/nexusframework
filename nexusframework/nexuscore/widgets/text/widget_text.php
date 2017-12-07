@@ -293,6 +293,14 @@ function nxs_widgets_text_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),	
+			array(
+				"id" 				=> "button_title",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Button hover text", "nxs_td"),
+				"placeholder"		=> "",
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
 			
 			array(
 				"id" 				=> "button_scale",
@@ -808,6 +816,7 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 	
 	$buttonargs = array
 	(
+		"title" => $button_title,
 		"text" => $button_text,
 		"scale" => $button_scale,
 		"colorzen" => $button_color,
