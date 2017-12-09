@@ -6636,7 +6636,7 @@ function nxs_lookups_getcombinedlookups_for_currenturl()
 	}
 	
 	$result = $nxs_gl_combinedlookups_for_url;
-	$lfc = nxs_lookups_getlookups_for_context(array());
+	$lfc = nxs_lookups_getlookups_for_context(array("id"=>"nxs_lookups_getcombinedlookups_for_currenturl"));
 	$result = array_merge($result, $lfc);
 	
 	return $result;

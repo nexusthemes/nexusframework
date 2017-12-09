@@ -1024,11 +1024,11 @@ function nxs_widgets_embedrepeater_render_webpart_render_htmlvisualization($args
 		// add the lookup values from pluggable sources
 		$context = array
 		(
+			"id" => "widget_embedrepeater",
 			"prefix" => "i.",
 			"modeluri" => $modeluri,
 		);
 		$add = nxs_lookups_getlookups_for_context($context);
-		
 		$lookup = array_merge($lookup, $add);
 		
 		// add the lookup values from the widget itself
@@ -1195,6 +1195,7 @@ function nxs_widgets_embedrepeater_render_webpart_render_htmlvisualization($args
 			{
 				$context = array
 				(
+					"id" => "widget_embedrepeater",
 					"prefix" => "parent.",
 					"modeluri" => $modeluri,
 				);

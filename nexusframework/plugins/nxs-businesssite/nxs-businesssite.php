@@ -999,23 +999,6 @@ class nxs_g_modelmanager
 			"featuredimgid" => $imageid,
 		);
 		
-		/*
-		$pm = get_post_meta($postid);
-		foreach ($pm as $key => $val)
-		{
-			if (is_array($val))
-			{
-				$extendedproperties[$key] = $val[0];
-				$keyvalues[$key] = $val[0];
-			}
-			else
-			{
-				$extendedproperties[$key] = $val;
-				$keyvalues[$key] = $val;
-			}
-		}
-		*/
-
 		$filterargs = array
 		(
 			"postid" => $postid,
@@ -1799,6 +1782,41 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	
+	function nxs_f_lookups_context($result = array(), $context = array())
+	{
+		if ($context["id"] == "widget_embedrepeater")
+		{
+			$prefix = $context["prefix"];
+			$modeluri = $context["modeluri"];
+			
+			if ($modeluri != "")
+			{
+				$pieces = explode("@", $modeluri);
+				$schema = $pieces[1];
+				
+				if ($schema != "wp.post")
+				{
+					$properties = $this->getmodeltaxonomyproperties(array("modeluri"=>$modeluri));
+					$add = array();
+					foreach ($properties as $key => $val)
+					{
+						$add["{$prefix}{$key}"] = $val;
+					}
+					//var_dump($add);
+					//die();
+					$result = array_merge($result, $add);
+					
+				}
+			}
+		}
+	
+		//echo json_encode($result);
+		//die();
+		
+		return $result;
+	}	
+	
 	function __construct()
   {
   	add_filter('init', array($this, "instance_init"), 5, 1);
@@ -1816,6 +1834,9 @@ class nxs_g_modelmanager
 			add_filter('wpseo_robots', array($this, 'wpseo_robots'), 99999);
 			
 		}
+		
+		// allow the system to populate the properties of the model for the lookups automatically
+		add_filter("nxs_f_lookups_context", array($this, "nxs_f_lookups_context"), 5, 2);
   }
   
 	/* ---------- */
