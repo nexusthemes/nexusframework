@@ -32,7 +32,7 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
 	$response=$_POST["g-recaptcha-response"];
 	if ($response) 
 	{
-		$verify=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$privatekey}&response={$response}");
+		$verify=url_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$privatekey}&response={$response}");
 		$captcha_success=json_decode($verify);
 		if ($captcha_success->success==true)
     {
@@ -42,6 +42,8 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
     else 
     {
     	$result["validationerrors"][] = nxs_l18n__("Wrong Captcha", "nxs_td");
+    	//$result["validationerrors"][] = "length:".strlen($verify);
+    	//$result["validationerrors"][] = nxs_l18n__("DEBUG:" . $verify, "nxs_td");
       // set the error code so that we can display it
       // $error = $resp->error;
     }
