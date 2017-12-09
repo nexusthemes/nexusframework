@@ -1679,6 +1679,7 @@ function nxs_sc_bool($atts, $content = null, $name='')
 	return $output;
 }
 add_shortcode('nxsbool', 'nxs_sc_bool');
+add_shortcode('nxs_bool', 'nxs_sc_bool');
 
 function nxs_sc_command($atts, $content = null, $name='') 
 {
