@@ -434,10 +434,14 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		if (is_numeric($image_data))
 		{
 			$image_imageid = $image_data;
+			$image_src = "";
+			$image_data = "";
 		}
 		else
 		{
 			$image_src = $image_data;
+			$image_imageid = "";
+			$image_data = "";
 		}
 	}
 	
@@ -577,7 +581,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	if ($image_imageid != "" || $image_src != "") 
 	{
 		// if image is 'set'
-		$image_imageid = '
+		$image_html = '
 			<div class="nxs-relative nxs-overflow '.$image_shadow.' '.$image_alignment.'" style="max-width: '.$max_width.'; '.$border_radius.'">
 				'.$html.'
 			</div>';
@@ -621,8 +625,22 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 				//"align" => $halign,	// not fully compatible i think?
 				"image_alignment" => $halign,	// not fully compatible i think?
 				"image_size" => $image_size,
+				
+				"destination_articleid" => $destination_articleid,
+				"destination_url" => $destination_url,
+				"destination_target" => $destination_target,
+				"destination_relation" => $destination_relation,
+
 			);
+			
+			// logo class is necessary to enable autoscaling for "original" sized images
+			echo '<div class="nxs-applylinkvarcolor nxs-logo">';	
+			echo $htmltitle;
+			if ($htmltitle != "" && $image_html != "") { 
+				echo $filler; 
+			}
 			echo nxs_gethtmlforimage_v3($a);
+			echo '</div>';
 		}
 		else
 		{
@@ -631,10 +649,10 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 			// logo class is necessary to enable autoscaling for "original" sized images
 			echo '<div class="nxs-applylinkvarcolor nxs-logo">';	
 			echo $htmltitle;
-			if ($htmltitle != "" && $image_imageid != "") { 
+			if ($htmltitle != "" && $image_html != "") { 
 				echo $filler; 
 			}
-			echo $image_imageid;
+			echo $image_html;
 			echo '</div>';
 		}   
 	} 

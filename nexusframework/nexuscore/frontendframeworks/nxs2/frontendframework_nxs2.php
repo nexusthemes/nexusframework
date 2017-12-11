@@ -1265,7 +1265,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 {
 	extract($args);
-	
+		
 	if ($title == "")
 	{
 		return "";
@@ -1382,7 +1382,7 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	{
 		$result = '<a href="' . $destination_url .'" '.$destination_target_html.' '.$destination_relation_html.'>' . $result . '</a>';
 	}
-	
+
 	return $result;
 }
 
