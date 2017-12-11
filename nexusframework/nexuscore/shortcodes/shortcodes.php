@@ -231,7 +231,12 @@ function nxs_sc_string($atts, $content = null, $name='')
 				return "urlprettyfy;debug;($content);($input);($value)";
 			}
 			
-			if (nxs_stringcontains($input, "http"))
+			$lower = trim(strtolower($input));
+			if (nxs_stringstartswith($lower, "http:"))
+			{
+				// ignore; already handled
+			}
+			else if (nxs_stringstartswith($lower, "https:"))
 			{
 				// ignore; already handled
 			}
@@ -853,6 +858,9 @@ function nxs_sc_string($atts, $content = null, $name='')
 				if ($cachebehaviour == "")
 				{
 				}
+				else if ($cachebehaviour == "none")
+				{
+				}
 				else if ($cachebehaviour == "refreshfirstphpruntime")
 				{
 					// refreshes the cache the first time this is requested in the php runtime duration
@@ -1136,6 +1144,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 				{
 					$instanceuris[] = $instanceuri;
 				}
+				
+				
 			}
 			
 			$input = implode(";", $instanceuris);
