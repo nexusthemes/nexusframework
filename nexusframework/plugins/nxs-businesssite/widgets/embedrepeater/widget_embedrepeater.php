@@ -333,6 +333,10 @@ function nxs_widgets_embedrepeater_home_getoptions($args)
 					"2"		=>"2",
 					"3"		=>"3",
 					"4"		=>"4",
+					"5"		=>"5",
+					"6"		=>"6",
+					"7"		=>"7",
+					"8"		=>"8",
 				),
 				"unistylablefield"	=> true
 			),
@@ -1252,12 +1256,15 @@ function nxs_widgets_embedrepeater_render_webpart_render_htmlvisualization($args
 		}
 	}
 	
-	// fill up tail items to fix flex box wrap ...
-	$numbertofillup = $actuallyrendered % $max_items_horizontally;
-	while ($numbertofillup > 0)
+	if ($actuallyrendered > 0)
 	{
-		$html .= "<div class='repeater-item'></div>";
-		$numbertofillup--;
+		// fill up tail items to fix flex box wrap ...
+		$numbertofillup = ($max_items_horizontally % $actuallyrendered);
+		while ($numbertofillup > 0)
+		{
+			$html .= "<div class='repeater-item'></div>";
+			$numbertofillup--;
+		}
 	}
 	
 	$html .= $widget_end_htmltemplate;
