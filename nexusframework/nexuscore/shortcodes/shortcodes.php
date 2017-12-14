@@ -162,7 +162,22 @@ function nxs_sc_string($atts, $content = null, $name='')
 		else if ($op == "sitemapentry")
 		{
 			// todo: also support the changefreq and priority
-			$url = nxs_url_prettyfy($atts["url"]);
+			
+			$url = $atts["url"];
+			
+			$shouldprettyfy = true;
+			if (nxs_stringcontains($url, "http://"))
+			{
+				$shouldprettyfy = false;
+			}
+			if (nxs_stringcontains($url, "https://"))
+			{
+				$shouldprettyfy = false;
+			}
+			if ($shouldprettyfy)
+			{
+				$url = nxs_url_prettyfy($url);
+			}
 			$input = "<url><loc>{$url}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>";
 			
 			if (is_user_logged_in())
