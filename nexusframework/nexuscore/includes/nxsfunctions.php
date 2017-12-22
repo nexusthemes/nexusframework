@@ -5419,6 +5419,10 @@ function nxs_iswebmethodinvocation()
 	{
 		$result = true;
 	}
+	else if (defined('DOING_AJAX') && DOING_AJAX)
+	{
+		$result = true;
+	}
 	return $result;
 }
 
@@ -9693,6 +9697,7 @@ function nxs_url_prettyfy($slug, $homeurl = "")
 			}	
 		}
 	}
+	
 	return $slug;
 }
 
