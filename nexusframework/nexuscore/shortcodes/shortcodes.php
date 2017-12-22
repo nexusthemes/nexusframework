@@ -1215,6 +1215,14 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = date("Y");
 		}
+		else if ($op == "currenturi")
+		{
+			$input = nxs_geturicurrentpage();
+			if ($atts["urlencode"] == "true")
+			{
+				$input = url_encode($input);
+			}
+		}
 		else if ($op == "currenturl")
 		{
 			$input = nxs_geturlcurrentpage();
@@ -1222,6 +1230,54 @@ function nxs_sc_string($atts, $content = null, $name='')
 			{
 				$input = url_encode($input);
 			}
+		}
+		else if ($op == "dumppost")
+		{
+			$postid = get_the_ID();
+			$input = "";
+			$input .= "<div class='nxs-text'><div class='nxs-dump nxs-default-p nxs-text'><p><table>";
+			//
+			$key = "posttype";
+			$val = nxs_getwpposttype($postid);
+			$input .= "<tr><td>{$key}</td><td>{$val}</td></tr>";
+			//
+			$key = "status";
+			$val = get_post_status($postid);
+			$input .= "<tr><td>{$key}</td><td>{$val}</td></tr>";
+			//
+			$key = "categories";
+			$val = "";
+			$categories = get_the_category($postid);
+			foreach ($categories as $cat)
+			{
+				$val .= "'" . esc_html( $cat->name ) . "'<br />";
+			}
+			$input .= "<tr><td>{$key}</td><td>{$val}</td></tr>";
+			//
+			$input .= "</table></p></div></div>";
+		}
+		else if ($op == "dumpuser")
+		{
+			// $postid = get_the_ID();
+			$input = "";
+			$input .= "<div class='nxs-text'><div class='nxs-dump nxs-default-p nxs-text'><p><table>";
+			//
+			//
+			$key = "capabilities";
+			$val = "";
+			$data = get_userdata( get_current_user_id() );
+			$current_user_caps = $data->allcaps;
+			foreach ($current_user_caps as $cap => $enabled)
+			{
+				if ($enabled)
+				{
+					$val .= $cap . "<br />";
+				}
+			}
+			
+			$input .= "<tr><td>{$key}</td><td>{$val}</td></tr>";
+			//
+			$input .= "</table></p></div></div>";
 		}
 		else if ($op == "addqueryparameter")
 		{
@@ -1374,35 +1430,87 @@ function nxs_sc_bool($atts, $content = null, $name='')
 	foreach ($opslist as $op)
 	{
 		$op = trim($op);
-		if ($op == "isnotempty" || $op == "!isempty")
+		
+		if (false)
 		{
-			$orig = $input;
-			
-			if (trim($input) == "")
-			{
-				$input = "false";
-			}
-			else
-			{
-				$input = "true";
-			}
-			/*			
-			if ($orig != "")
-			{
-				error_log("shortcode condition $op [$orig] becomes [$input]");			
-			}
-			*/
+			//
 		}
-		else if ($op == "isempty")
+		
+		else if ($op == "isempty" || $op == "isnotempty" || $op == "notempty" || $op == "!isempty")
 		{
-			if (trim($input) == "")
+			$evaluation = trim($input) == "";
+			if (nxs_stringstartswith($op, "!") || nxs_stringstartswith($op, "not") || nxs_stringstartswith($op, "isnot")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "in_array" || $op == "!in_array")
+		{
+			$array = $atts["array"];
+			$pieces = explode(";", $array);
+			
+			$evaluation = in_array($value, $pieces);
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "is_home" || $op == "!is_home")
+		{
+			$evaluation = is_home();
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "is_singular" || $op == "!is_singular")
+		{
+			$post_types = $atts["post_types"];
+			$evaluation = is_singular($post_types);
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "in_category" || $op == "!in_category")
+		{
+			$category = $atts["category"];
+			$evaluation = in_category($category);
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "is_user_logged_in" || $op == "!is_user_logged_in")
+		{
+			$evaluation = is_user_logged_in();
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "is_anonymous" || $op == "!is_anonymous")
+		{
+			$evaluation = !is_user_logged_in();
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "current_user_can" || $op == "!current_user_can" || $op == "has_capability" || $op == "!has_capability"  || $op == "has_cap" || $op == "!has_cap")
+		{
+			$capability = $atts["capability"];
+			$capability = str_replace(" ","_", $capability);	// sanitize the capability; spaces are not allowed; replace them with _'s
+			$evaluation = current_user_can($capability);
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "contains" || $op == "!contains")
+		{
+			$needle = $atts["containsneedle"];
+			if ($needle == "")
 			{
-				$input = "true";
+				$needle = $atts["needle"];
 			}
-			else
-			{
-				$input = "false";
-			}
+			$ignorecase = $atts["ignorecase"] === "true";
+			
+			$evaluation = nxs_stringcontains_v2($input, $needle, $ignorecase);
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
+		else if ($op == "equals" || $op == "!equals" || $op == "notequals")
+		{
+			$equalsvalue = $atts["equalsvalue"];
+			
+			$evaluation = ($input == $equalsvalue);
+			if (nxs_stringstartswith($op, "!") || nxs_stringstartswith($op, "not")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
 		}
 		else if ($op == "is_numeric")
 		{
@@ -1414,79 +1522,6 @@ function nxs_sc_bool($atts, $content = null, $name='')
 			{
 				$input = "false";
 			}
-		}
-		else if ($op == "contains")
-		{
-			$needle = $atts["containsneedle"];
-			if ($needle == "")
-			{
-				$needle = $atts["needle"];
-			}
-			$ignorecase = $atts["ignorecase"] === "true";
-			
-			if (nxs_stringcontains_v2($input, $needle, $ignorecase))
-			{
-				$input = "true";
-			}
-			else
-			{
-				$input = "false";
-			}
-			
-			if ($_REQUEST["scdebug"] == "true")
-			{
-				echo "shortcode condition [$input][$needle] evaluates to [$input]";
-				die();
-			}
-		}
-		else if ($op == "!contains")
-		{
-			$needle = $atts["containsneedle"];
-			$ignorecase = $atts["ignorecase"] === "true";
-			
-			if (nxs_stringcontains_v2($input, $needle, $ignorecase))
-			{
-				$input = "false";
-			}
-			else
-			{
-				$input = "true";
-			}
-		}
-		else if ($op == "equals")
-		{
-			$i = $input;
-			$equalsvalue = $atts["equalsvalue"];
-			
-			if ($input == $equalsvalue)
-			{
-				$input = "true";
-			}
-			else
-			{
-				$input = "false";
-				
-			
-			}
-			
-			if ($atts["debug"])
-			{
-				$input = "'$i' vs '$equalsvalue' becomes '$input'";
-			}
-		}
-		else if ($op == "!equals" || $op == "notequals")
-		{
-			$equalsvalue = $atts["equalsvalue"];
-			$orig = $input;
-			if ($input == $equalsvalue)
-			{
-				$input = "false";
-			}
-			else
-			{
-				$input = "true";
-			}
-			// error_log("shortcode condition [$op][$orig][$equalsvalue] evaluates to [$input]");
 		}
 		else if ($op == "httpok")
 		{
@@ -1580,29 +1615,14 @@ function nxs_sc_bool($atts, $content = null, $name='')
 			}
 			else
 			{
-				$input = "err";
-			}
-		}
-		else if ($op == "is_user_logged_in")
-		{
-			if (is_user_logged_in())
-			{
-				$input = "true";
-			}
-			else
-			{
-				$input = "false";
-			}
-		}
-		else if ($op == "is_anonymous")
-		{
-			if (is_user_logged_in())
-			{
-				$input = "false";
-			}
-			else
-			{
-				$input = "true";
+				if (isset($atts["fallback"]))
+				{
+					$input = $atts["fallback"];
+				}
+				else
+				{
+					$input = "err";
+				}
 			}
 		}
 		else if ($op == "modelexists")
@@ -1649,36 +1669,7 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		  	}
 		  }
 		}
-		else if ($op == "in_array")
-		{
-			$array = $atts["array"];
-			$pieces = explode(";", $array);
-			if (in_array($value, $pieces))
-			{
-				$input = "true";
-			}
-			else
-			{
-				$input = "false";
-			}
-		}
-		else if ($op == "!in_array")
-		{
-			$array = $atts["array"];
-			$pieces = explode(";", $array);
-			if (in_array($value, $pieces))
-			{
-				$input = "false";
-			}
-			else
-			{
-				$input = "true";
-			}
-		}
-		else if ($op == "is_home")
-		{
-			$input = is_home() ? "true" : "false";
-		}
+		
 		else
 		{
 			// bool operation to be implemented ...
