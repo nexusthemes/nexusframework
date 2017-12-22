@@ -116,7 +116,13 @@ function nxs_handle_maintenancemode()
 
 function nxs_handle_404()
 {
-	if (is_404())
+	global $nxs_gl_ptr;
+	
+	global $nxs_gl_ptr;
+	if ($nxs_gl_ptr["is_404"] === "false")
+	{
+	}
+	else if (is_404())
 	{
 		header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found Page Template");
 		header("Status: 404 Not Found Page Template 2");
