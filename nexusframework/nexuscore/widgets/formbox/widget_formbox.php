@@ -323,6 +323,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> "Identifier",
 				"placeholder" 		=> "Title goes here",
 				"tooltip" 			=> nxs_l18n__("Semantic and identifying name of this form. This identifies the container used to store submitted forms.", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -332,6 +333,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"placeholder" 		=> "Internal email",
 				"tooltip" 			=> nxs_l18n__("Enter here a valid existing e-mail address (most likely: your e-mail address) that should be notified when this form is submitted, for example yourname@yourdomain.com", "nxs_td"),
 				"footernote" => "<div class='content' style='font-size: smaller; font-style: italic;'><a target='_blank' href='https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1536984796'>Not receiving e-mails? Click here</a></div>",
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "subject_email",
@@ -339,6 +341,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> "Subject email",
 				"placeholder" 		=> "Subject email",
 				"tooltip" 			=> nxs_l18n__("Is there a particular subject you want to use for the notification e-mail? If so, enter it here (for example: information request from website)", "nxs_td"),
+				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array(
@@ -347,6 +350,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> "Sender email",
 				"placeholder" 		=> "Internal email",
 				"tooltip" 			=> nxs_l18n__("Enter a valid e-mail address here to use as the sender of the notification mails (for example: site@yourname.com).", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "sender_name",
@@ -354,18 +358,21 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> "Sender name",
 				"placeholder" 		=> "Name of email sender",
 				"tooltip" 			=> nxs_l18n__("What should be the name of the sender of the notifications? (for example: Your Name)", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "mail_body_includesourceurl",
 				"type" 				=> "checkbox",
 				"label" 			=> nxs_l18n__("Include form source URL", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("When checked, the source URL from where this form was posted will be included in the email send", "nxs_td"),
+				"unicontentablefield" => true,
 			),
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
 				"label" 			=> nxs_l18n__("Thank you page", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Use this to thank the visitor for taking the time to send an email by redirecting them to this page.", "nxs_td"),
+				"unistylablefield"	=> true,
 			),
 			array( 
 				"id" 				=> "submittedforms",
@@ -497,6 +504,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 {	
 	// Importing variables
 	extract($args);
+	
 	
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
