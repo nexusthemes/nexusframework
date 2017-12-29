@@ -28,7 +28,7 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 	
 	?>
 
-      <div class="content2">
+  <div class="content2">
 		<div class="box">
 			<?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
 			<div class="box-content">
@@ -79,7 +79,7 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
         					} 
 						?>
 					</ul>
-					<p class="nxs-radiobuttons-text"><?php echo $radiobuttons_text; ?></p>
+					<p class="nxs-radiobuttons-text" style="display: none"><?php echo $radiobuttons_text; ?></p>
 					<input type="hidden" id="<?php echo $id; ?>" name="<?php echo $id; ?>" value="<?php echo $value; ?>" />
 				</div>
 			</div>
