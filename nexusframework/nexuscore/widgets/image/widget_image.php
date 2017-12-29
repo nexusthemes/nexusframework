@@ -190,7 +190,16 @@ function nxs_widgets_image_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true,
 				"requirecapability" => nxs_cap_getdesigncapability(),
-			),		
+			),
+			array
+			(
+				"id" 				=> "image_title",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image title", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true,
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),	
 			array
 			(
 				"id" 				=> "image_border_width",
@@ -551,11 +560,18 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		$image_alt = get_post_meta($image_imageid, '_wp_attachment_image_alt', true);
 	}
 	
+	$image_title_attribute = "";
+	if ($image_title != "")
+	{
+		$image_title = str_replace("\"", "&quote;", $image_title);
+		$image_title_attribute = " title=\"{$image_title}\"";
+	}
+	
 	// Original vs stretched images
 	if ($image_size == 'original') {
-		$html = '<img src="'.$imageurl.'" class="v1 '.$grayscale.' '.$enlarge.'" style="display: block; align-self:center;'.$border_radius.'" alt="'.$image_alt.'">';
+		$html = '<img src="'.$imageurl.'" class="v1 '.$grayscale.' '.$enlarge.'" style="display: block; align-self:center;'.$border_radius.'" alt="'.$image_alt.'"'.$image_title_attribute.'>';
 	} else {
-		$html = '<img src="'.$imageurl.'" class="v2 nxs-stretch '.$grayscale.' '.$enlarge.'" style="display: block; align-self:center; '.$border_radius.'" alt="'.$image_alt.'">';
+		$html = '<img src="'.$imageurl.'" class="v2 nxs-stretch '.$grayscale.' '.$enlarge.'" style="display: block; align-self:center; '.$border_radius.'" alt="'.$image_alt.'"'.$image_title_attribute.'>';
 	}
 
 	// Image max size
