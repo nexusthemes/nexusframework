@@ -119,9 +119,29 @@ function nxs_widgets_text_home_getoptions($args)
 				"type" 				=> "radiobuttons",
 				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
-				"unistylablefield"	=> true
+				"unistylablefield"	=> true,
+				"mobile_action_toggles" => ".nxs-viewport-dependent",
 			),
-						
+			array(
+				"id" 				=> "title_alignment_tablet",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("", "nxs_td"),
+				"unistylablefield"	=> true,
+				"display" => "noneifempty",
+				"fortablets" => true,
+				"enable_deselect" => true,
+			),
+			array(
+				"id" 				=> "title_alignment_mobile",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("", "nxs_td"),
+				"unistylablefield"	=> true,
+				"display" => "noneifempty",
+				"formobiles" => true,
+				"enable_deselect" => true,
+			),
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
@@ -975,12 +995,16 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		$shouldapplylinkvarcolor = true; 
 	}
 	
+	
+	
 	// new implementation delegates rendering the title to the frontendframework
 	$a = array
 	(
 		"title" => $title,
 		"heading" => $title_heading,
 		"align" => $title_alignment,
+		"align_tablet" => $title_alignment_tablet,
+		"align_mobile" => $title_alignment_mobile,
 		"fontsize" => $title_fontsize,
 		"heightiq" => "title",
 		"destination_articleid" => $destination_articleid,
@@ -992,7 +1016,6 @@ function nxs_widgets_text_render_webpart_render_htmlvisualization($args)
 		"fontzen" => $title_fontzen,
 	);
 	$titlehtml = nxs_gethtmlfortitle_v4($a);
-	
 	
 	/* IMAGE
 	---------------------------------------------------------------------------------------------------- */

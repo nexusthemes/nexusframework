@@ -7151,33 +7151,64 @@ function nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblen
 	
 	if ($optionvalues["unistylablefield"] == true) 
 	{
-		$unistyle = $runtimeblendeddata["unistyle"];
-		$unicontent = $runtimeblendeddata["unicontent"];
-		$title = "";
-		$helpurl = "https://www.wpsupporthelp.com/answer/what-is-the-the-unistyle-wordpress-feature-i-want-to-add-more-w-1065/";
-		$icon = "nxs-icon-pagedecorator";
-		$opacity = "0.5";
-		if ($unistyle != "") 
+		if ($optionvalues["formobiles"] == true) 
 		{
-			$opacity = "1.0";
-			$title = "This style property is shared ($unistyle)";
+			// ignore it; indicator will be renders in rows above
 		}
-		$result .= "<a href='{$helpurl}' target='_blank' title='{$title}'><span class='{$icon}' style='opacity: {$opacity};'></span></a>";
+		else if ($optionvalues["fortablets"] == true) 
+		{
+			// ignore it; indicator will be renders in rows above
+		}
+		else
+		{
+			$unistyle = $runtimeblendeddata["unistyle"];
+			$unicontent = $runtimeblendeddata["unicontent"];
+			$title = "";
+			$helpurl = "https://www.wpsupporthelp.com/answer/what-is-the-the-unistyle-wordpress-feature-i-want-to-add-more-w-1065/";
+			$icon = "nxs-icon-pagedecorator";
+			$opacity = "0.5";
+			if ($unistyle != "") 
+			{
+				$opacity = "1.0";
+				$title = "This style property is shared ($unistyle)";
+			}
+			$result .= "<a href='{$helpurl}' target='_blank' title='{$title}'><span class='{$icon}' style='opacity: {$opacity};'></span></a>";
+		}
 	}
 	
 	if ($optionvalues["unicontentablefield"] == true) 
 	{
-		$unicontent = $runtimeblendeddata["unicontent"];
-		$title = "";
-		$helpurl = "https://www.wpsupporthelp.com/answer/how-to-share-the-same-content-widgets-between-2-seperate-sideb-1073/";
-		$icon = "nxs-icon-pen";
-		$opacity = "0.5";
-		if ($unicontent != "") 
+		if ($optionvalues["formobiles"] == true) 
 		{
-			$opacity = "1.0";
-			$title = "This content property is shared ($unicontent)";
+			// ignore it; indicator will be renders in rows above
 		}
-		$result .= "<a href='{$helpurl}' target='_blank' title='{$title}'><span class='{$icon}' style='opacity: {$opacity};'></span></a>";
+		else if ($optionvalues["fortablets"] == true) 
+		{
+			// ignore it; indicator will be renders in rows above
+		}
+		else
+		{
+			$unicontent = $runtimeblendeddata["unicontent"];
+			$title = "";
+			$helpurl = "https://www.wpsupporthelp.com/answer/how-to-share-the-same-content-widgets-between-2-seperate-sideb-1073/";
+			$icon = "nxs-icon-pen";
+			$opacity = "0.5";
+			if ($unicontent != "") 
+			{
+				$opacity = "1.0";
+				$title = "This content property is shared ($unicontent)";
+			}
+			$result .= "<a href='{$helpurl}' target='_blank' title='{$title}'><span class='{$icon}' style='opacity: {$opacity};'></span></a>";
+		}
+	}
+	
+	if ($optionvalues["fortablets"] == true) 
+	{
+		$result .= "<span class='nxs-icon-tablet' title='for tablets' style='font-size: 32px;'></span>";
+	}
+	if ($optionvalues["formobiles"] == true) 
+	{
+		$result .= "<span class='nxs-icon-mobile' title='for mobiles' style='font-size: 32px;'></span>";
 	}
 	
   $result .= "</div>";

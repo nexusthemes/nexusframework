@@ -23,7 +23,7 @@ function nxs_frontendframework_nxs_renderplaceholderwarning($message)
 function nxs_frontendframework_nxs_gethtmlforbutton($args)
 {
 	extract($args);
-	
+		
 	$render_errors = array();
 	
 	if ($_REQUEST["check"] == "atts")
@@ -211,7 +211,7 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 function nxs_frontendframework_nxs_gethtmlfortitle($args)
 {
 	extract($args);
-	
+		
 	if ($_REQUEST["check"] == "atts")
 	{
 		foreach ($args as $k=>$v)
@@ -346,6 +346,61 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 			$result = "<span class='nxs-applylinkvarcolor'>{$result}</span>";
 		}
 	}
+
+	// 
+	$widthsbydevice = array
+	(
+		"tablet" => 768,	// important; order these items from MOST WIDE to MOST NARROW !	
+		"mobile" => 414,	// important; order these items from MOST WIDE to MOST NARROW !	
+	);
+		
+	global $nxs_global_current_postid_being_rendered;
+	global $nxs_global_placeholder_render_statebag;
+	global $nxs_global_current_placeholderid_being_rendered;
+	
+	$injectsbydevice = array();
+
+	$widgetselector = ".nxs-widget-{$nxs_global_current_placeholderid_being_rendered}";
+	
+	foreach ($widthsbydevice as $name => $notused)
+	{
+		// alignment implementation
+		if (true)
+		{
+			$align_property = "align_{$name}";
+			$propertyvalue = $$align_property;
+			
+			if ($propertyvalue == "")
+			{
+				// nothing
+			}
+			else if ($propertyvalue == "left")
+			{
+				$injectsbydevice[$name][] = "{$widgetselector} .nxs-table { margin: 0 0 !important; }";
+			}
+			else if ($propertyvalue == "center")
+			{
+				$injectsbydevice[$name][] = "{$widgetselector} .nxs-table { margin: 0 auto !important; }";
+			}
+			else if ($propertyvalue == "right")
+			{
+				$injectsbydevice[$name][] = "{$widgetselector} .nxs-table { margin-right: 0 !important; margin-left: auto !important; }";
+			}
+		}
+	}
+	
+	foreach ($widthsbydevice as $name => $maxwidth)
+	{
+		$injects = $injectsbydevice[$name];
+		if ($injects != "")
+		{
+			$result .= "<style type='text/css'>";
+			$result .= "@media only screen and ( max-width: {$maxwidth}px ){";
+			$result .= implode("", $injects);
+			$result .= "}";
+			$result .= "</style>";
+		}
+	} 
 	
 	return $result;
 }
@@ -1200,6 +1255,10 @@ function nxs_frontendframework_nxs_sc_nxsplaceholder($inlinepageattributes, $con
 		// incorrectly configured
 		return "<div>incorrectly configured; placeholderid attribute not found on page $postid</div>";
 	}
+	
+	global $nxs_global_current_placeholderid_being_rendered;
+	$nxs_global_current_placeholderid_being_rendered = $placeholderid;
+	
 	$placeholdertemplate = nxs_getplaceholdertemplate($postid, $placeholderid);
 	
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
