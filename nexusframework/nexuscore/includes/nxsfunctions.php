@@ -2029,7 +2029,7 @@ function nxs_array_toutf8string($result)
 if(!function_exists('mb_detect_order')) 
 {
 	
-	function mb_detect_order($encoding_list)
+	function mb_detect_order($encoding_list = null)
 	{
 		$result = false;
 		if (is_null($encoding_list))
