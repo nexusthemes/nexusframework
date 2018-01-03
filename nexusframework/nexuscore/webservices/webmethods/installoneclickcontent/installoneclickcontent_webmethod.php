@@ -165,6 +165,13 @@ function nxs_webmethod_installoneclickcontent()
 			$isok = false;
 		}
 		
+		if ( is_multisite() ) 
+		{
+			error_log("theme is not compatible with multisite");
+			echo "Error; the theme is not compatible with WP multisites (<a target='_blank' href='https://codex.wordpress.org/Create_A_Network'>see here</a>). Please install on a single site WP installation instead.";
+			$isok = false;
+		}
+		
 		if ($isok)
 		{		
 			echo "<h2>Checking, installing and activating dependent plugins</h2>";
