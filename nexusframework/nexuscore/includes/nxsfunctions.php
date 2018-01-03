@@ -2796,13 +2796,24 @@ function nxs_storemedia_remotehttpdownload($args)
 	$url = $args["url"];
 	$destinationpath = $args["destinationpath"];
 
-	// default implementation
-	$args = array();
-	$args["url"] = $url;
+	
+	if (!isset($args["timeoutsecs"]))
+	{
+		// defaults to 1 sec
+		$args["timeoutsecs"] = 1;
+	}
+	else
+	{
+		error_log("nxs_storemedia_remotehttpdownload; using timeouts;" . $args["timeoutsecs"]);
+	}
+	
+	if (!isset($args["connectiontimeoutretriesleft"]))
+	{
+		// defaults to 6 attempts
+		$args["connectiontimeoutretriesleft"] = 6;
+	}
 	
 	// get content
-	$args["timeoutsecs"] = 1;
-	$args["connectiontimeoutretriesleft"] = 6;
 	$content = nxs_geturlcontents($args);
 	
 	// override content
