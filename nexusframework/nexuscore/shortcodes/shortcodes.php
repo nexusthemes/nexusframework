@@ -662,6 +662,45 @@ function nxs_sc_string($atts, $content = null, $name='')
 				//error_log("modelproperty;md5indexer;".json_encode($possibilities[$index]));
 				//error_log("modelproperty;md5indexer;result;".$input);
 			}
+			else if ($source == "where")
+			{
+				$input = "";
+				$schema = $atts["schema"];
+				$where_property_1 = $atts["where_property_1"];
+				$where_operator_1 = $atts["where_operator_1"];
+				$where_value_1 = $atts["where_value_1"];
+				$cachebehaviour = $atts["cachebehaviour"];
+				$instruction = "[nxsstring ops='listmodeluris' singularschema='nxs.nexusthemes.itemmeta' where_property_1='{$where_property_1}' where_operator_1='{$where_operator_1}' where_value_1='{$where_value_1}' cachebehaviour='{$cachebehaviour}']";
+				//error_log("modelprop secondarykey; instruction; $instruction");
+				
+				$modelurisstring = do_shortcode($instruction);
+				
+				//error_log("modelprop secondarykey; modelurisstring; $modelurisstring");
+				$modeluris = explode(";", $modelurisstring);
+				$count = count($modeluris);
+				if ($count == 1)
+				{
+					foreach ($modeluris as $modeluri)
+					{
+						$where_property_1 = $atts["property"];
+						$instruction = "[nxsstring ops='modelproperty' modeluri='{$modeluri}' property='{$property}']";
+						//error_log("instruction;".$instruction);
+						$input = do_shortcode($instruction);
+						//error_log("input;".$input);
+					}
+				}
+				else
+				{
+					if ($atts["fallback"] != "")
+					{
+						return $atts["fallback"];
+					}
+					else
+					{
+						return "ERR; multiple rows match? need only one";
+					}
+				}
+			}
 			else 
 			{
 				if ($atts["errorlog"] == "true")
@@ -1138,6 +1177,16 @@ function nxs_sc_string($atts, $content = null, $name='')
 						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
 						$conditionevaluation = ($fieldvalue == $operatorvalue);
 					}
+					else if ($operator == "equalscaseinsensitive")
+					{
+						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+						$conditionevaluation = strcasecmp($fieldvalue, $operatorvalue) == 0;
+					}
+					else if ($operator == "equalscaseinsensitivetrimmed")
+					{
+						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+						$conditionevaluation = strcasecmp(trim($fieldvalue), trim($operatorvalue)) == 0;
+					}
 					else
 					{
 						return "$op; unsupported where operator ($operator)";
@@ -1159,8 +1208,6 @@ function nxs_sc_string($atts, $content = null, $name='')
 				{
 					$instanceuris[] = $instanceuri;
 				}
-				
-				
 			}
 			
 			$input = implode(";", $instanceuris);
@@ -1175,7 +1222,15 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$key = $atts["key"];
 			$json = json_decode($input, true);
 			$json = $json[$key];
-			$input = json_encode($json);
+			
+			if ($atts["encode"] == "JSON_UNESCAPED_SLASHES")
+			{
+				$input = json_encode($json, JSON_UNESCAPED_SLASHES);
+			}
+			else 
+			{
+				$input = $json;
+			}
 		}
 		else if ($op == "ifthenelse")
 		{
@@ -1850,7 +1905,7 @@ function nxs_sc_title($atts, $content = null)
 	$filetoinclude = NXS_FRAMEWORKPATH . "/nexuscore/frontendframeworks/{$frontendframework}/frontendframework_{$frontendframework}.php";
 	require_once($filetoinclude);
 	
-	$functionnametoinvoke = "nxs_frontendframework_{$frontendframework}_gethtmlfortitle";
+	$functionnametoinvoke ="nxs_frontendframework_{$frontendframework}_gethtmlfortitle";
 	$result = call_user_func_array($functionnametoinvoke, array($args));
 	
 	return $result;
