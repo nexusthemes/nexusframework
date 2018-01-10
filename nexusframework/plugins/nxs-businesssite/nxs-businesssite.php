@@ -1806,7 +1806,21 @@ class nxs_g_modelmanager
 					//var_dump($add);
 					//die();
 					$result = array_merge($result, $add);
+				}
+				else
+				{
+					$properties = $this->getmodeltaxonomyproperties(array("modeluri"=>$modeluri));
+					$add = array();
+					foreach ($properties as $key => $val)
+					{
+						$add["{$prefix}{$key}"] = $val;
+					}
+					//var_dump($add);	
+					//die();
+					$result = array_merge($result, $add);
 					
+					//var_dump($result);
+					//die();
 				}
 			}
 		}
