@@ -654,20 +654,25 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	
 	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_formbox_send(&quot;" .  $postid . "&quot;, &quot;" . $placeholderid . "&quot;);');";
 
-	$imageurl = nxs_getframeworkurl() . "/images/animations/waitwhileloading4.gif";
-	$htmlwaitwhileloading = "<span class='nxs-form-wwl' style='display: none;'><img style='border: 0px;' src='{$imageurl}' /></span>";
-
-
-	// Button
-	$htmlbutton = '
-	<p class="' . $button_alignment_cssclass . '" style="display: flex; flex-orientation: row;">
-		<a rel="nofollow" id="' . $placeholderid . '_button" class="' . $buttoncssclasses . '" href="#" onclick="' . $invoke . '; return false;">' 
-			. $button_text . ' 
-		</a>
-		&nbsp;' . $htmlwaitwhileloading . '
-		
-	</p>';
+	$destination_js = $invoke . "; return false;";
+	$destination_relation = "nofollow";
+	$destination_target = "_current";
 	
+	$buttonargs = array
+	(
+		"title" => $button_title,
+		"text" => $button_text,
+		"scale" => $button_scale,
+		"colorzen" => $button_color,
+		"destination_target" => $destination_target,
+		"align" => $button_alignment,
+		"destination_js" => $destination_js,
+		"text_heightiq" => $text_heightiq,
+		"fontzen" => $button_fontzen,
+		"destination_relation" => $destination_relation,
+		"waitwhileloading" => "default",
+	);
+	$htmlbutton = nxs_gethtmlforbutton_v2($buttonargs);
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
