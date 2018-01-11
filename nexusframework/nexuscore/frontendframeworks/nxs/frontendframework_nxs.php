@@ -68,7 +68,8 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		return "";
 	}		
 
-	$align = nxs_getcssclassesforlookup("nxs-align-", $align);
+	$alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $align);
+	
 	$colorzen = nxs_getcssclassesforlookup("nxs-colorzen-", $colorzen);
 	$scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $scale);
 	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $margin);
@@ -200,9 +201,38 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		$title_att = "title='" . esc_html($title) . "'";
 	}
 	
+	//
+	$imageurl = nxs_getframeworkurl() . "/images/animations/waitwhileloading4.gif";
+	$htmlwaitwhileloading = "<span class='nxs-form-wwl' style='display: none;'><img style='border: 0px;' src='{$imageurl}' /></span>";
+	
+	if ($waitwhileloading === "default")
+	{
+		// 
+		if ($align == "right")
+		{
+			$waitwhileloading_left = true;
+		}
+		else
+		{
+			$waitwhileloading_right = true;
+		}
+	}
+	
 	$result = '';
-	$result .= '<p class="' . $align . ' nxs-padding-bottom0">';
+	$result .= '<p class="' . $alignment_cssclass . ' nxs-padding-bottom0">';
+	
+	if ($waitwhileloading_left === true)
+	{
+		$result .= "{$htmlwaitwhileloading}&nbsp;";
+	}
+	
 	$result .= '<a '.$title_att.' target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $scale_cssclass . ' ' . $border_radius_cssclass . ' ' . $margin_cssclass . ' ' . $colorzen . ' ' . $fontzen_cssclass . '" href="' . $url . '">' . $text . '</a>';
+	
+	if ($waitwhileloading_right === true)
+	{
+		$result .= "&nbsp;{$htmlwaitwhileloading}";
+	}	
+	
 	$result .= '</p>';
 	
 	return $result;
