@@ -989,6 +989,8 @@ class nxs_g_modelmanager
 		$imageid = nxs_get_key_imageid_in_post($postid);
 		$posttype = get_post_type($postid);
 		
+		$excerpt = get_the_excerpt($postid);
+		
 		//
 		$keyvalues = array
 		(
@@ -996,6 +998,7 @@ class nxs_g_modelmanager
 			"title" => nxs_gettitle_for_postid($postid),
 			"url" => nxs_geturl_for_postid($postid),
 			"text" => $text,
+			"excerpt" => $excerpt,
 			"featuredimgid" => $imageid,
 		);
 		
