@@ -45,6 +45,29 @@ function nxs_widgets_signpost_home_getoptions($args)
 		),
 		"fields" => array
 		(
+			// -------------------------------------------------------			
+			
+			// LOOKUPS
+			
+			array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "lookups",
+			),
+			array
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+			),
+		
 			// TITLE
 			
 			array( 
@@ -250,7 +273,6 @@ function nxs_widgets_signpost_home_getoptions($args)
 	return $options;
 }
 
-
 /* WIDGET HTML
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -294,6 +316,36 @@ function nxs_widgets_signpost_render_webpart_render_htmlvisualization($args)
 	
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text", "destination_url"));
+	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+		
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("title", "text", "button_text", "destination_url", "image_src", "destination_data");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
+	
+	// allow plugins to decorate (and also do something with) the mixedattributes 
+	// (an example of "doing something" would be for example to apply QA rules)
+	$filterargs = array
+	(
+		"mixedattributes" => $mixedattributes
+	);
+	$mixedattributes = apply_filters("nxs_f_widgetvisualizationdecorateatts", $mixedattributes, $filterargs);
+	
+	
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
