@@ -9115,6 +9115,9 @@ function nxs_addwoocommercesupport()
 {
 	// yes we do
 	add_theme_support("woocommerce");
+	add_theme_support( 'wc-product-gallery-zoom' );
+	add_theme_support( 'wc-product-gallery-lightbox' );
+	add_theme_support( 'wc-product-gallery-slider' );
 	
 	// the rendering of woocommerce pages, headers, etc. is handled by the pagetemplates, we ignore
 	remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
