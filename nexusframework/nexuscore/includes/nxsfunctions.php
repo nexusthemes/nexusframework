@@ -4055,6 +4055,8 @@ function nxs_register_menus()
 			"nxs-menu-generic"	=> "Nexus Menu 1 (Primary)", 
 			"nxs-menu-2" => "Nexus Menu 2",
 			"nxs-menu-3" => "Nexus Menu 3",
+			"nxs-menu-4" => "Nexus Menu 4",
+			"nxs-menu-5" => "Nexus Menu 5",
 		)
 	);
 }
