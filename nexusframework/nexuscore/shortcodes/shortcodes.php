@@ -89,6 +89,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 	$input = $content;
 	
 	$ops = $atts["ops"];
+	
 	$ops = str_replace(",","|", $ops);
 	$ops = str_replace(";","|", $ops);
 	$opslist = explode("|", $ops);
@@ -1751,6 +1752,56 @@ function nxs_sc_bool($atts, $content = null, $name='')
 }
 add_shortcode('nxsbool', 'nxs_sc_bool');
 add_shortcode('nxs_bool', 'nxs_sc_bool');
+
+
+// for example [nxsint ops="add" p1="1" p2="2"]
+function nxs_sc_int($atts, $content = null, $name='') 
+{
+	extract($atts);
+	
+	if (isset($sc_scope))
+	{
+		$scoperesult = nxs_sc_handlescope($atts, $content, $name);
+		if ($scoperesult !== false)
+		{
+			// we are outside the scope, exit
+			return $scoperesult;
+		}
+	}
+	
+	nxs_ob_start();
+	
+	$input = $content;
+	if ($input == "")
+	{
+		$input = $atts["input"];
+	}
+	if ($input == "")
+	{
+		$input = $atts["value"];
+	}
+	
+	$ops = $atts["ops"];
+	$ops = str_replace(",","|", $ops);
+	$ops = str_replace(";","|", $ops);
+	$opslist = explode("|", $ops);
+	foreach ($opslist as $op)
+	{
+		$op = trim($op);
+		
+		if (false)
+		{
+			//
+		}
+		
+		else if ($op == "add")
+		{
+			$input = intval($atts["p1"]) + intval($atts["p2"]);
+		}
+	}
+}
+add_shortcode("nxsint", "nxs_sc_int");
+add_shortcode("nxs_int", "nxs_sc_int");
 
 function nxs_sc_command($atts, $content = null, $name='') 
 {
