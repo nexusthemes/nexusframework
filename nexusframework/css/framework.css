@@ -2786,11 +2786,11 @@ span.reviewer 															{ margin-left: 5px; }
 .widget_price_filter .ui-slider-horizontal .ui-slider-range-max 		{ right: -1px; }
 
 /* cart */
-.widget_shopping_cart li												{ padding-left: 25px; margin-bottom: 20px; position: relative; }
+.widget_shopping_cart li												{ padding-left: 25px; padding-right: 50px; margin-bottom: 20px; position: relative; }
 .widget_shopping_cart li.empty											{ padding-left: 0px; }
 .widget_shopping_cart li a.remove										{ position: absolute; left: 0px; font-size: 0px; }
 .widget_shopping_cart li a.remove:before 								{ content: "\e165"; font-family: 'nexus'; font-size: 16px; position: absolute; }
-.widget_shopping_cart li img											{ position: absolute; right: 0px; width: 40px !important; }
+.widget_shopping_cart li img											{ position: absolute; right: 0px; width: 40px !important; height: 40px; }
 .widget_shopping_cart li span.quantity									{ display: block; }
 .widget_shopping_cart p.total											{ margin-bottom: 20px; }
 .widget_shopping_cart p.buttons .wc-forward								{ display: block; margin-top: 10px; padding-left: 25px; position: relative;}
@@ -3569,6 +3569,10 @@ span.reviewer 															{ margin-left: 5px; }
 .nxs-icon-snapchat:before				{ content: "\e642";	}
 .nxs-icon-nexus:before					{ content: "\e643";	}
 .nxs-icon-github:before					{ content: "\e644";	}
+.nxs-icon-ok:before						{ content: "\e645";	}
+.nxs-icon-vk:before						{ content: "\e646";	}
+.nxs-icon-whatsapp:before				{ content: "\e647";	}
+
 
 /* Crappicons */
 .nxs-icon-cockroach:before 				{ content: "\e900"; }
