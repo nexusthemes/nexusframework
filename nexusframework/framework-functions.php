@@ -1482,6 +1482,30 @@ function nxs_action_webmethod_init_recontructmainwploop()
 add_action("nxs_action_webmethod_init", "nxs_action_webmethod_init_recontructmainwploop");
 add_action("nxs_action_webmethod_init", "nxs_ext_initialize_frontendframework");
 
+// enable use of shortcodes in menu items
+// kudos to https://stackoverflow.com/questions/11403189/how-to-insert-shortcode-into-wordpress-menu
+function nxs_wp_nav_menu_items($result, $args = array())
+{
+	if (nxs_stringcontains_v2($result, "{", false))
+	{
+		$mixedattributes = array("item" => $result);
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("item");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+		$result = $mixedattributes["item"];
+	}
+	return $result;
+}
+add_filter('wp_nav_menu_items', 'nxs_wp_nav_menu_items');
+
 add_filter('wpseo_robots', 'nxs_webmethod_robots');
 function nxs_webmethod_robots($result)
 {
@@ -1651,7 +1675,7 @@ function nxs_setjQ_nxs()
 
 function nxs_after_setup_theme()
 {
-	add_theme_support( 'title-tag' );
+	add_theme_support('title-tag');
 	
 	// support for additional image sizes
 	add_image_size('nxs_cropped_200x200', 200, 200, TRUE );
