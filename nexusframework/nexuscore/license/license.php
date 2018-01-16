@@ -194,6 +194,11 @@ function nxs_license_checkupdate($value)
 		$template = get_template();
 		$value -> response[$template] = null;
 	}
+	else if ($licensekey == "fromowninfra")
+	{
+		// dont poll when we host ourselves as we do the updates in another way there
+		$shouldcheck = false;
+	}
 	
 	if ($shouldcheck)
 	{
