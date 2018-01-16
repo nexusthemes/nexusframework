@@ -1380,6 +1380,7 @@ class nxs_g_modelmanager
 		{
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "embed");
+			$result[] = array("widgetid" => "embedrepeater");
 			 
 			
 			//$result[] = array("widgetid" => "socialaccounts");
@@ -1390,6 +1391,18 @@ class nxs_g_modelmanager
 			//$result[] = array("widgetid" => "phone");
 			//$result[] = array("widgetid" => "buslogo");
 			$result[] = array("widgetid" => "embed");
+			$result[] = array("widgetid" => "embedrepeater");
+			
+			//$result[] = array("widgetid" => "socialaccounts");
+			//$result[] = array("widgetid" => "commercialmsgs");
+		}
+		else if ($nxsposttype == "footer") 
+		{
+			$result[] = array("widgetid" => "list");
+			//$result[] = array("widgetid" => "phone");
+			//$result[] = array("widgetid" => "buslogo");
+			$result[] = array("widgetid" => "embed");
+			$result[] = array("widgetid" => "embedrepeater");
 			
 			//$result[] = array("widgetid" => "socialaccounts");
 			//$result[] = array("widgetid" => "commercialmsgs");
