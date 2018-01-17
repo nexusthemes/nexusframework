@@ -276,86 +276,22 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 	
 	$items_genericlistid = $mixedattributes['items_genericlistid'];
 
-	/* HOVER MENU HTML
-	---------------------------------------------------------------------------------------------------- */
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		$hovermenuargs = array();
+		$hovermenuargs["postid"] = $postid;
+		$hovermenuargs["placeholderid"] = $placeholderid;
+		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
+		$hovermenuargs["metadata"] = $mixedattributes;
+		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
+	}
 	
-	nxs_ob_start();
-
-	?>
-	<ul>
-		<?php 
-		if ($items_genericlistid == "") 
-		{ 
-			?>
-			<li title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>'>
-				<a href='#' class='nxs-defaultwidgetclickhandler' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick="nxs_js_edit_widget(this); return false;">
-					<span class='nxs-icon-plug'></span>
-				</a>
-			</li>
-			<?php 
-		} 
-		else 
-		{
-			global $nxs_global_current_containerpostid_being_rendered;
-			$currentcontainerposturl = nxs_geturl_for_postid($nxs_global_current_containerpostid_being_rendered);
-			$nxsrefurlspecial = urlencode(base64_encode($currentcontainerposturl));
-			
-			//$nxsrefurlspecial = urlencode(base64_encode(nxs_geturl_for_postid($postid)));
-			$refurl = nxs_geturl_for_postid($items_genericlistid);
-			$refurl = nxs_addqueryparametertourl_v2($refurl, "nxsrefurlspecial", $nxsrefurlspecial, false);
-			?>
-			<a href='#' class='nxs-defaultwidgetclickhandler' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick="var url='<?php echo $refurl; ?>'; nxs_js_redirect(url); return false;">
-				<li title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>'>
-					<span class='nxs-icon-sliderbox'></span>
-				</li>
-			</a>
-			<a href='#' title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>' onclick="nxs_js_edit_widget(this); return false;">
-				<li title='<?php nxs_l18n_e("Edit[nxs:tooltip]", "nxs_td"); ?>'>
-					<span class='nxs-icon-plug'></span>
-				</li>
-			</a>
-			<?php 
-		} 
-		?>
-		<li title='<?php nxs_l18n_e("Move[nxs:tooltip]", "nxs_td"); ?>' class='nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder' id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
-			<span class='nxs-icon-move'></span>
-			<div class="nxs-drag-helper" style='display: none;'>
-				<div class='placeholder'>
-					<span id='placeholdertemplate_<?php echo $placeholdertemplate; ?>' class='<?php echo nxs_widgets_sliderbox_geticonid();?>'></span>
-				</div>
-			</div>					
-		</li>
-		<a class='nxs-no-event-bubbling' href='#' onclick='nxs_js_popup_placeholder_wipe("<?php echo $postid; ?>", "<?php echo $placeholderid; ?>"); return false;'>
-			<li title='<?php nxs_l18n_e("Delete[nxs:tooltip]", "nxs_td"); ?>'><span class='nxs-icon-trash'></span></li>
-		</a>
-		<?php 
-		if (nxs_shoulddebugmeta())
-		{
-			nxs_ob_start();
-			?>
-			<a class='nxs-no-event-bubbling' href='#' onclick="nxs_js_edit_widget_v2(this, 'debug'); return false; return false;">
-       	<li title='<?php nxs_l18n_e("Debug[tooltip]", "nxs_td"); ?>'>
-       		<span class='nxs-icon-search'></span>
-       	</li>
-    	</a>
-    	<?php
-    	$debughtml = nxs_ob_get_contents();
-			nxs_ob_end_clean();
-		}
-		else
-		{
-			$debughtml = "";
-		}
-		echo $debughtml;
-		?>
-	</ul>
-	<?php 
-	
-	$menu = nxs_ob_get_contents();
-	nxs_ob_end_clean();
-	
-	global $nxs_global_placeholder_render_statebag;
-	$nxs_global_placeholder_render_statebag["menutopright"] = $menu;
+	//global $nxs_global_placeholder_render_statebag;
+	//$nxs_global_placeholder_render_statebag["menutopright"] = $menu;
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
