@@ -1105,6 +1105,8 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 ----------------------------------------------------------------------------------------------------*/
 function nxs_widgets_sliderbox_initplaceholderdata($args)
 {
+	extract($args);
+	
 	// delegate to generic implementation
 	$widgetname = basename(dirname(__FILE__));
 	
@@ -1131,16 +1133,28 @@ function nxs_widgets_sliderbox_initplaceholderdata($args)
 		die();
 	}
 	
+	// default values
+	
+	$args['bgcolor_cssclass'] = "base2";
+	$args["button_color"] = "c12";
+	$args["button_scale"] = "1-2";
+	$args["item_durationvisibility"] = "5000";
+	$args["item_transitionduration"] = "300";
+	$args["main_controllers"] = "checked=true";
+	$args["metadata"] = "checked=true";
+	$args["pause_transition"] = "checked=true";
+	$args['ph_margin_bottom'] = "0-0";
+	$args["responsive_display"] = "display960";
+	
 	// current values as defined by unistyle prefail over the above "default" props
 	$unistylegroup = nxs_widgets_sliderbox_getunifiedstylinggroup();
 	$args = nxs_unistyle_blendinitialunistyleproperties($args, $unistylegroup);
 	
-	$args["item_durationvisibility"] = "5000";
-	$args["item_transitionduration"] = "300";
-	$args['ph_margin_bottom'] = "0-0";
-	$args['bgcolor_cssclass'] = "base2";
+	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
-	$result = nxs_widgets_initplaceholderdatageneric($args, $widgetname);
+	$result = array();
+	$result["result"] = "OK";
+	
 	return $result;
 }
 
