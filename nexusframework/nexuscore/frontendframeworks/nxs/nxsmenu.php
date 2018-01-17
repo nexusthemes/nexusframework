@@ -865,6 +865,7 @@
 								 	if ($requirewidgetresult["result"] == "OK")
 								 	{
 										$iconid = nxs_getwidgeticonid($widget);
+
 										$title = nxs_getplaceholdertitle($widget);
 										$invoke = "var args={containerpostid:'$pagedecoratorid',postid:'$pagedecoratorid',placeholderid:'$pagewidgetplaceholderid',rowindex:'$rowindex',sheet:'home',onsaverefreshpage:true}; nxs_js_popup_placeholder_neweditsession_v2(args); return false;";
 								 		?>
@@ -872,7 +873,7 @@
 										<li>
 							      	<a href="#" onclick="<?php echo $invoke; ?>" class="site" title="<?php echo $title; ?>">
 							      		<span class='<?php echo $iconid; ?>'></span>
-							      	</a>
+							      	</a>				
 							      </li>
 						 				<?php
 						 			}

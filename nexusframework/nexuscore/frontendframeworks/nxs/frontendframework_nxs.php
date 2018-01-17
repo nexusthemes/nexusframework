@@ -1541,7 +1541,7 @@ function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
 	           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'>
 	           		<span class='nxs-icon-trash'></span>
 	           	</li>
-	        	</a>		
+	        	</a>
 	        	<?php
 	        }
 	        ?>

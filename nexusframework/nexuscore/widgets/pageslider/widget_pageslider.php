@@ -86,6 +86,7 @@ function nxs_widgets_pageslider_home_getoptions($args)
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
 				"label" 			=> nxs_l18n__("Edit slides", "nxs_td"),
+				"preview_theme" => "gallerythumbs",
 				"unicontentablefield" => true,
 			),
 			array(
@@ -803,11 +804,9 @@ function nxs_widgets_pageslider_beforeend_head()
 	
 function nxs_widgets_pageslider_betweenheadandcontent()
 {
-	
 	// the global $nxs_pageslider_pagesliderid is set in nxs_widgets_pageslider_registerhooksforpagewidget($args)
 	global $nxs_pageslider_pagesliderid;
 	
-
 	$structure = nxs_parsepoststructure($nxs_pageslider_pagesliderid);
 	$aantalslides = count($structure);
 	
@@ -912,11 +911,93 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 	----------------------------------------------------------------------------------------------------*/
 	
 	echo $script;
-    
+
+	// render hover edit menu
+  if (nxs_cap_hasdesigncapabilities())
+  {
+  	$widgeticonid = nxs_widgets_pageslider_geticonid();
+  	
+		$pagedecoratorid = $nxs_pageslider_pagedecoratorid;
+		$pagewidgetplaceholderid = $nxs_pageslider_pagedecoratorwidgetplaceholderid;
+		$rowindex = -1;	// ?
+  	
+  	$title = nxs_widgets_pageslider_gettitle();
+		$invoke = "var args={containerpostid:'$pagedecoratorid',postid:'$pagedecoratorid',placeholderid:'$pagewidgetplaceholderid',rowindex:'$rowindex',sheet:'home',onsaverefreshpage:true}; nxs_js_popup_placeholder_neweditsession_v2(args); return false;";
+
+  	?>
+  	<!--
+  	<div class='nxs-hover-menu-positioner'>
+			
+		</div>
+		<div class='nxs-runtime-autocellsize nxs-cursor nxs-cell-cursor'>
+			test
+		</div>
+		-->
+		<style>
+			.nxs-cursorlayer
+			{
+				display: none;
+			}
+			.nxs-editor-active .nxs-cursorlayer
+			{
+				display: flex;
+				position: absolute; 
+				z-index: 130;
+			}
+			.nxs-editor-active .nxs-cursorlayer.nxs-hovering
+			{
+				visibility: visible;
+				//background-color: rgba(120,0,0,0.5);
+			}
+		</style>
+		<div class="nxs-hidewheneditorinactive nxs-hoverable nxs-cursorlayer nxs-cursor" style="width: 100vw; <?php echo $supersized_style; ?>">
+			<div class='nxs-hover-menu nxs-widget-hover-menu nxs-admin-wrap inside-right-top'>
+				<ul class="">
+					<li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
+						<a href="#" onclick="<?php echo $invoke; ?>" class="site" title="<?php echo $title; ?>">
+			  		<!-- <a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>'  class="nxs-defaultwidgetclickhandler" onclick="nxs_js_edit_widget_v2(this, 'unlock'); return false;"> -->
+			      	<span class='<?php echo $widgeticonid; ?>'></span>
+			      </a>
+			      <ul class="">
+			      	<a class='nxs-no-event-bubbling' href='https://www.wpsupporthelp.com/answer/how-to-remove-a-page-slider-from-your-wordpress-theme-919/' target="_blank">
+		           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'>
+		           		<span class='nxs-icon-trash'></span>
+		           	</li>
+		        	</a>
+			      </ul>
+		    	</li>
+				</ul>	
+			</div>
+		</div>
+		<script>
+			jQ_nxs(".nxs-hoverable").unbind("mouseover.glowwidget");
+			jQ_nxs(".nxs-hoverable").bind("mouseover.glowwidget", function(e)
+			{
+				if (!nxs_js_nxsisdragging)
+				{
+					jQ_nxs(this).find(".nxs-hover-menu").addClass("nxs-hovering");
+					jQ_nxs(this).addClass("nxs-hovering");
+				}
+			}
+			);
+			
+			jQ_nxs(".nxs-hoverable").unbind("mouseleave.glowwidget");
+			jQ_nxs(".nxs-hoverable").bind("mouseleave.glowwidget", function(e)
+			{
+				jQ_nxs(this).removeClass("nxs-hovering");
+				jQ_nxs(this).find(".nxs-hover-menu").removeClass("nxs-hovering");
+			}
+			);
+		</script>
+  	<?php
+	}
+  
 	echo '
 	<div id="nxs-supersized" class="nxs-sitewide-element nxs-containshovermenu1 '.$fixed_font.' '.$responsive_display.' '.$csswidescreenclass.' '.$remove_thumbnail_navigation.' '.$height.'" style="'.$supersized_style.'">';
-        
-        // SLIDE CAPTIONS
+    
+    
+    
+    // SLIDE CAPTIONS
 		if ($show_metadata != "") {
 			echo '
 		  <div class="caption-aligner '.$caption_width.' '.$halign.'" style="'.$supersized_style.'">			
