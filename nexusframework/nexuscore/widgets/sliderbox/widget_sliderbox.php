@@ -45,6 +45,7 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 			array(
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
+				"preview_theme" => "gallerythumbs",
 				"label" 			=> nxs_l18n__("Edit slides", "nxs_td"),
 			),
 			array(
