@@ -291,7 +291,8 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	}
 	
-	//global $nxs_global_placeholder_render_statebag;
+	global $nxs_global_placeholder_render_statebag;
+	
 	//$nxs_global_placeholder_render_statebag["menutopright"] = $menu;
 	
 	/* EXPRESSIONS
