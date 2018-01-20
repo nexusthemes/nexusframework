@@ -942,7 +942,7 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 			{
 				display: flex;
 				position: absolute; 
-				z-index: 130;
+				z-index: 114;
 			}
 			.nxs-editor-active .nxs-cursorlayer.nxs-hovering
 			{
