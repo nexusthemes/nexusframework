@@ -785,28 +785,60 @@ function nxs_init()
   			
   			die();
   		}
+  		else if ($_REQUEST["nxs"] == "server")
+  		{
+  			var_dump($_SERVER);
+  			die();
+  		}
   		else if ($_REQUEST["nxs"] == "checklicenseserver")
   		{
-  			$url = nxs_license_getlicenseserverurl($purpose);
-  			echo $url;
-  			echo "<br />";
-  			echo "<pre>";
-  			$content = file_get_contents($url);
-  			var_dump($content);
-  			
-  			echo "<br /> CURL:<br />";
-  			
-		    $ch = curl_init();
-		    curl_setopt($ch, CURLOPT_URL, $Url);
-		    curl_setopt($ch, CURLOPT_REFERER, "http://www.example.org/yay.htm");
-		    curl_setopt($ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0");
-		    curl_setopt($ch, CURLOPT_HEADER, 0);
-		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		    $output = curl_exec($ch);
-		    curl_close($ch);
-		 
-		    var_dump($output);
+  			$urls = array("https://www.example.com", "http://www.ip-adress.eu/", nxs_license_getlicenseserverurl($purpose));
+  			if ($_REQUEST["url"] != "")
+  			{
+  				$urls = array($_REQUEST["url"]);
+  			}
+  			foreach ($urls as $url)
+  			{
+  				var_dump($url);
+  				echo "<br />";
+  				
+  				// fetch
+	  			$content_filegetcontents = file_get_contents($url);
+	  			// report
+	  			echo "Testing - {$url}<br />";
+	  			echo "file_get_contents returns:<br />";
+	  			if ($_REQUEST["output"] == "asis")
+	  			{
+	  				echo $content_filegetcontents;
+	  			}
+	  			else
+	  			{
+						echo htmlentities($content_filegetcontents);
+					}
+					echo "<br /><br />";
+	  			
+	  			if ($_REQUEST["curl"] == "skip")
+	  			{
+	  				echo "curl returns: skipped<br />";
+	  			}
+	  			else
+	  			{ 
+		  			$ch = curl_init();
+				    curl_setopt($ch, CURLOPT_URL, $Url);
+				    curl_setopt($ch, CURLOPT_REFERER, "http://www.example.org/yay.htm");
+				    curl_setopt($ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0");
+				    curl_setopt($ch, CURLOPT_HEADER, 0);
+				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+				    $content_curl = curl_exec($ch);
+				    curl_close($ch);
+				    echo "curl returns:<br />";
+						echo htmlentities($content_curl);  			
+						echo "<br /><br />";
+				  }
+
+					echo "-----------<br />";
+  			}
   			
   			die();
   		}
@@ -1486,6 +1518,15 @@ add_action("nxs_action_webmethod_init", "nxs_ext_initialize_frontendframework");
 // kudos to https://stackoverflow.com/questions/11403189/how-to-insert-shortcode-into-wordpress-menu
 function nxs_wp_nav_menu_items($result, $args = array())
 {
+	// for the urls we cannot use placeholders, here we use name convention: http(s)://__x__ means {{x}}
+	if (nxs_stringcontains_v2($result, "://__", false))
+	{
+		$result = str_replace("https://__", "{{", $result);
+		$result = str_replace("http://__", "{{", $result);
+		$result = str_replace("__", "}}", $result);
+	}
+	
+	// for the titles
 	if (nxs_stringcontains_v2($result, "{", false))
 	{
 		$mixedattributes = array("item" => $result);
@@ -1502,6 +1543,7 @@ function nxs_wp_nav_menu_items($result, $args = array())
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
 		$result = $mixedattributes["item"];
 	}
+	
 	return $result;
 }
 add_filter('wp_nav_menu_items', 'nxs_wp_nav_menu_items');
@@ -1795,117 +1837,6 @@ function nxs_create_post_types_and_taxonomies()
 	$hadadmin = nxs_has_adminpermissions();
 	nxs_registernexustype_withtaxonomies("templatepart", array("nxs_tax_subposttype"), $hadadmin);	// holds content that is positioned in between subheader and subfooter
 	nxs_registernexustype_withtaxonomies("busrulesset", array("nxs_tax_subposttype"), $hadadmin);		// holds a set of business rules	
-	
-	// add custom posttypes for semantic entities;
-	/*
-	global $nxs_g_modelmanager;
-	$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema();
-	
-	foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
-	{
-		$show_in_nav_menus = false;
-		
-		// strip the "nxs_" prefix, as the register function will add it itself
-		$title = $taxonomy;
-				
-	 	if ($taxonomymeta["arity"] == "n")
-	 	{
-			if ($taxonomymeta["wpcreateinstructions"] != "")
-			{
-				$instances = $taxonomymeta["wpcreateinstructions"]["instances"];
-				if ($instances != "" && $taxonomymeta["caninstancesbereferenced"])
-				{
-					//
-			 		$type = $instances["type"];
-			 		if (in_array($type, array("post", "page")))
-			 		{
-			 			//$singular = $taxonomymeta["singular"];
-			 			
-			 			
-			 			
-						// "service"
-						$args = array
-						(
-							"title" => $title,
-							"taxonomies" => array("nxs_tax_subposttype"),
-							"ispublic" => true,
-							"show_ui" => true,
-							"exclude_from_search" => false,
-							'rewrite' => array
-							(
-								'slug' => '', 
-								'with_front' => FALSE
-							),
-							"supports" => array
-							(
-								'title',
-								'editor',
-								'author',
-								'slug',
-								'custom-fields',
-								'thumbnail',
-								'excerpt',
-							),
-							"show_in_nav_menus" => $show_in_nav_menus,
-						);
-						nxs_registernexustype_v2($args);
-						
-						if ($_REQUEST["tax"] == "debug")
-						{
-							if ($taxonomy == "nxs_service")
-							{
-								//echo $taxonomy;
-								var_dump($args);
-								die();
-							}
-						}
-
-					}
-				}
-				else
-				{
-					//
-					//$singular = $taxonomymeta["singular"];
-					$show_ui = true;
-					if (isset($taxonomymeta["show_ui"]))
-					{
-						$show_ui = $taxonomymeta["show_ui"];
-					}
-					
-					//error_log("lalalalala else for $singular");
-			 			
-					// p.e. "testimonial"
-					$args = array
-					(
-						"title" => $title,
-						"taxonomies" => array("nxs_tax_subposttype"),
-						"ispublic" => false,
-						"publicly_queryable" => false,
-						"show_ui" => $show_ui,
-						"exclude_from_search" => false,
-						'rewrite' => array
-						(
-							'slug' => '', 
-							'with_front' => FALSE
-						),
-						"supports" => array
-						(
-							'title',
-							'editor',
-							'author',
-							'slug',
-							'custom-fields',
-							'thumbnail',
-							'excerpt',
-						),
-						"show_in_nav_menus" => $show_in_nav_menus,
-					);
-					nxs_registernexustype_v2($args);
-				}
-			}
-		}
-	}
-	*/
 	
 	// by default custom post types in WP get a "slug" in their
 	// url, to be able to identify them. Our semantic entities
