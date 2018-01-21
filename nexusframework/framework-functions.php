@@ -2307,13 +2307,12 @@ function nxs_wp_update_nav_menu_item($menu_id, $menu_item_db_id, $args)
 {
 	if (true)
 	{
-		$postid = $args["menu-item-db-id"];
-		//var_dump($postid);
+		$postid = $menu_item_db_id;
 		
 		$keys = array("menu-item-object-id", "menu-item-parent-id", "_menu_item_menu_item_parent", "_menu_item_object_id");
 		foreach ($keys as $key)
 		{
-			$relatedpostid = $args[$key];
+			$relatedpostid = get_post_meta($postid, $key, true);
 			if ($relatedpostid != "")
 			{
 				$globalid = nxs_get_globalid($relatedpostid, true);
