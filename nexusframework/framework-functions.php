@@ -2186,33 +2186,9 @@ function nxs_init_handledebug()
 	//
 	// debug / patch section
 	//
-	
 	if (isset($_REQUEST["nxspatch"]))
 	{
-		if ($_REQUEST["nxspatch"] == "patch20131011001_turbo")
-		{
-			require_once(NXS_FRAMEWORKPATH . '/nexuscore/patches/patches.php');
-			nxs_applypatch($_REQUEST["nxspatch"], $args);
-			echo "Applied upgrade patch... please refresh screen";
-			die();
-		}		
-		if ($_REQUEST["nxspatch"] == "patch20130610002_clear")
-		{
-			require_once(NXS_FRAMEWORKPATH . '/nexuscore/patches/patches.php');
-			nxs_applypatch($_REQUEST["nxspatch"], $args);
-			echo "Applied upgrade patch... please refresh screen";
-			die();
-		}
-		
-		if ($_REQUEST["nxspatch"] == "patch20131003001_imgrename")
-		{
-			require_once(NXS_FRAMEWORKPATH . '/nexuscore/patches/patches.php');
-			nxs_applypatch($_REQUEST["nxspatch"], $args);
-			echo "Applied upgrade patch... please refresh screen";
-			die();
-		}
-		
-		if ($_REQUEST["nxspatch"] == "patch20131010001_addrolecapabilities")
+		if (true) // $_REQUEST["nxspatch"] == "menu")
 		{
 			require_once(NXS_FRAMEWORKPATH . '/nexuscore/patches/patches.php');
 			nxs_applypatch($_REQUEST["nxspatch"], $args);
@@ -2321,6 +2297,33 @@ function yoast_bug_fix() {
     echo '<script type="text/javascript">var wpseoSelect2Locale = wpseoSelect2Locale || "en";</script>';
 }
 add_action('admin_footer', 'yoast_bug_fix');
+
+// each time a backend menu item is saved,
+// we stored the globalid if the parent item, as well as the linked article
+// in the postmeta of the item, so after an import of the theme the
+// consistency check will be able to fix the relations
+// see *3987394587394587
+function nxs_wp_update_nav_menu_item($menu_id, $menu_item_db_id, $args)
+{
+	if (true)
+	{
+		$postid = $args["menu-item-db-id"];
+		//var_dump($postid);
+		
+		$keys = array("menu-item-object-id", "menu-item-parent-id", "_menu_item_menu_item_parent", "_menu_item_object_id");
+		foreach ($keys as $key)
+		{
+			$relatedpostid = $args[$key];
+			if ($relatedpostid != "")
+			{
+				$globalid = nxs_get_globalid($relatedpostid, true);
+				// stored globalid in meta of this object
+				add_post_meta($postid, "{$key}_globalid", $globalid, true);
+			}
+		}
+	}
+}
+add_action('wp_update_nav_menu_item', 'nxs_wp_update_nav_menu_item', 10, 3);
 
 // ---
 

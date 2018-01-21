@@ -456,7 +456,10 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 			
 			// we found a global key
 			$globalkeypieces = explode("_", $globalkey);
-			if (count($globalkeypieces) == 2)
+			$countglobalkeypieces = count($globalkeypieces);
+			
+			
+			if ($countglobalkeypieces == 2)
 			{
 				$localkey = $globalkeypieces[0];
 				if (!array_key_exists($localkey, $metadata))
@@ -475,7 +478,7 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 					}
 				}
 			}
-			else if (count($globalkeypieces) == 3)
+			else if ($countglobalkeypieces == 3)
 			{
 				$localkey = $globalkeypieces[0] . "_" . $globalkeypieces[1];
 				if (!array_key_exists($localkey, $metadata))
@@ -494,7 +497,7 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 					}
 				}
 			}
-			else if (count($globalkeypieces) == 4)
+			else if ($countglobalkeypieces == 4)
 			{
 				$localkey = $globalkeypieces[0] . "_" . $globalkeypieces[1] . "_" . $globalkeypieces[2];
 				if (!array_key_exists($localkey, $metadata))
@@ -513,7 +516,7 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 					}
 				}
 			}
-			else if (count($globalkeypieces) == 5)
+			else if ($countglobalkeypieces == 5)
 			{
 				$localkey = $globalkeypieces[0] . "_" . $globalkeypieces[1] . "_" . $globalkeypieces[2] . "_" . $globalkeypieces[3];
 				if (!array_key_exists($localkey, $metadata))
@@ -532,9 +535,47 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 					}
 				}
 			}
+			else if ($countglobalkeypieces == 6)
+			{
+				$localkey = $globalkeypieces[0] . "_" . $globalkeypieces[1] . "_" . $globalkeypieces[2] . "_" . $globalkeypieces[3]. "_" . $globalkeypieces[4];
+				if (!array_key_exists($localkey, $metadata))
+				{
+					if ($metadata[$globalkey] == "NXS-NULL")
+					{
+						// ok
+					}
+					else
+					{
+						// unable to locate localkey for globalkey
+						// blijkbaar is er een veld XYZ_globalXYZ, zonder een overeenkomstig XYZ meta veld?!
+						echo "No original key found for global key ($localkey) ?! this is not supported (dd)<br />";
+						echo "Value global key: [" . $metadata[$globalkey] . "]<br />";
+						die();
+					}
+				}
+			}
+			else if ($countglobalkeypieces == 7)
+			{
+				$localkey = $globalkeypieces[0] . "_" . $globalkeypieces[1] . "_" . $globalkeypieces[2] . "_" . $globalkeypieces[3]. "_" . $globalkeypieces[4]. "_" . $globalkeypieces[5];
+				if (!array_key_exists($localkey, $metadata))
+				{
+					if ($metadata[$globalkey] == "NXS-NULL")
+					{
+						// ok
+					}
+					else
+					{
+						// unable to locate localkey for globalkey
+						// blijkbaar is er een veld XYZ_globalXYZ, zonder een overeenkomstig XYZ meta veld?!
+						echo "No original key found for global key ($localkey) ?! this is not supported (dd)<br />";
+						echo "Value global key: [" . $metadata[$globalkey] . "]<br />";
+						die();
+					}
+				}
+			}
 			else
 			{
-				echo "This key '$globalkey' contains multiple underscores; this is not supported<br />";
+				echo "error '$globalkey' is not supported (count: {$countglobalkeypieces})";
 				die();
 			}
 			
@@ -900,7 +941,7 @@ function nxs_dataconsistency_sanitize_unicontentdata()
 }
 
 function nxs_dataconsistency_sanitize_postwidgetmetadata($postid)
-{ 		
+{
 	$parsedpoststructure = nxs_parsepoststructure($postid);
 	$rowindex = 0;
 	foreach ($parsedpoststructure as $pagerow)
@@ -977,6 +1018,26 @@ function nxs_dataconsistency_sanitize_postmetadata($postid)
 		{
   		echo " -->";
   	}
+	}
+	
+	// check for datasconsistency for menu items
+	// see *3987394587394587
+	$posttype = get_post_type($postid);
+	if ($posttype == "nav_menu_item")
+	{
+		$meta = array();
+		$temp = get_post_meta($postid);
+		foreach ($temp as $k => $v)
+		{
+			$meta[$k] = $v[0];
+		}
+		
+		$fix = nxs_getdatarequiringmodificationforglobalidfix($meta);
+		
+		foreach ($fix as $key => $val)
+		{
+			update_post_meta($postid, $key, $val);
+		}
 	}
 }
 
