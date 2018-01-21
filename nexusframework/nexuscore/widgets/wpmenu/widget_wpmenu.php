@@ -57,6 +57,8 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 		// 
 	}
 	
+	$menu_dropdown = get_registered_nav_menus();
+	
 	// CORE WIDGET OPTIONS
 	
 	$options = array
@@ -85,12 +87,15 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 				"id" => "menu_name",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Menu", "nxs_td"),
-				"dropdown" 			=> array
+				"dropdown" 			=> $menu_dropdown,
+				/* array
 				(
+				
 					"nxs-menu-generic"	=> "Nexus Menu 1 (Primary)", 
 					"nxs-menu-2" => "Nexus Menu 2",
 					"nxs-menu-3" => "Nexus Menu 3",
 				),
+				*/
 			),			
 			
 			/*
@@ -377,6 +382,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	{
 		$menu_name = "nxs-menu-generic";
 	}
+	
 	
 	$locations = get_nav_menu_locations();
 	$menu_id = $locations[$menu_name];
