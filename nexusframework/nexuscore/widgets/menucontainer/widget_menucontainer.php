@@ -55,6 +55,9 @@ function nxs_widgets_menucontainer_inject($result, $args)
  */
 function nxs_widgets_menucontainer_home_getoptions($args) 
 {
+	$patchurl = nxs_geturl_home();
+	$patchurl = nxs_addqueryparametertourl_v2($patchurl, "nxspatch", "menu", true, true);
+	
     // CORE WIDGET OPTIONS
     $options = array(
         "sheettitle" => nxs_widgets_menucontainer_gettitle(),
@@ -63,7 +66,31 @@ function nxs_widgets_menucontainer_home_getoptions($args)
             "group" => nxs_widgets_menucontainer_getunifiedstylinggroup(),
         ),
 				"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
-        "fields" => array(
+        "fields" => array
+        (
+        	// INPUT
+          array
+          (
+            "id" 				=> "wrapper_items_begin",
+            "type" 				=> "wrapperbegin",
+            "label" 			=> nxs_l18n__("Obsolete", "nxs_td"),
+            "initial_toggle_state"	=> "open",
+          ),
+          array
+          (
+            "id" 				=> "custom",
+            "type" 				=> "custom",
+            "label" 			=> nxs_l18n__("Obsolete", "nxs_td"),
+            "customcontent" => "<div style='display: flex; min-height: 300px; background-color: #FDD; padding: 30px;'><a class='nxsbutton' href='{$patchurl}'>Convert all menus of this site to WP menus</a></div>",
+            "initial_toggle_state"	=> "open",
+          ),
+          
+          array
+          (
+            "id" 				=> "wrapper_items_end",
+            "type" 				=> "wrapperend"
+          ),
+        
 
             // INPUT
             array(
@@ -891,75 +918,6 @@ function nxs_menu_enrichtitle($title, $currentdepth) {
 
     return $result;
 }
-
-/*
-function nxs_page_render_popup_getrenderedmenuitems($postid) 
-{
-    $poststructure = nxs_parsepoststructure($postid);
-    $cache = "";
-
-    foreach ($poststructure as $pagerow) {
-        $content = $pagerow["content"];
-        $placeholderid = nxs_parsepagerow($content);
-        $placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
-
-        $placeholdertype = $placeholdermetadata["type"];
-        $currentdepth = $placeholdermetadata["depthindex"];
-
-        if ($placeholdertype == "menuitemarticle") {
-            //
-            $title = $placeholdermetadata["title"];
-            $depthindex = $placeholdermetadata["depthindex"];
-
-            $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
-        }
-        else if ($placeholdertype == "menuitemcategory") {
-            //
-            $title = $placeholdermetadata["title"];
-            $depthindex = $placeholdermetadata["depthindex"];
-
-            $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
-        }
-        else if ($placeholdertype == "menuitemcustom") {
-            //
-            $title = $placeholdermetadata["title"];
-            $depthindex = $placeholdermetadata["depthindex"];
-
-            $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
-        }
-        else if ($placeholdertype == "menuitementities") {
-            //
-            $title = $placeholdermetadata["title"];
-            $depthindex = $placeholdermetadata["depthindex"];
-
-            $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
-        }
-        else if ($placeholdertype == "woomenuitem") {
-            //
-            $title = $placeholdermetadata["title"];
-            $depthindex = $placeholdermetadata["depthindex"];
-
-            $cache = $cache . "<li>" . str_repeat('&gt;', $depthindex) . $title . "</li>";
-        }
-        else if ($placeholdertype == "undefined") {
-            // undefined items are ignored
-        }
-        else if ($placeholdertype == "") {
-            // undefined items are ignored
-        }
-        else 
-        {
-          nxs_webmethod_return_nack("unexpected placeholdertype;" . $placeholdertype);
-        }
-    }
-
-    if ($cache == "") {
-        $cache = "Leeg";
-    }
-
-    return $cache;
-}
-*/
 
 /**
  * Default data - wordt aangeroepen bij het opslaan van data van deze placeholder

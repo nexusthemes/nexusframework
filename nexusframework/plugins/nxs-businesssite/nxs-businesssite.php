@@ -1416,6 +1416,117 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	/* LANG */
+	
+	function getruntimelangproperties()
+	{
+		global $nxs_gl_runtimelangproperties;
+		
+		if ($nxs_gl_runtimelangproperties == "")
+		{
+			$templateproperties = nxs_gettemplateproperties();
+			$content_postid = $templateproperties["content_postid"];
+			// locate all "lang" widget(s) in the front-end content "template"
+			$filterargs = array
+			(
+				"postid" => $content_postid,
+				"widgettype" => "lang",	// all seo widgets
+			);
+			$widgets = nxs_getwidgetsmetadatainpost_v2($filterargs);
+			$mixedattributes = reset($widgets);	// pick first one
+			
+			$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+			$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+			
+			if ($combined_lookups > 0)
+			{
+				// evaluate the lookups widget values line by line
+				$sofar = array();
+				foreach ($combined_lookups as $key => $val)
+				{
+					$sofar[$key] = $val;
+					//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
+		
+					//echo "step 2; about to evaluate lookup tables on; $val<br />";
+					// apply the lookup values
+					$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
+		
+					// apply shortcodes
+					$val = $sofar[$key];
+					//echo "step 3; result is $val<br />";
+		
+					//echo "step 4; about to evaluate shortcode on; $val<br />";
+		
+					$val = do_shortcode($val);
+					$sofar[$key] = $val;
+		
+					//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
+		
+					$combined_lookups[$key] = trim($val);
+				}
+			}
+			
+			// apply the lookups and shortcodes to the customhtml
+			$magicfields = array("language");
+			$translateargs = array
+			(
+				"lookup" => $combined_lookups,
+				"items" => $mixedattributes,
+				"fields" => $magicfields,
+			);
+			$mixedattributes = nxs_filter_translate_v2($translateargs);
+			
+			$nxs_gl_runtimelangproperties = $mixedattributes;
+			
+			$language = $nxs_gl_runtimelangproperties["language"];
+			$nxs_gl_runtimelangproperties["language"] = do_shortcode($language);
+		}
+		
+		return $nxs_gl_runtimelangproperties;
+	}
+	
+	//
+	function nxs_language_attributes($result, $doctype)
+	{
+		if ($doctype == "html")
+		{
+			$langproperties = $this->getruntimelangproperties();
+			if (true)
+			{
+				$attributes = array();
+				
+				$keyvaluecombis = explode(" ", $result);
+				foreach ($keyvaluecombis as $keyvaluecombi)
+				{
+					// for example: lang="en-us"
+					$pieces = explode("=", $keyvaluecombi, 2);
+					$key = $pieces[0];
+					$value = $pieces[1];
+					$attributes[$key] = $value;
+				}
+				
+				$language = $langproperties["language"];
+				if ($language != "")
+				{
+					$attributes["lang"] = "\"{$language}\"";
+				}
+				
+				$result = "";
+				$isfirst = true;
+				foreach ($attributes as $key => $val)
+				{
+					if (!$isfirst) { $result .= " "; } 
+					$result.= "{$key}={$val}";
+					$isfirst = false;
+				}
+				
+				// $result = http_build_query($attributes,'',' ');
+			}
+		}
+		return $result;
+	}
+	
+	
 	/* YOAST SEO */
 	
 	function getruntimeseoproperties()
@@ -1862,7 +1973,12 @@ class nxs_g_modelmanager
 			add_filter('wpseo_metadesc', array($this, 'wpseo_metadesc'), 1999);
 			add_filter('wpseo_canonical', array($this, 'wpseo_canonical'), 99999);
 			add_filter('wpseo_robots', array($this, 'wpseo_robots'), 99999);
-			
+		}
+		
+		// allow lang widgets to override LANG settings
+		if (true)
+		{
+			add_filter("language_attributes", array($this, 'nxs_language_attributes'), 10, 2);
 		}
 		
 		// allow the system to populate the properties of the model for the lookups automatically
