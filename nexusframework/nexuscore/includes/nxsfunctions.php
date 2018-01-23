@@ -1123,6 +1123,25 @@ function nxs_getbusinessruleimpact($metadata)
 	return $result;
 }
 
+function nxs_rules_getpagetemplaterules()
+{
+	global $wpdb;
+	$name = nxs_templates_getslug();
+	$qr = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE 1=1 AND post_name = '{$name}' AND post_type = 'nxs_busrulesset' ");
+	
+	$businessrules = array();
+	if (count($qr) > 0)
+	{
+		$postid = $postid = $qr[0]->ID;
+		$businessrules = nxs_parsepoststructure($postid);
+	}
+	
+	// allow a filter to extend the (page)businessrules?		
+	$businessrules = apply_filters("nxs_f_businessrules", $businessrules);
+	
+	return $businessrules;
+}
+
 function nxs_gettemplateproperties_internal()
 {
 	// to allow the conditional tags to work, we have to rewind the posts, and to invoke the_post on the individual post (if its there)
@@ -1202,19 +1221,7 @@ function nxs_gettemplateproperties_internal()
 		}
 		
 		global $wpdb;
-		$name = nxs_templates_getslug();
-		$qr = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE 1=1 AND post_name = '{$name}' AND post_type = 'nxs_busrulesset' ");
-		
-		$businessrules = array();
-		if (count($qr) > 0)
-		{
-			$postid = $postid = $qr[0]->ID;
-			$result["templaterulespostid"] = $postid;
-			$businessrules = nxs_parsepoststructure($postid);
-		}
-		
-		// allow a filter to extend the (page)businessrules?		
-		$businessrules = apply_filters("nxs_f_businessrules", $businessrules);
+		$businessrules = nxs_rules_getpagetemplaterules();
 		
 		$index = 0;
 		foreach ($businessrules as $currentbusinessrule) 
