@@ -1129,17 +1129,18 @@ function nxs_rules_getpagetemplaterules()
 	$name = nxs_templates_getslug();
 	$qr = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE 1=1 AND post_name = '{$name}' AND post_type = 'nxs_busrulesset' ");
 	
-	$businessrules = array();
+	$result = array();
 	if (count($qr) > 0)
 	{
 		$postid = $postid = $qr[0]->ID;
-		$businessrules = nxs_parsepoststructure($postid);
+		$result = nxs_parsepoststructure($postid);
+		$result["pagetemplaterulesset_id"] = $postid;	// required to fetch metadata for the widget while evaluating
 	}
 	
 	// allow a filter to extend the (page)businessrules?		
-	$businessrules = apply_filters("nxs_f_businessrules", $businessrules);
+	$result = apply_filters("nxs_f_businessrules", $result);
 	
-	return $businessrules;
+	return $result;
 }
 
 function nxs_gettemplateproperties_internal()
@@ -1223,6 +1224,7 @@ function nxs_gettemplateproperties_internal()
 		global $wpdb;
 		$businessrules = nxs_rules_getpagetemplaterules();
 		
+		$postid = $businessrules["pagetemplaterulesset_id"];
 		$index = 0;
 		foreach ($businessrules as $currentbusinessrule) 
 		{
@@ -1238,6 +1240,7 @@ function nxs_gettemplateproperties_internal()
 				$placeholdermetadata = nxs_getwidgetmetadata($postid, $businessruleelementid);
 				$placeholdertype = $placeholdermetadata["type"];
 			}
+			
 				
 			if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) 
 			{
@@ -1290,9 +1293,7 @@ function nxs_gettemplateproperties_internal()
   	$result["templaterules_modeluris"] = $statebag["out"]["templaterules_modeluris"];
   	$result["templaterules_lookups"] = $statebag["out"]["templaterules_lookups"];
   	$result["url_fragment_variables"] = $statebag["out"]["url_fragment_variables"];
-  	
   	$result["lastmatchingrule"] = $lastmatchingrule;
-		
 		$result["result"] = "OK";
 	}
 	
@@ -10331,6 +10332,9 @@ function nxs_get_post_status($postid)
 	{
 		$result = get_post_status($postid);
 	}
+	
+	$result = apply_filters("nxs_f_get_post_status", $result, $postid);
+	
 	return $result;
 }
 
@@ -10347,6 +10351,9 @@ function nxs_get_page($postid)
 	{
 		$result = get_page($postid);
 	}
+	
+	$result = apply_filters("nxs_get_page", $result, $postid);
+	
 	return $result;
 }
 
@@ -10356,6 +10363,7 @@ function nxs_getwpposttype($postid)
 	$postdata = nxs_get_page($postid);
 	if ($postdata == null) { nxs_webmethod_return_nack("nxs_getwpposttype; postid not found;" . $postid); }
 	$result = $postdata->post_type;
+	
 	return $result;
 }
 
@@ -10364,9 +10372,11 @@ function nxs_getwpposttype($postid)
 // note that this function name is obsolete; use nxs_get_corepostmeta instead,
 // this function is still being used by some plugins so we cannot yet remove it,
 // unless those plugins are updated...
+// NOTE; very confusing; there's also a nxs_get_post_meta function
 function nxs_get_postmeta($postid)
 {
 	$result = nxs_get_corepostmeta($postid);
+	
 	return $result;
 }
 
@@ -10398,6 +10408,28 @@ function nxs_get_corepostmeta($postid)
 	{
 		$result = $nxs_gl_cache_postmeta[$postid];
 	}
+	
+	return $result;
+}
+
+// sanity checked for remote posts
+// NOTE; there's also a nxs_get_postmeta function !! (very confusing...)
+function nxs_get_post_meta($postid, $key, $single) 
+{
+	$isremotetemplate = nxs_isremotetemplate($postid);
+	if ($isremotetemplate)
+	{
+		$remotepost = nxs_remote_getpost($postid);
+		$result = $remotepost["metas"][$key];
+		
+		// error_log("nxs_get_post_meta; debug; remote; $postid; $key; " . json_encode($result));
+	}
+	else
+	{
+		$result = get_post_meta($postid, $key, $single);
+	}
+	
+	$result = apply_filters("nxs_get_post_meta", $result, $postid, $key, $single);
 	
 	return $result;
 }
@@ -10494,25 +10526,6 @@ function nxs_remote_getpost_actual($postid)
 }
 
 // sanity checked for remote posts
-function nxs_get_post_meta($postid, $key, $single) 
-{
-	$isremotetemplate = nxs_isremotetemplate($postid);
-	if ($isremotetemplate)
-	{
-		$remotepost = nxs_remote_getpost($postid);
-		$result = $remotepost["metas"][$key];
-		
-		// error_log("nxs_get_post_meta; debug; remote; $postid; $key; " . json_encode($result));
-	}
-	else
-	{
-		$result = get_post_meta($postid, $key, $single);
-	}
-	
-	return $result;
-}
-
-// sanity checked for remote posts
 function nxs_isremotetemplate($postid) 
 {
 	$result = nxs_stringcontains($postid, "@remotetemplate");
@@ -10566,6 +10579,8 @@ function nxs_get_post_custom_keys($postid)
 	{
 		$result = get_post_custom_keys($postid);
 	}
+	
+	$result = apply_filters("nxs_get_post_custom_keys", $result, $postid);
 	
 	return $result;
 }
