@@ -1144,7 +1144,7 @@ function nxs_gettemplateproperties_internal()
 	{
 		if (is_user_logged_in() && !is_admin() && $_REQUEST["nxs_templatepart"] != "")
 		{
-			// editing a template part i the front-end, this should disable headers, sidebars, etc.
+			// editing a template part in the front-end, this should disable headers, sidebars, etc.
 			$postid = get_the_ID();
 			$ishandled = true;
 			$result = array
@@ -1201,111 +1201,92 @@ function nxs_gettemplateproperties_internal()
 		{
 		}
 		
-		// hier op crasht ie
-		if ($_REQUEST["huh"] == "123")
-		{
-			error_log("busrules debug 1");
-		}
-
-		// cannot use this query, as for some unclear reason on the EU server,
-		// the where clause gets corrupted;
-		/*
-		[02-Oct-2017 13:36:25 UTC] WordPress database error Unknown column 'wp_postmeta.meta_value' in 'order clause' for query SELECT   wp_posts.* FROM wp_posts  WHERE 1=1  AND wp_posts.post_name = 'pagetemplaterules' AND wp_posts.post_type = 'nxs_busrulesset'  ORDER BY wp_postmeta.meta_value+0 DESC, wp_posts.post_date DESC  made by require('wp-blog-header.php'), wp, WP->main, WP->query_posts, WP_Query->query, WP_Query->get_posts, apply_filters_ref_array, WP_Hook->apply_filters, nxs_g_modelmanager->businesssite_the_posts, nxs_gettemplateproperties, nxs_gettemplateproperties_internal, WP_Query->__construct, WP_Query->query, WP_Query->get_posts
-		*/
-		//$query = new WP_Query(array('name' => nxs_templates_getslug(),'post_type' => 'nxs_busrulesset'));
 		global $wpdb;
 		$name = nxs_templates_getslug();
 		$qr = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE 1=1 AND post_name = '{$name}' AND post_type = 'nxs_busrulesset' ");
 		
+		$businessrules = array();
 		if (count($qr) > 0)
 		{
 			$postid = $postid = $qr[0]->ID;
 			$result["templaterulespostid"] = $postid;
 			$businessrules = nxs_parsepoststructure($postid);
-
-			// allow a filter to extend the (page)businessrules?		
-			$businessrules = apply_filters("nxs_f_businessrules", $businessrules, $a);
-			
-			$index = 0;
-			foreach ($businessrules as $currentbusinessrule) 
+		}
+		
+		// allow a filter to extend the (page)businessrules?		
+		$businessrules = apply_filters("nxs_f_businessrules", $businessrules);
+		
+		$index = 0;
+		foreach ($businessrules as $currentbusinessrule) 
+		{
+			if ($currentbusinessrule["propertyevaluation"] == "done")
 			{
-				if ($currentbusinessrule["propertyevaluation"] == "done")
+				$placeholdertype = $currentbusinessrule["placeholdertype"];
+				$placeholdermetadata = $currentbusinessrule["placeholdermetadata"];
+			}
+			else
+			{				
+				$content = $currentbusinessrule["content"];
+				$businessruleelementid = nxs_parsepagerow($content);
+				$placeholdermetadata = nxs_getwidgetmetadata($postid, $businessruleelementid);
+				$placeholdertype = $placeholdermetadata["type"];
+			}
+				
+			if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) 
+			{
+				// empty row / rule, ignore it
+			}
+			else 
+			{
+				// store this item as one of the matching rules
+				$busrule_processresult = nxs_busrule_process($placeholdertype, $placeholdermetadata, $statebag);
+				if ($busrule_processresult["result"] == "OK")
 				{
-					$placeholdertype = $currentbusinessrule["placeholdertype"];
-					$placeholdermetadata = $currentbusinessrule["placeholdermetadata"];
-				}
-				else
-				{				
-					$content = $currentbusinessrule["content"];
-					$businessruleelementid = nxs_parsepagerow($content);
-					$placeholdermetadata = nxs_getwidgetmetadata($postid, $businessruleelementid);
-					$placeholdertype = $placeholdermetadata["type"];
-				}
+					$traceitem = array
+					(
+						"placeholdertype" => $placeholdertype,
+						"ismatch" => $busrule_processresult["ismatch"],
+					);
+					$result["trace"][] = $traceitem;
 					
-				if ($placeholdertype == "" || $placeholdertype == "undefined" || !isset($placeholdertype)) 
-				{
-					// empty row / rule, ignore it
-				}
-				else 
-				{
-					// store this item as one of the matching rules
-					$busrule_processresult = nxs_busrule_process($placeholdertype, $placeholdermetadata, $statebag);
-					if ($busrule_processresult["result"] == "OK")
+					if ($busrule_processresult["ismatch"] == "true")
 					{
-						$traceitem = array
-						(
-							"placeholdertype" => $placeholdertype,
-							"ismatch" => $busrule_processresult["ismatch"],
-						);
-						$result["trace"][] = $traceitem;
+						$lastmatchingrule = $placeholdertype;
 						
-						if ($busrule_processresult["ismatch"] == "true")
+						// the process function is responsible for filling the out property
+						if ($busrule_processresult["stopruleprocessingonmatch"] == "true")
 						{
-							$lastmatchingrule = $placeholdertype;
-							
-							// the process function is responsible for filling the out property
-							if ($busrule_processresult["stopruleprocessingonmatch"] == "true")
-							{
-								break;
-							}
-						}
-						else
-						{
-							// continu to next rule
+							break;
 						}
 					}
 					else
 					{
-						// if applying of a rule failed, we skip it
+						// continu to next rule
 					}
 				}
+				else
+				{
+					// if applying of a rule failed, we skip it
+				}
 			}
-			
-			// the system should have derived site wide elements
-			$sitewideelements = nxs_pagetemplates_getsitewideelements();
-			foreach($sitewideelements as $currentsitewideelement)
-	  	{
-	  		$result[$currentsitewideelement] = $statebag["out"][$currentsitewideelement];
-	  	}
-	  	
-	  	// pass through the values for the modeluris and modelmappings of the various sections
-	  	// for now only the content section (in the future also the header, subheader, ...)
-	  	$result["templaterules_modeluris"] = $statebag["out"]["templaterules_modeluris"];
-	  	$result["templaterules_lookups"] = $statebag["out"]["templaterules_lookups"];
-	  	$result["url_fragment_variables"] = $statebag["out"]["url_fragment_variables"];
-	  	
-	  	$result["lastmatchingrule"] = $lastmatchingrule;
-			
-			$result["result"] = "OK";
 		}
-		else
-		{
-			if ($_REQUEST["huh"] == "123")
-			{
-				error_log("busrules debug;' NOT FOUND");
-			}
-			$result["result"] = "NACK";
-		}
+		
+		// the system should have derived site wide elements
+		$sitewideelements = nxs_pagetemplates_getsitewideelements();
+		foreach($sitewideelements as $currentsitewideelement)
+  	{
+  		$result[$currentsitewideelement] = $statebag["out"][$currentsitewideelement];
+  	}
+  	
+  	// pass through the values for the modeluris and modelmappings of the various sections
+  	// for now only the content section (in the future also the header, subheader, ...)
+  	$result["templaterules_modeluris"] = $statebag["out"]["templaterules_modeluris"];
+  	$result["templaterules_lookups"] = $statebag["out"]["templaterules_lookups"];
+  	$result["url_fragment_variables"] = $statebag["out"]["url_fragment_variables"];
+  	
+  	$result["lastmatchingrule"] = $lastmatchingrule;
+		
+		$result["result"] = "OK";
 	}
 	
 	$keys = array("header_postid", "subheader_postid", "content_postid", "subfooter_postid", "footer_postid", "pagedecorator_postid");
