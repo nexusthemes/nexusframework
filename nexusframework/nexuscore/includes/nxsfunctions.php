@@ -3476,12 +3476,24 @@ function nxs_sitemeta_clearcache()
 
 function nxs_getsitemeta_internal($nackwhenerror)
 {
+	// allow plugins to override the behaviour
+	$nackwhenerror = apply_filters("nxs_getsitemeta_internal_nackwhenerror", $nackwhenerror);
+	
 	global $nxs_gl_cache_sitemeta;
 	if (!isset($nxs_gl_cache_sitemeta))
 	{
+		$result = array();
+		
 		$postids = nxs_get_postidsaccordingtoglobalid("activesitesettings");
+		if (count($postids) > 1)
+		{
+			// kudos to http://shibashake.com/wordpress-theme/wordpress-page-redirect
+			add_filter('wp_redirect', 'nxs_redirectafterimport', 10, 2);
+		}
+		
 		if (count($postids) == 0)
 		{
+			// 
 			if ($nackwhenerror)
 			{
 				error_log("no active site settings");
@@ -3513,27 +3525,20 @@ function nxs_getsitemeta_internal($nackwhenerror)
  				
 				nxs_webmethod_return_nack("no active site settings not found?! (a)");
 			}
-			
-			$result = array();
 		}
 		else 
 		{
-			if (count($postids) > 1)
-			{
-				// kudos to http://shibashake.com/wordpress-theme/wordpress-page-redirect
-				add_filter('wp_redirect', 'nxs_redirectafterimport', 10, 2);
-			}
-			// store site settings as pagemeta of specific postid
+			// get site settings as pagemeta of specific postid
 			$postid = $postids[0];
 			$result = nxs_get_corepostmeta($postid);
-			
-			// allow plugins to tune the result
-			// (for example the stans plugin will post-process the 
-			// output to set the colors)
-			$result = apply_filters("nxs_f_getsitemeta", $result);
-			
-			$nxs_gl_cache_sitemeta = $result;
 		}
+		
+		// allow plugins to tune the result
+		// (for example the stans plugin will post-process the 
+		// output to set the colors)
+		$result = apply_filters("nxs_f_getsitemeta", $result);
+		
+		$nxs_gl_cache_sitemeta = $result;
 	}
 	else
 	{
