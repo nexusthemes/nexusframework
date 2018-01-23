@@ -45,7 +45,8 @@ function nxs_widgets_csv_home_getoptions()
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
-				"initial_toggle_state" => "closed",
+      	"initial_toggle_state" => "closed-if-empty",
+      	"initial_toggle_state_id" => "lookups",
 			),
 			array
       (
