@@ -70,7 +70,7 @@ function nxs_apply_menu()
 	// grab menu from first header in the side
 	$publishedargs = array();
 	$publishedargs["post_status"] 	= array("publish", "private");
-	$publishedargs["post_type"] = array("post", "page", "nxs_header", "nxs_footer", "nxs_sidebar");
+	$publishedargs["post_type"] = array("post", "page", "nxs_header", "nxs_footer", "nxs_sidebar", "nxs_subheader", "nxs_subfooter");
 	$publishedargs["orderby"] 		= "post_date";//$order_by;
 	$publishedargs["order"] 		= "DESC"; //$order;
 	$publishedargs["numberposts"] 	= -1;	// allemaal!
@@ -157,6 +157,7 @@ function nxs_apply_menu()
 				$type = $item["type"];
 				$title = $item["title"];
 				$destination_articleid = $item["destination_articleid"];
+				$destination_url = $item["destination_url"];
 				$depthindex = $item["depthindex"];
 				
 				if ($type == "menuitemarticle" && $destination_articleid != "")
@@ -223,8 +224,36 @@ function nxs_apply_menu()
 			   	
 			   	$most_recent_menu_item_id_per_depth[$depthindex] = $menu_item_id;
 			  }
+			  else if ($type == "menuitemcustom")
+			  {
+			  	// if the link is not set, use a custom url
+			  	
+			  	$menuitem_args = array
+					(
+			      'menu-item-title' => $title,
+			      'menu-item-classes' => '',
+			      'menu-item-object-id' => '',
+			      'menu-item-object' => '',
+			      'menu-item-status' => 'publish',
+			      'menu-item-type' => 'custom',
+			      
+			      'menu-item-parent-id' => $most_recent_menu_item_id_per_depth[$depthindex - 1],
+			      'menu-item-url' => $destination_url, 	// custom url
+			    );
+					
+					// Set up default menu items
+			  	$menu_item_id = wp_update_nav_menu_item
+			  	(
+			  		$menu_id, 
+			  		0, // 0 creates a new item
+			  		$menuitem_args
+			   	);
+			   	
+			   	$most_recent_menu_item_id_per_depth[$depthindex] = $menu_item_id;
+			  }
 			  else
 			  {
+			  	echo "";
 			  	var_dump($item);
 			  	die();
 			  }
