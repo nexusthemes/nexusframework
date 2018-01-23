@@ -10352,7 +10352,7 @@ function nxs_get_page($postid)
 		$result = get_page($postid);
 	}
 	
-	$result = apply_filters("nxs_get_page", $result, $postid);
+	$result = apply_filters("nxs_f_get_page", $result, $postid);
 	
 	return $result;
 }
@@ -10429,7 +10429,7 @@ function nxs_get_post_meta($postid, $key, $single)
 		$result = get_post_meta($postid, $key, $single);
 	}
 	
-	$result = apply_filters("nxs_get_post_meta", $result, $postid, $key, $single);
+	$result = apply_filters("nxs_f_get_post_meta", $result, $postid, $key, $single);
 	
 	return $result;
 }
@@ -10580,7 +10580,7 @@ function nxs_get_post_custom_keys($postid)
 		$result = get_post_custom_keys($postid);
 	}
 	
-	$result = apply_filters("nxs_get_post_custom_keys", $result, $postid);
+	$result = apply_filters("nxs_f_get_post_custom_keys", $result, $postid);
 	
 	return $result;
 }
