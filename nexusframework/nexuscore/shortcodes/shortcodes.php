@@ -221,6 +221,12 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = nxs_geturl_home();
 		}
+		else if ($op == "hostname")
+		{
+			$homeurl = nxs_geturl_home();	// for example https://example.org/
+			$pieces = explode("/", $homeurl);
+			$input = $pieces[2];
+		}
 		else if ($op == "mediasource")
 		{
 			// input = 123rf|27357367
