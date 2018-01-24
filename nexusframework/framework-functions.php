@@ -1514,40 +1514,6 @@ function nxs_action_webmethod_init_recontructmainwploop()
 add_action("nxs_action_webmethod_init", "nxs_action_webmethod_init_recontructmainwploop");
 add_action("nxs_action_webmethod_init", "nxs_ext_initialize_frontendframework");
 
-// enable use of shortcodes in menu items
-// kudos to https://stackoverflow.com/questions/11403189/how-to-insert-shortcode-into-wordpress-menu
-function nxs_wp_nav_menu_items($result, $args = array())
-{
-	// for the urls we cannot use placeholders, here we use name convention: http(s)://__x__ means {{x}}
-	if (nxs_stringcontains_v2($result, "://__", false))
-	{
-		$result = str_replace("https://__", "{{", $result);
-		$result = str_replace("http://__", "{{", $result);
-		$result = str_replace("__", "}}", $result);
-	}
-	
-	// for the titles
-	if (nxs_stringcontains_v2($result, "{", false))
-	{
-		$mixedattributes = array("item" => $result);
-		
-		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
-		// replace values in mixedattributes with the lookup dictionary
-		$magicfields = array("item");
-		$translateargs = array
-		(
-			"lookup" => $combined_lookups,
-			"items" => $mixedattributes,
-			"fields" => $magicfields,
-		);
-		$mixedattributes = nxs_filter_translate_v2($translateargs);
-		$result = $mixedattributes["item"];
-	}
-	
-	return $result;
-}
-add_filter('wp_nav_menu_items', 'nxs_wp_nav_menu_items');
-
 add_filter('wpseo_robots', 'nxs_webmethod_robots');
 function nxs_webmethod_robots($result)
 {

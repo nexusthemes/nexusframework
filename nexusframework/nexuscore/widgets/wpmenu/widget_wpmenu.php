@@ -275,6 +275,39 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 	return $options;
 }
 
+function nxs_widgets_wpmenu_applylookups($result)
+{
+	/* process lookup entries/shortcodes in the response */
+	
+	// for the urls we cannot use placeholders, here we use name convention: http(s)://__x__ means {{x}}
+	if (nxs_stringcontains_v2($result, "://__", false))
+	{
+		$result = str_replace("https://__", "{{", $result);
+		$result = str_replace("http://__", "{{", $result);
+		$result = str_replace("__", "}}", $result);
+	}
+	
+	// for the titles
+	if (nxs_stringcontains_v2($result, "{", false))
+	{
+		$mixedattributes = array("item" => $result);
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("item");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+		$result = $mixedattributes["item"];
+	}
+	
+	return $result;
+}
+
 
 /* WIDGET HTML
 ----------------------------------------------------------------------------------------------------
@@ -395,6 +428,9 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 		"echo" => false,
 	);
 	$menuhtml = wp_nav_menu( $nav_menu_args );
+	
+	//
+	$menuhtml = nxs_widgets_wpmenu_applylookups($menuhtml);
 	
 	// Colorization script
 	$script = '
