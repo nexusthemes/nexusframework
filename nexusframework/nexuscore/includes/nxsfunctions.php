@@ -11644,6 +11644,15 @@ function nxs_wipe_postmetakeys($postid, $keystoberemoved)
 	}
 }
 
+function nxs_get_nav_menu_locations()
+{
+	$result = get_nav_menu_locations();
+	
+	$result = apply_filters("nxs_f_get_nav_menu_locations", $result);
+	
+	return $result;
+}
+
 function nxs_wp_get_attachment_image_src($attachment_id, $size, $icon)
 {
 	$isremotetemplate = nxs_isremotetemplate($attachment_id);
@@ -11656,6 +11665,8 @@ function nxs_wp_get_attachment_image_src($attachment_id, $size, $icon)
 	{
 		$result = wp_get_attachment_image_src($attachment_id, $size, $icon);
 	}
+	
+	$result = apply_filters("nxs_f_wp_get_attachment_image_src", $result, $attachment_id, $size, $icon);
 	
 	return $result;
 }

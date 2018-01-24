@@ -373,8 +373,6 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	if 		($submenu_fontsize == '1x')		{ $submenu_fontsize = "10"; }
 	else if ($submenu_fontsize == '0.9x') 	{ $submenu_fontsize = "09"; } 
 	else if ($submenu_fontsize == '0.8x') 	{ $submenu_fontsize = "08"; }
-	
-	nxs_ob_start();
 
 	// echo "menu is set to; $menu_name <br /><br />";
 
@@ -383,8 +381,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 		$menu_name = "nxs-menu-generic";
 	}
 	
-	
-	$locations = get_nav_menu_locations();
+	$locations = nxs_get_nav_menu_locations();
 	$menu_id = $locations[$menu_name];
 	
 	global $nxs_gl_currentmenuwidget_mixedattributes;
@@ -395,11 +392,9 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 		'fallback_cb' => '',
 		'menu'        => $menu_id,
 		'menu_class'	=> 'menu nxs-menu',
+		"echo" => false,
 	);
-	wp_nav_menu( $nav_menu_args );
-
-	$menuhtml = nxs_ob_get_contents();
-	nxs_ob_end_clean();
+	$menuhtml = wp_nav_menu( $nav_menu_args );
 	
 	// Colorization script
 	$script = '
