@@ -69,9 +69,9 @@
 	
 	nxs_ensureloadpathisset_v2();
 	
-	// let's load WordPress
+		// let's load WordPress
 	require_once(WP_LOAD_PATH . 'wp-load.php');
-	require_once(WP_LOAD_PATH . 'wp-admin/includes/admin.php');
+	require_once(ABSPATH . 'wp-admin/includes/admin.php');
 
 	//send_nosniff_header();
 	
