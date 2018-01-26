@@ -3781,6 +3781,8 @@ function nxs_analytics_handleanalytics()
 {
 	// see https://developers.google.com/analytics/devguides/collection/analyticsjs/#the_javascript_tracking_snippet
 	$analyticsUA = nxs_seo_getanalyticsua();
+
+	
 	if ($analyticsUA != "") 
 	{
 		if (!is_user_logged_in())
@@ -3809,12 +3811,29 @@ function nxs_analytics_handleanalytics()
 
 function nxs_seo_getanalyticsua()
 {
-	$sitemeta = nxs_getsitemeta_internal(false);
-	$result = $sitemeta["analyticsUA"];
+	$mixedattributes = nxs_getsitemeta_internal(false);
+	
+	// allow the use of lookup entries in the value; translate those here
+	$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+	//$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+	$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+	
+	// replace values in mixedattributes with the lookup dictionary
+	$magicfields = array("analyticsUA");
+	$translateargs = array
+	(
+		"lookup" => $combined_lookups,
+		"items" => $mixedattributes,
+		"fields" => $magicfields,
+	);
+	$mixedattributes = nxs_filter_translate_v2($translateargs);
+	
+	$result = $mixedattributes["analyticsUA"];
 	if ($result == "UA-38116525-1")
 	{
 		$result = "";
 	}
+	
 	return $result;
 }
 
