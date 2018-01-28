@@ -81,7 +81,7 @@ function nxs_widgets_menucontainer_home_getoptions($args)
             "id" 				=> "custom",
             "type" 				=> "custom",
             "label" 			=> nxs_l18n__("Obsolete", "nxs_td"),
-            "customcontent" => "<div style='display: flex; min-height: 300px; background-color: #FDD; padding: 30px;'><a class='nxsbutton' href='{$patchurl}'>Convert all menus of this site to WP menus</a></div>",
+            "customcontent" => "<div style='display: flex; min-height: 300px; background-color: #FDD; padding: 30px;'><a class='nxsbutton' target='_blank' href='{$patchurl}'>Convert all menus of this site to WP menus</a></div>",
             "initial_toggle_state"	=> "open",
           ),
           
