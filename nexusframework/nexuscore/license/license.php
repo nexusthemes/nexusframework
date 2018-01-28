@@ -1033,9 +1033,9 @@ function nxs_licenseregister_callback()
 				&nbsp;
 			</p>
 			<p>
-				Ordernumber
+				License key
 			</p>
-			<input type='text' name='nxs_ordernr' onkeydown='jQuery("#nxsregproceed").show();' onchange='jQuery("#nxsregproceed").show();' value='' style='width:30%' />
+			<input type='text' name='nxs_ordernr' placeholder='V2US.XXXXX' onkeydown='jQuery("#nxsregproceed").show();' onchange='jQuery("#nxsregproceed").show();' value='' style='width:30%' />
 			<p>
 				&nbsp;
 			</p>
