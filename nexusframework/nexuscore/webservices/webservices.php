@@ -126,6 +126,11 @@ function nxs_ajax_webmethods()
 			$hasaccess = true;
 			// ok
 		}
+		else if ($webmethod == "patch")
+		{
+			$hasaccess = true;
+			// ok
+		}
 		else if ($webmethod == "logout")
 		{
 			// lijkt onlogisch, maar dit kan komen als er sprake is van een multi site, gebruikt maken van folders;

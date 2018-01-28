@@ -8,7 +8,6 @@ function nxs_applypatch($patchname, $args)
 	}
 	
 	// delegate work
-	// doorlussen naar handler
 	$filetobeincluded = dirname(__FILE__) . "/" . $patchname . "/" . $patchname . ".php";
 	if (file_exists($filetobeincluded))
 	{
