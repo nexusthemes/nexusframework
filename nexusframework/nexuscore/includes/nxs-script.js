@@ -2173,29 +2173,49 @@ function nxs_js_redirect_top(url)
 		
 		function nxs_js_popup_placeholder_handleclick(placeholderdom)
 		{
-			var postid = nxs_js_findclosestpostid_for_dom(placeholderdom);
-			var widget = jQ_nxs(placeholderdom).find(".nxs-widget").first();
-			var placeholderid = jQ_nxs(widget).attr("id").split("-")[2];
-			var rowindex = nxs_js_getrowindex(widget);
-		
-			// indien (optioneel) een "nxs-clickdefault" attribuut aanwezig
-			// is binnen de dom van de widget, wordt het event doorgelust naar
-			// dat element
-			var widgetelement = nxs_js_getwidgetelement_forplaceholder(postid, placeholderid);				
 			var defaultelement = jQ_nxs(placeholderdom).find(".nxs-defaultwidgetclickhandler");
 			if (defaultelement.length >= 1)
 			{
-				// ja, er is een default element gedefinieerd
-				jQ_nxs(defaultelement).click();
+				var de = defaultelement[0];
+				var href = jQ_nxs(de).attr("href");
+				if (href != "")
+				{
+					nxs_js_log("navigation to:" + href);
+					window.location = href;
+				}
+				else
+				{
+					// ja, er is een default element gedefinieerd
+					jQ_nxs(defaultelement[0]).click();
+				}
 			}
 			else
 			{
-				// nee, er is geen default gedrag gedefinieerd
+				var postid = nxs_js_findclosestpostid_for_dom(placeholderdom);
+				var widget = jQ_nxs(placeholderdom).find(".nxs-widget").first();
 				
-				nxs_js_log('Warning; please upgrade deprecated widget; nxs-defaultwidgetclickhandler class attribute not set, defaulting to edit widget');
-				// default implementation
-				
-				nxs_js_popup_placeholder_neweditsession(postid, placeholderid, rowindex, 'home');
+				var placeholderid = jQ_nxs(widget).attr("id").split("-")[2];
+				var rowindex = nxs_js_getrowindex(widget);
+			
+				// indien (optioneel) een "nxs-clickdefault" attribuut aanwezig
+				// is binnen de dom van de widget, wordt het event doorgelust naar
+				// dat element
+				var widgetelement = nxs_js_getwidgetelement_forplaceholder(postid, placeholderid);				
+				var defaultelement = jQ_nxs(placeholderdom).find(".nxs-defaultwidgetclickhandler");
+				if (defaultelement.length >= 1)
+				{
+					// ja, er is een default element gedefinieerd
+					jQ_nxs(defaultelement).click();
+				}
+				else
+				{
+					// nee, er is geen default gedrag gedefinieerd
+					
+					nxs_js_log('Warning; please upgrade deprecated widget; nxs-defaultwidgetclickhandler class attribute not set, defaulting to edit widget');
+					// default implementation
+					
+					nxs_js_popup_placeholder_neweditsession(postid, placeholderid, rowindex, 'home');
+				}
 			}
 		}
 		

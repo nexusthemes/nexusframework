@@ -945,7 +945,7 @@
 		  	</a>
 		    <ul> 	
 		    	<li>
-		    		<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress">
+		    		<a href="<?php echo $wordpressbackendurl; ?>" title="<?php nxs_l18n_e("WordPress backend[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class="site small-wordpress nxs-defaultwidgetclickhandler">
 		    			<span class='nxs-icon-wordpresssidebar'></span>
 		    		</a>
 		    	</li>
