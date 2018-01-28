@@ -88,40 +88,15 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Menu", "nxs_td"),
 				"dropdown" 			=> $menu_dropdown,
-				/* array
-				(
-				
-					"nxs-menu-generic"	=> "Nexus Menu 1 (Primary)", 
-					"nxs-menu-2" => "Nexus Menu 2",
-					"nxs-menu-3" => "Nexus Menu 3",
-				),
-				*/
 			),			
 			
-			/*
-			array(
-				"id" 				=> "wpsidebarid",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Widget area number", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@nxsempty@@@" => nxs_l18n__("None", "nxs_td"),
-					"1" 	 => nxs_l18n__("Area 1", "nxs_td"),
-					"2" 	 => nxs_l18n__("Area 2", "nxs_td"),
-					"3" 	 => nxs_l18n__("Area 3", "nxs_td"),
-					"4" 	 => nxs_l18n__("Area 4", "nxs_td"),
-					"5" 	 => nxs_l18n__("Area 5", "nxs_td"),
-					"6" 	 => nxs_l18n__("Area 6", "nxs_td"),
-					"7" 	 => nxs_l18n__("Area 7", "nxs_td"),
-					"8" 	 => nxs_l18n__("Area 8", "nxs_td"),
-				),
-				"tooltip" 			=> nxs_l18n__("
-					To effectively use a native WP menu, you need to finish a number of steps the most obvious one is having a WP menu in the first place. 
-					Second you will place this WP menu in the appropriate WP widget area. We provide a total of 8 of these areas. 
-					The last step is choosing the specific area in the front-end and configuring the overall design.", "nxs_td"),
-				"unistylablefield"	=> true
+			array
+			(
+				"id" 				=> "editsection",
+				"type" 				=> "custom",
+				"custom"	=> "<div><a class='nxsbutton' href='{$editurl}'>Edit Items</a></div>",
+				"label" 			=> nxs_l18n__("Items", "nxs_td"),
 			),
-			*/
 			
 			array(
 				"id" 				=> "halign",
@@ -167,28 +142,52 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Menu item height", "nxs_td"),
 				"dropdown" 			=> array(
-					"1.3x"	=>"1.3x",
-					"1.2x"	=>"1.2x",
-					"1.1x"	=>"1.1x",
-					"1x"	=>"1x", 
-					"0.9x"	=>"0.9x",
-					"0.8x"	=>"0.8x",
+          "1x"	=>"1x",
+          "2x"	=>"2x",
+          "1.5x"	=>"1.5x",
+          "1.4x"	=>"1.4x",
+          "1.3x"	=>"1.3x",
+          "1.2x"	=>"1.2x",
+          "1.1x"	=>"1.1x",
+          "0.9x"	=>"0.9x",
+          "0.8x"	=>"0.8x",
 				),
 				"unistylablefield"	=> true
 			),
+			/*
 			array(
-				"id" 				=> "menu_fontsize",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Menu fontsize", "nxs_td"),
-				"dropdown" 			=> array(
-					"1.2x"	=>"1.2x",
-					"1.1x"	=>"1.1x",
-					"1x"	=>"1x", 
-					"0.9x"	=>"0.9x",
-					"0.8x"	=>"0.8x",
-				),
-				"unistylablefield"	=> true
-			),
+                "id"                => "submenu_height",
+                "type"              => "select",
+                "label"             => nxs_l18n__("Submenu item height", "nxs_td"),
+                "dropdown"          => array(
+                    "1x"    =>"1x",
+                    "2x"    =>"2x",
+                    "1.5x"  =>"1.5x",
+                    "1.4x"  =>"1.4x",
+                    "1.3x"  =>"1.3x",
+                    "1.2x"  =>"1.2x",
+                    "1.1x"  =>"1.1x",
+                    "0.9x"  =>"0.9x",
+                    "0.8x"  =>"0.8x",
+                ),
+                "unistylablefield"  => true
+            ),
+			*/
+			array(
+                "id" 				=> "menu_fontsize",
+                "type" 				=> "select",
+                "label" 			=> nxs_l18n__("Menu fontsize", "nxs_td"),
+                "dropdown" 			=> array(
+                    "1.4x"	=>"1.4x",
+                    "1.3x"	=>"1.3x",
+                    "1.2x"	=>"1.2x",
+                    "1.1x"	=>"1.1x",
+                    "1x"	=>"1x",
+                    "0.9x"	=>"0.9x",
+                    "0.8x"	=>"0.8x",
+                ),
+                "unistylablefield"	=> true
+            ),
 			array(
 				"id" 				=> "submenu_fontsize",
 				"type" 				=> "select",
@@ -203,13 +202,6 @@ function nxs_widgets_wpmenu_home_getoptions($args)
 			
 			
 			
-			array
-			(
-				"id" 				=> "editsection",
-				"type" 				=> "custom",
-				"custom"	=> "<div><a class='nxsbutton' href='{$editurl}'>Edit Items</a></div>",
-				"label" 			=> nxs_l18n__("Items", "nxs_td"),
-			),
 			
 			array( 
 				"id" 				=> "wrapper_end",
@@ -388,12 +380,26 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	else if ($font_variant == 'small-caps')						{ $font_variant = "nxs-small-caps"; }
 	
 	// Menu item height
-	if 		($parent_height == '1x')		{ $parent_height = "10"; } 
-	else if ($parent_height == '1.3x') 		{ $parent_height = "13"; }
-	else if ($parent_height == '1.2x') 		{ $parent_height = "12"; }
-	else if ($parent_height == '1.1x') 		{ $parent_height = "11"; }
-	else if ($parent_height == '0.9x') 		{ $parent_height = "09"; } 
-	else if ($parent_height == '0.8x') 		{ $parent_height = "08"; }  
+  if (empty($parent_height) || $parent_height == '1x')    { $parent_height = "10"; }
+  else if ($parent_height == '2x') 						{ $parent_height = "20"; }
+  else if ($parent_height == '1.5x') 						{ $parent_height = "15"; }
+  else if ($parent_height == '1.4x') 						{ $parent_height = "14"; }
+  else if ($parent_height == '1.3x') 						{ $parent_height = "13"; }
+  else if ($parent_height == '1.2x') 						{ $parent_height = "12"; }
+  else if ($parent_height == '1.1x') 						{ $parent_height = "11"; }
+  else if ($parent_height == '0.9x') 						{ $parent_height = "09"; }
+  else if ($parent_height == '0.8x') 						{ $parent_height = "08"; }
+	
+	// Submenu item height
+  if (empty($submenu_height) || $submenu_height == '1x')    { $submenu_height = "10"; }
+  else if ($submenu_height == '2x')                        { $submenu_height = "20"; }
+  else if ($submenu_height == '1.5x')                      { $submenu_height = "15"; }
+  else if ($submenu_height == '1.4x')                      { $submenu_height = "14"; }
+  else if ($submenu_height == '1.3x')                      { $submenu_height = "13"; }
+  else if ($submenu_height == '1.2x')                      { $submenu_height = "12"; }
+  else if ($submenu_height == '1.1x')                      { $submenu_height = "11"; }
+  else if ($submenu_height == '0.9x')                      { $submenu_height = "09"; }
+  else if ($submenu_height == '0.8x')                      { $submenu_height = "08"; }
 	
 	// Menu fontsize
 	if 		($menu_fontsize == '1x')		{ $menu_fontsize = "10"; }
