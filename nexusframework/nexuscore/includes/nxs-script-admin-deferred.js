@@ -1495,25 +1495,6 @@ function nxs_js_gui_setup_drag_listeners()
 		}
 	);
 	
-	// by default, the row drag will not be able to scroll,
-	// since the nxs-container has overflow: auto
-	// jQ_nxs(".nxs-dragrow-handler").each
-	// (
-	// 	function() 
-	// 	{
-	// 		// remove any previous mousedown handlers for rowdragfix
-	// 		jQ_nxs(this).unbind("mousedown.rowdragfix");
-	// 	    jQ_nxs(this).bind
-	// 	    (
-	// 	    	"mousedown.rowdragfix", 
-	// 	    	function() 
-	// 	    	{
-	// 	    		jQ_nxs("html").addClass("nxs-dragging");
-	// 	    	}
-	// 	    );
-	// 	}
-	// );
-	
 	// enable dragging of rows
 	jQ_nxs(".nxs-postrows").sortable
 	(
@@ -1540,8 +1521,6 @@ function nxs_js_gui_setup_drag_listeners()
 					
 					var html = '';
 					
-					//html = 'AAAAA';
-					//html = '<li class="nxs-placeholder nxs-one-whole nxs-column-1-1" style="background-color: green; height: 100%;">' + html + '</li>';
 					html = '<ul class="nxs-placeholder-list">' + html + '</ul>';
 					html = '<div class="nxs-row-container nxs-containsimmediatehovermenu nxs-row1" style="border-color: black; border-width: ' + dashthick + 'px; border-style: dashed; background-color: white;height:' + heightwithoutborders + 'px">' + html + '</div>';
 					
@@ -1555,7 +1534,7 @@ function nxs_js_gui_setup_drag_listeners()
 			scroll: true, 
 			//scrollSensitivity: 100,
 			//scrollSpeed: 100,
-	   		start: function(event, ui) 
+	   	start: function(event, ui) 
 			{
 				nxs_js_nxsisdragging = true;
 				jQ_nxs(ui.item).data("sourcepostid", nxs_js_findclosestpostid_for_dom(ui.item));

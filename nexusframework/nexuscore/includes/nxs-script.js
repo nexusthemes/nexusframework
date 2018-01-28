@@ -2178,7 +2178,7 @@ function nxs_js_redirect_top(url)
 			{
 				var de = defaultelement[0];
 				var href = jQ_nxs(de).attr("href");
-				if (href != "")
+				if (href != "" && href != "#")
 				{
 					nxs_js_log("navigation to:" + href);
 					window.location = href;
