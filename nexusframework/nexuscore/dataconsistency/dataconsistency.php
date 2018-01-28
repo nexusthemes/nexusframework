@@ -438,7 +438,11 @@ function nxs_getdatarequiringmodificationforglobalidfix($metadata)
 	// metadata is for example widgetmetadata, or pagemetadata
 	foreach ($metadata as $metakey => $valueformetakey)
 	{
-		if (nxs_stringendswith($metakey, "_globalid"))
+		if ($metakey == "nxs_globalid")
+		{
+			// ignore; this -is- the globalid, not an outbound reference
+		}
+		else if (nxs_stringendswith($metakey, "_globalid"))
 		{
 			//
 			// we gaan er hierbij vanuit dat de metakey XYZ_globalid verwijst naar de metakey XYZ (_globalid is dus een suffix)
