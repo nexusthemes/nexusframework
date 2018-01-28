@@ -1043,6 +1043,47 @@ function nxs_dataconsistency_sanitize_postmetadata($postid)
 			update_post_meta($postid, $key, $val);
 		}
 	}
+	
+	// menu positions
+	if (true)
+	{
+		$isdirty = false;
+		
+		$locations = get_theme_mod( 'nav_menu_locations' );
+		if ($locations == "") { $locations = array(); }
+		
+		$possiblelocations = array
+		(
+			"nxs-menu-generic",
+			"nxs-menu-2",
+			"nxs-menu-3",
+			"nxs-menu-4",
+			"nxs-menu-5"
+		);
+		
+	  foreach($possiblelocations as $locationid)
+	  {
+	  	if ($locations[$locationid] == "")
+	  	{
+	  		$menu = get_term_by('name', $locationid, 'nav_menu');
+	  		$menuid = $menu->term_id;
+	  		
+	  		if ($menuid != "")
+	  		{
+	  			$locations[$locationid] = $menuid;
+	  			$isdirty = true;
+	  		}
+	  		else
+	  		{
+	  			// simply does not exist; nothing wrong with that
+	  		}
+	  	}
+	  }
+	  if ($isdirty)
+	  {
+	  	set_theme_mod('nav_menu_locations', $locations);
+	  }
+	}
 }
 
 ?>
