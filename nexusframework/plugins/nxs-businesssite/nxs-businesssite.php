@@ -1086,6 +1086,13 @@ class nxs_g_modelmanager
 		return $model["contentmodel"];
 	}
 	
+	function doesmodelexist($modeluri = "")
+	{
+		$model = $this->getmodel($modeluri);
+		$result = ($model != false);
+		return $result;
+	}
+	
 	function getcontentmodelproperty($modeluri, $property)
 	{
 		$contentmodel = $this->getcontentmodel($modeluri);
