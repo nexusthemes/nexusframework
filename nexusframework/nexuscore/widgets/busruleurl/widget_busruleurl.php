@@ -515,6 +515,32 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 		$humanid = $path;
 		$humanid = $nxs_g_modelmanager->getnormalizedhumanmodelidentification($humanid);
 		
+		$charcount = substr_count($p1, '{');
+		
+		if ($charcount >= 4)
+		{
+			// for example: {{redirect_id@schema.{{language}}.redirect}}
+			
+			// the following lookups haven't been evaluated yet if we reach this point
+			// we temporarily evaluate them here
+			$lookupsfoundsofar = $statebag["out"]["templaterules_lookups"];
+			$parsed_lookupsfoundsofar = nxs_parse_keyvalues($lookupsfoundsofar);
+			$evaluated_lookupsfoundsofar = nxs_lookups_evaluate_linebyline($parsed_lookupsfoundsofar);
+			
+			$magicfields = array("p1");
+			$mixedattributes = array("p1" => $p1);
+			$translateargs = array
+			(
+				"lookup" => $evaluated_lookupsfoundsofar,
+				"items" => $mixedattributes,
+				"fields" => $magicfields,
+			);
+			$mixedattributes = nxs_filter_translate_v2($translateargs);
+			$p1 = $mixedattributes["p1"];
+			//var_dump($p1);
+			//die();
+		}
+		
 		$p1 = str_replace("{", "", $p1);	// {{key@model}}
 		$p1 = str_replace("{", "", $p1);	// key@model}}
 		$p1 = str_replace("}", "", $p1);	// key@model
@@ -525,7 +551,7 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 		$modeluri = "{$humanid}@{$modelschema}";
 		
 		// check if the modeluri exists
-		if ($nxs_g_modelmanager->ismodelfoundincache($modeluri))
+		if ($nxs_g_modelmanager->doesmodelexist($modeluri))
 		{
 			// ok, its there; the condition is valid apparently
 			// error_log("busrule; yes, match; $modeluri");
