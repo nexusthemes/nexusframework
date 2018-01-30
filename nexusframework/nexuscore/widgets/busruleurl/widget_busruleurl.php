@@ -417,17 +417,60 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 					}
 					else
 					{
-						if ($templatepiece === "*")
+						$wildcardscount = substr_count($templatepiece, "*");
+						if ($wildcardscount == 0)
 						{
-							// ignore this fraction (a match)
+							if ($templatepiece === $uripiece)
+							{
+								// yippie a match
+							}
+							else
+							{
+								// fragment mismatch; break the loop!
+								$isconditionvalid = false;
+							}
 						}
-						else if ($templatepiece === $uripiece)
+						else if ($wildcardscount == 1)
 						{
-							// yes its identical, continue to the next fragment
+							if ($templatepiece === "*")	// /*/
+							{
+								// ignore this fraction (a match)
+							}
+							else if (nxs_stringstartswith($templatepiece, "*"))	// /*-postfix/
+							{
+								$shouldendwith = str_replace("*", "", $templatepiece);
+								if (nxs_stringendswith($uripiece, $shouldendwith))
+								{
+									// ok so far
+								}
+								else
+								{
+									// fragment mismatch; break the loop!
+									$isconditionvalid = false;
+								}
+							}
+							else if (nxs_stringendswith($templatepiece, "*"))	// /*-postfix/
+							{
+								$shouldbeginwith = str_replace("*", "", $templatepiece);
+								if (nxs_stringstartswith($uripiece, $shouldbeginwith))
+								{
+									// ok so far
+								}
+								else
+								{
+									// fragment mismatch; break the loop!
+									$isconditionvalid = false;
+								}
+							}
+							else
+							{
+								// not supported; fragment mismatch; break the loop!
+								$isconditionvalid = false;
+							}
 						}
 						else
 						{
-							// fragment mismatch; break the loop!
+							// format not supported; fragment mismatch; break the loop!
 							$isconditionvalid = false;
 							break;
 						}
