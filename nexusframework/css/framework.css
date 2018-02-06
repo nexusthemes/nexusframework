@@ -2602,7 +2602,7 @@ div#nxsseoanalysisoutput li.score { clear: both; }
 ---------------------------------------------------------------------------------------------------- */
 .woocommerce form p  										{ clear: both; font-size: 15px; margin-bottom: 10px; }
 .woocommerce p.form-row										{ margin-bottom: 0px; }
-.woocommerce p.form-row label 								{ width: 20%; display: block; float: left; line-height: 30px; }
+.woocommerce p.form-row label 								{ width: 19%; display: block; float: left; line-height: 30px; }
 .woocommerce p.form-row select								{ margin-bottom: 10px; }
 .nxs-form .select2-choice 									{ font-size: 15px; padding: .4em !important; background-color: #fff !important; box-shadow: 0px 0px 0px 1px gray inset; margin-bottom: 10px; }
 .woocommerce form input[type=search],
