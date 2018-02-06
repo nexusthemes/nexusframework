@@ -1290,6 +1290,28 @@ function nxs_init()
 				echo "post type:{$posttype}<br />";
 				$needleglobalid = nxs_get_globalid($postid, false);
 				echo "globalid: $needleglobalid<br />";
+				
+				echo "----- local meta ----";
+				$origpost_meta_all = get_post_meta($postid);
+				foreach ($origpost_meta_all as $key => $val)
+				{
+					echo "meta key: $key<br />";
+					echo "meta val: <br />";
+					echo "<pre>";
+					if ($_REQUEST["fix"] == "true")
+					{
+						$val = preg_replace('~\xc2\xa0~', '&nbsp;', $val);
+						//$val = esc_html($val);
+					}
+					var_dump($val);
+					echo "</pre>";
+					echo "<br />";
+					echo "<br />";
+					echo "<hr />";
+				}
+				
+				
+				
 				echo "post_meta_all: $needleglobalid<br />";
 				$origpost_meta_all = nxs_get_post_meta_all($postid);
 				foreach ($origpost_meta_all as $key => $val)
