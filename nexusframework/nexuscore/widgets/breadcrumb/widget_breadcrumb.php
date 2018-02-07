@@ -59,13 +59,15 @@ function nxs_widgets_breadcrumb_home_getoptions($args)
 				"placeholder" => nxs_l18n__("You are here", "nxs_td"),
 				"unicontentablefield" => true
 			),
-            array(
+      array
+      (
 				"id" 				=> "icon",
 				"type" 				=> "icon",
 				"label" 			=> nxs_l18n__("Icon between breadcrumbs", "nxs_td"),
 				"unicontentablefield" => true
 			),
-            array(
+      array
+      (
 				"id" 				=> "homepage_breadcrumb",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Homepage as", "nxs_td"),
@@ -83,26 +85,35 @@ function nxs_widgets_breadcrumb_home_getoptions($args)
 				"type" 				=> "wrapperend"
 			),
             
-            array( 
+     	array
+     	(
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Miscellaneous", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 			),
             
-            array(
+      array
+      (
 				"id" 				=> "alignment",
 				"type" 				=> "radiobuttons",
 				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-            
-			array( 
+			
+			array
+			(
+				"id" 				=> "exclude_category_names",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Exclude category names", "nxs_td"),
+				// "unistylablefield"	=> true
+			),
+			array
+			( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
-			)
-            
+			)     
 		)
 	);
 	
@@ -219,6 +230,7 @@ function nxs_widgets_breadcrumb_render_webpart_render_htmlvisualization($args)
     // check if page has categories
     $categoriesfilters = array();
 		$categoriesfilters["uncategorized"] = "skip"; // Skip uncategorized breadcrumbs;
+		$categoriesfilters["exclude_category_names"] = $exclude_category_names;
 		$categories = get_the_category($postid);
 		nxs_getfilteredcategories($categories, $categoriesfilters); // all categories of current page without the uncategorized ones.
     $countCategoriesOfCurrentPage = count($categories);
@@ -231,79 +243,79 @@ function nxs_widgets_breadcrumb_render_webpart_render_htmlvisualization($args)
     
     // start making an array list for breadcrumb items
 		$list = array();
-        
-        // get homepage ID, name and link
-        $homepageID = nxs_gethomepageid(); 
-        $homepageName = get_the_title($homepageID);
-        $homepageLink = get_permalink($homepageID);
-        
-        // check if we are on the homepage (true or false)
-				$areWeOnTheHomepage = ($homepageID == $nxs_global_current_containerpostid_being_rendered);
-        
-        if($areWeOnTheHomepage)
-        {
-        	// nothing to show
-        } 
-        else if($currentPageHasParent || !$currentPageHasCategories)
-        { 
-        	// parentpages are stronger than categories of current page    
-		    	$triesleft = 100;
-          while($triesleft > 0){
-              $name = get_the_title($postid);
-              $link = get_permalink($postid);
+    
+    // get homepage ID, name and link
+    $homepageID = nxs_gethomepageid(); 
+    $homepageName = get_the_title($homepageID);
+    $homepageLink = get_permalink($homepageID);
+    
+    // check if we are on the homepage (true or false)
+		$areWeOnTheHomepage = ($homepageID == $nxs_global_current_containerpostid_being_rendered);
+    
+    if($areWeOnTheHomepage)
+    {
+    	// nothing to show
+    } 
+    else if($currentPageHasParent || !$currentPageHasCategories)
+    { 
+    	// parentpages are stronger than categories of current page    
+    	$triesleft = 100;
+      while($triesleft > 0){
+          $name = get_the_title($postid);
+          $link = get_permalink($postid);
 
-              if($postid == $nxs_global_current_containerpostid_being_rendered){
-                  // if this IS on the current page
-                  $list[] = array("type" => "text", "naam" => $name); //insert current page name,type and link OR pagename type and link of parent, into array
-              } else {
-                  // if it's NOT the current page
-                  $list[] = array("type" => "separator");
-                  $list[] = array("type" => "link", "naam" => $name, "link" => $link); //insert current page name,type and link OR pagename type and link of parent, into array
-              }
-              
-              $post_parent_id = wp_get_post_parent_id($postid);
-
-              if($post_parent_id == false){
-                  break; // no parent category, so let's jump out of the while loop
-              } else {
-                  $postid = $post_parent_id; // sets new id of parentpage of current page
-              }
-
-              $triesleft--;
-          }   
-        }
-        else if($currentPageHasCategories) 
-        {   
-          $category_of_current_page = $categories[0]; // get array keys and values for first degree category
-          
-          $category_id = $category_of_current_page->term_id; // get id of first degree category
-          
-          $currentPage_id = $nxs_global_current_containerpostid_being_rendered; // get id of current page viewing
-          $name = get_the_title($currentPage_id); // get name of current page viewing
-          $link = get_permalink($currentPage_id); // get link of current page viewing
-          
-          $list[] = array("type" => "text", "naam" => $name); //insert current page name, type and link into array
-
-  		    $triesleft = 100; 
-          while($triesleft > 0) 
-          {
-            $current_term = get_term($category_id, 'category'); // returns array with keys and values of category, based on the category_id
-            
-            $category_name = $current_term->name;
-            $category_link = get_category_link($category_id);
-
-            $list[] = array("type" => "separator");
-            $list[] = array("naam" => $category_name, "link" => $category_link, "type" => "link");
-            
-            if($current_term->parent && ( $current_term->parent != $current_term->term_id )){ // if current category has a parent categorie
-                $category_id = $current_term->parent; // sets new category_id, for your information: the one of the parent
-            } else {
-                break; // no parent category, so let's jump out of the while loop
-            }
-
-            $triesleft--;
+          if($postid == $nxs_global_current_containerpostid_being_rendered){
+              // if this IS on the current page
+              $list[] = array("type" => "text", "naam" => $name); //insert current page name,type and link OR pagename type and link of parent, into array
+          } else {
+              // if it's NOT the current page
+              $list[] = array("type" => "separator");
+              $list[] = array("type" => "link", "naam" => $name, "link" => $link); //insert current page name,type and link OR pagename type and link of parent, into array
           }
+          
+          $post_parent_id = wp_get_post_parent_id($postid);
+
+          if($post_parent_id == false){
+              break; // no parent category, so let's jump out of the while loop
+          } else {
+              $postid = $post_parent_id; // sets new id of parentpage of current page
+          }
+
+          $triesleft--;
+      }   
+    }
+    else if($currentPageHasCategories) 
+    {   
+      $category_of_current_page = $categories[0]; // get array keys and values for first degree category
+      
+      $category_id = $category_of_current_page->term_id; // get id of first degree category
+      
+      $currentPage_id = $nxs_global_current_containerpostid_being_rendered; // get id of current page viewing
+      $name = get_the_title($currentPage_id); // get name of current page viewing
+      $link = get_permalink($currentPage_id); // get link of current page viewing
+      
+      $list[] = array("type" => "text", "naam" => $name); //insert current page name, type and link into array
+
+	    $triesleft = 100; 
+      while($triesleft > 0) 
+      {
+        $current_term = get_term($category_id, 'category'); // returns array with keys and values of category, based on the category_id
+        
+        $category_name = $current_term->name;
+        $category_link = get_category_link($category_id);
+
+        $list[] = array("type" => "separator");
+        $list[] = array("naam" => $category_name, "link" => $category_link, "type" => "link");
+        
+        if($current_term->parent && ( $current_term->parent != $current_term->term_id )){ // if current category has a parent categorie
+            $category_id = $current_term->parent; // sets new category_id, for your information: the one of the parent
+        } else {
+            break; // no parent category, so let's jump out of the while loop
         }
+
+        $triesleft--;
+      }
+    }
         
     // Add homepage to array 
 

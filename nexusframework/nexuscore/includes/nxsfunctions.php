@@ -3781,8 +3781,6 @@ function nxs_analytics_handleanalytics()
 {
 	// see https://developers.google.com/analytics/devguides/collection/analyticsjs/#the_javascript_tracking_snippet
 	$analyticsUA = nxs_seo_getanalyticsua();
-
-	
 	if ($analyticsUA != "") 
 	{
 		if (!is_user_logged_in())
@@ -3950,8 +3948,9 @@ function nxs_getfilteredcategories(&$categorieshaystack, $filters)
 	{
 		$shouldremoveitem = false;
 		
+		// optionally remove "uncategorized" item
 		if (!$shouldremoveitem && array_key_exists("uncategorized", $filters))
-		{			
+		{
 			// 
 			if ($element->name == 'Uncategorized')			
 			{
@@ -3968,10 +3967,22 @@ function nxs_getfilteredcategories(&$categorieshaystack, $filters)
 			// no more filters to check
 		}
     
-        if ($shouldremoveitem)
-        {
-            unset($categorieshaystack[$elementKey]);
-        }
+    //
+    if (!$shouldremoveitem && array_key_exists("exclude_category_names", $filters))
+		{
+			$names_to_exclude_string = $filters["exclude_category_names"];
+			$names_to_exclude = explode(";", $names_to_exclude_string);
+			if (in_array($element->name, $names_to_exclude))
+			{
+				$shouldremoveitem = true;
+			}
+		}
+		
+		//    
+    if ($shouldremoveitem)
+    {
+        unset($categorieshaystack[$elementKey]);
+    }
 	}
 	
 	// restructure array
