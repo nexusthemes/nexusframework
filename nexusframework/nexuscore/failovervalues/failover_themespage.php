@@ -53,23 +53,8 @@
 		nxs_ob_start();
 		?>
 		<p>
-			<ul>
-				<li>
-					<a href='http://nexusthemes.com/support'>Support</a>
-					<ul style='padding-left: 20px;'>
-						<li><a target='_blank' href='http://nexusthemes.com/support/getting-started/'>Getting started</a></li>
-						<li><a target='_blank' href='http://nexusthemes.com/support/changing-and-adding-content/'>Changing &amp; adding content</a></li>
-						<li><a target='_blank' href='http://nexusthemes.com/support/changing-and-adding-content/'>Building blocks</a></li>
-						<li><a target='_blank' href='http://nexusthemes.com/support/faq/'>FAQ</a></li>
-					</ul>
-				</li>
-				<li><a href='<?php echo $license_url; ?>'>License</a></li>
-				<li><a href='<?php echo $update_url; ?>'>Update</a></li>
-			</ul>
-			<h3 style='padding-left: 0px;'>Links below are for system admins only</h3>
-			<ul>
-				<li><a href='<?php echo $restart_url; ?>' style='color: red;'>Restart</a></li>
-			</ul>
+			<a href='https://www.wpsupporthelp.com/' target='_blank'>https://www.wpsupporthelp.com/</a><br />
+			<iframe style="width: 100%; height: 70vh;" src="https://www.wpsupporthelp.com/answer/how-to-find-the-best-answer-to-my-wordpress-questions-1624/" />
 		</p>
 		<?php
 		$result["support_htmlid"] = "support";

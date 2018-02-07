@@ -81,11 +81,7 @@ function nxs_license_notifyregistersuccess()
   <?php
 }
 
-function nxs_license_getlicenseserverurl($purpose)
-{
-	//error_log("invoke; nxs_license_getlicenseserverurl; " . $purpose);
-	return "http://license.nexusthemes.com/";
-}
+
 
 function nxs_license_notifynolicense()
 {
@@ -137,229 +133,115 @@ function nxs_license_clearupdatetransient()
 {
 	delete_transient("nxs_themeupdate");
 }
-add_filter('delete_site_transient_update_themes', 'nxs_license_clearupdatetransient');
-add_action('load-update-core.php', 'nxs_license_clearupdatetransient');
-add_action('load-themes.php', 'nxs_license_clearupdatetransient');
 
-function nxs_license_checkupdate($value)
+// When a theme gets deleted, WordPress fires the 'delete_site_transient_update_themes' action before it deletes the transient.
+// add_filter('delete_site_transient_update_themes', 'nxs_license_clearupdatetransient');
+
+function nxs_license_load_themes()
+{
+	if ( isset( $_GET['activated'] ) ) 
+	{ 
+		// executed when the theme is activated by the user/system
+		nxs_license_clearupdatetransient();
+	}
+}
+add_action('load-themes.php', 'nxs_license_load_themes');
+
+function nxs_license_site_transient_update_themes($result)
 {
 	if (!function_exists("wp_get_theme"))
 	{
 		add_action('admin_notices', 'nxs_license_notifyrequireswpupdate');
-		return $value;
+		return $result;
 	}
 	
 	$themeobject = wp_get_theme();
-	
 	$parent = $themeobject->parent();
 	if ($parent != null)
 	{
 		$themeobject = $parent;
 	}
-	
 	$theme = $themeobject->name;
+	$currentversion = $themeobject->version;
 	
 	// ---
-	
-	$shouldcheck = false;
-	$url = nxs_geturlcurrentpage();
-	
+
+	$shouldcheck = true;
+
 	$nxs_themeupdate = get_transient("nxs_themeupdate");
+	
+	$enforcecheck = false;
+	
+	$url = nxs_geturlcurrentpage();
 	if (nxs_stringcontains($url, "nxs_admin_update"))
 	{
 		// always refresh if the user accesses the admin_update page
-		$shouldcheck = true;
-	}
-	else if ($nxs_themeupdate == "nostressing")
-	{
-		error_log("detected: no stressing, wont invoke get_version");
-		$shouldcheck = false;
-	}
-	else if ($nxs_themeupdate == false || $nxs_themeupdate == "")
-	{
-		$shouldcheck = true;
-	}	
-	else
-	{
-		// 
+		$enforcecheck = true;
 	}
 	
-	$licensekey = nxs_license_getlicensekey();
-	if ($licensekey == "")
+	// dont do version check on own infra
+	if ($shouldcheck === true)
 	{
-		$shouldcheck = false;
-		
-		// wp updates are disabled; we always require users to
-		// download the updates themselves
-		$template = get_template();
-		$value -> response[$template] = null;
-	}
-	else if ($licensekey == "fromowninfra")
-	{
-		// dont poll when we host ourselves as we do the updates in another way there
-		$shouldcheck = false;
-	}
-	
-	if ($shouldcheck)
-	{
-		$site = nxs_geturl_home();
-		$themeobject = wp_get_theme();
-		
-		$parent = $themeobject->parent();
-		if ($parent != null)
+		if ($licensekey == "fromowninfra")
 		{
-			$themeobject = $parent;
+			// dont poll when we host ourselves as we do the updates in another way there
+			$shouldcheck = false;
+			$enforcecheck = false;
 		}
-		
-		$version = $themeobject->version;
-		$maxexecutiontime = ini_get('max_execution_time'); 
-		
-		if (function_exists('nxs_theme_getmeta'))
-		{
-			$meta = nxs_theme_getmeta();
-			$version = $meta["version"];
-			$theme = $meta["id"];
-		}
+	}
 	
-		$serviceparams = array
-		(
-			'timeout' => 15,
-			'sslverify' => false,
-			'body' => array
-			(
-				"nxs_license_action" => "get_version",
-				"version" => $version,
-				"theme" => $theme,
-				"licensekey" => $licensekey,
-				"site" => $site,
-				"maxexecutiontime" => $maxexecutiontime,
-			)
-		);
+	// dont do verion check if we already know there's an update available
+	if ($shouldcheck === true)
+	{
+		$themeupdate = get_transient("nxs_themeupdate");
+		if ($themeupdate["nxs_updates"] == "yes")
+		{
+			// no need to proceed to poll, we already know an update is available
+			$shouldcheck = false;
+		}
+	}
+	
+	if ($shouldcheck === true || $enforcecheck === true)
+	{
+		// todo: add transient here too to avoid polling too often
 		
-		$site = home_url();
-		$url = nxs_license_getlicenseserverurl("get_version");
-		
-		global $nxs_glb_license_response; // prevent server from making multiple invocations per request
-		if ($nxs_glb_license_response == null)
-		{		
-			$response = wp_remote_post($url, $serviceparams);
-			$nxs_glb_license_response = $response;
+		// pull latest version from proxy first to reduce stressing the license server
+		// TODO: use CNAME instead would be better
+		$proxyurl = "https://s3.amazonaws.com/devices.nexusthemes.com/!api/latestthemeversion.txt";
+		$latestversion = nxs_geturlcontents(array("url" => $proxyurl));
+		if ($latestversion == "")
+		{
+			$shouldcheck = false;
 		}
 		else
 		{
-			$response = $nxs_glb_license_response;
-		}
-		
-		if (true)
-		{
-			$successful = true;
-		
-		  // make sure the response was successful
-		  if ( is_wp_error( $response )) 
-		  {
-		  	$successful = false;
-		  	error_log("detected failure response, message:");
-		    error_log($response->get_error_message());
-		  }
-		  
-		  $body = wp_remote_retrieve_body($response); 
-		  $update_data = json_decode($body, true);
-		  
-		  if ($successful ) 
-		  {
-		  	if ($update_data["result"] == "OK" || $update_data["result"] == "ALTFLOW")
-		  	{
-			 		$durationinsecs = 60 * 60 * 24 * 14;	// 1x every 2 weeks
-			 		$before = get_transient("nxs_themeupdate");
-			 		
-			 		set_transient("nxs_themeupdate", $update_data, $durationinsecs);
-		
-			 		if ("no" == $update_data["nxs_updates"])
-			 		{
-			 			$value = nxs_license_updatetheme($value, null);
-			 		}
-			 		else if ("enterlicensekey" == $update_data["nxs_updates"])
-			 		{
-			 			nxs_licenseresetkey();
-			 			$value = nxs_license_updatetheme($value, null);
-			 		}
-			 		else if ("yes" == $update_data["nxs_updates"])
-			 		{
-						$theme = $update_data["theme"];
-						if ($theme == null)
-						{
-							echo "theme not set!	";
-							var_dump($update_data);
-							die();
-						}
-						
-						//var_dump($update_data);
-						//die();
-						//echo "KOMT IE";
-						
-						if ($update_data["nxs_enablewpupdater"] == "yes")
-						{
-							$value = nxs_license_updatetheme($value, $update_data);
-						}
-						else
-						{
-							$value = nxs_license_updatetheme($value, null);
-						}
-					}
-					else
-					{
-						// $value = null;
-					}
-				}
-				else
-				{
-					// skip for now... 
-		    	$durationinsecs = 60 * 60 * 12;	// x hours
-		 	  	//error_log("instructing to prevent stressing");
-			    set_transient("nxs_themeupdate", "nostressing", $durationinsecs);
-			    
-		    	$value = nxs_license_updatetheme($value, null);
-				}
+			// its set, compare version with current
+			
+			if (version_compare($latestversion, $currentversion , "<="))
+			{
+				// nothing to check
+				$shouldcheck = false;
 			}
 			else
 			{
-				// skip for now... 
-		    $durationinsecs = 60 * 60 * 8;	// x hours
-	
-	 	  	//error_log("instructing to prevent stressing");
-		    set_transient("nxs_themeupdate", "nostressing", $durationinsecs);
-		    
-		    $value = nxs_license_updatetheme($value, null);
+				// an update is available, store that fact so it will be visible in the front end
+				set_transient("nxs_themeupdate", array("nxs_updates" => "yes"), 60 * 60 * 24 * 7);
+				
+				// dont poll the license server (useless)
+				$shouldcheck = false;
 			}
 		}
-		else
-		{
-			// already processed it
-		}
 	}
-
-	return $value;
-}
-add_filter('site_transient_update_themes', 'nxs_license_checkupdate');
-
-function nxs_license_updatetheme($value, $data)
-{
-	// the result should be stored in $template key,
-	// not in the $theme key, otherwise people that use
-	// custom theme folder names will get a notification
-	// that a theme has a new version, but in the updater
-	// they wont find anything
 	
-	// we by-pass the update mechanism of WP,
-	// since that could result in time out issues,
-	// and .maintenance mode troubles
-	$template = get_template();
-	$value -> response[$template] = $data;
+	//
+	//
+	//
 	
-	return $value;
+	return $result;
 }
+add_filter('site_transient_update_themes', 'nxs_license_site_transient_update_themes', 10, 1);
 
-function nxs_license_periodictriggerupdate()
+function nxs_license_after_setup_theme()
 {
 	if ($_REQUEST["nxs_force_themeupdatecheck"] == "true")
 	{
@@ -372,11 +254,11 @@ function nxs_license_periodictriggerupdate()
 	{
 		nxs_license_actualtriggerupdate();
 		
-		$hours = 9; // poll max 
+		$hours = 24; // poll max 
 		set_transient("nxs_themeupdater_freq", "cached", 60 * 60 * $hours);
 	}
 }
-add_action('after_setup_theme', 'nxs_license_periodictriggerupdate');
+add_action('after_setup_theme', 'nxs_license_after_setup_theme');
 
 function nxs_license_actualtriggerupdate()
 {
@@ -393,7 +275,6 @@ function nxs_license_actualtriggerupdate()
 	nxs_license_clearupdatetransient();
 	$x = get_site_transient("update_themes");
 	set_site_transient('update_themes', $x);
-	//var_dump($x);
 }
 
 add_action('admin_menu', 'nxs_license_addadminpages', 11);
@@ -412,10 +293,6 @@ function plugin_admin_init()
 	//All callbacks must be valid names of functions, even if provided functions are blank
 	add_settings_section('nxs_section_license', 'Registration', 'nxs_section_license_callback', 'nxs_section_license_type');
 	add_settings_field('nxs_register', 'Register', 'nxs_licenseregister_callback', 'nxs_section_license_type', 'nxs_section_license');
-	
-	//add_settings_field('nxs_licensekey', 'Serial number', 'nxs_licensekey_callback', 'nxs_section_license_type', 'nxs_section_license');
-	
-		
 	add_settings_section('nxs_section_update', 'Updates', 'nxs_section_update_callback', 'nxs_section_update_type');
 	
 	if ($_REQUEST["nxsmsg"] == "registeredsuccesfully")
@@ -470,85 +347,118 @@ function nxs_section_update_callback()
 	if ($isframeworkshared)
 	{
 		echo "Automatic updates are not available (the framework is shared)";
+		return;
+	}
+	
+	// invoke
+	if (!function_exists("wp_get_theme"))
+	{
+		add_action('admin_notices', 'nxs_license_notifyrequireswpupdate');
+		return;
+	}
+	
+	$nxs_licensenr = nxs_license_getlicensekey();
+	
+	$site = nxs_geturl_home();
+	$themeobject = wp_get_theme();
+	
+	$parent = $themeobject->parent();
+	if ($parent != null)
+	{
+		$themeobject = $parent;
+	}
+	
+	$version = $themeobject->version;
+	$theme = $themeobject->name;
+
+	if (function_exists('nxs_theme_getmeta'))
+	{
+		$meta = nxs_theme_getmeta();
+		$version = $meta["version"];
+		$theme = $meta["id"];
+	}
+	
+	$url = nxs_license_getlicenseserverurl("get_version");
+	$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "get_version", true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "version", $version, true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "theme", $theme, true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "ordernr", $nxs_licensenr, true, true);	// obsolete
+	$url = nxs_addqueryparametertourl_v2($url, "licensekey", $nxs_licensenr, true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "site", $site, true, true);
+	
+	$body = nxs_geturlcontents(array("url" => $url));
+	$themeupdate = json_decode($body, true);
+	// END INVOKE
+	
+	if (is_multisite())
+	{
+		$updateurl = network_admin_url('themes.php');
 	}
 	else
 	{
-		// call actual trigger
-		nxs_license_actualtriggerupdate();
-
-		if (is_multisite())
-		{
-			$updateurl = network_admin_url('themes.php');
-		}
-		else
-		{
-			$updateurl = admin_url('themes.php');
-		}
+		$updateurl = admin_url('themes.php');
+	}
 	
-		$themeupdate = get_transient("nxs_themeupdate");
+	if ($themeupdate["result"] == "OK")
+	{
+		$newversionexists = false;
 		
-		
-		if ($themeupdate["result"] == "OK")
+		if ($themeupdate["nxs_updates"] == "enterlicensekey")
 		{
-			$newversionexists = false;
-			
-			if ($themeupdate["nxs_updates"] == "enterlicensekey")
+			echo "Please enter a license key first";
+		}
+		else if ($themeupdate["nxs_updates"] == "yes")
+		{		
+			if (version_compare($themeupdate["new_version"], $theme->version) > 0)
 			{
-				echo "Please enter a license key first";
+				$newversionexists = true;
 			}
-			else if ($themeupdate["nxs_updates"] == "yes")
-			{		
-				if (version_compare($themeupdate["new_version"], $theme->version) > 0)
+			
+			if ($newversionexists)
+			{
+				if ($themeupdate["helphtml"] != "")
 				{
-					$newversionexists = true;
-				}
-				
-				if ($newversionexists)
-				{
-					if ($themeupdate["helphtml"] != "")
-					{
-						$helphtml = nxs_license_getoutputhelphtml($themeupdate);
-						echo $helphtml;
-					}
-					else
-					{
-						echo "A new version (" . $themeupdate["new_version"] . ") is available";
-						echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
-						?>
-						<p>
-							<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
-				  	</p>
-						<?php
-					}
+					$helphtml = nxs_license_getoutputhelphtml($themeupdate);
+					echo $helphtml;
 				}
 				else
 				{
-					if ($themeupdate["helphtml"] != "")
-					{
-						$helphtml = nxs_license_getoutputhelphtml($themeupdate);
-						echo $helphtml;
-					}
-					else
-					{
-						echo "Your theme is up to date";
-						// var_dump($themeupdate);
-						echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
-					}
+					echo "A new version (" . $themeupdate["new_version"] . ") is available";
+					echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
+					?>
+					<p>
+						<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
+			  	</p>
+					<?php
 				}
 			}
 			else
 			{
-				echo "Your theme is up to date <!-- (2) -->";
+				if ($themeupdate["helphtml"] != "")
+				{
+					$helphtml = nxs_license_getoutputhelphtml($themeupdate);
+					echo $helphtml;
+				}
+				else
+				{
+					echo "Your theme is up to date";
+					// var_dump($themeupdate);
+					echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
+				}
 			}
-		}
-		else if ($themeupdate["result"] == "ALTFLOW")
-		{
-			nxs_license_handlealtflow($themeupdate);
 		}
 		else
 		{
-			//
+			echo "Your theme is up to date <!-- (2) -->";
 		}
+	}
+	else if ($themeupdate["result"] == "ALTFLOW")
+	{
+		nxs_license_handlealtflow($themeupdate);
+	}
+	else
+	{
+		//
 	}
 }
 
@@ -561,12 +471,7 @@ function nxs_license_update_page_content()
       <?php 
       	settings_fields('option_group'); 
       	do_settings_sections('nxs_section_update_type');
-      ?>
-      <!--
-     	<p class='submit'>
-       	<input name='submit' type='submit' id='submit' class='button-primary' value='<?php _e("Save Changes") ?>' />
-     	</p>
-     	-->     	
+      ?>   	
 		</form>
 	</div>
 	<?php
@@ -758,73 +663,13 @@ function nxs_license_handlealtflow($response_data)
 
 function nxs_license_getnolicensetip_invoke()
 {
-	$response_data = get_transient("nxs_nolicensetip");
-	if ($response_data == false || $_REQUEST["nxs_nolicensetip_cache"] == "true")
-	{
-		// no data, or expired data
-		
-		$site = nxs_geturl_home();
-		$themeobject = wp_get_theme();
-		$version = $themeobject->version;
-		$theme = $themeobject->name;
-		
-		if (function_exists('nxs_theme_getmeta'))
-		{
-			$meta = nxs_theme_getmeta();
-			$version = $meta["version"];
-			$theme = $meta["id"];
-		}
-	
-		$serviceparams = array
-		(
-			'timeout' => 15,
-			'sslverify' => false,
-			'body' => array
-			(
-				"nxs_license_action" => "getnolicensetip",
-				"version" => $version,
-				"theme" => $theme,
-				"ordernr" => $ordernr,
-				"site" => $site
-			)
-		);
-		
-		$site = home_url();
-		$url = nxs_license_getlicenseserverurl("tipnolicense");
-		$response = wp_remote_post($url, $serviceparams);
-		
-		$successful = true;
-	
-	  // make sure the response was successful
-	  if ( is_wp_error( $response )) 
-	  {
-	  	$successful = false;
-	  	//var_dump($response);
-	  }
-	  
-	  $body = wp_remote_retrieve_body($response); 
-		$response_data = json_decode($body, true);
-		
-		if ($successful)
-	  {
-  		$hours = 10; // poll max 
-	 		set_transient("nxs_nolicensetip", $response_data, 60 * 60 * $hours);
-	  }
-	  else
-	  {
-	  	$hours = 11; // poll max 
-			set_transient("nxs_nolicensetip", "", 60 * 60 * $hours);
-	  }
-	}
-	
-	if ($response_data != false && $response_data != "")
-	{
-		nxs_license_handlealtflow($response_data);
-	}
-	else
-	{
-		// ignore
-	}
+	echo "No license found";
+}
+
+function nxs_license_getlicenseserverurl($purpose)
+{
+	//error_log("invoke; nxs_license_getlicenseserverurl; " . $purpose);
+	return "https://license1802.nexusthemes.com/";
 }
 
 function nxs_licenseregister_invoke()
@@ -835,7 +680,7 @@ function nxs_licenseregister_invoke()
 		return;
 	}
 	
-	$ordernr = $_REQUEST["nxs_ordernr"];
+	$nxs_licensenr = $_REQUEST["nxs_licensenr"];
 	
 	$site = nxs_geturl_home();
 	$themeobject = wp_get_theme();
@@ -856,152 +701,91 @@ function nxs_licenseregister_invoke()
 		$theme = $meta["id"];
 	}
 	
-	$serviceparams = array
-	(
-		'timeout' => 15,
-		'sslverify' => false,
-		'body' => array
-		(
-			"nxs_license_action" => "register",
-			"version" => $version,
-			"theme" => $theme,
-			"ordernr" => $ordernr,
-			"site" => $site
-		)
-	);
-	
-	$site = home_url();
 	$url = nxs_license_getlicenseserverurl("register");
-	$response = wp_remote_post($url, $serviceparams);
+	$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "register", true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "version", $version, true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "theme", $theme, true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "ordernr", $nxs_licensenr, true, true);	// obsolete
+	$url = nxs_addqueryparametertourl_v2($url, "licensenr", $nxs_licensenr, true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "site", $site, true, true);
+	$body = nxs_geturlcontents(array("url" => $url));
 	
-	$successful = true;
-
-  // make sure the response was successful
-  if ( is_wp_error( $response )) 
-  {
-  	$successful = false;
-  	
-  	$firstmsg = $response->get_error_message();
-  	if 
-  	(
-  		$firstmsg == "couldn't connect to host" || 
-  		$firstmsg == "connect() timed out!"
-  	)
-  	{
-  		echo "It looks like your host cannot connect to $url<br />";
-  		echo "To solve this problem:<br />";
-  		echo "Contact your host to ensure they are not blocking access to our servers<br /><br />";
-  		?>
-  		<iframe width="420" height="315" src="https://www.youtube.com/embed/1Z1gjGes4P8" frameborder="0" allowfullscreen></iframe>
-  		<br /><br />
-  		<?php
-			echo " <!-- ";
-			var_dump($url);
-			var_dump($response);	
-			echo " --> ";
-  	}
-  	else
-  	{
-	  	var_dump($url);
-  		var_dump($response);	
-  	}
-  }
-  
-  $body = wp_remote_retrieve_body($response); 
 	$response_data = json_decode($body, true);
 	
-	if ($successful ) 
-  {
-  	if ($response_data["result"] == "OK")
-  	{
-	  	$nxs_licensekey = $response_data["nxs_licensekey"];
-  		// store serial
-  		update_option('nxs_licensekey', $nxs_licensekey);
-  		  		
-  		$dummy = new stdClass();
-			nxs_license_checkupdate($dummy);
+	if ($response_data["result"] == "OK")
+	{
+  	$nxs_licensekey = $response_data["nxs_licensekey"];
+		// store serial
+		update_option('nxs_licensekey', $nxs_licensekey);
+		
+		// check for updates
+		$dummy = new stdClass();
+		nxs_license_site_transient_update_themes($dummy);
 
-  		// reload current page
-  		$url = nxs_geturlcurrentpage();
-  		$url = nxs_addqueryparametertourl_v2($url, "nxsmsg", "registeredsuccesfully", true, true);
-  		?>
-  		<script type='text/javascript'>
-  			var url = '<?php echo $url; ?>';
-  			window.location = url;
-  		</script>
-  		<?php
-  		?>
-  		<p>
-  			Thank you for your registration
-  		</p>
-			<p>
-				&nbsp;
-			</p>
-			<p>
-	  		<a class='button-primary' href=''>Reload the page</a>
-	  	</p>
-  		<?php
-  	}
-  	else if ($response_data["result"] == "ALTFLOW")
-  	{
- 			nxs_license_handlealtflow($response_data);
-  	}
-  	else
-  	{
-  		update_option('nxs_licensekey', "");
-  		
-  		if (nxs_stringcontains($response["body"], "Access Denied"))
-  		{
-  			?>
-  			<p>
-  				Unable to reach the license server at<br />
-  				<?php echo $url; ?><br />
-  				The most likely explanation why this happens, is that your host blocks
-  				access to our server. Contact your hosting company and ask them to 
-  				verify if they block access to servers, and if they do, whether they
-  				can enable ('white-list') our server.
-  			</p>
-  			<?php
-  		}
-  		?>
-  		<p>
-  			Unable to complete your registration<!-- 1 -->.<br />If you made a valid purchase
-  			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
-  			<?php
-  			echo "<!-- ";
-  			echo $response["body"];
-  			echo "--> ";
-  			?>
-  		</p>
-			<p>
-				&nbsp;
-			</p>
-			<p>
-	  		<a class='button-primary' href=''>Reload the page</a>
-	  	</p>
-  		<?php
-  		//var_dump($response);
-  	}
-  }
-  else
-  {
-  	// not succesful
-  	
-  	update_option('nxs_licensekey', "");
+		// reload current page
+		$url = nxs_geturlcurrentpage();
+		$url = nxs_addqueryparametertourl_v2($url, "nxsmsg", "registeredsuccesfully", true, true);
+		?>
+		<script type='text/javascript'>
+			var url = '<?php echo $url; ?>';
+			window.location = url;
+		</script>
+		<?php
 		?>
 		<p>
-			Unable to complete your registration<!-- 2 -->.<br />If you made a valid purchase
-			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
+			Thank you for your registration
 		</p>
 		<p>
 			&nbsp;
 		</p>
 		<p>
-  		<a class='button-primary' href=''>Restart registration</a>
+  		<a class='button-primary' href=''>Reload the page</a>
   	</p>
 		<?php
-  	//var_dump($response);
-  }
+	}
+	else if ($response_data["result"] == "ALTFLOW")
+	{
+		nxs_license_handlealtflow($response_data);
+	}
+	else
+	{
+		update_option('nxs_licensekey', "");
+		
+		if (nxs_stringcontains($body, "Access Denied"))
+		{
+			?>
+			<p>
+				Unable to reach the license server at<br />
+				<?php echo $url; ?><br />
+				The most likely explanation why this happens, is that your host blocks
+				access to our server. Contact your hosting company and ask them to 
+				verify if they block access to servers, and if they do, whether they
+				can enable ('white-list') our server.
+			</p>
+			<?php
+		}
+		?>
+		<p>
+			Unable to complete your registration<!-- 1 -->.<br />If you made a valid purchase
+			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
+			<?php
+			echo "<!-- ";
+			echo $url;
+			echo "\r\n";
+			echo "\r\n";
+			echo $body;
+			echo "--> ";
+			?>
+		</p>
+		<p>
+			&nbsp;
+		</p>
+		<p>
+  		<a class='button-primary' href=''>Reload the page</a>
+  	</p>
+		<?php
+		//var_dump($response);
+	}
 }
 
 function nxs_licenseregister_callback()
@@ -1015,9 +799,6 @@ function nxs_licenseregister_callback()
 		}
 		else
 		{
-			//
-			nxs_license_getnolicensetip_invoke();
-			
 			$url = nxs_geturlcurrentpage();
 			$url = nxs_addqueryparametertourl_v2($url, "nxs_license_register", "true", true, true);
 			$noncedurl = wp_nonce_url($url, 'register');
@@ -1035,7 +816,7 @@ function nxs_licenseregister_callback()
 			<p>
 				License key
 			</p>
-			<input type='text' name='nxs_ordernr' placeholder='V2US.XXXXX' onkeydown='jQuery("#nxsregproceed").show();' onchange='jQuery("#nxsregproceed").show();' value='' style='width:30%' />
+			<input type='text' name='nxs_licensenr' placeholder='V3.nexus.x.x.x' onkeydown='jQuery("#nxsregproceed").show();' onchange='jQuery("#nxsregproceed").show();' value='' style='width:30%' />
 			<p>
 				&nbsp;
 			</p>
@@ -1212,9 +993,6 @@ function nxs_license_themeswitch_page_content()
 	  <div class="wrap">
 	    <h2>Theme Switch (for system admins only!)</h2>
 	    <p>
-	    	todo
-	    </p>
-	    <p>
 				<b>Be sure to make a backup, and proceed only if you know what you are doing!</b><br />
 				<br />
 				To continue erasing your entire site, enter the text <b>DELETE</b> (capitalized) in the field below and push the button.<br />
@@ -1240,13 +1018,13 @@ function nxs_redirect_to_absolute_url($redirect_url)
 
 function nxs_redirect_to_all_themes()
 {
-	$redirect_url = 'http://nexusthemes.com/wordpress-themes/';
+	$redirect_url = 'https://nexusthemes.com/wordpress-themes-1002/';
 	nxs_redirect_to_absolute_url($redirect_url);
 }
 
 function nxs_redirect_to_backup_and_restore()
 {
-	$redirect_url = 'http://nexusthemes.com/support/how-to-backup-and-restore-your-wordpress-website/';
+	$redirect_url = 'https://www.wpsupporthelp.com/answer/could-you-explain-in-more-detail-what-the-automated-backup-featu-1562/';
 	nxs_redirect_to_absolute_url($redirect_url);
 }
 
