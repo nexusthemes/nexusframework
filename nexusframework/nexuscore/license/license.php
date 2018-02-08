@@ -373,7 +373,7 @@ function nxs_section_update_callback()
 
 	//
 	
-	$shouldcheck = true;
+	$shouldcheck = false;
 	$proxyurl = "https://s3.amazonaws.com/devices.nexusthemes.com/!api/latestthemeversion.txt";
 	$latestversion = nxs_geturlcontents(array("url" => $proxyurl));
 	if ($latestversion == "")
@@ -395,7 +395,7 @@ function nxs_section_update_callback()
 			set_transient("nxs_themeupdate", array("nxs_updates" => "yes"), 60 * 60 * 24 * 7);
 			
 			// dont poll the license server (useless)
-			$shouldcheck = false;
+			$shouldcheck = true;
 		}
 	}
 	
