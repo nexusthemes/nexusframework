@@ -495,7 +495,8 @@ function nxs_section_update_callback()
 	}
 	else
 	{
-		echo "Nice, you ARE using the latest version!";
+		echo "Nice, you ARE using the latest version! <!-- ($latestversion, $version) -->";
+		set_transient("nxs_themeupdate", array());
 	}
 }
 
