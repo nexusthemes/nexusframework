@@ -64,14 +64,14 @@ function nxs_widgets_youtube_home_getoptions($args)
 		
 			// TITLE
 			
-			array( 
+			array
+			( 
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"initial_toggle_state"	=> "closed-if-empty",
 				"initial_toggle_state_id" => "title",
 			),
-			
 			array(
 				"id" 				=> "title",
 				"type" 				=> "input",
@@ -80,7 +80,27 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
-			array(
+			array
+      (
+				"id" 					=> "title_lookuppicker",
+				"type" 				=> "custom",
+				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
+			),
+			
+			array
+			(
+				"id" 				=> "title_postprocessor",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Title max length", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@" => "None",
+					"truncateall" => "Truncate all",
+				),
+			"unistylablefield"	=> true
+			),
+			array
+			(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
@@ -88,12 +108,39 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			array(
+				"id" 				=> "title_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "title_alignment",
 				"type" 				=> "radiobuttons",
 				"subtype" 			=> "halign",
 				"label" 			=> nxs_l18n__("Title alignment", "nxs_td"),
-				"unistylablefield"	=> true
-			),			
+				"unistylablefield"	=> true,
+				"mobile_action_toggles" => ".nxs-viewport-dependent",
+			),
+			array(
+				"id" 				=> "title_alignment_tablet",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("", "nxs_td"),
+				"unistylablefield"	=> true,
+				"display" => "noneifempty",
+				"fortablets" => true,
+				"enable_deselect" => true,
+			),
+			array(
+				"id" 				=> "title_alignment_mobile",
+				"type" 				=> "radiobuttons",
+				"subtype" 			=> "halign",
+				"label" 			=> nxs_l18n__("", "nxs_td"),
+				"unistylablefield"	=> true,
+				"display" => "noneifempty",
+				"formobiles" => true,
+				"enable_deselect" => true,
+			),
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
@@ -101,11 +148,25 @@ function nxs_widgets_youtube_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "icon",
+				"type" 				=> "icon",
+				"label" 			=> nxs_l18n__("Icon", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array(
+				"id"     			=> "icon_scale",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 			),
-
+			
 			// VIDEO
 			array( 
 				"id" 				=> "wrapper_youtube_begin",
@@ -408,7 +469,25 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		$alternativehint = nxs_l18n__("No video set", "nxs_td");
 	}
 	
-	$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, "", "");
+	// new implementation delegates rendering the title to the frontendframework
+	$a = array
+	(
+		"title" => $title,
+		"heading" => $title_heading,
+		"align" => $title_alignment,
+		"align_tablet" => $title_alignment_tablet,
+		"align_mobile" => $title_alignment_mobile,
+		"fontsize" => $title_fontsize,
+		"heightiq" => "title",
+		"destination_articleid" => $destination_articleid,
+		"destination_url" => $destination_url,
+		"destination_target" => $destination_target,
+		"destination_relation" => $destination_relation,
+		"shouldapplylinkvarcolor" => $shouldapplylinkvarcolor,
+		// "microdata" => 
+		"fontzen" => $title_fontzen,
+	);
+	$htmltitle = nxs_gethtmlfortitle_v4($a);
 
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
