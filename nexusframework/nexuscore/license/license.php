@@ -371,94 +371,131 @@ function nxs_section_update_callback()
 	$version = $themeobject->version;
 	$theme = $themeobject->name;
 
-	if (function_exists('nxs_theme_getmeta'))
+	//
+	
+	$shouldcheck = true;
+	$proxyurl = "https://s3.amazonaws.com/devices.nexusthemes.com/!api/latestthemeversion.txt";
+	$latestversion = nxs_geturlcontents(array("url" => $proxyurl));
+	if ($latestversion == "")
 	{
-		$meta = nxs_theme_getmeta();
-		$version = $meta["version"];
-		$theme = $meta["id"];
-	}
-	
-	$url = nxs_license_getlicenseserverurl("get_version");
-	$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "get_version", true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "version", $version, true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "theme", $theme, true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "ordernr", $nxs_licensenr, true, true);	// obsolete
-	$url = nxs_addqueryparametertourl_v2($url, "licensekey", $nxs_licensenr, true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "site", $site, true, true);
-	
-	$body = nxs_geturlcontents(array("url" => $url));
-	$themeupdate = json_decode($body, true);
-	// END INVOKE
-	
-	if (is_multisite())
-	{
-		$updateurl = network_admin_url('themes.php');
+		$shouldcheck = false;
 	}
 	else
 	{
-		$updateurl = admin_url('themes.php');
+		// its set, compare version with current
+		
+		if (version_compare($latestversion, $version , "<="))
+		{
+			// nothing to check
+			$shouldcheck = false;
+		}
+		else
+		{
+			// an update is available, store that fact so it will be visible in the front end
+			set_transient("nxs_themeupdate", array("nxs_updates" => "yes"), 60 * 60 * 24 * 7);
+			
+			// dont poll the license server (useless)
+			$shouldcheck = false;
+		}
 	}
 	
-	if ($themeupdate["result"] == "OK")
+	if ($shouldcheck)
 	{
-		$newversionexists = false;
-		
-		if ($themeupdate["nxs_updates"] == "enterlicensekey")
+		//
+	
+		if (function_exists('nxs_theme_getmeta'))
 		{
-			echo "Please enter a license key first";
+			$meta = nxs_theme_getmeta();
+			$version = $meta["version"];
+			$theme = $meta["id"];
 		}
-		else if ($themeupdate["nxs_updates"] == "yes")
-		{		
-			if (version_compare($themeupdate["new_version"], $theme->version) > 0)
-			{
-				$newversionexists = true;
-			}
+		
+		$url = nxs_license_getlicenseserverurl("get_version");
+		$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "get_version", true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "version", $version, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "theme", $theme, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "ordernr", $nxs_licensenr, true, true);	// obsolete
+		$url = nxs_addqueryparametertourl_v2($url, "licensekey", $nxs_licensenr, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "site", $site, true, true);
+		
+		$body = nxs_geturlcontents(array("url" => $url));
+		$themeupdate = json_decode($body, true);
+		// END INVOKE
+		
+		if (is_multisite())
+		{
+			$updateurl = network_admin_url('themes.php');
+		}
+		else
+		{
+			$updateurl = admin_url('themes.php');
+		}
+	
+		if ($themeupdate["result"] == "OK")
+		{
+			$newversionexists = false;
 			
-			if ($newversionexists)
+			if ($themeupdate["nxs_updates"] == "enterlicensekey")
 			{
-				if ($themeupdate["helphtml"] != "")
+				echo "Please enter a license key first";
+			}
+			else if ($themeupdate["nxs_updates"] == "yes")
+			{		
+				if (version_compare($themeupdate["new_version"], $theme->version) > 0)
 				{
-					$helphtml = nxs_license_getoutputhelphtml($themeupdate);
-					echo $helphtml;
+					$newversionexists = true;
+				}
+				
+				if ($newversionexists)
+				{
+					if ($themeupdate["helphtml"] != "")
+					{
+						$helphtml = nxs_license_getoutputhelphtml($themeupdate);
+						echo $helphtml;
+					}
+					else
+					{
+						echo "A new version (" . $themeupdate["new_version"] . ") is available";
+						echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
+						?>
+						<p>
+							<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
+				  	</p>
+						<?php
+					}
 				}
 				else
 				{
-					echo "A new version (" . $themeupdate["new_version"] . ") is available";
-					echo "<!-- " . $themeupdate["new_version"] . " vs " . $theme->version . " -->";
-					?>
-					<p>
-						<a class="button-primary" href="<?php echo $updateurl; ?>">Update theme</a>
-			  	</p>
-					<?php
+					if ($themeupdate["helphtml"] != "")
+					{
+						$helphtml = nxs_license_getoutputhelphtml($themeupdate);
+						echo $helphtml;
+					}
+					else
+					{
+						echo "Your theme is up to date";
+						// var_dump($themeupdate);
+						echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
+					}
 				}
 			}
 			else
 			{
-				if ($themeupdate["helphtml"] != "")
-				{
-					$helphtml = nxs_license_getoutputhelphtml($themeupdate);
-					echo $helphtml;
-				}
-				else
-				{
-					echo "Your theme is up to date";
-					// var_dump($themeupdate);
-					echo "<!-- latest: " . version_compare($themeupdate["new_version"]) . " -->";
-				}
+				echo "Your theme is up to date <!-- (2) -->";
 			}
+		}
+		else if ($themeupdate["result"] == "ALTFLOW")
+		{
+			nxs_license_handlealtflow($themeupdate);
 		}
 		else
 		{
-			echo "Your theme is up to date <!-- (2) -->";
+			//
 		}
-	}
-	else if ($themeupdate["result"] == "ALTFLOW")
-	{
-		nxs_license_handlealtflow($themeupdate);
 	}
 	else
 	{
-		//
+		echo "Nice, you ARE using the latest version!";
 	}
 }
 
@@ -633,7 +670,16 @@ function nxs_licenseresetkey()
 }
 
 function nxs_license_handlealtflow($response_data)
-{ 		
+{
+	if ($response_data["altflowid"] == "NOUPDATE")
+	{
+		echo "You are NOW using the latest version :)";
+		
+		//echo "about to clear update transient";
+		nxs_license_clearupdatetransient();
+		return;
+	}
+	
 	if ($response_data["keeplicense"] == "true" || $response_data["keeplicense"] == true)
 	{
 		// 
