@@ -1425,6 +1425,18 @@ function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
 	if (!isset($placeholderid)) { nxs_webmethod_return_nack("placeholderid not set"); }
 	if (!isset($placeholdertemplate)) { nxs_webmethod_return_nack("placeholdertemplate not set"); }
 	
+	// grab options of this widget
+	$functionnametoinvoke = "nxs_widgets_{$placeholdertemplate}_home_getoptions";
+	if (function_exists($functionnametoinvoke))
+	{
+		$args = array();
+		$options = call_user_func($functionnametoinvoke, $args);
+	}
+	else
+	{
+		$options = array();
+	}
+	
 	//
 	// 
 	//
@@ -1460,6 +1472,7 @@ function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
 	
  	if (!$islocked)
  	{
+ 		// main hover menu
 		?>
 	  <ul class="">
 	  	<?php
@@ -1490,6 +1503,25 @@ function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
 	  	{
 	  		nxs_webmethod_return_nack("unsupported first widget menu item");
 	  	}
+	  	
+	  	// sub menu items rendered in the column to the LEFT side of the main item  of the widget
+	 		// is (if enabled) always filled with the help icon
+	 		$supporturl = $options["supporturl"];
+	 		if ($supporturl != "")
+	 		{
+	 			?>
+	 			<ul style='position: absolute; left: -45px; top: 0px;'>
+	 				<li title='<?php nxs_l18n_e("Support", "nxs_td"); ?>' class='nxs-hovermenu-button'>
+			  		<a target='_blank' href='<?php echo $supporturl; ?>' title='<?php nxs_l18n_e("Support", "nxs_td"); ?>'>
+			      	<span class='nxs-icon-info'></span>
+			      </a>
+			    </li>
+	 			</ul>
+	 			<?php
+	 		}
+	 		
+	  	
+	  	
 	    ?>
 	      <ul class="">
 	      	<?php
@@ -1576,6 +1608,7 @@ function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
 	{
 		if (nxs_cap_hasdesigncapabilities())
 		{
+			// sub menu items 
 			?>
 		  <ul class="">
 			 	<li title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>' class='nxs-hovermenu-button'>
