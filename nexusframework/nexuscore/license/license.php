@@ -875,7 +875,7 @@ function nxs_licenseregister_callback()
 				&nbsp;
 			</p>
 			<p>
-				FAQs:
+				Frequently asked questions:
 			</p>
 			<ul>
 				<li><a href='https://www.wpsupporthelp.com/answer/can-i-register-the-license-on-a-dev-environment-too-i-plan-to-b-677/' target='_blank'>Can I use the license for a development, staging or test environment too?</a></li>
