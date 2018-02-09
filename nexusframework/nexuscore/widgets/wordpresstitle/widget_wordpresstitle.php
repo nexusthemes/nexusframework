@@ -199,16 +199,24 @@ function nxs_widgets_wordpresstitle_home_getoptions($args)
 
 function nxs_widgets_wordpresstitle_popupoptioncontent($optionvalues, $args, $runtimeblendeddata) 
 {
-	nxs_ob_start();
 	$containerpostid = $args["clientpopupsessioncontext"]["containerpostid"];
-	$title = nxs_gettitle_for_postid($containerpostid);
-	
-	?>
-	<a href="#" class='nxsbutton1 nxs-float-right' onclick="nxs_js_popup_pagetemplate_neweditsession('home'); return false;"><?php nxs_l18n_e('Edit', 'nxs_td'); ?></a>
-	<p><?php echo $title;?></p>
-	<?php
-	$result = nxs_ob_get_contents();
-	nxs_ob_end_clean();
+	$posttype = nxs_getwpposttype($containerpostid);
+	if ($posttype == "nxs_templatepart")
+	{
+		$result = "No context (this option only applies in the context of a post or page, not in the context of a template part)";
+	}
+	else
+	{
+		$title = nxs_gettitle_for_postid($containerpostid);
+		
+		nxs_ob_start();
+		?>
+		<a href="#" class='nxsbutton1 nxs-float-right' onclick="nxs_js_popup_pagetemplate_neweditsession('home'); return false;"><?php nxs_l18n_e('Edit', 'nxs_td'); ?></a>
+		<p><?php echo $title;?></p>
+		<?php
+		$result = nxs_ob_get_contents();
+		nxs_ob_end_clean();
+	}
 	return $result;
 }
 
@@ -234,7 +242,12 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	// Widget specific variables
 	extract($mixedattributes);
 	
-	if (is_tax())
+	$posttype = nxs_getwpposttype($nxs_global_current_postid_being_rendered);
+	if ($posttype == "nxs_templatepart")
+	{
+		$title = "Template (title)";
+	}
+	else if (is_tax())
 	{
 		// $title = "Taxonomy";
 		$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
@@ -255,6 +268,8 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	}
 	else
 	{
+		
+		
 		$currentpost = get_post($nxs_global_current_containerpostid_being_rendered);
 		$title = get_the_title();
 		$currentpostdate = $currentpost->post_date;

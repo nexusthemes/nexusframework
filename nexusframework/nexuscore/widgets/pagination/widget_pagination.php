@@ -30,14 +30,13 @@ function nxs_widgets_pagination_home_getoptions($args)
     (
         "sheettitle" => nxs_widgets_pagination_gettitle(),
         "sheeticonid" => nxs_widgets_pagination_geticonid(),
-     		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
-		"unifiedstyling" => array
-		(
-            "group" => nxs_widgets_pagination_getunifiedstylinggroup(),
+				"unifiedstyling" => array
+				(
+          "group" => nxs_widgets_pagination_getunifiedstylinggroup(),
         ),
         "fields" => array
         (
-            // GENERAL STYLING
+          // GENERAL STYLING
 			
 			array( 
 				"id" 				=> "wrapper_begin",

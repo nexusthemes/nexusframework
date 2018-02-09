@@ -22,7 +22,6 @@ function nxs_widgets_busrulemaintenance_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_busrulemaintenance_gettitle(),
 		"sheeticonid" => nxs_widgets_busrulemaintenance_geticonid(),
-		//"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"fields" => array
 		(
 			//	

@@ -34,7 +34,6 @@ function nxs_widgets_wordpresssidebar_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_wordpresssidebar_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_wordpresssidebar_geticonid(),
-		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_wordpresssidebar_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array("group" => nxs_widgets_wordpresssidebar_getunifiedcontentgroup(),),
 		"fields" => array

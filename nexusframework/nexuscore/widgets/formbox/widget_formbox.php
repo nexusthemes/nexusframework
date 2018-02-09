@@ -180,7 +180,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_formbox_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_formbox_geticonid(),
-		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/forms-wordpress-questions-62/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_formbox_getunifiedstylinggroup(),),		
 		"fields" 			=> array
 		(
@@ -192,7 +192,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 			),
 			array
 			(
-				"id" 				=> "debug_lookups",
+				"id" 				=> "lookups",
 				"type" 				=> "textarea",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
 			),
@@ -520,7 +520,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
-	
+		
 	// Lookup atts
 	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "button_text", "internal_email", "sender_email"));
 	
@@ -589,9 +589,6 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		
 	// Appending custom widget class
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-form ";
-	
-	
-	
 	
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
@@ -838,9 +835,12 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 			$text != "" ) { 
 			echo $htmlfiller; 
 		}
-		
-		
-		
+
+		// determine all combined lookups for the url plus this widget		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+
 		echo "<div class='nxs-form'>";
 		
 		$index = -1;
@@ -867,9 +867,25 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 			 		
 			 		$subresult = nxs_widgets_renderinformbox($widget, $hookargs);
 			 		if ($subresult["result"] == "OK")
-			 		{
+			 		{		 			
+			 			// apply lookup tables to the fields
+			 			if (nxs_stringcontains($subresult["html"], "{{"))
+			 			{			 					
+							// replace values in mixedattributes with the lookup dictionary
+							$magicfields = array("html");
+							$translateargs = array
+							(
+								"lookup" => $combined_lookups,
+								"items" => $subresult,
+								"fields" => $magicfields,
+							);
+							$subresult = nxs_filter_translate_v2($translateargs);
+			 			}
+			 			
+			 			$subhtml = $subresult["html"];
+			 			
 			 			// append subresult to the overall result
-			 			echo $subresult["html"];
+			 			echo $subhtml;
 			 		}
 			 		else
 			 		{

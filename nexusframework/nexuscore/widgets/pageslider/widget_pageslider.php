@@ -69,7 +69,6 @@ function nxs_widgets_pageslider_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_pageslider_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_pageslider_geticonid(),
-		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"unifiedstyling" 	=> array("group" => nxs_widgets_pageslider_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_pageslider_getunifiedcontentgroup(),),
 		"fields" => array

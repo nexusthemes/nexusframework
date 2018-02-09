@@ -30,7 +30,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_googlemap_gettitle(),
 		"sheeticonid" => nxs_widgets_googlemap_geticonid(),
-		"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/google-map-google-maps-widget-wordpress-questions-18/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_googlemap_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_googlemap_getunifiedcontentgroup(),),
 		"fields" => array

@@ -23,7 +23,6 @@ function nxs_widgets_busruledeclarativecondition_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_busruledeclarativecondition_gettitle(),
 		"sheeticonid" => nxs_widgets_busruledeclarativecondition_geticonid(),
-		//"sheethelp" => nxs_l18n__("https://docs.google.com/spreadsheets/d/1lTcFyiKYRUiUdlJilsVaigkHT7a69eL-lVKKPp53v9c/edit#gid=1764396204"),
 		"fields" => array
 		(
 			array
