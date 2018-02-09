@@ -10388,6 +10388,7 @@ function nxs_get_page($postid)
 }
 
 // sanity checked for remote posts
+// get_post_type get_posttype getposttype getpost_type
 function nxs_getwpposttype($postid)
 {
 	$postdata = nxs_get_page($postid);
