@@ -1046,6 +1046,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 			if ($cachebehaviour == "")
 			{
 			}
+			else if ($cachebehaviour == "none")
+			{
+				// keep existing
+			}
 			else if ($cachebehaviour == "refreshfirstphpruntime")
 			{
 				// refreshes the cache the first time this is requested in the php runtime duration
@@ -1128,6 +1132,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$cachebehaviour = $atts["cachebehaviour"];
 			if ($cachebehaviour == "")
 			{
+			}
+			else if ($cachebehaviour == "none")
+			{
+				//
 			}
 			else if ($cachebehaviour == "refreshfirstphpruntime")
 			{
