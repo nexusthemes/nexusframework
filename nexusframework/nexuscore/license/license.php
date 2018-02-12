@@ -509,8 +509,20 @@ function nxs_license_update_page_content()
       <?php 
       	settings_fields('option_group'); 
       	do_settings_sections('nxs_section_update_type');
-      ?>   	
+      ?>
 		</form>
+		
+		<p>
+			&nbsp;
+		</p>
+		<p>
+			Frequently asked questions:
+		</p>
+		<ul>
+			<li><a href='https://www.wpsupporthelp.com/answer/is-it-safe-to-update-the-wordpress-theme-how-can-i-ensure-an-up-1410/' target='_blank'>Is it safe to update the WordPress theme?</a></li>
+			<li><a href='https://www.wpsupporthelp.com/wordpress-questions/updates-update-upgrade-wordpress-questions-27/' target='_blank'>All update related questions</a></li>
+		</ul>
+		
 	</div>
 	<?php
 }
