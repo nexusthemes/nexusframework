@@ -27,6 +27,7 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_sliderbox_gettitle(),
 		"sheeticonid" => nxs_widgets_sliderbox_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/slider-wordpress-questions-35/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_sliderbox_getunifiedstylinggroup(),

@@ -30,6 +30,7 @@ function nxs_widgets_wordpresstitle_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_wordpresstitle_gettitle(),
 		"sheeticonid" => nxs_widgets_wordpresstitle_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/wordpress-title-widget-wordpress-questions-261/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_wordpresstitle_getunifiedstylinggroup(),

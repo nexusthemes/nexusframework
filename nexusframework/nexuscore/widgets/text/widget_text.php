@@ -36,6 +36,7 @@ function nxs_widgets_text_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_text_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_text_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/text-widget-wordpress-questions-176/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_text_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_text_getunifiedcontentgroup(),),
 		"fields" => array

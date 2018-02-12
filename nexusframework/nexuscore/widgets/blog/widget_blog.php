@@ -39,6 +39,7 @@ function nxs_widgets_blog_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_blog_gettitle(),
 		"sheeticonid" => nxs_widgets_blog_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/blog-widgets-wordpress-questions-24/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_blog_getunifiedstylinggroup(),

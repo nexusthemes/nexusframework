@@ -7,7 +7,7 @@ function nxs_widgets_banner_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_banner_gettitle() {
-	return nxs_l18n__("banner", "nxs_td");
+	return nxs_l18n__("Banner", "nxs_td");
 }
 
 // Unistyle
@@ -29,6 +29,7 @@ function nxs_widgets_banner_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_banner_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_banner_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/banner-widget-wordpress-questions-174/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_banner_getunifiedstylinggroup(),),
 		"fields" => array
 		(

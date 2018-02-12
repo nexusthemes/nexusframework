@@ -33,6 +33,7 @@ function nxs_widgets_target_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_target_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_target_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/widgets-target-wordpress-questions-22/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_target_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_target_getunifiedcontentgroup(),),
 		"fields" => array

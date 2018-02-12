@@ -38,6 +38,7 @@ function nxs_widgets_logo_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_logo_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_logo_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/logo-wordpress-questions-71/",
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_logo_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_logo_getunifiedcontentgroup(),),
 		"fields" 			=> array

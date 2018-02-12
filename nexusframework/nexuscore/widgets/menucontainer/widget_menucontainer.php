@@ -62,6 +62,7 @@ function nxs_widgets_menucontainer_home_getoptions($args)
     $options = array(
         "sheettitle" => nxs_widgets_menucontainer_gettitle(),
         "sheeticonid" => nxs_widgets_menucontainer_geticonid(),
+        "supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/menu-wordpress-questions-78/",
         "unifiedstyling" => array(
             "group" => nxs_widgets_menucontainer_getunifiedstylinggroup(),
         ),

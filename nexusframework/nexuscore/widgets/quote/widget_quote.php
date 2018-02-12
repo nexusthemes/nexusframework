@@ -34,6 +34,7 @@ function nxs_widgets_quote_home_getoptions($args)
 	$options = array (
 		"sheettitle" 		=> nxs_widgets_quote_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_quote_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/quote-widget-wordpress-questions-179/",
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_quote_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_quote_getunifiedcontentgroup(),),
 		"fields" 			=> array

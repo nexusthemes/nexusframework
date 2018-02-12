@@ -38,6 +38,7 @@ function nxs_widgets_callout_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_callout_gettitle(),
 		"sheeticonid" => nxs_widgets_callout_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/callout-wordpress-questions-54/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_callout_getunifiedstylinggroup(),
