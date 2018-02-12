@@ -34,6 +34,7 @@ function nxs_widgets_youtube_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_youtube_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_youtube_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/video-youtube-yt-wordpress-questions-28/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_youtube_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array("group" => nxs_widgets_youtube_getunifiedcontentgroup(),),
 		"fields" => array

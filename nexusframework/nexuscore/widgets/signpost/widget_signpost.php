@@ -34,6 +34,7 @@ function nxs_widgets_signpost_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_signpost_gettitle(),
 		"sheeticonid" => nxs_widgets_signpost_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/signpost-widget-wordpress-questions-175/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_signpost_getunifiedstylinggroup(),

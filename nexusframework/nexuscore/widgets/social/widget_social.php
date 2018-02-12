@@ -34,6 +34,7 @@ function nxs_widgets_social_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_social_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_social_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/social-media-wordpress-questions-102/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_social_getunifiedstylinggroup(),),	
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_social_getunifiedcontentgroup(),),
 		"fields" 			=> array(

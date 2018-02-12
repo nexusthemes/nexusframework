@@ -69,6 +69,7 @@ function nxs_widgets_pageslider_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_pageslider_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_pageslider_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/background-slider-page-slider-wordpress-questions-14/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_pageslider_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_pageslider_getunifiedcontentgroup(),),
 		"fields" => array
@@ -922,7 +923,9 @@ function nxs_widgets_pageslider_betweenheadandcontent()
   	
   	$title = nxs_widgets_pageslider_gettitle();
 		$invoke = "var args={containerpostid:'$pagedecoratorid',postid:'$pagedecoratorid',placeholderid:'$pagewidgetplaceholderid',rowindex:'$rowindex',sheet:'home',onsaverefreshpage:true}; nxs_js_popup_placeholder_neweditsession_v2(args); return false;";
-
+		
+		$supporturl = "https://www.wpsupporthelp.com/wordpress-questions/background-slider-page-slider-wordpress-questions-14/";
+		
   	?>
   	<!--
   	<div class='nxs-hover-menu-positioner'>
@@ -957,6 +960,13 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 			  		<!-- <a href='#' title='<?php nxs_l18n_e("Edit[tooltip]", "nxs_td"); ?>'  class="nxs-defaultwidgetclickhandler" onclick="nxs_js_edit_widget_v2(this, 'unlock'); return false;"> -->
 			      	<span class='<?php echo $widgeticonid; ?>'></span>
 			      </a>
+			      <ul style='position: absolute; left: -45px; top: 0px;'>
+			 				<li title='<?php nxs_l18n_e("Support", "nxs_td"); ?>' class='nxs-hovermenu-button'>
+					  		<a target='_blank' href='<?php echo $supporturl; ?>' title='<?php nxs_l18n_e("Support", "nxs_td"); ?>'>
+					      	<span class='nxs-icon-info'></span>
+					      </a>
+					    </li>
+			 			</ul>
 			      <ul class="">
 			      	<a class='nxs-no-event-bubbling' href='https://www.wpsupporthelp.com/answer/how-to-remove-a-page-slider-from-your-wordpress-theme-919/' target="_blank">
 		           	<li title='<?php nxs_l18n_e("Delete[tooltip]", "nxs_td"); ?>'>
