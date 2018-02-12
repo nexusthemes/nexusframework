@@ -307,6 +307,12 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 		global $nxs_global_row_render_statebag;
 		$nxs_global_row_render_statebag["etchrow"] = true;
 	}
+	if (!nxs_cap_hasdesigncapabilities())
+	{
+		// don't render the widget
+		global $nxs_global_row_render_statebag;
+		$nxs_global_row_render_statebag["etchrow"] = true;
+	}
 
 	global $nxs_global_row_render_statebag;
 	$nxs_global_row_render_statebag["requiredcapabilities"][] = nxs_cap_getdesigncapability();
@@ -399,6 +405,12 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 	// The framework uses this array with its accompanying values to render the page
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-'.$placeholderid;
+	
+	if (!nxs_cap_hasdesigncapabilities())
+	{
+		$result["html"] = "";	
+	}
+	
 	return $result;
 }
 
