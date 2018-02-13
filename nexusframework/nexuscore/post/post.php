@@ -539,6 +539,11 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 		      <div class="content2">
 		        <div class="box">
 		        	<ul class="placeholder3">
+		        		<style>	
+									li .nxs-widgetitem-submenu { display: none; position: absolute; z-index: 99999; }
+									li .nxs-widgetitem-submenu li { width: auto !important;; height: auto !important; margin: 0 !important; padding: 2px;}
+									li:hover .nxs-widgetitem-submenu { display: block; }
+								</style>
 								<?php
 									// for each placeholder -->
 									foreach ($widgets as $currentwidget)
@@ -546,14 +551,29 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 										$title = $currentwidget["title"];
 										$widgetid = $currentwidget["widgetid"];
 										$iconid = nxs_getplaceholdericonid($widgetid);
+										$supporturl = nxs_widget_getsupporturl($widgetid);
 										?>
 										
-		        				<a href="#" onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;">
-											<li>
-												<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='nxs-widget-icon <?php echo $iconid; ?>'></span>
-												<p><?php echo $title; ?></p>
-											</li>
-										</a>
+										<li onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;" style="cursor: pointer;">
+											<?php
+											//$lookups = nxs_lookuptable_getlookup();
+											if ($supporturl != "") // $lookups["test"] == "test")
+											{
+												//$supporturl = "http://example.org";
+												?>
+												<ul class='nxs-widgetitem-submenu'>
+													<li title='Support'>
+														<a href='<?php echo $supporturl; ?>' target='_blank'>
+															<span class='nxs-icon-info'></span>
+														</a>
+													</li>
+												</ul>
+												<?php
+											}
+											?>
+											<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='nxs-widget-icon <?php echo $iconid; ?>'></span>
+											<p><?php echo $title; ?></p>
+										</li>
 										<?php
 									}
 								?>

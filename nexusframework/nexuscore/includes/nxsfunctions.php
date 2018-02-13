@@ -4682,10 +4682,24 @@ function nxs_get_localids_categories_v2($globalcatidsinbrackets)
 
 function nxs_getplaceholdericonid($placeholdertemplate)
 {
- 	// inject widget if not already loaded, implements *dsfvjhgsdfkjh*
- 	nxs_requirewidget($placeholdertemplate);
+	$options = nxs_widget_getoptions($placeholdertemplate);
+	$result = $options["sheeticonid"];
+ 	return $result;
+}
+
+function nxs_widget_getsupporturl($widgettype)
+{
+	$options = nxs_widget_getoptions($widgettype);
+	$result = $options["supporturl"];
+ 	return $result;
+}
+
+function nxs_widget_getoptions($widgettype)
+{
+	// inject widget if not already loaded, implements *dsfvjhgsdfkjh*
+ 	nxs_requirewidget($widgettype);
 	
-	$functionnametoinvoke = 'nxs_widgets_' . $placeholdertemplate . '_geticonid';
+	$functionnametoinvoke = 'nxs_widgets_' . $widgettype . '_home_getoptions';
 	if (function_exists($functionnametoinvoke))
 	{
 		$args = array();
@@ -4693,7 +4707,8 @@ function nxs_getplaceholdericonid($placeholdertemplate)
 	}
 	else
 	{
-		nxs_webmethod_return_nack("function not found;" . $functionnametoinvoke);
+		// not found
+		$result = array();
 	}
 	
 	return $result;

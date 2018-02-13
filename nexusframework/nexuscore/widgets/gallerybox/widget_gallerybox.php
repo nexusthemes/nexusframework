@@ -466,7 +466,6 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 			nxs_function_invokefunction($functionnametoinvoke, $args);
 		}
 		
-		
 		echo "<div class='nxs-clear'></div>";
 	} 
 	
