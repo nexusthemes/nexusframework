@@ -246,6 +246,7 @@ function nxs_widgets_embed_home_getoptions($args)
 	(
 		"sheettitle" => $sheettitle,
 		"sheeticonid" => $sheeticon,
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/embed-widgets-wordpress-questions-133/",
 		"fields" => $fields,
 		"footerfiller" => true,
 	);

@@ -27,7 +27,8 @@ function nxs_widgets_search_home_getoptions($args) {
 	(
 		"sheettitle" => nxs_widgets_search_gettitle(),
 		"sheeticonid" => nxs_widgets_search_geticonid(),
-		"unifiedstyling" => array
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/search-wordpress-questions-113/",
+		"unifiedstyling" 	=> array
 		(
 			"group" => nxs_widgets_search_getunifiedstylinggroup(),
 		),

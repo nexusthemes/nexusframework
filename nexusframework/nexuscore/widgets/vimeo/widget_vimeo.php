@@ -20,6 +20,7 @@ function nxs_widgets_vimeo_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_vimeo_gettitle(),
 		"sheeticonid" => nxs_widgets_vimeo_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/video-wordpress-questions-28/",
 		"fields" => array
 		(
 			// LOOKUPS

@@ -27,6 +27,7 @@ function nxs_widgets_gallerybox_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_gallerybox_gettitle(),
 		"sheeticonid" => nxs_widgets_gallerybox_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/image-gallery-widget-wordpress-questions-19/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_gallerybox_getunifiedstylinggroup(),

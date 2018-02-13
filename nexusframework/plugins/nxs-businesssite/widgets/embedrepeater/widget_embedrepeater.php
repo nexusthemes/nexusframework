@@ -168,6 +168,7 @@ function nxs_widgets_embedrepeater_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_embedrepeater_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_embedrepeater_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/embed-repeater-widget-wordpress-questions-194/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_embedrepeater_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_embedrepeater_getunifiedcontentgroup(),),
 		"footerfiller" => true,	// add some space at the bottom

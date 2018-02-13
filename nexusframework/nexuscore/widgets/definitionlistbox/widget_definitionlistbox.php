@@ -21,6 +21,7 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_definitionlistbox_gettitle(),
 		"sheeticonid" => nxs_widgets_definitionlistbox_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/definitionlist-widget-wordpress-questions-126/",
 		"fields" => array
 		(
 			// TITLE	

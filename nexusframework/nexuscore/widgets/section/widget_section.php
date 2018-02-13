@@ -126,6 +126,7 @@ function nxs_widgets_section_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_section_gettitle(),
 		"sheeticonid" => nxs_widgets_section_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/section-widget-wordpress-questions-264/",
 		"fields" => array
 		(
 			// -------------------------------------------------------			

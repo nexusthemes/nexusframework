@@ -32,6 +32,7 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_eventsbox_gettitle(),
 		"sheeticonid" => nxs_widgets_eventsbox_geticonid(),
+		"supporturl" => "	https://www.wpsupporthelp.com/wordpress-questions/events-widget-wordpress-questions-20/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_eventsbox_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_eventsbox_getunifiedcontentgroup(),),
 		

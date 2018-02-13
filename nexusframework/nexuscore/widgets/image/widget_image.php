@@ -34,6 +34,7 @@ function nxs_widgets_image_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_image_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_image_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/images-photos-pictures-image-widget-wordpress-questions-70/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_image_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_image_getunifiedcontentgroup(),),
 		"fields" => array

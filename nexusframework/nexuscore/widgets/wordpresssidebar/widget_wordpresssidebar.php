@@ -34,6 +34,7 @@ function nxs_widgets_wordpresssidebar_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_wordpresssidebar_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_wordpresssidebar_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/wordpress-backend-wordpress-questions-15/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_wordpresssidebar_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array("group" => nxs_widgets_wordpresssidebar_getunifiedcontentgroup(),),
 		"fields" => array

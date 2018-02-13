@@ -33,6 +33,7 @@ function nxs_widgets_csv_home_getoptions()
 	(
 		"sheettitle" 		=> "CSV table",
 		"sheeticonid" 		=> nxs_widgets_csv_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/widgets-csv-wordpress-questions-21/",
 		"unifiedstyling" 	=> array ("group" => nxs_widgets_csv_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_csv_getunifiedcontentgroup(),),
 		"fields" => array

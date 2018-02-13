@@ -153,6 +153,7 @@ function nxs_widgets_rssfeed_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_rssfeed_gettitle(),
 		"sheeticonid" => nxs_widgets_rssfeed_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/rss-wordpress-questions-251/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_rssfeed_getunifiedstylinggroup(),

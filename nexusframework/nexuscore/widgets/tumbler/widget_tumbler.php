@@ -37,6 +37,7 @@ function nxs_widgets_tumbler_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_tumbler_gettitle(),
 		"sheeticonid" => nxs_widgets_tumbler_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/tumbler-widget-wordpress-questions-177/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_tumbler_getunifiedstylinggroup(),

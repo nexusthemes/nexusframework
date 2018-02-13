@@ -137,6 +137,7 @@ function nxs_widgets_list_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_list_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_list_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/repeater-widget-wordpress-questions-123/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_list_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_list_getunifiedcontentgroup(),),
 		"footerfiller" => true,	// add some space at the bottom

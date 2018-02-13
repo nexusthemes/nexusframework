@@ -186,6 +186,7 @@ function nxs_widgets_htmlcustom_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_htmlcustom_gettitle(),
 		"sheeticonid" => nxs_widgets_htmlcustom_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/html-wordpress-questions-69/",
 		"fields" => array
 		(
 			// -------------------------------------------------------			

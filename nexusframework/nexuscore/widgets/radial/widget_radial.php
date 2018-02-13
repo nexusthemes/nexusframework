@@ -29,6 +29,7 @@ function nxs_widgets_radial_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_radial_gettitle(),
 		"sheeticonid" => nxs_widgets_radial_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/widgets-radial-wordpress-questions-95/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_radial_getunifiedstylinggroup(),

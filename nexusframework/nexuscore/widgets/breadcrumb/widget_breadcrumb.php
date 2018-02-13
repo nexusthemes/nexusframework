@@ -34,6 +34,7 @@ function nxs_widgets_breadcrumb_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_breadcrumb_gettitle(),
 		"sheeticonid" => nxs_widgets_breadcrumb_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/widgets-breadcrumbs-wordpress-questions-93/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_breadcrumb_getunifiedstylinggroup(),

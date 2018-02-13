@@ -33,6 +33,7 @@ function nxs_widgets_vectorart_home_getoptions($args)
 	(
 		"sheettitle" 		=> nxs_widgets_vectorart_gettitle(),
 		"sheeticonid" 		=> nxs_widgets_vectorart_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/widgets-vector-art-wordpress-questions-115/",
 		"unifiedstyling" 	=> array("group" => nxs_widgets_vectorart_getunifiedstylinggroup(),),
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_vectorart_getunifiedcontentgroup(),),
 		"fields" => array

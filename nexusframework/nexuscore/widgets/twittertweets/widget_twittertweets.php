@@ -71,6 +71,7 @@ function nxs_widgets_twittertweets_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_twittertweets_gettitle(),
 		"sheeticonid" => nxs_widgets_twittertweets_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/twitter-widget-wordpress-questions-178/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_twittertweets_getunifiedstylinggroup(),

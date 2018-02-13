@@ -29,6 +29,7 @@ function nxs_widgets_archive_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_archive_gettitle(),
 		"sheeticonid" => nxs_widgets_archive_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/archive-archives-archive-widget-wordpress-questions-25/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_archive_getunifiedstylinggroup(),
