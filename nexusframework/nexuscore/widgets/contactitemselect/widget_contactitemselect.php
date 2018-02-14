@@ -96,6 +96,7 @@ function nxs_widgets_contactitemselect_renderincontactbox($args)
 	<select id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" value="<?php echo $value;?>">
 		
 		<?php
+		$metadata_selectables = str_replace("|", "\n", $metadata_selectables);
 		$metadata_selectables = str_replace("@@NXSNEWLINE@@", "\n", $metadata_selectables);
 		$metadata_selectables = str_replace("\r\n", "\n", $metadata_selectables);
 		
