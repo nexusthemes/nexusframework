@@ -371,17 +371,6 @@ function nxs_widgets_text_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Link the button to an article within your site.", "nxs_td"),
 				"unicontentablefield" => true,
 			),
-			
-			/*
-			array(
-				"id" 				=> "destination_popuparticleid",
-				"type" 				=> "article_link",
-				"posttypes" => array("nxs_templatepart","page", "post"),
-				"label" 			=> nxs_l18n__("Link (popup)", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("The content template, post or page to be rendered in the popup", "nxs_td"),
-				"enable_mediaselect" => false,
-			),
-			*/
 						
 			array(
 				"id" 				=> "destination_url",
