@@ -50,11 +50,37 @@ function nxs_webmethod_formboxsubmit()
  	}
  	
  	// ensure the widget exists
- 	$widgetmetadata = nxs_getwidgetmetadata($postid, $placeholderid);
+ 	$mixedattributes = nxs_getwidgetmetadata($postid, $placeholderid);
  	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		$combined_lookups = array();
+		
+		// not possible to apply lookups for currenturl as this is a webmethod
+		//$combined_lookups = array_merge($combined_lookups, nxs_lookups_getcombinedlookups_for_currenturl());
+		
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+		
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("items_data");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
+ 	
+ 	$widgetmetadata = $mixedattributes;
  	$items_genericlistid = $widgetmetadata["items_genericlistid"];
+ 	$items_data = $widgetmetadata["items_data"];
  	$structure = nxs_parsepoststructure($items_genericlistid);
-	if (count($structure) == 0) 
+	if (count($structure) == 0 && $items_data == "") 
 	{
 		// error?
 		nxs_webmethod_return_nack("form structure not found? [" . $items_genericlistid . "]");
@@ -72,6 +98,7 @@ function nxs_webmethod_formboxsubmit()
  	
  	// load the form fields, and delegate handling to the form elements
  	$index = -1;
+	// the design-time items
 	foreach ($structure as $pagerow)
 	{
 		$index = $index + 1;
@@ -154,6 +181,113 @@ function nxs_webmethod_formboxsubmit()
 			// empty widget is ignored
 		}
 	}
+	
+	// the model driven items
+	$otheritems = array();
+	if ($items_data == "")
+	{
+		// ignore
+	}
+	else if (nxs_stringstartswith($items_data, "json:"))
+	{
+		$json = substr($items_data, 5);
+		$otheritems = json_decode($json, true);
+	}
+	else
+	{
+		// ignore
+	}
+	foreach ($otheritems as $otheritem)
+	{
+		if ($otheritem == "")
+		{
+			continue;
+		}
+		
+		$index = $index + 1;
+		$widget = $otheritem["type"];
+		
+		// override the elementid
+		$otheritem["overriddenelementid"] = "nxs_fb_{$postid}_{$placeholderid}_{$index}";
+		
+		// =======
+		
+		$widget = $otheritem["type"];
+		
+		// special type; contactitemreplyto is used to 
+		if ($widget == "contactitemreplyto")
+		{
+			$key = $otheritem["overriddenelementid"];
+ 			$replytoemailaddress = $_POST[$key];
+		}
+		
+		if ($widget != "")
+		{
+			$requirewidgetresult = nxs_requirewidget($widget);
+		 	if ($requirewidgetresult["result"] == "OK")
+		 	{
+		 		$submitargs = array();
+		 		// 
+		 		$submitargs["containerpostid"] = $containerpostid;
+		 		$submitargs["postid"] = $postid;
+		 		$submitargs["placeholderid"] = $placeholderid;
+		 		$submitargs["metadata"] = $otheritem;
+		 		//
+
+		 		// gets results from here
+		 		$subresult = nxs_widgets_formboxitem_getformitemsubmitresult($widget, $submitargs);
+		 		$subresults[] = $subresult;
+
+		 		// var_dump($subresult);
+
+		 		if ($subresult["result"] == "OK")
+		 		{
+		 			$newerrors = $subresult["validationerrors"];
+		 			if (count($newerrors) > 0)
+		 			{
+		 				$atleastoneerrorfound = true;
+		 				foreach ($newerrors as $currentnewerror)
+		 				{
+		 					$validationerrors[] = $currentnewerror;
+		 				}
+		 			}
+		 			$newmarkclientsideelements = $subresult["markclientsideelements"];
+		 			if (count($newmarkclientsideelements) > 0)
+		 			{
+		 				foreach ($newmarkclientsideelements as $currentnewmarkclientsideelement)
+		 				{
+		 					$markclientsideelements[] = $currentnewmarkclientsideelement;
+		 				}
+		 			}
+
+		 			$fileuploads[] = $subresult["fileupload"];
+
+		 			$newoutput = $subresult["output"];
+		 			$outputlines[] = $newoutput;
+		 		}
+		 		else
+		 		{
+			 		//
+			 		nxs_webmethod_return_nack("An error occured when verifying the form;" . $widget);	
+		 		}
+		 	}
+		 	else
+		 	{
+		 		// 
+		 		// TODO: dit moet beter worden afgehandeld; het systeem moet de meldingen client side tonen,
+		 		// zodat de gebruiker opnieuw kan submitten
+		 		nxs_webmethod_return_nack("missing form element;" . $widget);
+		 	}
+		}
+		else
+		{
+			// empty widget is ignored
+		}
+		
+		// =======
+		
+	}
+	
 
 	if ($atleastoneerrorfound === false)
 	{

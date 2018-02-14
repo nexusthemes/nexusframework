@@ -96,7 +96,111 @@ function nxs_sc_string($atts, $content = null, $name='')
 	foreach ($opslist as $op)
 	{
 		$op = trim($op);
-		if ($op == "lo")
+		if (false)
+		{
+			//
+		}
+		else if ($op == "form_items_data")
+		{
+			$result = array();
+			
+			global $nxs_g_modelmanager;
+			
+			// generates form items data based upon input criteria
+			$item_schema = $atts["item_schema"];
+			$form_type = $atts["form_type"];
+			$lang = $atts["lang"];
+			$cachebehaviour = $atts["cachebehaviour"];
+			
+			// grab all form items for the schema and form_type
+			$modeluris = do_shortcode("[nxsstring ops='listmodeluris' singularschema='{$item_schema}' where_property_1='form_type' where_operator_1='equals' where_value_1='{$form_type}' cachebehaviour='{$cachebehaviour}']");
+			$pieces = explode(";", $modeluris);
+			foreach ($pieces as $modeluri)
+			{
+				$resultitem = array();
+				
+				$modeluriprops = $nxs_g_modelmanager->getmodeltaxonomyproperties(array("modeluri" => $modeluri));
+				$type = $modeluriprops["type"];
+				
+				$parseinstructions = array();
+				
+				if ($type == "contactitemtext")
+				{
+					$parseinstructions["replicatelanguagedependentprops"] = array("formlabel", "placeholder", "initialtext");
+					$parseinstructions["replicatelanguageindependentprops"] = array("type", "isrequired", "isreadonly", "ishidden", "numofrows");
+				}
+				else if ($type == "contactitemreplyto")
+				{
+					$parseinstructions["replicatelanguagedependentprops"] = array("formlabel", "placeholder", "initialtext");
+					$parseinstructions["replicatelanguageindependentprops"] = array("type", "isrequired", "isreadonly", "ishidden");
+				}
+				else if ($type == "contactitemselect")
+				{
+					// grab options ("selectables") from related table based upon a naming convention
+					if (true)
+					{
+						$formitem_id = $modeluriprops["{$item_schema}_id"];
+						$listitem_modeluris = do_shortcode("[nxsstring ops='listmodeluris' singularschema='{$item_schema}.listitem' where_property_1='{$item_schema}_id' where_operator_1='equals' where_value_1='{$formitem_id}' cachebehaviour='{$cachebehaviour}']");
+						$listitem_pieces = explode(";", $listitem_modeluris);
+						$listitem_texts = array();
+						foreach ($listitem_pieces as $listitem_modeluri)
+						{
+							$listitem_texts[]= $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri" => $listitem_modeluri, "property" => "text_{$lang}"));
+						}
+						$selectables = implode("|", $listitem_texts);
+					}
+					
+					$parseinstructions["addkeyvalues"] = array("selectables" => $selectables);
+					$parseinstructions["replicatelanguagedependentprops"] = array("formlabel");
+					$parseinstructions["replicatelanguageindependentprops"] = array("type", "isrequired", "isreadonly", "ishidden");
+				}
+				else
+				{
+					$errmsg = "form_items_data; err; unsupported type; type:$type; modeluri: $modeluri; props:" . json_encode($modeluriprops);
+					error_log($errmsg);
+					return $errmsg;
+				}
+				
+				foreach ($parseinstructions as $instruction => $instructionmeta)
+				{
+					if ($instruction == "replicatelanguagedependentprops")
+					{
+						foreach ($instructionmeta as $property)
+						{
+							$modelval = $modeluriprops["{$property}_{$lang}"];
+							$resultitem[$property] = $modelval;
+						}
+					}
+					else if ($instruction == "replicatelanguageindependentprops")
+					{
+						foreach ($instructionmeta as $property)
+						{
+							$modelval = $modeluriprops["{$property}"];
+							$resultitem[$property] = $modelval;
+						}
+					}
+					else if ($instruction == "addkeyvalues")
+					{
+						foreach ($instructionmeta as $k => $v)
+						{
+							$resultitem[$k] = $v;
+						}
+					}
+					else
+					{
+						$errmsg = "form_items_data; err; unsupported instruction; $instruction";
+						error_log($errmsg);
+						return $errmsg;
+					}
+				}
+				
+				//
+				$result[] = $resultitem;
+			}
+			
+			$input = json_encode($result);
+		}
+		else if ($op == "lo")
 		{
 			$input = strtolower($input);
 		}
@@ -834,10 +938,21 @@ function nxs_sc_string($atts, $content = null, $name='')
 			);
 			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
 			
-			$input = htmlentities($input);
-			// 2017 07 06; the dollar sign is not properly replaced causing php to evaluate it to empty string
-			// if we wouldn't replace it here...
-			$input = str_replace('$', "&dollar;", $input);
+			if ($atts["encode"] == "")
+			{
+				$input = htmlentities($input);
+				// 2017 07 06; the dollar sign is not properly replaced causing php to evaluate it to empty string
+				// if we wouldn't replace it here...
+				$input = str_replace('$', "&dollar;", $input);
+			}
+			else if ($atts["encode"] == "none")
+			{
+				// 
+			}
+			else
+			{
+				// nothing
+			}
 				
 			if ($atts["errorlog"] == "true")
 			{

@@ -17,7 +17,7 @@ function nxs_widgets_formbox_getunifiedstylinggroup() {
 
 // Used by the individual formitem widgets to determine an automated unique ID
 function nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid) {
-	$result = "nxs_cf_" . md5($postid) . "_" . $placeholderid . "_";
+	$result = "nxs_fb_" . md5($postid) . "_" . $placeholderid . "_";
 	return $result;
 }
 
@@ -317,6 +317,15 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Form fields", "nxs_td"),
 				"unicontentablefield" => true,
 			),
+			
+			array
+			(
+				"id" 				=> "items_data",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Form fields (programmatic)", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			
 			array(
 				"id" 				=> "formidentifier",
 				"type" 				=> "input",
@@ -505,7 +514,6 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	// Importing variables
 	extract($args);
 	
-	
 	// Every widget needs it's own unique id for all sorts of purposes
 	// The $postid and $placeholderid are used when building the HTML later on
 	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
@@ -522,39 +530,27 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = array_merge($temp_array, $args);
 		
 	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "button_text", "internal_email", "sender_email"));
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "button_text", "internal_email", "sender_email", "items_data"));
 	
-	// translate the magic fields using the lookup tables of all referenced models
-	$lookupargs = array
-	(
-		"modeluris" => $modeluris,
-	);
-	global $nxs_g_modelmanager;
-	$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
-	
-	global $post;
-	$containerpostid = $post->ID;
-	// phase 3; add fields of the containerpostid
-	// add the lookup values from pluggable sources
-	$modeluri = "{$containerpostid}@wp.post";
-	$context = array
-	(
-		"prefix" => "",
-		"modeluri" => $modeluri,
-	);
-	$add = nxs_lookups_getlookups_for_context($context);
-	
-	$lookup = array_merge($lookup, $add);
-
-	
-	$magicfields = array("title", "button_text", "internal_email", "sender_email");
-	$translateargs = array
-	(
-		"lookup" => $lookup,
-		"items" => $mixedattributes,
-		"fields" => $magicfields,
-	);
-	$mixedattributes = nxs_filter_translate_v2($translateargs);
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+		
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("title", "button_text", "internal_email", "sender_email", "items_data");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
 	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
@@ -636,9 +632,12 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		$alternativemessage = nxs_l18n__("Warning: sender name is not set", "nxs_td");
 	}
 	
-	if (count($structure) == 0) {
+	if (count($structure) == 0 && $items_data == "") 
+	{
 		$alternativemessage = nxs_l18n__("Warning: add at least one form field", "nxs_td");
 	}
+	
+	
 		
 	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
 	$button_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
@@ -864,6 +863,90 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 			 		$hookargs["placeholderid"] = $placeholderid;
 			 		$hookargs["form_metadata"] = $mixedattributes;	// metadata of form itself
 			 		$hookargs["metadata"] = $currentplaceholdermetadata;
+			 		
+			 		$subresult = nxs_widgets_renderinformbox($widget, $hookargs);
+			 		if ($subresult["result"] == "OK")
+			 		{		 			
+			 			// apply lookup tables to the fields
+			 			if (nxs_stringcontains($subresult["html"], "{{"))
+			 			{			 					
+							// replace values in mixedattributes with the lookup dictionary
+							$magicfields = array("html");
+							$translateargs = array
+							(
+								"lookup" => $combined_lookups,
+								"items" => $subresult,
+								"fields" => $magicfields,
+							);
+							$subresult = nxs_filter_translate_v2($translateargs);
+			 			}
+			 			
+			 			$subhtml = $subresult["html"];
+			 			
+			 			// append subresult to the overall result
+			 			echo $subhtml;
+			 		}
+			 		else
+			 		{
+			 			echo "[warning, widget found, but returned an error?]";
+			 			var_dump($subresult);
+			 		}
+			 	}
+			 	else
+			 	{
+			 		// 
+			 		echo "[warning, widget not found?]";
+			 	}
+			}
+			else
+			{
+				// empty widget is ignored
+			}
+		}
+		
+		$otheritems = array();
+		if ($items_data == "")
+		{
+			// ignore
+		}
+		else if (nxs_stringstartswith($items_data, "json:"))
+		{
+			// see "form_items_data" operator of "nxs_string" shortcode on how to use this
+			$json = substr($items_data, 5);
+			$otheritems = json_decode($json, true);
+		}
+		else
+		{
+			// ignore
+		}
+		foreach ($otheritems as $otheritem)
+		{
+			if ($otheritem == "")
+			{
+				continue;
+			}
+			
+			$index = $index + 1;
+			$widget = $otheritem["type"];
+			
+			// override the elementid
+			$otheritem["overriddenelementid"] = "nxs_fb_{$postid}_{$placeholderid}_{$index}";
+			
+			if ($widget != "" && $widget != "undefined")
+			{
+				$requirewidgetresult = nxs_requirewidget($widget);
+			 	if ($requirewidgetresult["result"] == "OK")
+			 	{
+			 		// now that the widget is loaded, instruct the widget to register the needed hooks
+			 		// if it has some
+			 		$hookargs = array();
+			 		$hookargs["postid"] = $postid;
+			 		$hookargs["placeholderid"] = $placeholderid;
+			 		$hookargs["form_metadata"] = $mixedattributes;	// metadata of form itself
+			 		$hookargs["metadata"] = $otheritem;
+			 		$hookargs["index"] = $index;
+			 		$hookargs["items_data"] = $items_data;
+			 		
 			 		
 			 		$subresult = nxs_widgets_renderinformbox($widget, $hookargs);
 			 		if ($subresult["result"] == "OK")
