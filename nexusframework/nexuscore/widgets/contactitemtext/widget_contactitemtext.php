@@ -29,15 +29,14 @@ function nxs_widgets_contactitemtext_getformitemsubmitresult($args)
 	$result["validationerrors"] = array();
 	$result["markclientsideelements"] = array();
 	
-	nxs_requirewidget("contactbox");
-	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
-	
 	if ($overriddenelementid != "")
 	{
 		$key = $overriddenelementid;
 	}
 	else
 	{
+		nxs_requirewidget("contactbox");
+		$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
 		$key = $prefix . $elementid;
 	}	
 	$value = $_POST[$key];
@@ -74,8 +73,6 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	nxs_requirewidget("contactbox");
-	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
 	
 	if ($metadata_overriddenelementid != "")
 	{
@@ -83,6 +80,8 @@ function nxs_widgets_contactitemtext_renderincontactbox($args)
 	}
 	else
 	{
+		nxs_requirewidget("contactbox");
+		$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
 		$key = $prefix . $metadata_elementid;
 	}
 	
