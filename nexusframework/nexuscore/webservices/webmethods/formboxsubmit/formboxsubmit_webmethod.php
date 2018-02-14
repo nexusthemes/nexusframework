@@ -58,15 +58,14 @@ function nxs_webmethod_formboxsubmit()
 		global $nxs_g_modelmanager;
 		
 		$combined_lookups = array();
-		
-		// not possible to apply lookups for currenturl as this is a webmethod
-		//$combined_lookups = array_merge($combined_lookups, nxs_lookups_getcombinedlookups_for_currenturl());
-		
+		$combined_lookups = array_merge($combined_lookups, nxs_lookups_getcombinedlookups_for_currenturl());		
 		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
 		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
 		
+		//error_log("formboxsubmit; combined_lookups; " . json_encode($combined_lookups));
+		
 		// replace values in mixedattributes with the lookup dictionary
-		$magicfields = array("items_data");
+		$magicfields = array("items_data", "destination_url");
 		$translateargs = array
 		(
 			"lookup" => $combined_lookups,
@@ -506,7 +505,21 @@ function nxs_webmethod_formboxsubmit()
 			}
 			
 			$responseargs = array();
-		 	$responseargs["url"] = get_permalink($destination_articleid);
+			
+			if ($destination_url != "")
+			{
+				$responseargs["url"] = $destination_url;
+			}
+			else
+			{
+				$url = get_permalink($destination_articleid);
+				if ($url === false)
+				{
+					error_log("formbox submit; err; no url set? destination_articleid:$destination_articleid");
+					$url = "#";
+				}
+		 		$responseargs["url"] = $url;
+		 	}
 		 	
 			nxs_webmethod_return_ok($responseargs);
 	 	}

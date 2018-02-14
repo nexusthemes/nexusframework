@@ -409,7 +409,6 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 			$rowcontent = $pagerow["content"];
 			$placeholderid = nxs_parsepagerow($rowcontent);
 			$placeholdermetadata = nxs_getwidgetmetadata($items_genericlistid, $placeholderid);
-
 			$placeholdertype = $placeholdermetadata["type"];
 			
 			if ($placeholdertype != "" && $placeholdertype != "undefined")

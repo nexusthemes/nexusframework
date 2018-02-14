@@ -188,7 +188,8 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> "Lookups",
-				"initial_toggle_state"	=> "closed",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "lookups",
 			),
 			array
 			(
@@ -209,7 +210,8 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> "Title",
-				"initial_toggle_state"	=> "closed",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "title",
 			),
 			
 			array(
@@ -280,7 +282,8 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Text", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "text",
 			),
 			array(
 				"id" 				=> "text",
@@ -376,6 +379,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("When checked, the source URL from where this form was posted will be included in the email send", "nxs_td"),
 				"unicontentablefield" => true,
 			),
+			
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
@@ -383,6 +387,15 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Use this to thank the visitor for taking the time to send an email by redirecting them to this page.", "nxs_td"),
 				"unistylablefield"	=> true,
 			),
+			
+			array
+			( 
+				"id" 				=> "destination_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Thank you URL", "nxs_td"),
+				"unistylablefield"	=> true,
+			),
+			
 			array( 
 				"id" 				=> "submittedforms",
 				"type" 					=> "custom",
@@ -528,9 +541,6 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
-		
-	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title", "button_text", "internal_email", "sender_email", "items_data"));
 	
 	// Translate model magical fields
 	if (true)
@@ -542,7 +552,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
 		
 		// replace values in mixedattributes with the lookup dictionary
-		$magicfields = array("title", "button_text", "internal_email", "sender_email", "items_data");
+		$magicfields = array("title", "text", "button_text", "internal_email", "sender_email", "items_data", "destination_url");
 		$translateargs = array
 		(
 			"lookup" => $combined_lookups,
@@ -596,10 +606,10 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		$alternativemessage = nxs_l18n__("Warning: no button text", "nxs_td");
 	}
 	
-	if (!(isset($destination_articleid) && $destination_articleid != "" && $destination_articleid != 0)) 
+	if ($destination_url == "" && $destination_articleid == "")
 	{
-		$alternativemessage = nxs_l18n__("Warning: the 'thank you page' of this widget is not yet configured", "nxs_td");
-	} 
+		$alternativemessage = nxs_l18n__("Warning: thank you page is not set", "nxs_td");
+	}
 	
 	if ($internal_email == "") 
 	{
@@ -662,6 +672,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		"colorzen" => $button_color,
 		"destination_target" => $destination_target,
 		"align" => $button_alignment,
+		// note; don't pass the destination_articleid nor destination_url; we explicitly need the JS since this submits the form
 		"destination_js" => $destination_js,
 		"text_heightiq" => $text_heightiq,
 		"fontzen" => $button_fontzen,
