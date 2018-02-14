@@ -188,9 +188,11 @@ function nxs_widgets_undefined_home_rendersheet($args)
 		        <div class="box nxs-linkcolorvar-base2-m">
 		          <ul class="placeholder3 nxs-applylinkvarcolor isotope-grid">
 		          	<style>	
+		          		.isotope-item { cursor: pointer; } 
 									li .nxs-widgetitem-submenu { display: none; position: absolute; z-index: 99999; }
 									li .nxs-widgetitem-submenu li { width: auto !important;; height: auto !important; margin: 0 !important; padding: 2px;}
 									li:hover .nxs-widgetitem-submenu { display: block; }
+									
 								</style>
 								<?php
 									// for each placeholder -->
@@ -228,41 +230,40 @@ function nxs_widgets_undefined_home_rendersheet($args)
 											$elementclass .= $currenttag . " ";
 										}
 										?>
-										<a class="isotope-item <?php echo $elementclass; ?>" href="#" onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;">
-											<li>
+										<li class="isotope-item <?php echo $elementclass; ?>" href="#" onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;">
+											<?php
+											if (isset($iconid) && $iconid != "")
+											{
+												?>
 												<?php
-												if (isset($iconid) && $iconid != "")
+												if ($supporturl != "")
 												{
 													?>
-													<?php
-													if ($supporturl != "")
-													{
-														?>
-														<ul class='nxs-widgetitem-submenu'>
-															<li title='Support'>
-																<a href='<?php echo $supporturl; ?>' target='_blank'>
-																	<span class='nxs-icon-info'></span>
-																</a>
-															</li>
-														</ul>
-														<?php
-													}
-													?>
-													<span class='nxs-widget-icon <?php echo $iconid; ?>'></span>
-													<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
-													<?php
-												}
-												else
-												{
-													$iconid = nxs_getplaceholdericonid($widgetid);
-													?>
-													<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='<?php echo $iconid; ?>'></span>
-													<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
+													<ul class='nxs-widgetitem-submenu'>
+														<li title='Support'>
+															<a href='<?php echo $supporturl; ?>' target='_blank'>
+																<span class='nxs-icon-info'></span>
+															</a>
+														</li>
+													</ul>
 													<?php
 												}
 												?>
-											</li>
-										</a>
+												<span class='nxs-widget-icon <?php echo $iconid; ?>'></span>
+												<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
+												<?php
+											}
+											else
+											{
+												$iconid = nxs_getplaceholdericonid($widgetid);
+												?>
+												<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='<?php echo $iconid; ?>'></span>
+												<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
+												<?php
+											}
+											?>
+										</li>
+									
 										<?php
 									}
 								?>
