@@ -287,60 +287,35 @@ function nxs_webmethod_formboxsubmit()
 		
 	}
 	
-
 	if ($atleastoneerrorfound === false)
 	{
-		// die();
-
 		// so far no errors were found
-	 	$url = nxs_geturl_for_postid($containerpostid);
-
+	 		 	
 		// Get widget properties
 		$mixedattributes = nxs_getwidgetmetadata($postid, $placeholderid);
 		
-		// Lookup translation
-		$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("internal_email", "sender_email"));
-		
-		
-		
-		
-		// ** START
-		// these lines are required, as otherwise the {{email}} is not properly interpreted/returned
-		$templateproperties = nxs_gettemplateproperties();
-		$modelmapping = $templateproperties["templaterules_lookups_lookup"];
-		//error_log("modelmappingX;".json_encode($modelmapping));
-		// ** END
-
-		
-		// phase 2; translate the magic fields using the lookup tables of all referenced models
-		$lookupargs = array
-		(
-			"modeluris" => $modeluris,
-		);
-		global $nxs_g_modelmanager;
-		$lookup = $nxs_g_modelmanager->getlookups_v2($lookupargs);
-		
-		// phase 3; blend the properties of the containerpostid
-		// add the lookup values from pluggable sources
-		$modeluri = "{$containerpostid}@wp.post";
-		$context = array
-		(
-			"prefix" => "",
-			"modeluri" => $modeluri,
-		);
-		$add = nxs_lookups_getlookups_for_context($context);
-		$lookup = array_merge($lookup, $add);
-		
-		// error_log("add;".json_encode($add));
-		
-		$magicfields = array("internal_email", "sender_email");
-		$translateargs = array
-		(
-			"lookup" => $lookup,
-			"items" => $mixedattributes,
-			"fields" => $magicfields,
-		);
-		$mixedattributes = nxs_filter_translate_v2($translateargs);
+		// Translate model magical fields
+		if (true)
+		{
+			global $nxs_g_modelmanager;
+			
+			$combined_lookups = array();
+			$combined_lookups = array_merge($combined_lookups, nxs_lookups_getcombinedlookups_for_currenturl());		
+			$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+			$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+			
+			//error_log("formboxsubmit; combined_lookups; " . json_encode($combined_lookups));
+			
+			// replace values in mixedattributes with the lookup dictionary
+			$magicfields = array("internal_email", "sender_email", "destination_url");
+			$translateargs = array
+			(
+				"lookup" => $combined_lookups,
+				"items" => $mixedattributes,
+				"fields" => $magicfields,
+			);
+			$mixedattributes = nxs_filter_translate_v2($translateargs);
+		}
 
 	 	extract($mixedattributes);
 	 	
@@ -407,6 +382,7 @@ function nxs_webmethod_formboxsubmit()
 			}
 			
 			// append url
+			$url = $_SERVER['HTTP_REFERER'];
 			$datatoappend .= "Url: " . $url . $columnseperator;
 			
 			// append date and time
@@ -471,6 +447,7 @@ function nxs_webmethod_formboxsubmit()
 			$body = "";
 			if ($mail_body_includesourceurl != "")
 			{
+				$url = $_SERVER['HTTP_REFERER'];
 				$body .= nxs_l18n__("This form was posted from url: ", "nxs_td") . $url . "<br /><br />";
 			}
 			foreach ($outputlines as $currentoutputline)
@@ -513,10 +490,11 @@ function nxs_webmethod_formboxsubmit()
 			else
 			{
 				$url = get_permalink($destination_articleid);
-				if ($url === false)
+				if ($url === false || $url == "")
 				{
+					$url = $_SERVER['HTTP_REFERER'];
 					error_log("formbox submit; err; no url set? destination_articleid:$destination_articleid");
-					$url = "#";
+					//$url = "#";
 				}
 		 		$responseargs["url"] = $url;
 		 	}

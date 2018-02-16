@@ -421,7 +421,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Button", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
+				// "initial_toggle_state"	=> "closed",
 			),
 
 			array(
