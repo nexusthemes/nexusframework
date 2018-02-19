@@ -136,7 +136,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 	
 	// BUSINESS RULES WIDGETS
 	
-	if ($nxsposttype == "busrulesset") {
+	if ($nxsposttype == "busrulesset") 
+	{
 		$result[] = array("widgetid" => "busrulepostid", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busrulecategory", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busrulepostauthor", "tags" => array("nexus"));
@@ -151,7 +152,13 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "busruleposttype", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busrulehaspostcontent", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busruleauthentication", "tags" => array("nexus"));		
-		$result[] = array("widgetid" => "busrulesemanticlayout", "tags" => array("nexus"));
+		
+		if ($enableconceptualwidgets)
+		{
+			// obsolete widget
+			$result[] = array("widgetid" => "busrulesemanticlayout", "tags" => array("nexus"));
+		}
+		
 		$result[] = array("widgetid" => "busruleurl", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busruledeclarativecondition", "tags" => array("nexus"));
 	}
@@ -668,6 +675,7 @@ function nxs_getobsoletewidgetids()
 	$result = array();
 	
 	$result[] = "contactbox";
+	$result[] = "busrulesemanticlayout";
 	
 	if (!nxs_enableconceptualwidgets())
 	{
