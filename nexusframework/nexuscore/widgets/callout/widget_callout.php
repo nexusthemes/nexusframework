@@ -811,9 +811,11 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 		// "destination_target" => $destination_target,
 		// "destination_relation" => $destination_relation,
 		// -----
+		
 		"shouldapplylinkvarcolor" => false,		
 		"microdata" => $microdata,
 		"colorzen" => $derived_colorzen,
+		"fontzen" => $title_fontzen,
 		// 
 	);
 	$htmltitle = nxs_gethtmlfortitle_v4($a);
