@@ -391,12 +391,40 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "youtubeify")
 		{
+			if (true) // $_REQUEST["yt"] == "yt")
+			{
+				preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $input, $match);
+				if (count($match) >= 1)
+				{
+					// locate t=XX in the url
+					$url = $match[0][0];
+					$parts = parse_url($url);
+					parse_str($parts['query'], $queryparameters);
+					$t = $queryparameters["t"];
+					if ($t != "")
+		    	{
+		    		$start = "?start=$t";
+		    	}
+		    	else
+		    	{
+		    		$start = "";
+		    	}
+		    	//var_dump($input);
+		    	//var_dump($parts);
+		    	//var_dump($t);
+		    	//var_dump($start);
+		    }
+	    	//die();
+	    }
+			
 			// thanks to https://stackoverflow.com/questions/19050890/find-youtube-link-in-php-string-and-convert-it-into-embed-code
 			$input = preg_replace(
         "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
-        "<br /><div class=\"video-container\"><iframe class=\"video\" width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/$2\" allowfullscreen></iframe></div><br />",
+        "<br /><div class=\"video-container\"><iframe class=\"video\" width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/$2{$start}\" allowfullscreen></iframe></div><br />",
         $input
     	);
+    	
+    	
 		}
 		else if ($op == "linkify")
 		{
