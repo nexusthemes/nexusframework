@@ -4912,14 +4912,6 @@ function nxs_getsearchresults($searchargs)
 	$operator = "and";
 	$posttypes = get_post_types($args, $output, $operator);
 	
-	if ($_REQUEST["debugsearch"] == "true")
-	{
-		echo "nxs_getsearchresults :)";
-		var_dump($posttypes);
-		die();
-	}
-	
-	
 	$posttypevalues = array_values($posttypes);
 	$posttypelist = "'" . implode("','", $posttypevalues) . "'";
 	$posttypelist = str_replace("''", "", $posttypelist);
