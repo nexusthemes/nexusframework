@@ -94,9 +94,10 @@ function nxs_widgets_formitemcheckbox_renderincontactbox($args)
 		$checkedattribute = "checked='checked'";
 	}
 	?>
-	
-  <label for="<?php echo $key; ?>" class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
-  <input type="checkbox" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" <?php echo $checkedattribute; ?> />
+	<div style='margin-bottom: 10px;'>
+  <input type="checkbox" style='margin-bottom: 0px; height: 20px;' id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" <?php echo $checkedattribute; ?> />
+  <label for="<?php echo $key; ?>" style='display: inline-block;' class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
+  </div>
 	<?php
 	// var_dump($args);
 	
