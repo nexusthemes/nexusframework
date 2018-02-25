@@ -191,7 +191,7 @@ function nxs_busrule_busrulepostauthor_process($args, &$statebag)
 	$filter_authoremail = $metadata["filter_authoremail"];
 	
 	if (is_singular())
-	{		
+	{
 		$useremail = get_the_author_meta('user_email');
 		if ($useremail)
 		{
@@ -216,6 +216,10 @@ function nxs_busrule_busrulepostauthor_process($args, &$statebag)
 					{
 						// reset
 						$statebag["out"][$currentsitewideelement] = 0;
+					}
+					else if ($selectedvalue == "")
+					{
+						// skip
 					}
 					else
 					{
