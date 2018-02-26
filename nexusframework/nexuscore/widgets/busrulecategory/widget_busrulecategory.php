@@ -24,6 +24,7 @@ function nxs_widgets_busrulecategory_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_busrulecategory_gettitle(),
 		"sheeticonid" => nxs_widgets_busrulecategory_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/specific-category-business-rule-wordpress-questions-268/",
 		"fields" => array
 		(
 			array( 
