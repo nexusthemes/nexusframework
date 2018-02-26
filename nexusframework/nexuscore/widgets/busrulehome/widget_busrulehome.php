@@ -22,6 +22,7 @@ function nxs_widgets_busrulehome_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_busrulehome_gettitle(),
 		"sheeticonid" => nxs_widgets_busrulehome_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/homepage-business-rule-wordpress-questions-273/",
 		"fields" => array
 		(
 			//	
