@@ -22,6 +22,7 @@ function nxs_widgets_busrulecatchall_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_busrulecatchall_gettitle(),
 		"sheeticonid" => nxs_widgets_busrulecatchall_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/always-business-rule-wordpress-questions-272/",
 		"fields" => array
 		(
 			//	
