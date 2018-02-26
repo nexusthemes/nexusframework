@@ -24,6 +24,7 @@ function nxs_widgets_busrulepostid_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_busrulepostid_gettitle(),
 		"sheeticonid" => nxs_widgets_busrulepostid_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/specific-post-or-page-business-rule-wordpress-questions-267/",		
 		"fields" => array
 		(
 			array( 
