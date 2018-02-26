@@ -22,6 +22,7 @@ function nxs_widgets_busrule404_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_busrule404_gettitle(),
 		"sheeticonid" => nxs_widgets_busrule404_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/404-business-rule-wordpress-questions-274/",
 		"fields" => array
 		(
 			//	
@@ -197,7 +198,7 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 		foreach($sitewideelements as $currentsitewideelement)
 		{
 			$selectedvalue = $metadata[$currentsitewideelement];
-			if ($selectedvalue == $filter_authoremail)
+			if ($selectedvalue == "")
 			{
 				// skip
 			} 
