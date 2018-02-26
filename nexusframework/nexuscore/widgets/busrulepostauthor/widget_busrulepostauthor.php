@@ -41,6 +41,7 @@ function nxs_widgets_busrulepostauthor_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_busrulepostauthor_gettitle(),
 		"sheeticonid" => nxs_widgets_busrulepostauthor_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/specific-author-business-rule-wordpress-questions-269/",
 		"fields" => array
 		(
 			array( 
