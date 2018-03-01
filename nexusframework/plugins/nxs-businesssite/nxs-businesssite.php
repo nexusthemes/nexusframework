@@ -1543,15 +1543,32 @@ class nxs_g_modelmanager
 		if ($nxs_gl_runtimeseoproperties == "")
 		{
 			$templateproperties = nxs_gettemplateproperties();
-			$content_postid = $templateproperties["content_postid"];
-			// locate all "seo" widget(s) in the front-end content "template"
-			$filterargs = array
-			(
-				"postid" => $content_postid,
-				"widgettype" => "seo",	// all seo widgets
-			);
-			$seowidgets = nxs_getwidgetsmetadatainpost_v2($filterargs);
-			$mixedattributes = reset($seowidgets);
+			
+			$containerstocheck = array("content_postid", "header_postid", "footer_postid");
+			foreach ($containerstocheck as $containertocheck)
+			{
+				// look for the SEO widget in the template part -OR- (if its not found there) in the footer
+				
+				$content_postid = $templateproperties[$containertocheck];
+				// locate all "seo" widget(s) in the front-end content "template"
+				$filterargs = array
+				(
+					"postid" => $content_postid,
+					"widgettype" => "seo",	// all seo widgets
+				);
+				$seowidgets = nxs_getwidgetsmetadatainpost_v2($filterargs);
+				$mixedattributes = reset($seowidgets);
+				
+				if ($mixedattributes === false)
+				{
+					// not found; proceed with the next container (if any)
+				}
+				else
+				{
+					// found, stop the container loop
+					break;
+				}
+			}
 			
 			$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
 			$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
