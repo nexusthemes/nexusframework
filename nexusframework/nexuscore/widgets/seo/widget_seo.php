@@ -28,7 +28,7 @@ function nxs_widgets_seo_getunifiedcontentgroup() {
 ---------------------------------------------------------------------------------------------------- */
 
 // Define the properties of this widget
-function nxs_widgets_seo_home_getoptions($args) 
+function nxs_widgets_seo_home_getoptions($args = array()) 
 {
 	// CORE WIDGET OPTIONS
 
@@ -36,6 +36,7 @@ function nxs_widgets_seo_home_getoptions($args)
 	(
 		"sheettitle" => nxs_widgets_seo_gettitle(),
 		"sheeticonid" => nxs_widgets_seo_geticonid(),
+		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/seo-widget-wordpress-questions-265/",
 		"unifiedstyling" => array
 		(
 			"group" => nxs_widgets_seo_getunifiedstylinggroup(),
@@ -242,6 +243,13 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 	$result = array();
 	$result["result"] = "OK";
 	
+	//
+	$iswpseoinstalled = false;
+	if (defined( 'WPSEO_FILE' ) ) 
+	{
+		$iswpseoinstalled = true;
+	}
+	
 	// Widget specific variables
 	extract($mixedattributes);
 	
@@ -309,9 +317,16 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 	}
 	if (!nxs_cap_hasdesigncapabilities())
 	{
-		// don't render the widget
-		global $nxs_global_row_render_statebag;
-		$nxs_global_row_render_statebag["etchrow"] = true;
+		if (!$iswpseoinstalled)
+		{
+			// do render it, as there's a warning
+		}
+		else
+		{
+			// don't render the widget
+			global $nxs_global_row_render_statebag;
+			$nxs_global_row_render_statebag["etchrow"] = true;
+		}
 	}
 
 	global $nxs_global_row_render_statebag;
@@ -366,6 +381,8 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 		}
 	}
 	
+	
+	
 	?>
 	<style>
 		.nxs-can-err
@@ -384,6 +401,16 @@ function nxs_widgets_seo_render_webpart_render_htmlvisualization($args)
 	</style>
 	<div class='nxs-hidewheneditorinactive'>
 		<div style="background-color: white; border: 2px solid black; color: black; padding: 5px;" class="nxs-default-p">
+			<?php
+			if (!$iswpseoinstalled)
+			{
+				$options = nxs_widgets_seo_home_getoptions();
+				$supporturl = $options["supporturl"];
+				?>
+				<span style='color: red; '>WARNING: SEO widgets only work <a style='color: blue; text-decoration: underline;' target='_blank' href='<?php echo $supporturl; ?>'>if the (free) WordPress SEO plugin is installed</a></span><br />
+				<?php
+			}
+			?>
 			seo title: <?php echo $title; ?><br />
 			seo description: <?php echo $metadescription; ?><br />
 			seo canonical url: <a class='<?php echo $canonicalstate; ?>' href='<?php echo $canonicalurl; ?>' target='_blank'><?php echo $canonicalurl; ?></a><br />
