@@ -504,6 +504,30 @@ to 			{ -webkit-transform: rotate(360deg); }
 
 /* GENERAL CSS STYLING
 ----------------------------------------------------------------------------------------------------*/
+/* titles */
+h1															{ font-size: 30px; }
+h2															{ font-size: 27px; }
+h3															{ font-size: 24px; }
+h4															{ font-size: 21px; }
+h5															{ font-size: 18px; }
+h6															{ font-size: 15px; }
+
+.nxs-fontsize-0-8											{ font-size: 12px; }
+.nxs-fontsize-1-0											{ font-size: 15px; }
+.nxs-fontsize-1-2											{ font-size: 18px; }
+.nxs-fontsize-1-4											{ font-size: 21px; }
+.nxs-fontsize-1-6											{ font-size: 24px; }
+.nxs-fontsize-1-8											{ font-size: 27px; }
+.nxs-fontsize-2-0											{ font-size: 30px; }
+.nxs-fontsize-2-2											{ font-size: 33px; }
+.nxs-fontsize-2-4											{ font-size: 36px; }
+.nxs-fontsize-2-6											{ font-size: 39px; }
+.nxs-fontsize-2-8											{ font-size: 42px; }
+.nxs-fontsize-3-0											{ font-size: 45px; }
+.nxs-fontsize-4-0											{ font-size: 60px; }
+.nxs-fontsize-5-0											{ font-size: 75px; }
+.nxs-fontsize-6-0											{ font-size: 90px; }
+
 
 /* position */
 .nxs-relative 												{ position: relative; }
