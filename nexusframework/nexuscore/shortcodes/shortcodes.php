@@ -230,9 +230,30 @@ function nxs_sc_string($atts, $content = null, $name='')
 		else if ($op == "str_replace")
 		{
 			$search = $atts["search"];
-			$replace = $atts["replace"];
+			if ($search != "")
+			{
+				$replace = $atts["replace"];
+				$input = str_replace($search, $replace, $input);
+			}
 			
-			$input = str_replace($search, $replace, $input);
+			// if the trimmed value is empty
+			if (isset($atts["iftrimmedempty_replacement"]))
+			{
+				if (trim($input) == "")
+				{
+					$replacement = $atts["iftrimmedempty_replacement"];
+					$input = $replacement;
+				}	
+			}
+			///
+			if (isset($atts["ifcontainscurlybrackets_replacement"]))
+			{
+				if (nxs_stringcontains($input, "{") || nxs_stringcontains($input, "}"))
+				{
+					$replacement = $atts["ifcontainscurlybrackets_replacement"];
+					$input = $replacement;
+				}
+			}
 		}
 		else if ($op == "esc_attr")
 		{
@@ -859,14 +880,20 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$relations = $atts["relations"];
 			
 			//
-			$ignorewhenlist = array($modeluri, $property, $relations, $input);
+			$ignorewhenlist = array("modeluri" => $modeluri, "property" => $property, "relations" => $relations, "input" => $input);
 			
 			//$ignorewhenlist = array($input, $modeluri, $property, $relations);
-			foreach ($ignorewhenlist as $ignorewhen)
+			foreach ($ignorewhenlist as $key => $ignorewhen)
 			{
 				// special case handling; 
 				if (nxs_stringcontains($ignorewhen, "{{"))
 				{
+					if ($key == "modeluri" && isset($atts["unresolvedmodeluri_fallback"]))
+					{
+						$input = $atts["unresolvedmodeluri_fallback"];
+						return $input;
+					}					
+					
 					// still too early, apparently, evaluate at a later moment in time (ignore the shortcode
 					$input = nxs_sc_reconstructshortcode($atts, $origcontent, $name);
 					// note; an INSTANT return; don't proceed with any other possible operators
@@ -1428,12 +1455,16 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = date("Y");
 		}
+		else if ($op == "urlencode")
+		{
+			$input = urlencode($input);
+		}
 		else if ($op == "currenturi")
 		{
 			$input = nxs_geturicurrentpage();
 			if ($atts["urlencode"] == "true")
 			{
-				$input = url_encode($input);
+				$input = urlencode($input);
 			}
 		}
 		else if ($op == "currenturl")
@@ -1606,8 +1637,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 		
 	return $output;
 }
-add_shortcode('nxsstring', 'nxs_sc_string');	// deprecated ... use nxs_string instead...
-add_shortcode('nxs_string', 'nxs_sc_string');
+add_shortcode("nxsstring", "nxs_sc_string");	// deprecated ... use nxs_string instead...
+add_shortcode("nxs_string", "nxs_sc_string");
 
 // for example [nxsbool ops="isnotempty" value="aap"]
 function nxs_sc_bool($atts, $content = null, $name='') 
