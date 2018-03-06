@@ -347,6 +347,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
+	//
 	
 	// Translate model magical fields
 	if (true)
@@ -355,31 +356,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 		
 		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
 		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
-		
-		// evaluate the lookups widget values line by line
-		$sofar = array();
-		foreach ($combined_lookups as $key => $val)
-		{
-			$sofar[$key] = $val;
-			//echo "step 1; processing $key=$val sofar=".json_encode($sofar)."<br />";
-
-			//echo "step 2; about to evaluate lookup tables on; $val<br />";
-			// apply the lookup values
-			$sofar = nxs_lookups_blendlookupstoitselfrecursively($sofar);
-
-			// apply shortcodes
-			$val = $sofar[$key];
-			//echo "step 3; result is $val<br />";
-
-			//echo "step 4; about to evaluate shortcode on; $val<br />";
-
-			$val = do_shortcode($val);
-			$sofar[$key] = $val;
-
-			//echo "step 5; $key evaluates to $val (after applying shortcodes)<br /><br />";
-
-			$combined_lookups[$key] = $val;
-		}
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
 		
 		// apply the lookups and shortcodes to the customhtml
 		$magicfields = array("title", "text", "destination_url", "image_src", "image_data");
@@ -390,6 +367,8 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 			"fields" => $magicfields,
 		);
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
+		
+		
 	}  
 	
 	// Output the result array and setting the "result" position to "OK"
@@ -508,7 +487,7 @@ function nxs_widgets_image_render_webpart_render_htmlvisualization($args)
 	}
 
 	$image_src = trim($image_src);
-
+	
 	if ($image_src != "")
 	{
 		if (filter_var($image_src, FILTER_VALIDATE_URL) === FALSE)
