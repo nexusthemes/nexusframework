@@ -403,43 +403,80 @@ function nxs_widget_googlemap_getlatlng($address)
 	{
 		// get cached lat/lng
 		$licensekey = nxs_license_getlicensekey();
+		
 		if ($licensekey != "")
 		{
-			$key = "maplatlng_" . md5($address . $licensekey);
-			$latlng = get_transient($key);
-			if ($latlng == false || $_REQUEST["refreshlatlng"] == "true")
-			{
-				// refetch
-				$thememeta = nxs_theme_getmeta();
-				$args = array
+			$hardcoded = array
+			(
+				"3511 Shady Brook Dr, Augusta, GA 12345" => array
 				(
-					"hostname" => "shop.nexusthemes.com",
-					"apiurl" => "/latlng",
-					"queryparameters" => array
+					"lat" => 33.387193,
+					"lng" => -82.040054,
+					"found" => "true",
+					"actual" => false,
+					"licensestatus" => "OK",
+				),
+				"Lombard Street, San Francisco" => array
+				(
+					"lat" => 37.801083,
+					"lng" => -122.426789,
+					"found" => "true",
+					"actual" => false,
+					"licensestatus" => "OK",
+				),
+				"3511 Shady Brook Dr Augusta, GA(Georgia)" => array
+				(
+					"lat" => 33.387193,
+					"lng" => -82.040054,
+					"found" => "true",
+					"actual" => false,
+					"licensestatus" => "OK",
+				),
+			);
+			
+			if (array_key_exists($address, $hardcoded))
+			{
+				$latlng = $hardcoded[$address];	
+			}
+			else
+			{	
+				$key = "maplatlng_" . md5($address . $licensekey);
+				$latlng = get_transient($key);
+				if ($latlng == false || $_REQUEST["refreshlatlng"] == "true")
+				{
+					
+					// refetch
+					$thememeta = nxs_theme_getmeta();
+					$args = array
 					(
-						"address" => $address,
-						"licensekey" => $licensekey,
-						"themeid" => $thememeta["id"],
-						"nxs" => "googlemaps-api",
-					),
-				);
-				$latlng = nxs_connectivity_invoke_api_get($args);
-				
-				if ($latlng["licensestatus"] == "NACK")
-				{
-					//
-					nxs_licenseresetkey();
-				}
-				else
-				{
-					global $nxs_connectivity_errors;
-					if ($nxs_connectivity_errors > 0)
+						"hostname" => "shop.nexusthemes.com",
+						"apiurl" => "/latlng",
+						"queryparameters" => array
+						(
+							"address" => $address,
+							"licensekey" => $licensekey,
+							"themeid" => $thememeta["id"],
+							"nxs" => "googlemaps-api",
+						),
+					);
+					$latlng = nxs_connectivity_invoke_api_get($args);
+					
+					if ($latlng["licensestatus"] == "NACK")
 					{
-						set_transient($key, $latlng, 60 * 5);	// keep the cache for 5 mins
+						//
+						nxs_licenseresetkey();
 					}
 					else
 					{
-						set_transient($key, $latlng, 60 * 60 * 24 * 30);	// keep the cache for a month
+						global $nxs_connectivity_errors;
+						if ($nxs_connectivity_errors > 0)
+						{
+							set_transient($key, $latlng, 60 * 5);	// keep the cache for 5 mins
+						}
+						else
+						{
+							set_transient($key, $latlng, 60 * 60 * 24 * 30);	// keep the cache for a month
+						}
 					}
 				}
 			}
@@ -1037,7 +1074,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 		{
 			?>
 			<div>
-				Unable to render the map. Login to see whats wrong.
+				Unable to render the map. Login to see whats wrong (2435).
 			</div>
 			<?php
 		}
