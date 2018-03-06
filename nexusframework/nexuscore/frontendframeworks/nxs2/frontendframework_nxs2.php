@@ -599,7 +599,8 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		else if ($key == "colorzen")
 		{ 
 			// nxs-colorzen nxs-colorzen-c12-dm => // nxs-colorzen-c12-dm
-			$rulesbypseudo[$pseudoselector][] = "border-style: solid;";
+			
+			//$rulesbypseudo[$pseudoselector][] = "border-style: solid;";
 			
 			$val = str_replace("nxs-colorzen ", "", $val);
 			$val = str_replace("nxs-colorzen-", "", $val);
