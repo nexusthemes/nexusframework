@@ -294,19 +294,26 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 	$margin_cssclass = nxs_getcssclassesforlookup("nxs-margin", $margin);
 	$margin_bottom_cssclass = nxs_getcssclassesforlookup("nxs-margin-bottom", $margin_bottom);
 	
-	$heading = str_replace("h", "", $heading);
-	
-	// Title importance (H1 - H6)
-	if ($heading != "")
+	if ($heading == "span")
 	{
-		$headingelement = "h" . $heading;
-
+		$headingelement = "span";
 	}
 	else
 	{
-		// TODO: derive the importance based on the fontsize
-		//nxs_webmethod_return_nack("to be implemented; derive heading from fontsize");
-		$headingelement = "h1";
+		$heading = str_replace("h", "", $heading);
+		
+		// Title importance (H1 - H6)
+		if ($heading != "")
+		{
+			$headingelement = "h" . $heading;
+	
+		}
+		else
+		{
+			// TODO: derive the importance based on the fontsize
+			//nxs_webmethod_return_nack("to be implemented; derive heading from fontsize");
+			$headingelement = "h1";
+		}
 	}
 	
 	if ($fontzen != "")
