@@ -346,6 +346,9 @@ function nxs_cache_clear()
 	{
 		$path = nxs_cache_getcachefolder();
 		nxs_recursive_removedirectory($path);
+		
+		// allow plugins to extend the behaviour of the clearing of the cache
+		do_action('nxs_a_cache_clear_finished');
 	}
 }
 
@@ -371,7 +374,7 @@ function nxs_cache_getexpirationinsecs()
 	return $result;
 }
 
-function nxs_ensurenocacheoutput($buffer)
+function nxs_cache_wipecachecurrentrequest()
 {
 	$file = nxs_cache_getcachedfilename();
 	if (is_file($file))
@@ -379,6 +382,23 @@ function nxs_ensurenocacheoutput($buffer)
 		// remove file
 		unlink($file);
 	}
+}
+
+// this function is invoked after the output buffer is flushed, prior to returning it
+// specifically for a request that should NOT, and will NOT be cached
+function nxs_handlerequestnocaching($buffer)
+{
+	// whether or not we explicitly wipe the cache for the request
+	// is controlled by a filter. The default behavious is that
+	// the cached file (if present) will be deleted. This is practical
+	// as it automatically wipes cached content if an authenticated user 
+	// is editing the page.
+	$enforcecachewipefornocachingrequest = apply_filters("nxs_f_enforcecachewipefornocachingrequest", true);
+	if ($enforcecachewipefornocachingrequest)
+	{
+		nxs_cache_wipecachecurrentrequest();
+	}
+	
 	// return buffer as-is
 	return $buffer;
 }
@@ -394,7 +414,7 @@ function nxs_storecacheoutput($buffer)
 	$shouldstore = true;
 	$nocacheexplanations = array();
 	
-	// dont store if there's an acive user session
+	// dont store if there's an active user session
 	if(session_id() != '') 
 	{
 		// dont store; the session is set
@@ -580,7 +600,6 @@ function nxs_storecacheoutput($buffer)
 		// allow plugins to enhance the cached output even further
 		$cached = apply_filters("nxs_getcachedoutput", $cached);
 		
-		// fix: first encode the cached data to UTF8
 		file_put_contents($file, $cached, LOCK_EX);
 	}
 	else
@@ -662,7 +681,7 @@ function nxs_setupcache()
 	else
 	{
 		// proceed as usual... don't cache anything
-		nxs_ob_start("nxs_ensurenocacheoutput");
+		nxs_ob_start("nxs_handlerequestnocaching");
 	}
 }
 
