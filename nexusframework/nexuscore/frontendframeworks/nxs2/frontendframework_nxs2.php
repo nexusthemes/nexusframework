@@ -1478,6 +1478,17 @@ function nxs_frontendframework_nxs2_wp_footer()
 			// * fonts should be referenced by an absolute url, not relative
 			$contents = str_replace("../fonts/", "{$frameworkurl}/fonts/", $contents);
 			//echo nxs_frontendframework_nxs2_optimizecontent($contents);
+			
+			if (true) // $_REQUEST["cssoptimize"] == "true")
+			{
+				// replace multiple spaces (and new lines)
+				$contents = preg_replace('/\s+/', ' ',$contents);
+				// removed tabs and trims
+				$contents = preg_replace('/\t+/', '', $contents);
+				// trims
+				$contents = trim(preg_replace('/\t+/', '', $contents));
+			}
+			
 			echo $contents;
 			?>
 		</style>
@@ -1638,8 +1649,6 @@ function nxs_framework_theme_styles()
   do_action('nxs_action_after_enqueue_baseframeworkstyles');
 }
 add_action('wp_enqueue_scripts', 'nxs_framework_theme_styles');
-
-
 
 //
 //
