@@ -2634,7 +2634,7 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 		// smallest transparent image is;
 		// "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
 		$image_border .= 'src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" ';
-		$umage_border .= 'data-original="' . $imageurl . '" '; 
+		$image_border .= 'data-original="' . $imageurl . '" '; 
 	}
 	else
 	{
