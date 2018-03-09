@@ -605,7 +605,7 @@ function nxs_pagetemplate_handleheader()
 <?php nxs_render_htmlstarttag(); ?>
 <head profile="http://gmpg.org/xfn/11">
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
-	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=edge" />
 	<!-- Nexus Framework | http://nexusthemes.com -->	
 	<!-- Nexus Meta | <?php echo $headmeta; ?> -->
 	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemeid(); ?> | <?php echo $version; ?>" />
