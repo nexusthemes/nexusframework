@@ -39,7 +39,8 @@ body														{ height: 100%; }
 	padding-top: 1px;
     margin-top: -1px;
 }
-/*#nxs-header-container { overflow: auto; }   */
+/* to prevent site creating space on the right because of submenu items on last parent menu item "e.g. 'contact' item" */
+#nxs-header-container { overflow-x: hidden; overflow-y: visible; }
 
 a { 
 	/* overriding default browser colorization */
