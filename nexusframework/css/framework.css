@@ -2669,7 +2669,7 @@ h3#order_review_heading,
 .woocommerce .button:hover,
 .woocommerce input.submit:hover								{ cursor: pointer; }
 
-/* Thumbnails */
+/* Thumbnails (css for old WooCommerce version) */
 .images .thumbnails img 									{ height: auto; }
 .default .images .thumbnails .nxs-image						{ width: 30%; margin-right: 5%; }
 .default .images .thumbnails a:nth-child(3n+3) .nxs-image	{ margin-right: 0; }
