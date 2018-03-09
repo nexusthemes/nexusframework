@@ -435,6 +435,9 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	);
 	$menuhtml = wp_nav_menu( $nav_menu_args );
 	
+	// replace id="" to avoid w3c errs
+	$menuhtml = str_replace("id=", "data-id=", $menuhtml);
+	
 	//
 	$menuhtml = nxs_widgets_wpmenu_applylookups($menuhtml);
 	
@@ -482,15 +485,17 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
-	if ($menuhtml == "") {
-			nxs_renderplaceholderwarning(nxs_l18n__("No menu items found in the menu", "nxs_td"));
-		} else {
-			
+	if ($menuhtml == "") 
+	{
+		nxs_renderplaceholderwarning(nxs_l18n__("No menu items found in the menu", "nxs_td"));
+	} 
+	else 
+	{
 			// Default menu
 			echo '
 			<div class="' . $halign . '">		
 				<div class="nxs-menu nxs-native-menu ' . $responsive_display . '" >
-					<ul>' . $menuhtml . '</ul>
+					' . $menuhtml . '
 				</div>
 			</div>';
 			
@@ -516,7 +521,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
           <div id="a_nav_collapser_' . $placeholderid . '" class="nxs-menu-mini-nav-expander-' . $placeholderid . '" style="display: none;">
 
 					<div class="nxs-native-menu ' . $responsive . '" >
-						<ul>' . $menuhtml . '</ul>
+						' . $menuhtml . '
 					</div>';
 					
 				echo '
