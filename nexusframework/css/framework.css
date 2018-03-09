@@ -411,13 +411,13 @@ to 			{ -webkit-transform: rotate(360deg); }
 .kenburns ul#supersized li {
    -webkit-animation-name: kenburns;
    -webkit-animation-duration: 60s;
-   -webkit-animation-timing-function: lineair; 	/* ease is the default */
+   -webkit-animation-timing-function: linear; 	/* ease is the default */
    -webkit-animation-delay: 0s;             	/* 0 is the default */
    -webkit-animation-iteration-count: infinite; /* 1 is the default */
    -webkit-animation-direction: alternate;  	/* normal is the default */
    animation-name: kenburns;
    animation-duration: 60s;
-   animation-timing-function: lineair; 	/* ease is the default */
+   animation-timing-function: linear; 	/* ease is the default */
    animation-delay: 0s;             	/* 0 is the default */
    animation-iteration-count: infinite; /* 1 is the default */
    animation-direction: alternate;  	/* normal is the default */
@@ -458,7 +458,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 
 .nxs-filler2												{ clear: both; }
 
-.nxs-row1 													{ background: transparant; border-left: 36px solid transparent; position: relative; }
+.nxs-row1 													{ /* background: transparant; */ border-left: 36px solid transparent; position: relative; }
 .nxs-row2													{ border: 0px; position: relative; }
 
 /* default margin bottom */
@@ -479,7 +479,7 @@ to 			{ -webkit-transform: rotate(360deg); }
 
 .nxs-sidebar1 .nxs-row1 									{ border-left: 0px; }
 .nxs-fullwidth 												{ width: 960px; }
-.nxs-placeholder 											{ background: transparant;	border-right: 36px solid transparent; position: relative; float: left; }
+.nxs-placeholder 											{ /* background: transparant; */	border-right: 36px solid transparent; position: relative; float: left; }
 .nxs-fullwidth .nxs-one-whole								{ width: 960px !important; }
 .nxs-fullwidth .nxs-placeholder 							{ border-right: none !important; } 
 .nxs-fullwidth .nxs-placeholder-container 					{ border-right: 0px; }
@@ -1673,14 +1673,7 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-signpost:hover .mask-color								{ opacity: 1; }
 .nxs-signpost:hover .mask									{ opacity: 1; }
 .nxs-signpost:hover .nxs-default p,
-.nxs-signpost:hover .nxs-default a.nxs-button { 
-	opacity: 1; 
-		
-	transition: 		translateY(0px);
-	-o-transition: 		translateY(0px); 
-	-moz-transition: 	translateY(0px);
-	-webkit-transform:  translateY(0px); 
-}
+.nxs-signpost:hover .nxs-default a.nxs-button { opacity: 1; opacity: 1; transition: translateY(0px); -o-transition: translateY(0px); -moz-transition: translateY(0px); -webkit-transform: translateY(0px); }
 .nxs-signpost:hover .nxs-default p { 
 	transition-delay: 		  0.1s;
 	-o-transition-delay: 	  0.1s; 
