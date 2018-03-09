@@ -63,7 +63,7 @@
   </div>
 	
 
-	<script type='text/javascript'>
+	<script>
 
 		function nieuwmenuitem(element)
 		{

@@ -4,7 +4,7 @@
   <head>
     <title>Twitter OAuth in PHP</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <style type="text/css">
+    <style>
       img {border-width: 0}
       * {font-family:'Lucida Grande', sans-serif;}
     </style>

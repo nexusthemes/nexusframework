@@ -674,7 +674,7 @@ function nxs_pagetemplate_handleheader()
 	if (is_user_logged_in()) { ?>
 	
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
-	<script type="text/javascript">
+	<script>
 		onload=function()
 		{
 			// refresh the screen when the user pushes the back button
@@ -1252,7 +1252,7 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 			
 		function nxs_js_savepopupdata()
 		{
@@ -1416,7 +1416,7 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_setpopupdatefromcontrols()
 		{
@@ -1585,7 +1585,7 @@ function nxs_pagetemplate_blogentry_dialogappendrow_getsheethtml($args)
     </div>
   </div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1650,7 +1650,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
           <form id='nxsuploadform' action="<?php echo $fileuploadurl;?>" method="post" enctype="multipart/form-data">
               <input type="file" name="file" id="file" class="nxs-float-left" onchange="storefile();" />
           </form>		
-          <script type="text/javascript">
+          <script>
         	
         		function setupfiletransfer()
         		{
@@ -1728,7 +1728,7 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
     </div> <!--END block-->
   </div>
     
-  <script type='text/javascript'>
+  <script>
 		function nxs_js_execute_after_popup_shows()
 		{
 			
@@ -1779,7 +1779,7 @@ function nxs_pagetemplate_blogentry_exportstruct_getsheethtml($args)
     </div> <!--END block-->
   </div>
     
-  <script type='text/javascript'>
+  <script>
 		function nxs_js_execute_after_popup_shows()
 		{
 			

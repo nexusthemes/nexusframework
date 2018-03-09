@@ -359,7 +359,7 @@ function nxs_widgets_gallerybox_render_webpart_render_htmlvisualization($args)
 		$nxs_global_row_render_statebag["rrs_cssclass"].= " row-no-border-right ";
 		
 		?>
-		<script type='text/javascript'>
+		<script>
 			// opens a gallery thumbnail in a lightbox
 			function nxs_js_opengalleryitemlightbox(element)
 			{

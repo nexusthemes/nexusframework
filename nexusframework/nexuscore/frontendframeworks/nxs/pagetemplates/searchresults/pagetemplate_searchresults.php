@@ -192,7 +192,7 @@ function nxs_pagetemplate_searchresults_home_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 			
 		function nxs_js_savepopupdata()
 		{
@@ -335,7 +335,7 @@ function nxs_pagetemplate_searchresults_edittitle_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_setpopupdatefromcontrols()
 		{
@@ -546,7 +546,7 @@ function nxs_pagetemplate_searchresults_headerhome_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_saveandopenheader()
 		{
@@ -753,7 +753,7 @@ function nxs_pagetemplate_searchresults_sidebarhome_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_saveandopensidebar()
 		{
@@ -967,7 +967,7 @@ function nxs_pagetemplate_searchresults_footerhome_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_saveandopenfooter()
 		{
@@ -1138,7 +1138,7 @@ function nxs_pagetemplate_searchresults_dialogappendrow_getsheethtml($args)
     </div>
   </div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1203,7 +1203,7 @@ function nxs_pagetemplate_searchresults_appendstruct_getsheethtml($args)
           <form id='nxsuploadform' action="<?php echo $fileuploadurl;?>" method="post" enctype="multipart/form-data">
               <input type="file" name="file" id="file" class="nxs-float-left" onchange="storefile();" />
           </form>		
-          <script type="text/javascript">
+          <script>
         	
         		function setupfiletransfer()
         		{
@@ -1281,7 +1281,7 @@ function nxs_pagetemplate_searchresults_appendstruct_getsheethtml($args)
     </div> <!--END block-->
   </div>
     
-  <script type='text/javascript'>
+  <script>
 		function nxs_js_execute_after_popup_shows()
 		{
 			
@@ -1332,7 +1332,7 @@ function nxs_pagetemplate_searchresults_exportstruct_getsheethtml($args)
     </div> <!--END block-->
   </div>
     
-  <script type='text/javascript'>
+  <script>
 		function nxs_js_execute_after_popup_shows()
 		{
 			

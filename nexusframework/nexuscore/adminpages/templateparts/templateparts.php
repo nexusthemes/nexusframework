@@ -7,7 +7,7 @@
 	extract($_GET);
 ?>
 
-	<script type='text/javascript'>
+	<script>
 		function handleMultiAction(actionValue)
 		{
 			if (actionValue == "-1")
@@ -239,7 +239,7 @@
 								 	</select>
 								</div>
 								<a href='#' class="nxs-float-left nxsbutton1" onclick="nxs_js_createnewtype(jQ_nxs('#create_types_picker').val()); return false;"><?php nxs_l18n_e("Create", "nxs_td"); ?></a>
-								<script type='text/javascript'>
+								<script>
 									function nxs_js_createnewtype(typetocreate)
 									{
 										if (typetocreate == "")

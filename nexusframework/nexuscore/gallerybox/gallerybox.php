@@ -113,7 +113,7 @@ function nxs_gallerybox_detail_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_gal_left()
 		{

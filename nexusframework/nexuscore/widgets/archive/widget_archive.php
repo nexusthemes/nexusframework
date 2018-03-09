@@ -935,7 +935,7 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 				
 				?>
 				
-				<script type='text/javascript'>
+				<script>
 					jQuery(".nxs-pagination-<?php echo $queryparameter; ?> input").unbind("keyup.defaultenter");
 					jQuery(".nxs-pagination-<?php echo $queryparameter; ?> input").bind("keyup.defaultenter", function(e) {
 						if (e.keyCode == 13) {

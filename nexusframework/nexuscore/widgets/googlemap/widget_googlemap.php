@@ -934,7 +934,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 				<?php
 			}
 			?>
-			<script type='text/javascript'>
+			<script>
 				// if the browser is resized, then also re-center the map
 				jQ_nxs(document).bind('nxs_event_resizeend', function() 
 		    {
@@ -1294,7 +1294,7 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	{
 		?>
     <div id="map_canvas_popup_<?php echo $placeholderid;?>" style="width:100%; height: 300px; minheight: 300px;"></div>
-    <script type="text/javascript">
+    <script>
     	var address = jQuery('#<?php echo $altid["address"]; ?>').val();
     	var maptypeid = jQuery('#<?php echo $altid["maptypeid"]; ?>').val();
     	var zoom = jQuery('#<?php echo $altid["zoom"]; ?>').val();

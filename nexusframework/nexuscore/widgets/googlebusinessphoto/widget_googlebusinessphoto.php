@@ -279,7 +279,7 @@ function nxs_widgets_googlebusinessphoto_render_webpart_render_htmlvisualization
 		
 		<div id="pano_canvas_<?php echo $placeholderid;?>" class="nxs-runtime-autocellsize nxs-minheight <?php echo $minheight_cssclass; ?>"></div>
 
-		<script type='text/javascript'>
+		<script>
 			var panorama_is_dirty_<?php echo $placeholderid;?> = false;
   		var panorama_currenttick_in_slide_<?php echo $placeholderid;?>;
   		

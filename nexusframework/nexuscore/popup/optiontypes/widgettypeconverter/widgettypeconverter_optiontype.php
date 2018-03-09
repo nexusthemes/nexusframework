@@ -17,7 +17,7 @@ function nxs_popup_optiontype_widgettypeconverter_renderhtmlinpopup($optionvalue
 
 		// re-trigger the refresh immediately to reflect the new situation
 		?>
-		<script type='text/javascript'>
+		<script>
 			nxs_js_htmldialogmessageok('One moment...', '<div>Page will now refresh, one moment...</div>');
 			setTimeout
 			(
@@ -61,7 +61,7 @@ function nxs_popup_optiontype_widgettypeconverter_renderhtmlinpopup($optionvalue
     </div>
     <div class="nxs-clear"></div>
   </div>
-  <script type='text/javascript'>
+  <script>
   	function nxs_js_widgets_convertwidgettype(postid, placeholderid, newwidgettype)
   	{
   		var answer = confirm(nxs_js_gettrans('Sure you want to convert to this type?'));

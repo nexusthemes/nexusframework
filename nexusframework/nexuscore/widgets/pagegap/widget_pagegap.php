@@ -321,7 +321,7 @@ function nxs_widgets_pagegap_betweenheadandcontent()
 	}
 		
 	$script .= "
-	<script type='text/javascript'>	
+	<script>	
 		function nxs_js_gap_updateheight()
 		{
 			var height;

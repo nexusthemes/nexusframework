@@ -36,7 +36,7 @@ function nxs_popup_optiontype_effects_renderhtmlinpopup($optionvalues, $args, $r
   ';
   $escapedvalue = nxs_render_html_escape_singlequote($value);
   ?>
-  <script type="text/javascript">
+  <script>
 		function nxs_js_starteffectspicker_<?php echo $id;?>()
 		{
 			nxs_js_setpopupdatefromcontrols(); 

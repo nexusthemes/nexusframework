@@ -42,7 +42,7 @@ function nxs_popup_optiontype_date_renderhtmlinpopup($optionvalues, $args, $runt
         </div>
         <div class="nxs-clear"></div>
       </div>
-      <script type="text/javascript">
+      <script>
       	nxs_js_log("initializing datepicker");
       	jQ_nxs("#' . $id . '").datepicker({ dateFormat: "' . $dateformat . '", 
       	beforeShow: function(input, inst) 

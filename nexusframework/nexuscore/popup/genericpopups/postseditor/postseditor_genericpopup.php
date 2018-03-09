@@ -92,7 +92,7 @@ function nxs_popup_genericpopup_postseditor_getpopup($args)
 		</div> <!-- END block -->
 	</div> <!-- END nxs-admin-wrap -->
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function handleremovepost(name, postid)
 		{		

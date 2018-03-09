@@ -6121,7 +6121,7 @@ function nxs_js_displayStyleSheetProperties()
 }
 
 // css is the stylesheet contents to add / inject
-// the stylesheetcontainer is an object that references the object of for example <style type="text/css" id="myObject"></style>
+// the stylesheetcontainer is an object that references the object of for example <style id="myObject"></style>
 function nxs_js_setcss(css, containerbaseid)
 {
 	nxs_js_log("* setting css for " + containerbaseid);

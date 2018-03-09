@@ -660,7 +660,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 		if (count($slidesdataset) > 0) {
 			?>
 			
-			<script type='text/javascript'>
+			<script>
 			
 				jQuery(document).ready (
 					function() {
@@ -927,7 +927,7 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 			?>
 			
             
-			<script type='text/javascript'>
+			<script>
 				
 				var heightValue;
 				

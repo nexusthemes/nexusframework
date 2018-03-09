@@ -785,7 +785,7 @@ function nxs_licenseregister_invoke()
 		$url = nxs_geturlcurrentpage();
 		$url = nxs_addqueryparametertourl_v2($url, "nxsmsg", "registeredsuccesfully", true, true);
 		?>
-		<script type='text/javascript'>
+		<script>
 			var url = '<?php echo $url; ?>';
 			window.location = url;
 		</script>
@@ -917,7 +917,7 @@ function nxs_licenseregister_callback()
   		// reload current page
   		$url = nxs_geturlcurrentpage();
   		?>
-  		<script type='text/javascript'>
+  		<script>
   			var url = '<?php echo $url; ?>';
   			window.location = url;
   		</script>

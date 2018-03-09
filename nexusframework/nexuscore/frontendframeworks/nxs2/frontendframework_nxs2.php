@@ -1309,6 +1309,10 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	}
 	$heading = str_replace("h", "", $heading);
 	$headingelement = "h" . $heading;
+	if ($headingelement == "hspan")
+	{
+		$headingelement = "span";
+	}
 	
 	if ($fontsize == "")
 	{
@@ -1496,8 +1500,8 @@ function nxs_frontendframework_nxs2_wp_footer()
 	}
 	
 	?>
-	<script type="text/javascript" data-cfasync="false"  src="//www.google.com/jsapi"></script>
-	<script type="text/javascript" data-cfasync="false" >
+	<script data-cfasync="false"  src="//www.google.com/jsapi"></script>
+	<script data-cfasync="false" >
 		google.load('webfont','1');
 	</script>
 	<?php
@@ -2626,7 +2630,11 @@ function nxs_frontendframework_nxs2_gethtmlforimage($args)
 	
 	if ($loadbehaviour == "lazyload")
 	{
-		$image_border .= "data-original='{$imageurl}' ";
+		// kudos to https://stackoverflow.com/questions/9126105/blank-image-encoded-as-data-uri
+		// smallest transparent image is;
+		// "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+		$image_border .= 'src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" ';
+		$umage_border .= 'data-original="' . $imageurl . '" '; 
 	}
 	else
 	{

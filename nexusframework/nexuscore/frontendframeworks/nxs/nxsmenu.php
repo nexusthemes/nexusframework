@@ -59,8 +59,8 @@
 	$sitemeta = nxs_getsitemeta();
 ?>
 <!-- loading all fonts -->
-<script type="text/javascript" data-cfasync="false"  src="//www.google.com/jsapi"></script>
-<script type="text/javascript" data-cfasync="false" >
+<script data-cfasync="false"  src="//www.google.com/jsapi"></script>
+<script data-cfasync="false" >
 	google.load('webfont','1');
 </script>
 
@@ -463,7 +463,7 @@
 														<div class="nxs-clear padding"></div>
 			                  	</div>
 		     		              
-													<script type='text/javascript'>
+													<script>
 														function nxs_js_menu_activatepalette(palettename)
 														{
 															var initialcontext = 
@@ -1011,7 +1011,7 @@
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_getlimitedangle(min, max)
 		{

@@ -497,7 +497,7 @@ function nxs_widgets_filmrollbox_render_webpart_render_htmlvisualization($args)
 				?>
 			</div>
 			
-			<script type='text/javascript'>
+			<script>
 				// load filmroll js script and start the film!
 				jQuery(document).ready (
 					function() {

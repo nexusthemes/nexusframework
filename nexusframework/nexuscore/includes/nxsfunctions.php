@@ -7531,7 +7531,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	</div> <!-- END nxs-admin-wrap -->
 	
 	<!-- UPDATING POPUP SESSION DATA -->
-	<script type='text/javascript'>
+	<script>
     // generic implementation, same for all contextprocessors
     function nxs_js_setpopupdatefromcontrols() 
     {        
@@ -7817,7 +7817,7 @@ function nxs_render_dynamicservercss($sitemeta)
 	for ($currentchunk = 0; $currentchunk < nxs_getmaxservercsschunks(); $currentchunk++)
 	{
 		?>
-		<style type="text/css" id="nxs-dynamiccss-server-chunk-<?php echo $currentchunk; ?>"></style>
+		<style id="nxs-dynamiccss-server-chunk-<?php echo $currentchunk; ?>"></style>
 		<?php
 	}
 	// add more chunks when needed... 
@@ -7829,7 +7829,7 @@ function nxs_render_manualcss($sitemeta)
 	for ($currentchunk = 0; $currentchunk < nxs_getmaxservercsschunks(); $currentchunk++)
 	{
 		?>
-		<style type="text/css" id="nxs-dynamiccss-manual-chunk-<?php echo $currentchunk; ?>"></style>
+		<style id="nxs-dynamiccss-manual-chunk-<?php echo $currentchunk; ?>"></style>
 		<?php
 	}
 }
@@ -7860,8 +7860,8 @@ function nxs_render_htmlstarttag()
 function nxs_render_htmlcorescripts()
 {
 	?>
-	<script type='text/javascript'> var nxsboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingnxsbox.png" }; </script>	
-	<script type="text/javascript">	
+	<script> var nxsboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingnxsbox.png" }; </script>	
+	<script>	
 		document.documentElement.className = 'js'; <?php do_action('nxs_ext_injectinlinejsscriptfunctions'); ?>		
 	</script>
 	<noscript><?php do_action('nxs_ext_injectnoscript'); ?></noscript>
@@ -7889,7 +7889,7 @@ function nxs_render_headstyles()
 	// mutaties hierin ook doorvoeren in nxsmenu.php en header-post.php
 	$sitemeta = nxs_getsitemeta();
 	?>
-	<style type="text/css" id="dynamicCssCurrentConfiguration">
+	<style id="dynamicCssCurrentConfiguration">
 		<?php
 		$css = "";	
 
@@ -7913,8 +7913,8 @@ function nxs_render_headstyles()
 		echo $css;
 		?>
 	</style>
-	<style type="text/css" id="dynamicCssVormgevingKleuren"></style>
-	<style type="text/css" id="dynamicCssVormgevingLettertypen"></style>
+	<style id="dynamicCssVormgevingKleuren"></style>
+	<style id="dynamicCssVormgevingLettertypen"></style>
 	<?php nxs_render_dynamicservercss($sitemeta); ?>
 	<?php nxs_render_manualcss($sitemeta); ?>
 	<?php

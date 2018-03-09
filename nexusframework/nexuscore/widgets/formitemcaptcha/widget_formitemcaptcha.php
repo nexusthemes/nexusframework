@@ -115,7 +115,7 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
   }
   
   ?>
-  <script type='text/javascript'>
+  <script>
   	nxs_js_log("unbinding nxs_js_trigger_formvalidationfailed.captcha");
   	jQuery(window).unbind("nxs_js_trigger_formvalidationfailed.captcha");
   	nxs_js_log("binding nxs_js_trigger_formvalidationfailed.captcha");

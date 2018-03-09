@@ -35,7 +35,7 @@ function nxs_popup_optiontype_gotosheet_renderhtmlinpopup($optionvalues, $args, 
       </div>
   ';
   ?>
-  <script type="text/javascript">
+  <script>
 		function nxs_js_gotosheet_<?php echo $id;?>()
 		{
 			<?php

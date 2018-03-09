@@ -1181,7 +1181,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 				
 				?>
 				
-				<script type='text/javascript'>
+				<script>
 					jQuery(".nxs-pagination-<?php echo $queryparameter; ?> input").unbind("keyup.defaultenter");
 					jQuery(".nxs-pagination-<?php echo $queryparameter; ?> input").bind("keyup.defaultenter", function(e) {
 						if (e.keyCode == 13) {
@@ -1683,7 +1683,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 				{
 					// re-trigger rendering of FB like boxes
 				  ?>
-				 	<script type='text/javascript'>
+				 	<script>
 						// load and render DOM
 						nxs_js_inject_facebook();
 					</script>

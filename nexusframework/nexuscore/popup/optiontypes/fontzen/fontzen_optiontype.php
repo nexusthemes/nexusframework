@@ -55,7 +55,7 @@ function nxs_popup_optiontype_fontzen_renderhtmlinpopup($optionvalues, $args, $r
       </div>
   ';
   ?>
-  <script type="text/javascript">
+  <script>
 		function nxs_js_startfontzenpicker_<?php echo $id;?>()
 		{
 			nxs_js_setpopupdatefromcontrols(); 

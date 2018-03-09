@@ -55,7 +55,7 @@
 
 		// no matter the result, we will navigate to the Forms list page
 		?>
-		<script type='text/javascript'>
+		<script>
 			nxs_js_redirect("<?php echo $formsurl; ?>");
 		</script>
 		<?php

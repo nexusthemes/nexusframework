@@ -37,7 +37,7 @@
 	?>
 	<link rel="shortcut icon" href="<?php echo $faviconurl; ?>" type="image/x-icon" />
 	<!-- -->
-	<script type="text/javascript">	document.documentElement.className = 'js'; </script>
+	<script>	document.documentElement.className = 'js'; </script>
 	<?php 
 	
 	//
@@ -56,7 +56,7 @@
 	
 	<?php if (is_user_logged_in()) { ?>
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
-	<script type="text/javascript">
+	<script>
 		onload=function()
 		{
 			// refresh the screen when the user pushes the back button

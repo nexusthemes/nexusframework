@@ -149,7 +149,7 @@ function nxs_postwizard_pdt2_home_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 

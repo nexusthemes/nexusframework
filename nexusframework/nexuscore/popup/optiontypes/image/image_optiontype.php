@@ -30,7 +30,7 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 				<?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
         		
         <div class="box-content">
-					<script type='text/javascript'>
+					<script>
           	nxs_js_popup_setsessiondata('<?php echo $id; ?>', '<?php echo $$id; ?>');
           </script>
                       
@@ -152,7 +152,7 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
                 
                 <div class="box-content">
 					
-					<script type='text/javascript'>
+					<script>
                     	nxs_js_popup_setsessiondata('thumbid', '<?php echo $thumbid; ?>');
                     </script>
                     
@@ -168,7 +168,7 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
         <?php 
   }
 	?>
-	<script type='text/javascript'>
+	<script>
    	nxs_js_popup_setsessioncontext("allow_featuredimage", "<?php echo $allow_featuredimage; ?>");
   </script>
 	<?php

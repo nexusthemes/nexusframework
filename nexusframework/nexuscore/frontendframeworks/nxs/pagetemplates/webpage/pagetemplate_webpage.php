@@ -265,7 +265,7 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_startcategorieseditor()
 		{
@@ -477,7 +477,7 @@ function nxs_pagetemplate_webpage_edittitle_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_setpopupdatefromcontrols()
 		{
@@ -688,7 +688,7 @@ function nxs_pagetemplate_webpage_headerhome_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_saveandopenheader()
 		{
@@ -912,7 +912,7 @@ function nxs_pagetemplate_webpage_pagedecoratorhome_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_saveandopenpagedecorator()
 		{
@@ -1120,7 +1120,7 @@ function nxs_pagetemplate_webpage_sidebarhome_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_saveandopensidebar()
 		{
@@ -1334,7 +1334,7 @@ function nxs_pagetemplate_webpage_footerhome_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_saveandopenfooter()
 		{
@@ -1505,7 +1505,7 @@ function nxs_pagetemplate_webpage_dialogappendrow_getsheethtml($args)
     </div>
   </div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1570,7 +1570,7 @@ function nxs_pagetemplate_webpage_appendstruct_getsheethtml($args)
           <form id='nxsuploadform' action="<?php echo $fileuploadurl;?>" method="post" enctype="multipart/form-data">
               <input type="file" name="file" id="file" class="nxs-float-left" onchange="storefile();" />
           </form>		
-          <script type="text/javascript">
+          <script>
         	
         		function setupfiletransfer()
         		{
@@ -1648,7 +1648,7 @@ function nxs_pagetemplate_webpage_appendstruct_getsheethtml($args)
     </div> <!--END block-->
   </div>
     
-  <script type='text/javascript'>
+  <script>
 		function nxs_js_execute_after_popup_shows()
 		{
 			
@@ -1699,7 +1699,7 @@ function nxs_pagetemplate_webpage_exportstruct_getsheethtml($args)
     </div> <!--END block-->
   </div>
     
-  <script type='text/javascript'>
+  <script>
 		function nxs_js_execute_after_popup_shows()
 		{
 			

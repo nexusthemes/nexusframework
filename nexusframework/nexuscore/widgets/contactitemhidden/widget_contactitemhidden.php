@@ -86,7 +86,7 @@ function nxs_widgets_contactitemhidden_renderincontactbox($args)
 		
 		?>
 	  <input type="hidden" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" value="runtime" />
-	  <script type='text/javascript'>
+	  <script>
 	  	jQuery(window).ready
 	  	(
 	  		function()

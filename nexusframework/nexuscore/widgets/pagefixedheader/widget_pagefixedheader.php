@@ -121,7 +121,7 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 	  <?php 
 	}
 	?>
-	<script type="text/javascript">
+	<script>
 
 		<?php
 			// if the offset is not set then their is no need for the nxs_js_update_fixedheader_visualization function

@@ -53,7 +53,7 @@ function nxs_popup_optiontype_colorzen_renderhtmlinpopup($optionvalues, $args, $
       </div>
   ';
   ?>
-  <script type="text/javascript">
+  <script>
 		function nxs_js_startcolorzenpicker_<?php echo $id;?>()
 		{
 			nxs_js_setpopupdatefromcontrols(); 

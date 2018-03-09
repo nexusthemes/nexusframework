@@ -764,7 +764,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	else 
 	{
 		?>
-		<script type='text/javascript'>
+		<script>
 			// opens a form thumbnail in a lightbox
 			function nxs_js_openformitemlightbox(element)
 			{

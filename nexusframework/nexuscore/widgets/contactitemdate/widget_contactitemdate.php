@@ -97,7 +97,7 @@ function nxs_widgets_contactitemdate_renderincontactbox($args)
   <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
   <input type="text" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name">
   
-  <script type='text/javascript'>
+  <script>
 	
 		jQuery(document).ready
 		(

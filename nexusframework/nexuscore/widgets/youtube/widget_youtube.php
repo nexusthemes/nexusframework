@@ -555,7 +555,7 @@ function nxs_youtube_videoid_popupcontent($optionvalues, $args, $runtimeblendedd
 	<a href='#' onclick="nxs_js_setvideotosample_<?php echo $id; ?>(); return false;" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Sample[nxs:ddl]", "nxs_td"); ?></a>
 	<a href='http://www.youtube.com' target="_blank" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Open youtube[nxs:button]", "nxs_td"); ?></a>
 	
-	<script type='text/javascript'>
+	<script>
 		nxs_js_requirescript('parseuri_js', 'js', '<?php echo nxs_getframeworkurl() . '/nexuscore/widgets/youtube/js/parseuri.js'; ?>', false);
 
 		function nxs_js_setvideotosample_<?php echo $id; ?>()
@@ -645,7 +645,7 @@ function nxs_youtube_playsecs_popupcontent($optionvalues, $args, $runtimeblended
 	<span class='nxs-float-left' > <?php nxs_l18n_e("m", "nxs_td"); ?> </span>
 	<input type='text' id='play_partsec_<?php echo $id; ?>' name='play_partsec' class='nxs-float-left nxs-playfield_<?php echo $id; ?> nxs-playfield' value='<?php echo $play_partsec; ?>' oninput='nxs_js_updateplay_<?php echo $id; ?>();' style='width: 40px;' maxlength=2 size=2 />
 	<a href="#" onclick="jQuery('.nxs-playfield_<?php echo $id; ?>').val(''); nxs_js_updateplay_<?php echo $id; ?>(); return false;" class="nxsbutton1 nxs-float-left"><?php nxs_l18n_e("Clear", "nxs_td"); ?></a>
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_updateplay_<?php echo $id; ?>()
 		{
 			var minutes = jQuery('#play_partmin_<?php echo $id; ?>').val();

@@ -43,7 +43,7 @@ function nxs_popup_genericpopup_customhtml_getpopup_basic($args)
 		</div> <!-- END block -->
 	</div> <!-- END nxs-admin-wrap -->
 	
-	<script type='text/javascript'>
+	<script>
 		<?php 
 			echo $nxs_customhtml_customhtmlscriptfunctions; 
 			if ($minwidth != "")
@@ -94,7 +94,7 @@ function nxs_popup_genericpopup_customhtml_getpopup_completecustom($args)
 	
 	<?php echo $nxs_customhtml_customhtmlcanvascontent; ?>
 	
-	<script type='text/javascript'>
+	<script>
 		<?php 
 			echo $nxs_customhtml_customhtmlscriptfunctions; 
 			if ($minwidth != "")

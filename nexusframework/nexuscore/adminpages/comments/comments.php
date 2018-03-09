@@ -6,7 +6,7 @@
 	extract($_GET);
 ?>
 
-	<script type='text/javascript'>
+	<script>
 		function handleMultiAction(actionValue)
 		{
 			if (actionValue == "-1")

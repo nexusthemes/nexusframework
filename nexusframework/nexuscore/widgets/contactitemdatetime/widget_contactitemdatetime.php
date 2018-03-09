@@ -230,7 +230,7 @@ function nxs_widgets_contactitemdatetime_renderincontactbox($args)
   	<option value='55'>55</option>  
   </select>
   <div class="nxs-clear nxs-filler"></div>
-  <script type='text/javascript'>
+  <script>
 		jQuery(document).ready
 		(
 			function() 

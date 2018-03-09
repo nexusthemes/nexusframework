@@ -547,7 +547,7 @@ function nxs_widgets_commercialmsgs_render_webpart_render_htmlvisualization($arg
 		if (count($slidesdataset) > 0) {
 			?>
 			
-			<script type='text/javascript'>
+			<script>
 			
 				jQuery(document).ready (
 					function() {
@@ -800,7 +800,7 @@ function nxs_widgets_commercialmsgs_render_webpart_render_htmlvisualization($arg
 			?>
 			
             
-			<script type='text/javascript'>
+			<script>
 				
 				var heightValue;
 				

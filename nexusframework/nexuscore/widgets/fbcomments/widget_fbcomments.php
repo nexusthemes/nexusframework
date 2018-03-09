@@ -144,7 +144,7 @@ function nxs_widgets_fbcomments_render_webpart_render_htmlvisualization($args)
 		
 		echo '	
 		<!-- enable refresh of widgets after AJAX update -->
-		<script type="text/javascript">
+		<script>
 			// todo: check if this works ok... if the method on the following line is not found, it means we have
 			// to execute the following line in a window.load/ready event... and see if that is executed correctly,
 			// after an ajax update. If not, we have to inject the lines of the function inline.

@@ -432,7 +432,7 @@ function nxs_widgets_contactbox_render_webpart_render_htmlvisualization($args)
 	else 
 	{
 		?>
-		<script type='text/javascript'>
+		<script>
 			// opens a contact thumbnail in a lightbox
 			function nxs_js_opencontactitemlightbox(element)
 			{

@@ -340,7 +340,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
     </div>
   </div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function selectplaceholdertype(obj, placeholdertype)
 		{

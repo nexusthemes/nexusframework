@@ -37,7 +37,7 @@ function nxs_popup_optiontype_lock_renderhtmlinpopup($optionvalues, $args, $runt
 	            			// currently not locked
 		            		?>
 		                <a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_widgetlock(); return false;"><?php nxs_l18n_e("Lock", "nxs_td"); ?></a>
-										<script type='text/javascript'>
+										<script>
 	            				function nxs_js_widgetlock()
 	            				{
 	            					// save "other" fields in mem
@@ -54,7 +54,7 @@ function nxs_popup_optiontype_lock_renderhtmlinpopup($optionvalues, $args, $runt
 	            			// currently locked, unlock it (in mem)
 		            		?>
 		                <a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_widgetunlock(); return false;"><?php nxs_l18n_e("Unlock", "nxs_td"); ?></a>
-										<script type='text/javascript'>
+										<script>
 	            				function nxs_js_widgetunlock()
 	            				{
 	            					// save "other" fields in mem

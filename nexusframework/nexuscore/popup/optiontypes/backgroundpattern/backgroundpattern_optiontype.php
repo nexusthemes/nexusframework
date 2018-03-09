@@ -44,7 +44,7 @@ function nxs_popup_optiontype_backgroundpattern_renderhtmlinpopup($optionvalues,
       </div>
   ';
   ?>
-  <script type="text/javascript">
+  <script>
 		function nxs_js_startbackgroundpatternpicker_<?php echo $id;?>()
 		{
 			nxs_js_setpopupdatefromcontrols(); 

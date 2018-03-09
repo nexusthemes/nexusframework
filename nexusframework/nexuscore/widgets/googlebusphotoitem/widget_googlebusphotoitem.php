@@ -61,7 +61,7 @@ function nxs_widgets_googlebusphotoitem_panoviewer($optionvalues, $args, $runtim
   </div>
   <div class="nxs-clear"></div>
   
-  <script type='text/javascript'>
+  <script>
 		
 		function nxs_js_processnewpano()
 		{

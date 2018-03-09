@@ -59,7 +59,7 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 				
 		      <textarea style='display: block;' id="<?php echo $internaltextareaid; ?>" nxs-option-id="<?php echo $id;?>" name="<?php echo $internaltextareaid; ?>" cols="50" rows="15" ><?php echo htmlspecialchars($value); ?></textarea>
 		      
-					<script type="text/javascript">
+					<script>
 						jQ_nxs(window).bind 
 						(
 							"nxs_jstrigger_afterpopupshows", 

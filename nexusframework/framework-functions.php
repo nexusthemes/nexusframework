@@ -462,58 +462,6 @@ function nxs_ensure_sessionstarted()
   }
 }
 
-/*
-function nxs_framework_authentication_popup_top()
-{
-	?>
-	<div class="nxs-loginlogowrapper">
-		<a target="_blank" title="Premium WordPress themes - Nexus Themes" href='http://nexusthemes.com'>
-			<div id="logo"></div>
-			<div class="nxs-clear"></div>
-		</a>
-	</div>
-	<?php
-}
-add_action('nxs_authentication_popup_top', 'nxs_framework_authentication_popup_top');
-*/
-
-/*
-add_action('login_head', 'nxs_framework_login_head');
-function nxs_framework_login_head()
-{
-	$url = nxs_getframeworkurl() . "/images/logo.png";
-	?>
-	<style type="text/css">
-		body.login #login h1 a 
-		{ 
-			background: url('<?php echo $url; ?>') no-repeat scroll center bottom transparent;
-			background-size: contain;
-			width: 300px;
-		}
-  </style>
-  <?php
-}
-*/
-
-/*
-add_action('login_headertitle', 'nxs_framework_login_headertitle');
-function nxs_framework_login_headertitle($result)
-{
-	$result = "Nexus Themes";
-	return $result;
-}
-*/
-
-/*
-add_action('login_headerurl', 'nxs_framework_login_headerurl');
-function nxs_framework_login_headerurl($result)
-{
-	$meta = nxs_theme_getmeta();
-	$result = $meta["url"];
-	return $result;
-}
-*/
-
 function nxs_widgets_gettotalwidgetareacount()
 {
 	//
@@ -1457,7 +1405,7 @@ function nxs_init()
 				$url = wp_login_url();
 				$url = nxs_addqueryparametertourl_v2($url, "nxsaccess", "blocked", true, true);
 				?>
-				<script type='text/javascript'>
+				<script>
 					window.location.href="<?php echo $url; ?>";
 				</script>
 				<?php
@@ -1690,7 +1638,7 @@ function nxs_performdataconsistencycheck()
 function nxs_setjQ_nxs()
 {
 	?>
-	<script type="text/javascript">
+	<script>
 		var jQ_nxs = jQuery.noConflict(true);
 		var jQuery = jQ_nxs;
 		
@@ -2282,7 +2230,7 @@ function nxs_ext_initialize_frontendframework()
 
 // kudos to https://wordpress.org/support/topic/wpseoselect2locale-javascript-reference-error/
 function yoast_bug_fix() {
-    echo '<script type="text/javascript">var wpseoSelect2Locale = wpseoSelect2Locale || "en";</script>';
+    echo '<script>var wpseoSelect2Locale = wpseoSelect2Locale || "en";</script>';
 }
 add_action('admin_footer', 'yoast_bug_fix');
 

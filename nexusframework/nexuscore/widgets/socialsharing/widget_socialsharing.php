@@ -41,7 +41,7 @@ function nxs_widgets_socialsharing_twitter_render($url, $text)
 	<a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" ' . $datatext . ' data-via="" data-url="' . $url . '"></a>
 	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 	</div>
-	<script type="text/javascript">
+	<script>
 		if (typeof(twttr) != "undefined" && twttr != null ) 
 		{
 			twttr.widgets.load();
@@ -150,7 +150,7 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 			{
 				// see http://stackoverflow.com/questions/8961567/render-like-button-after-ajax-call
 				?>
-				<script type='text/javascript'>
+				<script>
 					// load and render DOM
 					nxs_js_inject_facebook();
 				</script>
@@ -166,7 +166,7 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 				<div class='nxs-share nxs-googleplus'>
 				<g:plusone size="tall"></g:plusone>
 				</div>
-				<script type="text/javascript">
+				<script>
 					nxs_js_inject_googleplus();
 					if (typeof(gapi) != 'undefined' && gapi != null ) 
 					{
@@ -185,7 +185,7 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 				<div class='nxs-share nxs-linkedin'>
 					<script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
 					<script type="IN/Share" data-showZero="true" data-url="<?php echo $url; ?>" data-counter="top"></script>
-					<script type='text/javascript'>
+					<script>
 						 IN.init();
 					</script>
 				</div>
@@ -377,7 +377,7 @@ function nxs_widgets_socialsharing_home_rendersheet($args)
     	</div>
     </div>
 
-    <script type='text/javascript'>
+    <script>
 				
 		function nxs_js_setpopupdatefromcontrols()
 		{

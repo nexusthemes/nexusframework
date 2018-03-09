@@ -134,7 +134,7 @@ function nxs_widgets_pageslidetotop_betweenheadandcontent()
 		</div>
 	</div>
 
-	<script type="text/javascript">
+	<script>
 
 		function nxs_js_show_slidetotop() {
 			if (jQ_nxs(window).scrollTop() < <?php echo $offsetpixels; ?>) {

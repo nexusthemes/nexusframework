@@ -134,7 +134,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 								<input id="mediapicker_filter_title" value="<?php echo nxs_render_html_escape_doublequote($mediapicker_filter_title); ?>">
 								<a class='nxsbutton1' href='#' onclick='nxs_js_popup_mediapicker_updatefilter(); return false;'>Filter</a>
 							</div>	
-							<script type='text/javascript'>
+							<script>
 								jQ_nxs("#mediapicker_filter_title").keyup
 								(
 									function (e) 
@@ -154,7 +154,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 					
 						
 						
-						<script type="text/javascript">
+						<script>
 							function setupfiletransfer() 
 							{
 								//alert("setting up...");
@@ -432,7 +432,7 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 	
 	</div> <!-- END nxs-admin-wrap -->
 	
-	<script type='text/javascript'>
+	<script>
 	
 		function nxs_js_popup_mediapicker_updatefilter()
 		{

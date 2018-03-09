@@ -305,7 +305,7 @@ function nxs_widgets_pagevideo_betweenheadandcontent()
 	}
 
 	$script .= "
-		<script type='text/javascript'>
+		<script>
 			function nxs_js_pagevideo_updateheight()
 			{";
 
@@ -341,7 +341,7 @@ function nxs_widgets_pagevideo_betweenheadandcontent()
 	<div id="ytcontainer" class="clearfix"></div>
 	<script src='<?php echo nxs_getframeworkurl(); ?>/nexuscore/widgets/pagevideo/js/jquery.tubular.1.0.js'></script>
   
-	<script type="text/javascript">
+	<script>
   	// '9bZkp7q19f0'
     jQ_nxs('document').ready(function() {
 			var options = { videoId: '<?php echo $youtubeid; ?>', start: 3 };

@@ -92,7 +92,7 @@ function nxs_popup_optiontype_colorvariation_renderhtmlinpopup($optionvalues, $a
       </div>
   ';
   ?>
-  <script type="text/javascript">
+  <script>
 		function nxs_js_startcolorvariationpicker_<?php echo $id;?>()
 		{
 			nxs_js_setpopupdatefromcontrols(); 

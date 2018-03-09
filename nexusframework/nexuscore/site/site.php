@@ -144,7 +144,7 @@ function nxs_site_loginhome_rendersheet($args)
 		</div> <!--END wrap-->
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -299,7 +299,7 @@ function nxs_site_nieuwfooterhome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -382,7 +382,7 @@ function nxs_site_nieuwheaderhome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -464,7 +464,7 @@ function nxs_site_nieuwsubheaderhome_rendersheet($args)
 		<div class="nxs-clear"></div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -546,7 +546,7 @@ function nxs_site_nieuwsubfooterhome_rendersheet($args)
 		<div class="nxs-clear"></div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -628,7 +628,7 @@ function nxs_site_newcontentparthome_rendersheet($args)
 		<div class="nxs-clear"></div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -709,7 +709,7 @@ function nxs_site_newpagedecoratorhome_rendersheet($args)
 		<div class="nxs-clear"></div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -790,7 +790,7 @@ function nxs_site_nieuwsidebarhome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -871,7 +871,7 @@ function nxs_site_nieuwmenuhome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -953,7 +953,7 @@ function nxs_site_nieuwlisthome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1035,7 +1035,7 @@ function nxs_site_nieuwslidesethome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1118,7 +1118,7 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_savepopupdata()
 		{
 			var valuestobeupdated = {};
@@ -1373,7 +1373,7 @@ function nxs_site_dashboardfaviconhome_rendersheet($args)
   	
   </div>
 
-  <script type="text/javascript">
+  <script>
   	
   	function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1603,7 +1603,7 @@ function nxs_site_logouthome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 			
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1701,7 +1701,7 @@ function nxs_site_mediamanagerupload_rendersheet($args)
   	
   </div>
 
-  <script type="text/javascript">
+  <script>
   	
   	function nxs_js_filechanged()
   	{
@@ -1970,7 +1970,7 @@ function nxs_site_newposthome_rendersheet($args)
     </div> <!--END content-->
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -2057,7 +2057,7 @@ function nxs_site_exportsite_rendersheet($args)
     </div> <!--END block-->
   </div>
     
-  <script type='text/javascript'>
+  <script>
 		function nxs_js_execute_after_popup_shows()
 		{
 			
@@ -2394,7 +2394,7 @@ function nxs_site_dashboardhome_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -2537,7 +2537,7 @@ function nxs_site_supportoptions_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 
 		function nxs_js_tryskype()
 		{
@@ -2698,7 +2698,7 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 	}
 	?>
 	<a href="#" class='nxsbutton1 nxs-float-right' onclick='nxs_js_triggerclearcache(); return false;'><?php nxs_l18n_e('Clear', 'nxs_td'); ?></a>
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_triggerclearcache()
 		{
 			nxs_js_popup_setshortscopedata("cacheaction","clear");
@@ -3077,7 +3077,7 @@ function nxs_site_lookuptablemanagementhome_customhtml($optionvalues, $args, $ru
 		';
 	}
 	?>
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_store_lookuptable()
 		{
 			var name = jQuery("#lookuptable_new_name").val();
@@ -3274,7 +3274,7 @@ function nxs_site_unistylemanagementhome_customhtml($optionvalues, $args, $runti
 	}
 	
 	?>
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_renameunistyle(group, oldname)
 		{
 			var newname = prompt('<?php nxs_l18n_e("Enter the new unistyle name", "nxs_td"); ?>', oldname);
@@ -3448,7 +3448,7 @@ function nxs_site_unicontentmanagementhome_customhtml($optionvalues, $args, $run
 	}
 	
 	?>
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_renameunicontent(group, oldname)
 		{
 			var newname = prompt('<?php nxs_l18n_e("Enter the new unicontent name", "nxs_td"); ?>', oldname);
@@ -3699,7 +3699,7 @@ function nxs_site_clipboardcopyselector_customhtml()
 {
 	?>
 	<a href="#" class="nxsbutton nxs-float-left" onclick="nxs_js_clipboard_copycontent('maincontent:contentbuilder'); return false;"><?php nxs_l18n_e("Copy main content of page", "nxs_td"); ?></a>
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_clipboard_copycontent(context)
 		{
 			var d = {
@@ -3785,7 +3785,7 @@ function nxs_site_clipboardpasteselector_customhtml()
  	{
  		?>
 		<a href="#" class="nxsbutton nxs-float-left" onclick="nxs_js_clipboard_pastecontent(); return false;"><?php nxs_l18n_e("Paste main content (content builder) of page", "nxs_td"); ?></a>
-		<script type='text/javascript'>
+		<script>
 			function nxs_js_clipboard_pastecontent()
 			{
 				var articlecontainerpostid = nxs_js_getcontainerpostid();
@@ -3913,7 +3913,7 @@ function nxs_site_managecolorization_customhtml($optionvalues, $args, $runtimebl
 			nxs_colorization_setactivepalettename($palettename);
 			// refresh page
 			?>
-			<script type='text/javascript'>
+			<script>
 				nxs_js_closepopup_unconditionally();
 				nxs_js_refreshcurrentpage();			
 			</script>
@@ -4019,7 +4019,7 @@ function nxs_site_managecolorization_customhtml($optionvalues, $args, $runtimebl
 		nxs_l18n_e("No palettes found", "nxs_td");
 	}
 	?>
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_activatepalette(palettename)
 		{
 			nxs_js_popup_setshortscopedata('action', 'activatepalette');
@@ -4064,7 +4064,7 @@ function nxs_site_doactivatepalette_customhtml($optionvalues, $args, $runtimeble
 	nxs_colorization_setactivepalettename($palettename);
 
 	?>
-	<script type='text/javascript'>
+	<script>
 		nxs_js_refreshcurrentpage();
 	</script>
 	<?php
@@ -4136,7 +4136,7 @@ function nxs_site_dosavepalette_customhtml($optionvalues, $args, $runtimeblended
 			nxs_colorization_setactivepalettename($palettename);
 			
 			?>
-			<script type='text/javascript'>
+			<script>
 				nxs_js_refreshcurrentpage();
 			</script>
 			<?php
@@ -4145,7 +4145,7 @@ function nxs_site_dosavepalette_customhtml($optionvalues, $args, $runtimeblended
 	if (!$ishandled)
 	{
 		?>
-		<script type='text/javascript'>
+		<script>
 			nxs_js_popup_setshortscopedata('action', 'savepalettephase2');
 			<?php
 			$colortypes = nxs_getcolorsinpalette();

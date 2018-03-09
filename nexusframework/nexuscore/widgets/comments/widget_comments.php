@@ -539,7 +539,7 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 		
 		?>
 	    
-		<script type='text/javascript'>
+		<script>
 			function preparecomment_<?php echo $placeholderid; ?>(replytocommentid, shouldscrollandfocus)
 			{
 				// alles inklappen

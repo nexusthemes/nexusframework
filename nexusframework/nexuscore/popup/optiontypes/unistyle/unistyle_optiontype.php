@@ -73,7 +73,7 @@ function nxs_popup_optiontype_unistyle_renderhtmlinpopup($optionvalues, $args, $
 		                  } 
 		                  ?>
 		                </select>
-				            <script type='text/javascript'>
+				            <script>
 				            	function nxs_js_setunistyle_<?php echo $id; ?>()
 				            	{
 				            		nxs_js_setpopupdatefromcontrols(); 
@@ -102,7 +102,7 @@ function nxs_popup_optiontype_unistyle_renderhtmlinpopup($optionvalues, $args, $
 				            	}
 				            </script>		                
 		                <a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_opensavesheet_unistyle(); return false;"><?php nxs_l18n_e("Persist", "nxs_td"); ?></a>
-										<script type='text/javascript'>
+										<script>
 	            				function nxs_js_opensavesheet_unistyle()
 	            				{
 	            					nxs_js_setpopupdatefromcontrols(); 
@@ -119,7 +119,7 @@ function nxs_popup_optiontype_unistyle_renderhtmlinpopup($optionvalues, $args, $
 	            			?>
 	            			<span><?php echo $value; ?></span>
 	            			<a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_disable_unistyle(); return false;"><?php nxs_l18n_e("De-activate", "nxs_td"); ?></a>
-	            			<script type='text/javascript'>
+	            			<script>
 	            				function nxs_js_disable_unistyle()
 	            				{
 	            					var r = confirm("<?php nxs_l18n_e("This will enable you to customize the style for this widget. Is this what you want?", "nxs_td"); ?>");

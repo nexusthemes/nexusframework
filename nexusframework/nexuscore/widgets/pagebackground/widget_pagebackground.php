@@ -162,7 +162,7 @@ function nxs_widgets_pagebackground_beforeend_head()
 			';
 	}
 	?>
-	<script type='text/javascript'>
+	<script>
 		// background page decorator
 		jQuery(window).load
 		(

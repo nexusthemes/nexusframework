@@ -580,7 +580,7 @@ function nxs_pagetemplate_handleheader()
 	if (is_user_logged_in()) { ?>
 	
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
-	<script type="text/javascript">
+	<script>
 		onload=function()
 		{
 			// refresh the screen when the user pushes the back button
@@ -934,7 +934,7 @@ function nxs_pagetemplate_archive_home_getsheethtml($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 			
 		function nxs_js_savepopupdata()
 		{

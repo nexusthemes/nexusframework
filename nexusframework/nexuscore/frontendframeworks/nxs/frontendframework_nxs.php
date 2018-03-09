@@ -463,6 +463,11 @@ function nxs_frontendframework_nxs_theme_styles()
     nxs_getthemeversion(), 
     'all' );
 
+	wp_register_style('nxs-framework-style-nxsv1', 
+    nxs_getframeworkurl() . '/css/framework-nxsv1.css', 
+    array(), 
+    nxs_getthemeversion(), 
+    'all' );
 
   if (is_child_theme()) 
   {
@@ -486,6 +491,7 @@ function nxs_frontendframework_nxs_theme_styles()
 	}
 	
   wp_enqueue_style('nxs-framework-style');
+  wp_enqueue_style('nxs-framework-style-nxsv1');
     
 	if (!$iswordpressbackendshowing)
 	{

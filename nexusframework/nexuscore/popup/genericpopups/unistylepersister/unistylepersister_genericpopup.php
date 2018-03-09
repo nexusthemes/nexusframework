@@ -79,7 +79,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 			}
 			
 			?>		
-			<script type='text/javascript'>
+			<script>
 				// reload the entire page; this is required, because its possible that other widgets
 				// use the same style as the one we just persisted, in that case its impossible to
 				// update all of them, unless we refresh the entire page
@@ -111,7 +111,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 			          </div>
 			          <div class="box-content">			
 									<a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_overridepreviousunistyle(); return false;"><?php nxs_l18n_e("Persist", "nxs_td"); ?> <?php echo $unistyleprevious; ?></a>
-									<script type='text/javascript'>
+									<script>
 		        				function nxs_js_overridepreviousunistyle()
 		        				{
 		        					var r = confirm("<?php nxs_l18n_e("All components that are connected to this unistyle will be updated if you proceed. Is this what you want?", "nxs_td"); ?>");
@@ -149,7 +149,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 									?>
 								</select>
 								<a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_overrideexistingunistyle(); return false;"><?php nxs_l18n_e("Persist", "nxs_td"); ?></a>
-								<script type='text/javascript'>
+								<script>
 	        				function nxs_js_overrideexistingunistyle()
 	        				{
 	        					var stylename = jQ_nxs('#overrideexistingunistyle').val();
@@ -181,7 +181,7 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 		          <div class="box-content">
 								<input type='text' id='newunistylename' style='width: 80%' value='' placeholder='enter your name here' />
 								<a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_storenewunistyle(); return false;"><?php nxs_l18n_e("Persist", "nxs_td"); ?></a>
-								<script type='text/javascript'>
+								<script>
 	        				function nxs_js_storenewunistyle()
 	        				{
 	        					var stylename = jQ_nxs('#newunistylename').val();

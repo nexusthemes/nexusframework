@@ -3,7 +3,7 @@
 	?>
 	
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
-	<script type="text/javascript">
+	<script>
 		onload=function()
 		{
 			// refresh the screen when the user pushes the back button
@@ -82,7 +82,7 @@
 		{
 			// activate WITH 1clickcontent
 			?>
-			<script type='text/javascript'>
+			<script>
 				jQuery(window).ready
 				(
 					function()
@@ -99,7 +99,7 @@
 		{
 			// SKIP 1clickcontent
 			?>
-			<script type='text/javascript'>
+			<script>
 				jQuery(window).load
 				(
 					function()
@@ -206,7 +206,7 @@
 			</div>			
 		</div>
 		
-		<script type='text/javascript'>
+		<script>
 			jQuery(document).ready
 			(
 				function() 
@@ -224,7 +224,7 @@
 	
 	?>
 	<div id="jGrowl" class="top-right jGrowl"><div class="jGrowl-notification"></div></div>
-	<script type='text/javascript'>
+	<script>
 		
 		var nxs_js_interval_serversideprocessing_1;
 		var nxs_js_interval_serversideprocessing_2;

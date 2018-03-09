@@ -93,7 +93,7 @@ function nxs_popup_optiontype_unicontent_renderhtmlinpopup($optionvalues, $args,
 	              } 
 	              ?>
 	            </select>
-	            <script type='text/javascript'>
+	            <script>
 	            	function nxs_js_setunicontent_<?php echo $id; ?>()
 	            	{
 	            		
@@ -145,7 +145,7 @@ function nxs_popup_optiontype_unicontent_renderhtmlinpopup($optionvalues, $args,
 	        </div>
 	        <div class="nxs-clear"></div>
 	      </div>
-	      <script type="text/javascript">
+	      <script>
 	      	function nxs_js_clearunicontent()
 	      	{
 	      		jQ_nxs("#' . $id . '").val("");

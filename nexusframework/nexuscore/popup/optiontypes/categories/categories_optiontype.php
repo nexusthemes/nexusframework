@@ -77,7 +77,7 @@ function nxs_popup_optiontype_categories_renderhtmlinpopup($optionvalues, $args,
     <div class="nxs-clear"></div>
 	</div> <!--END content-->
 	
-	<script type='text/javascript'>
+	<script>
 		
 		<?php if ($maxselectable == "1") { ?>
 			jQ_nxs(".selectable_category").on

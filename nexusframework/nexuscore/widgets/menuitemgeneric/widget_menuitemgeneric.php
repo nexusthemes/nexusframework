@@ -26,7 +26,7 @@ function nxs_menuitemgeneric_switchtype($optionvalues, $args, $runtimeblendeddat
 		<?php
 	}
 	?>
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_switchtomenuitemtype(menuitemtype)
 		{
     	// wijzig type van deze placeholder naar 'x'

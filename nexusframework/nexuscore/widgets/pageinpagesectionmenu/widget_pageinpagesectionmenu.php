@@ -147,7 +147,7 @@ function nxs_widgets_pageinpagesectionmenu_betweenheadandcontent()
 		</ul>
 	</div>
 
-	<script type="text/javascript">
+	<script>
 		var inpagesectionmenu = jQ_nxs('#nxs-inpagesectionmenu'),
 			inpagesectionmenuContainer = jQ_nxs('#nxs-inpagesectionmenu .nxs-inpagesectionmenu-itemcontainer'),
 			screenHeight = jQ_nxs(window).height(),

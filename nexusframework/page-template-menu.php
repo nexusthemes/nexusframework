@@ -46,7 +46,7 @@
 		</div>
 	</div> <!-- END content -->
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nieuwmenuitem(element)
 		{

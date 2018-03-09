@@ -151,7 +151,7 @@ function nxs_popup_optiontype_radiobuttons_renderhtmlinpopup($optionvalues, $arg
 		<div class="nxs-clear"></div>
 	</div>
 
-  	<script type="text/javascript">
+  	<script>
   		jQ_nxs(document).ready
   		(
 	  		function()

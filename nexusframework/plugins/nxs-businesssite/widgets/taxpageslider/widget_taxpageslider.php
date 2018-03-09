@@ -701,9 +701,9 @@ function nxs_widgets_taxpageslider_beforeend_head()
 		}
 		?>
 		<link rel="stylesheet" href="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/css/supersized.css" type="text/css" media="screen" />
-		<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/js/altsupersized.js"></script>
-		<script type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/theme/nxssupersizedshutter.js"></script>
-		<script type="text/javascript">
+		<script src="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/js/altsupersized.js"></script>
+		<script src="<?php echo nxs_getframeworkurl(); ?>/js/supersized/slideshow/theme/nxssupersizedshutter.js"></script>
+		<script>
 				
 				jQuery(document).ready
 				(
@@ -946,7 +946,7 @@ function nxs_widgets_taxpageslider_betweenheadandcontent()
 	// Ken Burns effect
 	if ($ken_burns != "") { 
 		$script = "
-		<script type='text/javascript'>
+		<script>
 			jQuery(window).ready(
 				function() {
 					// jQuery('html').addClass('nxs-taxpageslider kenburns');
@@ -958,7 +958,7 @@ function nxs_widgets_taxpageslider_betweenheadandcontent()
 		";
 	} else {
 		$script = "
-		<script type='text/javascript'>
+		<script>
 			jQuery(window).ready(
 				function() {
 					jQuery('html').addClass('nxs-taxpageslider');
@@ -998,7 +998,7 @@ function nxs_widgets_taxpageslider_betweenheadandcontent()
 			// reset the height of the caption aligner initially the page is loaded,
 			// and reset if after the screen size is adjusted
 			?>
-			<script type='text/javascript'>
+			<script>
 				
 				function nxs_js_resettaxpagesliderheight_to_screenheight()
 				{
@@ -1093,7 +1093,7 @@ function nxs_widgets_taxpageslider_betweenheadandcontent()
               	else
               	{
               		?>                
-	                <script type='text/javascript'>
+	                <script>
 	                  jQuery(window).load
 	                  (
 	                    function()

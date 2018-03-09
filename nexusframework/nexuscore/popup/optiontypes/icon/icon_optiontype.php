@@ -51,7 +51,7 @@ function nxs_popup_optiontype_icon_renderhtmlinpopup($optionvalues, $args, $runt
       </div>
   ';
   ?>
-  <script type="text/javascript">
+  <script>
 		function nxs_js_starticonpicker_<?php echo $id;?>()
 		{
 			nxs_js_setpopupdatefromcontrols(); 

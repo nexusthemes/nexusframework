@@ -49,7 +49,7 @@ function nxs_popup_optiontype_shape_renderhtmlinpopup($optionvalues, $args, $run
         <div class="nxs-clear"></div>
     </div>
     
-	<script type="text/javascript">
+	<script>
 		function nxs_js_startshapepicker_<?php echo $id;?>()
 		{
 			nxs_js_setpopupdatefromcontrols();

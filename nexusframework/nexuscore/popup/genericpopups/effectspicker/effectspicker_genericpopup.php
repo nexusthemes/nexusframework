@@ -60,7 +60,7 @@ function nxs_popup_genericpopup_effectspicker_getpopup($args)
 		</div> <!-- END block -->
 	</div> <!-- END nxs-admin-wrap -->
 	
-	<script type='text/javascript'>
+	<script>
 	
 		function nxs_js_selectitem_v2() 
 		{

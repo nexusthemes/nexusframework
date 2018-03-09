@@ -537,7 +537,7 @@ function nxs_widgets_generic_metaview($optionvalues, $args, $runtimeblendeddata)
 		
 		// trigger the client to refresh the row for the updated placeholder
 		?>
-		<script type='text/javascript'>
+		<script>
 			nxs_js_rerender_row_for_placeholder('<?php echo $postid;?>', '<?php echo $placeholderid;?>');
 		</script>
 		<?php

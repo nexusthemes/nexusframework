@@ -17,7 +17,7 @@
 	
 	<?php if (is_user_logged_in()) { ?>
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
-	<script type="text/javascript">
+	<script>
 		onload=function()
 		{
 			// refresh the screen when the user pushes the back button

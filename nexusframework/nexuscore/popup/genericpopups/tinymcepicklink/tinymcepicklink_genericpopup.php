@@ -340,7 +340,7 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
     </div>
   </div>
   
-  <script type='text/javascript'>
+  <script>
   	
   	function nxs_js_popup_get_initialbuttonstate() 
 		{ 

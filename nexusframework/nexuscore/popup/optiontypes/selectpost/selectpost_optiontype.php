@@ -137,7 +137,7 @@ function nxs_popup_optiontype_selectpost_renderhtmlinpopup($optionvalues, $args,
 				{
 					echo "<span title='" . nxs_l18n__("Warning; current value is no longer listed", "nxs_td") . "'>(!)</span>";
 					?>
-					<script type='text/javascript'>
+					<script>
 						nxs_js_popup_sessiondata_make_dirty();
 					</script>
 					<?php
@@ -147,7 +147,7 @@ function nxs_popup_optiontype_selectpost_renderhtmlinpopup($optionvalues, $args,
 		</div>
 		<div class="nxs-clear"></div>
 	</div> <!--END content-->
-	<script type='text/javascript'>
+	<script>
 		function nxs_js_preview(element)
 		{
 			var postid = jQ_nxs(element).closest(".box-content").find("select option:selected").val();

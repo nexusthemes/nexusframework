@@ -117,7 +117,7 @@ function nxs_post_home_rendersheet($args)
     </div> <!--END content-->
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -277,7 +277,7 @@ function nxs_post_dialogappendrow_rendersheet($args)
     </div>
   </div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -379,7 +379,7 @@ function nxs_post_edittitle_rendersheet($args)
 		</div>
 	</div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_setpopupdatefromcontrols()
 		{
@@ -597,7 +597,7 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
     </div>
   </div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		<?php
 		$numofoptions = count($widgets);
@@ -909,7 +909,7 @@ function nxs_post_dialogappendbusrulessetitem_rendersheet($args)
 		jQuery(".isotope-filter-all").addClass("nxsbutton").removeClass("nxsbutton1");
 	</script>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1073,7 +1073,7 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
     </div>
   </div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 
@@ -1214,7 +1214,7 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 			  </div>
 			</div>
 			
-			<script type='text/javascript'>
+			<script>
 				function nxs_js_storefile()
 				{
 					nxs_js_log("nxs_js_storefile; STORING FILE");
@@ -1365,7 +1365,7 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
     </div>
   </div>
 	
-	<script type='text/javascript'>
+	<script>
 		
 		function nxs_js_popup_get_initialbuttonstate() 
 		{ 

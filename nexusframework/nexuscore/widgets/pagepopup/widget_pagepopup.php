@@ -106,7 +106,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 			-webkit-box-shadow: none !important;
 		}
 	</style>
-	<script type='text/javascript'>
+	<script>
 
 		var prefetchedresult = { available:false };
 
