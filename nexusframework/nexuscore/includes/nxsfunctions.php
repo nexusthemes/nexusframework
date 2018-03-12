@@ -388,6 +388,26 @@ function nxs_cache_wipecachecurrentrequest()
 // specifically for a request that should NOT, and will NOT be cached
 function nxs_handlerequestnocaching($buffer)
 {
+	$shouldoptimizebuffer = true;
+	
+	$lowercasecontenttype = nxs_getcontenttype();
+	if (nxs_stringstartswith($lowercasecontenttype, "text/html"))
+	{
+		// okidoki, cache and optimize!
+	}
+	else
+	{
+		// unknown content, likely we dont want to store this
+		// return "$contenttype; fiets:" . $a . "]";
+		$shouldoptimizebuffer = false;
+	}
+	
+	if ($shouldoptimizebuffer)
+	{
+		// tune the buffer before returning it
+		$buffer = nxs_optimize_getoptimizedbuffer($buffer);
+	}
+	
 	// whether or not we explicitly wipe the cache for the request
 	// is controlled by a filter. The default behavious is that
 	// the cached file (if present) will be deleted. This is practical
@@ -409,9 +429,49 @@ function nxs_disablecacheforthisrequest()
 	$nxs_gl_cache_pagecache = false;
 }
 
-function nxs_storecacheoutput($buffer)
+function nxs_optimize_getoptimizedbuffer($result = "")
+{
+	// allow plugins to optimize the output (before storing it to cache, and/or returning it to the user)
+	$args = array();
+	$result = apply_filters("nxs_f_optimize_getoptimizedbuffer", $result, $args);
+	return $result;
+}
+
+function nxs_getcontenttype()
+{
+	$lowercasecontenttype = "";
+	
+	$headerssent = headers_list();
+		
+	foreach ($headerssent as $currentheadersent)
+	{
+		$lowercase = strtolower($currentheadersent);
+		if (nxs_stringstartswith($lowercase, "content-type:"))
+		{
+			$pieces = explode(":", $lowercase, 2);
+			if (count($pieces) == 2)
+			{
+				$lowercasecontenttype = trim($pieces[1]);
+			}
+			else
+			{
+				//
+			}
+		}
+		else
+		{
+			
+		}
+	}
+	
+	return $lowercasecontenttype;
+}
+
+function nxs_handlerequestwithcaching($buffer)
 {
 	$shouldstore = true;
+	$shouldoptimizebuffer = true;
+	
 	$nocacheexplanations = array();
 	
 	// dont store if there's an active user session
@@ -525,43 +585,28 @@ function nxs_storecacheoutput($buffer)
 	}
 	
 	// dont store unsupported content-types
-	$lowercasecontenttype = "";
+	
 	if ($shouldstore)
 	{
-		$headerssent = headers_list();
-		
-		foreach ($headerssent as $currentheadersent)
-		{
-			$lowercase = strtolower($currentheadersent);
-			if (nxs_stringstartswith($lowercase, "content-type:"))
-			{
-				$pieces = explode(":", $lowercase, 2);
-				if (count($pieces) == 2)
-				{
-					$lowercasecontenttype = trim($pieces[1]);
-				}
-				else
-				{
-					//
-				}
-			}
-			else
-			{
-				
-			}
-		}
-		
+		$lowercasecontenttype = nxs_getcontenttype();
 		if (nxs_stringstartswith($lowercasecontenttype, "text/html"))
 		{
-			// okidoki, cache!
+			// okidoki, cache and optimize!
 		}
 		else
 		{
 			// unknown content, likely we dont want to store this
 			// return "$contenttype; fiets:" . $a . "]";
 			$shouldstore = false;
+			$shouldoptimizebuffer = false;
 			$nocacheexplanations[] = "unsupported contenttype";
 		}
+	}
+	
+	if ($shouldoptimizebuffer)
+	{
+		// tune the buffer before returning it
+		$buffer = nxs_optimize_getoptimizedbuffer($buffer);
 	}
 	
 	// dont store if the page didnt properly finish rendering 
@@ -592,7 +637,7 @@ function nxs_storecacheoutput($buffer)
 			// if the folder doesn't yet exist, create it!
 			mkdir($dir, 0777, true);
 		}
-
+		
 		// enhance the output so we know its cached
 		$cached = $buffer;
 		$cached = str_replace("</body>", "</body><!-- CACHED " . NXS_UNIQUEIDFORREQUEST . " -->", $cached);			
@@ -675,7 +720,7 @@ function nxs_setupcache()
 		}
 		else
 		{
-			nxs_ob_start("nxs_storecacheoutput");
+			nxs_ob_start("nxs_handlerequestwithcaching");
 		}
 	}
 	else
@@ -7852,9 +7897,9 @@ function nxs_render_htmlclasstag()
 
 function nxs_render_htmlstarttag()
 {
-	?>
-	<html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?> prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#" <?php nxs_render_htmlclasstag(); ?>>
-	<?php
+	// the prefix part is also rendered by the languagw_attributes
+	// (prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#")
+	?><html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?> <?php nxs_render_htmlclasstag(); ?>><?php
 }
 
 function nxs_render_htmlcorescripts()

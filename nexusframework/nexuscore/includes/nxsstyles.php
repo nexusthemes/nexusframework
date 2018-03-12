@@ -5,11 +5,6 @@ function nxs_getmaxservercsschunks() {
 	return 4;
 }
 
-function nxs_showloadcover() {
-	// todo: eventually make configurable
-	return false;
-}
-
 function nxs_getcoloralphas() {
 	$result = array();
 	$result[] = 1;

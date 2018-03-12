@@ -31,7 +31,7 @@
 
 .responsive li a
 {
-	justify-content: start !important;
+	justify-content: flex-start !important;
 	padding-top: 0px;
 	padding-bottom: 0px;
 	padding-right: 0px;

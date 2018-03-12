@@ -9598,8 +9598,6 @@ function nxs_js_colorshake()
 	{
 		nxs_js_updatecss_themecss_actualrequest(true, true);
 		nxs_js_updatecss_manualcss_actualrequest();
-		
-		jQ_nxs("#nxs-load-cover").hide();
 	}
 }
 

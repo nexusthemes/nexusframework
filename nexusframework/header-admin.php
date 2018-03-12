@@ -7,9 +7,10 @@
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php nxs_render_htmlstarttag(); ?>
-<head profile="http://gmpg.org/xfn/11">
+<head>
+	<link rel="profile" href="http://gmpg.org/xfn/11"/>
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
-	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<link rel="shortcut icon" href="<?php echo nxs_getframeworkurl(); ?>/favicon.ico" type="image/x-icon" />
 	<script>	document.documentElement.className = 'js'; </script>
 	<?php nxs_render_htmlcorescripts(); ?>

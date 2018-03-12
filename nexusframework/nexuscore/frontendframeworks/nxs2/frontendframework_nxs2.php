@@ -1375,7 +1375,15 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 	
-	$result = '<' . $headingelement . ' ' . $itemprop . ' class="'.$unique_style_combination_class_0.'">' . $title . '</' . $headingelement . '>';
+	$anchorattribute = "";
+	if ($anchor != "")
+	{
+		$anchorattribute = 'id="' . $anchor . '"';
+		$anchorattribute = strtolower($anchorattribute);
+		$anchorattribute = str_replace(" ", "_", $anchorattribute);
+	}
+	
+	$result = '<' . $headingelement . ' ' . $itemprop . ' ' . $anchorattribute . ' ' . 'class="'.$unique_style_combination_class_0.'">' . $title . '</' . $headingelement . '>';
 	
 	// link
 	if ($destination_articleid != "") 
@@ -1640,10 +1648,63 @@ function nxs_clearunwantedscripts()
   }
 }
 
+function nxs2_f_optimize_getoptimizedbuffer($result)
+{
+	if (true) // $_REQUEST["testoptnxs2"] == "true")
+	{
+		// do something here
+		$result = str_replace("<style type=\"text/css\">", "<style>", $result);
+		$result = str_replace("<script type=\"text/javascript\">", "<script>", $result);
+
+		// some comments we want to keep; flip flow those
+		$flip = "<!-- Nexus";
+		$flop = "[[[[ Nexus";
+		$result = str_replace($flip, $flop, $result);
+		
+		$result = preg_replace('/<!--(.|\s)*?-->/', '', $result);
+
+		// reverse the flip flopping of the comments we want to keep
+		$result = str_replace($flop, $flip, $result);
+		
+		// remove comments inside CSS and in JS /**/
+		$result = preg_replace('!/\*.*?\*/!s', '', $result);
+		$result = preg_replace('/\n\s*\n/', "\n", $result);
+		
+		// replace multiple spaces (and new lines)
+		$result = preg_replace('/\s+/', ' ',$result);
+		
+		// replace empty spaces between tags
+		$result = str_replace("> <", "><", $result);
+		
+	}
+	
+	//
+	return $result;
+}
+
+
+
+
 function nxs_frontendframework_nxs2_init()
 {
 	disable_wp_emojicons();
 	nxs_clearunwantedscripts();
+	
+	add_filter("nxs_f_optimize_getoptimizedbuffer", "nxs2_f_optimize_getoptimizedbuffer", 10, 1);
+	
+	add_filter('nav_menu_css_class', 'my_css_attributes_filter', 100, 1);
+	add_filter('nav_menu_item_id', 'my_css_attributes_filter', 100, 1);
+	add_filter('page_css_class', 'my_css_attributes_filter', 100, 1);
+	function my_css_attributes_filter($var) 
+	{
+		if ($_REQUEST["d"] == "d")
+		{
+			var_dump($var);
+			die();
+		}
+		
+	  return is_array($var) ? array() : '';
+	}
 }
 
 function nxs_framework_theme_styles()
@@ -2306,7 +2367,7 @@ function nxs_nxsphcontainer($atts, $content = null, $name='')
 	{
 		$output = "";
 		
-		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgettype_cssclass, $ph_runtimecssclass);
+		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, /* $ph_unistyleindicator_cssclass, */ $ph_unicontent_cssclass, /* $ph_unicontentindicator_cssclass, */ $ph_widgettype_cssclass, $ph_runtimecssclass);
 		
 		$styles = array();
 		$styles["margin_bottom"] = $bottommarginclass;
@@ -2702,8 +2763,12 @@ function nxs_frontendframework_nxs2_injectlazylib()
 		};
 	</script>
 
+	<?php
+	/*
 	<!-- Download the script and execute it after lazyLoadOptions is defined -->
 	<script async src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/9.0.0/lazyload.min.js"></script>
+	*/
+	?><!-- lazyload --><script>var _extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};!function(e,t){"object"===("undefined"==typeof exports?"undefined":_typeof(exports))&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):e.LazyLoad=t()}(this,function(){"use strict";var e={elements_selector:"img",container:document,threshold:300,data_src:"original",data_srcset:"originalSet",class_loading:"loading",class_loaded:"loaded",class_error:"error",callback_load:null,callback_error:null,callback_set:null},t=function(e){return e.filter(function(e){return!e.dataset.wasProcessed})},n=function(e,t){var n=new e(t),r=new CustomEvent("LazyLoad::Initialized",{detail:{instance:n}});window.dispatchEvent(r)},r=function(e,t){var n=t.dataSrcSet,r=e.parentElement;if("PICTURE"===r.tagName)for(var s=0;s<r.children.length;s++){var o=r.children[s];if("SOURCE"===o.tagName){var a=o.dataset[n];a&&o.setAttribute("srcset",a)}}},s=function(e,t){var n=t.data_src,s=t.data_srcset,o=e.tagName,a=e.dataset[n];if("IMG"===o){r(e,t);var i=e.dataset[s];return i&&e.setAttribute("srcset",i),void(a&&e.setAttribute("src",a))}"IFRAME"!==o?a&&(e.style.backgroundImage='url("'+a+'")'):a&&e.setAttribute("src",a)},o=function(e,t){e&&e(t)},a=function(e,t,n){e.removeEventListener("load",t),e.removeEventListener("error",n)},i=function(e,t){var n=function n(s){l(s,!0,t),a(e,n,r)},r=function r(s){l(s,!1,t),a(e,n,r)};e.addEventListener("load",n),e.addEventListener("error",r)},l=function(e,t,n){var r=e.target;r.classList.remove(n.class_loading),r.classList.add(t?n.class_loaded:n.class_error),o(t?n.callback_load:n.callback_error,r)},c=function(e,t){["IMG","IFRAME"].indexOf(e.tagName)>-1&&(i(e,t),e.classList.add(t.class_loading)),s(e,t),e.dataset.wasProcessed=!0,o(t.callback_set,e)},d=function(t){this._settings=_extends({},e,t),this._setObserver(),this.update()};d.prototype={_setObserver:function(){var e=this;if("IntersectionObserver"in window){var n=this._settings;this._observer=new IntersectionObserver(function(r){r.forEach(function(t){if(t.isIntersecting){var r=t.target;c(r,n),e._observer.unobserve(r)}}),e._elements=t(e._elements)},{root:n.container===document?null:n.container,rootMargin:n.threshold+"px"})}},update:function(){var e=this,n=this._settings,r=n.container.querySelectorAll(n.elements_selector);this._elements=t(Array.prototype.slice.call(r)),this._observer?this._elements.forEach(function(t){e._observer.observe(t)}):(this._elements.forEach(function(e){c(e,n)}),this._elements=t(this._elements))},destroy:function(){var e=this;this._observer&&(t(this._elements).forEach(function(t){e._observer.unobserve(t)}),this._observer=null),this._elements=null,this._settings=null}};var u=window.lazyLoadOptions;return u&&function(e,t){var r=t.length;if(r)for(var s=0;s<r;s++)n(e,t[s]);else n(e,t)}(d,u),d});</script>	
 	<?php
 }
 
@@ -2764,7 +2829,7 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	$class = $atts["class"];
 	
-	$cssclasses = nxs_concatenateargswithspaces($class, "nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
+	$cssclasses = nxs_concatenateargswithspaces($class, "nxs-default-p", /* "nxs-applylinkvarcolor", */ "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
 	
 	if ($heightiq != "") 
 	{
