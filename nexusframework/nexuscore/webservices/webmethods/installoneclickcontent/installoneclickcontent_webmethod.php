@@ -51,6 +51,9 @@ function nxs_mm_plugin_download($url, $path)
 
 function nxs_mm_plugin_unpack($args, $target)
 {
+	// use alternative https://codex.wordpress.org/Function_Reference/unzip_file to avoid dependency issues with hosting
+	// providers like InMotion (2018 03 10)
+	
 	if($zip = zip_open($target))
 	{
 	  while($entry = zip_read($zip))
@@ -80,6 +83,7 @@ function nxs_mm_plugin_unpack($args, $target)
 	  }
 	  zip_close($zip);
 	}
+	
 	if($args['preserve_zip'] === false)
 	{
 		unlink($target);   
@@ -181,30 +185,36 @@ function nxs_webmethod_installoneclickcontent()
 	{
 		if (nxs_webmethod_installoneclickcontent_enablev2())
 		{
-			$thememeta = nxs_theme_getmeta_v2();
-			$plugins = $thememeta["activation"]["dependencies"]["plugins"];
-			$pluginscount = count($plugins);
-			
-			if ($pluginscount > 0)
-			{				
-				echo "<h2>Installing $pluginscount plugin(s) :)</h2>";
+			if (function_exists("nxs_theme_getmeta_v2"))
+			{
+				$thememeta = nxs_theme_getmeta_v2();
+				$plugins = $thememeta["activation"]["dependencies"]["plugins"];
+				$pluginscount = count($plugins);
 				
-				foreach ($plugins as $plugin)
-				{
-					$name = $plugin["name"];
-					echo "<h2>Plugin $name ...</h2>";
+				if ($pluginscount > 0)
+				{				
+					echo "<h2>Installing $pluginscount plugin(s) :)</h2>";
 					
-					$seperatelist = array($plugin);
-					nxs_mm_get_plugins($seperatelist);
-
-					echo "<h2>Done</h2>";
+					foreach ($plugins as $plugin)
+					{
+						$name = $plugin["name"];
+						echo "<h2>Plugin $name ...</h2>";
+						
+						$seperatelist = array($plugin);
+						nxs_mm_get_plugins($seperatelist);
+	
+						echo "<h2>Done</h2>";
+					}
+				}
+				else
+				{
+					echo "<h2>No dependent plugins need to be installed - Done</h2>";
 				}
 			}
 			else
 			{
-				echo "<h2>No dependent plugins need to be installed - Done</h2>";
+				echo "<h2>No dependent plugins need to be installed (2) - Done</h2>";
 			}
-
 		}
 		
 		echo "<span>Done</span>";
@@ -337,11 +347,17 @@ function nxs_webmethod_installoneclickcontent()
 			{
 				$file = "includes/widgets.php";
 				$path = trailingslashit( WIE_PATH ) . $file;
-				require_once($path);
+				if (file_exists($path))
+				{
+					require_once($path);
+				}
 				
 				$file = "includes/import.php";
 				$path = trailingslashit( WIE_PATH ) . $file;
-				require_once($path);
+				if (file_exists($path))
+				{
+					require_once($path);
+				}
 				
 				$filelocation = TEMPLATEPATH . "/" . "resources" . "/" . "widgets.wie";
 				if (file_exists($filelocation))

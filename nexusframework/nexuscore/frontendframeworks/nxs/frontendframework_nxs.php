@@ -357,7 +357,15 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 		$styles .= "display: flex; flex-direction: row; justify-content: flex-end;";
 	}
 	
-	$result = '<' . $headingelement . ' ' . $itemprop . ' class="' . $cssclasses . '" style="'.$styles.'">' . $title . '</' . $headingelement . '>';
+	$anchorattribute = "";
+	if ($anchor != "")
+	{
+		$anchorattribute = 'id="' . $anchor . '"';
+		$anchorattribute = strtolower($anchorattribute);
+		$anchorattribute = str_replace(" ", "_", $anchorattribute);
+	}
+	
+	$result = '<' . $headingelement . ' ' . $itemprop . ' ' . $anchorattribute . ' ' . 'class="' . $cssclasses . '" style="'.$styles.'">' . $title . '</' . $headingelement . '>';
 	
 	// link
 	if ($destination_articleid != "") 

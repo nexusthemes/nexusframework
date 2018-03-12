@@ -40,9 +40,10 @@
 ?>
 <!DOCTYPE html>
 <?php nxs_render_htmlstarttag(); ?>
-<head profile="http://gmpg.org/xfn/11">
+<head>
+	<link rel="profile" href="http://gmpg.org/xfn/11"/>
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
-	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<!-- Nexus Framework | http://nexusthemes.com -->
 	<!-- Nexus Meta | v1 | <?php echo $headmeta; ?> -->
 	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemeid(); ?> | <?php echo $version; ?>" />
@@ -72,7 +73,7 @@
 	nxs_render_headstyles();
 	nxs_analytics_handleanalytics();
 	
-	if (is_user_logged_in()) { ?>
+	if (nxs_cap_hasdesigncapabilities()) { ?>
 	
 	<input type="hidden" id="nxs-refreshed-indicator" value="no" />
 	<script>
@@ -107,12 +108,6 @@
 </head>
 
 <body <?php body_class(); ?>>
-	<?php if (nxs_showloadcover()) { ?>
-		<div id="nxs-load-cover" style='position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #000; z-index:9999;'></div>
-	<?php } else { ?>
-		<div id="nxs-load-cover" style=''></div>
-	<?php } ?>
-	
 	<?php do_action('nxs_bodybegin'); ?>
 	<?php do_action("nxs_render_frontendeditor");?>
 	
