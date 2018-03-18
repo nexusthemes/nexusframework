@@ -1971,14 +1971,14 @@ function nxs_htmlescape($input)
 }
 
 // kudos to http://stackoverflow.com/questions/4356289/php-random-string-generator
-function nxs_generaterandomstring($length = 10)
+function nxs_generaterandomstring($length = 10, $characters = 'abcdefghijklmnopqrstuvwxyz')
 {
-  $characters = 'abcdefghijklmnopqrstuvwxyz';
-  $randomString = '';
-  for ($i = 0; $i < $length; $i++) {
-      $randomString .= $characters[rand(0, strlen($characters) - 1)];
+  $result = '';
+  for ($i = 0; $i < $length; $i++) 
+  {
+		$result .= $characters[rand(0, strlen($characters) - 1)];
   }
-  return $randomString;
+  return $result;
 }
 
 function nxs_cutstring($string, $length)
