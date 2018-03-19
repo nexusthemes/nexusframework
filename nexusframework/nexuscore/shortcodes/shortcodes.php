@@ -1397,6 +1397,29 @@ function nxs_sc_string($atts, $content = null, $name='')
 			
 			$input = implode(";", $instanceuris);
 		}
+		else if ($op == "strtoorder")
+		{
+			// todo: extend the function to also support 0..9 and a space?
+			$max_orders_chars = 3;
+			$order_base = $input;
+			$order_base = strtolower($order_base);
+			$order_base = substr($order_base, 0, $max_orders_chars);
+			$alphabet = range('a', 'z');
+			$sizeperchar = count($alphabet);
+			$order = 0;
+			
+			$explanation = "";
+			for ($order_base_index = 0; $order_base_index < $max_orders_chars; $order_base_index++)
+			{
+				$char = $order_base[$order_base_index];
+				$charorder = array_search($char, $alphabet);
+				$powerof = ($max_orders_chars - $order_base_index);
+				$value = $charorder * ($sizeperchar ** $powerof);
+				$order += $value;
+			}
+			
+			$input = $order;
+		}
 		else if ($op == "file_get_contents" || $op == "filegetcontents")
 		{
 			$url = $atts["url"];
