@@ -2012,7 +2012,14 @@ function nxs_framework_getheadmeta($result)
 	else
 	{
 		$pieces = explode(".", $val);
-		$val = $pieces[2] . "." . $pieces[3];
+		if ($pieces[2] == "V3")
+		{
+			$val = $pieces[2] . "." . $pieces[3] . "." . $pieces[4] . "." . $pieces[5] . "." . $pieces[6];
+		}
+		else
+		{
+			$val = $pieces[2] . "." . $pieces[3];
+		}
 	}
 	$result .= "L:{$val}" . " | ";
 	return $result;
