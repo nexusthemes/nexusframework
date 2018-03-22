@@ -49,44 +49,39 @@ function nxs_mm_plugin_download($url, $path)
   }
 }
 
-function nxs_mm_plugin_unpack($args, $target)
+function nxs_mm_plugin_unpack($args, $sourcezipfile)
 {
+	
+	$destinationpath = $args["path"];
+	$destinationpath = rtrim($destinationpath, "/");
+	
+	$source_exists = file_exists($sourcezipfile);
+	$destination_exists = file_exists($destinationpath);
+	
+	//error_log("nxs_mm_plugin_unpack; unpacking new style :) ($sourcezipfile) ($destinationpath)");
+	//error_log("nxs_mm_plugin_unpack; source_exists; " . json_encode($source_exists));
+	//error_log("nxs_mm_plugin_unpack; destination_exists; " . json_encode($destination_exists));
+	
 	// use alternative https://codex.wordpress.org/Function_Reference/unzip_file to avoid dependency issues with hosting
 	// providers like InMotion (2018 03 10)
 	
-	if($zip = zip_open($target))
-	{
-	  while($entry = zip_read($zip))
-	  {
-	    $is_file = substr(zip_entry_name($entry), -1) == '/' ? false : true;
-	    $file_path = $args['path'].zip_entry_name($entry);
-	    if($is_file)
-	    {
-	      if(zip_entry_open($zip,$entry,"r")) 
-	      {
-	        $fstream = zip_entry_read($entry, zip_entry_filesize($entry));
-	        file_put_contents($file_path, $fstream );
-	        chmod($file_path, 0777);
-	        //echo "save: ".$file_path."<br />";
-	      }
-	      zip_entry_close($entry);
-	    }
-	    else
-	    {
-	      if(zip_entry_name($entry))
-	      {
-	        mkdir($file_path);
-	        chmod($file_path, 0777);
-	        //echo "create: ".$file_path."<br />";
-	      }
-	    }
-	  }
-	  zip_close($zip);
-	}
+	WP_Filesystem();
+	$dounzip = unzip_file($sourcezipfile, $destinationpath);
 	
 	if($args['preserve_zip'] === false)
 	{
 		unlink($target);   
+	}
+	
+	if (is_wp_error($dounzip)) 
+	{
+		echo "unzip err";
+		
+		$error = $dounzip->get_error_code();
+		$data = $dounzip->get_error_data($error);
+		
+		echo $error. ' - ';
+		print_r($data);
 	}
 }
 
@@ -159,13 +154,6 @@ function nxs_webmethod_installoneclickcontent()
 		{
 			error_log("theme; requires php 5.6 or above");
 			echo "Error; this theme requires at least PHP 5.6 (found: $ver). Please contact your hosting provider and ask them to upgrade the PHP version.";
-			$isok = false;
-		}
-		
-		if(!function_exists("zip_open"))
-		{
-			error_log("function zip_open not found; install /enable/ the php-zip module to fix this problem");
-			echo "Error; function zip_open not found. Unable to proceed. <a href='https://www.wpsupporthelp.com/answer/i-get-error-quot-function-zip-open-not-found-quot-php-zip-module-not-in-1513/'  target='_blank'>Click here to learn how to fix this</a>";
 			$isok = false;
 		}
 		
