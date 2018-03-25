@@ -55,6 +55,14 @@ function nxs_widgets_wordpresstitle_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
 				"placeholder" 		=> "Title goes here",
 			),
+			
+			array
+			(
+				"id" 				=> "title_searchresults",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Title (searchresults)", "nxs_td"),
+			),
+						
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
@@ -253,6 +261,10 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 		// $title = "Taxonomy";
 		$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
 		$title = $term->name;
+	}
+	else if (is_search() && $title_searchresults != "")
+	{
+		$title = $title_searchresults;
 	}
 	else if (is_archive())
 	{
