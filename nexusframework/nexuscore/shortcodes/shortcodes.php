@@ -1414,7 +1414,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$char = $order_base[$order_base_index];
 				$charorder = array_search($char, $alphabet);
 				$powerof = ($max_orders_chars - $order_base_index);
-				$value = $charorder * ($sizeperchar ** $powerof);
+				$factor = pow($sizeperchar, $powerof);	// cannot use ** because of PHP compatibility issues
+				$value = $charorder * $factor;
 				$order += $value;
 			}
 			
