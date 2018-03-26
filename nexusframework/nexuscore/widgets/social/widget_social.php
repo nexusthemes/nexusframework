@@ -126,6 +126,14 @@ function nxs_widgets_social_home_getoptions($args)
 				"unicontentablefield" => true,
 			),
 			array(
+				"id" 				=> "github_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("GitHub link", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Use full url or leave blank to skip this item", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to place a link to the GitHub account, place it here. Use the full url!", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array(
 				"id" 				=> "linkedin_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("LinkedIn link", "nxs_td"),
@@ -359,7 +367,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
 		
 		// replace values in mixedattributes with the lookup dictionary
-		$magicfields = array("title", "rss_url", "twitter_url", "facebook_url", "linkedin_url", "googleplus_url", "youtube_url", "pinterest_url", "instagram_url", "custom_1_url");
+		$magicfields = array("title", "rss_url", "twitter_url", "facebook_url", "linkedin_url", "googleplus_url", "youtube_url", "pinterest_url", "instagram_url", "github_url", "custom_1_url");
 		
 		$translateargs = array
 		(
@@ -423,6 +431,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	if ($pinterest_url == "dummy") { $pinterest_url = nxs_geturl_home(); }
 	if ($instagram_url == "dummy") { $instagram_url = nxs_geturl_home(); }
 	if ($custom_1_url == "dummy") { $custom_1_url = nxs_geturl_home(); }
+	if ($github_url == "dummy") { $github_url = nxs_geturl_home(); }
 	
 	
 	/* EXPRESSIONS
@@ -436,6 +445,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 	!$rss_url &&
 	!$twitter_url &&
 	!$facebook_url &&
+	!$github_url &&
 	!$linkedin_url &&
 	!$googleplus_url &&
 	!$youtube_url &&
@@ -457,6 +467,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		if ($youtube_url) 		{ $youtube_url = 	'<li><a target="_blank" href="' . $youtube_url . '">	<span class="nxs-icon-youtube"></span></a></li>'; }
 		if ($pinterest_url) 	{ $pinterest_url = 	'<li><a target="_blank" href="' . $pinterest_url . '">	<span class="nxs-icon-pinterest"></span></a></li>'; }
 		if ($instagram_url) 	{ $instagram_url = 	'<li><a target="_blank" href="' . $instagram_url . '">	<span class="nxs-icon-instagram"></span></a></li>'; }
+		if ($github_url) 		{ $github_url = 	'<li><a target="_blank" href="' . $github_url . '">	<span class="nxs-icon-github"></span></a></li>'; }
 		if ($custom_1_url)	
 		{
 			if ($custom_1_icon == "")
@@ -495,6 +506,7 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 					. $youtube_url
 					. $pinterest_url
 					. $instagram_url
+					. $github_url
 					. $custom_1_url
 					. '
 				</ul>';
@@ -687,7 +699,33 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 			</a>';	
 	}
 	
-
+	// ---
+	
+	// GITHUB
+	// If the accountname is set and there's no custom icon
+	if ($github_url != "" && $github_imageid == "") {
+		
+		$github_url = '<a href="' . $github_url . '" target="_new" class="nxs-social-github" ><li></li></a>';
+	
+	// If both the accountname and a custom icon is set
+	} else if ($github_url != "" && $github_imageid != "") {
+	
+		$imagemetadata= nxs_wp_get_attachment_image_src($github_imageid, 'full', true);
+		
+		// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
+		$github_imageurl 		= $imagemetadata[0];
+		$github_imageurl = nxs_img_getimageurlthemeversion($github_imageurl);
+		$github_imagewidth 	= $imagemetadata[1] . "px";
+		$github_imageheight 	= $imagemetadata[2] . "px";	
+	
+		$github_url = '
+			<a href="' . $github_url . '" target="_new" style="width: ' . $github_imagewidth . '; height: ' . $github_imageheight . ';">
+				<li style="background: url(' . $github_imageurl . ') no-repeat; width: ' . $github_imagewidth . '; height: ' . $github_imageheight . ';"></li>
+			</a>';	
+	}
+	
+	// ----
+	
 	// CUSTOM ACCOUNT
 	// If the accountname is set and there's no icon or custom image
 	if ($custom_1_url && !$custom_1_icon && !$custom_1_imageid){
