@@ -132,7 +132,8 @@ function nxs_widgets_comments_home_getoptions($args)
 				"dropdown" 			=> nxs_style_getdropdownitems("image_size"),
 				"unistylablefield"	=> true
 			),
-			array( 
+			array
+			( 
 				"id" 				=> "formfields",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Fields", "nxs_td"),
@@ -141,6 +142,43 @@ function nxs_widgets_comments_home_getoptions($args)
 					"name|email"=>nxs_l18n__("Name | Email", "nxs_td"), 
 				),
 				"unistylablefield"	=> true
+			),
+			//
+			array
+			( 
+				"id" 				=> "name_label",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Name label", "nxs_td"),
+			),
+			array
+			( 
+				"id" 				=> "email_label",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Email label", "nxs_td"),
+			),
+			array
+			( 
+				"id" 				=> "website_label",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Website label", "nxs_td"),
+			),
+			array
+			( 
+				"id" 				=> "comment_label",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Comment label", "nxs_td"),
+			),
+			array
+			( 
+				"id" 				=> "comment_button_text",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Comment button text", "nxs_td"),
+			),
+			array
+			( 
+				"id" 				=> "cancel_button_text",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Cancel button text", "nxs_td"),
 			),
 		),
 	);
@@ -487,6 +525,44 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 			
 			$title = $mixedattributes['title'];
 			
+			$name_label = $mixedattributes["name_label"];
+			if ($name_label == "")
+			{
+				$name_label = nxs_l18n__("Name[nxs:tooltip]", "nxs_td");
+			}
+			
+			//
+			
+			$email_label = $mixedattributes["email_label"];
+			if ($email_label == "")
+			{
+				$email_label = nxs_l18n__("Email address[nxs:tooltip]", "nxs_td");
+			}
+			
+			//
+			
+			$website_label = $mixedattributes["website_label"];
+			if ($website_label == "")
+			{
+				$website_label = nxs_l18n__("Website[nxs:tooltip]", "nxs_td");
+			}
+			
+			//
+			
+			$comment_label = $mixedattributes["comment_label"];
+			if ($comment_label == "")
+			{
+				$comment_label = nxs_l18n__("Comment[nxs:tooltip]", "nxs_td");
+			}
+			
+			// 
+			
+			$button_text = $mixedattributes["button_text"];
+			if ($button_text == "")
+			{
+				$button_text = nxs_l18n__("Send[nxs:tooltip]", "nxs_td");
+			}
+			
 			echo'
 			<div class="template" style="display: none;">
 				<div class="nxs-form ' . $concatenated_comments_css . '" id="nxs_commentform_' . $placeholderid . '">';
@@ -501,12 +577,12 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 					<input id="replytocommentid" type="hidden" name="replytocommentid" value="0" />
 			
 					<!-- NAME -->
-			    	<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Name[nxs:tooltip]", "nxs_td"); echo ' *:</label></div>
+			    	<div class="nxs-float-left nxs-width20"><label>'; echo $name_label; echo ' *:</label></div>
 			    	<div class="nxs-float-right nxs-width80"><input id="naam" name="naam" type="text"></div>
 			    	<div class="nxs-clear padding"></div>
 					
 					<!-- EMAIL -->
-					<div class="nxs-float-left nxs-width20"><label>' . nxs_l18n__("Email address[nxs:tooltip]", "nxs_td") . ' *:</label></div>
+					<div class="nxs-float-left nxs-width20"><label>' . $email_label . ' *:</label></div>
 					<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text"></div>
 					<div class="nxs-clear padding"></div>
 					';
@@ -515,20 +591,20 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 					{
 						echo '
 						<!-- WEBSITE -->
-						<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Website[nxs:tooltip]", "nxs_td"); echo ':</label></div>
+						<div class="nxs-float-left nxs-width20"><label>'; echo $website_label; echo ':</label></div>
 						<div class="nxs-float-right nxs-width80"><input id="website" name="website" type="text"></div>
 						<div class="nxs-clear padding"></div>';
 					}
 	
 					echo '
 					<!-- COMMENT -->
-					<div class="nxs-float-left nxs-width20"><label>'; nxs_l18n_e("Comment[nxs:tooltip]", "nxs_td"); echo ' *:</label></div>
+					<div class="nxs-float-left nxs-width20"><label>'; echo $comment_label; echo ' *:</label></div>
 					<div class="nxs-float-right nxs-width80"><textarea id="comment" name="comment"></textarea></div>
 					<div class="nxs-clear padding"></div>
 					
 					<!-- BUTTONS -->
-					<a class="nxs-button ' . $concatenated_button_css . ' nxs-margin-right15" href="#" onclick="postcomment_' . $placeholderid .'(); return false;">'; nxs_l18n_e("Send[nxs:tooltip]", "nxs_td"); echo '</a>
-					<a class="nxs-button ' . $concatenated_button_css . '" href="#" onclick="cancelcomment_' . $placeholderid .'(); return false;">'; nxs_l18n_e("Cancel[nxs:tooltip]", "nxs_td"); echo '</a>
+					<a class="nxs-button ' . $concatenated_button_css . ' nxs-margin-right15" href="#" onclick="postcomment_' . $placeholderid .'(); return false;">'; echo $comment_button_text; echo '</a>
+					<a class="nxs-button ' . $concatenated_button_css . '" href="#" onclick="cancelcomment_' . $placeholderid .'(); return false;">'; echo $cancel_button_text; echo '</a>
 					<div class="nxs-clear"></div>
 					
 			  </div>
