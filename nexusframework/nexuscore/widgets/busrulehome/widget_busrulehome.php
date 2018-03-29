@@ -166,7 +166,18 @@ function nxs_busrule_busrulehome_process($args, &$statebag)
 	$ishomepage = false;
 	
 	// check through the uri
-	if (true)
+	// this is only allowed if the system uses pretty permalinks
+	// else all pages will render like the homepage
+	
+	$isprettypermalinksenabled = true;
+	
+	$permalink_structure = get_option( 'permalink_structure' );
+	if ($permalink_structure == "")
+	{
+		$isprettypermalinksenabled = false;
+	}
+	
+	if ($isprettypermalinksenabled)
 	{
 		$serverrequri = nxs_geturicurrentpage();
 		$pieces = explode("?", $serverrequri);
