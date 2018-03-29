@@ -519,6 +519,7 @@ function nxs_license_update_page_content()
 			Frequently asked questions:
 		</p>
 		<ul>
+			<li><a href='https://www.wpsupporthelp.com/answer/how-can-i-see-what-is-being-updated-to-a-theme-when-it-indicates-1081/' target='_blank'>What has changed in the new version?</a></li>
 			<li><a href='https://www.wpsupporthelp.com/answer/is-it-safe-to-update-the-wordpress-theme-how-can-i-ensure-an-up-1410/' target='_blank'>Is it safe to update the WordPress theme?</a></li>
 			<li><a href='https://www.wpsupporthelp.com/wordpress-questions/updates-update-upgrade-wordpress-questions-27/' target='_blank'>All update related questions</a></li>
 		</ul>
