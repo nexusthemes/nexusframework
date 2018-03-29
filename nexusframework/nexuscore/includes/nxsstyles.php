@@ -623,7 +623,27 @@ function nxs_getfonts()
 	foreach ($googlewebfontspieces as $googlewebfontspiece)
 	{
 		$googlewebfontspiece = trim($googlewebfontspiece);
-		if ($googlewebfontspiece != "")
+		
+		$isvalid = true;
+		
+		if ($googlewebfontspiece == "")
+		{
+			$isvalid = false;
+		}
+		
+		$quotecount = substr_count ($googlewebfontspiece, "'");
+		if ($quotecount != 0 && $quotecount != 2)
+		{
+			$isvalid = false;
+		}
+		
+		$quotecount = substr_count ($googlewebfontspiece, "\"");
+		if ($quotecount != 0 && $quotecount != 2)
+		{
+			$isvalid = false;
+		}
+		
+		if ($isvalid)
 		{
 			$result[$googlewebfontspiece] = array("text" => "custom:" . $googlewebfontspiece);
 		}

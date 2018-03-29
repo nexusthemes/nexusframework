@@ -1589,6 +1589,39 @@ function nxs_frontendframework_nxs2_wp_footer()
 	      		$isfirstfont = true;
 	      		foreach ($allfontfams as $currentfont)
 	      		{
+	      			// skip invalid items
+	      			if (true)
+	      			{
+		      			//
+		      			$googlewebfontspiece = $currentfont;
+		      			$googlewebfontspiece = trim($googlewebfontspiece);
+								
+								$isvalid = true;
+								
+								if ($googlewebfontspiece == "")
+								{
+									$isvalid = false;
+								}
+								
+								$quotecount = substr_count ($googlewebfontspiece, "'");
+								if ($quotecount != 0 && $quotecount != 2)
+								{
+									$isvalid = false;
+								}
+								
+								$quotecount = substr_count ($googlewebfontspiece, "\"");
+								if ($quotecount != 0 && $quotecount != 2)
+								{
+									$isvalid = false;
+								}
+								
+								if (!$isvalid)
+								{
+									// skip this item
+									continue;
+								}
+							}
+	      			
 	      			if ($isfirstfont == false)
 	      			{
 	      				echo ",";
