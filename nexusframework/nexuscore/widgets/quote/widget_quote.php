@@ -409,6 +409,8 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 		$quote_alignment = 'nxs-margin-auto';
 	}
 	
+	
+	
 	// Stars
 	$empty_star = floor(5 - $stars);
 	$full_star = 5 - (ceil(5 - $stars));
@@ -420,18 +422,20 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	
 	if ($stars != 0) { $stars = $rating_text . " " . $full_star_html.$half_star_html.$empty_star_html; }
 	
+	
+	
 	if (true)
 	{	
 		// Stars and source
-		if ($source != "" && $destination_url == ""){ 
-	
+		if ($source != "" && $destination_url == "")
+		{ 
 			$source_textsize = nxs_getcssclassesforlookup("nxs-quote-fontsize", $source_textsize);
 	
 			$source = '
 				<p class="nxs-default-p source nxs-padding-bottom0">
 					<strong>'.$stars.'</strong>
 					<strong><span class="source '.$source_textsize.'">' . $source . '</span></strong>
-				</p>'; 
+				</p>';
 		} 
 		else if ($source != "" && $destination_url != "")
 		{
@@ -441,9 +445,17 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 					<a href="' . $destination_url . '" target="_new"><strong><span class="source '.$source_textsize.'">' . $source . '</span></strong></a>
 				</p>'; 
 		}
+		else if ($source == "" && $stars == "")
+		{
+			$source_textsize = nxs_getcssclassesforlookup("nxs-quote-fontsize", $source_textsize);
+	
+			$source = '
+				<p class="nxs-default-p source nxs-padding-bottom0">
+					<strong>'.$stars.'</strong>
+					<strong><span class="source '.$source_textsize.'">' . $source . '</span></strong>
+				</p>';
+		}
 	}
-	
-	
 	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -456,7 +468,6 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	} 
 	else 
 	{
-
 		if ($image_imageid != "" || $image_src != "")
 		{
 			
@@ -465,15 +476,11 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 		}
 		
 		echo '<div class="nxs-applylinkvarcolor nxs-relative ' . $quote_alignment . '" style="' . $quote_width . '">';
-		
-		
-		
 		echo $text;
 		echo '<div class="nxs-clear nxs-padding-bottom10"></div>';
 		echo $source;
 		echo '</div>
-		<div class="nxs-clear"></div>';			
-			
+		<div class="nxs-clear"></div>';
 	} 
 				
 	/* ------------------------------------------------------------------------------------------------- */
