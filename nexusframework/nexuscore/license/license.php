@@ -81,8 +81,6 @@ function nxs_license_notifyregistersuccess()
   <?php
 }
 
-
-
 function nxs_license_notifynolicense()
 {
 	if ($_REQUEST["oneclickcontent"] == "true")

@@ -5183,8 +5183,8 @@ function nxs_detect_ie()
 }
 
 function nxs_set_jsonheader()
-{
-		// set headers
+{	
+	// set headers
 	if (!nxs_detect_ie())
 	{
 		if(!headers_sent())
@@ -5244,7 +5244,7 @@ function nxs_webmethod_return_raw($args)
 		$existingoutput[] = nxs_ob_get_clean();
 	}
 	
-	nxs_set_jsonheader();
+	nxs_set_jsonheader(); 
 	http_response_code(200);
 
 	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
@@ -5277,8 +5277,6 @@ function nxs_webmethod_return_raw($args)
 			$v = preg_replace('~\xc2\xa0~', ' ', $v);
 			$args[$k] = $v;
 		}
-		
-		
 	}
 	
 	if ($_REQUEST["nxs_json_output_format"] == "prettyprint")
@@ -5292,21 +5290,99 @@ function nxs_webmethod_return_raw($args)
 	{
 		// important!! the json_encode can return nothing,
 		// on some servers, when the 2nd parameter (options),
-		// is specified; ticket 22986!
-		
-	  if ($_REQUEST["aaa"] == "aaa")
-		{
-			
-		}
-		
+		// is specified; ticket 22986!		
 		$output = json_encode($args);
 	}
-	
-
 	
 	echo $output;
 	
 	exit();
+}
+
+function nxs_webmethod_return_raw_async($args)
+{
+	if (headers_sent($filename, $linenum)) 
+	{
+		echo "nxs headers already send; $filename $linenum";
+		exit();
+	}
+	
+	$existingoutput = array();
+	
+	$numlevels = ob_get_level();
+	for ($i = 0; $i < $numlevels; $i++)
+	{
+		$existingoutput[] = nxs_ob_get_clean();
+	}
+	
+	nxs_set_jsonheader(); 
+	http_response_code(200);
+	
+	ignore_user_abort(true);
+	set_time_limit(0);
+
+	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
+	{
+		// very practical; the stacktrace and request are returned too,
+		// see the js console window to ease the debugging
+		$args["outputbeforeok"] = $existingoutput;
+		$args["request"] = $_REQUEST;
+		$args["stacktrace"] = nxs_getstacktrace();
+	}
+
+	// add 'result' to array
+	// $args["result"] = "OK";
+	
+	// sanitize malformed utf8 (if the case)
+	$args = nxs_array_toutf8string($args);
+	
+	// in some very rare situations the json_encode
+	// can stall/break the execution (see support ticket 13459)
+	// if there's weird Unicode characters in the HTML such as (C2 A0)
+	// which is a no-break character that is messed up
+	// (invoking json_encode on that output would not throw an exception
+	// but truly crash the server). To solve that problem, we use the following
+	// kudos to:
+	// http://stackoverflow.com/questions/12837682/non-breaking-utf-8-0xc2a0-space-and-preg-replace-strange-behaviour
+	foreach ($args as $k => $v)
+	{
+		if (is_string($v))
+		{
+			$v = preg_replace('~\xc2\xa0~', ' ', $v);
+			$args[$k] = $v;
+		}
+	}
+	
+	if ($_REQUEST["nxs_json_output_format"] == "prettyprint")
+	{
+		// only works in PHP 5.4 and above
+		$options = 0;
+		$options = $options | JSON_PRETTY_PRINT;
+		$output = json_encode($args, $options);
+	}
+	else
+	{
+		// important!! the json_encode can return nothing,
+		// on some servers, when the 2nd parameter (options),
+		// is specified; ticket 22986!		
+		$output = json_encode($args);
+	}
+	
+	ob_start();
+	echo $output;
+	header('Connection: close');
+	header('Content-Length: '.ob_get_length());
+	ob_end_flush();
+	ob_flush();
+	flush();
+	
+	// see http://php.net/manual/en/function.fastcgi-finish-request.php
+	// unlock session
+	session_write_close();
+	// flush to client
+	fastcgi_finish_request();
+	
+	// we don't invoke exit, as this is an async return (php code will proceed to execute)
 }
 
 function webmethod_return_alternativeflow($altflowid, $args)
