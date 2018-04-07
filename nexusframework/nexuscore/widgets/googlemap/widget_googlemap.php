@@ -204,7 +204,31 @@ function nxs_widgets_googlemap_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_googlemap_end",
 				"type" 				=> "wrapperend"
-			),		
+			),	
+			
+			// CONFIGURATION
+			
+			array
+			( 
+				"id" 				=> "wrapper_kml_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("KML (Keyhole_Markup_Language)", "nxs_td"),
+			),	
+			
+			array
+			( 
+				"id" 				=> "kml_postid",
+				"type" 				=> "image",
+				"label" 			=> nxs_l18n__("KML file", "nxs_td"),
+				"post_mime_type" => "application/xml",
+				"unicontentablefield" => true,
+			),
+			
+			array
+			( 
+				"id" 				=> "wrapper_kml_end",
+				"type" 				=> "wrapperend"
+			),	
 			
 			// TEXT
 			
@@ -834,6 +858,11 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	$button_heightiq = "";
 	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js, $button_heightiq, $button_fontzen, $destination_relation);
 
+	if ($kml_postid != "")
+	{
+		$kml_url = wp_get_attachment_url($kml_postid);
+	}
+	    	
 
 	nxs_ob_start();
 	?>
@@ -935,14 +964,33 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 			}
 			?>
 			<script>
+			
 				// if the browser is resized, then also re-center the map
 				jQ_nxs(document).bind('nxs_event_resizeend', function() 
 		    {
+		    	
 		    	nxs_js_log("detected resize of browser window...");
 		    	var map = nxs_js_maps["map_<?php echo $placeholderid; ?>"];
-		      map.setCenter({lat:<?php echo $lat;?>, lng:<?php echo $lng; ?>});
+		    	
+		    	<?php
+					if ($kml_url != "")
+					{
+						?>
+						var kmlLayer = new google.maps.KmlLayer({
+		          url: '<?php echo $kml_url; ?>',
+		          map: map
+		        });
+						<?php
+					}
+					else
+					{
+						?>
+			      map.setCenter({lat:<?php echo $lat;?>, lng:<?php echo $lng; ?>});
+			      <?php
+			    }
+			    ?>
 		    });
-				
+		    
 				jQuery(window).bind 
 				(
 					"nxs_js_trigger_googlemapsapikeyinvalid", 
@@ -962,20 +1010,44 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 				{
 					var myOptions = 
 					{
-					  	scrollwheel: false,
-		          		center: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
-		          		zoom: <?php echo $zoom; ?>,
-		          		mapTypeId: google.maps.MapTypeId.<?php echo strtoupper($maptypeid); ?>
-	        		};
-	        
-	        		nxs_js_maps["map_<?php echo $placeholderid; ?>"] = new google.maps.Map(document.getElementById("map_canvas_<?php echo $placeholderid; ?>"), myOptions);
-	        
-			        // add marker
-			        var marker = new google.maps.Marker
-			        ({
-		      			position: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
-		      			map: nxs_js_maps["map_<?php echo $placeholderid; ?>"],
-		    		});
+			  		scrollwheel: false,
+        		center: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
+        		zoom: <?php echo $zoom; ?>,
+        		mapTypeId: google.maps.MapTypeId.<?php echo strtoupper($maptypeid); ?>
+      		};
+        
+      		nxs_js_maps["map_<?php echo $placeholderid; ?>"] = new google.maps.Map(document.getElementById("map_canvas_<?php echo $placeholderid; ?>"), myOptions);
+      
+	       
+		    	
+		    	<?php
+		    	
+		    	if ($kml_postid != "")
+		    	{
+		    		$kml_url = wp_get_attachment_url($kml_postid);
+		    	}
+		    	
+		    	if ($kml_url != "")
+		    	{
+		    		?>
+		    		var kmlLayer = new google.maps.KmlLayer({
+		          url: '<?php echo $kml_url; ?>',
+		          map: nxs_js_maps["map_<?php echo $placeholderid; ?>"]
+		        });
+		        <?php
+		    	}
+		    	else
+		    	{
+		    		?>
+		    		 // add marker
+	        	var marker = new google.maps.Marker
+		        ({
+	      			position: new google.maps.LatLng(<?php echo $lat; ?>, <?php echo $lng; ?>),
+	      			map: nxs_js_maps["map_<?php echo $placeholderid; ?>"],
+	    			});
+	    			<?php
+			    }
+		    	?>
 				}
 				
 				function nxs_js_ext_widget_googlemap_init_<?php echo $placeholderid; ?>_initmapscript()
