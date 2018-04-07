@@ -9,24 +9,26 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 	extract($runtimeblendeddata);
 	$value = $$id;	// $id is the parametername, $$id is the value of that parameter	
 		
-	if ($value != "") {
+	if ($value != "") 
+	{
+		if ($value == "featuredimg")
+		{
+			$containerpostid = $_REQUEST["clientpopupsessioncontext"]["containerpostid"];
+			$imgidtopreview = get_post_thumbnail_id($containerpostid);
+			//var_dump($postid);
+			//var_dump($containerpostid);
+			//var_dump($imgidtopreview);
+		}
+		else
+		{
+			$imgidtopreview = $value;
+		}
+		
+		$mimetype = get_post_mime_type($imgidtopreview);
+		
 		?>
 		<div class="content2">
 			<div class="box">
-				<?php
-				if ($value == "featuredimg")
-				{
-					$containerpostid = $_REQUEST["clientpopupsessioncontext"]["containerpostid"];
-					$imgidtopreview = get_post_thumbnail_id($containerpostid);
-					//var_dump($postid);
-					//var_dump($containerpostid);
-					//var_dump($imgidtopreview);
-				}
-				else
-				{
-					$imgidtopreview = $value;
-				}
-				?>
 				<?php echo nxs_genericpopup_getrenderedboxtitle($optionvalues, $args, $runtimeblendeddata, $label, $tooltip); ?>
         		
         <div class="box-content">
@@ -72,9 +74,18 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 							
 								if (nxs_postexistsbyid($imgidtopreview))
 								{
-									?>
-	              	<img src='<?php echo $imageurl; ?>' class="nxs-icon-left" />
-	            		<?php
+									if ($mimetype == "application/xml")
+									{
+										?>
+										XML file<br />
+										<?php
+									}
+									else
+									{
+										?>
+		              	<img src='<?php echo $imageurl; ?>' class="nxs-icon-left" />
+		            		<?php
+		            	}
 	            	}
 	            	else
 	            	{
@@ -93,45 +104,61 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
           		// nothing
           	}
             ?>
-          </a>
+          </a><br />
                                   
 					<?php
+					
+					
+					
+					
 					if ($imageexists && $imagemetadata != "") 
 					{
-						// resetting the image to "full" for correct metadata "width" and "height" inclusion 
-						$imagemetadata= nxs_wp_get_attachment_image_src($imgidtopreview, 'full', true);
-						
-						if ($imagemetadata[1] > 1999 || $imagemetadata[2] > 1999) {	
-							
-							echo '<p>width : <span class="blink" style="color: red; font-weight: bold">'.$imagemetadata[1].'</span> px</p>';
-							echo '<p>height : <span class="blink" style="color: red; font-weight: bold">'.$imagemetadata[2].'</span> px</p>'; 
-							echo '<p>The image you\'ve uploaded exceeds the width and / or height of <span style="font-weight: bold">2000</span> px. Images this size will severely reduce your site\'s performance! Resize it.</p>'; 
-						
-						} else if ($imagemetadata[1] > 1366 || $imagemetadata[2] > 768) {	
-						
-							echo '<p>width : <span class="blink" style="color: orange; font-weight: bold">'.$imagemetadata[1].'</span> px</p>';
-							echo '<p>height : <span class="blink" style="color: orange; font-weight: bold">'.$imagemetadata[2].'</span> px</p>'; 
-							echo '<p>The image you\'ve uploaded exceeds the width of <span style="font-weight: bold">1366</span> px and / or height of <span style="font-weight: bold">768</span> px. This is larger than the most commonly used screen resolution. You might consider resizing it.</p>'; 
-						
-						} 
-						else 
+						if ($mimetype == "application/xml")
 						{
+							// 	
 							$posttitle = nxs_gettitle_for_postid($imgidtopreview);
-							echo "<p>title : {$posttitle}</p>";
-							echo '<p>width : '.$imagemetadata[1].' px</p>';
-							echo '<p>height : '.$imagemetadata[2].' px</p>';
+							echo "<p>title : {$posttitle}</p>";						
 						}
-					} 
+						else
+						{
+							// resetting the image to "full" for correct metadata "width" and "height" inclusion 
+							$imagemetadata= nxs_wp_get_attachment_image_src($imgidtopreview, 'full', true);
+							
+							if ($imagemetadata[1] > 1999 || $imagemetadata[2] > 1999) {	
+								
+								echo '<p>width : <span class="blink" style="color: red; font-weight: bold">'.$imagemetadata[1].'</span> px</p>';
+								echo '<p>height : <span class="blink" style="color: red; font-weight: bold">'.$imagemetadata[2].'</span> px</p>'; 
+								echo '<p>The image you\'ve uploaded exceeds the width and / or height of <span style="font-weight: bold">2000</span> px. Images this size will severely reduce your site\'s performance! Resize it.</p>'; 
+							
+							} else if ($imagemetadata[1] > 1366 || $imagemetadata[2] > 768) {	
+							
+								echo '<p>width : <span class="blink" style="color: orange; font-weight: bold">'.$imagemetadata[1].'</span> px</p>';
+								echo '<p>height : <span class="blink" style="color: orange; font-weight: bold">'.$imagemetadata[2].'</span> px</p>'; 
+								echo '<p>The image you\'ve uploaded exceeds the width of <span style="font-weight: bold">1366</span> px and / or height of <span style="font-weight: bold">768</span> px. This is larger than the most commonly used screen resolution. You might consider resizing it.</p>'; 
+							
+							} 
+							else 
+							{
+								$posttitle = nxs_gettitle_for_postid($imgidtopreview);
+								echo "<p>title : {$posttitle}</p>";
+								echo '<p>width : '.$imagemetadata[1].' px</p>';
+								echo '<p>height : '.$imagemetadata[2].' px</p>';
+							}
+						}
+					}
 					
-					$mimetype = get_post_mime_type($imgidtopreview);
 					if ($mimetype == "") {
 						$mimetype = __("Unknown mimetype");
+					}
+					else if($mimetype == "application/xml")
+					{
+						echo '<p>type : '.$mimetype.'</p>';
 					} 
 					else 
 					{
 						echo '<p>type : '.$mimetype.'</p>';
 					}
-                    ?>
+          ?>
                                   
                      <div class="nxs-clear"></div>
                 </div>
