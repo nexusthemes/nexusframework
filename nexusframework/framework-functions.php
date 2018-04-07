@@ -1494,6 +1494,15 @@ function nxs_webmethod_robots($result)
 	return $result;
 }
 
+// allow uploads of kml and kmz files (Google Maps)
+function add_upload_mimes($mimes) 
+{
+  $mimes['kml'] = 'application/xml';
+  $mimes['kmz'] = 'application/zip';
+  return $mimes;
+}
+add_filter('upload_mimes', 'add_upload_mimes');
+
 add_action('add_meta_boxes', 'nxs_add_metaboxes');
 function nxs_add_metaboxes()
 {
