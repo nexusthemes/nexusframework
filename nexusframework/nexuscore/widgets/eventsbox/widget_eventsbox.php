@@ -463,12 +463,15 @@ function nxs_widgets_eventsbox_render_webpart_render_htmlvisualization($args)
 			$skipitem = false;
 			if ($items_filter_hideeventsinpast != "")
 			{
-				$objDateTime = new DateTime('NOW');
 				$d1 = nxs_parse_ddmmyyyy($date_dd_mm_yy);
 				$now = new DateTime();
 				$today_dd_mm_yyyy = $now->format('d-m-Y');
 				$d2 = nxs_parse_ddmmyyyy($today_dd_mm_yyyy);
-				if ($d1 < $d2) {
+				if ($date_dd_mm_yy == $today_dd_mm_yyyy)
+				{
+					// 
+				}
+				else if ($d1 < $d2) {
 					// before today
 					$skipitem = true;
 				}
