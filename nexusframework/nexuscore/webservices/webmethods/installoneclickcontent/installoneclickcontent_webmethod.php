@@ -25,7 +25,7 @@ function nxs_mm_get_plugins($plugins)
   	
   	if ($shoulddownloadandinstall)
   	{
-    	nxs_mm_plugin_download($plugin['path'], $args['path'].$plugin['name'].'.zip');
+    	nxs_mm_plugin_download($plugin['path'], $args['path'] . $plugin['name'].'.zip');
     	nxs_mm_plugin_unpack($args, $args['path'].$plugin['name'].'.zip');
     }
     
@@ -35,10 +35,8 @@ function nxs_mm_get_plugins($plugins)
 
 function nxs_mm_plugin_download($url, $path) 
 {
-  $ch = curl_init($url);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  $data = curl_exec($ch);
-  curl_close($ch);
+	$data = nxs_geturlcontents(array("url") => $url);
+	
   if(file_put_contents($path, $data))
   {
   	return true;
