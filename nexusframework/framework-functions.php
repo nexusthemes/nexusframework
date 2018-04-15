@@ -738,6 +738,12 @@ function nxs_init()
   			var_dump($_SERVER);
   			die();
   		}
+  		else if ($_REQUEST["nxs"] == "pluginfolderwritable")
+  		{
+  			$folder = ABSPATH.'wp-content/plugins/';
+  			var_dump($folder);
+  			die();
+  		}
   		else if ($_REQUEST["nxs"] == "checklicenseserver")
   		{
   			$urls = array("https://www.example.com", "http://www.ip-adress.eu/", nxs_license_getlicenseserverurl($purpose));
@@ -769,10 +775,30 @@ function nxs_init()
 	  			{
 	  				echo "curl returns: skipped<br />";
 	  			}
+	  			else if ($_REQUEST["curl"] == "initonly")
+	  			{
+	  				echo "curl_init function exists?";
+	  				var_dump(function_exists("curl_init"));
+	  				
+	  				echo "curl_version function exists?";
+	  				var_dump(function_exists("curl_version"));
+	  				
+	  				
+	  				
+	  				echo "curl initing...<br />";
+	  				$ch = curl_init();
+	  				
+	  				echo "curl version...<br />";
+	  				$v = curl_version();
+	  				var_dump($v);
+	  				
+	  				curl_close($ch);
+	  				echo "closed :)<br />";
+	  			}
 	  			else
 	  			{ 
 		  			$ch = curl_init();
-				    curl_setopt($ch, CURLOPT_URL, $Url);
+				    curl_setopt($ch, CURLOPT_URL, $url);
 				    curl_setopt($ch, CURLOPT_REFERER, "http://www.example.org/yay.htm");
 				    curl_setopt($ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0");
 				    curl_setopt($ch, CURLOPT_HEADER, 0);
