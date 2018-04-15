@@ -208,6 +208,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = strtoupper($input);
 		}
+		else if ($op == "empty")
+		{
+			$input = "";
+		}
 		else if ($op == "count")
 		{
 			$seperator = ";";
@@ -1208,40 +1212,55 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "modeluriscount")
 		{
-			global $nxs_g_modelmanager;
-			
-			$iterator_datasource = $atts["singularschema"];
-			
-			$cachebehaviour = $atts["cachebehaviour"];
-			if ($cachebehaviour == "")
-			{
-			}
-			else if ($cachebehaviour == "none")
-			{
-				// keep existing
-			}
-			else if ($cachebehaviour == "refreshfirstphpruntime")
-			{
-				// refreshes the cache the first time this is requested in the php runtime duration
-				global $nxs_g_modelrefreshphpruntime;
-				if (!isset($nxs_g_modelrefreshphpruntime[$iterator_datasource]))
+			if ($atts["singularschema"] != "")
+			{	
+				global $nxs_g_modelmanager;
+				
+				$iterator_datasource = $atts["singularschema"];
+				
+				$cachebehaviour = $atts["cachebehaviour"];
+				if ($cachebehaviour == "")
 				{
-					$nxs_g_modelrefreshphpruntime[$iterator_datasource] = true;
-					//error_log("nxs_g_modelrefreshphpruntime refresh required for $iterator_datasource");
-					// clear it!
-					$nxs_g_modelmanager->cachebulkmodels($iterator_datasource);
 				}
+				else if ($cachebehaviour == "none")
+				{
+					// keep existing
+				}
+				else if ($cachebehaviour == "refreshfirstphpruntime")
+				{
+					// refreshes the cache the first time this is requested in the php runtime duration
+					global $nxs_g_modelrefreshphpruntime;
+					if (!isset($nxs_g_modelrefreshphpruntime[$iterator_datasource]))
+					{
+						$nxs_g_modelrefreshphpruntime[$iterator_datasource] = true;
+						//error_log("nxs_g_modelrefreshphpruntime refresh required for $iterator_datasource");
+						// clear it!
+						$nxs_g_modelmanager->cachebulkmodels($iterator_datasource);
+					}
+				}
+				else
+				{
+					nxs_webmethod_return_nack("unsupported cachebehaviour; $cachebehaviour");
+				}
+			
+				$iteratormodeluri = "singleton@listof{$iterator_datasource}";
+				$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
+				$instances = $contentmodel[$iterator_datasource]["instances"];
+							
+				$input = count($instances);
+			}
+			else if ($atts["modeluris"] != "")
+			{
+				// derive the modeluris count upon a specified ; seperated set
+				
+				$instances = explode(";", $atts["modeluris"]);
+				$instances = array_filter($instances);
+				$input = count($instances);
 			}
 			else
 			{
-				nxs_webmethod_return_nack("unsupported cachebehaviour; $cachebehaviour");
+				$input = "0";
 			}
-			
-			$iteratormodeluri = "singleton@listof{$iterator_datasource}";
-			$contentmodel = $nxs_g_modelmanager->getcontentmodel($iteratormodeluri);
-			$instances = $contentmodel[$iterator_datasource]["instances"];
-						
-			$input = count($instances);
 		}
 		else if ($op == "listmodeluris")
 		{
@@ -1654,6 +1673,254 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$length = $atts["length"];
 			$input = nxs_truncate_string($input, $length);
+		}
+		else if ($op == "adwordskeywordplannertool")
+		{
+			// doc; see https://support.google.com/adwords/editor/answer/56368?hl=en
+			// columns; see https://support.google.com/adwords/editor/answer/57747
+			$linetype = $atts["linetype"];
+			
+			$columns_meta = array
+			(
+				"Campaign" => array
+				(
+					"linetype_campaign_value_rule" => "requiresvalue",
+					"linetype_adgroup_value_rule" => "requiresvalue",
+					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+				"Campaign Status" => array
+				(
+					"linetype_campaign_value_rule" => "requiresvalue",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),
+				"Campaign daily budget" => array
+				(
+					"linetype_campaign_value_rule" => "requiresvalue",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),
+				"Display Network" => array
+				(
+					"linetype_campaign_value_rule" => "requiresvalue",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),
+				"Custom Bid Type" => array
+				(
+					"linetype_campaign_value_rule" => "requiresvalue",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),
+				"Ad Group Type" => array
+				(
+					"linetype_campaign_value_rule" => "requiresvalue",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),
+				"Flexible Reach" => array
+				(
+					"linetype_campaign_value_rule" => "requiresvalue",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),
+				"Ad Group" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresvalue",
+					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+				"Keyword" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
+					"linetype_adexpandedtextad_value_rule" => "requiresempty",
+				),
+				"Type" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),
+				"Max CPC" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresvalue",
+					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),
+				"Ad Group Status" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresvalue",
+					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
+					"linetype_expandedtextad_value_rule" => "requiresempty",
+				),				
+				"Final URL" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+				"Headline 1" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+				"Headline 2" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+				"Description" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+				"Path 1" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+				"Path 2" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+				"Status" => array
+				(
+					"linetype_campaign_value_rule" => "requiresempty",
+					"linetype_adgroup_value_rule" => "requiresempty",
+					"linetype_adgroupkeyword_value_rule" => "requiresempty",
+					"linetype_expandedtextad_value_rule" => "requiresvalue",
+				),
+			);
+			
+			if ($datasource == "")
+			{
+				if ($linetype == "header")
+				{
+					$input = "";
+					$input .= "<tr>";
+					
+					foreach ($columns_meta as $column => $meta)
+					{
+						$input .=  "<td>$column</td>";
+					}
+					$input .=  "</tr>";
+				}
+				else if ($linetype == "campaign" || $linetype == "adgroup"  || $linetype == "adgroupkeyword" || $linetype == "adexpandedtextad")
+				{
+					$input = "";
+					$input .= "<tr>";
+					
+					foreach ($columns_meta as $column => $meta)
+					{
+						$columnid = $column;
+						$columnid = strtolower($columnid);
+						$columnid = str_replace(" ", "_", $columnid);
+						$value = $atts[$columnid];
+						if ($value == "nxs:squareopensquareclose")
+						{
+							$value = "[]";
+						}
+						
+						//
+						$value_requirement = $meta["linetype_{$linetype}_value_rule"];
+						if ($value_requirement == "requiresvalue")
+						{
+							if ($value == "")
+							{
+								return "linetype ($linetype) column ($columnid) value is required but not set " . json_encode($atts);
+							}
+						}
+						else if ($value_requirement == "requiresempty")
+						{
+							if ($value != "")
+							{
+								if ($ignore_value_requirement == "true")
+								{
+									$value = "";
+								}
+								else
+								{
+									return "linetype ($linetype) column ($columnid) value should be empty but its not";
+								}
+							}
+						}
+						
+						$input .=  "<td class='$columnid'>$value</td>";
+					}
+					$input .=  "</tr>";
+				}
+				else 
+				{
+					$input = "unsupported linetype? ($linetype)";
+				}
+			}
+			else if ($datasource == "adpatterns")
+			{
+				$adpattern_index = -1;
+				$exploded_adpattern_ids = explode(";", $adpattern_ids);
+				foreach ($exploded_adpattern_ids as $adpattern_id)
+				{
+					$adpattern_index++;
+					
+					if ($linetypes == "")
+					{
+						return "no linetypes specified?";
+					}
+								
+					$exploded_linetypes = explode(";", $linetypes);
+					foreach ($exploded_linetypes as $linetype)
+					{
+						//$input .= "output for adpattern $adpattern_id linetype $linetype:<br />";
+						
+						// recursively invoke the linetypes
+						$invoke_args = array();
+						$invoke_args = array_merge($invoke_args, $atts);	// copy atts
+						$invoke_args["ops"] = "adwordskeywordplannertool";
+						unset($invoke_args["datasource"]);
+						unset($invoke_args["adpattern_ids"]);
+						unset($invoke_args["linetypes"]);
+						$invoke_args["ignore_value_requirement"] = "true";
+						$invoke_args["linetype"] = $linetype;
+						
+						$sub_shortcode = "";
+						$sub_shortcode .= "[nxs_string ";
+						foreach ($invoke_args as $k => $v)
+						{
+							$sub_shortcode .= "{$k}='{$v}' ";
+						}
+						$sub_shortcode .= "]";
+						
+						$cnt = count($exploded_adpattern_ids);
+						//$input .= "<tr><td>ad for adpattern_index $adpattern_index / $cnt ($adpattern_ids):</td></tr>";
+						$input .= do_shortcode($sub_shortcode);
+					}
+				}
+			}
 		}
 	}
 	
@@ -2318,21 +2585,22 @@ add_shortcode('nxsgooglemap', 'nxs_sc_googlemap');
 wp_oembed_add_provider( 'http://www.ted.com/talks/*', 'http://www.ted.com/talks/oembed.json' );
 
 // kudos to http://wordpress.stackexchange.com/questions/67740/ted-talks-shortcode-not-working
-function nxs_ted_shortcode( $atts ) {
-    // We need to use the WP_Embed class instance
-    global $wp_embed;
+function nxs_ted_shortcode( $atts ) 
+{
+  // We need to use the WP_Embed class instance
+  global $wp_embed;
 
-    // The "id" parameter is required
-    if ( empty($atts['id']) )
-        return '';
+  // The "id" parameter is required
+  if ( empty($atts['id']) )
+      return '';
 
-    // Construct the TEDTalk URL
-    $url = 'http://www.ted.com/talks/view/lang/eng/id/' . $atts['id'];
+  // Construct the TEDTalk URL
+  $url = 'http://www.ted.com/talks/view/lang/eng/id/' . $atts['id'];
 
-    // Run the URL through the  handler.
-    // This handler handles calling the oEmbed class
-    // and more importantly will also do the caching!
-    return $wp_embed->shortcode( $atts, $url );
+  // Run the URL through the  handler.
+  // This handler handles calling the oEmbed class
+  // and more importantly will also do the caching!
+  return $wp_embed->shortcode( $atts, $url );
 }
 add_shortcode('ted', 'nxs_ted_shortcode');
 
@@ -2396,7 +2664,6 @@ function nxs_sc_widget($atts, $content = null, $name='')
 	return $renderresult["html"];
 }
 add_shortcode('nxs_widget', 'nxs_sc_widget');
-
 
 function nxs_sc_video($atts, $content = null, $name='') 
 {
