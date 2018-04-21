@@ -233,11 +233,17 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "str_replace")
 		{
+			//error_log("str_replace;input;$input");
 			$search = $atts["search"];
+			//error_log("str_replace;search;$search");
 			if ($search != "")
 			{
 				$replace = $atts["replace"];
+				//error_log("str_replace;replace;$replace");
 				$input = str_replace($search, $replace, $input);
+				
+				// also replace the htmlentities version of the search
+				$input = str_replace(htmlentities($search), $replace, $input);
 			}
 			
 			// if the trimmed value is empty
@@ -336,6 +342,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$inthash = intval(substr($md5, 0, 8), 16);
 			$index = $inthash % $max;
 			$input = $pieces[$index];
+		}
+		else if ($op == "singlequote")
+		{
+			$input = "'";
 		}
 		else if ($op == "ucwords")
 		{
@@ -1381,6 +1391,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
 						$conditionevaluation = ($fieldvalue == $operatorvalue);
 					}
+					else if ($operator == "!equals")
+					{
+						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+						$conditionevaluation = ($fieldvalue != $operatorvalue);
+					}
 					else if ($operator == "equalscaseinsensitive")
 					{
 						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
@@ -1475,13 +1490,24 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "map")
 		{
-			if (isset($atts[$input]))
+			if ($input == "")
 			{
-				$input = $atts[$input];
+				$alternativekey = "empty";
+				if (array_key_exists($alternativekey, $atts))
+				{
+					$input = $atts[$alternativekey];
+				}
 			}
 			else
 			{
-				$input = $atts["fallback"];
+				if (isset($atts[$input]))
+				{
+					$input = $atts[$input];
+				}
+				else
+				{
+					$input = $atts["fallback"];
+				}
 			}
 		}
 		else if ($op == "strip_tags")
@@ -1501,6 +1527,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 		else if ($op == "urlencode")
 		{
 			$input = urlencode($input);
+		}
+		else if ($op == "the_ID")
+		{
+			$input = get_the_ID();
 		}
 		else if ($op == "currenturi")
 		{
@@ -1673,254 +1703,6 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$length = $atts["length"];
 			$input = nxs_truncate_string($input, $length);
-		}
-		else if ($op == "adwordskeywordplannertool")
-		{
-			// doc; see https://support.google.com/adwords/editor/answer/56368?hl=en
-			// columns; see https://support.google.com/adwords/editor/answer/57747
-			$linetype = $atts["linetype"];
-			
-			$columns_meta = array
-			(
-				"Campaign" => array
-				(
-					"linetype_campaign_value_rule" => "requiresvalue",
-					"linetype_adgroup_value_rule" => "requiresvalue",
-					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-				"Campaign Status" => array
-				(
-					"linetype_campaign_value_rule" => "requiresvalue",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),
-				"Campaign daily budget" => array
-				(
-					"linetype_campaign_value_rule" => "requiresvalue",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),
-				"Display Network" => array
-				(
-					"linetype_campaign_value_rule" => "requiresvalue",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),
-				"Custom Bid Type" => array
-				(
-					"linetype_campaign_value_rule" => "requiresvalue",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),
-				"Ad Group Type" => array
-				(
-					"linetype_campaign_value_rule" => "requiresvalue",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),
-				"Flexible Reach" => array
-				(
-					"linetype_campaign_value_rule" => "requiresvalue",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),
-				"Ad Group" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresvalue",
-					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-				"Keyword" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
-					"linetype_adexpandedtextad_value_rule" => "requiresempty",
-				),
-				"Type" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),
-				"Max CPC" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresvalue",
-					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),
-				"Ad Group Status" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresvalue",
-					"linetype_adgroupkeyword_value_rule" => "requiresvalue",
-					"linetype_expandedtextad_value_rule" => "requiresempty",
-				),				
-				"Final URL" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-				"Headline 1" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-				"Headline 2" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-				"Description" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-				"Path 1" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-				"Path 2" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-				"Status" => array
-				(
-					"linetype_campaign_value_rule" => "requiresempty",
-					"linetype_adgroup_value_rule" => "requiresempty",
-					"linetype_adgroupkeyword_value_rule" => "requiresempty",
-					"linetype_expandedtextad_value_rule" => "requiresvalue",
-				),
-			);
-			
-			if ($datasource == "")
-			{
-				if ($linetype == "header")
-				{
-					$input = "";
-					$input .= "<tr>";
-					
-					foreach ($columns_meta as $column => $meta)
-					{
-						$input .=  "<td>$column</td>";
-					}
-					$input .=  "</tr>";
-				}
-				else if ($linetype == "campaign" || $linetype == "adgroup"  || $linetype == "adgroupkeyword" || $linetype == "adexpandedtextad")
-				{
-					$input = "";
-					$input .= "<tr>";
-					
-					foreach ($columns_meta as $column => $meta)
-					{
-						$columnid = $column;
-						$columnid = strtolower($columnid);
-						$columnid = str_replace(" ", "_", $columnid);
-						$value = $atts[$columnid];
-						if ($value == "nxs:squareopensquareclose")
-						{
-							$value = "[]";
-						}
-						
-						//
-						$value_requirement = $meta["linetype_{$linetype}_value_rule"];
-						if ($value_requirement == "requiresvalue")
-						{
-							if ($value == "")
-							{
-								return "linetype ($linetype) column ($columnid) value is required but not set " . json_encode($atts);
-							}
-						}
-						else if ($value_requirement == "requiresempty")
-						{
-							if ($value != "")
-							{
-								if ($ignore_value_requirement == "true")
-								{
-									$value = "";
-								}
-								else
-								{
-									return "linetype ($linetype) column ($columnid) value should be empty but its not";
-								}
-							}
-						}
-						
-						$input .=  "<td class='$columnid'>$value</td>";
-					}
-					$input .=  "</tr>";
-				}
-				else 
-				{
-					$input = "unsupported linetype? ($linetype)";
-				}
-			}
-			else if ($datasource == "adpatterns")
-			{
-				$adpattern_index = -1;
-				$exploded_adpattern_ids = explode(";", $adpattern_ids);
-				foreach ($exploded_adpattern_ids as $adpattern_id)
-				{
-					$adpattern_index++;
-					
-					if ($linetypes == "")
-					{
-						return "no linetypes specified?";
-					}
-								
-					$exploded_linetypes = explode(";", $linetypes);
-					foreach ($exploded_linetypes as $linetype)
-					{
-						//$input .= "output for adpattern $adpattern_id linetype $linetype:<br />";
-						
-						// recursively invoke the linetypes
-						$invoke_args = array();
-						$invoke_args = array_merge($invoke_args, $atts);	// copy atts
-						$invoke_args["ops"] = "adwordskeywordplannertool";
-						unset($invoke_args["datasource"]);
-						unset($invoke_args["adpattern_ids"]);
-						unset($invoke_args["linetypes"]);
-						$invoke_args["ignore_value_requirement"] = "true";
-						$invoke_args["linetype"] = $linetype;
-						
-						$sub_shortcode = "";
-						$sub_shortcode .= "[nxs_string ";
-						foreach ($invoke_args as $k => $v)
-						{
-							$sub_shortcode .= "{$k}='{$v}' ";
-						}
-						$sub_shortcode .= "]";
-						
-						$cnt = count($exploded_adpattern_ids);
-						//$input .= "<tr><td>ad for adpattern_index $adpattern_index / $cnt ($adpattern_ids):</td></tr>";
-						$input .= do_shortcode($sub_shortcode);
-					}
-				}
-			}
 		}
 	}
 	
@@ -2204,7 +1986,19 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		  	}
 		  }
 		}
-		
+		else if ($op == "url_contains")
+		{
+			$currenturl = nxs_geturlcurrentpage();
+			$contains = $atts["contains"];
+			if (nxs_stringcontains($currenturl, $contains))
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+		}
 		else
 		{
 			// bool operation to be implemented ...
@@ -2277,10 +2071,27 @@ function nxs_sc_int($atts, $content = null, $name='')
 		{
 			$input = intval($atts["p1"]) + intval($atts["p2"]);
 		}
+		else if ($op == "percentage")
+		{
+			if ($input == "")
+			{
+				$input = $atts["empty"];
+			}
+			else 
+			{
+				error_log("nxs_int;percentage;$percentage;input;$input");
+				$percentage = $atts["percentage"];
+				$input = ($input / 100) * $percentage;
+				error_log("nxs_int;percentage;$percentage;output;$input");
+			}
+		}
 	}
 }
 add_shortcode("nxsint", "nxs_sc_int");
 add_shortcode("nxs_int", "nxs_sc_int");
+
+
+
 
 function nxs_sc_command($atts, $content = null, $name='') 
 {
