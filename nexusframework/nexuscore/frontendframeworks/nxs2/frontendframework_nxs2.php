@@ -1193,6 +1193,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
  			}
  		}
  	}
+ 	
  	if ($destination_target == "_self")
  	{
  		$destination_target = "_self";
@@ -1243,7 +1244,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	
 	if ($url != "")
 	{
-		if ($destination_target_html == 'target="_self"')
+		if ($destination_target == "_self")
 		{
 			$onclick = " onClick=\"window.location.href='{$url}';\" ";
 		}
