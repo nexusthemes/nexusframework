@@ -603,6 +603,8 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	);
 	$filter_pagination_pagesize = nxs_filter_translate_v2($translateargs);
 	
+	
+	
 	// handle fallbacks / ease of use scenarios
 	if (is_archive())
 	{
@@ -854,6 +856,8 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			$lookup = nxs_lookups_blendlookupstoitselfrecursively($lookup);
 		}
 		
+		 
+		
 		global $nxs_gl_sc_currentscope;
 		$nxs_gl_sc_currentscope["list.iterator.filter"] = true;
 		
@@ -983,6 +987,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 				);
 				$sublookups = nxs_lookups_getlookups_for_context($context);
 				nxs_lookups_context_adddynamiclookups($lookupscontext, $sublookups);
+				nxs_lookups_context_adddynamiclookups("global", $lookup);
 			}
 			
 			// apply shortcodes
@@ -992,6 +997,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 			if (true)
 			{
 				nxs_lookups_context_removedynamiclookups($lookupscontext);
+				nxs_lookups_context_removedynamiclookups("global");
 			}
 			
 			// ----
@@ -1174,6 +1180,14 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 	// The framework uses this array with its accompanying values to render the page
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-'.$placeholderid;
+	
+	// allow plugins to filter the result
+	$filterargs = array
+	(
+		"widget_lookups" => $lookups_widget,
+	);
+	$result = apply_filters("nxs_f_widget_htmlvisualization", $result, $filterargs);
+
 	return $result;
 }
 
