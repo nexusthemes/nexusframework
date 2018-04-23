@@ -1417,6 +1417,19 @@ function nxs_sc_string($atts, $content = null, $name='')
 						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
 						$conditionevaluation = strcasecmp($fieldvalue, $operatorvalue) == 0;
 					}
+					else if ($operator == "containscaseinsensitive")
+					{
+						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+						$position = stripos($fieldvalue, $operatorvalue);
+						if ($position === false)
+						{
+							$conditionevaluation = false;
+						}
+						else
+						{
+							$conditionevaluation = true;
+						}
+					}
 					else if ($operator == "equalscaseinsensitivetrimmed")
 					{
 						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
