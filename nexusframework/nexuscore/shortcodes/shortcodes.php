@@ -1383,7 +1383,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 								
 				$conditionevaluation = true;
 
-				$conditionindexers = array("", "_1", "_2");	// add more conditionindexers here when needed...
+				$conditionindexers = array("", "_1", "_2", "_3");	// add more conditionindexers here when needed...
 				foreach ($conditionindexers as $conditionindexer)
 				{
 					// operator
