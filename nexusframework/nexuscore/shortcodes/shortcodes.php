@@ -351,6 +351,17 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = ucwords($input);
 		}
+		else if ($op == "camelcase")
+		{
+			$input = ucwords($input);
+			$stopwords = array("for", "a", "and", "the", "if", "then", "than", "to", "most", "but", "how", "or", "what");
+			foreach ($stopwords as $stopword)
+			{
+				$find = " " . ucwords($stopword) . " ";
+				$replace = " " . strtolower($stopword) . " ";
+				$input = str_replace($find, $replace, $input);
+			}
+		}
 		else if ($op == "ucfirst" || $op == "ucfirstchar")
 		{
 			$input = strtoupper(substr($input, 0, 1)) . substr($input, 1);
@@ -883,6 +894,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 				}
 				
 				$modeluri = $atts["modeluri"];		// the base modeluri for which the property will be retrieved
+				
+				// normalize the input (foo bar@foobar => foobar@foobar)
+				global $nxs_g_modelmanager;
+				$modeluri = $nxs_g_modelmanager->getnormalizedmodeluri($modeluri);
+				
 				if ($modeluri == "")
 				{
 					global $nxs_global_current_containerpostid_being_rendered;

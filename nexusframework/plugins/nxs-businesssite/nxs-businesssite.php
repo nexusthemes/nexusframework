@@ -22,6 +22,20 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	function getnormalizedmodeluri($modeluri)
+	{
+		$pieces = explode("@", $modeluri, 2);
+		
+		$humanmodelidentification = $pieces[0];
+		$normalizedhumanmodelidentification = $this->getnormalizedhumanmodelidentification($humanmodelidentification);
+		
+		$schema = $pieces[1];
+		$normalizedschema = $this->getnormalizedschema($schema);
+		
+		$result = "{$normalizedhumanmodelidentification}@$normalizedschema";
+		return $result;
+	}
+	
 	function getcontentmodeltaxonomyinstances($args)
 	{
 		$taxonomy = $args["taxonomy"];
@@ -922,7 +936,7 @@ class nxs_g_modelmanager
 	function getmodel_v2($args)
 	{
 		$modeluri = $args["modeluri"];
-		
+				
 		// 
 		do_action("nxs_a_getmodel", array("modeluri" => $modeluri));
 		
