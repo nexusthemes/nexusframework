@@ -24,6 +24,8 @@ class nxs_g_modelmanager
 	
 	function getnormalizedmodeluri($modeluri)
 	{
+		//return $modeluri;
+		
 		$pieces = explode("@", $modeluri, 2);
 		
 		$humanmodelidentification = $pieces[0];
@@ -1268,6 +1270,8 @@ class nxs_g_modelmanager
 		
 		// if modeluri is specified retrieve the model through the modeluri
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/model-by-uri/{$modeluri}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
+		$url = nxs_addqueryparametertourl_v2($url, "referer", nxs_geturlcurrentpage(), true, true);
+		
 		$content = nxs_geturlcontents(array("url" => $url));
 
 		// error_log("getmodel_actual; returned content");
@@ -1340,6 +1344,8 @@ class nxs_g_modelmanager
 		
 		// step 1; load the bulk model information
 		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/bulkmodels/{$singularschema}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
+		$url = nxs_addqueryparametertourl_v2($url, "referer", nxs_geturlcurrentpage(), true, true);
+		
 		$content = nxs_geturlcontents(array("url" => $url));
 		$json = json_decode($content, true);
 		
