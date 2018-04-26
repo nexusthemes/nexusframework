@@ -719,6 +719,14 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			{
 				// default
 			}
+			else if ($val == "nxs-button-scale-1-4")
+			{
+				$rulesbypseudo[$pseudoselector][] = "font-size: 18px;";
+				$rulesbypseudo[$pseudoselector][] = "padding-left: 14px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-right: 14px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-top: 8px;";
+    		$rulesbypseudo[$pseudoselector][] = "padding-bottom: 8px;";
+			}
 			else if ($val == "nxs-button-scale-1-8")
 			{
 				$rulesbypseudo[$pseudoselector][] = "font-size: 22px;";
@@ -1508,6 +1516,12 @@ function nxs_frontendframework_nxs2_wp_footer()
 		<?php
 	}
 	
+	// loading of fonts is disabled
+	// nxs_fef2_loadfonts();
+}
+
+function nxs_fef2_loadfonts()
+{
 	?>
 	<script data-cfasync="false"  src="//www.google.com/jsapi"></script>
 	<script data-cfasync="false" >
