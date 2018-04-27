@@ -360,13 +360,13 @@ function nxs_widgets_pagepopup_home_getoptions($args)
 		$postid = $clientpopupsessioncontext["postid"];
 		$placeholderid = $clientpopupsessioncontext["placeholderid"];
 		
-		error_log("pagepopup; $postid $placeholderid");
+		// error_log("pagepopup; $postid $placeholderid");
 		
 		// load the widget's data from the persisted db
 		$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
 		$popup_trigger = $placeholdermetadata["popup_trigger"];
 		
-		error_log("pagepopup; popup_trigger; $popup_trigger");
+		//error_log("pagepopup; popup_trigger; $popup_trigger");
 		
 		// but allow it to be overriden in the session
 		if ($clientpopupsessiondata["popup_trigger"] != "")
@@ -374,7 +374,7 @@ function nxs_widgets_pagepopup_home_getoptions($args)
 			$popup_trigger = $clientpopupsessiondata["popup_trigger"];
 		}
 		
-		error_log("pagepopup; popup_trigger; $popup_trigger");
+		// error_log("pagepopup; popup_trigger; $popup_trigger");
 	
 		if ($popup_trigger == "js")
 		{	
