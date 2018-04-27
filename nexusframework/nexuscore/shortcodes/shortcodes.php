@@ -2119,9 +2119,6 @@ function nxs_sc_int($atts, $content = null, $name='')
 add_shortcode("nxsint", "nxs_sc_int");
 add_shortcode("nxs_int", "nxs_sc_int");
 
-
-
-
 function nxs_sc_command($atts, $content = null, $name='') 
 {
 	extract($atts);
@@ -2174,11 +2171,73 @@ function nxs_sc_command($atts, $content = null, $name='')
 				exit();
 			}
 		}
+		else if ($op == "nocache")
+		{
+			global $nxs_gl_cache_pagecache;
+			$nxs_gl_cache_pagecache = false;
+			echo "<div>(not cached; " . time() . ")</div>";
+		}
 	}
 	
 	return $output;
 }
 add_shortcode('nxscommand', 'nxs_sc_command');
+add_shortcode('nxs_command', 'nxs_sc_command');
+
+function nxs_sc_var($atts, $content = null, $name='') 
+{
+	extract($atts);
+	
+	if (isset($sc_scope))
+	{
+		$scoperesult = nxs_sc_handlescope($atts, $content, $name);
+		if ($scoperesult !== false)
+		{
+			// we are outside the scope, exit
+			return $scoperesult;
+		}
+	}
+	
+	$origcontent = $content;
+	
+	$content = $content;
+	if ($content == "")
+	{
+		$content = $atts["input"];
+	}
+	if ($content == "")
+	{
+		$content = $atts["value"];
+	}
+	
+	$input = $content;
+	
+	$ops = $atts["ops"];
+	$ops = str_replace(",","|", $ops);
+	$ops = str_replace(";","|", $ops);
+	$opslist = explode("|", $ops);
+	foreach ($opslist as $op)
+	{
+		$op = trim($op);
+		if ($op == "inc")
+		{
+			global $nxs_gl_vars;
+			$var = $atts["var"];
+			$nxs_gl_vars[$var]++;
+			$input = "";
+		}
+		else if ($op == "get")
+		{
+			global $nxs_gl_vars;
+			$input = $nxs_gl_vars[$var];
+		}
+	}
+	
+	$output = $input;
+	return $output;
+}
+add_shortcode('nxs_var', 'nxs_sc_var');
+
 
 // spinner shortcodes
 function nxs_sc_spin($atts, $content = null, $name='') 
