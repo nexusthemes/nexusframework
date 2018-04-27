@@ -327,6 +327,23 @@ function nxs_cache_getmd5hash()
 {
 	$data = "";
 	$data .= nxs_geturlcurrentpage();
+	
+	// ignore gclid parameter (AdWords tag)
+	$data = nxs_removequeryparameterfromurl($data, "gclid");
+	
+	// allow parameters of the url to be ignored when storing and retrieving the cache
+	$ignorekey = "nxs_cache_hash_ignoreparameters";
+	if ($_REQUEST[$ignorekey] != "")
+	{
+		$data = nxs_removequeryparameterfromurl($data, $ignorekey);
+		$nxs_cache_ignoreparameters_string = $_REQUEST[$ignorekey];
+		$nxs_cache_ignoreparameters = explode(";", $nxs_cache_ignoreparameters_string);
+		foreach ($nxs_cache_ignoreparameters as $nxs_cache_ignoreparameter)
+		{
+			$data = nxs_removequeryparameterfromurl($data, $nxs_cache_ignoreparameter);
+		}
+	}
+	
 	$result = md5($data);
 	return $result;
 }
@@ -646,6 +663,13 @@ function nxs_handlerequestwithcaching($buffer)
 		$cached = apply_filters("nxs_getcachedoutput", $cached);
 		
 		file_put_contents($file, $cached, LOCK_EX);
+		
+		// allow plugins outside WP to do something with the cache
+		$functionnametoinvoke = "nxs_e_cache_cachestored";
+		if (function_exists($functionnametoinvoke))
+		{
+			$result = call_user_func($functionnametoinvoke, $cached);
+		}
 	}
 	else
 	{
