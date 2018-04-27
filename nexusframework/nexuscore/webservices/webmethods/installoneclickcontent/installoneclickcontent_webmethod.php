@@ -35,7 +35,7 @@ function nxs_mm_get_plugins($plugins)
 
 function nxs_mm_plugin_download($url, $path) 
 {
-	$data = nxs_geturlcontents(array("url") => $url);
+	$data = nxs_geturlcontents(array("url" => $url));
 	
   if(file_put_contents($path, $data))
   {
