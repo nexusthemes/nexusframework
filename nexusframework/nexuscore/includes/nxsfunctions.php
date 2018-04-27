@@ -330,6 +330,7 @@ function nxs_cache_getmd5hash()
 	
 	// ignore gclid parameter (AdWords tag)
 	$data = nxs_removequeryparameterfromurl($data, "gclid");
+	$data = nxs_removequeryparameterfromurl($data, "nxs_fromtag");
 	
 	// allow parameters of the url to be ignored when storing and retrieving the cache
 	$ignorekey = "nxs_cache_hash_ignoreparameters";
