@@ -2015,6 +2015,24 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		  	}
 		  }
 		}
+		else if ($op == "lte")
+		{
+			$compareto = $atts["compareto"];
+			
+			
+			//var_dump($input);
+			//var_dump($compareto);
+			//die();
+			
+			if ((int) $input <= (int) $compareto)
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+		}
 		else if ($op == "url_contains")
 		{
 			$currenturl = nxs_geturlcurrentpage();
@@ -2230,6 +2248,20 @@ function nxs_sc_var($atts, $content = null, $name='')
 		{
 			global $nxs_gl_vars;
 			$input = $nxs_gl_vars[$var];
+		}
+		else if ($op == "lte")
+		{
+			$compareto = $atts["compareto"];
+			global $nxs_gl_vars;
+			$value = $nxs_gl_vars[$var];
+			if ($value <= $compareto)
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
 		}
 	}
 	
