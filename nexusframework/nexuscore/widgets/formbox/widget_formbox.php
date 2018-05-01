@@ -101,11 +101,21 @@ function nxs_widgets_formbox_getidentifier($metadata)
 	return $formidentifier;
 }
 
+function nxs_widgets_formbox_shouldstoreonfilesystem($metadata)
+{
+	return false;
+	/*
+	$result = $metadata["storeonfs"] != "";
+	return $result;
+	*/
+}
+
 function nxs_widgets_formbox_getpath($metadata)
 {
 	extract($metadata);
+	
 	// store submitted form on the filesystem or in the DB
-	$shouldstoreonfs = true;
+	$shouldstoreonfs = nxs_widgets_formbox_shouldstoreonfilesystem($metadata);
 	if ($shouldstoreonfs)
 	{		
 		$storageabsfolder = nxs_widgets_formbox_getstorageabsfolder($metadata);
@@ -159,7 +169,7 @@ function nxs_widgets_formbox_submittedforms($optionvalues, $args, $runtimeblende
 
 	?>
     <div class="nxs-float-left" style="width: 100%;">
-    	<a href='<?php echo $itemdetailurl;?>'>Open submitted forms</a>
+    	<a href='<?php echo $itemdetailurl;?>'>Open persisted forms</a>
     </div>		
     <div class="nxs-clear"></div>
   	<?php
@@ -338,71 +348,6 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
-			array(
-				"id" 				=> "internal_email",
-				"type" 				=> "input",
-				"label" 			=> "Email address to notify",
-				"placeholder" 		=> "Internal email",
-				"tooltip" 			=> nxs_l18n__("Enter here a valid existing e-mail address (most likely: your e-mail address) that should be notified when this form is submitted, for example yourname@yourdomain.com", "nxs_td"),
-				"footernote" => "<div class='content' style='font-size: smaller; font-style: italic;'><a target='_blank' href='https://www.wpsupporthelp.com/answer/the-e-mail-is-not-working-sending-i-m-not-receiving-emails-from-294/'>Not receiving e-mails? Click here</a></div>",
-				"unicontentablefield" => true,
-			),
-			array(
-				"id" 				=> "subject_email",
-				"type" 				=> "input",
-				"label" 			=> "Subject email",
-				"placeholder" 		=> "Subject email",
-				"tooltip" 			=> nxs_l18n__("Is there a particular subject you want to use for the notification e-mail? If so, enter it here (for example: information request from website)", "nxs_td"),
-				"unicontentablefield" => true,
-				"localizablefield"	=> true
-			),
-			array(
-				"id" 				=> "sender_email",
-				"type" 				=> "input",
-				"label" 			=> "Sender email",
-				"placeholder" 		=> "Internal email",
-				"tooltip" 			=> nxs_l18n__("Enter a valid e-mail address here to use as the sender of the notification mails (for example: site@yourname.com).", "nxs_td"),
-				"unicontentablefield" => true,
-			),
-			array(
-				"id" 				=> "sender_name",
-				"type" 				=> "input",
-				"label" 			=> "Sender name",
-				"placeholder" 		=> "Name of email sender",
-				"tooltip" 			=> nxs_l18n__("What should be the name of the sender of the notifications? (for example: Your Name)", "nxs_td"),
-				"unicontentablefield" => true,
-			),
-			array(
-				"id" 				=> "mail_body_includesourceurl",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Include form source URL", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("When checked, the source URL from where this form was posted will be included in the email send", "nxs_td"),
-				"unicontentablefield" => true,
-			),
-			
-			array(
-				"id" 				=> "destination_articleid",
-				"type" 				=> "article_link",
-				"label" 			=> nxs_l18n__("Thank you page", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("Use this to thank the visitor for taking the time to send an email by redirecting them to this page.", "nxs_td"),
-				"unistylablefield"	=> true,
-			),
-			
-			array
-			( 
-				"id" 				=> "destination_url",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Thank you URL", "nxs_td"),
-				"unistylablefield"	=> true,
-			),
-			
-			array( 
-				"id" 				=> "submittedforms",
-				"type" 					=> "custom",
-				"customcontenthandler"	=> "nxs_widgets_formbox_submittedforms",
-				"label" 			=> nxs_l18n__("Forms", "nxs_td"),
-			),
-			
 			array( 
 				"id" 				=> "items_colorzen",
 				"type" 				=> "colorzen",
@@ -471,26 +416,122 @@ function nxs_widgets_formbox_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> "Persistence",
-				"initial_toggle_state"	=> "closed",
+				"label" 			=> "Submit handling - Email",	
 			),
+			
+			
 			array
-			(
-				"id" 				=> "debug_modeluri",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Modeluri (defines in which model will be stored)", "nxs_td"),
+			( 
+				"id" 				=> "sendoutmail",
+				"type" 				=> "custom",
+				"layouttype" => "",
+				"label" 			=> nxs_l18n__("Send mail to recipient?", "nxs_td"),
+				"customcontent" => "<input type='checkbox' disabled='disabled' checked='checked' />",
 			),
-			array
-			(
-				"id" 				=> "debug_writeaccesstoken",
+			
+			array(
+				"id" 				=> "internal_email",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Access token (permission key to store data in the model)", "nxs_td"),
+				"label" 			=> "Email address to notify",
+				"placeholder" 		=> "Internal email",
+				"tooltip" 			=> nxs_l18n__("Enter here a valid existing e-mail address (most likely: your e-mail address) that should be notified when this form is submitted, for example yourname@yourdomain.com", "nxs_td"),
+				"footernote" => "<div class='content' style='font-size: smaller; font-style: italic;'><a target='_blank' href='https://www.wpsupporthelp.com/answer/the-e-mail-is-not-working-sending-i-m-not-receiving-emails-from-294/'>Not receiving e-mails? Click here</a></div>",
+				"unicontentablefield" => true,
 			),
+			array(
+				"id" 				=> "subject_email",
+				"type" 				=> "input",
+				"label" 			=> "Subject email",
+				"placeholder" 		=> "Subject email",
+				"tooltip" 			=> nxs_l18n__("Is there a particular subject you want to use for the notification e-mail? If so, enter it here (for example: information request from website)", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			array(
+				"id" 				=> "sender_email",
+				"type" 				=> "input",
+				"label" 			=> "Sender email",
+				"placeholder" 		=> "Internal email",
+				"tooltip" 			=> nxs_l18n__("Enter a valid e-mail address here to use as the sender of the notification mails (for example: site@yourname.com).", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array(
+				"id" 				=> "sender_name",
+				"type" 				=> "input",
+				"label" 			=> "Sender name",
+				"placeholder" 		=> "Name of email sender",
+				"tooltip" 			=> nxs_l18n__("What should be the name of the sender of the notifications? (for example: Your Name)", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			array(
+				"id" 				=> "mail_body_includesourceurl",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Include form source URL", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, the source URL from where this form was posted will be included in the email send", "nxs_td"),
+				"unicontentablefield" => true,
+			),
+			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),	
+			/*
+			array
+			( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> "Submit handling - File system",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "storeonfs",			
+			),
 			
+			array
+			( 
+				"id" 				=> "storeonfs",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Persist on file system?", "nxs_td"),
+			),
+			array
+			( 
+				"id" 				=> "submittedforms",
+				"type" 					=> "custom",
+				"customcontenthandler"	=> "nxs_widgets_formbox_submittedforms",
+				"label" 			=> nxs_l18n__("", "nxs_td"),
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),	
+			*/
+			array
+			( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> "Submit handling - Thank you page",
+			),
+			
+			array(
+				"id" 				=> "destination_articleid",
+				"type" 				=> "article_link",
+				"label" 			=> nxs_l18n__("Thank you page", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Use this to thank the visitor for taking the time to send an email by redirecting them to this page.", "nxs_td"),
+				"unistylablefield"	=> true,
+			),
+			
+			array
+			( 
+				"id" 				=> "destination_url",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Thank you URL", "nxs_td"),
+				"unistylablefield"	=> true,
+			),
+			
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),	
+			/*			
 			array( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
@@ -506,8 +547,8 @@ function nxs_widgets_formbox_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
-			),	
-			
+			),
+			*/
 		)
 	);
 	
@@ -515,7 +556,6 @@ function nxs_widgets_formbox_home_getoptions($args)
 	
 	return $options;
 }
-
 
 /* WIDGET HTML
 ----------------------------------------------------------------------------------------------------
@@ -1054,7 +1094,7 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	}
 	
 	// Title
-	$args["title_heading"] = "2";			
+	$args["title_heading"] = "2";
 	
 	// Form
 	$args["internal_email"] = "{{email}}"; // $current_user->user_email;

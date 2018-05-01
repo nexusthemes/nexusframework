@@ -95,7 +95,7 @@ function nxs_widgets_formitemcheckbox_renderincontactbox($args)
 	}
 	?>
 	<div style='margin-bottom: 10px;'>
-  <input type="checkbox" style='margin-bottom: 0px; height: 20px;' id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" <?php echo $checkedattribute; ?> />
+  <input type="checkbox" style='margin-bottom: 0px; height: 13px;' id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" <?php echo $checkedattribute; ?> />
   <label for="<?php echo $key; ?>" style='display: inline-block;' class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
   </div>
 	<?php
@@ -207,7 +207,7 @@ function nxs_widgets_formitemcheckbox_home_getoptions($args)
 			array
 			( 
 				"id" 				=> "formlabel",
-				"type" 				=> "input",
+				"type" 				=> "tinymce",
 				"label" 			=> nxs_l18n__("Label", "nxs_td"),
 				"placeholder" => nxs_l18n__("Label goes here", "nxs_td"),
 			),

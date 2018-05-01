@@ -359,53 +359,68 @@ function nxs_webmethod_formboxsubmit()
 		}
 
 		// store data in csv
-		$storageabspath = nxs_widgets_formbox_getpath($mixedattributes);
-		if ($storageabspath != "")
+		$shouldstoreonfs = nxs_widgets_formbox_shouldstoreonfilesystem($mixedattributes);
+		if ($shouldstoreonfs)
 		{
-			$lineseperator = "\r\n";
-			$columnseperator = ";";
-			$removenewlines = true;
-			$datatoappend = "";
-			
-			// append submitted form data
-			foreach ($outputlines as $currentoutputline)
+			$storageabspath = nxs_widgets_formbox_getpath($mixedattributes);
+			if ($storageabspath != "")
 			{
-				$removecolumnseperators = true;
-				if ($removecolumnseperators)
+				$lineseperator = "\r\n";
+				$columnseperator = ";";
+				$removenewlines = true;
+				$datatoappend = "";
+				
+				// append submitted form data
+				foreach ($outputlines as $currentoutputline)
 				{
-					// if user would use ; himself in the output,
-					// the CSV cannot be used
-					$currentoutputline = str_replace($columnseperator, "(columnseperator)", $currentoutputline);
+					$removecolumnseperators = true;
+					if ($removecolumnseperators)
+					{
+						// if user would use ; himself in the output,
+						// the CSV cannot be used
+						
+						// strip new lines
+						error_log("submit;" . $currentoutputline);
+						$currentoutputline = str_replace("\r\n", "(linebreak)", $currentoutputline);
+						$currentoutputline = str_replace(":", "(colon)", $currentoutputline);
+						$currentoutputline = str_replace("\'", "(quote)", $currentoutputline);
+						$currentoutputline = str_replace("\"", "(quote)", $currentoutputline);
+						$currentoutputline = str_replace($columnseperator, "(columnseperator)", $currentoutputline);
+					}
+					
+					$datatoappend .= $currentoutputline . $columnseperator;
 				}
 				
-				$datatoappend .= $currentoutputline . $columnseperator;
+				// append url
+				$url = $_SERVER['HTTP_REFERER'];
+				$datatoappend .= "Url: " . $url . $columnseperator;
+				
+				// append date and time
+				$currentdatetime = date('Y-m-d H:i:s');
+				$datatoappend .= "Timestamp: " . $currentdatetime . $columnseperator;
+				
+				// append client IP
+				$clientip = $_SERVER['REMOTE_ADDR'];
+				$datatoappend .= "Client IP: " . $clientip . $columnseperator;
+				
+				if ($removenewlines)
+				{
+					// if user would use \r\n himself in the output,
+					// the CSV cannot be used
+					$datatoappend = str_replace($lineseperator, " ", $datatoappend);
+				}
+	
+	
+				// store form
+				file_put_contents($storageabspath, $datatoappend, FILE_APPEND | LOCK_EX);
+				
+				// store new line for each row
+				file_put_contents($storageabspath, $lineseperator, FILE_APPEND | LOCK_EX);
 			}
-			
-			// append url
-			$url = $_SERVER['HTTP_REFERER'];
-			$datatoappend .= "Url: " . $url . $columnseperator;
-			
-			// append date and time
-			$currentdatetime = date('Y-m-d H:i:s');
-			$datatoappend .= "Timestamp: " . $currentdatetime . $columnseperator;
-			
-			// append client IP
-			$clientip = $_SERVER['REMOTE_ADDR'];
-			$datatoappend .= "Client IP: " . $clientip . $columnseperator;
-			
-			if ($removenewlines)
+			else
 			{
-				// if user would use \r\n himself in the output,
-				// the CSV cannot be used
-				$datatoappend = str_replace($lineseperator, " ", $datatoappend);
+				// no output writing to file
 			}
-
-
-			// store form
-			file_put_contents($storageabspath, $datatoappend, FILE_APPEND | LOCK_EX);
-			
-			// store new line for each row
-			file_put_contents($storageabspath, $lineseperator, FILE_APPEND | LOCK_EX);
 		}
 		else
 		{
