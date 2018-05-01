@@ -36,13 +36,13 @@ function nxs_popup_optiontype_custom_renderhtmlinpopup($optionvalues, $args, $ru
 	    </div>
 	<?php
 	}
-
-	else if ($layouttype == "custom") {
+	else if ($layouttype == "custom") 
+	{
 		nxs_popup_optiontype_custom_runfunctionifitexists($optionvalues, $args, $runtimeblendeddata);
 	}
-
-	else {
-		echo "Unkown layout type";
+	else 
+	{
+		echo "Unknown layout type";
 	}
 }
 
