@@ -307,11 +307,22 @@ function nxs_widgets_comments_helper_render_comment_recursive(
 				</div>
 	
 				<div class="nxs-clear nxs-filler"></div>
-	
-				<!-- REPLY BUTTON -->
-				<a class="nxs-button ' . $concatenated_button_css . '" href="#" onclick="preparecomment_' . $placeholderid . '(' . $currentcomment->comment_ID . ', true); return false;">';
-					nxs_l18n_e("Reply[nxs:button]", "nxs_td"); echo '
-				</a>
+				';
+				
+				global $nxs_global_current_containerpostid_being_rendered;
+				$postid = $nxs_global_current_containerpostid_being_rendered;
+				
+				if ( comments_open($postid))
+				{
+					echo '
+					<!-- REPLY BUTTON -->
+					<a class="nxs-button ' . $concatenated_button_css . '" href="#" onclick="preparecomment_' . $placeholderid . '(' . $currentcomment->comment_ID . ', true); return false;">';
+						nxs_l18n_e("Reply[nxs:button]", "nxs_td"); echo '
+					</a>
+					';
+				}
+				
+				echo '
 				
 				<!-- DELETE BUTTON -->';
 				if (nxs_has_adminpermissions()) {
@@ -363,10 +374,15 @@ function nxs_widgets_comments_helper_render_comment_recursive(
 
 function nxs_widgets_comments_render_webpart_render_htmlvisualization_native()
 {
-	if ( comments_open() || get_comments_number() ) 
+	global $nxs_global_current_containerpostid_being_rendered;
+	$postid = $nxs_global_current_containerpostid_being_rendered;
+	
+	if ( comments_open($postid) ||  get_comments_number($postid) ) 
 	{
 		comments_template();
 	}
+	
+	
 }
 
 function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
@@ -563,55 +579,62 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 				$button_text = nxs_l18n__("Send[nxs:tooltip]", "nxs_td");
 			}
 			
-			echo'
-			<div class="template" style="display: none;">
-				<div class="nxs-form ' . $concatenated_comments_css . '" id="nxs_commentform_' . $placeholderid . '">';
-				
-					if (isset($title)) {
-						echo '<h3 class="nxs-title">' . $title . '</h3>';
-					}
-				
-					echo '
+			global $nxs_global_current_containerpostid_being_rendered;
+			$postid = $nxs_global_current_containerpostid_being_rendered;
 			
-					<input id="postid" name="postid" type="hidden" value="' . $nxs_global_current_containerpostid_being_rendered . '" />
-					<input id="replytocommentid" type="hidden" name="replytocommentid" value="0" />
-			
-					<!-- NAME -->
-			    	<div class="nxs-float-left nxs-width20"><label>'; echo $name_label; echo ' *:</label></div>
-			    	<div class="nxs-float-right nxs-width80"><input id="naam" name="naam" type="text"></div>
-			    	<div class="nxs-clear padding"></div>
+			if (comments_open($postid))
+			{
+				
+				echo'
+				<div class="template" style="display: none;">
+					<div class="nxs-form ' . $concatenated_comments_css . '" id="nxs_commentform_' . $placeholderid . '">';
 					
-					<!-- EMAIL -->
-					<div class="nxs-float-left nxs-width20"><label>' . $email_label . ' *:</label></div>
-					<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text"></div>
-					<div class="nxs-clear padding"></div>
-					';
+						if (isset($title)) {
+							echo '<h3 class="nxs-title">' . $title . '</h3>';
+						}
 					
-					if ($formfields == "" || $formfields == "name|email|website")
-					{
 						echo '
-						<!-- WEBSITE -->
-						<div class="nxs-float-left nxs-width20"><label>'; echo $website_label; echo ':</label></div>
-						<div class="nxs-float-right nxs-width80"><input id="website" name="website" type="text"></div>
-						<div class="nxs-clear padding"></div>';
-					}
-	
-					echo '
-					<!-- COMMENT -->
-					<div class="nxs-float-left nxs-width20"><label>'; echo $comment_label; echo ' *:</label></div>
-					<div class="nxs-float-right nxs-width80"><textarea id="comment" name="comment"></textarea></div>
-					<div class="nxs-clear padding"></div>
-					
-					<!-- BUTTONS -->
-					<a class="nxs-button ' . $concatenated_button_css . ' nxs-margin-right15" href="#" onclick="postcomment_' . $placeholderid .'(); return false;">'; echo $comment_button_text; echo '</a>
-					<a class="nxs-button ' . $concatenated_button_css . '" href="#" onclick="cancelcomment_' . $placeholderid .'(); return false;">'; echo $cancel_button_text; echo '</a>
-					<div class="nxs-clear"></div>
-					
-			  </div>
-			  
-			</div>
+				
+						<input id="postid" name="postid" type="hidden" value="' . $nxs_global_current_containerpostid_being_rendered . '" />
+						<input id="replytocommentid" type="hidden" name="replytocommentid" value="0" />
+				
+						<!-- NAME -->
+				    	<div class="nxs-float-left nxs-width20"><label>'; echo $name_label; echo ' *:</label></div>
+				    	<div class="nxs-float-right nxs-width80"><input id="naam" name="naam" type="text"></div>
+				    	<div class="nxs-clear padding"></div>
+						
+						<!-- EMAIL -->
+						<div class="nxs-float-left nxs-width20"><label>' . $email_label . ' *:</label></div>
+						<div class="nxs-float-right nxs-width80"><input id="email" name="email" type="text"></div>
+						<div class="nxs-clear padding"></div>
+						';
+						
+						if ($formfields == "" || $formfields == "name|email|website")
+						{
+							echo '
+							<!-- WEBSITE -->
+							<div class="nxs-float-left nxs-width20"><label>'; echo $website_label; echo ':</label></div>
+							<div class="nxs-float-right nxs-width80"><input id="website" name="website" type="text"></div>
+							<div class="nxs-clear padding"></div>';
+						}
 		
-		</div>';
+						echo '
+						<!-- COMMENT -->
+						<div class="nxs-float-left nxs-width20"><label>'; echo $comment_label; echo ' *:</label></div>
+						<div class="nxs-float-right nxs-width80"><textarea id="comment" name="comment"></textarea></div>
+						<div class="nxs-clear padding"></div>
+						
+						<!-- BUTTONS -->
+						<a class="nxs-button ' . $concatenated_button_css . ' nxs-margin-right15" href="#" onclick="postcomment_' . $placeholderid .'(); return false;">'; echo $comment_button_text; echo '</a>
+						<a class="nxs-button ' . $concatenated_button_css . '" href="#" onclick="cancelcomment_' . $placeholderid .'(); return false;">'; echo $cancel_button_text; echo '</a>
+						<div class="nxs-clear"></div>
+						
+				  </div>	 <!-- end form -->
+				  
+				</div> <!-- end template --> ';
+			}
+			
+			echo '</div> <!-- outer wrap -->';
 		
 		?>
 	    
