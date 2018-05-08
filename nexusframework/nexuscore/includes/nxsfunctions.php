@@ -3883,6 +3883,7 @@ function nxs_analytics_handleanalytics()
 				})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 				
 				ga('create', '<?php echo $analyticsUA; ?>', 'auto');
+				ga('set', 'anonymizeIp', true);
 				ga('send', 'pageview');	
 			</script>
 			<?php 
