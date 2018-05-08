@@ -73,7 +73,7 @@ function nxs_mm_plugin_unpack($args, $sourcezipfile)
 	
 	if (is_wp_error($dounzip)) 
 	{
-		echo "unzip err";
+		echo "unzip err;";
 		
 		$error = $dounzip->get_error_code();
 		$data = $dounzip->get_error_data($error);
