@@ -1179,9 +1179,17 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 			echo "</div>";
 		}
 		else 
-		{ 
+		{
+			if (is_super_admin())
+			{
+				if ($_REQUEST["map"] == "why")
+				{
+					var_dump($latlng);
+				}
+			}
+			
 			?>
-			<div>Maps placeholder :(</div>
+			<div>Maps placeholder (login to see the error)</div>
 			<?php 
 		}
 		
@@ -1227,23 +1235,18 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 	
 	$addressprop = $altid["address"];
 	$address = $$addressprop;
-	// $address = $$altid["address"];
 	
 	$maptypeidprop = $altid["maptypeid"];
 	$maptypeid = $$maptypeidprop;
-	// $maptypeid = $$altid["maptypeid"];
 	
 	$zoomprop = $altid["zoom"];
 	$zoom = $$zoomprop;
-	//$zoom = $$altid["zoom"];
 	
 	$deltalatprop = $altid["deltalat"];
 	$deltalat = $$deltalatprop;
-	//$deltalat = $$altid["deltalat"];
 	
 	$deltalngprop = $altid["deltalng"];
 	$deltalng = $$deltalngprop;
-	//$deltalng = $$altid["deltalng"];
 	
 	$translated = array("address" => $address);
 	$translated = nxs_filter_translatelookup($translated, array("address"));
@@ -1318,6 +1321,18 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
       <div class="nxs-clear"></div>
     	<?php
   	}
+  	
+  	$licensekey = get_option('nxs_licensekey');
+		if ($licensekey == "")
+    {
+    	?>
+     	<div style='margin-top: 10px;'>
+     		Note; the maps feature requires a valid license. Your site is currently not connected to a valid Nexus license. <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://www.wpsupporthelp.com/answer/how-to-register-your-wordpress-theme-purchase-to-get-updates-1091/'>Learn more</a><br />
+     	</div>
+      <div class="nxs-clear"></div>
+    	<?php
+  	}
+  	
   	
     ?>
 	</div> <!--END content-->
@@ -1535,7 +1550,11 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 		{ 
 			?>
 			<div class="content2">
-				<span style='background-color: red; color: white;'>We were unable to locate this address on the map.<br />Try using a different address instead.</span>
+				<div style='background-color: red; color: white;'>
+					The geocode was successful but returned no results.<br />
+					This may occur if the geocoder was passed a non-existent address.<br />
+					Try using a different address instead.
+				</div>
 				<script>jQuery('#<?php echo $id; ?>').focus();</script>
 			</div>
 			<?php 
@@ -1546,8 +1565,8 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 			<div class="content2">
 				Unable to render the map<br />
 				<?php
-				var_dump($latlngavailable);
 				echo "<!-- ";
+				var_dump($latlngavailable);
 				var_dump($latlng);
 				echo " -->";
 				
