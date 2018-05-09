@@ -1326,16 +1326,26 @@ class nxs_g_modelmanager
 	
 	function cachebulkmodels($singularschema)
 	{
-		if ($singularschema == "") { echo "singularschema not specified?"; die(); }
-		if (!$this->isvalidschema($singularschema)) { echo "invalid singularschema $singularschema?"; return; /* die(); */ }
-		if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot cachebulkmodels lists; cachebulkmodels the singular model to refetch the list"; die(); }
-
-		// the fetching of the models; this will load the singleton as well as the individual items
-		$this->cachebulkmodels_internal($singularschema);
-		
-		// the fetching of the list model conneced to it
-		//$listofschema = "listof{$singularschema}";
-		//$this->cachebulkmodels_internal($listofschema);
+		// we optimized the function; if the refetching for this singularschema already occured  
+		// during this php's process we won't do it again as it will result in the same information being pulled
+		global $nxs_gl_fetchedcacheforbulkmodelsinprocess;
+		if (!isset($nxs_gl_fetchedcacheforbulkmodelsinprocess[$singularschema]))
+		{
+			// mark as fetched so we wont refetch during this php process
+			$nxs_gl_fetchedcacheforbulkmodelsinprocess[$singularschema] = true;
+			
+			if ($singularschema == "") { echo "singularschema not specified?"; die(); }
+			if (!$this->isvalidschema($singularschema)) { echo "invalid singularschema $singularschema?"; return; /* die(); */ }
+			if (nxs_stringstartswith($singularschema, "listof")) { echo "cannot cachebulkmodels lists; cachebulkmodels the singular model to refetch the list"; die(); }
+	
+			// the fetching of the models; this will load the singleton as well as the individual items
+			$this->cachebulkmodels_internal($singularschema);
+		}
+		else
+		{
+			// already did it, ignored
+			// error_log("nxs;cachebulkmodels;$singularschema;wont refetch as we already did so during this php process");
+		}
 	}
 	
 	function cachebulkmodels_internal($singularschema)
