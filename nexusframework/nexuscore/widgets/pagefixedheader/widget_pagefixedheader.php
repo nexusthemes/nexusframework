@@ -276,11 +276,11 @@ function nxs_widgets_pagefixedheader_home_getoptions($args)
 			( 
 				"id"					=> "header_postid",
 				"type" 					=> "selectpost",
+				"post_type" 			=> "nxs_header",
 				"post_status"			=> array("publish", "future"),
 				"previewlink_enable"	=> "true",
 				"label" 				=> nxs_l18n__("Fixed header", "nxs_td"),
 				"tooltip" 				=> nxs_l18n__("Select a header to show on the top of your page. The header will stay on top, even when scrolling down.", "nxs_td"),
-				"post_type" 			=> "nxs_header",
 				"buttontext" 			=> nxs_l18n__("Style header", "nxs_td"),
 				"emptyitem_enable"		=> false,
 				"unistylablefield"		=> true
