@@ -2195,6 +2195,52 @@ function nxs_sc_command($atts, $content = null, $name='')
 			$nxs_gl_cache_pagecache = false;
 			echo "<div>(not cached; " . time() . ")</div>";
 		}
+		else if ($op == "settemplateproperties")
+		{
+			$title = $atts["content_post"];
+			if ($title != "")
+			{
+				$wpposttype = "nxs_templatepart";
+				$postid = nxs_getpostid_for_title_and_wpposttype($title, $wpposttype);
+				if ($postid != "")
+				{
+					add_filter
+					(
+						"nxs_f_gettemplateproperties_stage2", 
+						function($result) use ($postid)
+						{
+							$result["content_postid"] = $postid;
+							return $result;	
+						}, 
+						2
+					);
+				}
+			}
+			
+			$items = array("header", "footer", "sidebar");
+			foreach ($items as $item)
+			{
+				$title = $atts["{$item}_post"];
+				if ($title != "")
+				{
+					$wpposttype = "nxs_{$item}";
+					$postid = nxs_getpostid_for_title_and_wpposttype($title, $wpposttype);
+					if ($postid != "")
+					{
+						add_filter
+						(
+							"nxs_f_gettemplateproperties_stage2", 
+							function($result) use ($item, $postid)
+							{
+								$result["{$item}_postid"] = $postid;
+								return $result;	
+							}, 
+							2
+						);
+					}
+				}
+			}
+		}
 	}
 	
 	return $output;
