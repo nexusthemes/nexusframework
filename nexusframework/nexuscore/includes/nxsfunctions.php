@@ -1078,6 +1078,14 @@ function nxs_gettemplateproperties()
 				
 				// store the lookup table
 				$nxs_gl_cache_templateprops["templaterules_lookups_lookup"] = $parsed_templaterules_lookups;
+
+				// allow code to override the templateproperties here,
+				// for example this is the place where shortcodes like [nxs_command ops="settemplateproperties" ... ]
+				// can control or tune the template properties.
+				// it cannot be done prior to this phase, as then the shortcodes used in the lookups
+				// will not have been evaluated/executed yet, so therefore we call this one "stage2"
+				$args = array();
+				$nxs_gl_cache_templateprops = apply_filters("nxs_f_gettemplateproperties_stage2", $nxs_gl_cache_templateprops, $args);
 			}
 		}
 	}
