@@ -97,12 +97,8 @@ function nxs_license_notifynolicense()
 	  ?>
 	  <div class="error">
 	    <p>
-	    	You are not receiving theme updates for this WordPress theme 
-	    	because the site is not connected to a valid license. To connect
-	    	your site to a valid license, enter the ordernumber of your order
-	    	on the register page.
-	    	<br />
-	    	Please <a href='<?php echo $url;?>'>register</a> your license to enable theme updates.
+	    	You are currently missing out on important features since you site is not yet (or no longer) connected
+	    	to a valid license. Have a valid license? <a href='<?php echo $url;?>'>Enter the license here</a>. <a href='<?php echo $url;?>'>Read more</a>
 	    </p>
 	  </div>
 	  <?php
@@ -739,101 +735,15 @@ function nxs_licenseregister_invoke()
 	}
 	
 	$nxs_licensenr = $_REQUEST["nxs_licensenr"];
+	$nxs_explicitconsent = $_POST["nxs_explicitconsent"];
 	
-	$site = nxs_geturl_home();
-	$themeobject = wp_get_theme();
-	
-	$parent = $themeobject->parent();
-	if ($parent != null)
-	{
-		$themeobject = $parent;
-	}
-	
-	$version = $themeobject->version;
-	$theme = $themeobject->name;
-
-	if (function_exists('nxs_theme_getmeta'))
-	{
-		$meta = nxs_theme_getmeta();
-		$version = $meta["version"];
-		$theme = $meta["id"];
-	}
-	
-	$url = nxs_license_getlicenseserverurl("register");
-	$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "register", true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "version", $version, true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "theme", $theme, true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "ordernr", $nxs_licensenr, true, true);	// obsolete
-	$url = nxs_addqueryparametertourl_v2($url, "licensenr", $nxs_licensenr, true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "site", $site, true, true);
-	$body = nxs_geturlcontents(array("url" => $url));
-	
-	$response_data = json_decode($body, true);
-	
-	if ($response_data["result"] == "OK")
-	{
-  	$nxs_licensekey = $response_data["nxs_licensekey"];
-		// store serial
-		update_option('nxs_licensekey', $nxs_licensekey);
-		
-		// check for updates
-		$dummy = new stdClass();
-		nxs_license_site_transient_update_themes($dummy);
-
-		// reload current page
-		$url = nxs_geturlcurrentpage();
-		$url = nxs_addqueryparametertourl_v2($url, "nxsmsg", "registeredsuccesfully", true, true);
-		?>
-		<script>
-			var url = '<?php echo $url; ?>';
-			window.location = url;
-		</script>
-		<?php
-		?>
-		<p>
-			Thank you for your registration
-		</p>
-		<p>
-			&nbsp;
-		</p>
-		<p>
-  		<a class='button-primary' href=''>Reload the page</a>
-  	</p>
-		<?php
-	}
-	else if ($response_data["result"] == "ALTFLOW")
-	{
-		nxs_license_handlealtflow($response_data);
-	}
-	else
+	if ($nxs_explicitconsent == "")
 	{
 		update_option('nxs_licensekey', "");
 		
-		if (nxs_stringcontains($body, "Access Denied"))
-		{
-			?>
-			<p>
-				Unable to reach the license server at<br />
-				<?php echo $url; ?><br />
-				The most likely explanation why this happens, is that your host blocks
-				access to our server. Contact your hosting company and ask them to 
-				verify if they block access to servers, and if they do, whether they
-				can enable ('white-list') our server.
-			</p>
-			<?php
-		}
 		?>
 		<p>
-			Unable to complete your registration<!-- 1 -->.<br />If you made a valid purchase
-			and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
-			<?php
-			echo "<!-- ";
-			echo $url;
-			echo "\r\n";
-			echo "\r\n";
-			echo $body;
-			echo "--> ";
-			?>
+			Without your explicit consent the license cannot be registered<br />
 		</p>
 		<p>
 			&nbsp;
@@ -842,7 +752,118 @@ function nxs_licenseregister_invoke()
   		<a class='button-primary' href=''>Reload the page</a>
   	</p>
 		<?php
-		//var_dump($response);
+	}
+	else
+	{
+		$clientip = $_SERVER['REMOTE_ADDR'];
+		
+		$site = nxs_geturl_home();
+		$themeobject = wp_get_theme();
+		
+		$parent = $themeobject->parent();
+		if ($parent != null)
+		{
+			$themeobject = $parent;
+		}
+		
+		$version = $themeobject->version;
+		$theme = $themeobject->name;
+	
+		if (function_exists('nxs_theme_getmeta'))
+		{
+			$meta = nxs_theme_getmeta();
+			$version = $meta["version"];
+			$theme = $meta["id"];
+		}
+		
+		$url = nxs_license_getlicenseserverurl("register");
+		$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "register", true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "version", $version, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "theme", $theme, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "ordernr", $nxs_licensenr, true, true);	// obsolete
+		$url = nxs_addqueryparametertourl_v2($url, "licensenr", $nxs_licensenr, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "site", $site, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "nxs_explicitconsent", $nxs_explicitconsent, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "clientip", $clientip, true, true);
+		
+		$body = nxs_geturlcontents(array("url" => $url));
+		
+		$response_data = json_decode($body, true);
+		
+		if ($response_data["result"] == "OK")
+		{
+	  	$nxs_licensekey = $response_data["nxs_licensekey"];
+			// store serial
+			update_option('nxs_licensekey', $nxs_licensekey);
+			
+			// check for updates
+			$dummy = new stdClass();
+			nxs_license_site_transient_update_themes($dummy);
+	
+			// reload current page
+			$url = nxs_geturlcurrentpage();
+			$url = nxs_addqueryparametertourl_v2($url, "nxsmsg", "registeredsuccesfully", true, true);
+			?>
+			<script>
+				var url = '<?php echo $url; ?>';
+				window.location = url;
+			</script>
+			<?php
+			?>
+			<p>
+				Thank you for your registration
+			</p>
+			<p>
+				&nbsp;
+			</p>
+			<p>
+	  		<a class='button-primary' href=''>Reload the page</a>
+	  	</p>
+			<?php
+		}
+		else if ($response_data["result"] == "ALTFLOW")
+		{
+			nxs_license_handlealtflow($response_data);
+		}
+		else
+		{
+			update_option('nxs_licensekey', "");
+			
+			if (nxs_stringcontains($body, "Access Denied"))
+			{
+				?>
+				<p>
+					Unable to reach the license server at<br />
+					<?php echo $url; ?><br />
+					The most likely explanation why this happens, is that your host blocks
+					access to our server. Contact your hosting company and ask them to 
+					verify if they block access to servers, and if they do, whether they
+					can enable ('white-list') our server.
+				</p>
+				<?php
+			}
+			?>
+			<p>
+				Unable to complete your registration<!-- 1 -->.<br />If you made a valid purchase
+				and want to register your theme, please try again later, or contact us at info@nexusthemes.com<br />
+				<?php
+				echo "<!-- ";
+				echo $url;
+				echo "\r\n";
+				echo "\r\n";
+				echo $body;
+				echo "--> ";
+				?>
+			</p>
+			<p>
+				&nbsp;
+			</p>
+			<p>
+	  		<a class='button-primary' href=''>Reload the page</a>
+	  	</p>
+			<?php
+			//var_dump($response);
+		}
 	}
 }
 
@@ -857,6 +878,7 @@ function nxs_licenseregister_callback()
 		}
 		else
 		{
+			$terms_url = "https://nexusthemes.com/terms-and-conditions-1006/";
 			$url = nxs_geturlcurrentpage();
 			$url = nxs_addqueryparametertourl_v2($url, "nxs_license_register", "true", true, true);
 			$noncedurl = wp_nonce_url($url, 'register');
@@ -875,6 +897,15 @@ function nxs_licenseregister_callback()
 				License key
 			</p>
 			<input type='text' name='nxs_licensenr' placeholder='V3.nexus.x.x.x' onkeydown='jQuery("#nxsregproceed").show();' onchange='jQuery("#nxsregproceed").show();' value='' style='width:30%' />
+			<p>
+				&nbsp;
+			</p>
+			<input type='checkbox' id='nxs_explicitconsent' name='nxs_explicitconsent' />
+			<label for="nxs_terms">
+				I hereby acknowledge that I have read and understood the terms and conditions<br /> 
+				as provided in the 'Terms and Conditions' as available at <a target='_blank' href='<?php echo $terms_url; ?>'><?php echo $terms_url; ?></a><br />
+				and I agree to all of the terms.
+			</label>
 			<p>
 				&nbsp;
 			</p>
