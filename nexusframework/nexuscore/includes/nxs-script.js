@@ -6627,7 +6627,7 @@ function nxs_js_setupviewportlistener()
 
 function nxs_js_setupviewportlistener_actual()
 {
-	nxs_js_log("nxs_js_setupviewportlistener_actual");
+	// nxs_js_log("nxs_js_setupviewportlistener_actual");
 
 	var previousactiveviewport = nxs_js_activeviewport;
 	//nxs_js_log("previous:" + previousactiveviewport);
