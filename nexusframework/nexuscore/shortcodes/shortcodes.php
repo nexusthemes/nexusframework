@@ -361,6 +361,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$replace = " " . strtolower($stopword) . " ";
 				$input = str_replace($find, $replace, $input);
 			}
+			$exceptions = array("WordPress");
+			foreach ($exceptions as $exception)
+			{
+				$input = str_ireplace($exception, $exception, $input);
+			}
 		}
 		else if ($op == "ucfirst" || $op == "ucfirstchar")
 		{
