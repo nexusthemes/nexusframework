@@ -226,7 +226,9 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 		$result .= "{$htmlwaitwhileloading}&nbsp;";
 	}
 	
-	$result .= '<a '.$title_att.' target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="nxs-button ' . $scale_cssclass . ' ' . $border_radius_cssclass . ' ' . $margin_cssclass . ' ' . $colorzen . ' ' . $fontzen_cssclass . '" href="' . $url . '">' . $text . '</a>';
+	
+	$cssclasses = nxs_concatenateargswithspaces("nxs-button", $scale_cssclass, $border_radius_cssclass, $margin_cssclass, $colorzen, $fontzen_cssclass, $class);
+	$result .= '<a '.$title_att.' target="' . $destination_target . '" ' . $destination_relation_html . ' ' . $onclick . ' class="'.$cssclasses.'" href="' . $url . '">' . $text . '</a>';
 	
 	if ($waitwhileloading_right === true)
 	{

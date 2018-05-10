@@ -1261,7 +1261,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	
 	$result = '';
 	$result .= '<p class="' . $compiled[0]["id"] . '">';
-	$result .= '<button ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $fontzen_cssclass . '">' . $text . '</button>';
+	$result .= '<button ' . $destination_relation_html . ' ' . $onclick . ' class="' . $unique_style_combination_class_2 . ' ' . $fontzen_cssclass . ' ' . $class . '">' . $text . '</button>';
 	$result .= '</p>';
 	
 	return $result;
