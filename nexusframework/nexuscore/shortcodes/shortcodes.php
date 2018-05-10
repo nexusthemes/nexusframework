@@ -528,9 +528,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 		else if ($op == "listify")
 		{
 			$seperator = $atts["seperator"];
+			if ($seperator == "") { $seperator = "|"; }
 			$pieces = explode($seperator, $input);
 			$input = "";
-			$input .= "<ul>";
+			$input .= "<ul class='nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0'>";
 			foreach ($pieces as $piece)
 			{
 				$piece = trim($piece);
@@ -538,7 +539,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 				{
 					continue;
 				}
-				$input .= "<li>{$piece}{$seperator}</li>";
+				$input .= "<li>{$piece}</li>";
 			}
 			$input .= "</ul>";
 		}
