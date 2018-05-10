@@ -546,7 +546,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 		{
 			$val = str_replace("nxs-margin-top-", "", $val);
 			$val = str_replace("nxs-margin-top", "", $val);
-			
+						
 			if ($val == "")
 			{
 				// does not apply
@@ -719,33 +719,28 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 			{
 				// default
 			}
-			else if ($val == "nxs-button-scale-1-4")
-			{
-				$rulesbypseudo[$pseudoselector][] = "font-size: 18px;";
-				$rulesbypseudo[$pseudoselector][] = "padding-left: 14px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-right: 14px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-top: 8px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-bottom: 8px;";
-			}
-			else if ($val == "nxs-button-scale-1-8")
-			{
-				$rulesbypseudo[$pseudoselector][] = "font-size: 22px;";
-				$rulesbypseudo[$pseudoselector][] = "padding-left: 18px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-right: 18px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-top: 11px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-bottom: 11px;";
-			}
-			else if ($val == "nxs-button-scale-2-0")
-			{
-				$rulesbypseudo[$pseudoselector][] = "font-size: 24px;";
-				$rulesbypseudo[$pseudoselector][] = "padding-left: 20px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-right: 20px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-top: 12px;";
-    		$rulesbypseudo[$pseudoselector][] = "padding-bottom: 12px;";
-			}
 			else
 			{
-				$rulesbypseudo[$pseudoselector][] = "unsupported_scale_{$key}:{$val}";
+				$val = str_replace("nxs-button-scale-", "", $val);
+				$val = str_replace("nxs-button-scale", "", $val);
+			
+				$pieces = explode("-", $val);
+				$whole = $pieces[0];
+				$fraction = $pieces[1];
+				$value = $whole + ($fraction / 10);
+				
+				//
+				
+				$fontsizevalue = $value * 10 + 4;
+				$rulesbypseudo[$pseudoselector][] = "font-size: {$fontsizevalue}px; origval: $val;";
+
+				$paddinglrvalue = $value * 10;
+				$rulesbypseudo[$pseudoselector][] = "padding-left: {$paddinglrvalue}px;";
+				$rulesbypseudo[$pseudoselector][] = "padding-right: {$paddinglrvalue}px;";
+
+				$paddingtdvalue = $value * 6;
+				$rulesbypseudo[$pseudoselector][] = "padding-top: {$paddingtdvalue}px;";
+				$rulesbypseudo[$pseudoselector][] = "padding-bottom: {$paddingtdvalue}px;";
 			}
 		}
 		else if ($key == "fontsize" || false)
@@ -1326,7 +1321,11 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	if ($fontsize == "")
 	{
 		// derive the fontsize based upon the heading type (h1, h2, ...)
-		if ($heading == "2")
+		if ($heading == "1")
+		{
+			$fontsize = "2-2";
+		}
+		else if ($heading == "2")
 		{
 			$fontsize = "1-8";
 		}
