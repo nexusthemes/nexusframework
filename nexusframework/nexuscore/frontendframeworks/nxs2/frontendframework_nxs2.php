@@ -1245,7 +1245,7 @@ function nxs_frontendframework_nxs2_gethtmlforbutton($args)
 	$unique_style_combination_class_2 = $compiled[1]["id"];
 	//
 	
-	if ($url != "")
+	if ($destination_js == "" && $url != "")
 	{
 		if ($destination_target == "_self")
 		{
