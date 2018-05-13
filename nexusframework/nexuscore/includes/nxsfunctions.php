@@ -323,28 +323,33 @@ function nxs_shouldusecache_stage1()
 	return $result;	
 } 
 
-function nxs_cache_getmd5hash()
+function nxs_cache_getcanonicalurl()
 {
-	$data = "";
-	$data .= nxs_geturlcurrentpage();
+	$result = "";
+	$result .= nxs_geturlcurrentpage();
 	
 	// ignore gclid parameter (AdWords tag)
-	$data = nxs_removequeryparameterfromurl($data, "gclid");
-	$data = nxs_removequeryparameterfromurl($data, "nxs_fromtag");
+	$result = nxs_removequeryparameterfromurl($result, "gclid");
+	$result = nxs_removequeryparameterfromurl($result, "nxs_fromtag");
 	
 	// allow parameters of the url to be ignored when storing and retrieving the cache
 	$ignorekey = "nxs_cache_hash_ignoreparameters";
 	if ($_REQUEST[$ignorekey] != "")
 	{
-		$data = nxs_removequeryparameterfromurl($data, $ignorekey);
+		$result = nxs_removequeryparameterfromurl($result, $ignorekey);
 		$nxs_cache_ignoreparameters_string = $_REQUEST[$ignorekey];
 		$nxs_cache_ignoreparameters = explode(";", $nxs_cache_ignoreparameters_string);
 		foreach ($nxs_cache_ignoreparameters as $nxs_cache_ignoreparameter)
 		{
-			$data = nxs_removequeryparameterfromurl($data, $nxs_cache_ignoreparameter);
+			$result = nxs_removequeryparameterfromurl($result, $nxs_cache_ignoreparameter);
 		}
 	}
-	
+	return $result;
+}
+
+function nxs_cache_getmd5hash()
+{
+	$data = nxs_cache_getcanonicalurl();
 	$result = md5($data);
 	return $result;
 }
@@ -658,7 +663,7 @@ function nxs_handlerequestwithcaching($buffer)
 		
 		// enhance the output so we know its cached
 		$cached = $buffer;
-		$cached = str_replace("</body>", "</body><!-- CACHED " . NXS_UNIQUEIDFORREQUEST . " -->", $cached);			
+		$cached = str_replace("</body>", "</body><!-- CACHED " . NXS_UNIQUEIDFORREQUEST . " " . nxs_cache_getcanonicalurl() . " -->", $cached);			
 		
 		// allow plugins to enhance the cached output even further
 		$cached = apply_filters("nxs_getcachedoutput", $cached);
@@ -5080,30 +5085,32 @@ function nxs_prettyprint_array($arr)
 {
 	$retStr = '<h1>Pretty print</h1>';
   $retStr = '<ul>';
-  if (is_array($arr)){
-      foreach ($arr as $key=>$val){
-          if (is_array($val))
-          {
-          	$retStr .= '<li>' . $key . ' => ' . nxs_prettyprint_array($val) . '</li>';
-          } 
-          else if (is_string($val))
-          {
-          	$retStr .= '<li>' . $key . ' => ' . $val . '</li>';
-          }
-          else
-          {
-          	$type = get_class($val);
-          	if ($type === false)
-          	{
-          		// primitive
-          		$retStr .= '<li>' . $key . ' => ' . $val . '</li>';
-          	}
-          	else
-          	{
-          		$retStr .= '<li>' . $key . ' => {some object of type ' . $type . ' }</li>';
-          	}
-          }
+  if (is_array($arr))
+  {
+    foreach ($arr as $key=>$val)
+    {
+      if (is_array($val))
+      {
+      	$retStr .= '<li>' . $key . ' => ' . nxs_prettyprint_array($val) . '</li>';
+      } 
+      else if (is_string($val))
+      {
+      	$retStr .= '<li>' . $key . ' => ' . $val . '</li>';
       }
+      else
+      {
+      	$type = get_class($val);
+      	if ($type === false)
+      	{
+      		// primitive
+      		$retStr .= '<li>' . $key . ' => ' . $val . '</li>';
+      	}
+      	else
+      	{
+      		$retStr .= '<li>' . $key . ' => {some object of type ' . $type . ' }</li>';
+      	}
+      }
+    }
   }
   else
   {
@@ -13366,6 +13373,9 @@ function nxs_frontendframework_getfrontendframework()
 	{
 		$result = $trl["customfrontendframework"];
 	}
+	
+	// allow filters to override the behaviour
+	$result = apply_filters("nxs_f_frontendframework", $result);
 
 	if ($_REQUEST["frontendframework"] != "")
 	{
