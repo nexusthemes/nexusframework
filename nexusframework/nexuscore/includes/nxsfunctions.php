@@ -3448,16 +3448,17 @@ function nxs_get_advanced_strippedtags($data_str, $allowable_tags, $allowable_at
 	return $data_str;
 }
 
+
 function nxs_getpostid_for_title_and_nxstype($title, $nxsposttype)
 {
 	$posttype = nxs_getposttype_by_nxsposttype($nxsposttype);
-	$post = get_page_by_title($title, "OBJECT", $posttype);
+	$post = nxs_get_page_by_title($title, "OBJECT", $posttype);
 	return $post->ID;
 }
 
 function nxs_getpostid_for_title_and_wpposttype($title, $wpposttype)
 {
-	$post = get_page_by_title($title, "OBJECT", $wpposttype);
+	$post = nxs_get_page_by_title($title, "OBJECT", $wpposttype);
 	return $post->ID;	
 }
 
@@ -10537,6 +10538,15 @@ function nxs_connectivity_invoke_api_get($args)
 // =======
 // sanity checked for remote posts wrappers below
 // =======
+
+function nxs_get_page_by_title($page_title, $output, $post_type)
+{
+	$result = get_page_by_title($page_title, $output, $post_type);
+	
+	$result = apply_filters("nxs_f_get_page_by_title", $result, $page_title, $output, $post_type);
+
+	return $result;
+}
 
 // sanity checked for remote posts
 function nxs_get_post_status($postid)
