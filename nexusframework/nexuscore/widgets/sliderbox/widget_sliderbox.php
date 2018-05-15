@@ -764,9 +764,9 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 	    			// 
 	    			}
 		    						
-					jQuery(window).bind("nxs_recalculateruntimedimensions", function(e) {
-							//
-							nxs_js_log("gjslide");
+					jQuery(window).bind("nxs_recalculateruntimedimensions", function(e) 
+					{
+						// nxs_js_log("gjslide");
 						var slideset = jQuery("#slideset_<?php echo $placeholderid; ?>");
 						var currentslideindex = jQuery(slideset).data("nxs_activeslideindex");
 						
