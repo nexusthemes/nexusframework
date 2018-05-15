@@ -5427,6 +5427,7 @@ function nxs_webmethod_return_raw_async($args)
 	// we don't invoke exit, as this is an async return (php code will proceed to execute)
 }
 
+// obsolete; use nxs_webmethod_return_alternativeflow instead 
 function webmethod_return_alternativeflow($altflowid, $args)
 {
 	nxs_webmethod_return_alternativeflow($altflowid, $args);
