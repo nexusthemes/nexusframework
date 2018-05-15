@@ -473,7 +473,7 @@ function nxs_widget_googlemap_getlatlng($address)
 					$thememeta = nxs_theme_getmeta();
 					$args = array
 					(
-						"hostname" => "shop.nexusthemes.com",
+						"hostname" => "global.nexusthemes.com",
 						"apiurl" => "/latlng",
 						"queryparameters" => array
 						(
@@ -495,11 +495,14 @@ function nxs_widget_googlemap_getlatlng($address)
 						global $nxs_connectivity_errors;
 						if ($nxs_connectivity_errors > 0)
 						{
-							set_transient($key, $latlng, 60 * 5);	// keep the cache for 5 mins
+							// keep the cache for 5 mins
+							set_transient($key, $latlng, 60 * 5);	
 						}
 						else
 						{
-							set_transient($key, $latlng, 60 * 60 * 24 * 30);	// keep the cache for a month
+							// keep the cache for a month; dont store it longer as thats not allowed
+							// per the policy of google
+							set_transient($key, $latlng, 60 * 60 * 24 * 30);	
 						}
 					}
 				}
@@ -517,8 +520,6 @@ function nxs_widget_googlemap_getlatlng($address)
 	{
 		// echo "no address entered";
 	}
-	
-	
 	
 	return $result;
 }
