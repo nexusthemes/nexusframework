@@ -731,11 +731,25 @@ function nxs_setupcache()
 					$nxs_shouldusecache_stage2 = false;
 				}
 			}
+			
+			// don't send out cache if the site is configured
+			// to use a dataprotection with a cookie wall
+			// if the cookie consent was not given (yet)
+			if ($nxs_shouldusecache_stage2)
+			{
+				// 
+				if (!nxs_dataprotection_isactionallowed("render_cached_content"))
+				{
+					$nxs_shouldusecache_stage2 = false;
+				}
+			}
 		}
 		else
 		{
 			//error_log("cache stage 2 file not found $file");
 		}
+		
+		// 
 			
 		if ($nxs_shouldusecache_stage2)
 		{
