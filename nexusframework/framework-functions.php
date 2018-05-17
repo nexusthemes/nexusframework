@@ -2315,7 +2315,7 @@ function nxs_browser_iscrawler()
   return $result;
 }
 
-function nxs_gdpr_nexusframework_use_framework_on_any_site_getgdprmeta()
+function nxs_dataprotection_nexusframework_use_framework_on_any_site_getprotecteddata($args)
 {
 	// include webmethods
 	if (true)
@@ -2325,7 +2325,7 @@ function nxs_gdpr_nexusframework_use_framework_on_any_site_getgdprmeta()
 		foreach ($folders as $folder)
 		{
 			$name = basename($folder);			
-			$subactivities[] = "webmethod:{$name}";
+			$subactivities[] = "nexusframework:webmethod:{$name}";
 			
 			$path = "{$folder}/{$name}_webmethod.php";			
 			require_once($path);
@@ -2340,7 +2340,7 @@ function nxs_gdpr_nexusframework_use_framework_on_any_site_getgdprmeta()
 		foreach ($folders as $folder)
 		{
 			$name = basename($folder);			
-			$subactivities[] = "widget:{$name}";
+			$subactivities[] = "nexusframework:widget:{$name}";
 			
 			$path = "{$folder}/widget_{$name}.php";			
 			require_once($path);
