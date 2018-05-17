@@ -2354,6 +2354,7 @@ function nxs_gdpr_nexusframework_use_framework_on_any_site_getgdprmeta()
 	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
 	$subactivities[] = "google:loadanalytics";
 	$subactivities[] = "google:loadspecificanalyticsifconfigured";
+	$subactivities[] = "nexusframework:handleexplicitcookieconsent";
 	
 	// for logged in users;
 	$subactivities[] = "nexusframework:support";
