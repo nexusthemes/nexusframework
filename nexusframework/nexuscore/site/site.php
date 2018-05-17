@@ -2234,6 +2234,20 @@ function nxs_site_dashboardhome_rendersheet($args)
             </div>
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
+	        
+	        <!-- data protection -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Data Protection (GDPR/Privacy)", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectionhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        
 					<!-- cache management -->
 	        <div class="content2">
             <div class="box">
@@ -2709,6 +2723,52 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 	$result = nxs_ob_get_contents();
 	nxs_ob_end_clean();
 	return $result;
+}
+
+function nxs_site_dataprotectionhome_getoptions($args)
+{
+	$sitemeta = nxs_getsitemeta();
+	$dataprotectiontype = $sitemeta["dataprotectiontype"];
+	if (isset($args["clientpopupsessiondata"]["dataprotectiontype"]))
+	{
+		$dataprotectiontype = $args["clientpopupsessiondata"]["dataprotectiontype"];
+	}
+	
+	$fields = array();
+	$fields[] = array
+	(
+		"id" 			=> "dataprotectiontype",
+		"type" 				=> "select",
+		"popuprefreshonchange" => "true",
+		"label"			=> nxs_l18n__("Data Protection Type", "nxs_td"),
+		"dropdown" 			=> array
+		(
+			"" => "none",
+			"explicit_consent_by_cookie_wall" => "Explicit consent by cookie wall",
+		),
+	);
+	
+	if ($dataprotectiontype == "explicit_consent_by_cookie_wall")
+	{
+		$fields[] = array
+		(
+			"id" 			=> "cookie_wall_image_imageid",
+			"label"			=> nxs_l18n__("Cookie Wall background image", "nxs_td"),
+			"type" 				=> "image",
+		);
+	}
+	
+	//
+	
+	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Data Protection (GDPR/privacy)", "nxs_td"),
+		"footerfiller" => true,
+		"fields" => $fields,
+	);
+	
+	return $options;	
 }
 
 function nxs_site_cachemanagementhome_getoptions($args)

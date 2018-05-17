@@ -11,6 +11,11 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 	$result = array();
 	
 	$rootactivity = $args["rootactivity"];
+	if ($rootactivity == "")
+	{
+		nxs_webmethod_return_nack("error; nxs_dataprotection; rootactivity not set?");
+	}
+	
 	$queue = array($rootactivity);
 	$processed = array();
 	
@@ -67,11 +72,23 @@ function nxs_dataprotection_getexplicitconsentcookiename()
 function nxs_dataprotection_gettypeofdataprotection()
 {
 	$result = "none";
-	if ($_REQUEST["gdpr"] == "test")
+	
+	if (nxs_hassitemeta())
 	{
-		$result = "explicit_content_by_cookie_wall";
+		$sitemeta = nxs_getsitemeta();
+		$result = $sitemeta["dataprotectiontype"];
+	}
+
+	if ($result == "")
+	{
+		$result = "none";
 	}
 	
+	if ($_REQUEST["dataprotection"] != "")
+	{
+		$result = $_REQUEST["dataprotection"];
+	}
+
 	return $result;
 }
 
@@ -80,7 +97,7 @@ function nxs_dataprotection_isactionallowed($action)
 	$result = false;
 	
 	$dataprotectiontype = nxs_dataprotection_gettypeofdataprotection();
-	if ($dataprotectiontype == "explicit_content_by_cookie_wall")
+	if ($dataprotectiontype == "explicit_consent_by_cookie_wall")
 	{
 		if (nxs_browser_iscrawler())
 		{
@@ -116,7 +133,7 @@ function nxs_dataprotection_isactionallowed($action)
 function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 {
 	$dataprotectiontype = nxs_dataprotection_gettypeofdataprotection();
-	if ($dataprotectiontype == "explicit_content_by_cookie_wall")
+	if ($dataprotectiontype == "explicit_consent_by_cookie_wall")
 	{
 		if (nxs_browser_iscrawler())
 		{
@@ -130,7 +147,18 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 			
 			if ($r == "")
 			{
-				// nope, no consent yet
+				// nope, no consent yet; show the cookie wall
+				$backgroundimage_url = "";
+				if (nxs_hassitemeta())
+				{
+					$sitemeta = nxs_getsitemeta();
+					$cookie_wall_image_imageid = $sitemeta["cookie_wall_image_imageid"];
+					
+					$imagemetadata = nxs_wp_get_attachment_image_src($cookie_wall_image_imageid, 'full', true);
+					// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
+					$backgroundimage_url 		= $imagemetadata[0];
+					$backgroundimage_url = nxs_img_getimageurlthemeversion($backgroundimage_url);
+				}
 				
 				$jquery_url = nxs_getframeworkurl() . "/js/jquery-1.11.1/jquery.min.js";
 				?>
@@ -149,11 +177,120 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 						<script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(); ?>"></script>
 					</head>
 					<body>
-						first give explicit consent to our terms and conditions, thanks
-						<form id='nxsdataprotectionform'>
-							<input type='checkbox' name='nxsexplicitconsent' id='nxsexplicitconsent' />
-							<input type='submit' />
-						</form>
+						<style>
+							
+							body::before
+							{
+							  content: ""; /* important */
+							  z-index: -1; /* important */
+							  position: inherit;  
+							  left: inherit;
+							  top: inherit;
+							  width: inherit;                                                                               
+							  height: inherit;  
+							  background-image: inherit;
+							  background-size: cover; 
+							  background-position: center center;
+							  filter: blur(8px);
+							}
+							
+							body
+							{
+							  background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("<?php echo $backgroundimage_url; ?>"); 
+							  background-size: 0 0;  /* image should not be drawn here */
+							  width: 100%;
+							  height: 100%;
+							  position: fixed; /* or absolute for scrollable backgrounds */  
+							  font-family: arial;
+							}
+							
+							#nxsdataprotectionback
+							{
+								width: 100vw;
+								height: 100vh;
+								display: flex;
+								align-items: center;
+  							justify-content: center;
+  						}
+  						
+							#nxsdataprotectionwrap
+							{
+								padding: 20px;
+								
+								border-radius: 20px;
+								background-color: white;
+								color: black;
+								font-size: 20px;
+								box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+								max-width: 40vw;
+							}
+							
+							input[type=submit] 
+							{
+						    padding:5px 15px; 
+						    background:#ccc; 
+						    border:0 none;
+						    cursor:pointer;
+						    -webkit-border-radius: 5px;
+						    border-radius: 5px;
+						    font-size: 20px;
+							}
+							
+							#nxsdataprotectionterms
+							{
+								border: 1px solid black;
+								max-height: 20vh;
+								max-width: 100%;
+								overflow-y: scroll;
+								padding-top: 10px;
+								padding-bottom: 10px;
+								
+							}
+							
+							::-webkit-scrollbar {
+						        -webkit-appearance: none;
+						        width: 7px;
+					    }
+					    ::-webkit-scrollbar-thumb {
+					        border-radius: 4px;
+					        background-color: rgba(0,0,0,.5);
+					        -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+					    }
+							
+						</style>
+						<div id='nxsdataprotectionback'>
+							<div id='nxsdataprotectionwrap'>
+								<p>
+									First give explicit consent to our terms and conditions, thanks
+								</p>
+								<div>
+									<h2>Terms and conditions</h2>
+									<div id='nxsdataprotectionterms'>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet faucibus sapien. Pellentesque non odio sit amet elit rutrum volutpat. Curabitur facilisis ut sapien tincidunt luctus. Integer vehicula lorem enim, eget rutrum magna lobortis nec. Aliquam sed sodales leo. Cras eget vehicula nunc. Proin sit amet felis quis arcu ullamcorper vulputate. Vivamus convallis ipsum sodales magna condimentum, vel mattis lectus porttitor. Quisque pulvinar, nunc in laoreet commodo, leo urna blandit sem, sit amet rutrum massa nibh quis tortor. In bibendum justo eget lectus sagittis congue. Etiam ac lorem id sapien sagittis rutrum ac sit amet eros. Fusce ultrices gravida nulla, quis vestibulum nunc faucibus vel. Ut dapibus tellus a risus rhoncus pulvinar. Morbi consectetur orci ac imperdiet eleifend.
+									</div>
+								</div>
+								<form id='nxsdataprotectionform'>
+									<input type='checkbox' name='nxsexplicitconsent' id='nxsexplicitconsent' />
+									<label for="nxsexplicitconsent">Yes i totally agree to the <a href='#'>terms and conditions</a></label>
+									
+									<br />
+									<input type='submit' />
+								</form>
+							</div>
+						</div>
+						<div>
+							<?php 
+							/*
+							$args = array
+							(
+								"rootactivity" => "wordpress:use_theme_on_any_site",
+							);
+							$activitiesandinformation = nxs_dataprotection_buildrecursiveprotecteddata($args);
+							$json = json_encode($activitiesandinformation);
+							echo $json;
+							*/
+							?>
+						</div>
 						<script>
 							
 							$('#nxsdataprotectionform').submit
