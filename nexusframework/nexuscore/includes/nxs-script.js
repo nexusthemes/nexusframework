@@ -6487,7 +6487,7 @@ function nxs_js_setcookie(name, value, expiretime)
 	    var expires = " expires=" + d.toUTCString() + " ";
 	}
 
-  	document.cookie = name + "=" + value + "; " + expires + "; path=/";
+  document.cookie = name + "=" + value + "; " + expires + "; path=/";
 }
 
 function nxs_js_getcookie(c_name) 

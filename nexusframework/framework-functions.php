@@ -399,6 +399,11 @@ require_once(NXS_FRAMEWORKPATH . '/nexuscore/extensions/commentsproviders/commen
 
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/webservices/webservices.php'); 
 
+// data protection
+require_once(NXS_FRAMEWORKPATH . '/nexuscore/dataprotection/dataprotection.php');
+
+
+add_action('init', 'nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest', 5);
 
 // handle webmethod, is this is a webmethod
 // note that if this _is_ a webmethod, the system will stop execution after this method
@@ -414,8 +419,6 @@ nxs_addfeedsupport();
 nxs_addyoastseosupport();
 nxs_addwoocommercesupport();
 
-// plugins
-nxs_loadplugin_twittertweets();
 
 function nxs_seotab_pluginnotfound()
 {
@@ -456,8 +459,6 @@ function nxs_ensure_sessionstarted()
   	// 20130329 the next line should fix issue identified by Jessica
   	// see http://www.php.net/manual/en/session.configuration.php#ini.session.save-handler
   	// see http://forums.cpanel.net/f5/error-php-fatal-error-session_start-failed-initialize-storage-module-17100-p3.html
-  	// if errors shows Fatal error: session_start() [<a href='function.session-start'>function.session-start</a>]: Failed to initialize storage module: files (path: )
-  	// this means the 
   	session_start();
   }
 }
@@ -2301,6 +2302,85 @@ function nxs_wp_update_nav_menu_item($menu_id, $menu_item_db_id, $args)
 	}
 }
 add_action('wp_update_nav_menu_item', 'nxs_wp_update_nav_menu_item', 10, 3);
+
+function nxs_browser_iscrawler() 
+{
+	$result = false;
+	
+  if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) 
+  {
+    $result = true;
+  }
+  
+  return $result;
+}
+
+function nxs_gdpr_nexusframework_use_framework_on_any_site_getgdprmeta()
+{
+	// include webmethods
+	if (true)
+	{
+		$folder = NXS_FRAMEWORKPATH . "/nexuscore/webservices/webmethods";
+		$folders = glob($folder . '/*' , GLOB_ONLYDIR);
+		foreach ($folders as $folder)
+		{
+			$name = basename($folder);			
+			$subactivities[] = "webmethod:{$name}";
+			
+			$path = "{$folder}/{$name}_webmethod.php";			
+			require_once($path);
+		}
+	}
+	
+	// include widgets
+	if (true)
+	{
+		$folder = NXS_FRAMEWORKPATH . "/nexuscore/widgets";
+		$folders = glob($folder . '/*' , GLOB_ONLYDIR);
+		foreach ($folders as $folder)
+		{
+			$name = basename($folder);			
+			$subactivities[] = "widget:{$name}";
+			
+			$path = "{$folder}/widget_{$name}.php";			
+			require_once($path);
+		}
+	}
+	
+	// for any user; (cookie consent required)
+	$subactivities[] = "nexusframework:usegooglefonts";
+	$subactivities[] = "google:loadjsapi";
+	$subactivities[] = "google:loadwebfont";
+	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
+	$subactivities[] = "google:loadanalytics";
+	$subactivities[] = "google:loadspecificanalyticsifconfigured";
+	
+	// for logged in users;
+	$subactivities[] = "nexusframework:support";
+	$subactivities[] = "nexusframework:selectlanguage_nxs_cookie_hl";
+	
+	
+	$subactivities[] = "themeuser:nexusthemes:usesupport";
+	$subactivities[] = "themeuser:google:usesupport";
+	
+	$subactivities[] = "nexusframework:updates";
+	$subactivities[] = "dpa:nexus:usegooglefonts";
+
+	$subactivities[] = "nexusframework:license";
+	$subactivities[] = "nexusframework:ixplatform";
+	
+	//
+	
+	$result = array
+	(
+		"subactivities" => $subactivities,
+		"dataprocessingdeclarations" => array	
+		(
+		)
+	);
+	
+	return $result;
+}
 
 // ---
 

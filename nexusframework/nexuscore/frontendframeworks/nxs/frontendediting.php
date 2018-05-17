@@ -434,6 +434,10 @@ else
 <script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(); ?>"></script>
 <script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-deferred.js?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
 <script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-admin-deferred.js?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
+<?php 
+// this is executed also for anonymous users
+
+?>
 <script data-cfasync="false" type="text/javascript" src="//www.google.com/jsapi"></script>
 <script data-cfasync="false" type="text/javascript">
 	google.load('webfont','1');

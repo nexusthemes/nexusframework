@@ -1,5 +1,9 @@
 <?php
 
+// probably should be moved to the twitter widget?
+require_once(NXS_FRAMEWORKPATH . '/plugins/display-tweets-php/includes/Twitter/api.php');
+
+//
 function nxs_widgets_twittertweets_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
 	return "nxs-icon-" . $widget_name;
@@ -18,13 +22,7 @@ function nxs_widgets_twittertweets_getunifiedstylinggroup() {
 function nxs_widgets_twittertweets_connection($optionvalues, $args, $runtimeblendeddata) 
 {
 	nxs_ob_start();
-	
-	//$headingid = "heading";
-	
 	extract($optionvalues);
-	
-	//$containerpostid = $args["clientpopupsessioncontext"]["containerpostid"];
-		
 	?>
 	<div>
 		<?php

@@ -528,8 +528,6 @@ function nxs_frontendframework_nxs_clearunwantedscripts()
 	{
 		// the theme could break if pointing to an incompatible version
 		// therefore we remove jquery scripts added by third party plugins, such as NGG
-  	//wp_deregister_script('jquery');
-  	
   	
   	// 25 aug 2014; removed; woocommerce adds various scripts that are dependent upon
   	// jquery, and we ignore those too when using the approach below...
@@ -537,11 +535,16 @@ function nxs_frontendframework_nxs_clearunwantedscripts()
   	{
   		wp_deregister_script('jquery');
 			wp_deregister_script('jquery-ui');
+
+			$jquery_url = nxs_getframeworkurl() . "/js/jquery-1.11.1/jquery.min.js";
 			$dependencies = false;
-      wp_register_script('jquery', "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js", $dependencies);
-      wp_enqueue_script('jquery');
-      
-      wp_enqueue_script('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js', array('jquery'), '1.11.1');
+			
+      wp_register_script('jquery', $jquery_url, $dependencies);
+      wp_enqueue_script('jquery');      
+
+			$jquery_ui_url = nxs_getframeworkurl() . "/js/jquery-ui-1.11.1/jquery-ui.min.js";
+
+      wp_enqueue_script('jquery-ui', $jquery_ui_url, array('jquery'), '1.11.1');
 		}
 		add_action('wp_print_scripts', 'nxs_modify_scripts', 100);
 		add_action('wp_head','nxs_setjQ_nxs');

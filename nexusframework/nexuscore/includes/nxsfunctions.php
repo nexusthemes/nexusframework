@@ -9225,16 +9225,6 @@ function webmethod_return_ok($args)
 	nxs_webmethod_return_ok($args);
 }
 
-function nxs_loadplugin_twittertweets()
-{
-	// load api
-	$filetoinclude = NXS_FRAMEWORKPATH . '/plugins/display-tweets-php/includes/Twitter/api.php';
-	require_once($filetoinclude);
-	
-	// dispatch requests made by/for twitter
-	nxs_twitter_dispatchrequest();
-}
-
 function nxs_addfeedsupport()
 {
 	// text
@@ -9286,7 +9276,6 @@ function nxs_ext_feed_img($content)
 
 function nxs_the_excerpt_rss($content)
 {
-	
 	$content = nxs_the_content_feed($content, $feedtype);
 	$content = str_replace("\n", " ", $content);
 	$content = str_replace("&nbsp;", " ", $content);
