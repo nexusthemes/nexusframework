@@ -1544,7 +1544,7 @@ function nxs_clearunwantedscripts()
   }
   else
   {
-  	//add_action('admin_head','nxs_setjQ_nxs');
+  	
   }
 }
 
