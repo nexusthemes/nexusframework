@@ -148,20 +148,47 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 			if ($r == "")
 			{
 				// nope, no consent yet; show the cookie wall
+				
+				/* EXPRESSIONS
+				---------------------------------------------------------------------------------------------------- */
+				
+				$sitemeta = nxs_getsitemeta();
+				
+				// Background Image
 				$backgroundimage_url = "";
 				if (nxs_hassitemeta())
 				{
-					$sitemeta = nxs_getsitemeta();
 					$cookie_wall_image_imageid = $sitemeta["cookie_wall_image_imageid"];
-					
 					$imagemetadata = nxs_wp_get_attachment_image_src($cookie_wall_image_imageid, 'full', true);
-					// Returns an array with $imagemetadata: [0] => url, [1] => width, [2] => height
-					$backgroundimage_url 		= $imagemetadata[0];
+					$backgroundimage_url = $imagemetadata[0];
 					$backgroundimage_url = nxs_img_getimageurlthemeversion($backgroundimage_url);
 				}
 				
+				// GDPR Trust Icon			
+				$gdpr_imageid = $sitemeta["gdpr_imageid"];
+				$imagemetadata = nxs_wp_get_attachment_image_src($gdpr_imageid, 'full', true);
+				$gdprimage_url = $imagemetadata[0];
+				$gdprimage_url = nxs_img_getimageurlthemeversion($gdprimage_url);
+				
+				// GDPR Content
+				$text = $sitemeta["text"];
+				
+				// Terms and Condtions
+				$terms_and_conditions_title = $sitemeta["terms_and_conditions_title"];
+				$terms_and_conditions_text = $sitemeta["terms_and_conditions_text"];
+				
+				// Privacy Policy
+				$privacy_policy_title = $sitemeta["privacy_policy_title"];
+				$privacy_policy_text = $sitemeta["privacy_policy_text"];
+				
+				
 				$jquery_url = nxs_getframeworkurl() . "/js/jquery-1.11.1/jquery.min.js";
-				?>
+				
+                
+                /* OUTPUT
+				---------------------------------------------------------------------------------------------------- */
+                ?>
+                
 				<html>
 					<head>
 						<script data-cfasync="false" type="text/javascript" src="<?php echo $jquery_url; ?>"></script>
@@ -176,11 +203,11 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 						</script>
 						<script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(); ?>"></script>
 					</head>
-					<body>
+					
+                    <body>
 						<style>
 							
-							body::before
-							{
+							body::before {
 							  content: ""; /* important */
 							  z-index: -1; /* important */
 							  position: inherit;  
@@ -192,10 +219,10 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 							  background-size: cover; 
 							  background-position: center center;
 							  filter: blur(8px);
+							  transform: scale(1.05);
 							}
 							
-							body
-							{
+							body {
 							  background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("<?php echo $backgroundimage_url; ?>"); 
 							  background-size: 0 0;  /* image should not be drawn here */
 							  width: 100%;
@@ -204,80 +231,139 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 							  font-family: arial;
 							}
 							
-							#nxsdataprotectionback
-							{
+							#nxsdataprotectionback {
 								width: 100vw;
 								height: 100vh;
 								display: flex;
 								align-items: center;
-  							justify-content: center;
-  						}
+  								justify-content: center;
+  							}
   						
-							#nxsdataprotectionwrap
-							{
+							#nxsdataprotectionwrap {
 								padding: 20px;
-								
-								border-radius: 20px;
-								background-color: white;
-								color: black;
-								font-size: 20px;
+								border-radius: 3px;
+								background-color: #003399;
+								color: white;
+								font-size: 16px;
 								box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
 								max-width: 40vw;
 							}
+							#nxsdataprotectionwrap p { margin: 0 0 0 1em; }
 							
-							input[type=submit] 
-							{
-						    padding:5px 15px; 
-						    background:#ccc; 
-						    border:0 none;
-						    cursor:pointer;
-						    -webkit-border-radius: 5px;
-						    border-radius: 5px;
-						    font-size: 20px;
+							input[type=submit]  {
+								padding:5px 15px; 
+								background:#ccc; 
+								border:0 none;
+								cursor:pointer;
+								-webkit-border-radius: 5px;
+								border-radius: 5px;
+								font-size: 20px;
 							}
 							
-							#nxsdataprotectionterms
-							{
-								border: 1px solid black;
-								max-height: 20vh;
-								max-width: 100%;
-								overflow-y: scroll;
-								padding-top: 10px;
-								padding-bottom: 10px;
-								
-							}
+							
 							
 							::-webkit-scrollbar {
 						        -webkit-appearance: none;
 						        width: 7px;
-					    }
-					    ::-webkit-scrollbar-thumb {
-					        border-radius: 4px;
-					        background-color: rgba(0,0,0,.5);
-					        -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
-					    }
+					    	}
+							::-webkit-scrollbar-thumb { border-radius: 4px; background-color: rgba(0,0,0,.5); -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5); }
+							
+
+
+							/* Acordeon styles */
+							.gdpr-accordion-wrapper .tab { position: relative; margin-bottom: 1px; width: 100%; color: #fff; overflow: hidden; }
+							.gdpr-accordion-wrapper input { position: absolute; opacity: 0; z-index: -1; }
+							.gdpr-accordion-wrapper label {
+							  position: relative;
+							  display: block;
+							  padding: 0 0 0 1em;
+							  border: 2px solid white;
+							  font-weight: bold;
+							  line-height: 3;
+							  cursor: pointer;
+							  margin-bottom: 0.1em;
+							}
+							.gdpr-accordion-wrapper .tab-content {
+							  max-height: 0;
+							  overflow-y: scroll;
+							  background: white;
+							  color: grey;
+							  -webkit-transition: max-height .35s;
+							  -o-transition: max-height .35s;
+							  transition: max-height .35s;
+							}
+							.gdpr-accordion-wrapper .tab-content p,
+							.gdpr-accordion-wrapper .tab-content h1,
+							.gdpr-accordion-wrapper .tab-content h2,
+							.gdpr-accordion-wrapper .tab-content h3,
+							.gdpr-accordion-wrapper .tab-content h4,
+							.gdpr-accordion-wrapper .tab-content h5,
+							.gdpr-accordion-wrapper .tab-content h6 { margin: 1em; }
+							/* :checked */
+							.gdpr-accordion-wrapper input:checked ~ .tab-content { max-height: 10em; }
+							/* Icon */
+							.gdpr-accordion-wrapper label::after {
+							  position: absolute;
+							  right: 0;
+							  top: 0;
+							  display: block;
+							  width: 3em;
+							  height: 3em;
+							  line-height: 3;
+							  text-align: center;
+							  -webkit-transition: all .35s;
+							  -o-transition: all .35s;
+							  transition: all .35s;
+							}
+							.gdpr-accordion-wrapper input[type=checkbox] + label::after { content: "+"; }
+							.gdpr-accordion-wrapper input[type=radio] + label::after { content: "\25BC"; }
+							.gdpr-accordion-wrapper input[type=checkbox]:checked + label::after { transform: rotate(315deg); }
+							.gdpr-accordion-wrapper input[type=radio]:checked + label::after { transform: rotateX(180deg); }
+
 							
 						</style>
-						<div id='nxsdataprotectionback'>
-							<div id='nxsdataprotectionwrap'>
-								<p>
-									First give explicit consent to our terms and conditions, thanks
+                        
+                        
+                        <?php
+						
+						echo '
+						<div id="nxsdataprotectionback">
+							<div id="nxsdataprotectionwrap">
+								
+								<p style="text-align: center;">
+									<img src="'.$gdprimage_url.'">
 								</p>
-								<div>
-									<h2>Terms and conditions</h2>
-									<div id='nxsdataprotectionterms'>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet faucibus sapien. Pellentesque non odio sit amet elit rutrum volutpat. Curabitur facilisis ut sapien tincidunt luctus. Integer vehicula lorem enim, eget rutrum magna lobortis nec. Aliquam sed sodales leo. Cras eget vehicula nunc. Proin sit amet felis quis arcu ullamcorper vulputate. Vivamus convallis ipsum sodales magna condimentum, vel mattis lectus porttitor. Quisque pulvinar, nunc in laoreet commodo, leo urna blandit sem, sit amet rutrum massa nibh quis tortor. In bibendum justo eget lectus sagittis congue. Etiam ac lorem id sapien sagittis rutrum ac sit amet eros. Fusce ultrices gravida nulla, quis vestibulum nunc faucibus vel. Ut dapibus tellus a risus rhoncus pulvinar. Morbi consectetur orci ac imperdiet eleifend.
+								
+								<p>'.$text.'</p>
+							
+								<div class="gdpr-accordion-wrapper">
+    
+									<div class="tab">
+									  <input id="tab-one" type="checkbox" name="tabs">
+									  <label for="tab-one">'.$terms_and_conditions_title.'</label>
+									  <div class="tab-content">'.$terms_and_conditions_text.'</div>
 									</div>
+									
+									<div class="tab">
+									  <input id="tab-two" type="checkbox" name="tabs">
+									  <label for="tab-two">'.$privacy_policy_title.'</label>
+									  <div class="tab-content">'.$privacy_policy_text.'</div>
+									</div>
+								
 								</div>
-								<form id='nxsdataprotectionform'>
-									<input type='checkbox' name='nxsexplicitconsent' id='nxsexplicitconsent' />
-									<label for="nxsexplicitconsent">Yes i totally agree to the <a href='#'>terms and conditions</a></label>
+  
+								<form id="nxsdataprotectionform">
+									<input type="checkbox" name="nxsexplicitconsent" id="nxsexplicitconsent" />
+									<label for="nxsexplicitconsent">Yes i totally agree</label>
 									
 									<br />
-									<input type='submit' />
+									<input type="submit" />
 								</form>
+								
 							</div>
-						</div>
+						</div>'
+						?>
+						
 						<div>
 							<?php 
 							/*
