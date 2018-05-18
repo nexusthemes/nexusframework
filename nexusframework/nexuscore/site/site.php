@@ -2734,29 +2734,150 @@ function nxs_site_dataprotectionhome_getoptions($args)
 		$dataprotectiontype = $args["clientpopupsessiondata"]["dataprotectiontype"];
 	}
 	
+	// 
+	
 	$fields = array();
 	$fields[] = array
 	(
-		"id" 			=> "dataprotectiontype",
-		"type" 				=> "select",
-		"popuprefreshonchange" => "true",
-		"label"			=> nxs_l18n__("Data Protection Type", "nxs_td"),
-		"dropdown" 			=> array
+		"id" 					=> "dataprotectiontype",
+		"type" 					=> "select",
+		"popuprefreshonchange" 	=> "true",
+		"label"					=> nxs_l18n__("Data Protection Type", "nxs_td"),
+		"dropdown" 				=> array
 		(
-			"" => "none",
-			"explicit_consent_by_cookie_wall" => "Explicit consent by cookie wall",
+			"" 									=> "none",
+			"explicit_consent_by_cookie_wall" 	=> "Explicit consent by cookie wall",
 		),
 	);
 	
+	// EXPLICIT CONSENT OPTIONS
+	
 	if ($dataprotectiontype == "explicit_consent_by_cookie_wall")
 	{
+		
+		// GENERAL
+		
+		$fields[] = array( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("General", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "title",
+			);
+		
+		$fields[] = array
+		( 
+			"id" 				=> "text",
+			"type" 				=> "input",
+			"label" 			=> nxs_l18n__("Title", "nxs_td"),
+			"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+			"unicontentablefield" => true,
+			"localizablefield"	=> true
+		);
+		
+		$fields[] = array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+		);
+		
+		// IMAGES
+		
+		$fields[] = array( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Images", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "title",
+			);
+			
+		$fields[] = array
+		(
+			"id" 			=> "gdpr_imageid",
+			"label"			=> nxs_l18n__("Trust Icon", "nxs_td"),
+			"type" 			=> "image",
+		);
 		$fields[] = array
 		(
 			"id" 			=> "cookie_wall_image_imageid",
-			"label"			=> nxs_l18n__("Cookie Wall background image", "nxs_td"),
-			"type" 				=> "image",
+			"label"			=> nxs_l18n__("Background Image", "nxs_td"),
+			"type" 			=> "image",
+		);
+		
+		$fields[] = array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+		);
+		
+		// TERMS AND CONDITIONS
+		
+		$fields[] = array( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Terms and Conditions", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "title",
+			);
+		
+		$fields[] = array
+		( 
+			"id" 				=> "terms_and_conditions_title",
+			"type" 				=> "input",
+			"label" 			=> nxs_l18n__("Title", "nxs_td"),
+			"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+			"unicontentablefield" => true,
+			"localizablefield"	=> true
+		);
+		$fields[] = array(
+			"id" 				=> "terms_and_conditions_text",
+			"type" 				=> "tinymce",
+			"label" 			=> nxs_l18n__("Text", "nxs_td"),
+			"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
+			"unicontentablefield" => true,
+			"localizablefield"	=> true
+		);
+		
+		$fields[] = array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+		);
+		
+		// PRIVACY POLICY
+		
+		$fields[] = array( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Privacy Policy", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "title",
+			);
+		
+		$fields[] = array
+		( 
+			"id" 				=> "privacy_policy_title",
+			"type" 				=> "input",
+			"label" 			=> nxs_l18n__("Title", "nxs_td"),
+			"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+			"unicontentablefield" => true,
+			"localizablefield"	=> true
+		);
+		$fields[] = array(
+			"id" 				=> "privacy_policy_text",
+			"type" 				=> "tinymce",
+			"label" 			=> nxs_l18n__("Text", "nxs_td"),
+			"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
+			"unicontentablefield" => true,
+			"localizablefield"	=> true
+		);
+		
+		$fields[] = array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
 		);
 	}
+	
+	
+	
+	
 	
 	//
 	
