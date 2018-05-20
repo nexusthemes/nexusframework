@@ -413,7 +413,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		{
 			
 			$videoid = "B6cg4ZoUwVU";
-			$videourl = "http://www.youtube.com/watch?v=" . $videoid;
+			$videourl = "https://www.youtube.com/watch?v=" . $videoid;
 		}
 		
 		$renderBeheer = true;
@@ -495,12 +495,6 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	nxs_ob_start();
 
 	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-youtube";
-	
-	$scheme = "http";
-	if (is_ssl()) 
-	{
-		$scheme = "https";
-	}
 
 	?>
 
@@ -513,7 +507,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		}
 		?>
         <div class="video-container">
-            <iframe class="nxs-youtube-iframe" src="<?php echo $scheme; ?>://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" frameborder="0" allowfullscreen></iframe>
+            <iframe class="nxs-youtube-iframe" src="https://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
     <?php
@@ -536,6 +530,62 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 
 	// outbound statebag
 	// $nxs_global_row_render_statebag["foo"] = "bar";
+	
+	// data protection handling
+	$activity = "nexusframework:widget_youtube";
+	$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($activity);
+	if ($dataprotectiontype == "")
+	{
+		// leave as-is
+	}
+	else if ($dataprotectiontype == "enabled")
+	{
+		// leave as-is
+	}
+	else if ($dataprotectiontype == "enabled_after_cookie_wall_consent_or_robot")
+	{
+		if (nxs_browser_iscrawler())
+		{
+			// leave as-is
+		}
+		else
+		{
+			$result["html"] = "todo; check consent cookiewall";
+		}
+	}
+	else if ($dataprotectiontype == "enabled_after_cookie_component_consent_or_robot")
+	{
+		if (nxs_browser_iscrawler())
+		{
+			// leave as-is
+		}
+		else
+		{
+			if (nxs_dataprotection_isexplicitconsentgiven($activity))
+			{
+				// leave as-is
+			}
+			else
+			{
+				$result["html"] = nxs_dataprotection_renderexplicitconsentinput($activity);
+			}
+		}
+	}
+	else if ($dataprotectiontype == "disabled")
+	{
+		if (is_user_logged_in())
+		{
+			$result["html"] = "Disabled (User Data Protection)";
+		}
+		else
+		{
+			$result["html"] = "";
+		}
+	}
+	else
+	{
+		$result["html"] = "Unsupported data protection type; $dataprotectiontype";
+	}
 
 	return $result;
 }
@@ -550,17 +600,17 @@ function nxs_youtube_videoid_popupcontent($optionvalues, $args, $runtimeblendedd
 
 	nxs_ob_start();
 	?>
-	<input type='text' class='videourl-<?php echo $id; ?> nxs-float-left' placeholder='<?php nxs_l18n_e("For example http://www.youtube.com/watch?feature=player_embedded&v=Gvvw4lXcCXE[nxs:placeholder]", "nxs_td"); ?>' oninput='nxs_js_updatevideoid_<?php echo $id; ?>();' value='http://www.youtube.com/watch?v=<?php echo $value; ?>' />
+	<input type='text' class='videourl-<?php echo $id; ?> nxs-float-left' placeholder='<?php nxs_l18n_e("For example https://www.youtube.com/watch?feature=player_embedded&v=Gvvw4lXcCXE[nxs:placeholder]", "nxs_td"); ?>' oninput='nxs_js_updatevideoid_<?php echo $id; ?>();' value='https://www.youtube.com/watch?v=<?php echo $value; ?>' />
 	<div class="nxs-clear">&nbsp;</div>
 	<a href='#' onclick="nxs_js_setvideotosample_<?php echo $id; ?>(); return false;" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Sample[nxs:ddl]", "nxs_td"); ?></a>
-	<a href='http://www.youtube.com' target="_blank" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Open youtube[nxs:button]", "nxs_td"); ?></a>
+	<a href='https://www.youtube.com' target="_blank" class='nxsbutton1 nxs-float-left'><?php nxs_l18n_e("Open youtube[nxs:button]", "nxs_td"); ?></a>
 	
 	<script>
 		nxs_js_requirescript('parseuri_js', 'js', '<?php echo nxs_getframeworkurl() . '/nexuscore/widgets/youtube/js/parseuri.js'; ?>', false);
 
 		function nxs_js_setvideotosample_<?php echo $id; ?>()
 		{
-			jQuery('.videourl-<?php echo $id; ?>').val('<?php nxs_l18n_e("http://www.youtube.com/watch?v=B6cg4ZoUwVU", "nxs_td"); ?>');
+			jQuery('.videourl-<?php echo $id; ?>').val('<?php nxs_l18n_e("https://www.youtube.com/watch?v=B6cg4ZoUwVU", "nxs_td"); ?>');
 
 			nxs_js_updatevideoid_<?php echo $id; ?>()
 		}
@@ -713,7 +763,7 @@ function nxs_widgets_youtube_initplaceholderdata($args)
 	$args["title"] = nxs_l18n__("title[sample]", "nxs_td");
 	$args['title_heightiq'] = "true";
 	$args["videoid"] = nxs_l18n__("videoid[youtube,sample,B6cg4ZoUwVU]", "nxs_td");
-	$args["videourl"] = nxs_l18n__("videourl[youtube,sample,http://www.youtube.com/watch?v=B6cg4ZoUwVU]", "nxs_td");
+	$args["videourl"] = nxs_l18n__("videourl[youtube,sample,https://www.youtube.com/watch?v=B6cg4ZoUwVU]", "nxs_td");
 	$args["language"] = nxs_l18n__("language[sample,youtube]", "nxs_td");
 	
 	// current values as defined by unistyle prefail over the above "default" props
@@ -729,5 +779,42 @@ function nxs_widgets_youtube_initplaceholderdata($args)
 	$result = array();
 	$result["result"] = "OK";
 	
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_widget_youtube_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+			// if widget has properties that pull information from other 
+			// vendors (like scripts, images hosted on external sites, etc.) 
+			// those need to be taken into consideration
+			// responsibility for that is the person configuring the widget
+			"custom-widget-configuration",	
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can browse a page of the website owned by the (controller) that renders youtube videos using the YouTube widget of the framework",
+				"what" => "IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "Google (YouTube)",	// the name of the data_processor or data_recipient
+				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Not applicable (because this is a compiletime declaration)",
+				"supported_consent_options" => array
+				(
+					"explicit_consent_by_cookie_wall",
+				),
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
+			),
+		),
+		"status" => "final",
+	);
 	return $result;
 }
