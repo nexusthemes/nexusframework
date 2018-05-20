@@ -38,7 +38,7 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 				{						
 					$subactivity = nxs_dataprotection_getcanonicalactivity($subactivity);
 					
-					$currentresult["dataprocessingdeclarations"]["includes"][] = $subactivity;
+					$result["activities"][$currentactivity]["includes"][] = $subactivity;
 					
 					if (!in_array($subactivity, $processed))
 					{
@@ -46,14 +46,19 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 					}
 					else
 					{
-						// 
-						$result["warning"][] = "activity was enqueued multiple times (only the first time it was processed); $subactivity";
+						// for some we already know this will happen; those will be ignored
+						$expected_to_be_used_multiple_times = array("custom_widget_configuration");
+						$was_expected_to_be_used_multiple_times = in_array($subactivity, $expected_to_be_used_multiple_times);
+						if (!$was_expected_to_be_used_multiple_times)
+						{ 
+							$result["warning"][] = "activity was enqueued multiple times (only the first time it was processed); $subactivity";
+						}
 					}
 				}
 			}
 							
 			// store result of the current component
-			$result["activities"][$currentactivity] = $currentresult["dataprocessingdeclarations"];
+			$result["activities"][$currentactivity]["dataprocessingdeclarations"] = $currentresult["dataprocessingdeclarations"];
 		}
 		else
 		{
@@ -426,4 +431,102 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 	{
 		nxs_webmethod_return_nack("error; nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest; unsupported dataprotectiontype ($dataprotectiontype)");
 	}
+}
+
+// todo: move to nexuscore/dataprotection/nxs-dataprotection.php
+function nxs_dataprotection_factor_createprotecteddata($type)
+{
+	if ($type == "widget-none")
+	{
+		$result = array
+		(
+			"subactivities" => array
+			(
+				// if widget has properties that pull information from other 
+				// vendors (like scripts, images hosted on external sites, etc.) 
+				// those need to be taken into consideration
+				// responsibility for that is the person configuring the widget
+				"custom-widget-configuration",	
+			),
+			"dataprocessingdeclarations" => array	
+			(
+			),
+			"status" => "final",
+		);
+	}
+	else
+	{
+		nxs_webmethod_return_nack("error; nxs_dataprotection_factor_createprotecteddata; unsupported type; {$type}");
+	}
+	
+	return $result;
+}
+
+// todo: move to nexuscore/dataprotection/nxs-dataprotection.php
+function nxs_dataprotection_nexusframework_use_framework_on_any_site_getprotecteddata($args)
+{
+	// include webmethods
+	if (true)
+	{
+		$folder = NXS_FRAMEWORKPATH . "/nexuscore/webservices/webmethods";
+		$folders = glob($folder . '/*' , GLOB_ONLYDIR);
+		foreach ($folders as $folder)
+		{
+			$name = basename($folder);			
+			$subactivities[] = "nexusframework:webmethod:{$name}";
+			
+			$path = "{$folder}/{$name}_webmethod.php";			
+			require_once($path);
+		}
+	}
+	
+	// include widgets
+	if (true)
+	{
+		$folder = NXS_FRAMEWORKPATH . "/nexuscore/widgets";
+		$folders = glob($folder . '/*' , GLOB_ONLYDIR);
+		foreach ($folders as $folder)
+		{
+			$name = basename($folder);			
+			$subactivities[] = "nexusframework:widget:{$name}";
+			
+			$path = "{$folder}/widget_{$name}.php";			
+			require_once($path);
+		}
+	}
+	
+	// for any user; (cookie consent required)
+	$subactivities[] = "nexusframework:usegooglefonts";
+	$subactivities[] = "google:loadjsapi";
+	$subactivities[] = "google:loadwebfont";
+	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
+	$subactivities[] = "google:loadanalytics";
+	$subactivities[] = "google:loadspecificanalyticsifconfigured";
+	$subactivities[] = "nexusframework:handleexplicitcookieconsent";
+	
+	// for logged in users;
+	$subactivities[] = "nexusframework:support";
+	$subactivities[] = "nexusframework:selectlanguage_nxs_cookie_hl";
+	
+	
+	$subactivities[] = "themeuser:nexusthemes:usesupport";
+	$subactivities[] = "themeuser:google:usesupport";
+	
+	$subactivities[] = "nexusframework:updates";
+	$subactivities[] = "dpa:nexus:usegooglefonts";
+
+	$subactivities[] = "nexusframework:license";
+	$subactivities[] = "nexusframework:ixplatform";
+	
+	//
+	
+	$result = array
+	(
+		"subactivities" => $subactivities,
+		"dataprocessingdeclarations" => array	
+		(
+		)
+	);
+	
+	return $result;
 }

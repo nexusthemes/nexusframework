@@ -403,11 +403,12 @@ require_once(NXS_FRAMEWORKPATH . '/nexuscore/webservices/webservices.php');
 require_once(NXS_FRAMEWORKPATH . '/nexuscore/dataprotection/dataprotection.php');
 
 
-add_action('init', 'nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest', 5);
 
 // handle webmethod, is this is a webmethod
 // note that if this _is_ a webmethod, the system will stop execution after this method
-add_action('init', 'nxs_handlewebmethods', 999999);
+add_action('init', 'nxs_handlewebmethods', 999990);
+
+add_action('init', 'nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest', 999991);
 
 //After category is updated, set a flag to do a data consistency check
 add_action('edited_terms', 'nxs_dataconsistency_after_edited_terms');
@@ -2313,74 +2314,6 @@ function nxs_browser_iscrawler()
   }
   
   return $result;
-}
-
-function nxs_dataprotection_nexusframework_use_framework_on_any_site_getprotecteddata($args)
-{
-	// include webmethods
-	if (true)
-	{
-		$folder = NXS_FRAMEWORKPATH . "/nexuscore/webservices/webmethods";
-		$folders = glob($folder . '/*' , GLOB_ONLYDIR);
-		foreach ($folders as $folder)
-		{
-			$name = basename($folder);			
-			$subactivities[] = "nexusframework:webmethod:{$name}";
-			
-			$path = "{$folder}/{$name}_webmethod.php";			
-			require_once($path);
-		}
-	}
-	
-	// include widgets
-	if (true)
-	{
-		$folder = NXS_FRAMEWORKPATH . "/nexuscore/widgets";
-		$folders = glob($folder . '/*' , GLOB_ONLYDIR);
-		foreach ($folders as $folder)
-		{
-			$name = basename($folder);			
-			$subactivities[] = "nexusframework:widget:{$name}";
-			
-			$path = "{$folder}/widget_{$name}.php";			
-			require_once($path);
-		}
-	}
-	
-	// for any user; (cookie consent required)
-	$subactivities[] = "nexusframework:usegooglefonts";
-	$subactivities[] = "google:loadjsapi";
-	$subactivities[] = "google:loadwebfont";
-	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
-	$subactivities[] = "google:loadanalytics";
-	$subactivities[] = "google:loadspecificanalyticsifconfigured";
-	$subactivities[] = "nexusframework:handleexplicitcookieconsent";
-	
-	// for logged in users;
-	$subactivities[] = "nexusframework:support";
-	$subactivities[] = "nexusframework:selectlanguage_nxs_cookie_hl";
-	
-	
-	$subactivities[] = "themeuser:nexusthemes:usesupport";
-	$subactivities[] = "themeuser:google:usesupport";
-	
-	$subactivities[] = "nexusframework:updates";
-	$subactivities[] = "dpa:nexus:usegooglefonts";
-
-	$subactivities[] = "nexusframework:license";
-	$subactivities[] = "nexusframework:ixplatform";
-	
-	//
-	
-	$result = array
-	(
-		"subactivities" => $subactivities,
-		"dataprocessingdeclarations" => array	
-		(
-		)
-	);
-	
-	return $result;
 }
 
 // ---
