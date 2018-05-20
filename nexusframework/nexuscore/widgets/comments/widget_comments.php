@@ -618,6 +618,15 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 							<div class="nxs-clear padding"></div>';
 						}
 		
+						if ($cancel_button_text == "")
+						{
+							$cancel_button_text = "Cancel";
+						}
+						if ($comment_button_text == "")
+						{
+							$comment_button_text = "Comment";
+						}
+		
 						echo '
 						<!-- COMMENT -->
 						<div class="nxs-float-left nxs-width20"><label>'; echo $comment_label; echo ' *:</label></div>
