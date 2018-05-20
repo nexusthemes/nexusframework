@@ -1159,4 +1159,9 @@ function nxs_widgets_sliderbox_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_widget_sliderbox_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
 ?>

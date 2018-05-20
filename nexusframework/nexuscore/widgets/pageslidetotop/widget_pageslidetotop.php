@@ -417,4 +417,9 @@ function nxs_widgets_pageslidetotop_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_widget_pageslidetotop_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
 ?>

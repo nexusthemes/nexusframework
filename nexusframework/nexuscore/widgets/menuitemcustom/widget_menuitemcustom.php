@@ -426,3 +426,10 @@ function nxs_widgets_menuitemcustom_initplaceholderdata($args) {
 	
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_menuitemcustom_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
+?>

@@ -97,4 +97,9 @@ function nxs_menuitemgeneric_switchtype($optionvalues, $args, $runtimeblendeddat
 	<?php
 }
 
+function nxs_dataprotection_nexusframework_widget_menuitemgeneric_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
 ?>

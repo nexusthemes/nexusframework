@@ -1150,4 +1150,9 @@ function nxs_widgets_pageslider_betweenheadandcontent()
 <?php
 }
 
+function nxs_dataprotection_nexusframework_widget_pageslider_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
 ?>

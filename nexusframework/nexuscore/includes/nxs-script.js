@@ -6481,7 +6481,8 @@ function nxs_js_setcookie(name, value, expiretime)
 {
 	var expires = "";
 
-	if (expiretime) {
+	if (expiretime) 
+	{
 		var d = new Date();
     d.setTime(d.getTime() + expiretime);
     var expires = " expires=" + d.toUTCString() + " ";
