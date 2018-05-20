@@ -139,11 +139,6 @@ function nxs_ajax_webmethods()
 			$hasaccess = true;
 			// ok
 		}
-		else if ($webmethod == "squeeze")
-		{
-			$hasaccess = true;
-			// ok
-		}
 		else if ($webmethod == "addcomment")
 		{
 			$hasaccess = true;

@@ -321,8 +321,7 @@
 .nxs-icon-radial:before 				{ content: "\e223"; }
 .nxs-icon-crop:before 					{ content: "\e224"; }
 .nxs-icon-scissors:before 				{ content: "\e225"; }
-.nxs-icon-filer:before,
-.nxs-icon-squeezebox:before				{ content: "\e226"; }
+.nxs-icon-filer:before			{ content: "\e226"; }
 .nxs-icon-template:before 				{ content: "\e227"; }
 .nxs-icon-new-tab:before 				{ content: "\e228"; }
 .nxs-icon-embed:before 					{ content: "\e229"; }
@@ -1505,20 +1504,6 @@
 
 
 
-/* SQUEEZEBOX
------------------------------------------------------------------------------------------- */
-.nxs-squeezebox .wrapper									{ display: table; }
-.nxs-squeezebox .wrapped-element							{ display: table-cell; vertical-align: middle; }
-.nxs-squeezebox .nxs-input-wrapper 							{ padding: 5px 0; margin: 0 auto; }
-.nxs-squeezebox label 										{ float: left; line-height: 30px; font-size: 15px; }
-.nxs-squeezebox input[type=text],
-.nxs-squeezebox input[type=email] 							{ border: 1px solid #DFDFDF; font-size: 15px; text-indent: 10px; line-height: 30px; height: 30px; width: 70%; float: right; }
-/*.nxs-squeezebox input[type=submit] 							{ display: none; }*/
-.nxs-squeezebox .nxs-center 								{ margin-left: auto !important; margin-right: auto !important; }
-.nxs-squeezebox .nxs-right 									{ margin-left: auto !important; }
-
-
-
 /* SERVER GALLERY
 ------------------------------------------------------------------------------------------ */
 .nxs-server-gallery ul.series li  							{ width: 15%; margin-right: 2%; margin-bottom: 26px; float: left; }
@@ -1557,7 +1542,7 @@
 }
 
 
-/* SQUEEZEBOX
+/* DISQUS
 ------------------------------------------------------------------------------------------ */
 .nxs-disqus-comments a,
 .nxs-disqus-comments .dsq-widget-comment					{ display: block; font-size: 15px; line-height: 1.625em; margin-bottom: 15px; }
