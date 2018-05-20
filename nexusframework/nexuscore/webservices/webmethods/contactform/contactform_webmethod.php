@@ -64,7 +64,7 @@ function nxs_webmethod_contactform()
  	$url = nxs_geturl_for_postid($containerpostid);
  	$internalemail = $mixedattributes['internal_email'];
  	$texttop = $mixedattributes['texttop'];
- 	$pageidaftersqueeze = $mixedattributes['destination_articleid'];
+ 	$destination_articleid = $mixedattributes['destination_articleid'];
 
 	if ($internalemail != "")
 	{
@@ -106,6 +106,6 @@ function nxs_webmethod_contactform()
  	//
  	
  	$responseargs = array();
- 	$responseargs["url"] = get_permalink($pageidaftersqueeze);
+ 	$responseargs["url"] = get_permalink($destination_articleid);
 	nxs_webmethod_return_ok($responseargs);
 }
