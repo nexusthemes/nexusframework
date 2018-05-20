@@ -2728,27 +2728,18 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 
 function nxs_site_dataprotectionhome_getoptions($args)
 {
-	$sitemeta = nxs_getsitemeta();
-	$dataprotectiontype = $sitemeta["dataprotectiontype"];
-	if (isset($args["clientpopupsessiondata"]["dataprotectiontype"]))
+	$prefix = nxs_dataprotection_getprefix();
+	$usecookiewallactivity = "nexusframework:usecookiewall";
+	$usecookiewallactivity = nxs_dataprotection_getcanonicalactivity($usecookiewallactivity);
+	
+	$dataprotectiontype_usecookiewall = nxs_dataprotection_getdataprotectiontype($usecookiewallactivity);
+	if (isset($args["clientpopupsessiondata"]["{$prefix}{$usecookiewallactivity}"]))
 	{
-		$dataprotectiontype = $args["clientpopupsessiondata"]["dataprotectiontype"];
+		$dataprotectiontype_usecookiewall = $args["clientpopupsessiondata"]["{$prefix}{$usecookiewallactivity}"];
 	}
+
 	
 	$fields = array();
-	$fields[] = array
-	(
-		"id" 					=> "dataprotectiontype",
-		"type" 					=> "select",
-		"popuprefreshonchange" 	=> "true",
-		"label"					=> nxs_l18n__("Data Protection Type", "nxs_td"),
-		"dropdown" 				=> array
-		(
-			"" => "None (default)",
-			"none" => "None",
-			"explicit_consent_by_cookie_wall" => "Explicit consent by cookie wall",
-		),
-	);
 	
 	if (true)
 	{
@@ -2769,12 +2760,21 @@ function nxs_site_dataprotectionhome_getoptions($args)
 		
 		foreach ($controllable_activities as $controllable_activity => $control_options)
 		{
+			$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
+			
+			$popuprefreshonchange = "";
+			if ($controllable_activity == "nexusframework_usecookiewall")
+			{
+				$popuprefreshonchange = "true";
+			}
+			
 			$fields[] = array
 			(
-				"id" 					=> "dataprotectiontype_{$controllable_activity}",
+				"id" 					=> "{$prefix}{$controllable_activity}",
 				"type" 					=> "select",
-				"label"					=> nxs_l18n__(" {$controllable_activity}", "nxs_td"),
+				"label"					=> nxs_l18n__("{$controllable_activity}", "nxs_td"),
 				"dropdown" 				=> $control_options,
+				"popuprefreshonchange" => $popuprefreshonchange,
 			);
 		}
 		
@@ -2788,9 +2788,8 @@ function nxs_site_dataprotectionhome_getoptions($args)
 
 	// EXPLICIT CONSENT OPTIONS
 	
-	if ($dataprotectiontype == "explicit_consent_by_cookie_wall")
+	if ($dataprotectiontype_usecookiewall == "enabled_disabled_for_robots")
 	{
-		
 		// GENERAL
 		
 		$fields[] = array
@@ -2922,11 +2921,6 @@ function nxs_site_dataprotectionhome_getoptions($args)
 	}
 	
 	// 
-	
-	
-	
-	//
-	
 	
 	$options = array
 	(
