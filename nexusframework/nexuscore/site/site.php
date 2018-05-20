@@ -2725,6 +2725,7 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 	return $result;
 }
 
+
 function nxs_site_dataprotectionhome_getoptions($args)
 {
 	$sitemeta = nxs_getsitemeta();
@@ -2733,8 +2734,6 @@ function nxs_site_dataprotectionhome_getoptions($args)
 	{
 		$dataprotectiontype = $args["clientpopupsessiondata"]["dataprotectiontype"];
 	}
-	
-	// 
 	
 	$fields = array();
 	$fields[] = array
@@ -2745,11 +2744,48 @@ function nxs_site_dataprotectionhome_getoptions($args)
 		"label"					=> nxs_l18n__("Data Protection Type", "nxs_td"),
 		"dropdown" 				=> array
 		(
-			"" 									=> "none",
-			"explicit_consent_by_cookie_wall" 	=> "Explicit consent by cookie wall",
+			"" => "None (default)",
+			"none" => "None",
+			"explicit_consent_by_cookie_wall" => "Explicit consent by cookie wall",
 		),
 	);
 	
+	if (true)
+	{
+		// each configurable component that deals with user data that can be controlled
+		$fields[] = array
+		( 
+			"id" 				=> "wrapper_title_begin",
+			"type" 				=> "wrapperbegin",
+			"label" 			=> nxs_l18n__("Components Impacting User Data (You Control How)", "nxs_td"),
+		);
+		
+		$a = array
+		(
+			"rootactivity" => "nexusframework:use_framework",
+		);
+		$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
+		$controllable_activities = array_reverse($controllable_activities);
+		
+		foreach ($controllable_activities as $controllable_activity => $control_options)
+		{
+			$fields[] = array
+			(
+				"id" 					=> "dataprotectiontype_{$controllable_activity}",
+				"type" 					=> "select",
+				"label"					=> nxs_l18n__(" {$controllable_activity}", "nxs_td"),
+				"dropdown" 				=> $control_options,
+			);
+		}
+		
+		$fields[] = array
+		( 
+			"id" 				=> "wrapper_end",
+			"type" 				=> "wrapperend",
+		);
+		
+	}
+
 	// EXPLICIT CONSENT OPTIONS
 	
 	if ($dataprotectiontype == "explicit_consent_by_cookie_wall")
@@ -2757,13 +2793,14 @@ function nxs_site_dataprotectionhome_getoptions($args)
 		
 		// GENERAL
 		
-		$fields[] = array( 
-				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("General", "nxs_td"),
-				"initial_toggle_state"	=> "closed-if-empty",
-				"initial_toggle_state_id" => "title",
-			);
+		$fields[] = array
+		( 
+			"id" 				=> "wrapper_title_begin",
+			"type" 				=> "wrapperbegin",
+			"label" 			=> nxs_l18n__("General", "nxs_td"),
+			"initial_toggle_state"	=> "closed-if-empty",
+			"initial_toggle_state_id" => "title",
+		);
 		
 		$fields[] = array
 		( 
@@ -2775,14 +2812,16 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			"localizablefield"	=> true
 		);
 		
-		$fields[] = array( 
+		$fields[] = array
+		( 
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 		);
 		
 		// IMAGES
 		
-		$fields[] = array( 
+		$fields[] = array
+		( 
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Images", "nxs_td"),
@@ -2803,14 +2842,16 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			"type" 			=> "image",
 		);
 		
-		$fields[] = array( 
+		$fields[] = array
+		( 
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 		);
 		
 		// TERMS AND CONDITIONS
 		
-		$fields[] = array( 
+		$fields[] = array
+		( 
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Terms and Conditions", "nxs_td"),
@@ -2827,7 +2868,8 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			"unicontentablefield" => true,
 			"localizablefield"	=> true
 		);
-		$fields[] = array(
+		$fields[] = array
+		(
 			"id" 				=> "terms_and_conditions_text",
 			"type" 				=> "tinymce",
 			"label" 			=> nxs_l18n__("Text", "nxs_td"),
@@ -2836,14 +2878,16 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			"localizablefield"	=> true
 		);
 		
-		$fields[] = array( 
+		$fields[] = array
+		( 
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 		);
 		
 		// PRIVACY POLICY
 		
-		$fields[] = array( 
+		$fields[] = array
+		( 
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Privacy Policy", "nxs_td"),
@@ -2860,7 +2904,8 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			"unicontentablefield" => true,
 			"localizablefield"	=> true
 		);
-		$fields[] = array(
+		$fields[] = array
+		(
 			"id" 				=> "privacy_policy_text",
 			"type" 				=> "tinymce",
 			"label" 			=> nxs_l18n__("Text", "nxs_td"),
@@ -2869,13 +2914,14 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			"localizablefield"	=> true
 		);
 		
-		$fields[] = array( 
+		$fields[] = array
+		( 
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 		);
 	}
 	
-	
+	// 
 	
 	
 	

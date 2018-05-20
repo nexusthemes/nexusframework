@@ -9,7 +9,7 @@ function nxs_dataprotection_getcanonicalactivity($component)
 function nxs_dataprotection_buildrecursiveprotecteddata($args)
 {
 	$result = array();
-	
+		
 	$rootactivity = $args["rootactivity"];
 	if ($rootactivity == "")
 	{
@@ -89,11 +89,6 @@ function nxs_dataprotection_gettypeofdataprotection()
 		$result = "none";
 	}
 	
-	if ($_REQUEST["dataprotection"] != "")
-	{
-		$result = $_REQUEST["dataprotection"];
-	}
-
 	return $result;
 }
 
@@ -368,20 +363,6 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 							</div>
 						</div>'
 						?>
-						
-						<div>
-							<?php 
-							/*
-							$args = array
-							(
-								"rootactivity" => "wordpress:use_theme_on_any_site",
-							);
-							$activitiesandinformation = nxs_dataprotection_buildrecursiveprotecteddata($args);
-							$json = json_encode($activitiesandinformation);
-							echo $json;
-							*/
-							?>
-						</div>
 						<script>
 							
 							$('#nxsdataprotectionform').submit
@@ -462,9 +443,54 @@ function nxs_dataprotection_factor_createprotecteddata($type)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_use_framework_getprotecteddata($args)
+{
+	$subactivities = array();
+	
+	$subactivities[] = "nexusframework:use_framework_on_any_site";
+	$subactivities[] = "nexusframework:use_framework_on_this_site";
+	
+	//
+	
+	$result = array
+	(
+		"subactivities" => $subactivities,
+		"dataprocessingdeclarations" => array	
+		(
+		)
+	);
+	
+	return $result;
+}
+
 // todo: move to nexuscore/dataprotection/nxs-dataprotection.php
 function nxs_dataprotection_nexusframework_use_framework_on_any_site_getprotecteddata($args)
 {
+	// for any user
+	$subactivities[] = "nexusframework:usecookiewall";
+	$subactivities[] = "nexusframework:usegooglefonts";
+	$subactivities[] = "google:loadjsapi";
+	$subactivities[] = "google:loadwebfont";
+	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
+	$subactivities[] = "google:loadanalytics";
+	$subactivities[] = "google:loadspecificanalyticsifconfigured";
+	$subactivities[] = "nexusframework:handleexplicitcookieconsent";
+	
+	// for logged in users;
+	$subactivities[] = "nexusframework:support";
+	$subactivities[] = "nexusframework:selectlanguage_nxs_cookie_hl";
+	
+	
+	$subactivities[] = "themeuser:nexusthemes:usesupport";
+	$subactivities[] = "themeuser:google:usesupport";
+	
+	$subactivities[] = "nexusframework:updates";
+	$subactivities[] = "dpa:nexus:usegooglefonts";
+
+	$subactivities[] = "nexusframework:license";
+	$subactivities[] = "nexusframework:ixplatform";
+	
+	
 	// include webmethods
 	if (true)
 	{
@@ -495,29 +521,7 @@ function nxs_dataprotection_nexusframework_use_framework_on_any_site_getprotecte
 		}
 	}
 	
-	// for any user; (cookie consent required)
-	$subactivities[] = "nexusframework:usegooglefonts";
-	$subactivities[] = "google:loadjsapi";
-	$subactivities[] = "google:loadwebfont";
-	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
-	$subactivities[] = "google:loadanalytics";
-	$subactivities[] = "google:loadspecificanalyticsifconfigured";
-	$subactivities[] = "nexusframework:handleexplicitcookieconsent";
-	
-	// for logged in users;
-	$subactivities[] = "nexusframework:support";
-	$subactivities[] = "nexusframework:selectlanguage_nxs_cookie_hl";
-	
-	
-	$subactivities[] = "themeuser:nexusthemes:usesupport";
-	$subactivities[] = "themeuser:google:usesupport";
-	
-	$subactivities[] = "nexusframework:updates";
-	$subactivities[] = "dpa:nexus:usegooglefonts";
 
-	$subactivities[] = "nexusframework:license";
-	$subactivities[] = "nexusframework:ixplatform";
-	
 	//
 	
 	$result = array
@@ -527,6 +531,114 @@ function nxs_dataprotection_nexusframework_use_framework_on_any_site_getprotecte
 		(
 		)
 	);
+	
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_usecookiewall_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can give a consent over various activities of the site that deal with user data according to the rules specified by the controlled",
+				"what" => "As explained in the terms and conditions as well as privacy statement that can be configured in the site",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("cookiewall"),
+				"data_processor" => "Various (see terms and conditions and privacy statement)",	// the name of the data_processor or data_recipient
+				"data_retention" => "Various (see terms and conditions and pricacy statement)",
+				"program_lifecycle_phase" => "runtime",	// determined by how the controlled fills in the privacy statement and terms and conditions
+				"why" => "As explained in the terms and conditions as well as privacy statement that can be configured in the site",
+				"security" => "As explained in the terms and conditions as well as privacy statement that can be configured in the site",
+			),
+		),
+		"status" => "final",
+	);
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_usegooglefonts_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can browse a page of the website that uses fonts that are pulled using google jsapi",
+				"what" => "IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "Google (Fonts)",	// the name of the data_processor or data_recipient
+				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Not applicable (because this is a compiletime declaration)",
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
+			),
+		),
+		"status" => "final",
+	);
+	return $result;
+}
+
+function nxs_dataprotection_factory_getenableoptions($type)
+{
+	if ($type == "all")
+	{
+		$result = array
+		(
+			"" => "Enabled (default)",
+			"enabled" => "Enabled",
+			"enabled_after_cookie_wall_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a cookie wall consent. For robots its enabled.",
+			"enabled_after_cookie_component_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a component cookie consent. For robots its enabled.",
+			"disabled" => "Disabled",
+		);
+	}
+	else if ($type == "cookiewall")
+	{
+		$result = array
+		(
+			"" => "Disabled (default)",
+			"disabled" => "Disabled",
+			"enabled" => "Enabled",
+		);
+	}
+	else
+	{
+		nxs_webmethod_return_nack("not supported; $type");
+	}
+	
+	return $result;
+}
+
+function nxs_dataprotection_get_controllable_activities($args)
+{
+	$result = array();
+	
+	$protecteddata = nxs_dataprotection_buildrecursiveprotecteddata($args);
+	$activities = $protecteddata["activities"];
+	foreach ($activities as $activity => $activity_meta)
+	{
+		$dataprocessingdeclarations = $activity_meta["dataprocessingdeclarations"];
+		foreach ($dataprocessingdeclarations as $dataprocessingdeclaration_meta)
+		{
+			$controller_options = $dataprocessingdeclaration_meta["controller_options"];
+			if (isset($controller_options))
+			{
+				$result[$activity] = $controller_options;
+			}
+		}
+	}
 	
 	return $result;
 }
