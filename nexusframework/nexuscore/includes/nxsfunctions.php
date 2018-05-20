@@ -738,7 +738,7 @@ function nxs_setupcache()
 			if ($nxs_shouldusecache_stage2)
 			{
 				// 
-				if (!nxs_dataprotection_isactionallowed("render_cached_content"))
+				if (!nxs_dataprotection_iscacheallowed())
 				{
 					$nxs_shouldusecache_stage2 = false;
 				}

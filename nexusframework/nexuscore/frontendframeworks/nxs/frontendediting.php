@@ -436,79 +436,83 @@ else
 <script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script-admin-deferred.js?v=<?php echo nxs_getthemeversion(); ?>" defer></script>
 <?php 
 // this is executed also for anonymous users
-
-?>
-<script data-cfasync="false" type="text/javascript" src="//www.google.com/jsapi"></script>
-<script data-cfasync="false" type="text/javascript">
-	google.load('webfont','1');
-</script>
-<?php
-$fontsbeingused = array();
-$fontidentifiers = nxs_font_getfontidentifiers();
-foreach ($fontidentifiers as $currentfontidentifier)
-{
-	$vg_fontfam = $sitemeta["vg_fontfam_{$currentfontidentifier}"];
-	$fontfams = nxs_getmappedfontfams($vg_fontfam);
-	foreach ($fontfams as $fontfam)
-	{
-		$fontsbeingused[]= $fontfam;
-	}
-}
-?>
-<?php
-if (count($fontsbeingused) > 0)
+$googlewebfont_activity = "nexusframework:usegooglefonts";
+if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
 {
 	?>
-	<script>
-		WebFont.load
-		(
-			{
-				google: 
-				{ 
-	      	families: 
-	      	[
-	      		<?php
-	      		// some fonts produce a 403 or 400, we skip these	
-	      		$skipfonts = nxs_font_getskipfonts();
-	      		foreach ($skipfonts as $skipfont)
-	      		{
-	      			if(($key = array_search($skipfont, $fontsbeingused)) !== false) 
-	      			{
-					   	 unset($fontsbeingused[$key]);
-							}
-						}	      		
-	      		
-	      		$isfirstfont = true;
-	      		foreach ($fontsbeingused as $currentfont)
-	      		{
-	      			if ($isfirstfont == false)
-	      			{
-	      				echo ",";
-	      			}
-	      			else
-	      			{
-	      				$isfirstfont = false;
-	      			}
-	      			
-	      			if (nxs_stringcontains($currentfont, "'"))
-	      			{
-	      				echo "{$currentfont}";
-	      			}
-	      			else
-	      			{
-	      				// als het font al quotes bevat, dan niet wrappen in single QUOTES!!!!!
-	      				echo "'{$currentfont}'";
-	      			}
-
-	      		}
-	      		?>
-	      		
-	      	] 
-	      }
-			}
-		); 
+	<script data-cfasync="false" type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script data-cfasync="false" type="text/javascript">
+		google.load('webfont','1');
 	</script>
 	<?php
+
+	$fontsbeingused = array();
+	$fontidentifiers = nxs_font_getfontidentifiers();
+	foreach ($fontidentifiers as $currentfontidentifier)
+	{
+		$vg_fontfam = $sitemeta["vg_fontfam_{$currentfontidentifier}"];
+		$fontfams = nxs_getmappedfontfams($vg_fontfam);
+		foreach ($fontfams as $fontfam)
+		{
+			$fontsbeingused[]= $fontfam;
+		}
+	}
+	?>
+	<?php
+	if (count($fontsbeingused) > 0)
+	{
+		?>
+		<script>
+			WebFont.load
+			(
+				{
+					google: 
+					{ 
+		      	families: 
+		      	[
+		      		<?php
+		      		// some fonts produce a 403 or 400, we skip these	
+		      		$skipfonts = nxs_font_getskipfonts();
+		      		foreach ($skipfonts as $skipfont)
+		      		{
+		      			if(($key = array_search($skipfont, $fontsbeingused)) !== false) 
+		      			{
+						   	 unset($fontsbeingused[$key]);
+								}
+							}	      		
+		      		
+		      		$isfirstfont = true;
+		      		foreach ($fontsbeingused as $currentfont)
+		      		{
+		      			if ($isfirstfont == false)
+		      			{
+		      				echo ",";
+		      			}
+		      			else
+		      			{
+		      				$isfirstfont = false;
+		      			}
+		      			
+		      			if (nxs_stringcontains($currentfont, "'"))
+		      			{
+		      				echo "{$currentfont}";
+		      			}
+		      			else
+		      			{
+		      				// als het font al quotes bevat, dan niet wrappen in single QUOTES!!!!!
+		      				echo "'{$currentfont}'";
+		      			}
+	
+		      		}
+		      		?>
+		      		
+		      	] 
+		      }
+				}
+			); 
+		</script>
+		<?php
+	}
 }
 ?>
 <script data-cfasync="false" type='text/javascript'>

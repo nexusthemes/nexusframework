@@ -57,114 +57,118 @@
 	$prtargs["pagetemplate"] = $pagetemplate;
 	$postrowtemplates = nxs_getpostrowtemplates($prtargs);
 	$sitemeta = nxs_getsitemeta();
-?>
-<!-- loading all fonts -->
-<script data-cfasync="false"  src="//www.google.com/jsapi"></script>
-<script data-cfasync="false" >
-	google.load('webfont','1');
-</script>
-
-<?php
-	/* FONT HANDLING v2 START */
-	// alle fonts worden hier ingeladen, anders kan gebruiker niet zien welke keuze hij maakt
-	$allfontfams = array();
-	$allfonts = nxs_getfonts();
-	foreach ($allfonts as $currentfontid=>$meta)
-	{
-		$currentfontfams = nxs_getmappedfontfams($currentfontid);
-		foreach ($currentfontfams as $currentfontfam)
-		{
-			$allfontfams[] = $currentfontfam;
-		}
-	}
-	?>	
-<script> 
 	
-	WebFont.load
-	(
+	$googlewebfont_activity = "nexusframework:usegooglefonts";
+	if (nxs_dataprotection_isexplicitconsentgiven($googlewebfont_activity))
+	{
+		?>
+		<!-- loading all fonts -->
+		
+		<script data-cfasync="false"  src="https://www.google.com/jsapi"></script>
+		<script data-cfasync="false" >
+			google.load('webfont','1');
+		</script>
+		<?php
+		/* FONT HANDLING v2 START */
+		// alle fonts worden hier ingeladen, anders kan gebruiker niet zien welke keuze hij maakt
+		$allfontfams = array();
+		$allfonts = nxs_getfonts();
+		foreach ($allfonts as $currentfontid=>$meta)
 		{
-			google: 
-			{ 
-      	families: 
-      	[
-      		<?php
-      		// some fonts produce a 403 or 400, we skip these	
-      		$skipfonts = nxs_font_getskipfonts();
-      		foreach ($skipfonts as $skipfont)
-      		{
-      			if(($key = array_search($skipfont, $allfontfams)) !== false) 
-      			{
-				   	 unset($allfontfams[$key]);
-						}
-					}
-      		
-      		$isfirstfont = true;
-      		foreach ($allfontfams as $currentfont)
-      		{
-      			// skip invalid items
-      			if (true)
-      			{
-	      			//
-	      			$googlewebfontspiece = $currentfont;
-	      			$googlewebfontspiece = trim($googlewebfontspiece);
-							
-							$isvalid = true;
-							
-							if ($googlewebfontspiece == "")
-							{
-								$isvalid = false;
-							}
-							
-							$quotecount = substr_count ($googlewebfontspiece, "'");
-							if ($quotecount != 0 && $quotecount != 2)
-							{
-								$isvalid = false;
-							}
-							
-							$quotecount = substr_count ($googlewebfontspiece, "\"");
-							if ($quotecount != 0 && $quotecount != 2)
-							{
-								$isvalid = false;
-							}
-							
-							if (!$isvalid)
-							{
-								// skip this item
-								continue;
-							}
-						}
-							
-      			//
-      			
-      			if ($isfirstfont == false)
-      			{
-      				echo ",";
-      			}
-      			else
-      			{
-      				$isfirstfont = false;
-      			}
-      			
-      			
-      			
-      			if (nxs_stringcontains($currentfont, "'"))
-      			{
-      				echo "{$currentfont}";
-      			}
-      			else
-      			{
-      				// als het font al quotes bevat, dan niet wrappen in single QUOTES!!!!!
-      				echo "'{$currentfont}'";
-      			}
-      		}
-      		?>
-      	] 
-      }
+			$currentfontfams = nxs_getmappedfontfams($currentfontid);
+			foreach ($currentfontfams as $currentfontfam)
+			{
+				$allfontfams[] = $currentfontfam;
+			}
 		}
-	); 
-</script>
-<?php
-	/* FONT HANDLING v2 END */
+		?>
+		<script> 
+			
+			WebFont.load
+			(
+				{
+					google: 
+					{ 
+		      	families: 
+		      	[
+		      		<?php
+		      		// some fonts produce a 403 or 400, we skip these	
+		      		$skipfonts = nxs_font_getskipfonts();
+		      		foreach ($skipfonts as $skipfont)
+		      		{
+		      			if(($key = array_search($skipfont, $allfontfams)) !== false) 
+		      			{
+						   	 unset($allfontfams[$key]);
+								}
+							}
+		      		
+		      		$isfirstfont = true;
+		      		foreach ($allfontfams as $currentfont)
+		      		{
+		      			// skip invalid items
+		      			if (true)
+		      			{
+			      			//
+			      			$googlewebfontspiece = $currentfont;
+			      			$googlewebfontspiece = trim($googlewebfontspiece);
+									
+									$isvalid = true;
+									
+									if ($googlewebfontspiece == "")
+									{
+										$isvalid = false;
+									}
+									
+									$quotecount = substr_count ($googlewebfontspiece, "'");
+									if ($quotecount != 0 && $quotecount != 2)
+									{
+										$isvalid = false;
+									}
+									
+									$quotecount = substr_count ($googlewebfontspiece, "\"");
+									if ($quotecount != 0 && $quotecount != 2)
+									{
+										$isvalid = false;
+									}
+									
+									if (!$isvalid)
+									{
+										// skip this item
+										continue;
+									}
+								}
+									
+		      			//
+		      			
+		      			if ($isfirstfont == false)
+		      			{
+		      				echo ",";
+		      			}
+		      			else
+		      			{
+		      				$isfirstfont = false;
+		      			}
+		      			
+		      			
+		      			
+		      			if (nxs_stringcontains($currentfont, "'"))
+		      			{
+		      				echo "{$currentfont}";
+		      			}
+		      			else
+		      			{
+		      				// als het font al quotes bevat, dan niet wrappen in single QUOTES!!!!!
+		      				echo "'{$currentfont}'";
+		      			}
+		      		}
+		      		?>
+		      	] 
+		      }
+				}
+			); 
+		</script>
+		<?php
+	}
 ?>
 <div id="nxs-menu-outerwrap" style='display: none;'>
 	<div id="nxs-menu-wrap" class='nxs-admin-wrap'>
@@ -534,8 +538,12 @@
 		                  
 		                  </div> <!--END tabs-->
 		                  
-						<div id="tabs-lettertypen">
-		                      
+											<div id="tabs-lettertypen">
+												<?php
+												$googlewebfont_activity = "nexusframework:usegooglefonts";
+												if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
+												{
+													?>
 		                      <div class="nxs-float-left nxs-margin-right10">
 		                          <div class="block">
 		                            <div class="nxs-admin-header"><h3><?php nxs_l18n_e("Fonts[nxs:adminmenu,subtab,heading]", "nxs_td"); ?></h3></div>
@@ -585,8 +593,14 @@
 		     		              <a id='nxs_menu_savelettertypenbutton' style='display: none;' href='#' class="nxsbutton nxs-float-left" onclick='nxs_js_font_savefonts(); return false;'><?php nxs_l18n_e("Save[nxs:btn]", "nxs_td"); ?></a>
 		     		              
 		     		              <div class="nxs-clear"></div>
-		                  		
-		                  </div>
+	                  			<?php
+	                  		}
+	                  		else
+	                  		{
+	                  			echo nxs_dataprotection_renderexplicitconsentinput($googlewebfont_activity);
+	                  		}
+	                  		?>
+		              	</div>
 		                  
 		              </div> <!--END content-->
 		                  

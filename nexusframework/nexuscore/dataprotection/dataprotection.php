@@ -103,8 +103,113 @@ function nxs_dataprotection_getcookieretentionindays()
 	return $result;
 }
 
+function nxs_dataprotection_iscacheallowed()
+{
+	// todo: to be implemented
+	return false;
+}
+
+function nxs_dataprotection_iscookiewallactivity($activity)
+{
+	$activity = nxs_dataprotection_getcanonicalactivity($activity);
+	if ($activity == "nexusframework_usecookiewall")
+	{
+		$result = true;
+	}
+	else
+	{
+		$result = false;
+	}
+}
+
+function nxs_dataprotection_isactivityonforuser($activity)
+{
+	$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($activity);
+	
+	if (nxs_dataprotection_iscookiewallactivity($activity))
+	{
+		if ($dataprotectiontype == "")
+		{
+			$result = false;	// defaults to false
+		}
+		else if ($dataprotectiontype == "disabled")
+		{
+			$result = false;	// defaults to false
+		}
+		else if ($enabled_disabled_for_robots == "disabled")
+		{
+			if (nxs_browser_iscrawler())
+			{
+				$result = false;	// 
+			}
+			else
+			{
+				if (nxs_dataprotection_isexplicitconsentgiven($activity))
+				{
+					$result = false;	// 
+				}
+				else
+				{
+					$result = true;	// 
+				}
+			}
+		}	
+	}
+	else
+	{
+		if ($dataprotectiontype == "")
+		{
+			$result = true;
+		}
+		else if ($dataprotectiontype == "enabled")
+		{
+			$result = true;
+		}
+		else if ($dataprotectiontype == "enabled_after_cookie_wall_consent_or_robot")
+		{
+			if (nxs_browser_iscrawler())
+			{
+				$result = true;
+			}
+			else
+			{
+				$result = false;
+			}
+		}
+		else if ($dataprotectiontype == "enabled_after_cookie_component_consent_or_robot")
+		{
+			if (nxs_browser_iscrawler())
+			{
+				$result = true;
+			}
+			else
+			{
+				if (nxs_dataprotection_isexplicitconsentgiven($activity))
+				{
+					$result = true;
+				}
+				else
+				{
+					$result = false;
+				}
+			}
+		}
+		else if ($dataprotectiontype == "disabled")
+		{
+			$result = false;
+		}
+		else
+		{
+			nxs_webmethod_return_nack("unsupported dataprotectiontype; $dataprotectiontype");
+		}
+	}
+	
+	return $result;
+}
+
 function nxs_dataprotection_isexplicitconsentgiven($activity)
 {
+	
 	// its not a bot, check if the cookie is set
 	$cookiename = nxs_dataprotection_getexplicitconsentcookiename($activity);
 	
@@ -148,15 +253,13 @@ function nxs_dataprotection_getdataprotectiontype($activity)
 		$activity = nxs_dataprotection_getcanonicalactivity($activity);
 		
 		$sitemeta = nxs_getsitemeta();
-		$result = $sitemeta["{$prefix}{$activity}"];
+		$key = "{$prefix}{$activity}";
+		$result = $sitemeta[$key];
+		
+		//error_log("nxs_dataprotection_getdataprotectiontype; $activity; $key; ($result) ");
 	}
 	
 	return $result;
-}
-
-function nxs_dataprotection_isactionallowed($action)
-{
-	return true;
 }
 
 //
@@ -210,7 +313,7 @@ function nxs_dataprotection_renderexplicitconsentinput($activity)
 {
 	nxs_ob_start();
 	?>
-	<div><a href='#' onclick='return false;'>Click here to give your consent to render this widget</a></div>
+	<div><a href='#' onclick='return false;'>Click here to give your consent to render <?php echo $activity; ?></a></div>
 	<?php
 	$result = nxs_ob_get_contents();
 	nxs_ob_end_clean();
@@ -408,16 +511,13 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions()
 					);
 	      	$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
 					$controllable_activities = array_reverse($controllable_activities);
-					//var_dump($controllable_activities);
-					//die();
+					
 	      	foreach ($controllable_activities as $controllable_activity => $control_options)
 	      	{
 	      		$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
 	      		$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($controllable_activity);
 	      		
-	      		//var_dump($controllable_activity);
-	      		//var_dump($dataprotectiontype);
-	      		//echo "<br />";
+	      	
 	      		
 	      		if (in_array($dataprotectiontype, array("enabled_after_cookie_component_consent_or_robot", "enabled_disabled_for_robots")))
 	      		{
