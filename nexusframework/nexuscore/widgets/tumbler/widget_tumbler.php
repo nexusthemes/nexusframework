@@ -22,7 +22,6 @@ function nxs_widgets_tumbler_getunifiedcontentgroup() {
 	return "tumblerwidget";
 }
 
-
 /* WIDGET STRUCTURE
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
@@ -534,6 +533,11 @@ function nxs_widgets_tumbler_initplaceholderdata($args)
 	$result["result"] = "OK";
 	
 	return $result;
+}
+
+function nxs_dataprotection_nexusframework_widget_tumbler_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
 }
 
 ?>
