@@ -163,17 +163,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "busruledeclarativecondition", "tags" => array("nexus"));
 	}
 	
-	if ($nxsposttype == "genericlist") {
-		$nxssubposttype = $args["nxssubposttype"];
-		if ($nxssubposttype == "stack") {
-			$args = array();
-			$args["nxsposttype"] = "post";
-			$args["pagetemplate"] = "blogentry";
-			// return the widgets for regular post / blogentry
-			return nxs_getwidgets_functions_AF($result, $args);
-		}
-	}
-	
 	if ($nxsposttype == "subheader" || $nxsposttype == "header") {
 		$result[] = array("widgetid" => "wordpresstitle", "tags" => array("nexus"));
 	}
@@ -256,7 +245,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "categories", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "archive", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "htmlcustom", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "squeezebox", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "googlebusinessphoto", "tags" => array("nexus"));		
 		$result[] = array("widgetid" => "rssfeed", "tags" => array("nexus"));	
 		$result[] = array("widgetid" => "breadcrumb", "tags" => array("nexus"));
@@ -273,8 +261,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		}
 		
 		// $result[] = array("widgetid" => "fbcomments");
-		// 
-		// $result[] = array("widgetid" => "stack");
 		// $result[] = array("widgetid" => "searchresults");	// deprecated in favor of archive widget
 		// $result[] = array("widgetid" => "contact"); 			// deprecated in favor of contact box widget
 	}
@@ -563,15 +549,12 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("googledoc");
 	nxs_ext_lazyload_widget("rssfeed");
 	nxs_ext_lazyload_widget("breadcrumb");
-	nxs_ext_lazyload_widget("template2");
 	nxs_ext_lazyload_widget("image");
 	nxs_ext_lazyload_widget("search");
 	nxs_ext_lazyload_widget("contact");
-	nxs_ext_lazyload_widget("stack");
 	nxs_ext_lazyload_widget("wordpresstitle");
 	nxs_ext_lazyload_widget("quote");
 	nxs_ext_lazyload_widget("radial");
-	nxs_ext_lazyload_widget("squeezebox");
 	nxs_ext_lazyload_widget("googlebusinessphoto");
 	nxs_ext_lazyload_widget("googlebusphotoitem");
 	nxs_ext_lazyload_widget("eventsbox");
@@ -679,7 +662,6 @@ function nxs_getobsoletewidgetids()
 	if (!nxs_enableconceptualwidgets())
 	{
 		$result[] = "googlebusinessphoto";
-		$result[] = "squeezebox";
 	}
 
 	return $result;
