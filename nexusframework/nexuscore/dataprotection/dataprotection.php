@@ -69,9 +69,69 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 	return $result;
 }
 
-function nxs_dataprotection_getexplicitconsentcookiename()
+function nxs_dataprotection_getlatestupdatebycontroller()
 {
-	return "nxs_dataprotection_explicit_content";
+	if (nxs_hassitemeta())
+	{
+		$prefix = nxs_dataprotection_getprefix();		
+		$sitemeta = nxs_getsitemeta();
+		$result = $sitemeta["{$prefix}controllerlatestversion"];
+	}
+	
+	if ($result == "")
+	{
+		$result = "none";
+	}
+	
+	return $result;
+}
+
+function nxs_dataprotection_getcookieretentionindays()
+{
+	if (nxs_hassitemeta())
+	{
+		$prefix = nxs_dataprotection_getprefix();		
+		$sitemeta = nxs_getsitemeta();
+		$result = $sitemeta["{$prefix}cookieretention"];
+	}
+	
+	if ($result == "")
+	{
+		$result = 30;
+	}
+	
+	return $result;
+}
+
+function nxs_dataprotection_isexplicitconsentgiven($activity)
+{
+	// its not a bot, check if the cookie is set
+	$cookiename = nxs_dataprotection_getexplicitconsentcookiename($activity);
+	
+	$r = $_COOKIE[$cookiename];
+	if ($r == "")
+	{
+		$result = false;
+	}
+	else
+	{
+		$result = true;
+	}
+	return $result;
+}
+
+function nxs_dataprotection_getexplicitconsentcookiename($activity)
+{
+	if ($activity == "") { nxs_webmethod_return_nack("nxs_dataprotection_getexplicitconsentcookiename; no activity specified"); }
+	
+	$activity = nxs_dataprotection_getcanonicalactivity($activity);
+	$theme_meta = nxs_theme_getmeta();
+	$theme_version = $theme_meta["version"];
+	$latestcontrollerupdate = nxs_dataprotection_getlatestupdatebycontroller();
+	$result = "nxs_dataprotection_explicit_consent_{$activity}_{$theme_version}_{$latestcontrollerupdate}";
+	$result = preg_replace('/[^A-Za-z0-9\_]/', '', $result); // Removes special chars.
+	
+	return $result;
 }
 
 function nxs_dataprotection_getprefix()
@@ -96,44 +156,18 @@ function nxs_dataprotection_getdataprotectiontype($activity)
 
 function nxs_dataprotection_isactionallowed($action)
 {
-	$result = false;
-	
-	$dataprotectiontype = nxs_dataprotection_gettypeofdataprotection();
-	if ($dataprotectiontype == "explicit_consent_by_cookie_wall")
-	{
-		if (nxs_browser_iscrawler())
-		{
-			// its a bot; no cookie wall; using cached page is ok
-			$result = true;
-		}
-		else
-		{
-			// its not a bot, check if the cookie is set
-			$cookiename = nxs_dataprotection_getexplicitconsentcookiename();
-			$r = $_COOKIE[$cookiename];
-			
-			if ($r != "")
-			{
-				$result = true;
-			}
-		}
-	}
-	else if ($dataprotectiontype == "none")
-	{
-		// proceed; no data protection is enforced by the owner of the site
-		$result = true;
-	}
-	else
-	{
-		nxs_webmethod_return_nack("error; nxs_dataprotection_isallowedtoreceivedcachedpage; unsupported dataprotectiontype ($dataprotectiontype)");
-	}
-	
-	return $result;
+	return true;
 }
 
 //
 function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 {
+	if ($_REQUEST["nxs"] == "privacysettings")
+	{
+		nxs_dataprotection_renderwebsitevisitorprivacyoptions();
+		die();
+	}
+	
 	$usecookiewallactivity = "nexusframework:usecookiewall";
 	$dataprotectiontype_usecookie = nxs_dataprotection_getdataprotectiontype($usecookiewallactivity);
 	if ($dataprotectiontype_usecookie == "")
@@ -155,12 +189,9 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 		else
 		{
 			// its not a bot, check if the cookie is set
-			$cookiename = nxs_dataprotection_getexplicitconsentcookiename();
-			$r = $_COOKIE[$cookiename];
-			
-			if ($r == "")
+			if (!nxs_dataprotection_isexplicitconsentgiven($usecookiewallactivity))
 			{
-				nxs_dataprotection_rendercookiewall();
+				nxs_dataprotection_renderwebsitevisitorprivacyoptions();
 				die();
 			}
 			else
@@ -175,8 +206,22 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 	}
 }
 
-function nxs_dataprotection_rendercookiewall()
+function nxs_dataprotection_renderexplicitconsentinput($activity)
 {
+	nxs_ob_start();
+	?>
+	<div><a href='#' onclick='return false;'>Click here to give your consent to render this widget</a></div>
+	<?php
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
+}
+
+function nxs_dataprotection_renderwebsitevisitorprivacyoptions()
+{
+	$usecookiewallactivity = "nexusframework:usecookiewall";	
+	$cookiename = nxs_dataprotection_getexplicitconsentcookiename($usecookiewallactivity);
+
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */
 
@@ -214,7 +259,7 @@ function nxs_dataprotection_rendercookiewall()
 	        
           /* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
-          ?>  
+  ?>  
 	<html>
 		<head>
 			<script data-cfasync="false" type="text/javascript" src="<?php echo $jquery_url; ?>"></script>
@@ -347,10 +392,52 @@ function nxs_dataprotection_rendercookiewall()
 				.gdpr-accordion-wrapper input[type=radio]:checked + label::after { transform: rotateX(180deg); }
 
 				
-			</style>
+			</style> 
                   
-                  
-                  <?php
+      <?php
+      // render form
+      if (true)
+      {
+				nxs_ob_start();
+	      ?>
+	      <form id="nxsdataprotectionform">
+	      	<?php
+	      	$a = array
+					(
+						"rootactivity" => "nexusframework:use_framework",
+					);
+	      	$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
+					$controllable_activities = array_reverse($controllable_activities);
+					//var_dump($controllable_activities);
+					//die();
+	      	foreach ($controllable_activities as $controllable_activity => $control_options)
+	      	{
+	      		$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
+	      		$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($controllable_activity);
+	      		
+	      		//var_dump($controllable_activity);
+	      		//var_dump($dataprotectiontype);
+	      		//echo "<br />";
+	      		
+	      		if (in_array($dataprotectiontype, array("enabled_after_cookie_component_consent_or_robot", "enabled_disabled_for_robots")))
+	      		{
+	      			$cookiename = nxs_dataprotection_getexplicitconsentcookiename($controllable_activity);
+							$checkedattribute = nxs_dataprotection_isexplicitconsentgiven($controllable_activity) ? "checked" : "";
+	      			$items[] = $cookiename;
+							?>
+							<input type="checkbox" class="nxsexplicituserconsent" data-cookiename="<?php echo $cookiename; ?>" id="<?php echo $cookiename; ?>" <?php echo $checkedattribute; ?> />
+							<label for="<?php echo $cookiename; ?>">Yes i agree to use the <?php echo $controllable_activity; ?></label>
+							<br />
+							<?php
+						}
+					}
+					?>
+					<input type="submit" value="Update my privacy settings" />
+				</form>
+	      <?php
+				$form = nxs_ob_get_contents();
+				nxs_ob_end_clean();
+			}
 			
 			echo '
 			<div id="nxsdataprotectionback">
@@ -378,16 +465,14 @@ function nxs_dataprotection_rendercookiewall()
 					
 					</div>
 
-					<form id="nxsdataprotectionform">
-						<input type="checkbox" name="nxsexplicitconsent" id="nxsexplicitconsent" />
-						<label for="nxsexplicitconsent">Yes i totally agree</label>
-						
-						<br />
-						<input type="submit" />
-					</form>
+					'.$form.'
 					
 				</div>
-			</div>'
+			</div>';
+			
+			$finishedurl = nxs_geturl_home();
+			$days = nxs_dataprotection_getcookieretentionindays();
+			
 			?>
 			<script>
 				
@@ -395,27 +480,38 @@ function nxs_dataprotection_rendercookiewall()
 				(
 					function(ev) 
 					{
-					    ev.preventDefault(); // to stop the form from submitting
-					    var isconfirmed = document.getElementById("nxsexplicitconsent").checked;
-					    nxs_js_store_expliciet_cookie_consent(isconfirmed);
+				    ev.preventDefault(); // to stop the form from submitting
+				    
+				    <?php
+				    foreach ($items as $item)
+				    {
+				    	?>
+					    var isconfirmed = document.getElementById("<?php echo $item; ?>").checked;
+					    nxs_js_store_expliciet_cookie_consent("<?php echo $item; ?>", isconfirmed);
+					    <?php
+					  }
+					  ?>
+					  
+					  // reload the page 
+					  window.location.href = '<?php echo $finishedurl; ?>';
 					}
 				);
 				
-				function nxs_js_store_expliciet_cookie_consent(isconfirmed)
+				function nxs_js_store_expliciet_cookie_consent(name, isconfirmed)
 				{
 					if (isconfirmed)
 					{
 						// one year
-						var expiretime = 365 * 24 * 60 * 60 * 1000;
+						var expiretime = <?php echo $days; ?> * 24 * 60 * 60 * 1000;
 						// set cookie
-						nxs_js_setcookie("<?php echo $cookiename; ?>", 'confirmed', expiretime);
-						
-						// reload the page 
-						location.reload();
+						nxs_js_setcookie(name, isconfirmed, expiretime);
 					}
 					else
 					{
-						alert('you cannot proceed if you dont agree');
+						// one year in the past means it will be gone
+						var expiretime = - 365 * 24 * 60 * 60 * 1000;
+						// set cookie
+						nxs_js_setcookie(name, "", expiretime);
 					}
 				}
 			</script>

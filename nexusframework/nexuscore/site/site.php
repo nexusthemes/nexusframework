@@ -2738,12 +2738,38 @@ function nxs_site_dataprotectionhome_getoptions($args)
 		$dataprotectiontype_usecookiewall = $args["clientpopupsessiondata"]["{$prefix}{$usecookiewallactivity}"];
 	}
 
-	
 	$fields = array();
-	
+
+	// time stamp or version number of the privavy policy and/or terms and conditions
 	if (true)
 	{
-		// each configurable component that deals with user data that can be controlled
+		$fields[] = array
+		(
+			"id" 					=> "{$prefix}controllerlatestversion",
+			"type" 					=> "input",
+			"label"					=> nxs_l18n__("Version", "nxs_td"),
+		);
+	}
+	
+	// duration of the cookies
+	$fields[] = array
+	(
+		"id" 					=> "{$prefix}cookieretention",
+		"type" 					=> "select",
+		"label"					=> nxs_l18n__("Retention period", "nxs_td"),
+		"dropdown" 				=> array
+		(
+			"" => "30 days (default)",
+			"30" => "30 days",
+			"60" => "60 days",
+			"365" => "365 days",
+		),
+	);
+	
+	
+	// each configurable component that deals with user data that can be controlled
+	if (true)
+	{		
 		$fields[] = array
 		( 
 			"id" 				=> "wrapper_title_begin",
