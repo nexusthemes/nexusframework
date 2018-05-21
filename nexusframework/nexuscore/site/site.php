@@ -2740,78 +2740,6 @@ function nxs_site_dataprotectionhome_getoptions($args)
 
 	$fields = array();
 
-	// time stamp or version number of the privavy policy and/or terms and conditions
-	if (true)
-	{
-		$fields[] = array
-		(
-			"id" 					=> "{$prefix}controllerlatestversion",
-			"type" 					=> "input",
-			"label"					=> nxs_l18n__("Version", "nxs_td"),
-		);
-	}
-	
-	// duration of the cookies
-	$fields[] = array
-	(
-		"id" 					=> "{$prefix}cookieretention",
-		"type" 					=> "select",
-		"label"					=> nxs_l18n__("Retention period", "nxs_td"),
-		"dropdown" 				=> array
-		(
-			"" => "30 days (default)",
-			"30" => "30 days",
-			"60" => "60 days",
-			"365" => "365 days",
-		),
-	);
-	
-	
-	// each configurable component that deals with user data that can be controlled
-	if (true)
-	{		
-		$fields[] = array
-		( 
-			"id" 				=> "wrapper_title_begin",
-			"type" 				=> "wrapperbegin",
-			"label" 			=> nxs_l18n__("Components Impacting User Data (You Control How)", "nxs_td"),
-		);
-		
-		$a = array
-		(
-			"rootactivity" => "nexusframework:process_request",
-		);
-		$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
-		$controllable_activities = array_reverse($controllable_activities);
-		
-		foreach ($controllable_activities as $controllable_activity => $control_options)
-		{
-			$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
-			
-			$popuprefreshonchange = "";
-			if ($controllable_activity == "nexusframework_usecookiewall")
-			{
-				$popuprefreshonchange = "true";
-			}
-			
-			$fields[] = array
-			(
-				"id" 					=> "{$prefix}{$controllable_activity}",
-				"type" 					=> "select",
-				"label"					=> nxs_l18n__("{$controllable_activity}", "nxs_td"),
-				"dropdown" 				=> $control_options,
-				"popuprefreshonchange" => $popuprefreshonchange,
-			);
-		}
-		
-		$fields[] = array
-		( 
-			"id" 				=> "wrapper_end",
-			"type" 				=> "wrapperend",
-		);
-		
-	}
-
 	// EXPLICIT CONSENT OPTIONS
 	
 	if ($dataprotectiontype_usecookiewall == "enabled_disabled_for_robots")
@@ -2832,9 +2760,31 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			"id" 				=> "text",
 			"type" 				=> "input",
 			"label" 			=> nxs_l18n__("Title", "nxs_td"),
-			"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
+			"placeholder" 		=> nxs_l18n__("This site has components that use cookies and process user data to analyze traffic and optimize your web experience. Please provide your consent for the following component(s) to function.", "nxs_td"),
 			"unicontentablefield" => true,
 			"localizablefield"	=> true
+		);
+		if (true)
+		{
+			$fields[] = array
+			(
+				"id" 	=> "{$prefix}controllerlatestversion",
+				"type" 	=> "input",
+				"label"	=> nxs_l18n__("Version", "nxs_td"),
+			);
+		}
+		$fields[] = array
+		(
+			"id" 		=> "{$prefix}cookieretention",
+			"type" 		=> "select",
+			"label"		=> nxs_l18n__("Retention period", "nxs_td"),
+			"dropdown" 	=> array
+			(
+				"" 		=> "30 days (default)",
+				"30" 	=> "30 days",
+				"60" 	=> "60 days",
+				"365" 	=> "365 days",
+			),
 		);
 		
 		$fields[] = array
@@ -2842,6 +2792,51 @@ function nxs_site_dataprotectionhome_getoptions($args)
 				"id" 				=> "wrapper_title_end",
 				"type" 				=> "wrapperend"
 		);
+		
+		// DATA PROCESSING SERVICES
+		
+		if (true)
+		{		
+			$fields[] = array
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Data Processing Services", "nxs_td"),
+			);
+			
+			$a = array(
+				"rootactivity" => "nexusframework:process_request",
+			);
+			$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
+			$controllable_activities = array_reverse($controllable_activities);
+			
+			foreach ($controllable_activities as $controllable_activity => $control_options)
+			{
+				$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
+				
+				$popuprefreshonchange = "";
+				if ($controllable_activity == "nexusframework_usecookiewall")
+				{
+					$popuprefreshonchange = "true";
+				}
+				
+				$fields[] = array
+				(
+					"id" 					=> "{$prefix}{$controllable_activity}",
+					"type" 					=> "select",
+					"label"					=> nxs_l18n__("{$controllable_activity}", "nxs_td"),
+					"dropdown" 				=> $control_options,
+					"popuprefreshonchange" => $popuprefreshonchange,
+				);
+			}
+			
+			$fields[] = array
+			( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+			);
+			
+		}
 		
 		// IMAGES
 		
@@ -2865,42 +2860,6 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			"id" 			=> "cookie_wall_image_imageid",
 			"label"			=> nxs_l18n__("Background Image", "nxs_td"),
 			"type" 			=> "image",
-		);
-		
-		$fields[] = array
-		( 
-				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
-		);
-		
-		// TERMS AND CONDITIONS
-		
-		$fields[] = array
-		( 
-				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Terms and Conditions", "nxs_td"),
-				"initial_toggle_state"	=> "closed-if-empty",
-				"initial_toggle_state_id" => "title",
-			);
-		
-		$fields[] = array
-		( 
-			"id" 				=> "terms_and_conditions_title",
-			"type" 				=> "input",
-			"label" 			=> nxs_l18n__("Title", "nxs_td"),
-			"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
-			"unicontentablefield" => true,
-			"localizablefield"	=> true
-		);
-		$fields[] = array
-		(
-			"id" 				=> "terms_and_conditions_text",
-			"type" 				=> "tinymce",
-			"label" 			=> nxs_l18n__("Text", "nxs_td"),
-			"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
-			"unicontentablefield" => true,
-			"localizablefield"	=> true
 		);
 		
 		$fields[] = array
