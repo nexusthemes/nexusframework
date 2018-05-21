@@ -602,7 +602,7 @@ function nxs_dataprotection_nexusframework_widget_pagepopup_getprotecteddata($ar
 			array
 			(
 				"use_case" => "(belongs_to_whom_id) can browse a page of the website owned by the (controller) that conditionally renders page popups (condition could be the fact whether or not the website visitor has seen the popup before",
-				"what" => "A cookie with name starting with nxs_pagepopup_shown_ and followed by the identification of the popup, that indicates if that popup was shown before",
+				"what" => "A cookie with name starting with nxs_pagepopup_shown_ and followed by the identification of the popup, that indicates if that popup was shown before. Its a functional cookie to avoid annoyance of the visitor seeing the page popup even though it was shown before.",
 				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
 				"controller" => "website_owner",	// who is responsible for this?
 				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),

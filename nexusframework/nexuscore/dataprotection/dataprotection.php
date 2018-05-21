@@ -315,9 +315,14 @@ function nxs_dataprotection_renderexplicitconsentinput($activity)
 	
 	if ($dataprotectiontype == "enabled_after_cookie_component_consent_or_robot")
 	{
+		$currenturl = nxs_geturlcurrentpage();
+		$where_to_give_consent_url = nxs_geturl_home();
+		$where_to_give_consent_url = nxs_addqueryparametertourl_v2($where_to_give_consent_url, "nxs", "privacysettings", true, true);
+		$where_to_give_consent_url = nxs_addqueryparametertourl_v2($where_to_give_consent_url, "returnto", $currenturl, true, true);
+		
 		nxs_ob_start();
 		?>
-		<div><a href='#' onclick='return false;'>Click here to give your consent to render <?php echo $activity; ?></a></div>
+		<div><a href='<?php echo $where_to_give_consent_url; ?>'>Click here to give your consent to render <?php echo $activity; ?></a></div>
 		<?php
 		$result = nxs_ob_get_contents();
 		nxs_ob_end_clean();
@@ -606,7 +611,12 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions()
 				</div>
 			</div>';
 			
-			$finishedurl = nxs_geturl_home();
+			$finishedurl = $_REQUEST["returnto"];
+			if ($finishedurl == "")
+			{
+				$finishedurl = nxs_geturl_home();
+			}
+			
 			$days = nxs_dataprotection_getcookieretentionindays();
 			
 			?>
