@@ -2779,7 +2779,7 @@ function nxs_site_dataprotectionhome_getoptions($args)
 		
 		$a = array
 		(
-			"rootactivity" => "nexusframework:use_framework",
+			"rootactivity" => "nexusframework:process_request",
 		);
 		$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
 		$controllable_activities = array_reverse($controllable_activities);

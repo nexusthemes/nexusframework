@@ -445,28 +445,7 @@ function nxs_dataprotection_factor_createprotecteddata($type)
 	return $result;
 }
 
-function nxs_dataprotection_nexusframework_use_framework_getprotecteddata($args)
-{
-	$subactivities = array();
-	
-	$subactivities[] = "nexusframework:use_framework_on_any_site";
-	$subactivities[] = "nexusframework:use_framework_on_this_site";
-	
-	//
-	
-	$result = array
-	(
-		"subactivities" => $subactivities,
-		"dataprocessingdeclarations" => array	
-		(
-		)
-	);
-	
-	return $result;
-}
-
-// todo: move to nexuscore/dataprotection/nxs-dataprotection.php
-function nxs_dataprotection_nexusframework_use_framework_on_any_site_getprotecteddata($args)
+function nxs_dataprotection_nexusframework_process_request_getprotecteddata($args)
 {
 	// for any user
 	$subactivities[] = "nexusframework:usecookiewall";
@@ -560,6 +539,23 @@ function nxs_dataprotection_nexusframework_usecookiewall_getprotecteddata($args)
 		),
 		"status" => "final",
 	);
+	return $result;
+}
+
+function nxs_dataprotection_widget_defaultformitem_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+			"nexusframework_widget_formbox",
+		),
+		"dataprocessingdeclarations" => array	
+		(
+		),
+		"status" => "final",
+	);
+	
 	return $result;
 }
 
