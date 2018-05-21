@@ -527,64 +527,15 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
-
-	// outbound statebag
-	// $nxs_global_row_render_statebag["foo"] = "bar";
 	
 	// data protection handling
-	$activity = "nexusframework:widget_youtube";
-	$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($activity);
-	if ($dataprotectiontype == "")
+	if (true)
 	{
-		// leave as-is
-	}
-	else if ($dataprotectiontype == "enabled")
-	{
-		// leave as-is
-	}
-	else if ($dataprotectiontype == "enabled_after_cookie_wall_consent_or_robot")
-	{
-		if (nxs_browser_iscrawler())
+		$activity = "nexusframework:widget_youtube";
+		if (!nxs_dataprotection_isactivityonforuser($activity))
 		{
-			// leave as-is
+			$result["html"] = nxs_dataprotection_renderexplicitconsentinput($activity);
 		}
-		else
-		{
-			$result["html"] = "todo; check consent cookiewall";
-		}
-	}
-	else if ($dataprotectiontype == "enabled_after_cookie_component_consent_or_robot")
-	{
-		if (nxs_browser_iscrawler())
-		{
-			// leave as-is
-		}
-		else
-		{
-			if (nxs_dataprotection_isexplicitconsentgiven($activity))
-			{
-				// leave as-is
-			}
-			else
-			{
-				$result["html"] = nxs_dataprotection_renderexplicitconsentinput($activity);
-			}
-		}
-	}
-	else if ($dataprotectiontype == "disabled")
-	{
-		if (is_user_logged_in())
-		{
-			$result["html"] = "Disabled (User Data Protection)";
-		}
-		else
-		{
-			$result["html"] = "";
-		}
-	}
-	else
-	{
-		$result["html"] = "Unsupported data protection type; $dataprotectiontype";
 	}
 
 	return $result;
@@ -807,10 +758,6 @@ function nxs_dataprotection_nexusframework_widget_youtube_getprotecteddata($args
 				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
 				"program_lifecycle_phase" => "compiletime",
 				"why" => "Not applicable (because this is a compiletime declaration)",
-				"supported_consent_options" => array
-				(
-					"explicit_consent_by_cookie_wall",
-				),
 				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
 			),
 		),

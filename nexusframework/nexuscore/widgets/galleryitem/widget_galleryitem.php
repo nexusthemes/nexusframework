@@ -347,3 +347,8 @@ function nxs_widgets_galleryitem_renderingallery($args)
 		</a>
 	</div>';
 }
+
+function nxs_dataprotection_nexusframework_widget_galleryitem_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}

@@ -646,3 +646,8 @@ function nxs_widgets_logo_initplaceholderdata($args)
 	
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_logo_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}

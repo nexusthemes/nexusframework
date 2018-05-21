@@ -176,7 +176,7 @@ function nxs_widgets_rssfeed_home_getoptions($args)
 			),
 			
 			array( 
-				"id" 				=> "wrapper_daasource_end",
+				"id" 				=> "wrapper_datasource_end",
 				"type" 				=> "wrapperend",
 				"unistylablefield"	=> true
 			),
@@ -465,18 +465,6 @@ function nxs_widgets_rssfeed_render_webpart_render_htmlvisualization($args)
 	
 	$rsshtml = nxs_widgets_rssfeed_getoutput($rssargs);
 	
-	/*
-	// get html for each part	
-	//$htmltitle = nxs_gethtmlfortitle($title, $title_heading, $title_alignment, $title_fontsize, $title_heightiq, $destination_articleid, $destination_url);
-	$htmltext = nxs_gethtmlfortext($text, $rssfeed_alignment, $rssfeed_showliftnote, $rssfeed_showdropcap, $wrappingelement, $rssfeed_heightiq);
-	// $htmlforimage = nxs_gethtmlforimage($image_imageid, $image_border_width, $image_size, $image_alignment, $image_shadow, $image_alt, $destination_articleid, $destination_url, $image_title);
-	$htmlforbutton = nxs_gethtmlforbutton($button_text, $button_scale, $button_color, $destination_articleid, $destination_url, $destination_target, $button_alignment, $destination_js);
-	$htmlfiller = nxs_gethtmlforfiller();
-	
-	// Callout color
-	$callout_color_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $callout_color);
-	*/
-	
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
 
@@ -530,6 +518,11 @@ function nxs_widgets_rssfeed_initplaceholderdata($args)
 	$result["result"] = "OK";
 	
 	return $result;
+}
+
+function nxs_dataprotection_nexusframework_widget_rssfeed_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
 }
 
 ?>
