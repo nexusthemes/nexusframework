@@ -197,3 +197,10 @@ function nxs_busrule_busrulecatchall_process($args, &$statebag)
 	
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_busrulecatchall_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
+?>

@@ -270,4 +270,9 @@ function nxs_busrule_busrulearchivetype_process($args, &$statebag)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_widget_busrulearchivetype_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
 ?>

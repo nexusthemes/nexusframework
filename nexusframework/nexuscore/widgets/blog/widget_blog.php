@@ -1756,4 +1756,9 @@ function nxs_widgets_blog_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_widget_blog_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
 ?>

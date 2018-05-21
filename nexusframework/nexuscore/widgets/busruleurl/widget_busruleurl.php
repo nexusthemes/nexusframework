@@ -761,3 +761,10 @@ function nxs_busrule_busruleurl_process($args, &$statebag)
 	
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_busruleurl_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
+?>

@@ -643,3 +643,8 @@ function nxs_widgets_eventsbox_initplaceholderdata($args)
 	$result = array();
 	$result["result"] = "OK";
 }
+
+function nxs_dataprotection_nexusframework_widget_eventsbox_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}

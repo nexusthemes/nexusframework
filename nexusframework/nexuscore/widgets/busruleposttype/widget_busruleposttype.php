@@ -272,3 +272,10 @@ function nxs_busrule_busruleposttype_process($args, &$statebag)
 	
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_busruleposttype_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
+?>

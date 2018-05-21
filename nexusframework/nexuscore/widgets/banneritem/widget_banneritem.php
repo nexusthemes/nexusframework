@@ -221,4 +221,9 @@ function nxs_widgets_banneritem_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_widget_banneritem_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
 ?>

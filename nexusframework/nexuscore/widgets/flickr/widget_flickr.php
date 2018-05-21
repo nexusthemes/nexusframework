@@ -314,6 +314,17 @@ function nxs_widgets_flickr_render_webpart_render_htmlvisualization($args)
 	// The framework uses this array with its accompanying values to render the page
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-'.$placeholderid;
+	
+	// data protection handling
+	if (true)
+	{
+		$activity = "nexusframework:widget_flickr";
+		if (!nxs_dataprotection_isactivityonforuser($activity))
+		{
+			$result["html"] = nxs_dataprotection_renderexplicitconsentinput($activity);
+		}
+	}
+	
 	return $result;
 }
 
@@ -337,6 +348,39 @@ function nxs_widgets_flickr_initplaceholderdata($args)
 	$result = array();
 	$result["result"] = "OK";
 	
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_widget_flickr_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+			// if widget has properties that pull information from other 
+			// vendors (like scripts, images hosted on external sites, etc.) 
+			// those need to be taken into consideration
+			// responsibility for that is the person configuring the widget
+			"custom-widget-configuration",	
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can browse a page of the website owned by the (controller) that renders Flickr media items using the flickr widget of the framework",
+				"what" => "IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "Flickr",	// the name of the data_processor or data_recipient
+				"data_retention" => "See https://www.flickr.com/",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Not applicable (because this is a compiletime declaration)",
+				"security" => "See https://www.flickr.com/",
+			),
+		),
+		"status" => "final",
+	);
 	return $result;
 }
 

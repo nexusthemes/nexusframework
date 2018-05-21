@@ -202,4 +202,9 @@ function nxs_widgets_definitionlistitemtext_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_widget_definitionlistitemtext_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
 ?>

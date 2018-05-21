@@ -335,3 +335,10 @@ function nxs_busrule_busruledeclarativecondition_process($args, &$statebag)
 	
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_busruledeclarativecondition_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
+
+?>

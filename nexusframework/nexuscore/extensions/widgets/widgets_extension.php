@@ -245,7 +245,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "categories", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "archive", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "htmlcustom", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "googlebusinessphoto", "tags" => array("nexus"));		
 		$result[] = array("widgetid" => "rssfeed", "tags" => array("nexus"));	
 		$result[] = array("widgetid" => "breadcrumb", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "wpmenu", "tags" => array("nexus"));
@@ -278,11 +277,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "definitionlistbox", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "sliderbox", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "vectorart", "tags" => array("nexus"));
-		
-		if ($enableconceptualwidgets)
-		{
-			$result[] = array("widgetid" => "filmrollbox", "tags" => array("nexus"));
-		}
 	} 
 	
 	/* MENU POSTTYPE
@@ -314,22 +308,13 @@ function nxs_getwidgets_functions_AF($result, $args)
 		
 		if ($enableconceptualwidgets)
 		{
-			// FILMROLL
-			if ($nxssubposttype == "filmrollbox") {
-				$result[] = array("widgetid" => "slide", "tags" => array("nexus"));
-			}
 		}
 		
 		// SUPERSIZED SLIDER
 		if ($nxssubposttype == "pageslider") {
 			$result[] = array("widgetid" => "slide", "tags" => array("nexus"));		
 		}
-		
-		// GOOGLE BUSINESS PHOTOS
-		if ($nxssubposttype == "googlebusphotoslides"){
-			$result[] = array("widgetid" => "googlebusphotoitem", "tags" => array("nexus"));
-		}
-		
+				
 		// CONTACT FORM
 		if ($nxssubposttype == "contact"){
 			$result[] = array("widgetid" => "contactitemtext", "tags" => array("nexus"));
@@ -504,7 +489,7 @@ function nxs_lazyload_widgets()
 	
 	if ($enableconceptualwidgets)
 	{
-		nxs_ext_lazyload_widget("filmrollbox");
+		// nxs_ext_lazyload_widget("...");
 	}
 	
 	nxs_ext_lazyload_widget("youtube");
@@ -550,8 +535,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("wordpresstitle");
 	nxs_ext_lazyload_widget("quote");
 	nxs_ext_lazyload_widget("radial");
-	nxs_ext_lazyload_widget("googlebusinessphoto");
-	nxs_ext_lazyload_widget("googlebusphotoitem");
 	nxs_ext_lazyload_widget("eventsbox");
 	nxs_ext_lazyload_widget("eventsboxitem");
 	nxs_ext_lazyload_widget("csv");
@@ -561,6 +544,7 @@ function nxs_lazyload_widgets()
     
 	if ($enableconceptualwidgets)
 	{
+		// nxs_ext_lazyload_widget("...");
 	}
 	
 	nxs_ext_lazyload_widget("target");
@@ -653,7 +637,7 @@ function nxs_getobsoletewidgetids()
 	
 	if (!nxs_enableconceptualwidgets())
 	{
-		$result[] = "googlebusinessphoto";
+		// $result[] = "...";
 	}
 
 	return $result;

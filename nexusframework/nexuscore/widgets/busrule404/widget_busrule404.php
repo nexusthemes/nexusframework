@@ -236,3 +236,8 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 	
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_busrule404_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-none");
+}
