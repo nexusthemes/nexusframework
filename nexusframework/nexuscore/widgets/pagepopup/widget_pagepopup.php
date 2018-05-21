@@ -1,10 +1,12 @@
 <?php
 
-function nxs_widgets_pagepopup_geticonid() {
+function nxs_widgets_pagepopup_geticonid() 
+{
 	return "nxs-icon-pagepopup";
 }
 
-function nxs_widgets_pagepopup_gettitle() {
+function nxs_widgets_pagepopup_gettitle() 
+{
 	return nxs_l18n__("Page popup", "nxs_td");
 }
 
@@ -19,6 +21,11 @@ function nxs_widgets_pagepopup_registerhooksforpagewidget($args)
 	$nxs_pagepopup_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
 	
 	add_action('nxs_beforeend_head', 'nxs_widgets_pagepopup_beforeend_head');
+}
+
+function nxs_widgets_pagepopup_getcookieretentionindays($args)
+{
+	return 7;
 }
 
 // kudos to http://css-tricks.com/perfect-full-page-background-image/
@@ -39,7 +46,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 	}
 	else
 	{
-		$destination_url = "http://www.example.org";
+		$destination_url = "https://www.example.org";
 	}
 	
 	// prevent administrators from seeing annoying edit features
@@ -185,6 +192,10 @@ function nxs_widgets_pagepopup_beforeend_head()
 		$maxheight = 750;
 		// $width = 340;		// 1 column
 		$width = 738;		// 2 columns
+		
+		$a = array();
+		$days = nxs_widgets_pagepopup_getcookieretentionindays($a);
+		
 		?>
 
 		jQuery(window).load
@@ -262,7 +273,7 @@ function nxs_widgets_pagepopup_beforeend_head()
 				if (response.setcookie != null && !nxs_js_stringisblank(response.setcookie))
 				{
 					// expire cookie in a week
-					expiretime = 7 * 24 * 60 * 60 * 1000;
+					expiretime = <?php echo $days; ?> * 24 * 60 * 60 * 1000;
 
 					// set cookie
 					nxs_js_setcookie(response.setcookie, 'set', expiretime);
@@ -571,6 +582,39 @@ function nxs_widgets_pagepopup_initplaceholderdata($args)
 	$result = array();
 	$result["result"] = "OK";
 	
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_widget_pagepopup_getprotecteddata($args)
+{
+	$a = array();
+	$days = nxs_widgets_pagepopup_getcookieretentionindays($a);
+
+	$result = array
+	(
+		"subactivities" => array
+		(
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			// "See the terms https://gdpr.twitter.com/en.html"
+		
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can browse a page of the website owned by the (controller) that conditionally renders page popups (condition could be the fact whether or not the website visitor has seen the popup before",
+				"what" => "A cookie with name starting with nxs_pagepopup_shown_ and followed by the identification of the popup, that indicates if that popup was shown before",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "Website of controller",	// the name of the data_processor or data_recipient
+				"data_retention" => "{$days} days",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Not applicable (because this is a compiletime declaration)",
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; See https://gdpr.twitter.com/en.html",
+			),
+		),
+		"status" => "final",
+	);
 	return $result;
 }
 

@@ -692,6 +692,10 @@
 					{
 						$shouldrender = true;
 					}
+					if (NXS_FRAMEWORKSHARED === "true")
+					{
+						$shouldrender = false;
+					}
 					
 					if ($shouldrender)
 					{
