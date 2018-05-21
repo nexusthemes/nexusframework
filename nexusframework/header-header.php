@@ -20,8 +20,6 @@
 	$faviconlookup = nxs_wp_get_attachment_image_src($faviconid, 'full', true);
 	$faviconurl = $faviconlookup[0];
 	$faviconurl = nxs_img_getimageurlthemeversion($faviconurl);
-	
-	$analyticsUA = nxs_seo_getanalyticsua();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php nxs_render_htmlstarttag(); ?>

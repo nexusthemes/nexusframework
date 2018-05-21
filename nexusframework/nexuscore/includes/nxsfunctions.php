@@ -3894,38 +3894,110 @@ function nxs_get_backslashescaped_string($val)
 	return $val;
 }
 
-function nxs_analytics_handleanalytics()
+function nxs_analytics_gettagmanagerid_internal()
 {
-	// see https://developers.google.com/analytics/devguides/collection/analyticsjs/#the_javascript_tracking_snippet
-	$analyticsUA = nxs_seo_getanalyticsua();
-	if ($analyticsUA != "") 
+	$mixedattributes = nxs_getsitemeta_internal(false);
+	
+	// allow the use of lookup entries in the value; translate those here
+	$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+	//$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+	$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+	
+	// replace values in mixedattributes with the lookup dictionary
+	$magicfields = array("googletagmanagerid");
+	$translateargs = array
+	(
+		"lookup" => $combined_lookups,
+		"items" => $mixedattributes,
+		"fields" => $magicfields,
+	);
+	$mixedattributes = nxs_filter_translate_v2($translateargs);
+	
+	$result = $mixedattributes["googletagmanagerid"];
+	
+	return $result;
+}
+
+function nxs_analytics_handlegoogletagmanager()
+{
+	$usegoogletagmanager_activity = "nexusframework:usegoogletagmanager";
+	if (nxs_dataprotection_isactivityonforuser($usegoogletagmanager_activity))
 	{
-		if (!is_user_logged_in())
+		$tagmanagerid = nxs_analytics_gettagmanagerid_internal();
+		
+		// Google Tag Manager; HEAD PART - NEW STYLE
+		if ($tagmanagerid != "")
 		{
-			?>
-			<!-- Google Analytics -->
-			<script>
-				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-				})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-				
-				ga('create', '<?php echo $analyticsUA; ?>', 'auto');
-				ga('set', 'anonymizeIp', true);
-				ga('send', 'pageview');	
-			</script>
-			<?php 
+			if (!is_user_logged_in())
+			{
+				?>
+				<!-- Google Tag Manager -->
+				<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+				})(window,document,'script','dataLayer','<?php echo $tagmanagerid; ?>');</script>
+				<!-- End Google Tag Manager -->
+				<?php
+			}
+			else
+			{
+				?>
+				<!-- Google Tag Manager is suppressed for authenticated users (see https://github.com/nexusthemes/communityrfc/issues/60) -->
+				<?php
+			}
 		}
 		else
 		{
-			?>
-			<!-- Google Analytics is set but not rendered (<?php echo $analyticsUA; ?>); tracking script is not rendered for authenticated users (see https://github.com/nexusthemes/communityrfc/issues/60) -->
-			<?php
+			// not configured
 		}
-	} 
+	}
+	else
+	{
+		// not allowed
+	}
 }
 
-function nxs_seo_getanalyticsua()
+function nxs_analytics_handleanalytics()
+{
+	$useanalytics_activity = "nexusframework:useanalytics";
+	if (nxs_dataprotection_isactivityonforuser($useanalytics_activity))
+	{
+		// see https://developers.google.com/analytics/devguides/collection/analyticsjs/#the_javascript_tracking_snippet
+		$analyticsUA = nxs_analytics_getanalytics_ua_internal();
+		if ($analyticsUA != "") 
+		{
+			if (!is_user_logged_in())
+			{
+				?>
+				<!-- Google Analytics -->
+				<script>
+					(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+					})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+					
+					ga('create', '<?php echo $analyticsUA; ?>', 'auto');
+					ga('set', 'anonymizeIp', true);
+					ga('send', 'pageview');	
+				</script>
+				<?php 
+			}
+			else
+			{
+				?>
+				<!-- Google Analytics is set but not rendered (<?php echo $analyticsUA; ?>); tracking script is not rendered for authenticated users (see https://github.com/nexusthemes/communityrfc/issues/60) -->
+				<?php
+			}
+		}
+	}
+	else
+	{
+		// nope, its not available
+	}
+}
+
+function nxs_analytics_getanalytics_ua_internal()
 {
 	$mixedattributes = nxs_getsitemeta_internal(false);
 	
@@ -3945,6 +4017,8 @@ function nxs_seo_getanalyticsua()
 	$mixedattributes = nxs_filter_translate_v2($translateargs);
 	
 	$result = $mixedattributes["analyticsUA"];
+	// on some old themes we accidentally put in a tracking code
+	// if thats the case, we void it to ensure its not tracked
 	if ($result == "UA-38116525-1")
 	{
 		$result = "";
@@ -3952,6 +4026,8 @@ function nxs_seo_getanalyticsua()
 	
 	return $result;
 }
+
+//
 
 function nxs_yoast_backend_enqueuescript()
 {	

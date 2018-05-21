@@ -2623,8 +2623,8 @@ function nxs_site_marketingmanagementhome_getoptions($args)
 		(
 			array( 
 				"id" 			=> "googletagmanagerid",
-				"label"			=> nxs_l18n__("Google Tag Manager ID", "nxs_td"),
-				"type" 			=> "textarea",
+				"label"			=> nxs_l18n__("Google Tag Manager ID", "nxs_td") . "<br />GTM-XXXXXX",
+				"type" 			=> "input",
 			),
 			array(
 				"id" 			=> "analyticsUA",

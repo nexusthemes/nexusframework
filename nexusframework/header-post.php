@@ -31,8 +31,6 @@
 	{
 		$faviconid = "";
 	}
-	$analyticsUA = nxs_seo_getanalyticsua();
-	
 	$meta = nxs_theme_getmeta();
 	$version = $meta["version"];
 	

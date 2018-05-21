@@ -29,6 +29,11 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 		if (function_exists($functionnametoinvoke))
 		{
 			$currentresult = call_user_func($functionnametoinvoke, $args);
+			
+			if ($currentresult["status"] != "final")
+			{
+				$result["errors"]["notfinal"][] = "gdprmeta implementation is not yet final ( {$functionnametoinvoke} )";
+			}
 		
 			// enqueue subactivities
 			if (true)
@@ -47,11 +52,11 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 					else
 					{
 						// for some we already know this will happen; those will be ignored
-						$expected_to_be_used_multiple_times = array("custom_widget_configuration");
+						$expected_to_be_used_multiple_times = array("custom_widget_configuration", "nexusframework_widget_formbox", "widget_defaultformitem", "wordpress_wp_mail");
 						$was_expected_to_be_used_multiple_times = in_array($subactivity, $expected_to_be_used_multiple_times);
 						if (!$was_expected_to_be_used_multiple_times)
 						{ 
-							$result["warning"][] = "activity was enqueued multiple times (only the first time it was processed); $subactivity";
+							$result["errors"]["multipleoccurences"][] = "activity was enqueued multiple times (only the first time it was processed); $subactivity";
 						}
 					}
 				}
@@ -62,7 +67,7 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 		}
 		else
 		{
-			$result["errors"][] = "no valid gdprmeta implemented ( {$functionnametoinvoke} )";
+			$result["errors"]["notimplemented"][] = "no valid gdprmeta implemented ( {$functionnametoinvoke} )";
 		}
 	}
 	
@@ -466,11 +471,9 @@ function nxs_dataprotection_nexusframework_use_framework_on_any_site_getprotecte
 	// for any user
 	$subactivities[] = "nexusframework:usecookiewall";
 	$subactivities[] = "nexusframework:usegooglefonts";
-	$subactivities[] = "google:loadjsapi";
-	$subactivities[] = "google:loadwebfont";
+	$subactivities[] = "nexusframework:useanalytics";
+	$subactivities[] = "nexusframework:usegoogletagmanager";
 	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
-	$subactivities[] = "google:loadanalytics";
-	$subactivities[] = "google:loadspecificanalyticsifconfigured";
 	$subactivities[] = "nexusframework:handleexplicitcookieconsent";
 	
 	// for logged in users;
@@ -579,7 +582,64 @@ function nxs_dataprotection_nexusframework_usegooglefonts_getprotecteddata($args
 				"data_processor" => "Google (Fonts)",	// the name of the data_processor or data_recipient
 				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
 				"program_lifecycle_phase" => "compiletime",
-				"why" => "Not applicable (because this is a compiletime declaration)",
+				"why" => "Google fonts can improve the user experience on the site.",
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
+			),
+		),
+		"status" => "final",
+	);
+	return $result;
+}
+
+
+function nxs_dataprotection_nexusframework_useanalytics_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can browse a page of the website that uses google analytics to track the user behaviour of the site",
+				"what" => "IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "Google (analytics)",	// the name of the data_processor or data_recipient
+				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Analytics is used to monitor and track behaviour of (belongs_to_whom_id) on the website to review online campaigns by tracking landing page quality and conversions (goals). More details here https://en.wikipedia.org/wiki/Google_Analytics#Features",
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
+			),
+		),
+		"status" => "final",
+	);
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_usegoogletagmanager_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can browse a page of the website that uses google tag manager to track the user behaviour of the site",
+				"what" => "IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "Google (Tag Manager)",	// the name of the data_processor or data_recipient
+				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "It is used for tracking and analytics on websites (variants of e-marketing tags, sometimes referred to as tracking pixels or web beacons). More details here; https://en.wikipedia.org/wiki/Google_Tag_Manager",
 				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
 			),
 		),
