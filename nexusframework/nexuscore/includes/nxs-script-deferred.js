@@ -87,18 +87,7 @@ function nxs_js_lazyloadmoreblogs(domelement)
 					);					
 					
 					// update the paging page nr
-					nxs_js_log("most recent was:" + most_recent_page);
-					// 
-					
-					// instruct the comments to be reloaded
-					if (typeof nxs_js_refreshdisquscount_throttled == 'function')
-					{
-						nxs_js_refreshdisquscount_throttled();
-					}
-					else
-					{
-						//
-					}
+					// nxs_js_log("most recent was:" + most_recent_page);
 				}
 				else
 				{
@@ -118,13 +107,6 @@ function nxs_js_lazyloadmoreblogs(domelement)
 			}
 		}
 	);
-}
-
-function nxs_js_mailchimpsubmit(domelement)
-{
-	var placeholder = jQ_nxs(domelement).closest(".nxs-placeholder");
-	var submitbutton = jQ_nxs(placeholder).find("input[type=submit]");
-	jQ_nxs(submitbutton).click();
 }
 
 function nxs_js_validateemail(elementValue)

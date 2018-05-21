@@ -62,7 +62,6 @@ add_action('nxs_getcommentsproviders', 'nxs_getcommentsproviders_functions_AF', 
 function nxs_getcommentsproviders_functions_AF($result, $args)
 {
 	$result["wordpressnative"] = array();
-	//$result["disqus"] = array();
 	return $result;
 }
 
@@ -70,7 +69,6 @@ function nxs_getcommentsproviders_functions_AF($result, $args)
 // lazy load commentsproviders
 //
 nxs_ext_lazyload_commentsprovider("wordpressnative");
-nxs_ext_lazyload_commentsprovider("disqus");
 
 function nxs_commentsprovider_getcurrent()
 {

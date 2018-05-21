@@ -149,11 +149,6 @@ function nxs_ajax_webmethods()
 			$hasaccess = true;
 			// ok (save-as used in media reference)
 		}
-		else if ($webmethod == "aweberproxy")
-		{
-			// zou dus eigenlijk gedelegeerd moeten (kunnen) worden naar plugin
-			$hasaccess = true;
-		}
 		else if ($webmethod == "contactform")
 		{
 			$hasaccess = true;

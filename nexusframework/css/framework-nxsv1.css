@@ -1541,16 +1541,6 @@
 .nxs-main .nxs-server-gallery ul.series li:nth-child(4n)	{ margin-right: 0%; }
 }
 
-
-/* DISQUS
------------------------------------------------------------------------------------------- */
-.nxs-disqus-comments a,
-.nxs-disqus-comments .dsq-widget-comment					{ display: block; font-size: 15px; line-height: 1.625em; margin-bottom: 15px; }
-.nxs-disqus-comments .dsq-widget-comment:before,
-.nxs-disqus-comments .dsq-widget-comment:after				{ content: '"'; font-size: 15px; }
-
-
-
 /* EVENTS
 ------------------------------------------------------------------------------------------ */
 .nxs-events .nxs-evententry									{ margin-top: 20px; }

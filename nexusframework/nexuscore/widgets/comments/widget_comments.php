@@ -818,7 +818,7 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 	}
 	else
 	{
-		// a plugin (like for example Disqus) already handled the output
+		// a plugin already handled the output
 	}
 	
 	$result["html"] = $html;	
