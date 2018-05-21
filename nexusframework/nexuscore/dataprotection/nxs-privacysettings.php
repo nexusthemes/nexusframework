@@ -85,8 +85,8 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				  margin: 0px;
 				  padding: 0px;
 				}
-				#nxsdataprotectionback { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
-				@media only screen and ( max-width: 959px ) { body { height: auto; } #nxsdataprotectionback { display: block; } }
+				#nxsdataprotectionback { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; overflow-y: scroll; }
+				@media only screen and ( max-width: 959px ) { #nxsdataprotectionback { display: block; } }
 				
 				#nxsdataprotectionwrap { padding: 20px; border-radius: 3px;	color: white; font-size: 16px; box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75); max-width: 40%; overflow-y: scroll; }
 				
@@ -95,7 +95,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				@media only screen and ( max-width: 959px ) { #nxsdataprotectionwrap { max-width: 100%;} }
 				#nxsdataprotectionwrap p { margin: 1em; }
 				
-				::-webkit-scrollbar { -webkit-appearance: none; width: 7px;	}
+				::-webkit-scrollbar { -webkit-appearance: none; width: 0px;	}
 				::-webkit-scrollbar-thumb { border-radius: 4px; background-color: rgba(0,0,0,.5); -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5); }
 				
 				/* Acordeon styles */
