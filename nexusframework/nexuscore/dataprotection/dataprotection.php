@@ -311,12 +311,48 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 
 function nxs_dataprotection_renderexplicitconsentinput($activity)
 {
-	nxs_ob_start();
-	?>
-	<div><a href='#' onclick='return false;'>Click here to give your consent to render <?php echo $activity; ?></a></div>
-	<?php
-	$result = nxs_ob_get_contents();
-	nxs_ob_end_clean();
+	$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($activity);
+	
+	if ($dataprotectiontype == "enabled_after_cookie_component_consent_or_robot")
+	{
+		nxs_ob_start();
+		?>
+		<div><a href='#' onclick='return false;'>Click here to give your consent to render <?php echo $activity; ?></a></div>
+		<?php
+		$result = nxs_ob_get_contents();
+		nxs_ob_end_clean();
+	}
+	else if ($dataprotectiontype == "disabled")
+	{
+		if (is_user_logged_in())
+		{
+			nxs_ob_start();
+			?>
+			<div class='hidewheneditorinactive'><?php echo $activity; ?>; won't render because of the data protection type configuration</div>
+			<?php
+			$result = nxs_ob_get_contents();
+			nxs_ob_end_clean();
+		}
+		else
+		{
+			nxs_ob_start();
+			?>
+			<div><?php echo $activity; ?>; <?php echo $dataprotectiontype; ?></div>
+			<?php
+			$result = nxs_ob_get_contents();
+			nxs_ob_end_clean();
+		}
+	}
+	else
+	{
+		nxs_ob_start();
+		?>
+		<div>Unexpected; <?php echo $activity; ?>; <?php echo $dataprotectiontype; ?></div>
+		<?php
+		$result = nxs_ob_get_contents();
+		nxs_ob_end_clean();
+	}
+	
 	return $result;
 }
 
