@@ -316,17 +316,19 @@ function nxs_getwidgets_functions_AF($result, $args)
 		}
 				
 		// CONTACT FORM
-		if ($nxssubposttype == "contact"){
+		if ($nxssubposttype == "contact")
+		{
+			// please note; this is for an OLD (obsolete) widget
 			$result[] = array("widgetid" => "contactitemtext", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
-			// $result[] = array("widgetid" => "contactitemhidden");
-			// $result[] = array("widgetid" => "contactitemattachment");
 			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
 		}
+		
+		// error_log("nxs_getwidgets_functions_AF; $nxssubposttype");
 		
 		// FORM
 		if ($nxssubposttype == "form") 
