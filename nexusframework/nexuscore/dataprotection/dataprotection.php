@@ -173,7 +173,15 @@ function nxs_dataprotection_isactivityonforuser($activity)
 			}
 			else
 			{
-				$result = false;
+				$usecookiewallactivity = "nexusframework:usecookiewall";
+				if (nxs_dataprotection_isexplicitconsentgiven($usecookiewallactivity))
+				{
+					$result = true;
+				}
+				else
+				{
+					$result = false;
+				}
 			}
 		}
 		else if ($dataprotectiontype == "enabled_after_cookie_component_consent_or_robot")
@@ -191,7 +199,7 @@ function nxs_dataprotection_isactivityonforuser($activity)
 				else
 				{
 					$result = false;
-				}
+				}			
 			}
 		}
 		else if ($dataprotectiontype == "disabled")
@@ -203,6 +211,9 @@ function nxs_dataprotection_isactivityonforuser($activity)
 			nxs_webmethod_return_nack("unsupported dataprotectiontype; $dataprotectiontype");
 		}
 	}
+	
+	
+
 	
 	return $result;
 }
@@ -327,13 +338,22 @@ function nxs_dataprotection_renderexplicitconsentinput($activity)
 		$result = nxs_ob_get_contents();
 		nxs_ob_end_clean();
 	}
+	else if ($dataprotectiontype == "enabled_after_cookie_wall_consent_or_robot")
+	{
+		nxs_ob_start();
+		?>
+		<div><?php echo $activity; ?>; disabled</div>
+		<?php
+		$result = nxs_ob_get_contents();
+		nxs_ob_end_clean();
+	}
 	else if ($dataprotectiontype == "disabled")
 	{
 		if (is_user_logged_in())
 		{
 			nxs_ob_start();
 			?>
-			<div class='hidewheneditorinactive'><?php echo $activity; ?>; won't render because of the data protection type configuration</div>
+			<div class='hidewheneditorinactive'><?php echo $activity; ?>; disabled by website owner (controller)</div>
 			<?php
 			$result = nxs_ob_get_contents();
 			nxs_ob_end_clean();
@@ -554,6 +574,16 @@ function nxs_dataprotection_factory_getenableoptions($type)
 			"enabled" => "Enabled",
 			"enabled_after_cookie_wall_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a cookie wall consent. For robots its enabled.",
 			"enabled_after_cookie_component_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a component cookie consent. For robots its enabled.",
+			"disabled" => "Disabled",
+		);
+	}
+	else if ($type == "widget:enabled|cookiewall|disabled")
+	{
+		$result = array
+		(
+			"" => "Enabled (default)",
+			"enabled" => "Enabled",
+			"enabled_after_cookie_wall_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a cookie wall consent. For robots its enabled.",
 			"disabled" => "Disabled",
 		);
 	}

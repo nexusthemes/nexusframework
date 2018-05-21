@@ -606,10 +606,10 @@ function nxs_dataprotection_nexusframework_widget_pagepopup_getprotecteddata($ar
 				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
 				"controller" => "website_owner",	// who is responsible for this?
 				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
-				"data_processor" => "Website of controller",	// the name of the data_processor or data_recipient
+				"data_processor" => "website_owner", // its not really "processed"; its a functional cookie
 				"data_retention" => "{$days} days",
 				"program_lifecycle_phase" => "compiletime",
-				"why" => "Not applicable (because this is a compiletime declaration)",
+				"why" => "Its used to prevent the same popup from being showing multiple times for subsequent website requests",
 				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; See https://gdpr.twitter.com/en.html",
 			),
 		),
