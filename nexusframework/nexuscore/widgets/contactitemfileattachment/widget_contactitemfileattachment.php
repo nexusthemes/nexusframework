@@ -85,7 +85,6 @@ function nxs_widgets_contactitemfileattachment_getformitemsubmitresult($args)
 	$fileext = pathinfo($filename, PATHINFO_EXTENSION);
 
 	// check here if it got the right file extension
-
 	
 	// normally the output is $formlabel: $value
 	// but for the file upload we give the $value later in the formboxsubmit_webmethod
@@ -147,10 +146,10 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
   	// invoked when the page renders for the first time, and when the user changes the file
   	function nxs_js_ci_a_updatestate_<?php echo $key; ?>()
   	{
-  		nxs_js_log("updating state");
+  		// nxs_js_log("updating state");
   		var thefileinput = document.getElementById('<?php echo $key; ?>');
  			var statevisualizer = document.getElementById("state_<?php echo $key; ?>");
- 			nxs_js_log("length" + thefileinput.files.length);
+ 			// nxs_js_log("length" + thefileinput.files.length);
   		if (thefileinput.files.length > 0)
   		{
   			var name = thefileinput.files.item(0).name;
@@ -165,7 +164,7 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
     	{
   			statevisualizer.innerText = "<?php echo $metadata_no_file_selected_text; ?>";   		
     	}
-    	nxs_js_log("so far");
+    	// nxs_js_log("so far");
     }
     nxs_js_ci_a_updatestate_<?php echo $key; ?>();
   </script>
@@ -362,6 +361,41 @@ function nxs_widgets_contactitemfileattachment_initplaceholderdata($args)
 	$result = array();
 	$result["result"] = "OK";
 	
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_widget_contactitemfileattachment_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+			// if widget has properties that pull information from other 
+			// vendors (like scripts, images hosted on external sites, etc.) 
+			// those need to be taken into consideration
+			// responsibility for that is the person configuring the widget
+			"custom-widget-configuration",
+			// 
+			"widget-defaultformitem",
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can submit files (aka form attachments) through a form on a page of the website owned by the (controller) using the contact item file attachment widget of the framework",
+				"what" => "the content (bytes) of the file that was uploaded, the name of the file, IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "wordpress_process",
+				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Not applicable (because this is a compiletime declaration)",
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
+			),
+		),
+		"status" => "OPEN (wat gebeurt er met de file nadat submit afgehandeld is?)",
+	);
 	return $result;
 }
 

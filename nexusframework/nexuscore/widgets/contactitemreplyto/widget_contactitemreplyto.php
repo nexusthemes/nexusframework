@@ -289,4 +289,9 @@ function nxs_widgets_contactitemreplyto_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_widget_contactitemreplyto_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-defaultformitem");
+}
+
 ?>

@@ -1133,3 +1133,46 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	$result = nxs_widgets_initplaceholderdatageneric($args, $widgetname);
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_formbox_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+			// if widget has properties that pull information from other 
+			// vendors (like scripts, images hosted on external sites, etc.) 
+			// those need to be taken into consideration
+			// responsibility for that is the person configuring the widget
+			"custom-widget-configuration",	
+			//
+			"wordpress:wp_mail",
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can enter information in a form rendered by the formbox widget of the framework. Submitted forms are send to the web server and are handled by the formbox widget.",
+				"what" => "The fields with the corresponding values as part of the form, the IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => array
+				(
+					"" => "Enabled (default)",
+					"enabled" => "Enabled",
+					// "enabled_after_cookie_wall_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a cookie wall consent. For robots its enabled.",
+					// "enabled_after_cookie_component_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a component cookie consent. For robots its enabled.",
+					"enabled_after_consent_at_submit" => "For website visitors its conditionally enabled only after the website visitor gave a component cookie consent. For robots its enabled.",
+					"disabled" => "Disabled",
+				),
+				"data_processor" => "Google (YouTube)",	// the name of the data_processor or data_recipient
+				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Not applicable (because this is a compiletime declaration)",
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
+			),
+		),
+		"status" => "final",
+	);
+	return $result;
+}

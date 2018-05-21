@@ -55,6 +55,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 			function nxs_js_userhasadminpermissions() { return <?php if (nxs_has_adminpermissions()) { echo "true"; } else { echo "false"; } ?>; }
 			</script>
 			<script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/nxs-script.js?v=<?php echo nxs_getthemeversion(); ?>"></script>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		</head>
 		
               <body>
@@ -85,34 +86,18 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				  padding: 0px;
 				}
 				#nxsdataprotectionback { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
-				#nxsdataprotectionwrap { padding: 20px; border-radius: 3px;	background-color: #003399; color: white; font-size: 16px; box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75); max-width: 40vw; }
+				@media only screen and ( max-width: 959px ) { body { height: auto; } #nxsdataprotectionback { display: block; } }
+				
+				#nxsdataprotectionwrap { padding: 20px; border-radius: 3px;	color: white; font-size: 16px; box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75); max-width: 40%; overflow-y: scroll; }
+				
 				@media only screen and ( max-width: 1439px ) { #nxsdataprotectionwrap { max-width: 60%;} }
 				@media only screen and ( max-width: 1199px ) { #nxsdataprotectionwrap { max-width: 80%;} }
 				@media only screen and ( max-width: 959px ) { #nxsdataprotectionwrap { max-width: 100%;} }
-				
-				
 				#nxsdataprotectionwrap p { margin: 1em; }
 				
-				input[type=submit]  {
-					padding:5px 15px; 
-					background:#ccc; 
-					border:0 none;
-					cursor:pointer;
-					-webkit-border-radius: 5px;
-					border-radius: 5px;
-					font-size: 20px;
-				}
-				
-				
-				
-				::-webkit-scrollbar {
-			        -webkit-appearance: none;
-			        width: 7px;
-		    	}
+				::-webkit-scrollbar { -webkit-appearance: none; width: 7px;	}
 				::-webkit-scrollbar-thumb { border-radius: 4px; background-color: rgba(0,0,0,.5); -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5); }
 				
-
-
 				/* Acordeon styles */
 				.gdpr-accordion-wrapper .tab { position: relative; margin-bottom: 1px; width: 100%; color: #fff; overflow: hidden; }
 				.gdpr-accordion-wrapper input { position: absolute; opacity: 0; z-index: -1; }
@@ -141,7 +126,8 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				.gdpr-accordion-wrapper .tab-content h3,
 				.gdpr-accordion-wrapper .tab-content h4,
 				.gdpr-accordion-wrapper .tab-content h5,
-				.gdpr-accordion-wrapper .tab-content h6 { margin: 1em; }
+				.gdpr-accordion-wrapper .tab-content h6,
+				#nxsdataprotectionform { margin: 1em; }
 				/* :checked */
 				.gdpr-accordion-wrapper input:checked ~ .tab-content { max-height: 10em; }
 				/* Icon */
@@ -163,74 +149,62 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				.gdpr-accordion-wrapper input[type=checkbox]:checked + label::after { transform: rotate(315deg); }
 				.gdpr-accordion-wrapper input[type=radio]:checked + label::after { transform: rotateX(180deg); }
 				
-				
-				.gdpr input[type=text] {
-					padding:5px; 
-					border:2px solid #ccc; 
-					-webkit-border-radius: 5px;
-					border-radius: 5px;
-				}
-				
-				input[type=text]:focus {
-					border-color:#333;
-				}
-				
 				input[type=submit] {
-					padding:5px 15px; 
-					background:#ccc; 
-					border:0 none;
-					cursor:pointer;
-					-webkit-border-radius: 5px;
-					border-radius: 5px; 
+					border-radius: 2px;
+					border: hidden;
+					padding: 10px 8px; 
+					cursor: default;
+					font-size: 14px;
+					text-align: center;
+					text-transform: uppercase;
+					background: #4285f4;
+					color: white;
+					margin-top: 20px;
 				}
+				input[type=submit]:hover { cursor: pointer; }
 				
 				
 
 				
 			</style> 
                   
-      <?php
-      // render form
-      if (true)
-      {
-				nxs_ob_start();
-	      ?>
-	      <form id="nxsdataprotectionform">
-	      	<?php
-	      	$a = array
-					(
-						"rootactivity" => "nexusframework:use_framework",
-					);
-	      	$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
-					$controllable_activities = array_reverse($controllable_activities);
-					
-	      	foreach ($controllable_activities as $controllable_activity => $control_options)
-	      	{
-	      		$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
-	      		$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($controllable_activity);
-	      		
+	<?php
+	
+	// render form
+	if (true) {
+		
+		nxs_ob_start();
+		
+		// Begin Form HTML
+		echo'<form id="nxsdataprotectionform">';
 	      	
-	      		
-	      		if (in_array($dataprotectiontype, array("enabled_after_cookie_component_consent_or_robot", "enabled_disabled_for_robots")))
-	      		{
-	      			$cookiename = nxs_dataprotection_getexplicitconsentcookiename($controllable_activity);
-							$checkedattribute = nxs_dataprotection_isexplicitconsentgiven($controllable_activity) ? "checked" : "";
-	      			$items[] = $cookiename;
-							?>
-							<input type="checkbox" class="nxsexplicituserconsent" data-cookiename="<?php echo $cookiename; ?>" id="<?php echo $cookiename; ?>" <?php echo $checkedattribute; ?> />
-							<label for="<?php echo $cookiename; ?>">Yes i agree to use the <?php echo $controllable_activity; ?></label>
-							<br />
-							<?php
-						}
-					}
-					?>
-					<input type="submit" value="Update my privacy settings" />
-				</form>
-	      
-		  <?php
-				$form = nxs_ob_get_contents();
-				nxs_ob_end_clean();
+		$a = array("rootactivity" => "nexusframework:use_framework",);
+		$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
+		$controllable_activities = array_reverse($controllable_activities);
+				
+		foreach ($controllable_activities as $controllable_activity => $control_options)
+		{
+			$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
+			$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($controllable_activity);
+			
+			if (in_array($dataprotectiontype, array("enabled_after_cookie_component_consent_or_robot", "enabled_disabled_for_robots")))
+			{
+				$cookiename = nxs_dataprotection_getexplicitconsentcookiename($controllable_activity);
+				$checkedattribute = nxs_dataprotection_isexplicitconsentgiven($controllable_activity) ? "checked" : "";
+				$items[] = $cookiename;
+					echo'
+					<input type="checkbox" class="nxsexplicituserconsent" data-cookiename="'.$cookiename.'" id="'.$cookiename.'" '.$checkedattribute.' />
+					<label for="'.$cookiename.'">'.$controllable_activity.'</label>
+					<br />
+					';
+				}
 			}
+			echo'<input type="submit" value="Update my privacy settings" />
+			
+			</form>';
+	      	$form = nxs_ob_get_contents();
+			nxs_ob_end_clean();
+		}
 			
 			echo '
 			<div id="nxsdataprotectionback">
@@ -241,6 +215,8 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 					</p>
 					
 					<p>'.$text.'</p>
+					
+					'.$form.'
 				
 					<div class="gdpr-accordion-wrapper">
 
@@ -251,8 +227,6 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 						</div>
 					
 					</div>
-
-					'.$form.'
 					
 				</div>
 			</div>';

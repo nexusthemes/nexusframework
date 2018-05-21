@@ -255,10 +255,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "menucontainer", "tags" => array("nexus"));
       $result[] = array("widgetid" => "carousel", "tags" => array("nexus"));
 		}
-		
-		// $result[] = array("widgetid" => "fbcomments");
-		// $result[] = array("widgetid" => "searchresults");	// deprecated in favor of archive widget
-		// $result[] = array("widgetid" => "contact"); 			// deprecated in favor of contact box widget
 	}
 	
 	/* EXCLUDING SIDEBAR POSTTYPE
@@ -313,19 +309,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		// SUPERSIZED SLIDER
 		if ($nxssubposttype == "pageslider") {
 			$result[] = array("widgetid" => "slide", "tags" => array("nexus"));		
-		}
-				
-		// CONTACT FORM
-		if ($nxssubposttype == "contact")
-		{
-			// please note; this is for an OLD (obsolete) widget
-			$result[] = array("widgetid" => "contactitemtext", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
 		}
 		
 		// error_log("nxs_getwidgets_functions_AF; $nxssubposttype");
@@ -511,7 +494,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("contactitemselect");
 	nxs_ext_lazyload_widget("contactitemmultiselect");
 	nxs_ext_lazyload_widget("contactitemhidden");
-	nxs_ext_lazyload_widget("contactitemattachment");
 	nxs_ext_lazyload_widget("contactitemfileattachment");
 	nxs_ext_lazyload_widget("formitemcaptcha");
 	nxs_ext_lazyload_widget("formitemcheckbox");
@@ -533,7 +515,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("breadcrumb");
 	nxs_ext_lazyload_widget("image");
 	nxs_ext_lazyload_widget("search");
-	nxs_ext_lazyload_widget("contact");
 	nxs_ext_lazyload_widget("wordpresstitle");
 	nxs_ext_lazyload_widget("quote");
 	nxs_ext_lazyload_widget("radial");

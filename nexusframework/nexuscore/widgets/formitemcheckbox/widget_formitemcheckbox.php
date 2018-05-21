@@ -258,4 +258,9 @@ function nxs_widgets_formitemcheckbox_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_dataprotection_nexusframework_widget_formitemcheckbox_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("widget-defaultformitem");
+}
+
 ?>

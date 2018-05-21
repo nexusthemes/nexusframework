@@ -408,6 +408,30 @@ function nxs_dataprotection_factor_createprotecteddata($type)
 			"status" => "final",
 		);
 	}
+	else if ($type == "widget-defaultformitem")
+	{
+		// NOTE; only use this approach for default form items (such as text input, select input, etc.)
+		// it should NOT be used for form item types that DO process user meta in their own
+		// specific ways (such for example as the ReCaptcha item)
+		$result = array
+		(
+			"subactivities" => array
+			(
+				// if widget has properties that pull information from other 
+				// vendors (like scripts, images hosted on external sites, etc.) 
+				// those need to be taken into consideration
+				// responsibility for that is the person configuring the widget
+				"custom-widget-configuration",
+				// delegate handling of the user data to default widget_formbox implementation
+				"nexusframework:widget_formbox",	
+			),
+			"dataprocessingdeclarations" => array	
+			(
+				// intentionally left blank (sub activities are responsible for proper handling)
+			),
+			"status" => "final",
+		);
+	}
 	else
 	{
 		nxs_webmethod_return_nack("error; nxs_dataprotection_factor_createprotecteddata; unsupported type; {$type}");
