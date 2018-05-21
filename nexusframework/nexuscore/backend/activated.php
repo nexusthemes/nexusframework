@@ -174,7 +174,7 @@
     	<?php 
     	if (!has_action("nxs_activation_finishedwrap"))
     	{
-    		$licensekey = esc_attr(get_option('nxs_licensekey'));
+    		$licensekey = nxs_license_getlicensekey();
 				if ($licensekey == "") {
 					$url = admin_url('admin.php?page=nxs_admin_license');
 					$button_text = nxs_l18n__("Enable update notifications", "nxs_td");

@@ -6,7 +6,7 @@
 		
 		header('HTTP/1.0 200 OK');
 		
-		$licensekey = get_option('nxs_licensekey');
+		$licensekey = nxs_license_getlicensekey();
 		
 		if ($licensekey == "")
 		{

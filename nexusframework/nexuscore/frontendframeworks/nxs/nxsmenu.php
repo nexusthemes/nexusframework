@@ -650,7 +650,7 @@
 			{
 				// default framework generic
 			
-				$licensekey = esc_attr(get_option('nxs_licensekey'));
+				$licensekey = nxs_license_getlicensekey();
 				if ($licensekey == "")
 				{
 					$shouldshow = true;

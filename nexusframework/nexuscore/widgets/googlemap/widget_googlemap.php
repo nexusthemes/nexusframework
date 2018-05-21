@@ -1225,6 +1225,16 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
 
+	// data protection handling
+	if (true)
+	{
+		$activity = "nexusframework:widget_googlemap";
+		if (!nxs_dataprotection_isactivityonforuser($activity))
+		{
+			$result["html"] = nxs_dataprotection_renderexplicitconsentinput($activity);
+		}
+	}
+
 	return $result;
 }
 
@@ -1323,7 +1333,7 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
     	<?php
   	}
   	
-  	$licensekey = get_option('nxs_licensekey');
+  	$licensekey = nxs_license_getlicensekey();
 		if ($licensekey == "")
     {
     	?>
@@ -1623,4 +1633,38 @@ function nxs_widgets_googlemap_initplaceholderdata($args)
 	
 	return $result;
 }
+
+function nxs_dataprotection_nexusframework_widget_googlemap_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+			// if widget has properties that pull information from other 
+			// vendors (like scripts, images hosted on external sites, etc.) 
+			// those need to be taken into consideration
+			// responsibility for that is the person configuring the widget
+			"custom-widget-configuration",	
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can browse a page of the website owned by the (controller) that renders a map",
+				"what" => "IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "Google (Google Maps)",	// the name of the data_processor or data_recipient
+				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Not applicable (because this is a compiletime declaration)",
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
+			),
+		),
+		"status" => "final",
+	);
+	return $result;
+}
+
 ?>
