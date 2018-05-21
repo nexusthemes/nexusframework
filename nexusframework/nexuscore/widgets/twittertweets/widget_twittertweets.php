@@ -530,6 +530,17 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 	// The framework uses this array with its accompanying values to render the page
 	$result["html"] = $html;	
 	$result["replacedomid"] = 'nxs-widget-' . $placeholderid;
+	
+	// data protection handling
+	if (true)
+	{
+		$activity = "nexusframework:widget_twittertweets";
+		if (!nxs_dataprotection_isactivityonforuser($activity))
+		{
+			$result["html"] = nxs_dataprotection_renderexplicitconsentinput($activity);
+		}
+	}
+	
 	return $result;
 }
 
@@ -581,5 +592,35 @@ function nxs_widgets_twittertweets_updateplaceholderdata($args)
 	$result = array();
 	$result["result"] = "OK";
 	
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_widget_twittertweets_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			// "See the terms https://gdpr.twitter.com/en.html"
+		
+			array
+			(
+				"use_case" => "(belongs_to_whom_id) can browse a page of the website owned by the (controller) that renders tweets using the TwitterTweets widget of the framework",
+				"what" => "IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"controller" => "website_owner",	// who is responsible for this?
+				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
+				"data_processor" => "Twitter",	// the name of the data_processor or data_recipient
+				"data_retention" => "See https://gdpr.twitter.com/en.html",
+				"program_lifecycle_phase" => "compiletime",
+				"why" => "Not applicable (because this is a compiletime declaration)",
+				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; See https://gdpr.twitter.com/en.html",
+			),
+		),
+		"status" => "final",
+	);
 	return $result;
 }
