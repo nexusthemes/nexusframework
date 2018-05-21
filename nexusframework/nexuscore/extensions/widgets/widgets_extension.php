@@ -254,9 +254,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		{
 			// menucontainer is obsolete as of jan 2017
 			$result[] = array("widgetid" => "menucontainer", "tags" => array("nexus"));
-			
-      $result[] = array("widgetid" => "pagination", "tags" => array("nexus"));
-      
       $result[] = array("widgetid" => "carousel", "tags" => array("nexus"));
 		}
 		
@@ -406,8 +403,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		{
 			
 		}
-		//$result[] = array("widgetid" => "pagevideo");
-		//$result[] = array("widgetid" => "pagegap");
 	}
 	
 	
@@ -561,7 +556,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("eventsboxitem");
 	nxs_ext_lazyload_widget("csv");
 	nxs_ext_lazyload_widget("section");
-	nxs_ext_lazyload_widget("pagination");
 	nxs_ext_lazyload_widget("vectorart");
 	nxs_ext_lazyload_widget("wpmenu");
     
@@ -588,8 +582,6 @@ function nxs_lazyload_widgets()
 	{
 		
 	}
-	//nxs_ext_lazyload_widget("pagevideo");
-	//nxs_ext_lazyload_widget("pagegap");
 	
 	// BUSINESS RULES
 	nxs_ext_lazyload_widget("busrulecatchall");	
