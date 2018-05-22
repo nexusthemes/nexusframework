@@ -23,8 +23,15 @@ function nxs_popup_optiontype_select_renderhtmlinpopup($optionvalues, $args, $ru
 		$popuprefreshonchangeaction = "";
 	}
 	
-	// add a variable option so people can use a lookup too (perhaps make this optional?)
-	$dropdown["{{" . $id . "}}"] = "{{" . $id . "}}";
+	if ($dropdown_add_lookup == "true")
+	{
+		// add a variable option so people can use a lookup too (perhaps make this optional?)
+		$dropdown["{{" . $id . "}}"] = "{{" . $id . "}}";
+	}
+	else
+	{
+		// hide
+	}
 	
 	?>
   <div class="content2">
