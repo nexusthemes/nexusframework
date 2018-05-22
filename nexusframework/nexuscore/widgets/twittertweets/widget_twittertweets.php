@@ -599,6 +599,7 @@ function nxs_dataprotection_nexusframework_widget_twittertweets_getprotecteddata
 {
 	$result = array
 	(
+		"controller_label" => "Twitter Tweets",
 		"subactivities" => array
 		(
 		),

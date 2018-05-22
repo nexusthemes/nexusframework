@@ -220,6 +220,8 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				
 		foreach ($controllable_activities as $controllable_activity => $control_options)
 		{
+			$controller_label = $control_options["controller_label"];
+			
 			$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
 			$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($controllable_activity);
 			
@@ -234,7 +236,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 					<label class="switch" for="'.$cookiename.'">
 						<input type="checkbox" class="nxsexplicituserconsent" data-cookiename="'.$cookiename.'" id="'.$cookiename.'" '.$checkedattribute.' />
 						<span class="slider round"></span>
-						'.$controllable_activity.'
+						'.$controller_label.'
 					</label>
 					<br/>
 					';

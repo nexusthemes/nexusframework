@@ -365,6 +365,7 @@ function nxs_dataprotection_nexusframework_widget_vimeo_getprotecteddata($args)
 {
 	$result = array
 	(
+		"controller_label" => "Vimeo videos",
 		"subactivities" => array
 		(
 		),
