@@ -27,7 +27,7 @@ function nxs_widgets_formitemhtml_getformitemsubmitresult($args)
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
 // hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
 // het bewerken van de placeholder kan opstarten
-function nxs_widgets_formitemhtml_renderincontactbox($args)
+function nxs_widgets_formitemhtml_renderinformbox($args)
 {
 	extract($args);
 	

@@ -149,19 +149,7 @@ function nxs_ajax_webmethods()
 			$hasaccess = true;
 			// ok (save-as used in media reference)
 		}
-		else if ($webmethod == "contactform")
-		{
-			$hasaccess = true;
-		}
-		else if ($webmethod == "contactboxsubmit")
-		{
-			$hasaccess = true;
-		}
 		else if ($webmethod == "formboxsubmit")
-		{
-			$hasaccess = true;
-		}
-		else if ($webmethod == "contactformsubmit")
 		{
 			$hasaccess = true;
 		}

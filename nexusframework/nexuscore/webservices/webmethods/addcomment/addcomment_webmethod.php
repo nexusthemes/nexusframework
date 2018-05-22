@@ -95,7 +95,7 @@ function nxs_webmethod_addcomment()
 		
 		$headers .= 'Content-Type: text/html;' . "\n\r";
 
-	    wp_mail($toemail, $subject, $body, $headers);
+	  wp_mail($toemail, $subject, $body, $headers);
 	}
 	
 	//

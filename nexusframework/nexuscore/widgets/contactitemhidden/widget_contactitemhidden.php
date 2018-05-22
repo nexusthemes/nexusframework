@@ -28,8 +28,8 @@ function nxs_widgets_contactitemhidden_getformitemsubmitresult($args)
 	$result["validationerrors"] = array();
 	$result["markclientsideelements"] = array();
 	
-	nxs_requirewidget("contactbox");
-	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
+	nxs_requirewidget("formbox");
+	$prefix = nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid);
 	
 	if ($overriddenelementid != "")
 	{
@@ -50,7 +50,7 @@ function nxs_widgets_contactitemhidden_getformitemsubmitresult($args)
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
 // hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
 // het bewerken van de placeholder kan opstarten
-function nxs_widgets_contactitemhidden_renderincontactbox($args)
+function nxs_widgets_contactitemhidden_renderinformbox($args)
 {
 	//
 	extract($args);
@@ -60,8 +60,8 @@ function nxs_widgets_contactitemhidden_renderincontactbox($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	nxs_requirewidget("contactbox");
-	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
+	nxs_requirewidget("formbox");
+	$prefix = nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid);
 		
 	//
 	// render actual control / html

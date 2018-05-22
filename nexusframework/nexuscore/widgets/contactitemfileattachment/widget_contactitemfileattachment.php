@@ -30,8 +30,8 @@ function nxs_widgets_contactitemfileattachment_getformitemsubmitresult($args)
 	$result["markclientsideelements"] = array();
 	$result["fileupload"] = array();
 	
-	nxs_requirewidget("contactbox");
-	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
+	nxs_requirewidget("formbox");
+	$prefix = nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid);
 	
 	if ($overriddenelementid != "")
 	{
@@ -97,7 +97,7 @@ function nxs_widgets_contactitemfileattachment_getformitemsubmitresult($args)
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
 // hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
 // het bewerken van de placeholder kan opstarten
-function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
+function nxs_widgets_contactitemfileattachment_renderinformbox($args)
 {
 	//
 	extract($args);
@@ -107,8 +107,8 @@ function nxs_widgets_contactitemfileattachment_renderincontactbox($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	nxs_requirewidget("contactbox");
-	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
+	nxs_requirewidget("formbox");
+	$prefix = nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid);
 	
 	if ($metadata_overriddenelementid != "")
 	{
@@ -382,16 +382,16 @@ function nxs_dataprotection_nexusframework_widget_contactitemfileattachment_getp
 		(
 			array
 			(
-				"use_case" => "(belongs_to_whom_id) can submit files (aka form attachments) through a form on a page of the website owned by the (controller) using the contact item file attachment widget of the framework",
+				"use_case" => "(belongs_to_whom_id) can submit files (aka form attachments) through a form on a page of the website owned by the (controller) using the contact item file attachment widget of the framework. The component is responsible for storing the file on the web server such that the owner of the site can view it. Note; next to this also the form will send an email; this is a seperate activity.",
 				"what" => "the content (bytes) of the file that was uploaded, the name of the file, IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
 				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
 				"controller" => "website_owner",	// who is responsible for this?
 				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
-				"data_processor" => "wordpress_process",
-				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
+				"data_processor" => "hosting_provider",
+				"data_retention" => "The file is not automatically cleaned; it will be kept there as long as the terms and conditions apply between website_owner and hosting_provider, or until the file is deleted manually",
 				"program_lifecycle_phase" => "compiletime",
 				"why" => "Not applicable (because this is a compiletime declaration)",
-				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
+				"security" => "If the ",
 			),
 		),
 		"status" => "OPEN (wat gebeurt er met de file nadat submit afgehandeld is?)",

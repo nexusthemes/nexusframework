@@ -45,10 +45,7 @@ function nxs_popup_optiontype_widgettypeconverter_renderhtmlinpopup($optionvalue
 	      	$placeholderid = $args["clientpopupsessioncontext"]["placeholderid"];
 	      	$allwidgets = array
 	      	(
-	      		//"calloutthemepreview",
-	      		//"themelivedemo"
 	      		"formbox",
-	      		"contactbox"
 	      		);
 	      	foreach ($allwidgets as $currentwidget)
       		{

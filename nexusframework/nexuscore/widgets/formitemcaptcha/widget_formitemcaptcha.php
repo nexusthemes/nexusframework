@@ -67,7 +67,7 @@ function nxs_widgets_formitemcaptcha_getformitemsubmitresult($args)
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
 // hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
 // het bewerken van de placeholder kan opstarten
-function nxs_widgets_formitemcaptcha_renderincontactbox($args)
+function nxs_widgets_formitemcaptcha_renderinformbox($args)
 {
 	extract($args);
 	
@@ -79,9 +79,9 @@ function nxs_widgets_formitemcaptcha_renderincontactbox($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	nxs_requirewidget("contactbox");
-	$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
-	
+	nxs_requirewidget("formbox");
+	$prefix = ($postid, $placeholderid);
+	nxs_widgets_formbox_getclientsideprefix
 	if ($metadata_overriddenelementid != "")
 	{
 		$key = $metadata_overriddenelementid;

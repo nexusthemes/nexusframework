@@ -101,12 +101,6 @@ function nxs_upgrade_widget($override, $postid, $placeholderid)
 		$updatedvalues["type"] = "text";
 	}
 	
-	if ($widgetmetadata["type"] == "contactform" && $override == "true")
-	{
-		echo "found";
-		$updatedvalues["type"] = "contact";
-	}
-	
 	if ($widgetmetadata["type"] == "wordpressshortcode" && $override == "true")
 	{
 		echo "found";
@@ -463,4 +457,5 @@ function nxs_upgrade_widget($override, $postid, $placeholderid)
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $updatedvalues);
 }
+
 ?>

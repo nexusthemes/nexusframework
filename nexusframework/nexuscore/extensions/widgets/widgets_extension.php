@@ -214,7 +214,6 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "googlemap", "tags" => array("nexus"));
 		
 		// Forms
-		$result[] = array("widgetid" => "contactbox", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "formbox", "tags" => array("nexus"));
 		
 		// Testimonials
@@ -484,7 +483,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("galleryitem");
 	nxs_ext_lazyload_widget("definitionlistbox");
 	nxs_ext_lazyload_widget("definitionlistitemtext");
-	nxs_ext_lazyload_widget("contactbox");
 	nxs_ext_lazyload_widget("formbox");
 	nxs_ext_lazyload_widget("contactitemtext");
 	nxs_ext_lazyload_widget("contactitemsecret");
@@ -615,7 +613,6 @@ function nxs_getobsoletewidgetids()
 {
 	$result = array();
 	
-	$result[] = "contactbox";
 	$result[] = "busrulesemanticlayout";
 	
 	if (!nxs_enableconceptualwidgets())

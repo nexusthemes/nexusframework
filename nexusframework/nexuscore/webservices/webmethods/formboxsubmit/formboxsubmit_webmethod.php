@@ -109,8 +109,8 @@ function nxs_webmethod_formboxsubmit()
 		// special type; contactitemreplyto is used to 
 		if ($widget == "contactitemreplyto")
 		{
-			nxs_requirewidget("contactbox");
-			$prefix = nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid);
+			nxs_requirewidget("formbox");
+			$prefix = nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid);
 			
 			$elementid = $currentplaceholdermetadata["elementid"];
 			$key = $prefix . $elementid;

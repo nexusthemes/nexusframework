@@ -24,7 +24,7 @@ function nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid) {
 function nxs_widgets_renderinformbox($widget, $args) 
 {
 	// we invoke the method of the contactbox, same as formbox
-	$functionnametoinvoke = 'nxs_widgets_' . $widget . '_renderincontactbox';
+	$functionnametoinvoke = 'nxs_widgets_' . $widget . '_renderinformbox';
 	// invokefunction
 	if (function_exists($functionnametoinvoke)) {
 		$result = call_user_func($functionnametoinvoke, $args);

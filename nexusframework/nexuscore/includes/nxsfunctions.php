@@ -4542,10 +4542,7 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	
 	//
 	$headers .= 'Content-Type: text/html;' . "\r\n";
-	//error_log("nxs_sendhtmlmail_v3 before wp_mail");
-	//error_log("nxs_sendhtmlmail_v3 headers; $headers");
 	$result = wp_mail($toemail, $subject, $body, $headers);
-	//error_log("nxs_sendhtmlmail_v3 after wp_mail");
 	
 	if ($result == false)
 	{

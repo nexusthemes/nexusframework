@@ -16,7 +16,7 @@ function nxs_widgets_contactbox_getunifiedstylinggroup() {
 }
 
 // Used by the individual contactitem widgets to determine an automated unique ID
-function nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid) 
+function nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid) 
 {
 	$isremotetemplate = nxs_isremotetemplate($postid);
 	$result = "nxs_cf_" . md5($postid) . "_" . $placeholderid . "_";
@@ -24,8 +24,8 @@ function nxs_widgets_contactbox_getclientsideprefix($postid, $placeholderid)
 	return $result;
 }
 
-function nxs_widgets_renderincontactbox($widget, $args) {
-	$functionnametoinvoke = 'nxs_widgets_' . $widget . '_renderincontactbox';
+function nxs_widgets_renderinformbox($widget, $args) {
+	$functionnametoinvoke = 'nxs_widgets_' . $widget . '_renderinformbox';
 	// invokefunction
 	if (function_exists($functionnametoinvoke)) {
 		$result = call_user_func($functionnametoinvoke, $args);
@@ -528,7 +528,7 @@ function nxs_widgets_contactbox_render_webpart_render_htmlvisualization($args)
 			 		$hookargs["metadata"] = $currentplaceholdermetadata;
 			 		
 			 		
-			 		$subresult = nxs_widgets_renderincontactbox($widget, $hookargs);
+			 		$subresult = nxs_widgets_renderinformbox($widget, $hookargs);
 			 		if ($subresult["result"] == "OK")
 			 		{
 			 			// append subresult to the overall result
