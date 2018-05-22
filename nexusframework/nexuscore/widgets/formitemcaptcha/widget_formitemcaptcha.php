@@ -342,6 +342,7 @@ function nxs_dataprotection_nexusframework_widget_formitemcaptcha_getprotectedda
 				"use_case" => "(belongs_to_whom_id) can submit forms on a page of the website owned by the (controller) that require captchas using the formitemcaptcha widget of the framework",
 				"what" => "IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
 				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
+				"explicit_user_consent_inherited_from_activity" => "nexusframework:widget:formbox", // this causes the controller and user to not have to explicitly give consent; the 
 				"controller" => "website_owner",	// who is responsible for this?
 				"controller_options" => nxs_dataprotection_factory_getenableoptions("all"),
 				"data_processor" => "Google (ReCaptcha)",	// the name of the data_processor or data_recipient

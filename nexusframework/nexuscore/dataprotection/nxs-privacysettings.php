@@ -58,7 +58,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		</head>
 		
-              <body>
+			<body>
 			<style>
 				
 				body::before {
@@ -98,7 +98,8 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				::-webkit-scrollbar { -webkit-appearance: none; width: 0px;	}
 				::-webkit-scrollbar-thumb { border-radius: 4px; background-color: rgba(0,0,0,.5); -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5); }
 				
-				/* Acordeon styles */
+				/* Acordeon styles 
+				---------------------------------------------------------------------------------------------------- */
 				.gdpr-accordion-wrapper .tab { position: relative; margin-bottom: 1px; width: 100%; color: #fff; overflow: hidden; }
 				.gdpr-accordion-wrapper input { position: absolute; opacity: 0; z-index: -1; }
 				.gdpr-accordion-wrapper label {
@@ -157,16 +158,48 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 					font-size: 14px;
 					text-align: center;
 					text-transform: uppercase;
-					background: #4285f4;
+					background: #2196F3;
 					color: white;
-					margin-top: 20px;
 				}
 				input[type=submit]:hover { cursor: pointer; }
 				
-				
-
-				
-			</style> 
+				/* Switch
+				---------------------------------------------------------------------------------------------------- */			
+				.switch { position: relative; display: inline-block; width: 60px; height: 34px; line-height: 34px; text-indent: 80px; margin-bottom: 1.2em;}
+				.switch input {display:none;}
+				.slider {
+					position: absolute;
+					cursor: pointer;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					background-color: #ccc;
+					-webkit-transition: .4s;
+					transition: .4s;
+				}
+				.slider:before {
+					position: absolute;
+					content: "";
+					height: 26px;
+					width: 26px;
+					left: 4px;
+					bottom: 4px;
+					background-color: white;
+					-webkit-transition: .4s;
+					transition: .4s;
+				}
+				input:checked + .slider { background-color: #2196F3; }
+				input:focus + .slider { box-shadow: 0 0 1px #2196F3; }
+				input:checked + .slider:before {
+					-webkit-transform: translateX(26px);
+					-ms-transform: translateX(26px);
+					transform: translateX(26px);
+				}
+				.slider.round { border-radius: 34px; }
+				.slider.round:before { border-radius: 50%; }
+			
+            </style> 
                   
 	<?php
 	
@@ -196,9 +229,14 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				$checkedattribute = nxs_dataprotection_isexplicitconsentgiven($controllable_activity) ? "checked" : "";
 				$items[] = $cookiename;
 					echo'
-					<input type="checkbox" class="nxsexplicituserconsent" data-cookiename="'.$cookiename.'" id="'.$cookiename.'" '.$checkedattribute.' />
-					<label for="'.$cookiename.'">'.$controllable_activity.'</label>
-					<br />
+					
+					
+					<label class="switch" for="'.$cookiename.'">
+						<input type="checkbox" class="nxsexplicituserconsent" data-cookiename="'.$cookiename.'" id="'.$cookiename.'" '.$checkedattribute.' />
+						<span class="slider round"></span>
+						'.$controllable_activity.'
+					</label>
+					<br/>
 					';
 				}
 			}
@@ -230,6 +268,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 						</div>
 					
 					</div>
+					
 					
 				</div>
 			</div>';

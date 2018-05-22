@@ -355,6 +355,7 @@ function nxs_dataprotection_nexusframework_widget_flickr_getprotecteddata($args)
 {
 	$result = array
 	(
+		"controller_label" => "Flickr embeds",
 		"subactivities" => array
 		(
 			// if widget has properties that pull information from other 

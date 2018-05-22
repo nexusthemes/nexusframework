@@ -2,7 +2,7 @@
 
 function nxs_dataprotection_getcanonicalactivity($component)
 {
-	$result = strtolower(preg_replace('/[^A-Za-z0-9]/', '_', $component)); // Removes special chars.
+	$result = strtolower(preg_replace('/[^A-Za-z0-9@]/', '_', $component)); // Removes special chars.
 	return $result;
 }
 
@@ -25,50 +25,118 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 		$currentactivity = nxs_dataprotection_getcanonicalactivity($currentactivity);
 		$processed[] = $currentactivity;
 		
-		// delegate the request to the theme for theme-specific gdpr meta
-		$functionnametoinvoke = "nxs_dataprotection_{$currentactivity}_getprotecteddata";
-		if (function_exists($functionnametoinvoke))
+		// if the activity contains a "@" that means it seperates the instance from the type (type@instance1)
+		if (nxs_stringcontains($currentactivity, "@"))
 		{
-			$currentresult = call_user_func($functionnametoinvoke, $args);
+			$pieces = explode("@", $currentactivity);
+			$currentactivitytype = $pieces[0];
+			$activityinstance = $pieces[1];
 			
-			if ($currentresult["status"] != "final")
+			// delegate the request to the theme for theme-specific gdpr meta
+			$functionnametoinvoke = "nxs_dataprotection_{$currentactivitytype}_instance_getprotecteddata";
+			if (function_exists($functionnametoinvoke))
 			{
-				$result["errors"]["notfinal"][] = "gdprmeta implementation is not yet final ( {$functionnametoinvoke} )";
-			}
-		
-			// enqueue subactivities
-			if (true)
-			{
-				$subactivities = $currentresult["subactivities"];
-				foreach ($subactivities as $subactivity)
-				{						
-					$subactivity = nxs_dataprotection_getcanonicalactivity($subactivity);
-					
-					$result["activities"][$currentactivity]["includes"][] = $subactivity;
-					
-					if (!in_array($subactivity, $processed))
-					{
-						$queue[] = $subactivity;
-					}
-					else
-					{
-						// for some we already know this will happen; those will be ignored
-						$expected_to_be_used_multiple_times = array("custom_widget_configuration", "nexusframework_widget_formbox", "widget_defaultformitem", "wordpress_wp_mail");
-						$was_expected_to_be_used_multiple_times = in_array($subactivity, $expected_to_be_used_multiple_times);
-						if (!$was_expected_to_be_used_multiple_times)
-						{ 
-							$result["errors"]["multipleoccurences"][] = "activity was enqueued multiple times (only the first time it was processed); $subactivity";
+				$currentresult = call_user_func($functionnametoinvoke, $activityinstance, $args);
+								
+				if ($currentresult["status"] != "final")
+				{
+					$result["errors"]["notfinal"][] = "gdprmeta implementation is not yet final ( {$functionnametoinvoke} )";
+				}
+			
+				// enqueue subactivities
+				if (true)
+				{
+					$subactivities = $currentresult["subactivities"];
+					foreach ($subactivities as $subactivity)
+					{						
+						$subactivity = nxs_dataprotection_getcanonicalactivity($subactivity);
+						
+						$result["activities"][$currentactivity]["includes"][] = $subactivity;
+						
+						if (!in_array($subactivity, $processed))
+						{
+							$queue[] = $subactivity;
+						}
+						else
+						{
+							// for some we already know this will happen; those will be ignored
+							$expected_to_be_used_multiple_times = array("custom_widget_configuration", "nexusframework_widget_formbox", "widget_defaultformitem", "wordpress_wp_mail");
+							$was_expected_to_be_used_multiple_times = in_array($subactivity, $expected_to_be_used_multiple_times);
+							if (!$was_expected_to_be_used_multiple_times)
+							{ 
+								$result["errors"]["multipleoccurences"][] = "activity was enqueued multiple times (only the first time it was processed); $subactivity";
+							}
 						}
 					}
 				}
+								
+				// store result of the current component
+				$result["activities"][$currentactivity]["dataprocessingdeclarations"] = $currentresult["dataprocessingdeclarations"];
+				
+				$result["activities"][$currentactivity]["controller_label"] = $currentresult["controller_label"];
 			}
-							
-			// store result of the current component
-			$result["activities"][$currentactivity]["dataprocessingdeclarations"] = $currentresult["dataprocessingdeclarations"];
+			else
+			{
+				$result["errors"]["notimplemented"][] = "no valid gdprmeta implemented ( {$functionnametoinvoke} )";
+			}
 		}
 		else
 		{
-			$result["errors"]["notimplemented"][] = "no valid gdprmeta implemented ( {$functionnametoinvoke} )";
+			$currentactivitytype = $currentactivity;
+			
+			// delegate the request to the theme for theme-specific gdpr meta
+			$functionnametoinvoke = "nxs_dataprotection_{$currentactivitytype}_getprotecteddata";
+			if (function_exists($functionnametoinvoke))
+			{
+				$currentresult = call_user_func($functionnametoinvoke, $args);
+				
+				
+				if ($currentresult["status"] != "final")
+				{
+					$result["errors"]["notfinal"][] = "gdprmeta implementation is not yet final ( {$functionnametoinvoke} )";
+				}
+			
+				// enqueue subactivities
+				if (true)
+				{
+					$subactivities = $currentresult["subactivities"];
+					foreach ($subactivities as $subactivity)
+					{						
+						$subactivity = nxs_dataprotection_getcanonicalactivity($subactivity);
+						
+						$result["activities"][$currentactivity]["includes"][] = $subactivity;
+						
+						if (!in_array($subactivity, $processed))
+						{
+							$queue[] = $subactivity;
+						}
+						else
+						{
+							// for some we already know this will happen; those will be ignored
+							$expected_to_be_used_multiple_times = array("custom_widget_configuration", "nexusframework_widget_formbox", "widget_defaultformitem", "wordpress_wp_mail");
+							$was_expected_to_be_used_multiple_times = in_array($subactivity, $expected_to_be_used_multiple_times);
+							if (!$was_expected_to_be_used_multiple_times)
+							{ 
+								$result["errors"]["multipleoccurences"][] = "activity was enqueued multiple times (only the first time it was processed); $subactivity";
+							}
+						}
+					}
+				}
+								
+				// store result of the current component
+				$result["activities"][$currentactivity]["dataprocessingdeclarations"] = $currentresult["dataprocessingdeclarations"];
+				
+				$controller_label = $currentresult["controller_label"];
+				if ($controller_label == "")
+				{
+					$controller_label = $currentactivity;
+				}
+				$result["activities"][$currentactivity]["controller_label"] = $controller_label;
+			}
+			else
+			{
+				$result["errors"]["notimplemented"][] = "no valid gdprmeta implemented ( {$functionnametoinvoke} )";
+			}
 		}
 	}
 	
@@ -246,11 +314,14 @@ function nxs_dataprotection_getexplicitconsentcookiename($activity)
 {
 	if ($activity == "") { nxs_webmethod_return_nack("nxs_dataprotection_getexplicitconsentcookiename; no activity specified"); }
 	
-	$activity = nxs_dataprotection_getcanonicalactivity($activity);
-	$theme_meta = nxs_theme_getmeta();
-	$theme_version = $theme_meta["version"];
-	$latestcontrollerupdate = nxs_dataprotection_getlatestupdatebycontroller();
-	$result = "nxs_dataprotection_explicit_consent_{$activity}_{$theme_version}_{$latestcontrollerupdate}";
+	$parts = array();
+	$parts["prefix"] = "nxs_dataprotection_explicit_consent";
+	$parts["activity"] = nxs_dataprotection_getcanonicalactivity($activity);
+	$parts["latestcontrollerupdate"] = nxs_dataprotection_getlatestupdatebycontroller();
+	
+	// todo: add filter to allow plugins to also control the parts
+		
+	$result = implode("_", $parts);
 	$result = preg_replace('/[^A-Za-z0-9\_]/', '', $result); // Removes special chars.
 	
 	return $result;
@@ -519,6 +590,7 @@ function nxs_dataprotection_nexusframework_usecookiewall_getprotecteddata($args)
 {
 	$result = array
 	(
+		"controller_label" => "Cookie wall",
 		"subactivities" => array
 		(
 		),
@@ -526,16 +598,16 @@ function nxs_dataprotection_nexusframework_usecookiewall_getprotecteddata($args)
 		(
 			array
 			(
-				"use_case" => "(belongs_to_whom_id) can give a consent over various activities of the site that deal with user data according to the rules specified by the controlled",
-				"what" => "As explained in the terms and conditions as well as privacy statement that can be configured in the site",
+				"use_case" => "(belongs_to_whom_id) can give a consent over various activities of the site that deal with user data according to the rules specified by the controller",
+				"what" => "See privacy policy",
 				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
 				"controller" => "website_owner",	// who is responsible for this?
 				"controller_options" => nxs_dataprotection_factory_getenableoptions("cookiewall"),
-				"data_processor" => "Various (see terms and conditions and privacy statement)",	// the name of the data_processor or data_recipient
-				"data_retention" => "Various (see terms and conditions and pricacy statement)",
+				"data_processor" => "See privacy policy",	// the name of the data_processor or data_recipient
+				"data_retention" => "See privacy policy",
 				"program_lifecycle_phase" => "runtime",	// determined by how the controlled fills in the privacy statement and terms and conditions
-				"why" => "As explained in the terms and conditions as well as privacy statement that can be configured in the site",
-				"security" => "As explained in the terms and conditions as well as privacy statement that can be configured in the site",
+				"why" => "See privacy policy",
+				"security" => "See privacy policy",
 			),
 		),
 		"status" => "final",
@@ -549,7 +621,7 @@ function nxs_dataprotection_widget_defaultformitem_getprotecteddata($args)
 	(
 		"subactivities" => array
 		(
-			"nexusframework_widget_formbox",
+			//  "nexusframework_widget_formbox",
 		),
 		"dataprocessingdeclarations" => array	
 		(
@@ -564,6 +636,7 @@ function nxs_dataprotection_nexusframework_usegooglefonts_getprotecteddata($args
 {
 	$result = array
 	(
+		"controller_label" => "Google Fonts",
 		"subactivities" => array
 		(
 		),
@@ -593,6 +666,7 @@ function nxs_dataprotection_nexusframework_useanalytics_getprotecteddata($args)
 {
 	$result = array
 	(
+		"controller_label" => "Google Analytics",
 		"subactivities" => array
 		(
 		),
@@ -621,6 +695,7 @@ function nxs_dataprotection_nexusframework_usegoogletagmanager_getprotecteddata(
 {
 	$result = array
 	(
+		"controller_label" => "Google Tag Manager",
 		"subactivities" => array
 		(
 		),
@@ -651,30 +726,30 @@ function nxs_dataprotection_factory_getenableoptions($type)
 	{
 		$result = array
 		(
-			"" => "Enabled (default)",
-			"enabled" => "Enabled",
-			"enabled_after_cookie_wall_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a cookie wall consent. For robots its enabled.",
-			"enabled_after_cookie_component_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a component cookie consent. For robots its enabled.",
-			"disabled" => "Disabled",
+			"" => "No explicit consent is required (default)",
+			"enabled" => "No explicit consent is required",
+			"enabled_after_cookie_wall_consent_or_robot" => "An explicit cookie wall consent is required (robots dont require any consent)",
+			"enabled_after_cookie_component_consent_or_robot" => "An explicit cookie component consent is required (robots dont require any consent)",
+			"disabled" => "Disabled (this feature is disabled)",
 		);
 	}
 	else if ($type == "widget:enabled|cookiewall|disabled")
 	{
 		$result = array
 		(
-			"" => "Enabled (default)",
-			"enabled" => "Enabled",
-			"enabled_after_cookie_wall_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a cookie wall consent. For robots its enabled.",
-			"disabled" => "Disabled",
+			"" => "No explicit consent is required (default)",
+			"enabled" => "No explicit consent is required",
+			"enabled_after_cookie_wall_consent_or_robot" => "An explicit cookie wall consent is required (robots dont require any consent)",
+			"disabled" => "Disabled (this feature is disabled)",
 		);
 	}
 	else if ($type == "cookiewall")
 	{
 		$result = array
 		(
-			"" => "Disabled (default)",
-			"disabled" => "Disabled",
-			"enabled_disabled_for_robots" => "Enabled (for robots its disabled)",
+			"" => "Disabled (website visitors wont see a cookie wall) (default)",
+			"disabled" => "Disabled (website visitors wont see a cookie wall)",
+			"enabled_disabled_for_robots" => "An expliciet cookie wall consent is required to view the site (ignored by robots)",
 		);
 	}
 	else if ($type == "studio:enabled")
@@ -715,7 +790,10 @@ function nxs_dataprotection_get_controllable_activities($args)
 			$controller_options = $dataprocessingdeclaration_meta["controller_options"];
 			if (isset($controller_options))
 			{
-				$result[$activity] = $controller_options;
+				$result[$activity]["controller_options"] = $controller_options;
+				$result[$activity]["controller_label"] = $activity_meta["controller_label"];
+				$result[$activity]["belongs_to_whom_ids"][] = $dataprocessingdeclaration_meta["belongs_to_whom_id"];
+				$result[$activity]["dataprocessingdeclarations"] = $dataprocessingdeclarations;
 			}
 		}
 	}

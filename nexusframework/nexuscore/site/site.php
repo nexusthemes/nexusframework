@@ -2239,10 +2239,10 @@ function nxs_site_dashboardhome_rendersheet($args)
 	        <div class="content2">
             <div class="box">
               <div class="box-title">
-              	<h4><?php nxs_l18n_e("Data Protection (GDPR/Privacy)", "nxs_td"); ?></h4>
+              	<h4><?php nxs_l18n_e("Options to control the processing of personal data (GDPR/privacy)", "nxs_td"); ?></h4>
               </div>
               <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectionhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectioncontrollerhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
               </div>
             </div>
             <div class="nxs-clear margin"></div>
@@ -2726,7 +2726,7 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 }
 
 
-function nxs_site_dataprotectionhome_getoptions($args)
+function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 {
 	$prefix = nxs_dataprotection_getprefix();
 	$usecookiewallactivity = "nexusframework:usecookiewall";
@@ -2742,7 +2742,7 @@ function nxs_site_dataprotectionhome_getoptions($args)
 
 	// EXPLICIT CONSENT OPTIONS
 	
-	if ($dataprotectiontype_usecookiewall == "enabled_disabled_for_robots")
+	if (true) // $dataprotectiontype_usecookiewall == "enabled_disabled_for_robots")
 	{
 		// GENERAL
 		
@@ -2797,12 +2797,7 @@ function nxs_site_dataprotectionhome_getoptions($args)
 		
 		if (true)
 		{		
-			$fields[] = array
-			( 
-				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Data Processing Services", "nxs_td"),
-			);
+			
 			
 			$a = array
 			(
@@ -2814,8 +2809,42 @@ function nxs_site_dataprotectionhome_getoptions($args)
 			$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
 			$controllable_activities = array_reverse($controllable_activities);
 			
-			foreach ($controllable_activities as $controllable_activity => $control_options)
+			foreach ($controllable_activities as $controllable_activity => $meta)
 			{
+				$controller_options = $meta["controller_options"];
+				$controller_label = $meta["controller_label"];
+				$dataprocessingdeclarations = $meta["dataprocessingdeclarations"];
+				$belongs_to_whom_ids = $meta["belongs_to_whom_ids"];
+				
+				// in this popup only render activities that belong to with website_visitors
+				if (true)
+				{
+					if (!in_array("website_visitor", $belongs_to_whom_ids))
+					{
+						continue;
+					}
+				}
+				
+				// ignore the component if all its data activities have their user consent
+				// derived from other activities (for example its not practical
+				// to have to give multiple consents for file attachments; 
+				// the consent is given for the use case to submit the form)
+				if (true)
+				{
+					$count_explicit_user_consent_inherited_from_activity = 0;
+					foreach ($dataprocessingdeclarations as $dataprocessingdeclaration)
+					{
+						if ($dataprocessingdeclaration["explicit_user_consent_inherited_from_activity"] != "")
+						{
+							$count_explicit_user_consent_inherited_from_activity++;
+						}
+					}
+					if ($count_explicit_user_consent_inherited_from_activity == count($dataprocessingdeclarations))
+					{
+						continue;
+					}
+				}
+							
 				$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
 				
 				$popuprefreshonchange = "";
@@ -2824,21 +2853,58 @@ function nxs_site_dataprotectionhome_getoptions($args)
 					$popuprefreshonchange = "true";
 				}
 				
+				$id = "{$prefix}{$controllable_activity}";
+				$id = str_replace("@", "_", $id);
+				
+				$fields[] = array
+				( 
+					"id" 				=> "wrapper_title_begin",
+					"type" 				=> "wrapperbegin",
+					"label" 			=> "Feature: {$controller_label}",
+				);
+
+				foreach ($dataprocessingdeclarations as $dataprocessingdeclaration)
+				{
+					$fields[] = array
+					(
+						"id" 					=> $id,
+						"type" 					=> "custom",
+						"label"					=> "Personal data",
+						"custom" 	=> $dataprocessingdeclaration["what"],
+					);		
+					$fields[] = array
+					(
+						"id" 					=> $id,
+						"type" 					=> "custom",
+						"label"					=> "Belongs to",
+						"custom" 	=> $dataprocessingdeclaration["belongs_to_whom_id"],
+					);				
+					$fields[] = array
+					(
+						"id" 					=> $id,
+						"type" 					=> "custom",
+						"label"					=> "Description",
+						"custom" 	=> $dataprocessingdeclaration["use_case"],
+					);
+					
+				}
+				
 				$fields[] = array
 				(
-					"id" 					=> "{$prefix}{$controllable_activity}",
+					"id" 					=> $id,
 					"type" 					=> "select",
-					"label"					=> nxs_l18n__("{$controllable_activity}", "nxs_td"),
-					"dropdown" 				=> $control_options,
+					"label"					=> "User consent control",
+					"dropdown" 				=> $controller_options,
 					"popuprefreshonchange" => $popuprefreshonchange,
+				);
+				$fields[] = array
+				( 
+					"id" 				=> "wrapper_end",
+					"type" 				=> "wrapperend",
 				);
 			}
 			
-			$fields[] = array
-			( 
-				"id" 				=> "wrapper_end",
-				"type" 				=> "wrapperend",
-			);
+		
 			
 		}
 		
@@ -2913,7 +2979,7 @@ function nxs_site_dataprotectionhome_getoptions($args)
 	
 	$options = array
 	(
-		"sheettitle" => nxs_l18n__("Data Protection (GDPR/privacy)", "nxs_td"),
+		"sheettitle" => nxs_l18n__("Options to control the processing of personal data", "nxs_td"),
 		"footerfiller" => true,
 		"fields" => $fields,
 	);
@@ -3153,7 +3219,8 @@ function nxs_site_accessrestrictionhome_getoptions($args)
 					"block" => nxs_l18n__("Block", "nxs_td"), 
 				)
 			),
-			array( 
+			array
+			( 
 				"id" 		=> "wrapper_accessrestrictions_end",
 				"type" 		=> "wrapperend"
 			),

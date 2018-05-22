@@ -592,6 +592,7 @@ function nxs_dataprotection_nexusframework_widget_pagepopup_getprotecteddata($ar
 
 	$result = array
 	(
+		"controller_label" => "Page popups",
 		"subactivities" => array
 		(
 		),

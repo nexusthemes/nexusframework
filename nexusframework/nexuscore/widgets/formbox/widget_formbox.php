@@ -194,7 +194,8 @@ function nxs_widgets_formbox_home_getoptions($args)
 		"unifiedstyling" 	=> array("group" => nxs_widgets_formbox_getunifiedstylinggroup(),),		
 		"fields" 			=> array
 		(
-			array( 
+			array
+			( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> "Lookups",
@@ -210,10 +211,56 @@ function nxs_widgets_formbox_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
-			),	
+			),
 			
+			// DATA PROTECTION
 			
-									
+				array
+			( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> "Data Protection",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "lookups",
+			),
+			array
+			(
+				"id" 				=> "dataprotection_data_retention",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Data retention", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
+			),
+			// controller_option 
+			// the active "current" controller option is defined in the site meta for this formbox;
+			// its not a widget meta property (since popups can only have one 'context'; site or widget)
+			// perhaps we can build something like this in the future, but for now this is how it works
+			array
+			(
+				"id" 				=> "dataprotection_why",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Why", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "dataprotection_security",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Security", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "dataprotection_controller_label",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Controller label", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
+			),
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend"
+			),
+
+												
 			// TITLE	
 			
 			array( 
@@ -1136,43 +1183,118 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 
 function nxs_dataprotection_nexusframework_widget_formbox_getprotecteddata($args)
 {
+	$subactivities = array();
+	
+	// locate all forms defined in this website
+	$filter = array
+	(
+		"widgettype" => "formbox",
+	);
+	$formsfound = nxs_getwidgetsmetadatainsite($filter);
+	foreach ($formsfound as $postid => $placeholdersonpost)
+	{
+		//echo "processing $postid <br />";
+		
+		foreach ($placeholdersonpost as $placeholderid => $meta)
+		{
+			// echo "processing $placeholderid <br />";
+			
+			$instance = "{$postid}_{$placeholderid}";
+			$subactivities[] = "nexusframework:widget:formbox@{$instance}";	
+		}
+	}
+	
+	$subactivities = array_unique($subactivities);
+	
 	$result = array
 	(
-		"subactivities" => array
+		"subactivities" => $subactivities,
+		"dataprocessingdeclarations" => array	
 		(
-			// if widget has properties that pull information from other 
-			// vendors (like scripts, images hosted on external sites, etc.) 
-			// those need to be taken into consideration
-			// responsibility for that is the person configuring the widget
-			"custom-widget-configuration",	
-			//
-			"wordpress:wp_mail",
+			// intentionally left blank
 		),
+		"status" => "final",
+	);
+	
+	return $result;
+}
+
+function nxs_dataprotection_nexusframework_widget_formbox_instance_getprotecteddata($instance, $args)
+{	
+	// instance consists of "postid_placeholderid"
+	$pieces = explode("_", $instance);
+	$postid = $pieces[0];
+	$placeholderid = $pieces[1];
+	
+	// simple approach would be; pull the information from the properties of the widget
+	// clean approach would be to seperate the properties; on one hand there's the style and content properties of the widget
+	// (stored as widget meta), and there's also the data protected properties (stored on site level?))
+	
+	$whats = array();
+	
+	$widgetmeta = nxs_getwidgetmetadata($postid, $placeholderid);
+	$items_genericlistid = $widgetmeta["items_genericlistid"];
+	$structure = nxs_parsepoststructure($items_genericlistid);
+	foreach ($structure as $pagerow)
+	{
+		$rowcontent = $pagerow["content"];
+		$currentplaceholderid = nxs_parsepagerow($rowcontent);
+		$formitemmeta = nxs_getwidgetmetadata($items_genericlistid, $currentplaceholderid);
+		$formlabel = $formitemmeta["formlabel"];	
+		$whats[]= $formlabel;
+	}
+	
+	$what = $widgetmeta["dataprotection_what"];
+	if ($what == "")
+	{
+		$whats[]= "Also the IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)";
+		$what = implode(", ", $whats);
+	}
+	
+	//
+	$data_retention = $widgetmeta["dataprotection_data_retention"];
+	$why = $widgetmeta["dataprotection_why"];
+	$security = $widgetmeta["dataprotection_security"];
+	$controller_label = $widgetmeta["dataprotection_controller_label"];
+	if ($controller_label == "")
+	{
+		$controller_label = "Form $instance";
+	}
+	
+	// the active "current" controller option is defined in the site meta for this formbox;
+	// its not a widget meta property (since popups can only have one 'context'; site or widget)
+	$controller_options = array
+	(
+		"" => "Enabled (no consent required) (default)",
+		"enabled" => "Enabled (no consent required)",
+		"explicit_user_content_at_submit" => "Explicit user consent at submit",
+		"disabled" => "Disabled",
+	);
+	
+	// 
+	
+	$result = array
+	(
+		"controller_label" => $controller_label,
+		"subactivities" => $subactivities,
 		"dataprocessingdeclarations" => array	
 		(
 			array
 			(
-				"use_case" => "(belongs_to_whom_id) can enter information in a form rendered by the formbox widget of the framework. Submitted forms are send to the web server and are handled by the formbox widget.",
-				"what" => "The fields with the corresponding values as part of the form, the IP address of the (belongs_to_whom_id) as well as 'Request header fields' send by browser of ((belongs_to_whom_id)) (https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields)",
+				"use_case" => "(belongs_to_whom_id) can submit this form",
+				"what" => $what,
 				"belongs_to_whom_id" => "website_visitor", // (has to give consent for using the "what")
 				"controller" => "website_owner",	// who is responsible for this?
-				"controller_options" => array
-				(
-					"" => "Enabled (default)",
-					"enabled" => "Enabled",
-					// "enabled_after_cookie_wall_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a cookie wall consent. For robots its enabled.",
-					// "enabled_after_cookie_component_consent_or_robot" => "For website visitors its conditionally enabled only after the website visitor gave a component cookie consent. For robots its enabled.",
-					"enabled_after_consent_at_submit" => "For website visitors its conditionally enabled only after the website visitor gave a component cookie consent. For robots its enabled.",
-					"disabled" => "Disabled",
-				),
-				"data_processor" => "Google (YouTube)",	// the name of the data_processor or data_recipient
-				"data_retention" => "See the terms https://cloud.google.com/terms/data-processing-terms#data-processing-and-security-terms-v20",
-				"program_lifecycle_phase" => "compiletime",
-				"why" => "Not applicable (because this is a compiletime declaration)",
-				"security" => "The data is transferred over a secure https connection. Security is explained in more detail here; https://cloud.google.com/terms/data-processing-terms#7-data-security",
-			),
+				"controller_options" => $controller_options,
+				"data_processor" => "hosting_provider",	// the name of the data_processor or data_recipient
+				"data_retention" => $data_retention,
+				"program_lifecycle_phase" => "runtime",
+				"why" => $why,
+				"security" => $security,
+			),			
 		),
-		"status" => "final",
+		"status" => "draft; todo: controller_options; perhaps the recipient of the mail is also a data processor?",
 	);
+	
 	return $result;
 }

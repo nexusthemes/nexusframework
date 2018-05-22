@@ -737,6 +737,7 @@ function nxs_dataprotection_nexusframework_widget_youtube_getprotecteddata($args
 {
 	$result = array
 	(
+		"controller_label" => "YouTube videos",
 		"subactivities" => array
 		(
 			// if widget has properties that pull information from other 

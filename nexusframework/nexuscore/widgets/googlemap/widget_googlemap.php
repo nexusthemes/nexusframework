@@ -1638,6 +1638,7 @@ function nxs_dataprotection_nexusframework_widget_googlemap_getprotecteddata($ar
 {
 	$result = array
 	(
+		"controller_label" => "Google Maps",
 		"subactivities" => array
 		(
 			// if widget has properties that pull information from other 
