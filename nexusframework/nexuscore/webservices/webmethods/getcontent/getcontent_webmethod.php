@@ -134,4 +134,21 @@ function nxs_webmethod_getcontent()
 	}
 }
 
+function nxs_dataprotection_nexusframework_webmethod_getcontent_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+			// intentionally left blank
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			// intentionally left blank
+		),
+		"status" => "final",
+	);
+	return $result;
+}
+
 ?>

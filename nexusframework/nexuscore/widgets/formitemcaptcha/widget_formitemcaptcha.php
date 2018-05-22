@@ -80,8 +80,8 @@ function nxs_widgets_formitemcaptcha_renderinformbox($args)
 	$result["result"] = "OK";
 	
 	nxs_requirewidget("formbox");
-	$prefix = ($postid, $placeholderid);
-	nxs_widgets_formbox_getclientsideprefix
+	$prefix = nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid);
+	
 	if ($metadata_overriddenelementid != "")
 	{
 		$key = $metadata_overriddenelementid;

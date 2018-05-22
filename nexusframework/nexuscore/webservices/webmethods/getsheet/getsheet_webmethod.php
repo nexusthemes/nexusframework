@@ -16,4 +16,21 @@ function nxs_webmethod_getsheet()
 	nxs_webmethod_return($result);
 }
 
+function nxs_dataprotection_nexusframework_webmethod_getsheet_getprotecteddata($args)
+{
+	$result = array
+	(
+		"subactivities" => array
+		(
+			// intentionally left blank
+		),
+		"dataprocessingdeclarations" => array	
+		(
+			// intentionally left blank
+		),
+		"status" => "final",
+	);
+	return $result;
+}
+
 ?>

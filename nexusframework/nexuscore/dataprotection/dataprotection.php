@@ -676,6 +676,22 @@ function nxs_dataprotection_factory_getenableoptions($type)
 			"enabled_disabled_for_robots" => "Enabled (for robots its disabled)",
 		);
 	}
+	else if ($type == "studio:enabled")
+	{
+		// todo: move to studio files (filter?)
+		$result = array
+		(
+			"enabled" => "Enabled",
+		);
+	}
+	else if ($type == "license")
+	{
+		$result = array
+		(
+			"" => "license (default)",
+			"license" => "license",
+		);
+	}	
 	else
 	{
 		nxs_webmethod_return_nack("not supported; $type");
