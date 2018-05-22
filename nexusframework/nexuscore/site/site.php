@@ -2804,8 +2804,12 @@ function nxs_site_dataprotectionhome_getoptions($args)
 				"label" 			=> nxs_l18n__("Data Processing Services", "nxs_td"),
 			);
 			
-			$a = array(
-				"rootactivity" => "nexusframework:process_request",
+			$a = array
+			(
+				"rootactivities" => array
+				(
+					"nexusframework:process_request"
+				),
 			);
 			$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
 			$controllable_activities = array_reverse($controllable_activities);

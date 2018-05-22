@@ -10,15 +10,16 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 {
 	$result = array();
 		
-	$rootactivity = $args["rootactivity"];
-	if ($rootactivity == "")
-	{
-		nxs_webmethod_return_nack("error; nxs_dataprotection; rootactivity not set?");
+	$queue = array();
+
+	// add root activities
+	if (true)
+	{	
+		$rootactivities = $args["rootactivities"];
+		$queue = array_merge($queue, $rootactivities);
 	}
-	
-	$queue = array($rootactivity);
+		
 	$processed = array();
-	
 	while($currentactivity = array_pop($queue))
 	{			
 		$currentactivity = nxs_dataprotection_getcanonicalactivity($currentactivity);
