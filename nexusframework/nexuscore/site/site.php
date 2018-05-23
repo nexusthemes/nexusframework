@@ -2452,7 +2452,7 @@ function nxs_site_supportoptions_rendersheet($args)
               	<h4><?php nxs_l18n_e("Video tutorials[nxs:popup,label]", "nxs_td"); ?></h4>
               </div>
               <div class="box-content">
-              	<a href='http://nexusthemes.com/video-tutorials/' target='_blank'><?php nxs_l18n_e("Video tutorials[nxs:link]", "nxs_td"); ?></a>
+              	<a href='https://nexusthemes.com/video-tutorials/' target='_blank'><?php nxs_l18n_e("Video tutorials[nxs:link]", "nxs_td"); ?></a>
               </div>
             </div>
             <div class="nxs-clear margin"></div>
@@ -2465,7 +2465,7 @@ function nxs_site_supportoptions_rendersheet($args)
               	<h4><?php nxs_l18n_e("Website[nxs:label]", "nxs_td"); ?></h4>
               </div>
               <div class="box-content">
-              	<a href="http://nexusthemes.com" target="_blank">http://nexusthemes.com</a>
+              	<a href="https://nexusthemes.com" target="_blank">https://nexusthemes.com</a>
               </div>
             </div>
             <div class="nxs-clear margin"></div>

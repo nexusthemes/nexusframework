@@ -179,7 +179,6 @@ function nxs_widgets_socialsharing_render_webpart_render_htmlvisualization($args
 			<?php
 			if (nxs_stringcontains($items, "linkedin"))
 			{
-				$widgeturl = nxs_getframeworkurl() . "/js/linkedin/widget.js";
 				?>
 				<!-- linkedin -->
 				<div class='nxs-share nxs-linkedin'>

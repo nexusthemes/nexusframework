@@ -21,10 +21,6 @@
 							"action": "nxs_ajax_webmethods",
 							"webmethod": "getcontent",
 							"contentcontext": "anonymouspost_" + nxs_seo_backend_id + "_" + nxs_seo_backend_id,
-							//"clientpopupsessioncontext": nxs_js_getescaped_popupsession_context(),
-							//"contenttype": "webpart",
-							//"webparttemplate": "render_htmlvisualization",
-							//"clientqueryparameters": nxs_js_escaped_getqueryparametervalues()
 						},
 						cache: false,
 						dataType: 'JSON',
@@ -35,13 +31,6 @@
 							if (response.result == "OK")
 							{
 								console.log('finished querying ...');
-								//nxs_seo_backend_content = response.html;
-								
-								//$("#wpseo-pageanalysis").show();
-								// trigger a refresh of the analysis
-								//YoastSEO.app.refresh();
-								
-								// tell yoast to refresh again after 2 secs
 								
 								_self.custom_content = response.html;
  

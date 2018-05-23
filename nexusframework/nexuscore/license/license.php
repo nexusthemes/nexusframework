@@ -10,10 +10,6 @@ function nxs_site_wipepostsinposttype($posttype)
 	
 	global $wpdb;
 	
-	//$result = nxs_get_corepostmeta(24);
-	//var_dump($result);
-	//die();
-	
 	// delete metadata
 	$p = $wpdb->prepare(
 	"DELETE FROM " . $wpdb->prefix . "postmeta where post_id in (SELECT p.id FROM " . $wpdb->prefix . "posts p where p.post_type='%s')", $posttype
@@ -68,8 +64,6 @@ function nxs_site_wipe()
 	$x = wp_upload_dir();
 	$uploadfolderforthissite = $x["basedir"];
 	nxs_recursive_removedirectory($uploadfolderforthissite);
-
-	// todo: clear the site's title too
 }
 
 function nxs_license_notifyregistersuccess()
@@ -603,7 +597,7 @@ function nxs_license_restart_page_content()
 	    	We have a created a video that explains in more detail why you would want
 	    	to delete your entire site (and start from scratch).<br />
 	    	Its defined at the section 'How to remove all WordPress content and start from scratch'
-	    	on the support page for <a target='_blank' href='http://nexusthemes.com/support/how-to-install-a-wordpress-theme/'>activating your WordPress theme</a>.
+	    	on the support page for <a target='_blank' href='https://nexusthemes.com/support/how-to-install-a-wordpress-theme/'>activating your WordPress theme</a>.
 	    </p>
 	    <p>
 				<b>Be sure to make a backup, and proceed only if you know what you are doing!</b><br />

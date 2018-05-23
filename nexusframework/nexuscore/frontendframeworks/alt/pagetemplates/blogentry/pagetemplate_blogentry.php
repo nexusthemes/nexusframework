@@ -290,7 +290,7 @@ function nxs_pagetemplate_handlecontent()
 						// dont use this approach on nexusthemes.com
 						$homeurl = nxs_geturl_home();
 						
-						if ($homeurl == "http://nexusthemes.com/")
+						if ($homeurl == "https://nexusthemes.com/")
 						{
 							$wpposttype = nxs_getwpposttype($contentpostid);
 							if ($wpposttype == "product")

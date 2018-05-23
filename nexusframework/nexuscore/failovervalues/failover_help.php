@@ -13,7 +13,7 @@
 					<h4>Nexus Themes</h4>
 				</div>
 				<div class='box-content'>
-					<a href='http://nexusthemes.com/?camp=failoverhelp' target="_blank">Online help</a>
+					<a href='https://nexusthemes.com/?camp=failoverhelp' target="_blank">Online help</a>
 					<div class='nxs-clear'></div>
 				</div>
 			</div>

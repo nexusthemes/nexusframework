@@ -2162,10 +2162,8 @@ ul#thumb-list li:hover										{ cursor:pointer; }
 /* CAROUSEL
 ---------------------------------------------------------------------------------------------------- */
 .nxs-carousel .logo-wrapper									{ width: 100%; height: 100%; overflow: hidden; z-index: 15; pointer-events: none; }
-/* 
-The problem is display: inline. This respects whitespaces like line breaks in your code.
-http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-between-these-two-elementsli 
-*/
+/* The problem is display: inline. This respects whitespaces like line breaks in your code. */
+/* http://stackoverflow.com/questions/16494468/what-is-this-random-extra-space-between-these-two-elementsli */
 .nxs-carousel .carousel-wrapper img							{ display: block; }
 
 /* http://cssdeck.com/labs/responsive-image */

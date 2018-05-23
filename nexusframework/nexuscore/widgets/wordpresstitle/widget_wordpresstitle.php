@@ -396,7 +396,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	if ($linkedin != "") { 
 		$linkedin = 		'
 		<li>
-			<a target="_blank" href="http://www.linkedin.com/shareArticle?mini=true&url=' . $currentencodedposturl . '&title=' . $currentencodedtitle . '">
+			<a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=' . $currentencodedposturl . '&title=' . $currentencodedtitle . '">
 				<span class="nxs-icon-linkedin"></span>
 			</a>
 		</li>

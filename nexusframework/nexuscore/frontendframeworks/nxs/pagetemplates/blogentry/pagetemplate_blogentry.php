@@ -296,7 +296,7 @@ function nxs_pagetemplate_handlecontent()
 						// dont use this approach on nexusthemes.com
 						$homeurl = nxs_geturl_home();
 						
-						if ($homeurl == "http://nexusthemes.com/")
+						if ($homeurl == "https://nexusthemes.com/")
 						{
 							$wpposttype = nxs_getwpposttype($contentpostid);
 							if ($wpposttype == "product")
@@ -613,7 +613,7 @@ function nxs_pagetemplate_handleheader()
 	<link rel="profile" href="http://gmpg.org/xfn/11"/>
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<!-- Nexus Framework | http://nexusthemes.com -->	
+	<!-- Nexus Framework | https://nexusthemes.com -->	
 	<!-- Nexus Meta | <?php echo $headmeta; ?> -->
 	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemeid(); ?> | <?php echo $version; ?>" />
 	<?php nxs_render_htmlcorescripts(); ?>

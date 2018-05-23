@@ -982,8 +982,8 @@ ul.nxs-menu li.nxs-touched ul li.height08					{ height: 40px; }
 
 .nxs-native-menu ul.menu li.menu-item-has-children > a		{ cursor: pointer; }
 
-/* Enabling center aligment 
-http://css-tricks.com/centering-list-items-horizontally-slightly-trickier-than-you-might-think/ */
+/* Enabling center aligment */
+/* http://css-tricks.com/centering-list-items-horizontally-slightly-trickier-than-you-might-think/ */
 .right ul.nxs-menu	 										{ float: right; }
 .center ul.nxs-menu											{ display: table; margin: 0 auto; }
 .center ul.nxs-menu > li									{ display: inline; }
@@ -1046,8 +1046,8 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 .main-controllers-bg										{ height: 50px; width: 100%; position: absolute; bottom: 0px; z-index: 70; }
 
 .slide-wrapper {
-	/* clicking through the absolute positioned layer with pointer-events to reach the anchor underneath 
-	http://stackoverflow.com/questions/3680429/click-through-a-div-to-underlying-elements. */
+	/* clicking through the absolute positioned layer with pointer-events to reach the anchor underneath */
+	/* http://stackoverflow.com/questions/3680429/click-through-a-div-to-underlying-elements. */
 	pointer-events:none; 
 	position: absolute;
 	height: 788px;

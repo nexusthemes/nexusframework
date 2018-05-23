@@ -67,7 +67,7 @@
 		//
 		nxs_ob_start();
 		?>
-		<a target='_blank' href='http://nexusthemes.com'>
+		<a target='_blank' href='https://nexusthemes.com'>
 			<img style='width: 200px;' src='<?php echo nxs_getframeworkurl() . '/images/logo.png'; ?>' />
 		</a>
 		<?php
