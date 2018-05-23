@@ -1316,7 +1316,7 @@ function nxs_dataprotection_nexusframework_widget_formbox_instance_getprotectedd
 				"data_retention" => $data_retention,
 				"program_lifecycle_phase" => "runtime",
 				"why" => $why,
-				"security" => $security,,
+				"security" => $security,
 			),			
 		),
 		"status" => "final",
