@@ -519,7 +519,7 @@ function nxs_dataprotection_showcookiewall()
 {
 	// redirect user to the cookie wall page
 	
-	$url = nxs_dataprotection_getprivacysettingsurl();
+	$url = nxs_dataprotection_getcookiewallpageurl();
 	$currenturl = nxs_geturlcurrentpage();
 	$url = nxs_addqueryparametertourl_v2($url, nxs_dataprotection_getreturnqueryparameter(), $currenturl, true, true);
 	?>
@@ -533,10 +533,10 @@ function nxs_dataprotection_showcookiewall()
 	die();
 }
 
-function nxs_dataprotection_getprivacysettingsurl()
+function nxs_dataprotection_getcookiewallpageurl()
 {
 	$url = nxs_geturl_home();
-	$url = nxs_addqueryparametertourl_v2($url, "nxs", "privacysettings", true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "nxs", "cookiewall", true, true);
 	return $url;
 }
 
@@ -546,14 +546,14 @@ function nxs_dataprotection_getreturnqueryparameter()
 	return $result;
 }
 
-function nxs_dataprotection_isprivacysettingspage()
+function nxs_dataprotection_iscookiewallpage()
 {
-	$privacysettingsurl = nxs_dataprotection_getprivacysettingsurl();
+	$cookiewallpageurl = nxs_dataprotection_getcookiewallpageurl();
 	
 	$currenturl = nxs_geturlcurrentpage();
 	$currenturl = nxs_removequeryparameterfromurl($currenturl, nxs_dataprotection_getreturnqueryparameter());
 	
-	$result = ($currenturl == $privacysettingsurl);
+	$result = ($currenturl == $cookiewallpageurl);
 	return $result;
 }
 
@@ -563,7 +563,7 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 	// render cookie wall / privacy settings page if this request is for the privacy settings
 	if (true)
 	{
-		if (nxs_dataprotection_isprivacysettingspage())
+		if (nxs_dataprotection_iscookiewallpage())
 		{
 			nxs_dataprotection_renderwebsitevisitorprivacyoptions();
 			die();

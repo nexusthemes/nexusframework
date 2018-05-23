@@ -439,7 +439,7 @@
 					else if (lowercase.indexOf("bytes exhausted (tried to allocate") > -1)
 					{
 						// solutions; http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28
-						nxs_js_alert_sticky("<?php echo nxs_l18n__("Hint: not enough memory. See http://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28", "nxs_td"); ?>");
+						nxs_js_alert_sticky("<?php echo nxs_l18n__("Hint: not enough memory. See https://wordpress.org/support/topic/memory-exhausted-error-in-admin-panel-after-upgrade-to-28/", "nxs_td"); ?>");
 					}
 					else if (lowercase.indexOf("maximum execution time") > -1 && lowercase.indexOf("exceeded") > -1)
 					{

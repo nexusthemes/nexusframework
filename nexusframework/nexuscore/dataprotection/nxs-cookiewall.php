@@ -1,6 +1,6 @@
 <?php
 
-function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
+function nxs_dataprotection_rendercookiewall_actual()
 {
 	if (!nxs_dataprotection_isprivacysupported_and_configured())
 	{

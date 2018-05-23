@@ -14,7 +14,7 @@
 			<p>
 				<a href='<?php echo $data["site_url"]; ?>'><?php echo $siteurl; ?></a> <?php nxs_l18n_e("is now freely powered by Nexus Themes[nxs:failover]", "nxs_td"); ?><br />
 				WordPress themes reinvented | Forever Free | Nexus Themes<br />
-				<?php nxs_l18n_e("By using our theme you agree to our[nxs:failover]", "nxs_td"); ?> <a target='_blank' href='http://www.nexusthemes.com'><?php nxs_l18n_e("terms and conditions[nxs:failover]", "nxs_td"); ?></a><br />
+				<?php nxs_l18n_e("By using our theme you agree to our[nxs:failover]", "nxs_td"); ?> <a target='_blank' href='https://nexusthemes.com'><?php nxs_l18n_e("terms and conditions[nxs:failover]", "nxs_td"); ?></a><br />
 			</p>
 		</div>
 		<?php
