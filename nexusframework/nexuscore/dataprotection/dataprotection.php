@@ -177,18 +177,52 @@ function nxs_dataprotection_getlatestupdatebycontroller()
 	return $result;
 }
 
-function nxs_dataprotection_getcookieretentionindays()
+function nxs_dataprotection_getcookieconsentretentionindays()
 {
 	if (nxs_hassitemeta())
 	{
 		$prefix = nxs_dataprotection_getprefix();		
 		$sitemeta = nxs_getsitemeta();
-		$result = $sitemeta["{$prefix}cookieretention"];
+		$result = $sitemeta["{$prefix}cookiewallcookieretention"];
 	}
 	
 	if ($result == "")
 	{
 		$result = 30;
+	}
+	
+	return $result;
+}
+
+function nxs_dataprotection_getcookiewallbuttontext()
+{
+	if (nxs_hassitemeta())
+	{
+		$prefix = nxs_dataprotection_getprefix();		
+		$sitemeta = nxs_getsitemeta();
+		$result = $sitemeta["{$prefix}cookiewallbuttontext"];
+	}
+	
+	if ($result == "")
+	{
+		$result = "Submit";
+	}
+	
+	return $result;
+}
+
+function nxs_dataprotection_getcookiewallconsenttext()
+{
+	if (nxs_hassitemeta())
+	{
+		$prefix = nxs_dataprotection_getprefix();		
+		$sitemeta = nxs_getsitemeta();
+		$result = $sitemeta["{$prefix}cookiewallconsenttext("];
+	}
+	
+	if ($result == "")
+	{
+		$result = "I hereby acknowledge that I have read and understood the Privacy Policy and provide consent to process my user my data";
 	}
 	
 	return $result;
@@ -331,6 +365,7 @@ function nxs_dataprotection_isactivityonforuser($activity)
 function nxs_dataprotection_isexplicitconsentgiven($activity)
 {
 	$cookiename = nxs_dataprotection_getexplicitconsentcookiename($activity);
+	
 	$r = $_COOKIE[$cookiename];
 	if ($r == "")
 	{
@@ -388,13 +423,16 @@ function nxs_dataprotection_showcookiewall()
 	// redirect user to the cookie wall page
 	
 	$url = nxs_dataprotection_getprivacysettingsurl();
+	$currenturl = nxs_geturlcurrentpage();
+	$url = nxs_addqueryparametertourl_v2($url, nxs_dataprotection_getreturnqueryparameter(), $currenturl, true, true);
 	?>
+	<!--
 	<script>
 		window.location = '<?php echo $url; ?>';
 	</script>
+	-->
 	<?php
-	wp_redirect($url, 301);
-	die();
+	wp_redirect($url, 307);	// note; don't use a 301 here, as it will be cache
 	die();
 }
 
@@ -405,10 +443,19 @@ function nxs_dataprotection_getprivacysettingsurl()
 	return $url;
 }
 
+function nxs_dataprotection_getreturnqueryparameter()
+{
+	$result = "rqp";
+	return $result;
+}
+
 function nxs_dataprotection_isprivacysettingspage()
 {
 	$privacysettingsurl = nxs_dataprotection_getprivacysettingsurl();
+	
 	$currenturl = nxs_geturlcurrentpage();
+	$currenturl = nxs_removequeryparameterfromurl($currenturl, nxs_dataprotection_getreturnqueryparameter());
+	
 	$result = ($currenturl == $privacysettingsurl);
 	return $result;
 }
@@ -417,43 +464,43 @@ function nxs_dataprotection_isprivacysettingspage()
 function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 {
 	// render cookie wall / privacy settings page if this request is for the privacy settings
-	if (nxs_dataprotection_isprivacysettingspage())
+	if (true)
 	{
-		nxs_dataprotection_renderwebsitevisitorprivacyoptions();
-		die();
+		if (nxs_dataprotection_isprivacysettingspage())
+		{
+			nxs_dataprotection_renderwebsitevisitorprivacyoptions();
+			die();
+		}
 	}
 	
 	// check if we should redirect to the cookie wall page (privacy settings)
-	$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
-	if (nxs_dataprotection_isoperational($cookiewallactivity))
+	if (true)
 	{
-		if (nxs_browser_ishuman())
+		$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+		if (nxs_dataprotection_isoperational($cookiewallactivity))
 		{
-			// its not a bot, check if the cookie is set
-			if (nxs_dataprotection_isexplicitconsentgiven($cookiewallactivity))
+			if (nxs_browser_ishuman())
 			{
-				// okidoki, consent was given
+				// its not a bot, check if the cookie is set
+				if (nxs_dataprotection_isexplicitconsentgiven($cookiewallactivity))
+				{
+					// okidoki, consent was given
+				}
+				else
+				{
+					nxs_dataprotection_showcookiewall();
+					die();
+				}
 			}
 			else
 			{
-				nxs_dataprotection_showcookiewall();
-				die();
+				// bots bypass the cookiewall, thus nothing to do here
 			}
-			else
-			{
-				// proceed; an expliciet consent is found
-			}
-		}
 		}
 		else
 		{
-			// bots bypass the cookiewall, thus nothing to do here
+			// controller disabled the cookiewall, nothing to do here
 		}
-	}
-	}
-	else
-	{
-		// controller disabled the cookiewall, nothing to do here
 	}
 }
 

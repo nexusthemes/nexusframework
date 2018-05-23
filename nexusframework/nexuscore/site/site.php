@@ -2700,6 +2700,33 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 				"type" 	=> "input",
 				"label"	=> nxs_l18n__("Version", "nxs_td"),
 			);
+			$fields[] = array
+			(
+				"id" 		=> "{$prefix}cookiewallcookieretention",
+				"type" 		=> "select",
+				"label"		=> nxs_l18n__("Retention period (Cookie wall consent)", "nxs_td"),
+				"dropdown" 	=> array
+				(
+					"" 		=> "30 days (default)",
+					"30" 	=> "30 days",
+					"60" 	=> "60 days",
+					"365" 	=> "365 days",
+				),
+			);
+			$fields[] = array
+			(
+				"id" 	=> "{$prefix}cookiewallbuttontext",
+				"type" 	=> "input",
+				"label"	=> nxs_l18n__("Cookie wall button text", "nxs_td"),
+			);
+			$fields[] = array
+			(
+				"id" 	=> "{$prefix}cookiewallconsenttext",
+				"type" 	=> "input",
+				"label"	=> nxs_l18n__("Cookie wall consent text", "nxs_td"),
+			);
+			
+			
 		}
 				
 		$fields[] = array

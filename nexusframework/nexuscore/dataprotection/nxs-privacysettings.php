@@ -44,7 +44,9 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
   ?>  
 	<html>
 		<head>
+			<meta name="robots" content="noindex">
 			<script data-cfasync="false" type="text/javascript" src="<?php echo $jquery_url; ?>"></script>
+			
 			<?php nxs_setjQ_nxs(); ?>
 			<script>
 			function nxs_js_isuserloggedin() { return <?php if (is_user_logged_in()) { echo "true"; } else { echo "false"; } ?>; } 
@@ -204,28 +206,36 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 	<?php
 	
 	// render form
-	if (true) {
+	if (true) 
+	{
+		$submit_button_text = nxs_dataprotection_getcookiewallbuttontext();
+		$explicit_consent_cookiewall_label = nxs_dataprotection_getcookiewallconsenttext();
 		
 		nxs_ob_start();
 		
 		// Begin Form HTML
 		echo'<form id="nxsdataprotectionform">';
-	      	
-		$a = array
-		(
-			"rootactivities" => array("nexusframework:process_request")
-		);
-		$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
-		$controllable_activities = array_reverse($controllable_activities);
+	  
+	  
+	  $cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+		$controllable_activities = array($cookiewallactivity);
 				
-		foreach ($controllable_activities as $controllable_activity => $control_options)
+		foreach ($controllable_activities as $controllable_activity)
 		{
+			$control_options = nxs_dataprotection_getactivityprotecteddata($controllable_activity);
+			
 			$controller_label = $control_options["controller_label"];
+			if (nxs_dataprotection_iscookiewallactivity($controllable_activity))
+			{
+				$controller_label = $explicit_consent_cookiewall_label;
+			}
 			
 			$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
 			$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($controllable_activity);
 			
-			if (in_array($dataprotectiontype, array("enabled_after_cookie_component_consent_or_robot", "enabled_disabled_for_robots")))
+			$is_operational = nxs_dataprotection_isoperational($controllable_activity);
+			
+			if ($is_operational)
 			{
 				$cookiename = nxs_dataprotection_getexplicitconsentcookiename($controllable_activity);
 				$checkedattribute = nxs_dataprotection_isexplicitconsentgiven($controllable_activity) ? "checked" : "";
@@ -242,7 +252,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 					';
 				}
 			}
-			echo'<input type="submit" value="Update my privacy settings" />
+			echo'<input type="submit" value="'.$submit_button_text.'" />
 			
 			</form>';
 	      	$form = nxs_ob_get_contents();
@@ -275,13 +285,14 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				</div>
 			</div>';
 			
-			$finishedurl = $_REQUEST["returnto"];
+			$returnqueryparameter = nxs_dataprotection_getreturnqueryparameter();
+			$finishedurl = $_REQUEST[$returnqueryparameter];
 			if ($finishedurl == "")
 			{
 				$finishedurl = nxs_geturl_home();
 			}
 			
-			$days = nxs_dataprotection_getcookieretentionindays();
+			$days = nxs_dataprotection_getcookieconsentretentionindays();
 			
 			?>
 			<script>
