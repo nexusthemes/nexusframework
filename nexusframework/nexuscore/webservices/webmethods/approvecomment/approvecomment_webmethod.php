@@ -40,4 +40,10 @@ function nxs_webmethod_approvecomment()
 	$responseargs = array();
 	nxs_webmethod_return_ok($responseargs);
 }
+
+function nxs_dataprotection_nexusframework_webmethod_approvecomment_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

@@ -2023,56 +2023,6 @@ function nxs_site_newposthome_rendersheet($args)
 	nxs_webmethod_return_ok($result);
 }
 
-function nxs_site_exportsite_rendersheet($args)
-{
-	//
-	//
-	//
-	extract($args);
-	
-	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
-	
-	$filedownloadurl = admin_url('admin-ajax.php?action=nxs_ajax_webmethods&webmethod=exportcontent&export=siteallpoststructuresandwidgets');
-	
-	nxs_ob_start();
-
-	?>
-
-  <div class="nxs-admin-wrap">
-    <div class="block">
-     
-     	<?php nxs_render_popup_header(nxs_l18n__("Export site post structure and widget data[nxs:popup]", "nxs_td")); ?>
-      
-      <div class="content2">
-      	<a href='<?php echo $filedownloadurl;?>'>Download</a>
-      </div> <!--END content-->
-      <div class="content2">
-          <div class="box">
-            <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:popup,button]", "nxs_td"); ?></a>
-         </div>
-          <div class="nxs-clear margin"></div>
-      </div> <!--END content-->
-    </div> <!--END block-->
-  </div>
-    
-  <script>
-		function nxs_js_execute_after_popup_shows()
-		{
-			
-		}
-	</script>
-    
-	<?php
-	
-	$html = nxs_ob_get_contents();
-	nxs_ob_end_clean();
-	
-	$result["html"] = $html;
-	nxs_webmethod_return_ok($result);
-}
-
 /* DASHBOARD POPUP
 ---------------------------------------------------------------------------------------------------- */
 function nxs_site_dashboardhome_rendersheet($args)
@@ -2379,20 +2329,6 @@ function nxs_site_dashboardhome_rendersheet($args)
 	        	<?php
 	        }
 	        ?>
-	        
-	        <!-- export -->
-	        <!--
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title"><h4><?php nxs_l18n_e("Site data[nxs:popup,label]", "nxs_td"); ?></h4></div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('exportsite'); return false;" class="nxsbutton1 nxs-float-right">Export site</a>
-                <div class="nxs-clear margin"></div>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div>
-	        -->
 	      </div>
 	    </div>
 		        
@@ -2853,6 +2789,12 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 					$popuprefreshonchange = "true";
 				}
 				
+				$activity_type = "type";
+				if (nxs_stringcontains($controllable_activity, "@"))
+				{
+					$activity_type = "instance";
+				}
+				
 				$id = "{$prefix}{$controllable_activity}";
 				$id = str_replace("@", "_", $id);
 				
@@ -2886,17 +2828,50 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 						"label"					=> "Description",
 						"custom" 	=> $dataprocessingdeclaration["use_case"],
 					);
-					
 				}
 				
-				$fields[] = array
-				(
-					"id" 					=> $id,
-					"type" 					=> "select",
-					"label"					=> "User consent control",
-					"dropdown" 				=> $controller_options,
-					"popuprefreshonchange" => $popuprefreshonchange,
-				);
+				if ($activity_type == "instance")
+				{
+					// "instance" activities are stored in the widget metadata,
+					// so we can display the "active" controller option
+					// but we can't make it editable as this popup is for rendering site props (not widget meta props)
+					
+					// derive postid and placeholderid from the instance activity (type@postid_placeholderid)
+					$pieces = explode("@", $controllable_activity);
+					$instanceid = $pieces[1];
+					$pieces = explode("_", $instanceid);
+					$postid = $pieces[0];
+					$placeholderid = $pieces[1];
+					$widgetmeta = nxs_getwidgetmetadata($postid, $placeholderid);
+					$dataprotection_control_option = $widgetmeta["dataprotection_control_option"];
+					
+					
+					$fields[] = array
+					(
+						"id" 					=> $id,
+						"type" 					=> "custom",
+						"label"					=> "User consent control",
+						"custom" 	=> $dataprotection_control_option,
+					);
+				}
+				else if ($activity_type == "type")
+				{
+					// "type" activities are stored in the site settings,
+					// so we can render a dropdown with the options
+					$fields[] = array
+					(
+						"id" 					=> $id,
+						"type" 					=> "select",
+						"label"					=> "User consent control",
+						"dropdown" 				=> $controller_options,
+						"popuprefreshonchange" => $popuprefreshonchange,
+					);
+				}
+				else
+				{
+					nxs_webmethod_return_nack("muh? ($activity_type)");
+				}
+				
 				$fields[] = array
 				( 
 					"id" 				=> "wrapper_end",

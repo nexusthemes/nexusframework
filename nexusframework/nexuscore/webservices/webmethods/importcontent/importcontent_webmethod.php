@@ -180,4 +180,10 @@ function nxs_webmethod_importcontent()
 		nxs_webmethod_return_nack("bestand kan niet worden geupload #2612a");
 	}
 }
+
+function nxs_dataprotection_nexusframework_webmethod_importcontent_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

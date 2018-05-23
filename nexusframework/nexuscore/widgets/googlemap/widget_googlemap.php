@@ -1151,7 +1151,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 			</div>
 			<?php
 		}
-		else if ($address == "")
+		else if ($translatedaddress == "")
 		{
 			?>
 			<div>
@@ -1534,10 +1534,10 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 		}
 		else if 
 		(
-			nxs_stringcontains($address, "{") || 
-			nxs_stringcontains($address, "}") || 
-			nxs_stringcontains($address, "[") || 
-			nxs_stringcontains($address, "]") || 
+			nxs_stringcontains($translatedaddress, "{") || 
+			nxs_stringcontains($translatedaddress, "}") || 
+			nxs_stringcontains($translatedaddress, "[") || 
+			nxs_stringcontains($translatedaddress, "]") || 
 			false
 		)
 		{

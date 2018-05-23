@@ -144,11 +144,6 @@ function nxs_ajax_webmethods()
 			$hasaccess = true;
 			// ok
 		}
-		else if ($webmethod == "exportmedia")
-		{
-			$hasaccess = true;
-			// ok (save-as used in media reference)
-		}
 		else if ($webmethod == "formboxsubmit")
 		{
 			$hasaccess = true;

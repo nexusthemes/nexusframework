@@ -8,4 +8,10 @@ function nxs_webmethod_processsmstate()
 	
 	nxs_webmethod_return_ok($result);
 }
+
+function nxs_dataprotection_nexusframework_webmethod_processsmstate_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

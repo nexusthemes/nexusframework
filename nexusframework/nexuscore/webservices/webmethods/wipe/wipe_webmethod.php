@@ -52,3 +52,10 @@ function nxs_webmethod_wipe()
 		nxs_webmethod_return_nack("unsupported context; $context");
 	}
 }
+
+function nxs_dataprotection_nexusframework_webmethod_wipe_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
+?>

@@ -913,10 +913,6 @@ function nxs_pagetemplate_archive_home_getsheethtml($args)
       
       <div class="content2">
         <div class="box">
-        	<!--
-        	<a href='#' class="nxsbutton1 nxs-float-left" onclick='nxs_js_popup_navigateto("appendstruct"); return false;'>Append data</a>
-        	<a href='#' class="nxsbutton1 nxs-float-left" onclick='nxs_js_popup_navigateto("exportstruct"); return false;'>Export data</a>
-        	-->
           <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Save[nxs:button]", "nxs_td"); ?></a>
           <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:button]", "nxs_td"); ?></a>
           <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:button]", "nxs_td"); ?></a>

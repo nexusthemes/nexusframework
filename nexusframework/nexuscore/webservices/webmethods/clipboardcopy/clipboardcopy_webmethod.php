@@ -106,4 +106,10 @@ function nxs_webmethod_clipboardcopy()
 	$responseargs["growl"] = $growl;
 	nxs_webmethod_return_ok($responseargs);
 }
+
+function nxs_dataprotection_nexusframework_webmethod_clipboardcopy_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

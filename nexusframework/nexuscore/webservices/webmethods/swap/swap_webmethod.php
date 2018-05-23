@@ -148,3 +148,10 @@ function nxs_webmethod_swap()
 		nxs_webmethod_return_nack("unsupported context; $context");
 	}
 }
+
+function nxs_dataprotection_nexusframework_webmethod_swap_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
+?>

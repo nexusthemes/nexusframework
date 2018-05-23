@@ -2973,59 +2973,6 @@ function nxs_js_redirect_top(url)
 			}
 		}
 		
-		
-		
-		function nxs_js_menuitem_remove(postid, element)
-		{
-			var rowindex = nxs_js_getrowindex(element);
-			// verwijdert de row
-			var answer = confirm(nxs_js_gettrans('Are you sure you want to delete this menu item?'));
-			if (answer)
-			{
-				var waitgrowltoken = nxs_js_alert_wait_start(nxs_js_gettrans('Removing row'));
-				
-				// invoke ajax call
-				var ajaxurl = nxs_js_get_adminurladminajax();
-				jQ_nxs.ajax
-				(
-					{
-						type: 'POST',
-						data: 
-						{
-							"action": "nxs_ajax_webmethods",
-							"webmethod": "removemenuitem",
-							"postid": postid,
-							"rowid": rowindex
-						},
-						cache: false,
-						dataType: 'JSON',
-						url: ajaxurl, 
-						success: function(response) 
-						{
-							nxs_js_alert_wait_finish(waitgrowltoken);
-							nxs_js_log(response);
-							
-							var containerElement = jQ_nxs(".nxs-post-" + postid)[0];
-							jQ_nxs(containerElement).html(response.html);
-							// reenable all events
-							nxs_js_reenable_all_window_events();
-							nxs_js_alert(nxs_js_gettrans('Refreshed'));
-						},
-						error: function(response)
-						{
-							nxs_js_alert_wait_finish(waitgrowltoken);
-							nxs_js_popup_notifyservererror();
-							nxs_js_log(response);
-						}										
-					}
-				);			
-			}
-			else
-			{
-				// nop
-			}
-		}
-
 		function nxs_js_reenable_all_window_events()
 		{
 			if (!nxs_js_enableguieffects())

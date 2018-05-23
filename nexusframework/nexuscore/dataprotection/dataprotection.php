@@ -467,7 +467,25 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions()
 // todo: move to nexuscore/dataprotection/nxs-dataprotection.php
 function nxs_dataprotection_factor_createprotecteddata($type)
 {
-	if ($type == "widget-none")
+	if ($type == "webmethod-none")
+	{
+		$result = array
+		(
+			"subactivities" => array
+			(
+				// if widget has properties that pull information from other 
+				// vendors (like scripts, images hosted on external sites, etc.) 
+				// those need to be taken into consideration
+				// responsibility for that is the person configuring the widget
+				"custom-widget-configuration",	
+			),
+			"dataprocessingdeclarations" => array	
+			(
+			),
+			"status" => "final",
+		);
+	}
+	else if ($type == "widget-none")
 	{
 		$result = array
 		(
@@ -525,15 +543,9 @@ function nxs_dataprotection_nexusframework_process_request_getprotecteddata($arg
 	$subactivities[] = "nexusframework:useanalytics";
 	$subactivities[] = "nexusframework:usegoogletagmanager";
 	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
-	$subactivities[] = "nexusframework:handleexplicitcookieconsent";
 	
 	// for logged in users;
-	$subactivities[] = "nexusframework:support";
 	$subactivities[] = "nexusframework:selectlanguage_nxs_cookie_hl";
-	
-	
-	$subactivities[] = "themeuser:nexusthemes:usesupport";
-	$subactivities[] = "themeuser:google:usesupport";
 	
 	$subactivities[] = "nexusframework:updates";
 	$subactivities[] = "dpa:nexus:usegooglefonts";

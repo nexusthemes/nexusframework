@@ -62,3 +62,10 @@ function nxs_webmethod_removerow() {
 	// create response
 	nxs_webmethod_return_ok($result);
 }
+
+function nxs_dataprotection_nexusframework_webmethod_removerow_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
+?>

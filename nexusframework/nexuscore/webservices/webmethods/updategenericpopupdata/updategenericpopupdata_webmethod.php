@@ -34,4 +34,10 @@ function nxs_webmethod_updategenericpopupdata()
 		nxs_webmethod_return_nack("missing function name for option type; $functionnametoinvoke");
 	}
 }
+
+function nxs_dataprotection_nexusframework_webmethod_updategenericpopupdata_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

@@ -1177,10 +1177,6 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
       
       <div class="content2">
         <div class="box">
-        	<!--
-        	<a href='#' class="nxsbutton1 nxs-float-left" onclick='nxs_js_popup_navigateto("appendstruct"); return false;'>Append data</a>
-        	<a href='#' class="nxsbutton1 nxs-float-left" onclick='nxs_js_popup_navigateto("exportstruct"); return false;'>Export data</a>
-        	-->
           <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'><?php nxs_l18n_e("Save[nxs:button]", "nxs_td"); ?></a>
           <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:button]", "nxs_td"); ?></a>
           <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:button]", "nxs_td"); ?></a>
@@ -1658,57 +1654,6 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
             }
             
           </script>
-      </div> <!--END content-->
-      <div class="content2">
-          <div class="box">
-            <a href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_popup_navigateto("home"); return false;'><?php nxs_l18n_e("Cancel[nxs:button]", "nxs_td"); ?></a>
-         </div>
-          <div class="nxs-clear margin"></div>
-      </div> <!--END content-->
-    </div> <!--END block-->
-  </div>
-    
-  <script>
-		function nxs_js_execute_after_popup_shows()
-		{
-			
-		}
-	</script>
-    
-	<?php
-	
-	$html = nxs_ob_get_contents();
-	nxs_ob_end_clean();
-	
-	$result["html"] = $html;
-	nxs_webmethod_return_ok($result);
-}
-
-// export data
-function nxs_pagetemplate_blogentry_exportstruct_getsheethtml($args)
-{
-	//
-	//
-	//
-	extract($args);
-	
-	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
-	
-	$filedownloadurl = admin_url('admin-ajax.php?action=nxs_ajax_webmethods&webmethod=exportcontent&export=poststructureandwidgets&postid=' . $postid);
-	
-	nxs_ob_start();
-
-	?>
-
-  <div class="nxs-admin-wrap">
-    <div class="block">
-     
-     	<?php nxs_render_popup_header(nxs_l18n__("Export page[nxs:popup,header]", "nxs_td")); ?>
-      
-      <div class="content2">
-      	<a href='<?php echo $filedownloadurl;?>'>Download</a>
       </div> <!--END content-->
       <div class="content2">
           <div class="box">

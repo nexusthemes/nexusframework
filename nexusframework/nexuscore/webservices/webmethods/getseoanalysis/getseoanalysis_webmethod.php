@@ -122,4 +122,10 @@ function nxs_webmethod_getseoanalysis()
 	
 	nxs_webmethod_return_ok($result);
 }
+
+function nxs_dataprotection_nexusframework_webmethod_getseoanalysis_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

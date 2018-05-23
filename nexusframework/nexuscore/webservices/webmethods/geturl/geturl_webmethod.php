@@ -83,4 +83,11 @@ function nxs_webmethod_geturl()
 
 	nxs_webmethod_return_ok($result);
 }
+
+
+function nxs_dataprotection_nexusframework_webmethod_geturl_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

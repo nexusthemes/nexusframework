@@ -75,4 +75,11 @@ function nxs_webmethod_savefileupload()
 		nxs_webmethod_return_nack("unable to upload file (#2612b); check: is file extension permitted?");
 	}
 }
+
+function nxs_dataprotection_nexusframework_webmethod_savefileupload_getprotecteddata($args)
+{
+	// used only for logged in users (no user data involved)
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

@@ -23,4 +23,10 @@ function nxs_webmethod_logout()
 	$responseargs["previousstate"] = $previousstate;
 	nxs_webmethod_return_ok($responseargs);
 }
+
+function nxs_dataprotection_nexusframework_webmethod_logout_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

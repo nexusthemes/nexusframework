@@ -215,14 +215,26 @@ function nxs_widgets_formbox_home_getoptions($args)
 			
 			// DATA PROTECTION
 			
-				array
+			array
 			( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> "Data Protection",
-				"initial_toggle_state"	=> "closed-if-empty",
-				"initial_toggle_state_id" => "lookups",
+				"label" 			=> "Control processing of Personal Data",
 			),
+			array
+			(
+				"id" 				=> "dataprotection_controller_label",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Controller label", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
+			),
+			array
+			(
+				"id" 				=> "dataprotection_control_option",
+				"type" 				=> "select",
+				"dropdown" => nxs_widgets_formbox_getcontroloptions(),
+				"label" 			=> nxs_l18n__("Control option", "nxs_td"),
+			),			
 			array
 			(
 				"id" 				=> "dataprotection_data_retention",
@@ -230,10 +242,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Data retention", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
 			),
-			// controller_option 
-			// the active "current" controller option is defined in the site meta for this formbox;
-			// its not a widget meta property (since popups can only have one 'context'; site or widget)
-			// perhaps we can build something like this in the future, but for now this is how it works
+
 			array
 			(
 				"id" 				=> "dataprotection_why",
@@ -248,18 +257,11 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Security", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
 			),
-			array
-			(
-				"id" 				=> "dataprotection_controller_label",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Controller label", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
-			),
+			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
-
 												
 			// TITLE	
 			
@@ -1181,6 +1183,18 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	return $result;
 }
 
+function nxs_widgets_formbox_getcontroloptions()
+{
+	$result =  array
+	(
+		"" => "Enabled (no consent required) (default)",
+		"enabled" => "Enabled (no consent required)",
+		"explicit_user_content_at_submit" => "Explicit user consent at submit",
+		// no 'disabled' option here; if the controller doesn't want this form, he should remove it from the site
+	);
+	return $result;
+}
+
 function nxs_dataprotection_nexusframework_widget_formbox_getprotecteddata($args)
 {
 	$subactivities = array();
@@ -1263,16 +1277,9 @@ function nxs_dataprotection_nexusframework_widget_formbox_instance_getprotectedd
 	
 	// the active "current" controller option is defined in the site meta for this formbox;
 	// its not a widget meta property (since popups can only have one 'context'; site or widget)
-	$controller_options = array
-	(
-		"" => "Enabled (no consent required) (default)",
-		"enabled" => "Enabled (no consent required)",
-		"explicit_user_content_at_submit" => "Explicit user consent at submit",
-		"disabled" => "Disabled",
-	);
+	$controller_options = nxs_widgets_formbox_getcontroloptions();
 	
 	// 
-	
 	$result = array
 	(
 		"controller_label" => $controller_label,

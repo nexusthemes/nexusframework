@@ -23,4 +23,10 @@ function nxs_webmethod_getplaceholderbytemplate()
  	
 	nxs_webmethod_return_ok($args);
 }
+
+function nxs_dataprotection_nexusframework_webmethod_getplaceholderbytemplate_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

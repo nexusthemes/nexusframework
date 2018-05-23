@@ -38,4 +38,10 @@ function nxs_webmethod_updatesitedata()
 		nxs_webmethod_return_nack("bestand " . $filetobeincluded . " not found");
 	}
 }
+
+function nxs_dataprotection_nexusframework_webmethod_updatesitedata_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

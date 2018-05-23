@@ -103,4 +103,9 @@ function nxs_webmethod_pagepopup()
 	}
 }
 
+function nxs_dataprotection_nexusframework_webmethod_pagepopup_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>
