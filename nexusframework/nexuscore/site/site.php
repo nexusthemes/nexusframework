@@ -2665,20 +2665,12 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 {
 	$prefix = nxs_dataprotection_getprefix();
-	$usecookiewallactivity = "nexusframework:usecookiewall";
-	$usecookiewallactivity = nxs_dataprotection_getcanonicalactivity($usecookiewallactivity);
-	
-	$dataprotectiontype_usecookiewall = nxs_dataprotection_getdataprotectiontype($usecookiewallactivity);
-	if (isset($args["clientpopupsessiondata"]["{$prefix}{$usecookiewallactivity}"]))
-	{
-		$dataprotectiontype_usecookiewall = $args["clientpopupsessiondata"]["{$prefix}{$usecookiewallactivity}"];
-	}
 
 	$fields = array();
 
 	// EXPLICIT CONSENT OPTIONS
 	
-	if (true) // $dataprotectiontype_usecookiewall == "enabled_disabled_for_robots")
+	if (true)
 	{
 		// GENERAL
 		
@@ -2709,20 +2701,7 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 				"label"	=> nxs_l18n__("Version", "nxs_td"),
 			);
 		}
-		$fields[] = array
-		(
-			"id" 		=> "{$prefix}cookieretention",
-			"type" 		=> "select",
-			"label"		=> nxs_l18n__("Retention period", "nxs_td"),
-			"dropdown" 	=> array
-			(
-				"" 		=> "30 days (default)",
-				"30" 	=> "30 days",
-				"60" 	=> "60 days",
-				"365" 	=> "365 days",
-			),
-		);
-		
+				
 		$fields[] = array
 		( 
 				"id" 				=> "wrapper_title_end",
@@ -2745,141 +2724,99 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 			$controllable_activities = nxs_dataprotection_get_controllable_activities($a);
 			$controllable_activities = array_reverse($controllable_activities);
 			
-			foreach ($controllable_activities as $controllable_activity => $meta)
+			// CONTROL OPERATIONAL STATES OF ACTIVITIES (THAT INVOLVE USER DATA)
+			
+			if (true)
 			{
-				$controller_options = $meta["controller_options"];
-				$controller_label = $meta["controller_label"];
-				$dataprocessingdeclarations = $meta["dataprocessingdeclarations"];
-				$belongs_to_whom_ids = $meta["belongs_to_whom_ids"];
-				
-				// in this popup only render activities that belong to with website_visitors
-				if (true)
-				{
-					if (!in_array("website_visitor", $belongs_to_whom_ids))
-					{
-						continue;
-					}
-				}
-				
-				// ignore the component if all its data activities have their user consent
-				// derived from other activities (for example its not practical
-				// to have to give multiple consents for file attachments; 
-				// the consent is given for the use case to submit the form)
-				if (true)
-				{
-					$count_explicit_user_consent_inherited_from_activity = 0;
-					foreach ($dataprocessingdeclarations as $dataprocessingdeclaration)
-					{
-						if ($dataprocessingdeclaration["explicit_user_consent_inherited_from_activity"] != "")
-						{
-							$count_explicit_user_consent_inherited_from_activity++;
-						}
-					}
-					if ($count_explicit_user_consent_inherited_from_activity == count($dataprocessingdeclarations))
-					{
-						continue;
-					}
-				}
-							
-				$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
-				
-				$popuprefreshonchange = "";
-				if ($controllable_activity == "nexusframework_usecookiewall")
-				{
-					$popuprefreshonchange = "true";
-				}
-				
-				$activity_type = "type";
-				if (nxs_stringcontains($controllable_activity, "@"))
-				{
-					$activity_type = "instance";
-				}
-				
-				$id = "{$prefix}{$controllable_activity}";
-				$id = str_replace("@", "_", $id);
-				
 				$fields[] = array
 				( 
-					"id" 				=> "wrapper_title_begin",
+					"id" 				=> "wrapper_begin",
 					"type" 				=> "wrapperbegin",
-					"label" 			=> "Feature: {$controller_label}",
+					"label" 			=> "Control the operational state per component",
 				);
+				
+			
+				foreach ($controllable_activities as $controllable_activity => $meta)
+				{
+					$controller_options = $meta["controller_options"];
+					$controller_label = $meta["controller_label"];
+					if ($controller_label == "")
+					{
+						$controller_label = $controllable_activity;
+					}
+					
+					$dataprocessingdeclarations = $meta["dataprocessingdeclarations"];
+					$belongs_to_whom_ids = $meta["belongs_to_whom_ids"];
+					
+					// in this popup only render activities that belong to with website_visitors
+					if (true)
+					{
+						if (!in_array("website_visitor", $belongs_to_whom_ids))
+						{
+							continue;
+						}
+					}
+					
+					// ignore the component if all its data activities have their user consent
+					// derived from other activities (for example its not practical
+					// to have to give multiple consents for file attachments; 
+					// the consent is given for the use case to submit the form)
+					if (true)
+					{
+						$count_explicit_user_consent_inherited_from_activity = 0;
+						foreach ($dataprocessingdeclarations as $dataprocessingdeclaration)
+						{
+							if ($dataprocessingdeclaration["explicit_user_consent_inherited_from_activity"] != "")
+							{
+								$count_explicit_user_consent_inherited_from_activity++;
+							}
+						}
+						if ($count_explicit_user_consent_inherited_from_activity == count($dataprocessingdeclarations))
+						{
+							continue;
+						}
+					}
+								
+					$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
+					
+					$activity_type = "type";
+					if (nxs_stringcontains($controllable_activity, "@"))
+					{
+						$activity_type = "instance";
+					}
+					
+					if ($activity_type == "instance")
+					{
+						continue;
+					}
+					
+					$defaultvalue = nxs_dataprotection_getactivitydefaultoperationalstate($controllable_activity);
+					
+					$prefix = nxs_dataprotection_getprefix();
+					$id = "{$prefix}{$controllable_activity}_operationalstate";
+					$id = str_replace("@", "_", $id);
+					
+					$fields[] = array
+					(
+						"id" 				=> $id,
+						"type" 				=> "select",
+						"label" 			=> $controller_label,
+						"dropdown" => array
+						(
+							"enabled" => "Enabled",
+							"disabled" => "Disabled",
+						),
+						"defaultblankvalue" => $defaultvalue,
+					);
+				}
 
-				foreach ($dataprocessingdeclarations as $dataprocessingdeclaration)
-				{
-					$fields[] = array
-					(
-						"id" 					=> $id,
-						"type" 					=> "custom",
-						"label"					=> "Personal data",
-						"custom" 	=> $dataprocessingdeclaration["what"],
-					);		
-					$fields[] = array
-					(
-						"id" 					=> $id,
-						"type" 					=> "custom",
-						"label"					=> "Belongs to",
-						"custom" 	=> $dataprocessingdeclaration["belongs_to_whom_id"],
-					);				
-					$fields[] = array
-					(
-						"id" 					=> $id,
-						"type" 					=> "custom",
-						"label"					=> "Description",
-						"custom" 	=> $dataprocessingdeclaration["use_case"],
-					);
-				}
-				
-				if ($activity_type == "instance")
-				{
-					// "instance" activities are stored in the widget metadata,
-					// so we can display the "active" controller option
-					// but we can't make it editable as this popup is for rendering site props (not widget meta props)
-					
-					// derive postid and placeholderid from the instance activity (type@postid_placeholderid)
-					$pieces = explode("@", $controllable_activity);
-					$instanceid = $pieces[1];
-					$pieces = explode("_", $instanceid);
-					$postid = $pieces[0];
-					$placeholderid = $pieces[1];
-					$widgetmeta = nxs_getwidgetmetadata($postid, $placeholderid);
-					$dataprotection_control_option = $widgetmeta["dataprotection_control_option"];
-					
-					
-					$fields[] = array
-					(
-						"id" 					=> $id,
-						"type" 					=> "custom",
-						"label"					=> "User consent control",
-						"custom" 	=> $dataprotection_control_option,
-					);
-				}
-				else if ($activity_type == "type")
-				{
-					// "type" activities are stored in the site settings,
-					// so we can render a dropdown with the options
-					$fields[] = array
-					(
-						"id" 					=> $id,
-						"type" 					=> "select",
-						"label"					=> "User consent control",
-						"dropdown" 				=> $controller_options,
-						"popuprefreshonchange" => $popuprefreshonchange,
-					);
-				}
-				else
-				{
-					nxs_webmethod_return_nack("muh? ($activity_type)");
-				}
-				
 				$fields[] = array
 				( 
 					"id" 				=> "wrapper_end",
 					"type" 				=> "wrapperend",
 				);
+				
 			}
-			
-		
 			
 		}
 		

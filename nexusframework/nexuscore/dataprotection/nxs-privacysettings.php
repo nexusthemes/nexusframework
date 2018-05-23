@@ -2,8 +2,8 @@
 
 function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 {
-	$usecookiewallactivity = "nexusframework:usecookiewall";	
-	$cookiename = nxs_dataprotection_getexplicitconsentcookiename($usecookiewallactivity);
+	$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+	$cookiename = nxs_dataprotection_getexplicitconsentcookiename($cookiewallactivity);
 
 	/* EXPRESSIONS
 	---------------------------------------------------------------------------------------------------- */

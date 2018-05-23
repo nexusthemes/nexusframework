@@ -6,6 +6,19 @@ function nxs_dataprotection_getcanonicalactivity($component)
 	return $result;
 }
 
+function nxs_dataprotection_getactivityprotecteddata($activity)
+{
+	$args = array
+	(
+		"rootactivities" => array($activity),
+		"shouldprocesssubactivities" => false,
+	);
+	$build = nxs_dataprotection_buildrecursiveprotecteddata($args);
+	$result = $build["activities"][$activity];
+	
+	return $result;
+}
+
 function nxs_dataprotection_buildrecursiveprotecteddata($args)
 {
 	$result = array();
@@ -17,6 +30,20 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 	{	
 		$rootactivities = $args["rootactivities"];
 		$queue = array_merge($queue, $rootactivities);
+	}
+	
+	// derive if we should process subactivities
+	if (true)
+	{
+		if (isset($args["shouldprocesssubactivities"]))
+		{
+			$shouldprocesssubactivities = $args["shouldprocesssubactivities"];
+		}
+		else
+		{
+			// default is that we will process sub activities
+			$shouldprocesssubactivities = true;
+		}
 	}
 		
 	$processed = array();
@@ -44,7 +71,7 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 				}
 			
 				// enqueue subactivities
-				if (true)
+				if ($shouldprocesssubactivities)
 				{
 					$subactivities = $currentresult["subactivities"];
 					foreach ($subactivities as $subactivity)
@@ -70,10 +97,7 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 					}
 				}
 								
-				// store result of the current component
-				$result["activities"][$currentactivity]["dataprocessingdeclarations"] = $currentresult["dataprocessingdeclarations"];
-				
-				$result["activities"][$currentactivity]["controller_label"] = $currentresult["controller_label"];
+				$result["activities"][$currentactivity] = $currentresult;
 			}
 			else
 			{
@@ -95,9 +119,9 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 				{
 					$result["errors"]["notfinal"][] = "gdprmeta implementation is not yet final ( {$functionnametoinvoke} )";
 				}
-			
+	
 				// enqueue subactivities
-				if (true)
+				if ($shouldprocesssubactivities)
 				{
 					$subactivities = $currentresult["subactivities"];
 					foreach ($subactivities as $subactivity)
@@ -124,14 +148,7 @@ function nxs_dataprotection_buildrecursiveprotecteddata($args)
 				}
 								
 				// store result of the current component
-				$result["activities"][$currentactivity]["dataprocessingdeclarations"] = $currentresult["dataprocessingdeclarations"];
-				
-				$controller_label = $currentresult["controller_label"];
-				if ($controller_label == "")
-				{
-					$controller_label = $currentactivity;
-				}
-				$result["activities"][$currentactivity]["controller_label"] = $controller_label;
+				$result["activities"][$currentactivity] = $currentresult;
 			}
 			else
 			{
@@ -183,121 +200,137 @@ function nxs_dataprotection_iscacheallowed()
 	return false;
 }
 
+function nxs_dataprotection_getcookiewallactivity()
+{
+	$result = "nexusframework:cookiewall";
+	
+	//
+	$result = nxs_dataprotection_getcanonicalactivity($result);
+	
+	return $result;
+}
+
 function nxs_dataprotection_iscookiewallactivity($activity)
 {
+	$truecookiewallactivity = nxs_dataprotection_getcookiewallactivity();
 	$activity = nxs_dataprotection_getcanonicalactivity($activity);
-	if ($activity == "nexusframework_usecookiewall")
+	
+	$result = ($truecookiewallactivity == $activity);
+	return $result;
+}
+
+function nxs_dataprotection_getactivitydefaultuserconsentrequirement($activity)
+{
+	$result = "component_requires_no_explicit_consent";
+	return $result;
+}
+
+function nxs_dataprotection_getactivitydefaultoperationalstate($activity)
+{
+	$defaultoperationalstate = "enabled";				
+	$protecteddata = nxs_dataprotection_getactivityprotecteddata($activity);
+	
+	$defaultoperationalstatekey = "defaultoperationalstate";
+	if (isset($protecteddata[$defaultoperationalstatekey]))
+	{
+		$defaultoperationalstate = $protecteddata[$defaultoperationalstatekey];
+	}
+	$result = $defaultoperationalstate;
+	return $result;
+}
+
+function nxs_dataprotection_isoperational($activity)
+{
+	if (nxs_hassitemeta())
+	{
+		$prefix = nxs_dataprotection_getprefix();
+		$activity = nxs_dataprotection_getcanonicalactivity($activity);
+		
+		$sitemeta = nxs_getsitemeta();
+		$key = "{$prefix}{$activity}_operationalstate";
+		$value = $sitemeta[$key];
+	}
+	
+	if ($value == "")
+	{
+		$value = nxs_dataprotection_getactivitydefaultoperationalstate($activity);
+	}
+	
+	if ($value == "enabled")
 	{
 		$result = true;
 	}
-	else
+	else if ($value == "disabled")
 	{
 		$result = false;
 	}
+	else
+	{
+		nxs_webmethod_return_nack("unsupported; nxs_dataprotection_isoperational; $value");
+	}
+	
+	return $result;
 }
 
 function nxs_dataprotection_isactivityonforuser($activity)
 {
-	$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($activity);
-	
-	if (nxs_dataprotection_iscookiewallactivity($activity))
+	if (nxs_dataprotection_isoperational($activity))
 	{
-		if ($dataprotectiontype == "")
+		// controller has turned on this activity
+		
+		if (nxs_browser_ishuman())
 		{
-			$result = false;	// defaults to false
-		}
-		else if ($dataprotectiontype == "disabled")
-		{
-			$result = false;	// defaults to false
-		}
-		else if ($enabled_disabled_for_robots == "disabled")
-		{
-			if (nxs_browser_iscrawler())
+			// its a human
+			if (nxs_dataprotection_iscookiewallactivity($activity))
 			{
-				$result = false;	// 
-			}
-			else
-			{
-				if (nxs_dataprotection_isexplicitconsentgiven($activity))
-				{
-					$result = false;	// 
-				}
-				else
-				{
-					$result = true;	// 
-				}
-			}
-		}	
-	}
-	else
-	{
-		if ($dataprotectiontype == "")
-		{
-			$result = true;
-		}
-		else if ($dataprotectiontype == "enabled")
-		{
-			$result = true;
-		}
-		else if ($dataprotectiontype == "enabled_after_cookie_wall_consent_or_robot")
-		{
-			if (nxs_browser_iscrawler())
-			{
+				// for the cookiewall; if its operationally on, the activity is on, period
 				$result = true;
 			}
 			else
 			{
-				$usecookiewallactivity = "nexusframework:usecookiewall";
-				if (nxs_dataprotection_isexplicitconsentgiven($usecookiewallactivity))
+				// some activity other than the cookiewall
+				// whether this is enabled is dependent upon the fact whether the controller turned on the cookiewall or not
+				$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+				if (nxs_dataprotection_isoperational($cookiewallactivity))
 				{
-					$result = true;
+					// the cookie wall is turned on
+					if (nxs_dataprotection_isexplicitconsentgiven($cookiewallactivity))
+					{
+						// the user gave an explicit consent on the cookie wall, proceed
+						$result = true;
+					}
+					else
+					{
+						// no explicit consent on the cookiewall, stop
+						$result = false;
+					}
 				}
 				else
 				{
-					$result = false;
-				}
-			}
-		}
-		else if ($dataprotectiontype == "enabled_after_cookie_component_consent_or_robot")
-		{
-			if (nxs_browser_iscrawler())
-			{
-				$result = true;
-			}
-			else
-			{
-				if (nxs_dataprotection_isexplicitconsentgiven($activity))
-				{
+					// cookiewall is turned off by the controler and the activity is turned on; means controller decided to 
+					// not require an explicit consent
 					$result = true;
 				}
-				else
-				{
-					$result = false;
-				}			
 			}
-		}
-		else if ($dataprotectiontype == "disabled")
-		{
-			$result = false;
 		}
 		else
 		{
-			nxs_webmethod_return_nack("unsupported dataprotectiontype; $dataprotectiontype");
+			// all activities that are operational are available for bots, no questions asked
+			$result = true;
 		}
 	}
-	
-	
-
+	else
+	{
+		// if the controller decided to disable the feature the activity is off
+		$result = false;
+	}
 	
 	return $result;
 }
 
 function nxs_dataprotection_isexplicitconsentgiven($activity)
 {
-	
-	// its not a bot, check if the cookie is set
 	$cookiename = nxs_dataprotection_getexplicitconsentcookiename($activity);
-	
 	$r = $_COOKIE[$cookiename];
 	if ($r == "")
 	{
@@ -350,39 +383,60 @@ function nxs_dataprotection_getdataprotectiontype($activity)
 	return $result;
 }
 
+function nxs_dataprotection_showcookiewall()
+{
+	// redirect user to the cookie wall page
+	
+	$url = nxs_dataprotection_getprivacysettingsurl();
+	?>
+	<script>
+		window.location = '<?php echo $url; ?>';
+	</script>
+	<?php
+	wp_redirect($url, 301);
+	die();
+	die();
+}
+
+function nxs_dataprotection_getprivacysettingsurl()
+{
+	$url = nxs_geturl_home();
+	$url = nxs_addqueryparametertourl_v2($url, "nxs", "privacysettings", true, true);
+	return $url;
+}
+
+function nxs_dataprotection_isprivacysettingspage()
+{
+	$privacysettingsurl = nxs_dataprotection_getprivacysettingsurl();
+	$currenturl = nxs_geturlcurrentpage();
+	$result = ($currenturl == $privacysettingsurl);
+	return $result;
+}
+
 //
 function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 {
-	if ($_REQUEST["nxs"] == "privacysettings")
+	// render cookie wall / privacy settings page if this request is for the privacy settings
+	if (nxs_dataprotection_isprivacysettingspage())
 	{
 		nxs_dataprotection_renderwebsitevisitorprivacyoptions();
 		die();
 	}
 	
-	$usecookiewallactivity = "nexusframework:usecookiewall";
-	$dataprotectiontype_usecookie = nxs_dataprotection_getdataprotectiontype($usecookiewallactivity);
-	if ($dataprotectiontype_usecookie == "")
+	// check if we should redirect to the cookie wall page (privacy settings)
+	$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+	if (nxs_dataprotection_isoperational($cookiewallactivity))
 	{
-		// ignore this; default = no cookie wall
-	}
-	else if ($dataprotectiontype_usecookie == "disabled")
-	{
-		// ignore this; default = no cookie wall
-	}
-	else if ($dataprotectiontype_usecookie == "enabled_disabled_for_robots")
-	{
-		// its turned on
-		
-		if (nxs_browser_iscrawler())
-		{
-			// its a bot; no cookie wall
-		}
-		else
+		if (nxs_browser_ishuman())
 		{
 			// its not a bot, check if the cookie is set
-			if (!nxs_dataprotection_isexplicitconsentgiven($usecookiewallactivity))
+			if (nxs_dataprotection_isexplicitconsentgiven($cookiewallactivity))
 			{
-				nxs_dataprotection_renderwebsitevisitorprivacyoptions();
+				// okidoki, consent was given
+			}
+			else
+			{
+				nxs_dataprotection_showcookiewall();
 				die();
 			}
 			else
@@ -390,10 +444,16 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 				// proceed; an expliciet consent is found
 			}
 		}
+		}
+		else
+		{
+			// bots bypass the cookiewall, thus nothing to do here
+		}
+	}
 	}
 	else
 	{
-		nxs_webmethod_return_nack("error; nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest; unsupported dataprotectiontype ($dataprotectiontype)");
+		// controller disabled the cookiewall, nothing to do here
 	}
 }
 
@@ -538,7 +598,7 @@ function nxs_dataprotection_factor_createprotecteddata($type)
 function nxs_dataprotection_nexusframework_process_request_getprotecteddata($args)
 {
 	// for any user
-	$subactivities[] = "nexusframework:usecookiewall";
+	$subactivities[] = nxs_dataprotection_getcookiewallactivity();
 	$subactivities[] = "nexusframework:usegooglefonts";
 	$subactivities[] = "nexusframework:useanalytics";
 	$subactivities[] = "nexusframework:usegoogletagmanager";
@@ -598,10 +658,11 @@ function nxs_dataprotection_nexusframework_process_request_getprotecteddata($arg
 	return $result;
 }
 
-function nxs_dataprotection_nexusframework_usecookiewall_getprotecteddata($args)
+function nxs_dataprotection_nexusframework_cookiewall_getprotecteddata($args)
 {
 	$result = array
 	(
+		"defaultoperationalstate" => "disabled",	// by default its disabled
 		"controller_label" => "Cookie wall",
 		"subactivities" => array
 		(
@@ -741,7 +802,7 @@ function nxs_dataprotection_factory_getenableoptions($type)
 			"" => "No explicit consent is required (default)",
 			"enabled" => "No explicit consent is required",
 			"enabled_after_cookie_wall_consent_or_robot" => "An explicit cookie wall consent is required (robots dont require any consent)",
-			"enabled_after_cookie_component_consent_or_robot" => "An explicit cookie component consent is required (robots dont require any consent)",
+			// "enabled_after_cookie_component_consent_or_robot" => "An explicit cookie component consent is required (robots dont require any consent)",
 			"disabled" => "Disabled (this feature is disabled)",
 		);
 	}
@@ -757,11 +818,9 @@ function nxs_dataprotection_factory_getenableoptions($type)
 	}
 	else if ($type == "cookiewall")
 	{
+		// none; the cookiewall is either operational or its not
 		$result = array
 		(
-			"" => "Disabled (website visitors wont see a cookie wall) (default)",
-			"disabled" => "Disabled (website visitors wont see a cookie wall)",
-			"enabled_disabled_for_robots" => "An expliciet cookie wall consent is required to view the site (ignored by robots)",
 		);
 	}
 	else if ($type == "studio:enabled")
