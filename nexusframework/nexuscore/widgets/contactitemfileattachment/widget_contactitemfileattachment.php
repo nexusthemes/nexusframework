@@ -391,10 +391,10 @@ function nxs_dataprotection_nexusframework_widget_contactitemfileattachment_getp
 				"data_retention" => "The file is not automatically cleaned; it will be kept there as long as the terms and conditions apply between website_owner and hosting_provider, or until the file is deleted manually",
 				"program_lifecycle_phase" => "compiletime",
 				"why" => "Not applicable (because this is a compiletime declaration)",
-				"security" => "If the ",
+				"security" => "Not applicable (because this is a compiletime declaration)",
 			),
 		),
-		"status" => "OPEN (wat gebeurt er met de file nadat submit afgehandeld is?)",
+		"status" => "final",
 	);
 	return $result;
 }

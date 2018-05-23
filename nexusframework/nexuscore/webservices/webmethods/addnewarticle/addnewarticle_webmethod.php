@@ -35,4 +35,10 @@ function nxs_webmethod_addnewarticle()
 	$response = nxs_addnewarticle($combinedargs);
 	nxs_webmethod_return($response);
 }
+
+function nxs_dataprotection_nexusframework_webmethod_addnewarticle_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
 ?>

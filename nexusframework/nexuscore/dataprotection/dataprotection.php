@@ -614,8 +614,8 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 
 function nxs_dataprotection_renderwebsitevisitorprivacyoptions()
 {
-	require_once("nxs-privacysettings.php");
-	nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual();
+	require_once("nxs-cookiewall.php");
+	nxs_dataprotection_rendercookiewall_actual();
 }
 
 // todo: move to nexuscore/dataprotection/nxs-dataprotection.php
@@ -696,14 +696,10 @@ function nxs_dataprotection_nexusframework_process_request_getprotecteddata($arg
 	$subactivities[] = "nexusframework:usegooglefonts";
 	$subactivities[] = "nexusframework:useanalytics";
 	$subactivities[] = "nexusframework:usegoogletagmanager";
-	$subactivities[] = "google:loadspecificfontsdependingonhowconfigured";
 	
 	// for logged in users;
-	$subactivities[] = "nexusframework:selectlanguage_nxs_cookie_hl";
 	
 	$subactivities[] = "nexusframework:updates";
-	$subactivities[] = "dpa:nexus:usegooglefonts";
-
 	$subactivities[] = "nexusframework:license";
 	$subactivities[] = "nexusframework:ixplatform";
 	
@@ -746,7 +742,8 @@ function nxs_dataprotection_nexusframework_process_request_getprotecteddata($arg
 		"subactivities" => $subactivities,
 		"dataprocessingdeclarations" => array	
 		(
-		)
+		),
+		"status" => "final",
 	);
 	
 	return $result;
@@ -756,7 +753,7 @@ function nxs_dataprotection_nexusframework_cookiewall_getprotecteddata($args)
 {
 	$result = array
 	(
-		"defaultoperationalstate" => "disabled",	// by default its disabled
+		"defaultoperationalstate" => "disabled",	// by default its disabled, otherwise new users who use this theme will see the cookiewall after activating the theme
 		"controller_label" => "Cookie wall",
 		"subactivities" => array
 		(
@@ -827,7 +824,6 @@ function nxs_dataprotection_nexusframework_usegooglefonts_getprotecteddata($args
 	);
 	return $result;
 }
-
 
 function nxs_dataprotection_nexusframework_useanalytics_getprotecteddata($args)
 {

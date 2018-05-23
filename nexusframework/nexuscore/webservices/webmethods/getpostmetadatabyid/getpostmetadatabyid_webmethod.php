@@ -28,3 +28,10 @@ function nxs_webmethod_getpostmetadatabyid()
 
 	nxs_webmethod_return_ok($result);	
 }
+
+function nxs_dataprotection_nexusframework_webmethod_getpostmetadatabyid_getprotecteddata($args)
+{
+	return nxs_dataprotection_factor_createprotecteddata("webmethod-none");
+}
+
+?>

@@ -1283,11 +1283,12 @@ function nxs_dataprotection_nexusframework_widget_formbox_instance_getprotectedd
 		$what = implode(", ", $whats);
 	}
 	
-	//
-	$data_retention = $widgetmeta["dataprotection_data_retention"];
-	$why = $widgetmeta["dataprotection_why"];
-	$security = $widgetmeta["dataprotection_security"];
-	$controller_label = $widgetmeta["dataprotection_controller_label"];
+	// we could perhaps allow website_owners to fill in the data retention, the why, security, controller label in
+	// the widget; as this is not needed for now we will leave it as is.
+	$data_retention = "";
+	$why = "";
+	$security = "";
+	$controller_label = "";
 	if ($controller_label == "")
 	{
 		$controller_label = "Form $instance";
@@ -1315,10 +1316,10 @@ function nxs_dataprotection_nexusframework_widget_formbox_instance_getprotectedd
 				"data_retention" => $data_retention,
 				"program_lifecycle_phase" => "runtime",
 				"why" => $why,
-				"security" => $security,
+				"security" => $security,,
 			),			
 		),
-		"status" => "draft; todo: controller_options; perhaps the recipient of the mail is also a data processor?",
+		"status" => "final",
 	);
 	
 	return $result;

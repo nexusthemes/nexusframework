@@ -6192,68 +6192,6 @@ function nxs_localization_getsupportedforeignlanguages()
 	*/
 }
 
-function nxs_localization_usenativelanguage()
-{
-	$currentlanguage = nxs_localization_getcurrent_hl_language();
-	
-	if ($currentlanguage == "" || $currentlanguage == "en")
-	{
-		$result = true;
-	}
-	else
-	{
-		$result = false;
-	}
-	
-	/*
-	$foreignlanguages = nxs_localization_getsupportedforeignlanguages();
-	if (in_array($currentlanguage, $foreignlanguages))
-	{
-		$result = false;
-	}
-	else
-	{
-		$result = true;
-	}
-	*/
-	return $result;
-}
-
-function nxs_localization_getcurrent_hl_language()
-{
-	// returns "" when native language is active,
-	// or the specific foreign language otherwise
-	$result = "en";
-	
-	if ($_SERVER["HTTP_HOST"] == "nl.nexusthemes.com")
-	{
-		$result = "nl";
-	}
-	
-	if (nxs_has_adminpermissions())
-	{
-		// using non-native language is only available for administrators
-		if (isset($_COOKIE["nxs_cookie_hl"]))
-		{
-			$result = $_COOKIE["nxs_cookie_hl"];
-		}
-		
-		if (isset($_REQUEST["hl"]))
-		{
-			$result = $_REQUEST["hl"];
-		}
-		else
-		{
-			if (isset($_REQUEST["clientqueryparameters"]["hl"]))
-			{
-				$result = $_REQUEST["clientqueryparameters"]["hl"];
-			}
-		}
-	}
-	
-	return $result;
-}
-
 function nxs_localization_getblogidforlanguage($lang)
 {
 	if ($_SERVER["HTTP_HOST"] == "nexusthemes.com")
@@ -10036,63 +9974,6 @@ function nxs_url_prettyfy($slug, $homeurl = "")
 	}
 	
 	return $slug;
-}
-
-// obsolete function
-function nxs_filter_getwidgetmetadata_localize($result)
-{
-	return nxs_localization_localize($result);
-}
-
-// retrieves widget metadata, taking into consideration
-// localized fields that could be applicable for this widget,
-// if widget meta = "title" => "foo" and "title_hl_nl" => "bar",
-// the function will return meta as "title" = "bar" and "title_hl_nl" = "bar" if the hl language is set to "nl".
-function nxs_localization_localize($result)
-{
-	if (count($result) == 0)
-	{
-		// lookup will fail
-	}
-	else
-	{
-		nxs_requirepopup_contextprocessor("widgets");
-		
-		$widget = $result["type"];
-		nxs_requirewidget($widget);
-		$sheet = "home";
-		
-		$options = nxs_popup_contextprocessor_widgets_getoptions_widgetsheet($widget, $sheet);
-		$localizablefieldids = nxs_localization_getlocalizablefieldids($options);
-		if (!nxs_localization_usenativelanguage())
-		{
-			// translation is required
-			$currenthllanguage = nxs_localization_getcurrent_hl_language();
-			
-			foreach ($localizablefieldids as $currentlocalizablefieldid)
-			{
-				// override widgetmeta["{$id}"] with widgetmeta["{$id}_hl_{$currenthllanguage}"]
-				
-				//echo $currentlocalizablefieldid . " / " . $currentlocalizablefieldid . "_hl_" . $currenthllanguage;
-				//echo $result[$currentlocalizablefieldid] . " / " . $result[$currentlocalizablefieldid . "_hl_" . $currenthllanguage];
-				
-				if ($result[$currentlocalizablefieldid . "_hl_" . $currenthllanguage] == "")
-				{
-					// fallback scenario; we stick to the native language if the translated version is empty
-					$result[$currentlocalizablefieldid];
-				}
-				else
-				{
-					$result[$currentlocalizablefieldid] = $result[$currentlocalizablefieldid . "_hl_" . $currenthllanguage];
-				}
-			}
-		}
-		else
-		{
-			// stick to native language		
-		}
-	}
-	return $result;
 }
 
 function nxs_widgets_busrule_pagetemplates_getbeforeitems()
