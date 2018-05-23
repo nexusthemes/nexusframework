@@ -165,7 +165,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 				
 				/* Switch
 				---------------------------------------------------------------------------------------------------- */			
-				.switch { position: relative; display: inline-block; width: 60px; height: 34px; line-height: 34px; text-indent: 80px; margin-bottom: 1.2em;}
+				.switch { position: relative; display: inline-block; width: 100%; height: 34px; line-height: 34px; text-indent: 80px; margin-bottom: 1.2em;}
 				.switch input {display:none;}
 				.slider {
 					position: absolute;
@@ -196,7 +196,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 					-ms-transform: translateX(26px);
 					transform: translateX(26px);
 				}
-				.slider.round { border-radius: 34px; }
+				.slider.round { border-radius: 34px; width: 60px; }
 				.slider.round:before { border-radius: 50%; }
 			
             </style> 
@@ -236,7 +236,7 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 					<label class="switch" for="'.$cookiename.'">
 						<input type="checkbox" class="nxsexplicituserconsent" data-cookiename="'.$cookiename.'" id="'.$cookiename.'" '.$checkedattribute.' />
 						<span class="slider round"></span>
-						'.$controller_label.'
+						<span>'.$controller_label.'</span>
 					</label>
 					<br/>
 					';
