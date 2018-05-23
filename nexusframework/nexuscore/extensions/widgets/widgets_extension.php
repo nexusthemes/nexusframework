@@ -323,6 +323,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "formitemcaptcha", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "formitemcheckbox", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "formitemprivacyconsent", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemreplyto", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "formitemhtml", "tags" => array("nexus"));
@@ -393,6 +394,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 			"contactitemreplyto",
 			"formitemcaptcha",
 			"formitemcheckbox",
+			"formitemprivacyconsent",
 			"definitionlistitemtext",
 			"eventsboxitem", 
 			"gallerybox", 
@@ -495,6 +497,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("contactitemfileattachment");
 	nxs_ext_lazyload_widget("formitemcaptcha");
 	nxs_ext_lazyload_widget("formitemcheckbox");
+	nxs_ext_lazyload_widget("formitemprivacyconsent");
 	nxs_ext_lazyload_widget("formitemhtml");
 	nxs_ext_lazyload_widget("blog");
 	nxs_ext_lazyload_widget("archive");

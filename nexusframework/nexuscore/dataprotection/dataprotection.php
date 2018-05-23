@@ -217,12 +217,105 @@ function nxs_dataprotection_getcookiewallconsenttext()
 	{
 		$prefix = nxs_dataprotection_getprefix();		
 		$sitemeta = nxs_getsitemeta();
-		$result = $sitemeta["{$prefix}cookiewallconsenttext("];
+		$result = $sitemeta["{$prefix}cookiewallconsenttext"];
 	}
 	
 	if ($result == "")
 	{
 		$result = "I hereby acknowledge that I have read and understood the Privacy Policy and provide consent to process my user my data";
+	}
+	
+	return $result;
+}
+
+function nxs_dataprotection_isprivacysupported()
+{
+	// supported from WP 4.9.6 and up
+	$result = function_exists("get_privacy_policy_url");
+	return $result;
+}
+
+function nxs_dataprotection_getprivacypolicy_postid()
+{
+	$result = "";
+	if (nxs_dataprotection_isprivacysupported())
+	{
+		$policy_page_id = (int) get_option( 'wp_page_for_privacy_policy' );
+		if ( ! empty( $policy_page_id ) && get_post_status( $policy_page_id ) === 'publish' ) 
+		{
+			$result = $policy_page_id;
+		}
+	}
+	return $result;
+}
+
+function nxs_dataprotection_isprivacysupported_and_configured()
+{
+	if (nxs_dataprotection_isprivacysupported() && nxs_dataprotection_getprivacypolicy_postid() != "")
+	{
+		$result = true;
+	}
+	else
+	{
+		$result = false;
+	}
+	return $result;
+}
+
+function nxs_dataprotection_getprivacypolicyurl()
+{
+	$postid = nxs_dataprotection_getprivacypolicy_postid();
+	if ($postid != "")
+	{
+		$result = nxs_geturl_for_postid($postid);
+	}
+	else
+	{
+		$result = "";
+	}
+	
+	return $result;
+}
+
+function nxs_dataprotection_getprivacypolicytitle()
+{
+	$postid = nxs_dataprotection_getprivacypolicy_postid();
+	if ($postid != "")
+	{
+		$result = nxs_gettitle_for_postid($postid);
+	}
+	else
+	{
+		if (is_user_logged_in())
+		{
+			$result = "Privacy policy not configured";
+		}
+		else
+		{
+			$result = "Login to see the error ERR.34987349457";
+		}
+	}
+	
+	return $result;
+}
+
+function nxs_dataprotection_getprivacypolicytext()
+{
+	$postid = nxs_dataprotection_getprivacypolicy_postid();
+	if ($postid != "")
+	{
+		$result = nxs_getwpcontent_for_postid($postid);
+	}
+	else
+	{
+		if (is_user_logged_in())
+		{
+			$result = "Privacy policy not configured";
+		}
+		else
+		{
+			$result = "Login to see the error ERR.34987349457b";
+		}
 	}
 	
 	return $result;
@@ -403,6 +496,10 @@ function nxs_dataprotection_getprefix()
 
 function nxs_dataprotection_getdataprotectiontype($activity)
 {
+	// 
+	
+	// if 
+	
 	if (nxs_hassitemeta())
 	{
 		$prefix = nxs_dataprotection_getprefix();
@@ -476,93 +573,43 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 	// check if we should redirect to the cookie wall page (privacy settings)
 	if (true)
 	{
-		$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
-		if (nxs_dataprotection_isoperational($cookiewallactivity))
+		if (nxs_iswploginpage())
 		{
-			if (nxs_browser_ishuman())
+			// login is ok
+		}
+		else if (is_admin())
+		{
+			// admin pages are ok
+		}
+		else
+		{
+			$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+			if (nxs_dataprotection_isoperational($cookiewallactivity))
 			{
-				// its not a bot, check if the cookie is set
-				if (nxs_dataprotection_isexplicitconsentgiven($cookiewallactivity))
+				if (nxs_browser_ishuman())
 				{
-					// okidoki, consent was given
+					// its not a bot, check if the cookie is set
+					if (nxs_dataprotection_isexplicitconsentgiven($cookiewallactivity))
+					{
+						// okidoki, consent was given
+					}
+					else
+					{
+						nxs_dataprotection_showcookiewall();
+						die();
+					}
 				}
 				else
 				{
-					nxs_dataprotection_showcookiewall();
-					die();
+					// bots bypass the cookiewall, thus nothing to do here
 				}
 			}
 			else
 			{
-				// bots bypass the cookiewall, thus nothing to do here
+				// controller disabled the cookiewall, nothing to do here
 			}
 		}
-		else
-		{
-			// controller disabled the cookiewall, nothing to do here
-		}
 	}
-}
-
-function nxs_dataprotection_renderexplicitconsentinput($activity)
-{
-	$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($activity);
-	
-	if ($dataprotectiontype == "enabled_after_cookie_component_consent_or_robot")
-	{
-		$currenturl = nxs_geturlcurrentpage();
-		$where_to_give_consent_url = nxs_geturl_home();
-		$where_to_give_consent_url = nxs_addqueryparametertourl_v2($where_to_give_consent_url, "nxs", "privacysettings", true, true);
-		$where_to_give_consent_url = nxs_addqueryparametertourl_v2($where_to_give_consent_url, "returnto", $currenturl, true, true);
-		
-		nxs_ob_start();
-		?>
-		<div><a href='<?php echo $where_to_give_consent_url; ?>'>Click here to give your consent to render <?php echo $activity; ?></a></div>
-		<?php
-		$result = nxs_ob_get_contents();
-		nxs_ob_end_clean();
-	}
-	else if ($dataprotectiontype == "enabled_after_cookie_wall_consent_or_robot")
-	{
-		nxs_ob_start();
-		?>
-		<div><?php echo $activity; ?>; disabled</div>
-		<?php
-		$result = nxs_ob_get_contents();
-		nxs_ob_end_clean();
-	}
-	else if ($dataprotectiontype == "disabled")
-	{
-		if (is_user_logged_in())
-		{
-			nxs_ob_start();
-			?>
-			<div class='hidewheneditorinactive'><?php echo $activity; ?>; disabled by website owner (controller)</div>
-			<?php
-			$result = nxs_ob_get_contents();
-			nxs_ob_end_clean();
-		}
-		else
-		{
-			nxs_ob_start();
-			?>
-			<div><?php echo $activity; ?>; <?php echo $dataprotectiontype; ?></div>
-			<?php
-			$result = nxs_ob_get_contents();
-			nxs_ob_end_clean();
-		}
-	}
-	else
-	{
-		nxs_ob_start();
-		?>
-		<div>Unexpected; <?php echo $activity; ?>; <?php echo $dataprotectiontype; ?></div>
-		<?php
-		$result = nxs_ob_get_contents();
-		nxs_ob_end_clean();
-	}
-	
-	return $result;
 }
 
 function nxs_dataprotection_renderwebsitevisitorprivacyoptions()

@@ -13551,3 +13551,24 @@ function nxs_popup_renderpopuptemplate($destination_popuparticleid, $domid)
 	</template>
 	<?php
 }
+
+function nxs_popup_factory_createnotificationoptions($sheettitle, $notification)
+{
+	$options = array
+	(
+		"sheettitle" => $sheettitle,
+		"footerfiller" => true,
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "x",
+				"label"			=> nxs_l18n__("Page caching", "nxs_td"),
+				"type" 			=> "custom",
+				"custom" => $notification,
+			),
+		),
+	);
+	
+	return $options;
+}

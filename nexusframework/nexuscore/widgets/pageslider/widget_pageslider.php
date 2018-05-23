@@ -628,7 +628,7 @@ function nxs_widgets_pageslider_beforeend_head()
 								slideshow               :   1,												// Slideshow on/off
 								autoplay				:	<?php echo $autoplay; ?>,						// Slideshow starts playing automatically
 								start_slide             :   <?php echo $startslide; ?>,						// Start slide (0 is random)
-								image_path				:	'http://demo4.horecamasters.nl/wordpress/wp-content/themes/rsw/images/supersized/',
+								image_path				:	'',
 								stop_loop				:	0,												// Pauses slideshow on last slide
 								random					: 	0,												// Randomize slide order (Ignores start slide)
 								slide_interval          :   <?php echo $item_durationvisibility; ?>,		// Length between transitions

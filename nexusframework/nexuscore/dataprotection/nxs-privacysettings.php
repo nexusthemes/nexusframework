@@ -2,6 +2,26 @@
 
 function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 {
+	if (!nxs_dataprotection_isprivacysupported_and_configured())
+	{
+		if (is_user_logged_in())
+		{
+			$backendurl = get_admin_url();
+		}
+		else
+		{
+			$backendurl = wp_login_url();
+		}
+		
+		//
+		?>
+		Error<br />
+		unable to render cookiewall - privacy policy is not configured or not published (requires WP 4.9.6 or above)<br />
+		<a href='<?php echo $backendurl; ?>'>Go to the WP backend</a>
+		<?php
+		die();
+	}
+	
 	$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
 	$cookiename = nxs_dataprotection_getexplicitconsentcookiename($cookiewallactivity);
 
@@ -22,10 +42,10 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 	$backgroundimage_url = nxs_img_getimageurlthemeversion($backgroundimage_url);
 	
 	// GDPR Trust Icon			
-	$gdpr_imageid = $sitemeta["gdpr_imageid"];
-	$imagemetadata = nxs_wp_get_attachment_image_src($gdpr_imageid, 'full', true);
-	$gdprimage_url = $imagemetadata[0];
-	$gdprimage_url = nxs_img_getimageurlthemeversion($gdprimage_url);
+	$cookie_wall_trust_imageid = $sitemeta["cookie_wall_trust_imageid"];
+	$imagemetadata = nxs_wp_get_attachment_image_src($cookie_wall_trust_imageid, 'full', true);
+	$cookie_wall_trust_imageurl = $imagemetadata[0];
+	$cookie_wall_trust_imageurl = nxs_img_getimageurlthemeversion($cookie_wall_trust_imageurl);
 	
 	// GDPR Content
 	$text = $sitemeta["text"];
@@ -34,8 +54,8 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 	$background_color = $sitemeta["background_color"];
 	
 	// Privacy Policy
-	$privacy_policy_title = $sitemeta["privacy_policy_title"];
-	$privacy_policy_text = $sitemeta["privacy_policy_text"];
+	$privacy_policy_title = nxs_dataprotection_getprivacypolicytitle();
+	$privacy_policy_text = wpautop(nxs_dataprotection_getprivacypolicytext());
 	
 	$jquery_url = nxs_getframeworkurl() . "/js/jquery-1.11.1/jquery.min.js";
 	        
@@ -231,7 +251,6 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 			}
 			
 			$controllable_activity = nxs_dataprotection_getcanonicalactivity($controllable_activity);
-			$dataprotectiontype = nxs_dataprotection_getdataprotectiontype($controllable_activity);
 			
 			$is_operational = nxs_dataprotection_isoperational($controllable_activity);
 			
@@ -263,8 +282,16 @@ function nxs_dataprotection_renderwebsitevisitorprivacyoptions_actual()
 			<div id="nxsdataprotectionback">
 				<div id="nxsdataprotectionwrap" style="background-color: '.$background_color.';">
 					
+					
 					<p style="text-align: center;">
-						<img src="'.$gdprimage_url.'">
+						';
+						
+						if ($cookie_wall_trust_imageid != "")
+						{
+							echo '<img src="'.$cookie_wall_trust_imageurl.'">';
+						}
+						
+						echo '
 					</p>
 					
 					<p>'.$text.'</p>

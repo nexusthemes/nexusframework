@@ -238,7 +238,8 @@ function nxs_widgets_search_render_webpart_render_htmlvisualization($args)
 		$activity = "nexusframework:widget_search";
 		if (!nxs_dataprotection_isactivityonforuser($activity))
 		{
-			$result["html"] = nxs_dataprotection_renderexplicitconsentinput($activity);
+			// not allowed
+			$result["html"] = "";
 		}
 	}
 	
@@ -272,6 +273,7 @@ function nxs_dataprotection_nexusframework_widget_search_getprotecteddata($args)
 {
 	$result = array
 	(
+		"controller_label" => "Site Search",
 		"subactivities" => array
 		(
 			// if widget has properties that pull information from other 

@@ -30,7 +30,39 @@ function nxs_js_formbox_send(postid, placeholderid)
 		return;
 	}
 	
-	//
+	// first we check if all form items that require explicit user consent prior to sending are checked
+	// find input fields
+	var numberofmissedexplicitconsents = 0;
+	jQuery("#nxs-widget-" + placeholderid).find(".nxs-requires-explicitconsent-before-sending").each
+	(
+		function(i)
+		{
+			if (!jQuery(this).is(':checked'))
+			{
+				if (numberofmissedexplicitconsents == 0)
+				{
+					//nxs_js_log("no checked for;");
+					//nxs_js_log(this);
+					numberofmissedexplicitconsents++;
+
+					var text = jQuery(this).attr("data-textnoconsent");
+					alert(text);
+					
+					return;
+				}
+				else 
+				{
+					// one message is enough; ignore the next ones (would mean multiple consents?)
+				}
+			}
+		}
+	);
+	
+	// don't send if one (or more) consents are missing
+	if (numberofmissedexplicitconsents > 0)
+	{
+		return;
+	}
 	
 	
 	nxs_js_formbox_handlestartprocessing(postid, placeholderid);

@@ -27,6 +27,8 @@ function nxs_popup_optiontype_gotosheet_renderhtmlinpopup($optionvalues, $args, 
 					</div>
           <div class="box-content">
           	<?php
+          	echo $custom;
+          	
           	echo '
           	<a href="#" class="nxsbutton1 nxs-float-right" onclick="nxs_js_gotosheet_' . $id . '(); return false;">' . $buttontext . '</a>
           </div>

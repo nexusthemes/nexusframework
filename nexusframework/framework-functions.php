@@ -420,24 +420,6 @@ nxs_addfeedsupport();
 nxs_addyoastseosupport();
 nxs_addwoocommercesupport();
 
-
-function nxs_seotab_pluginnotfound()
-{
-	?>
-	<div id="tabs-seo" class="seo-disabled">
-		<div class="content nxs-padding10">
-			<h2>Search engine optimization</h2>
-			<br />
-			<br />
-			<p>
-				<?php nxs_l18n_e("Want to attract more traffic to your website? Click <a target='_blank' href='http://nexusthemes.com/support/increase-visitors/'>here</a>", "nxs_td"); ?><br />
-			</p>
-		</div>
-	</div>
-	<?php
-}
-add_action('nxs_ext_seotab_pluginnotfound', 'nxs_seotab_pluginnotfound');	// default implementation, can be overruled
-
 function nxs_session_hasstartedactivesession()
 {
 	$r = isset($_COOKIE[session_name()]);
@@ -801,7 +783,7 @@ function nxs_init()
 	  			{ 
 		  			$ch = curl_init();
 				    curl_setopt($ch, CURLOPT_URL, $url);
-				    curl_setopt($ch, CURLOPT_REFERER, "http://www.example.org/yay.htm");
+				    curl_setopt($ch, CURLOPT_REFERER, "https://www.example.org/yay.htm");
 				    curl_setopt($ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0");
 				    curl_setopt($ch, CURLOPT_HEADER, 0);
 				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

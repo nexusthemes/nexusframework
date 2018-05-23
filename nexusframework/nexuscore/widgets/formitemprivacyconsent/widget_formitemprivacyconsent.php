@@ -1,17 +1,17 @@
 <?php
 
-function nxs_widgets_formitemcheckbox_geticonid()
+function nxs_widgets_formitemprivacyconsent_geticonid()
 {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-checkmark";
+	return "nxs-icon-handshake";
 }
 
-function nxs_widgets_formitemcheckbox_gettitle()
+function nxs_widgets_formitemprivacyconsent_gettitle()
 {
-	return nxs_l18n__("Checkbox input", "nxs_td");
+	return nxs_l18n__("Privacy consent", "nxs_td");
 }
 
-function nxs_widgets_formitemcheckbox_getformitemsubmitresult($args)
+function nxs_widgets_formitemprivacyconsent_getformitemsubmitresult($args)
 {
 	// $args consists of "metadata"
 	// combined with $_POST this should feed us with all information
@@ -22,7 +22,6 @@ function nxs_widgets_formitemcheckbox_getformitemsubmitresult($args)
 	$elementid = $metadata["elementid"];
 	$overriddenelementid = $metadata["overriddenelementid"];
 	$formlabel = $metadata["formlabel"];
-	$isrequired = $metadata["isrequired"];
 		
 	$result = array();
 	$result["result"] = "OK";
@@ -42,8 +41,14 @@ function nxs_widgets_formitemcheckbox_getformitemsubmitresult($args)
 	}	
 	$value = $_POST[$key];
 	
-	if ($isrequired != "")
+	if (true)
 	{
+		if (!nxs_dataprotection_isprivacysupported_and_configured())
+		{
+			// error
+			$result["validationerrors"][] = nxs_l18n__("Privacy policy is not setup properly (contact the site admin)", "nxs_td");
+			$result["markclientsideelements"][] = $key;
+		}
 		// it is required field
 		if (trim($value) == '')
 		{
@@ -61,7 +66,7 @@ function nxs_widgets_formitemcheckbox_getformitemsubmitresult($args)
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,
 // hierbij worden afhankelijk van de rechten ook knoppen gerenderd waarmee de gebruiker
 // het bewerken van de placeholder kan opstarten
-function nxs_widgets_formitemcheckbox_renderinformbox($args)
+function nxs_widgets_formitemprivacyconsent_renderinformbox($args)
 {
 	extract($args);
 	
@@ -73,6 +78,8 @@ function nxs_widgets_formitemcheckbox_renderinformbox($args)
 	nxs_requirewidget("formbox");
 	$prefix = nxs_widgets_formbox_getclientsideprefix($postid, $placeholderid);
 	
+	$privacypolicyurl = nxs_dataprotection_getprivacypolicyurl();
+	
 	if ($metadata_overriddenelementid != "")
 	{
 		$key = $metadata_overriddenelementid;
@@ -80,6 +87,11 @@ function nxs_widgets_formitemcheckbox_renderinformbox($args)
 	else
 	{
 		$key = $prefix . $metadata_elementid;
+	}
+
+	if ($metadata_popuptextifnoconsent == "")
+	{
+		$metadata_popuptextifnoconsent = "We cannot process your form without your consent to the privacy policy";
 	}
 	
 	//
@@ -95,8 +107,10 @@ function nxs_widgets_formitemcheckbox_renderinformbox($args)
 	}
 	?>
 	<div style='margin-bottom: 10px;'>
-  <input type="checkbox" style='margin-bottom: 0px; height: 13px;' id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name" <?php echo $checkedattribute; ?> />
-  <label for="<?php echo $key; ?>" style='display: inline-block;' class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
+  <input type="checkbox" style='margin-bottom: 0px; height: 13px;' id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name nxs-requires-explicitconsent-before-sending" <?php echo $checkedattribute; ?> data-textnoconsent="<?php echo $metadata_popuptextifnoconsent; ?>" />
+  <label for="<?php echo $key; ?>" style='display: inline-block;' class="field_name">
+  	<a href="<?php echo $privacypolicyurl; ?>" target="_blank"><?php echo $metadata_formlabel;?><?php if (true) { ?>*<?php } ?></a>
+  </label>
   </div>
 	<?php
 	// var_dump($args);
@@ -111,7 +125,7 @@ function nxs_widgets_formitemcheckbox_renderinformbox($args)
 	return $result;
 }
 
-function nxs_widgets_formitemcheckbox_render_webpart_render_htmlvisualization($args)
+function nxs_widgets_formitemprivacyconsent_render_webpart_render_htmlvisualization($args)
 {
 	//
 	extract($args);
@@ -163,7 +177,7 @@ function nxs_widgets_formitemcheckbox_render_webpart_render_htmlvisualization($a
 	
 	nxs_ob_start();
 
-	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-formitemcheckbox-item";
+	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-formitemprivacyconsent-item";
 	
 	/* ADMIN OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -172,7 +186,7 @@ function nxs_widgets_formitemcheckbox_render_webpart_render_htmlvisualization($a
 	<div class="nxs-dragrow-handler nxs-padding-menu-item">
 		<div class="content2">
 			<div class="box">
-	        	<div class="box-title nxs-width40"><h4><span class="nxs-icon-checkmark" style="font-size: 16px;" /> Checkbox</h4></div>
+	        	<div class="box-title nxs-width40"><h4><span class="nxs-icon-handshake" style="font-size: 16px;" /> Privacy consent</h4></div>
 				<div class="box-content  nxs-width60">'.$formlabel.'</div>
 			</div>
 			<div class="nxs-clear"></div>
@@ -193,17 +207,28 @@ function nxs_widgets_formitemcheckbox_render_webpart_render_htmlvisualization($a
 }
 
 // Define the properties of this widget
-function nxs_widgets_formitemcheckbox_home_getoptions($args) 
+function nxs_widgets_formitemprivacyconsent_home_getoptions($args) 
 {
+	if (!nxs_dataprotection_isprivacysupported())
+	{
+		// return; please upgrade to wp 4.9.6 or above
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first upgrade to WP 4.9.6");
+	}
+	
+	// this is wp 4.9.6 or above
+	if (nxs_dataprotection_getprivacypolicy_postid() == "")
+	{
+		$fixurl = get_admin_url(null, "privacy.php");
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first <a href='$fixurl'>configure the privacy policy page in the WP backend and ensure its published</a>.");
+	}
+	
 	$options = array
 	(
-		"sheettitle" => nxs_widgets_formitemcheckbox_gettitle(),
-		"sheeticonid" => nxs_widgets_formitemcheckbox_geticonid(),
+		"sheettitle" => nxs_widgets_formitemprivacyconsent_gettitle(),
+		"sheeticonid" => nxs_widgets_formitemprivacyconsent_geticonid(),
 	
 		"fields" => array
 		(
-			// GENERAL			
-			
 			array
 			( 
 				"id" 				=> "formlabel",
@@ -230,25 +255,45 @@ function nxs_widgets_formitemcheckbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Override default element ID", "nxs_td"),
 				"placeholder" => nxs_l18n__("Leave blank to use default", "nxs_td"),
 			),
-			*/
-			array
-			( 
-				"id" 				=> "isrequired",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Is required", "nxs_td"),
-			),
-
+			*/			
 		)
+	);
+	
+	$privacypolicyurl = nxs_dataprotection_getprivacypolicyurl();
+	if ($privacypolicyurl != "")
+	{
+		$custom = nxs_l18n__("<a target='_blank' href='{$privacypolicyurl}'>{$privacypolicyurl}</a>");
+	}
+	else
+	{
+		$custom = nxs_l18n__("Error; privacy policy is not yet configured");
+	}
+	
+	$fixurl = get_admin_url(null, "privacy.php");
+	$options["fields"][] = array
+	( 
+		"id"				=> "editlinkref",
+		"type" 				=> "custom",
+		"label" 			=> nxs_l18n__("Change privacy policy link", "nxs_td"),
+		"custom" => "$custom | <a href='$fixurl' class='nxsbutton1'>Edit</a>",
+	);
+	
+	$options["fields"][] = array
+	( 
+		"id" 				=> "popuptextifnoconsent",
+		"type" 				=> "input",
+		"label" 			=> nxs_l18n__("No consent error text", "nxs_td"),
 	);
 	
 	return $options;
 }
 
-function nxs_widgets_formitemcheckbox_initplaceholderdata($args)
+function nxs_widgets_formitemprivacyconsent_initplaceholderdata($args)
 {
 	extract($args);
 
 	$args["elementid"] = nxs_generaterandomstring(6);
+	$args["popuptextifnoconsent"] = "We cannot process your form without your consent to the privacy policy";
 	
 	nxs_mergewidgetmetadata_internal($postid, $placeholderid, $args);
 	
@@ -258,7 +303,7 @@ function nxs_widgets_formitemcheckbox_initplaceholderdata($args)
 	return $result;
 }
 
-function nxs_dataprotection_nexusframework_widget_formitemcheckbox_getprotecteddata($args)
+function nxs_dataprotection_nexusframework_widget_formitemprivacyconsent_getprotecteddata($args)
 {
 	return nxs_dataprotection_factor_createprotecteddata("widget-defaultformitem");
 }

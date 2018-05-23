@@ -537,7 +537,8 @@ function nxs_widgets_twittertweets_render_webpart_render_htmlvisualization($args
 		$activity = "nexusframework:widget_twittertweets";
 		if (!nxs_dataprotection_isactivityonforuser($activity))
 		{
-			$result["html"] = nxs_dataprotection_renderexplicitconsentinput($activity);
+			// not allowed
+			$result["html"] = "";
 		}
 	}
 	

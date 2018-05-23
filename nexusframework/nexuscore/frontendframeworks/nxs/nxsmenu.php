@@ -597,7 +597,7 @@
 	                  		}
 	                  		else
 	                  		{
-	                  			echo nxs_dataprotection_renderexplicitconsentinput($googlewebfont_activity);
+	                  			// not allowed
 	                  		}
 	                  		?>
 		              	</div>

@@ -1,5 +1,5 @@
 /*  Theme Name: Default Admin styling Description: Default Admin styling 
-Version: 2.1.0 Author: Nexus Studios Author URI: http://www.nexusthemes.com/ */
+Version: 2.1.0 Author: Nexus Studios Author URI: https://nexusthemes.com/ */
 
 /* ADMIN STYLES
 ------------------------------------------------------------------------------------------ */
@@ -616,8 +616,8 @@ a.nxs-big-button:hover,
 a.nxs-medium-button:hover 							{ text-decoration: none !important; }
 
 /* WordPress button */
-a.button-wp 										{ background: #72B12F url("http://46.252.194.50/nexusv2/files/2012/10/logo-wp.png") no-repeat 15px 15px; padding: 25px 20px 25px 80px !important; }
-a.button-wp:hover 									{ background: #518F1D url("http://46.252.194.50/nexusv2/files/2012/10/logo-wp.png") no-repeat 15px 15px; }
+a.button-wp 										{ background: #72B12F; padding: 25px 20px 25px 80px !important; }
+a.button-wp:hover 									{ background: #518F1D; }
 
 /* ADMIN BLUE BUTTON
 ----------------------------------------------------------------------------------------------------*/

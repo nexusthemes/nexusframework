@@ -1407,47 +1407,24 @@ class nxs_g_modelmanager
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "embed");
 			$result[] = array("widgetid" => "embedrepeater");
-			
-			//$result[] = array("widgetid" => "socialaccounts");
-			//$result[] = array("widgetid" => "commercialmsgs");
-			
-
 		}
 		else if ($nxsposttype == "sidebar") 
 		{
 			$result[] = array("widgetid" => "list");
 			$result[] = array("widgetid" => "embed");
 			$result[] = array("widgetid" => "embedrepeater");
-			 
-			
-			//$result[] = array("widgetid" => "socialaccounts");
 		}
 		else if ($nxsposttype == "header") 
 		{
 			$result[] = array("widgetid" => "list");
-			//$result[] = array("widgetid" => "phone");
-			//$result[] = array("widgetid" => "buslogo");
 			$result[] = array("widgetid" => "embed");
 			$result[] = array("widgetid" => "embedrepeater");
-			
-			//$result[] = array("widgetid" => "socialaccounts");
-			//$result[] = array("widgetid" => "commercialmsgs");
 		}
 		else if ($nxsposttype == "footer") 
 		{
 			$result[] = array("widgetid" => "list");
-			//$result[] = array("widgetid" => "phone");
-			//$result[] = array("widgetid" => "buslogo");
 			$result[] = array("widgetid" => "embed");
 			$result[] = array("widgetid" => "embedrepeater");
-			
-			//$result[] = array("widgetid" => "socialaccounts");
-			//$result[] = array("widgetid" => "commercialmsgs");
-		}
-		
-		if ($pagetemplate == "pagedecorator") 
-		{
-			//$result[] = array("widgetid" => "taxpageslider", "tags" => array("nexus"));		
 		}
 		
 		return $result;
@@ -1737,18 +1714,10 @@ class nxs_g_modelmanager
 	{
 		// widgets
 		nxs_lazyload_plugin_widget(__FILE__, "list");
-		
 		nxs_lazyload_plugin_widget(__FILE__, "embed");
-		
 		nxs_lazyload_plugin_widget(__FILE__, "embedrepeater");
-		
-		//nxs_lazyload_plugin_widget(__FILE__, "phone");
-		//nxs_lazyload_plugin_widget(__FILE__, "buslogo");
-		//nxs_lazyload_plugin_widget(__FILE__, "socialaccounts");
-		//nxs_lazyload_plugin_widget(__FILE__, "commercialmsgs");
 
 		// page decorators
-		//nxs_lazyload_plugin_widget(__FILE__, "taxpageslider");
 		
 		// handle bulk model prefetching
 		

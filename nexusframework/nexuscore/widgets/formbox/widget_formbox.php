@@ -213,6 +213,8 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"type" 				=> "wrapperend"
 			),
 			
+			/*
+			
 			// DATA PROTECTION
 			
 			array
@@ -262,6 +264,8 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"
 			),
+			
+			*/
 												
 			// TITLE	
 			
@@ -747,6 +751,8 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	
 	$buttoncssclasses = nxs_concatenateargswithspaces("nxs-form-submit", "nxs-button", $button_color_cssclass, $button_scale_cssclass, $button_border_radius_cssclass);
 	
+	$semilazyinvoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_log();');";
+	
 	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_formbox_send(&quot;" .  $postid . "&quot;, &quot;" . $placeholderid . "&quot;);');";
 
 	$destination_js = $invoke . "; return false;";
@@ -887,6 +893,18 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		</script>
 		
 		<?php
+		
+		// load the script that handles the submit after some secs
+		// way beyond the load so the page loads fast,
+		// and way prior to the form being submitted such that its as responsive as we would like
+		if (true)
+		{
+			?>
+			<script>
+				setTimeout(function(){ <?php echo $semilazyinvoke; ?> }, 3000);				
+			</script>
+			<?php
+		}
 		
 		if ($icon == "" && $title == "")
 		{

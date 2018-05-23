@@ -2189,10 +2189,23 @@ function nxs_site_dashboardhome_rendersheet($args)
 	        <div class="content2">
             <div class="box">
               <div class="box-title">
-              	<h4><?php nxs_l18n_e("Options to control the processing of personal data (GDPR/privacy)", "nxs_td"); ?></h4>
+              	<h4><?php nxs_l18n_e("Cookie wall", "nxs_td"); ?></h4>
               </div>
               <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectioncontrollerhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectioncookiewallhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        
+	        <!-- data protection component control -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Component control", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectioncomponentcontrolhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
               </div>
             </div>
             <div class="nxs-clear margin"></div>
@@ -2202,7 +2215,7 @@ function nxs_site_dashboardhome_rendersheet($args)
 	        <div class="content2">
             <div class="box">
               <div class="box-title">
-              	<h4><?php nxs_l18n_e("Cache management (performance/speed)", "nxs_td"); ?></h4>
+              	<h4><?php nxs_l18n_e("Cache management", "nxs_td"); ?></h4>
               </div>
               <div class="box-content">
               	<a href="#" onclick="nxs_js_popup_site_neweditsession('cachemanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
@@ -2661,9 +2674,22 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 	return $result;
 }
 
-
-function nxs_site_dataprotectioncontrollerhome_getoptions($args)
+function nxs_site_dataprotectioncomponentcontrolhome_getoptions($args)
 {
+	if (!nxs_dataprotection_isprivacysupported())
+	{
+		// return; please upgrade to wp 4.9.6 or above
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first upgrade to WP 4.9.6");
+	}
+	
+	// this is wp 4.9.6 or above
+	if (nxs_dataprotection_getprivacypolicy_postid() == "")
+	{
+		// return; please configure the privacy policy first
+		$fixurl = get_admin_url(null, "privacy.php");
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first <a href='$fixurl'>configure the privacy policy page in the WP backend and ensure its published</a>.");
+	}
+	
 	$prefix = nxs_dataprotection_getprefix();
 
 	$fields = array();
@@ -2672,69 +2698,6 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 	
 	if (true)
 	{
-		// GENERAL
-		
-		$fields[] = array
-		( 
-			"id" 				=> "wrapper_title_begin",
-			"type" 				=> "wrapperbegin",
-			"label" 			=> nxs_l18n__("General", "nxs_td"),
-			"initial_toggle_state"	=> "closed-if-empty",
-			"initial_toggle_state_id" => "title",
-		);
-		
-		$fields[] = array
-		( 
-			"id" 				=> "text",
-			"type" 				=> "input",
-			"label" 			=> nxs_l18n__("Title", "nxs_td"),
-			"placeholder" 		=> nxs_l18n__("This site has components that use cookies and process user data to analyze traffic and optimize your web experience. Please provide your consent for the following component(s) to function.", "nxs_td"),
-			"unicontentablefield" => true,
-			"localizablefield"	=> true
-		);
-		if (true)
-		{
-			$fields[] = array
-			(
-				"id" 	=> "{$prefix}controllerlatestversion",
-				"type" 	=> "input",
-				"label"	=> nxs_l18n__("Version", "nxs_td"),
-			);
-			$fields[] = array
-			(
-				"id" 		=> "{$prefix}cookiewallcookieretention",
-				"type" 		=> "select",
-				"label"		=> nxs_l18n__("Retention period (Cookie wall consent)", "nxs_td"),
-				"dropdown" 	=> array
-				(
-					"" 		=> "30 days (default)",
-					"30" 	=> "30 days",
-					"60" 	=> "60 days",
-					"365" 	=> "365 days",
-				),
-			);
-			$fields[] = array
-			(
-				"id" 	=> "{$prefix}cookiewallbuttontext",
-				"type" 	=> "input",
-				"label"	=> nxs_l18n__("Cookie wall button text", "nxs_td"),
-			);
-			$fields[] = array
-			(
-				"id" 	=> "{$prefix}cookiewallconsenttext",
-				"type" 	=> "input",
-				"label"	=> nxs_l18n__("Cookie wall consent text", "nxs_td"),
-			);
-			
-			
-		}
-				
-		$fields[] = array
-		( 
-				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
-		);
-		
 		// DATA PROCESSING SERVICES
 		
 		if (true)
@@ -2847,6 +2810,156 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 			
 		}
 		
+		
+		
+	}
+	
+	// 
+	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Component Control", "nxs_td"),
+		"footerfiller" => true,
+		"fields" => $fields,
+	);
+	
+	return $options;	
+}
+
+function nxs_site_dataprotectioncookiewallhome_getoptions($args)
+{
+	if (!nxs_dataprotection_isprivacysupported())
+	{
+		// return; please upgrade to wp 4.9.6 or above
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first upgrade to WP 4.9.6");
+	}
+	
+	// this is wp 4.9.6 or above
+	if (nxs_dataprotection_getprivacypolicy_postid() == "")
+	{
+		// return; please configure the privacy policy first
+		$fixurl = get_admin_url(null, "privacy.php");
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first <a href='$fixurl'>configure the privacy policy page in the WP backend and ensure its published</a>.");
+	}
+	
+	$prefix = nxs_dataprotection_getprefix();
+
+	$fields = array();
+
+	// EXPLICIT CONSENT OPTIONS
+	
+	if (true)
+	{
+		// GENERAL
+		
+		
+		// DATA PROCESSING SERVICES
+		
+		if (true)
+		{
+			$fields[] = array
+			( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> "Control the operational state per component",
+			);
+			
+			//only show the cookie wall activity here
+			$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+			$controllable_activity = $cookiewallactivity;
+			$meta = nxs_dataprotection_getactivityprotecteddata($cookiewallactivity);
+			
+			if (true)
+			{
+				$controller_options = $meta["controller_options"];
+				$controller_label = $meta["controller_label"];
+				if ($controller_label == "")
+				{
+					$controller_label = $controllable_activity;
+				}
+				
+				$defaultvalue = nxs_dataprotection_getactivitydefaultoperationalstate($controllable_activity);
+				
+				$prefix = nxs_dataprotection_getprefix();
+				$id = "{$prefix}{$controllable_activity}_operationalstate";
+				$id = str_replace("@", "_", $id);
+				
+				$fields[] = array
+				(
+					"id" 				=> $id,
+					"type" 				=> "select",
+					"label" 			=> $controller_label,
+					"dropdown" => array
+					(
+						"enabled" => "Enabled",
+						"disabled" => "Disabled",
+					),
+					"defaultblankvalue" => $defaultvalue,
+				);
+			}
+
+		}
+			
+		$fields[] = array
+		( 
+			"id" 				=> "wrapper_title_begin",
+			"type" 				=> "wrapperbegin",
+			"label" 			=> nxs_l18n__("General", "nxs_td"),
+		);
+		
+		$fields[] = array
+		( 
+			"id" 				=> "text",
+			"type" 				=> "input",
+			"label" 			=> nxs_l18n__("Title", "nxs_td"),
+			"placeholder" 		=> nxs_l18n__("This site has components that use cookies and process user data to analyze traffic and optimize your web experience. Please provide your consent for the following component(s) to function.", "nxs_td"),
+			"unicontentablefield" => true,
+			"localizablefield"	=> true
+		);
+		if (true)
+		{
+			$fields[] = array
+			(
+				"id" 	=> "{$prefix}controllerlatestversion",
+				"type" 	=> "input",
+				"label"	=> nxs_l18n__("Version", "nxs_td"),
+			);
+			$fields[] = array
+			(
+				"id" 		=> "{$prefix}cookiewallcookieretention",
+				"type" 		=> "select",
+				"label"		=> nxs_l18n__("Retention period (Cookie wall consent)", "nxs_td"),
+				"dropdown" 	=> array
+				(
+					"" 		=> "30 days (default)",
+					"30" 	=> "30 days",
+					"60" 	=> "60 days",
+					"365" 	=> "365 days",
+				),
+			);
+			$fields[] = array
+			(
+				"id" 	=> "{$prefix}cookiewallbuttontext",
+				"type" 	=> "input",
+				"label"	=> nxs_l18n__("Cookie wall button text", "nxs_td"),
+			);
+			$fields[] = array
+			(
+				"id" 	=> "{$prefix}cookiewallconsenttext",
+				"type" 	=> "input",
+				"label"	=> nxs_l18n__("Cookie wall consent text", "nxs_td"),
+			);
+			
+			
+		}
+				
+		$fields[] = array
+		( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "wrapperend"
+		);
+		
+
 		// IMAGES
 		
 		$fields[] = array
@@ -2854,13 +2967,11 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Images", "nxs_td"),
-				"initial_toggle_state"	=> "closed-if-empty",
-				"initial_toggle_state_id" => "title",
 			);
 			
 		$fields[] = array
 		(
-			"id" 			=> "gdpr_imageid",
+			"id" 			=> "cookie_wall_trust_imageid",
 			"label"			=> nxs_l18n__("Trust Icon", "nxs_td"),
 			"type" 			=> "image",
 		);
@@ -2877,48 +2988,13 @@ function nxs_site_dataprotectioncontrollerhome_getoptions($args)
 				"type" 				=> "wrapperend"
 		);
 		
-		// PRIVACY POLICY
-		
-		$fields[] = array
-		( 
-				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Privacy Policy", "nxs_td"),
-				"initial_toggle_state"	=> "closed-if-empty",
-				"initial_toggle_state_id" => "title",
-			);
-		
-		$fields[] = array
-		( 
-			"id" 				=> "privacy_policy_title",
-			"type" 				=> "input",
-			"label" 			=> nxs_l18n__("Title", "nxs_td"),
-			"placeholder" 		=> nxs_l18n__("Title goes here", "nxs_td"),
-			"unicontentablefield" => true,
-			"localizablefield"	=> true
-		);
-		$fields[] = array
-		(
-			"id" 				=> "privacy_policy_text",
-			"type" 				=> "tinymce",
-			"label" 			=> nxs_l18n__("Text", "nxs_td"),
-			"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
-			"unicontentablefield" => true,
-			"localizablefield"	=> true
-		);
-		
-		$fields[] = array
-		( 
-				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
-		);
 	}
 	
 	// 
 	
 	$options = array
 	(
-		"sheettitle" => nxs_l18n__("Options to control the processing of personal data", "nxs_td"),
+		"sheettitle" => nxs_l18n__("Cookie wall", "nxs_td"),
 		"footerfiller" => true,
 		"fields" => $fields,
 	);

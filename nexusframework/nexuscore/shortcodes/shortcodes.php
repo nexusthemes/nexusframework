@@ -100,6 +100,18 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			//
 		}
+		else if ($op == "privacypolicy_title")
+		{
+			$input = nxs_dataprotection_getprivacypolicytitle();
+		}
+		else if ($op == "privacypolicy_text")
+		{
+			$input = nxs_dataprotection_getprivacypolicytext();
+		}
+		else if ($op == "privacypolicy_url")
+		{
+			$input = nxs_dataprotection_getprivacypolicyurl();
+		}
 		else if ($op == "form_items_data")
 		{
 			$result = array();
