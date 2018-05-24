@@ -13444,7 +13444,7 @@ function nxs_popup_factory_createnotificationoptions($sheettitle, $notification)
 			array
 			(
 				"id" 			=> "x",
-				"label"			=> nxs_l18n__("Page caching", "nxs_td"),
+				"label"			=> "",
 				"type" 			=> "custom",
 				"custom" => $notification,
 			),

@@ -666,6 +666,21 @@ function nxs_dataprotection_factor_createprotecteddata($type)
 			"status" => "final",
 		);
 	}
+	else if ($type == "plugin-none")
+	{
+		$result = array
+		(
+			"subactivities" => array
+			(
+				// intentionally left blank
+			),
+			"dataprocessingdeclarations" => array	
+			(
+				//
+			),
+			"status" => "final",
+		);
+	}
 	else if ($type == "widget-defaultformitem")
 	{
 		// NOTE; only use this approach for default form items (such as text input, select input, etc.)
