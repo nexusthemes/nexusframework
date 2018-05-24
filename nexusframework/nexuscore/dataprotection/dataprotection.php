@@ -323,8 +323,17 @@ function nxs_dataprotection_getprivacypolicytext()
 
 function nxs_dataprotection_iscacheallowed()
 {
-	// todo: to be implemented
-	return false;
+	$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+	if (nxs_dataprotection_isoperational($cookiewallactivity))
+	{
+		$result = false;
+	}
+	else
+	{
+		$result = true;
+	}
+	
+	return $result;
 }
 
 function nxs_dataprotection_getcookiewallactivity()
