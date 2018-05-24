@@ -2288,7 +2288,11 @@ add_action('wp_update_nav_menu_item', 'nxs_wp_update_nav_menu_item', 10, 3);
 
 function nxs_browser_ishuman()
 {
-	if (nxs_browser_iscrawler())
+	if( defined( 'WP_CLI' ) )
+	{
+		$result = false;
+	}
+	else if (nxs_browser_iscrawler())
 	{
 		$result = false;
 	}
