@@ -2679,7 +2679,8 @@ function nxs_site_dataprotectioncomponentcontrolhome_getoptions($args)
 	if (!nxs_dataprotection_isprivacysupported())
 	{
 		// return; please upgrade to wp 4.9.6 or above
-		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first upgrade to WP 4.9.6");
+		$fixurl = get_admin_url(null, "update-core.php");
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first <a href='$fixurl'>upgrade to the WP 4.9.6 or above</a>.");
 	}
 	
 	// this is wp 4.9.6 or above
@@ -2830,8 +2831,8 @@ function nxs_site_dataprotectioncookiewallhome_getoptions($args)
 {
 	if (!nxs_dataprotection_isprivacysupported())
 	{
-		// return; please upgrade to wp 4.9.6 or above
-		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first upgrade to WP 4.9.6");
+		$fixurl = get_admin_url(null, "update-core.php");
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first <a href='$fixurl'>upgrade to the WP 4.9.6 or above</a>.");
 	}
 	
 	// this is wp 4.9.6 or above
@@ -2899,7 +2900,18 @@ function nxs_site_dataprotectioncookiewallhome_getoptions($args)
 			}
 
 		}
-			
+		
+		$previewurl = nxs_dataprotection_getcookiewallpageurl();
+		
+		// link to cookie wall
+		$fields[] = array
+		( 
+			"id" 				=> "preview",
+			"type" 				=> "custom",
+			"label" 			=> nxs_l18n__("Url", "nxs_td"),
+			"custom" => "<a target='_blank' href='{$previewurl}'>$previewurl</a> <a target='_blank' class='nxsbutton1' href='{$previewurl}'>Preview</a>",
+		);
+		
 		$fields[] = array
 		( 
 			"id" 				=> "wrapper_title_begin",
@@ -2909,7 +2921,7 @@ function nxs_site_dataprotectioncookiewallhome_getoptions($args)
 		
 		$fields[] = array
 		( 
-			"id" 				=> "text",
+			"id" 				=> "cookie_wall_text",
 			"type" 				=> "input",
 			"label" 			=> nxs_l18n__("Title", "nxs_td"),
 			"placeholder" 		=> nxs_l18n__("This site has components that use cookies and process user data to analyze traffic and optimize your web experience. Please provide your consent for the following component(s) to function.", "nxs_td"),
@@ -2923,12 +2935,14 @@ function nxs_site_dataprotectioncookiewallhome_getoptions($args)
 				"id" 	=> "{$prefix}controllerlatestversion",
 				"type" 	=> "input",
 				"label"	=> nxs_l18n__("Version", "nxs_td"),
+				"tooltip" => "Each time you want to enforce a new consent from all website visitors, increase this version number (for example 1, 2, 3)",
+				"placeholder" => "For example v1 or a date format like 2018-05-24",
 			);
 			$fields[] = array
 			(
 				"id" 		=> "{$prefix}cookiewallcookieretention",
 				"type" 		=> "select",
-				"label"		=> nxs_l18n__("Retention period (Cookie wall consent)", "nxs_td"),
+				"label"		=> nxs_l18n__("Cookie retention period", "nxs_td"),
 				"dropdown" 	=> array
 				(
 					"" 		=> "30 days (default)",
@@ -2977,11 +2991,18 @@ function nxs_site_dataprotectioncookiewallhome_getoptions($args)
 		);
 		$fields[] = array
 		(
-			"id" 			=> "cookie_wall_image_imageid",
+			"id" 			=> "cookiewall_desktop_imageid",
 			"label"			=> nxs_l18n__("Background Image", "nxs_td"),
 			"type" 			=> "image",
 		);
-		
+		/*
+		$fields[] = array
+		(
+			"id" 			=> "cookiewall_wrapcolorzen",
+			"label"			=> nxs_l18n__("Wrap colorzen", "nxs_td"),
+			"type" 			=> "colorzen",
+		);
+		*/
 		$fields[] = array
 		( 
 				"id" 				=> "wrapper_title_end",
@@ -2995,7 +3016,6 @@ function nxs_site_dataprotectioncookiewallhome_getoptions($args)
 	$options = array
 	(
 		"sheettitle" => nxs_l18n__("Cookie wall", "nxs_td"),
-		"footerfiller" => true,
 		"fields" => $fields,
 	);
 	

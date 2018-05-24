@@ -731,6 +731,19 @@
 				</li>
 				<?php
 			}
+			
+			$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
+			if (nxs_dataprotection_isoperational($cookiewallactivity))
+			{
+				?>
+				<li class="nxs-hidewheneditorinactive">
+					<a href="#" class='site' onclick="nxs_js_popup_site_neweditsession('dataprotectioncookiewallhome'); return false;" title="<?php nxs_l18n_e("Cookie wall (active)", "nxs_td"); ?>">
+						<span class='nxs-icon-concrete'></span>
+					</a>
+				</li>
+				<?php
+			}
+			
 			?>
 			<li class="nxs-hidewheneditorinactive">
 				<a href="<?php bloginfo('url'); ?>" title="<?php nxs_l18n_e("Home[nxs:adminmenu,tooltip]", "nxs_td"); ?>" class='site' >

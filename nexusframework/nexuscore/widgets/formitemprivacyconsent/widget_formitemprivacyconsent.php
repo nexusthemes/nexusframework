@@ -211,8 +211,8 @@ function nxs_widgets_formitemprivacyconsent_home_getoptions($args)
 {
 	if (!nxs_dataprotection_isprivacysupported())
 	{
-		// return; please upgrade to wp 4.9.6 or above
-		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first upgrade to WP 4.9.6");
+		$fixurl = get_admin_url(null, "update-core.php");
+		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first <a href='$fixurl'>upgrade to the WP 4.9.6 or above</a>.");
 	}
 	
 	// this is wp 4.9.6 or above

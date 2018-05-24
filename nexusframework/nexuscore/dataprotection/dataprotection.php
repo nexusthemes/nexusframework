@@ -222,7 +222,7 @@ function nxs_dataprotection_getcookiewallconsenttext()
 	
 	if ($result == "")
 	{
-		$result = "I hereby acknowledge that I have read and understood the Privacy Policy and provide consent to process my user my data";
+		$result = "I hereby acknowledge that I have read and understood the Privacy Policy and provide consent to process my user data";
 	}
 	
 	return $result;

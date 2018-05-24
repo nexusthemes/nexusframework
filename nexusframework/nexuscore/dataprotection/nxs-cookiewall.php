@@ -35,9 +35,8 @@ function nxs_dataprotection_rendercookiewall_actual()
 	
 	// Background Image
 
-	$backgroundimage_url = "";
-	$cookie_wall_image_imageid = $sitemeta["cookie_wall_image_imageid"];
-	$imagemetadata = nxs_wp_get_attachment_image_src($cookie_wall_image_imageid, 'full', true);
+	$cookiewall_desktop_imageid = $sitemeta["cookiewall_desktop_imageid"];
+	$imagemetadata = nxs_wp_get_attachment_image_src($cookiewall_desktop_imageid, 'full', true);
 	$backgroundimage_url = $imagemetadata[0];
 	$backgroundimage_url = nxs_img_getimageurlthemeversion($backgroundimage_url);
 	
@@ -48,10 +47,11 @@ function nxs_dataprotection_rendercookiewall_actual()
 	$cookie_wall_trust_imageurl = nxs_img_getimageurlthemeversion($cookie_wall_trust_imageurl);
 	
 	// GDPR Content
-	$text = $sitemeta["text"];
+	$text = $sitemeta["cookie_wall_text"];
 	
 	// Background Color
-	$background_color = $sitemeta["background_color"];
+	$cookiewall_wrapcolorzen = $sitemeta["cookiewall_wrapcolorzen"];
+	$background_color = "#222222";
 	
 	// Privacy Policy
 	$privacy_policy_title = nxs_dataprotection_getprivacypolicytitle();
@@ -182,6 +182,7 @@ function nxs_dataprotection_rendercookiewall_actual()
 					text-transform: uppercase;
 					background: #2196F3;
 					color: white;
+					margin-top: 20px;
 				}
 				input[type=submit]:hover { cursor: pointer; }
 				
