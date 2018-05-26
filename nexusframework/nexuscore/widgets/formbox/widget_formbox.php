@@ -753,7 +753,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	
 	$semilazyinvoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_log();');";
 	
-	$invoke = "nxs_js_lazyexecute('/nexuscore/widgets/formbox/js/formbox.js?v=f" . nxs_getthemeversion(). "', true, 'nxs_js_formbox_send(&quot;" .  $postid . "&quot;, &quot;" . $placeholderid . "&quot;);');";
+	$invoke = "nxs_js_formbox_send(&quot;" .  $postid . "&quot;, &quot;" . $placeholderid . "&quot;);";
 
 	$destination_js = $invoke . "; return false;";
 	$destination_relation = "nofollow";
