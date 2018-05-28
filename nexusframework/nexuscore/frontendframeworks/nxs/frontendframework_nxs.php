@@ -1883,6 +1883,7 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 {
 	extract($args);
 	
+	/*
 	if ($_REQUEST["check"] == "atts")
 	{
 		foreach ($args as $k=>$v)
@@ -1900,6 +1901,7 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 			}
 		}
 	}
+	*/
 	
 	if ($text == "")
 	{
@@ -1920,6 +1922,11 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	
 	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
+	
+	if ($text_heightiq != "") 
+	{
+		$heightiq = $text_heightiq;
+	}
 	
 	if ($heightiq != "") 
 	{
