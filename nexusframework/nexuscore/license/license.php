@@ -32,8 +32,6 @@ function nxs_site_wipe()
 		die();
 	}
 	
-	//nxs_ob_start();
-	
 	global $wpdb;
 
 	// we do so for truly EACH post (not just post, pages, but also for entities created by third parties,
@@ -274,6 +272,20 @@ function nxs_license_addadminpages()
 	add_submenu_page("nxs_backend_overview", 'ThemeSwitch', 'ThemeSwitch', 'switch_themes', 'nxs_admin_themeswitch', 'nxs_license_themeswitch_page_content', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'All Themes', 'All Themes', 'switch_themes', 'nxs_admin_allthemes', 'nxs_redirect_to_all_themes', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'Backup and Restore', 'Backup &amp; Restore', 'switch_themes', 'nxs_admin_backup_and_restore', 'nxs_redirect_to_backup_and_restore', '', 81 );
+	
+	$a = array
+	(
+		"applyfilters" => "no",
+	);
+	$licensekey = nxs_license_getlicensekey($a);
+	if ($licensekey == "")
+	{
+		add_submenu_page("nxs_backend_overview", 'Free Registration', 'Free Registration', 'switch_themes', 'nxs_admin_terms', 'nxs_license_theme_register_for_free_page_content');
+	}
+	else
+	{
+		add_submenu_page("nxs_backend_overview", 'Candy Shop', 'Candy Shop', 'switch_themes', 'nxs_admin_terms', 'nxs_license_theme_registered_page_content');
+	}
 }
 
 function plugin_admin_init()
@@ -300,12 +312,56 @@ function plugin_admin_init()
 }
 add_action( 'admin_init', 'plugin_admin_init' );
 
-function nxs_license_getlicensekey()
+function nxs_license_getlicensekey($args = array())
 {
 	$result = esc_attr(get_option('nxs_licensekey'));
-	$result = apply_filters("nxs_f_licensekey", $result);
+	
+	$shouldapplyfilters = true;
+	if ("no" == $args["applyfilters"])
+	{
+		$shouldapplyfilters = false;
+	}
+	if ($shouldapplyfilters)
+	{
+		$result = apply_filters("nxs_f_licensekey", $result);
+	}
 	
 	return $result;
+}
+
+function nxs_license_getuserconsentkey()
+{
+	return "nxs_userconsentid";
+}
+
+function nxs_license_getuserconsentid($args = array())
+{
+	$user_id = get_current_user_id();
+	$key = nxs_license_getuserconsentkey();
+	$result = get_user_meta($user_id, $key, true);
+	
+	// apply filters
+	if (true)
+	{
+		$shouldapplyfilters = true;
+		if ("no" == $args["applyfilters"])
+		{
+			$shouldapplyfilters = false;
+		}
+		if ($shouldapplyfilters)
+		{
+			$result = apply_filters("nxs_f_license_getuserconsentid", $result);
+		}
+	}
+	
+	return $result;
+}
+
+function nxs_license_updateuserconsentid($consentid)
+{
+	$user_id = get_current_user_id();
+	$key = nxs_license_getuserconsentkey();
+	update_user_meta($user_id, $key, $consentid);
 }
 
 function nxs_section_license_callback()
@@ -733,7 +789,7 @@ function nxs_licenseregister_invoke()
 	
 	if ($nxs_explicitconsent == "")
 	{
-		update_option('nxs_licensekey', "");
+		nxs_licenseresetkey();
 		
 		?>
 		<p>
@@ -896,9 +952,8 @@ function nxs_licenseregister_callback()
 			</p>
 			<input type='checkbox' id='nxs_explicitconsent' name='nxs_explicitconsent' />
 			<label for="nxs_terms">
-				I hereby acknowledge that I have read and understood the terms and conditions<br /> 
-				as provided in the 'Terms and Conditions' as available at <a target='_blank' href='<?php echo $terms_url; ?>'><?php echo $terms_url; ?></a><br />
-				and I agree to all of the terms.
+				I hereby acknowledge that I have read, understood and accepted the terms and conditions<br /> 
+				as provided in the 'Terms and Conditions' as available at <a target='_blank' href='<?php echo $terms_url; ?>'><?php echo $terms_url; ?></a>
 			</label>
 			<p>
 				&nbsp;
@@ -1116,6 +1171,273 @@ function nxs_redirect_to_backup_and_restore()
 {
 	$redirect_url = 'https://www.wpsupporthelp.com/answer/could-you-explain-in-more-detail-what-the-automated-backup-featu-1562/';
 	nxs_redirect_to_absolute_url($redirect_url);
+}
+
+function nxs_license_getinappshopmeta()
+{
+	$a = array
+	(
+		"applyfilters" => "no",
+	);
+	$licensekey = nxs_license_getlicensekey($a);
+	if ($licensekey == "")
+	{
+		echo "site is not registered";
+		die();
+	}
+
+	$url = nxs_license_getlicenseserverurl("register");
+	$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "getinappshopmeta", true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "nxs_licensekey", $licensekey, true, true);
+	
+	$body = nxs_geturlcontents(array("url" => $url));
+	
+	$response_data = json_decode($body, true);
+	
+	if ($response_data["result"] != "OK")
+	{
+		echo "not available, sorry please try again lager";
+		die();
+	}
+	
+	return $response_data;
+}
+
+function nxs_license_theme_registered_page_content()
+{
+	if ($_REQUEST["action"] == "unregister")
+	{
+		// todo; notify the server 
+		nxs_licenseresetkey();
+		?>
+		<div class="wrap">
+			<h2>Unregistered</h2>
+		</div>
+		<p>
+			The license is now unregistered
+		</p>
+		<?php
+		die();
+	}
+	
+	$a = array
+	(
+		"applyfilters" => "no",
+	);
+	$licensekey = nxs_license_getlicensekey($a);
+	if ($licensekey == "")
+	{
+		//
+		echo "to use this functionality a license is required";
+		die();
+	}
+	
+	$unregisterurl = nxs_geturlcurrentpage();
+	$unregisterurl = nxs_addqueryparametertourl_v2($unregisterurl, "action", "unregister", true, true);
+
+	?>
+	<div class="wrap">
+		<h2>Registered</h2>
+	</div>
+	<p>
+		Registered using license key <?php echo $licensekey; ?><br />
+		To unregister the license use <a href='<?php echo $unregisterurl; ?>' />this link</a>
+	</p>
+	<p>
+		<h3>Candy shop</h3>
+		<p>
+			Bla bla bla
+		</p>
+		<h4>Products and services</h4>
+		<table>
+		<?php
+		$inappshop = nxs_license_getinappshopmeta();
+		foreach ($inappshop["items"] as $itemmeta)
+		{
+			$title = $itemmeta["title"];
+			$price = $itemmeta["price"];
+			echo "<tr><td>$title</td><td>$price</td></tr>";
+		}
+		?>
+		</table>
+		<?php
+		
+		echo "<hr />";
+		echo "<textarea style='width: 100%; height: 50vh;'>";
+		echo json_encode($inappshop);
+		echo "</textarea>";
+		?>
+	</p>
+	<?php
+}
+
+function nxs_license_theme_register_for_free_page_content()
+{
+	$a = array
+	(
+		"applyfilters" => "no",
+	);
+	$nxs_license_getuserconsentid = nxs_license_getuserconsentid($a);
+	if ($nxs_license_getuserconsentid != "")
+	{
+		echo "a consent was already given?";
+		echo "ERR 54345987.45";
+		die();
+	}
+		
+	if ($_REQUEST["action"] == "verifyuserconsenttoken")
+	{
+		$userconsenttoken = $_REQUEST["userconsenttoken"];
+		
+		$url = nxs_license_getlicenseserverurl("register");
+		$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "processuserconsenttoken", true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "userconsenttoken", $userconsenttoken, true, true);
+		
+		$body = nxs_geturlcontents(array("url" => $url));
+		
+		$response_data = json_decode($body, true);
+		
+		if ($response_data["result"] == "OK")
+		{
+			// update the licensekey in the option db of WP
+			$userconsentid = $response_data["licensekey"];
+			nxs_license_updateuserconsentid($userconsentid);
+						
+			$candystoreurl = admin_url('admin.php?page=nxs_admin_terms');
+						
+			?>
+			 <div class="wrap">
+		    <h2>Registration completed</h2>
+		    <p>
+		    	Hooray, this site is now registered :)
+		    </p>
+	    	<h3>Next steps from here</h3>
+	    	<ul>
+	    		<li><a href='<?php echo $candystoreurl; ?>'>To the candy store</a></li>
+		    </ul>
+		    </p>
+		   </div>
+		  <?php
+		}
+		else
+		{
+			?>
+			<div class="wrap">
+		    <h2>Registration failed</h2>
+		    <p>
+		    	Looks like something went wrong. You could try again later...
+		    </p>
+		  </div>
+			<?php
+		}
+		
+		die();
+	}
+	else if ($_REQUEST["action"] == "handleuseracceptsterms")
+	{
+		$whoownsthiswebsite = $_REQUEST["whoownsthiswebsite"];
+		$email = $_REQUEST["email"];
+		
+		$url = nxs_license_getlicenseserverurl("register");
+		$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "useracceptstermsrequest", true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "currenturl", nxs_geturlcurrentpage(), true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "firstname", $_REQUEST["firstname"], true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "lastname", $_REQUEST["lastname"], true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "email", $email, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "clientip", $_SERVER['REMOTE_ADDR'], true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "homeurl", nxs_geturl_home(), true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "termsurl", $termsurl, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "whoownsthiswebsite", $whoownsthiswebsite, true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "termsexplicitconsent", $_REQUEST["termsexplicitconsent"], true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "formtruecompleteandaccurate", $_REQUEST["formtruecompleteandaccurate"], true, true);
+		
+		$body = nxs_geturlcontents(array("url" => $url));
+		
+		$response_data = json_decode($body, true);
+		
+		if ($response_data["result"] == "OK")
+		{	
+			?>
+			<div class="wrap">
+				<h2>Register your copy for free</h2>
+			</div>
+			<p>
+				<h3>Please check your e-mail</h3>
+				We just send a confirmation mail to <?php echo $email; ?>. 
+				Please check your mailbox; you should receive an e-mail from us any minute now.
+			</p>
+			<p>
+				<h3>Alternative flows</h3>
+				Didn't find anything? Then ensure our email address is whitelisted and that
+				the e-mail didn't end up in your spam folder (if it did, we advise to white list our email address).
+			</p>
+			<?php
+			die();
+		}
+	}
+	
+	$current_user = wp_get_current_user();
+	$email = $current_user->user_email;
+	$firstname = $current_user->user_firstname;
+	$lastname = $current_user->user_lastname;
+	$termsurl = "https://nexusthemes.com/terms-and-conditions-1006/";
+	$editprofile = admin_url('profile.php');
+	?>
+	<div class="wrap">
+		<h2>Register your copy for free</h2>
+	</div>
+	<p>
+		Register your copy for free
+	</p>
+	<ul>
+		<li>Automatic notifications when a new version is release</li>
+		<li>Join our free community (per business type)</li>
+		<li>(todo list benefits)</li>
+	</ul>
+	<p>	
+		<form method="POST">
+			<input type="hidden" name="action" value="handleuseracceptsterms" /><br />
+
+			<label for="firstname">Firstname</label><br />
+			<input type="text" name="firstname" id="firstname" value="<?php echo $firstname; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
+			<br />
+
+			<label for="lastname">Lastname</label><br />
+			<input type="text" name="lastname" id="lastname" value="<?php echo $lastname; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
+			<br />
+
+			<label for="email">Email</label><br />
+			<input type="email" name="email" id="email" value="<?php echo $email; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
+			<br />
+				
+			<label>This website is owner by ...</label><br />
+
+			<input type="radio" id="itsformyownbusiness" name="whoownsthiswebsite" value="itsformyownbusiness" required>
+			<label for="itsformyownbusiness">Me</label><br />	
+
+			<input type="radio" id="itsformyclient" name="whoownsthiswebsite" value="itsformyclient" required>
+			<label for="itsformyclient">My client</label><br />
+
+			<input type="radio" id="itsforafriendorrelative" name="whoownsthiswebsite" value="itsforafriendorrelative" required>
+			<label for="itsforafriendorrelative">A friend of relative</label><br />
+
+			<br />
+			
+			<input type="checkbox" name="formtruecompleteandaccurate" id="formtruecompleteandaccurate" required />
+			<label for="formtruecompleteandaccurate">
+				I confirm that the information given in this form is true, complete and accurate</label><br />
+				<br />
+				
+			<input type="checkbox" name="termsexplicitconsent" id="termsexplicitconsent" required />
+			<label for="termsexplicitconsent">
+				I hereby acknowledge that the form is filled in correctly, and that I have read and understood the terms and conditions<br />
+				as provided in the 'Terms and Conditions' as available at <a target='_blank' href='<?php echo $termsurl; ?>'><?php echo $termsurl; ?></a><br />
+				and I agree to all of the terms</label><br />
+			<br />
+			<input type="submit" value="SUBMIT" />
+		</form>
+	</p>
+	<?php
 }
 
 ?>
