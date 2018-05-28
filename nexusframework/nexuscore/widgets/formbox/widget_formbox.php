@@ -472,7 +472,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> "Submit handling - Email",	
 			),
 			
-			
+			/*			
 			array
 			( 
 				"id" 				=> "sendoutmail",
@@ -481,6 +481,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Send mail to recipient?", "nxs_td"),
 				"customcontent" => "<input type='checkbox' disabled='disabled' checked='checked' />",
 			),
+			*/
 			
 			array(
 				"id" 				=> "internal_email",
