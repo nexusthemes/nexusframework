@@ -277,8 +277,8 @@ function nxs_license_addadminpages()
 	(
 		"applyfilters" => "no",
 	);
-	$licensekey = nxs_license_getlicensekey($a);
-	if ($licensekey == "")
+	$nxs_license_getuserconsentid = nxs_license_getuserconsentid($a);
+	if ($nxs_license_getuserconsentid == "")
 	{
 		add_submenu_page("nxs_backend_overview", 'Free Registration', 'Free Registration', 'switch_themes', 'nxs_admin_terms', 'nxs_license_theme_register_for_free_page_content');
 	}
@@ -1179,8 +1179,8 @@ function nxs_license_getinappshopmeta()
 	(
 		"applyfilters" => "no",
 	);
-	$licensekey = nxs_license_getlicensekey($a);
-	if ($licensekey == "")
+	$nxs_license_getuserconsentid = nxs_license_getuserconsentid($a);
+	if ($nxs_license_getuserconsentid == "")
 	{
 		echo "site is not registered";
 		die();
@@ -1188,7 +1188,7 @@ function nxs_license_getinappshopmeta()
 
 	$url = nxs_license_getlicenseserverurl("register");
 	$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "getinappshopmeta", true, true);
-	$url = nxs_addqueryparametertourl_v2($url, "nxs_licensekey", $licensekey, true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "nxs_licensekey", $nxs_license_getuserconsentid, true, true);
 	
 	$body = nxs_geturlcontents(array("url" => $url));
 	
@@ -1208,7 +1208,8 @@ function nxs_license_theme_registered_page_content()
 	if ($_REQUEST["action"] == "unregister")
 	{
 		// todo; notify the server 
-		nxs_licenseresetkey();
+		nxs_license_updateuserconsentid("");
+		
 		?>
 		<div class="wrap">
 			<h2>Unregistered</h2>
@@ -1224,8 +1225,8 @@ function nxs_license_theme_registered_page_content()
 	(
 		"applyfilters" => "no",
 	);
-	$licensekey = nxs_license_getlicensekey($a);
-	if ($licensekey == "")
+	$nxs_license_getuserconsentid = nxs_license_getuserconsentid($a);
+	if ($nxs_license_getuserconsentid == "")
 	{
 		//
 		echo "to use this functionality a license is required";
@@ -1326,6 +1327,9 @@ function nxs_license_theme_register_for_free_page_content()
 		    <h2>Registration failed</h2>
 		    <p>
 		    	Looks like something went wrong. You could try again later...
+		    	<!--
+		    	<?php echo $body; ?>
+		    	-->
 		    </p>
 		  </div>
 			<?php
@@ -1396,45 +1400,50 @@ function nxs_license_theme_register_for_free_page_content()
 	</ul>
 	<p>	
 		<form method="POST">
-			<input type="hidden" name="action" value="handleuseracceptsterms" /><br />
-
-			<label for="firstname">Firstname</label><br />
-			<input type="text" name="firstname" id="firstname" value="<?php echo $firstname; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
-			<br />
-
-			<label for="lastname">Lastname</label><br />
-			<input type="text" name="lastname" id="lastname" value="<?php echo $lastname; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
-			<br />
-
-			<label for="email">Email</label><br />
-			<input type="email" name="email" id="email" value="<?php echo $email; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
-			<br />
+				<input type="hidden" name="action" value="handleuseracceptsterms" /><br />
+	
+				<label for="firstname">Firstname</label><br />
+				<input type="text" name="firstname" id="firstname" value="<?php echo $firstname; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
+				<br />
+	
+				<label for="lastname">Lastname</label><br />
+				<input type="text" name="lastname" id="lastname" value="<?php echo $lastname; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
+				<br />
+	
+				<label for="email">Email</label><br />
+				<input type="email" name="email" id="email" value="<?php echo $email; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
+				<br />
+					
+				<label>Are you the website owner?</label><br />
+	
+				<input type="radio" id="itsformyownbusiness" name="whoownsthiswebsite" value="itsformyownbusiness" required>
+				<label for="itsformyownbusiness">Yes</label><br />	
+	
+				<input type="radio" id="itsformyclient" name="whoownsthiswebsite" value="itsformyclient" required>
+				<label for="itsformyclient">No, I am building this for my client</label><br />
 				
-			<label>This website is owner by ...</label><br />
-
-			<input type="radio" id="itsformyownbusiness" name="whoownsthiswebsite" value="itsformyownbusiness" required>
-			<label for="itsformyownbusiness">Me</label><br />	
-
-			<input type="radio" id="itsformyclient" name="whoownsthiswebsite" value="itsformyclient" required>
-			<label for="itsformyclient">My client</label><br />
-
-			<input type="radio" id="itsforafriendorrelative" name="whoownsthiswebsite" value="itsforafriendorrelative" required>
-			<label for="itsforafriendorrelative">A friend of relative</label><br />
-
-			<br />
-			
-			<input type="checkbox" name="formtruecompleteandaccurate" id="formtruecompleteandaccurate" required />
-			<label for="formtruecompleteandaccurate">
-				I confirm that the information given in this form is true, complete and accurate</label><br />
+				<?php
+				// todo: allow business owners to hide the user consent for all other users
+				?>
+	
+				<input type="radio" id="itsforafriendorrelative" name="whoownsthiswebsite" value="itsforafriendorrelative" required>
+				<label for="itsforafriendorrelative">No, I am building this for a friend of relative</label><br />
+	
 				<br />
 				
-			<input type="checkbox" name="termsexplicitconsent" id="termsexplicitconsent" required />
-			<label for="termsexplicitconsent">
-				I hereby acknowledge that the form is filled in correctly, and that I have read and understood the terms and conditions<br />
-				as provided in the 'Terms and Conditions' as available at <a target='_blank' href='<?php echo $termsurl; ?>'><?php echo $termsurl; ?></a><br />
-				and I agree to all of the terms</label><br />
-			<br />
-			<input type="submit" value="SUBMIT" />
+				<input type="checkbox" name="formtruecompleteandaccurate" id="formtruecompleteandaccurate" required />
+				<label for="formtruecompleteandaccurate">
+					I confirm that the information given in this form is true, complete and accurate</label><br />
+					<br />
+					
+				<input type="checkbox" name="termsexplicitconsent" id="termsexplicitconsent" required />
+				<label for="termsexplicitconsent">
+					I have read, understood and accepted the <a target='_blank' href='<?php echo $termsurl; ?>'>terms and conditions</a>
+				</label>
+				<br />
+				<br />
+				
+				<input type="submit" value="SUBMIT" />
 		</form>
 	</p>
 	<?php
