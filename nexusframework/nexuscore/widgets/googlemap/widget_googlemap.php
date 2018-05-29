@@ -1181,7 +1181,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 		</div>
 		<?php
 	}
-	else if ($translatedaddress == "")
+	else if ($address == "")
 	{
 		?>
 		<div>
