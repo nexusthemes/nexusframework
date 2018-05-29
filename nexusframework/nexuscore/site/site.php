@@ -2159,19 +2159,6 @@ function nxs_site_dashboardhome_rendersheet($args)
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
 
-					<!-- marketing management -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Marketing management", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('marketingmanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-
 					<!-- integrations -->
 	        <div class="content2">
             <div class="box">
@@ -2555,35 +2542,6 @@ function nxs_site_selectcommentprovider_getoptions($args)
 				"id" 			=> "active_commentsprovider",
 				"type" 			=> "select",
 				"dropdown" 		=> nxs_getcommentsproviders_idtonames(),
-			),
-		)
-	);
-	return $options;
-}
-
-/* MARKETING MANAGEMENT
----------------------------------------------------------------------------------------------------- */
-function nxs_site_marketingmanagementhome_getoptions($args)
-{	
-	$options = array
-	(
-		"sheettitle" => nxs_l18n__("Marketing management", "nxs_td"),
-		"fields" => array
-		(
-			array( 
-				"id" 			=> "googletagmanagerid",
-				"label"			=> nxs_l18n__("Google Tag Manager ID", "nxs_td") . "<br />GTM-XXXXXX",
-				"type" 			=> "input",
-			),
-			array(
-				"id" 			=> "analyticsUA",
-				"label"			=> nxs_l18n__("Google Analytics UA", "nxs_td"),
-				"type" 			=> "input",
-			),
-			array(
-				"id" 			=> "pagecaching",
-				"label"			=> nxs_l18n__("Page caching", "nxs_td"),
-				"type" 			=> "checkbox",
 			),
 		)
 	);
