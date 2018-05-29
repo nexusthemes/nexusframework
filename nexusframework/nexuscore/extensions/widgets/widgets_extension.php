@@ -461,7 +461,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("menucontainer");
 	nxs_ext_lazyload_widget("wordpresssidebar");
 	nxs_ext_lazyload_widget("menuitemgeneric");
-	// nxs_ext_lazyload_widget("menuitementities");
 	nxs_ext_lazyload_widget("menuitemarticle");
 	nxs_ext_lazyload_widget("menuitemcustom");
 	nxs_ext_lazyload_widget("menuitemcategory");
@@ -472,11 +471,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("slide");
 	nxs_ext_lazyload_widget("slidesincat");
 	nxs_ext_lazyload_widget("sliderbox");
-	
-	if ($enableconceptualwidgets)
-	{
-		// nxs_ext_lazyload_widget("...");
-	}
 	
 	nxs_ext_lazyload_widget("youtube");
 	nxs_ext_lazyload_widget("vimeo");
@@ -525,11 +519,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("section");
 	nxs_ext_lazyload_widget("vectorart");
 	nxs_ext_lazyload_widget("wpmenu");
-    
-	if ($enableconceptualwidgets)
-	{
-		// nxs_ext_lazyload_widget("...");
-	}
 	
 	nxs_ext_lazyload_widget("target");
 	nxs_ext_lazyload_widget("flickr");
@@ -545,11 +534,6 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("pageslidetotop");
 	nxs_ext_lazyload_widget("pageinpagesectionmenu");
 	nxs_ext_lazyload_widget("pagefixedheader");
-
-	if ($enableconceptualwidgets)
-	{
-		
-	}
 	
 	// BUSINESS RULES
 	nxs_ext_lazyload_widget("busrulecatchall");	
@@ -570,10 +554,7 @@ function nxs_lazyload_widgets()
 	nxs_ext_lazyload_widget("busruleurl");
 	nxs_ext_lazyload_widget("busruledeclarativecondition");
 	
-	// DEPRECATED
 	
-	// nxs_ext_lazyload_widget("fbcomments");
-	// nxs_ext_lazyload_widget("searchresults");	// deprecated in favor of archive widget
 }
 
 // if framework is loaded by the plugins, we load the widgets after all plugins are available
