@@ -2634,6 +2634,7 @@ function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $ar
 
 function nxs_site_dataprotectioncomponentcontrolhome_getoptions($args)
 {
+	/*
 	if (!nxs_dataprotection_isprivacysupported())
 	{
 		// return; please upgrade to wp 4.9.6 or above
@@ -2648,6 +2649,7 @@ function nxs_site_dataprotectioncomponentcontrolhome_getoptions($args)
 		$fixurl = get_admin_url(null, "privacy.php");
 		return nxs_popup_factory_createnotificationoptions("Sorry", "Please first <a href='$fixurl'>configure the privacy policy page in the WP backend and ensure its published</a>.");
 	}
+	*/
 	
 	$prefix = nxs_dataprotection_getprefix();
 
