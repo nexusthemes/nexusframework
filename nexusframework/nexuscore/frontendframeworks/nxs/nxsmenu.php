@@ -59,7 +59,7 @@
 	$sitemeta = nxs_getsitemeta();
 	
 	$googlewebfont_activity = "nexusframework:usegooglefonts";
-	if (nxs_dataprotection_isexplicitconsentgiven($googlewebfont_activity))
+	if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
 	{
 		?>
 		<!-- loading all fonts -->
@@ -83,6 +83,7 @@
 		}
 		?>
 		<script> 
+			// loading fonts (nxsmenu)
 			
 			WebFont.load
 			(
@@ -1584,8 +1585,8 @@
 			var splitted = fontfamily.split(':');
 			var result = splitted[0];
 			
-			nxs_js_log("0--0-0-0-0-0");
-			nxs_js_log(result);
+			//nxs_js_log("0--0-0-0-0-0");
+			//nxs_js_log(result);
 			
 			return result;
 		}
