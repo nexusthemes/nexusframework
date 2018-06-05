@@ -632,8 +632,13 @@ function nxs_frontendframework_nxs_sc_nxspagerow($rowattributes, $content = null
 	$nxs_global_row_render_statebag["pagerowid"] = $rowattributes["pagerowid"];
 	$nxs_global_row_render_statebag["rowindex"] = $nxs_global_current_rowindex_being_rendered;
 	
-	// render inner html
-	$content = nxs_applyshortcodes($content);
+	// evaluate if the row should be rendered or not
+	// if not, we should not evaluate the content (widgets) of the row,
+	// or at least we should inform the widgets in the row the row is disabled
+	// such that they can render in an alternative way
+	
+	 
+	
 	
 	// note; the statebag could have been updated / populated by placeholders for outbound data / information
 		
@@ -920,6 +925,11 @@ function nxs_frontendframework_nxs_sc_nxspagerow($rowattributes, $content = null
 	{
 		nxs_webmethod_return_nack("nxs_global_current_render_mode (nog?) niet ondersteund: {$nxs_global_current_render_mode}");
 	}
+
+	$nxs_global_row_render_statebag["r_enabled"] = $r_enabled;
+		
+	// render inner html
+	$content = nxs_applyshortcodes($content);
 	
 	$output .= "<ul class='nxs-placeholder-list'>";
 	$output .= $content;

@@ -2270,6 +2270,13 @@ function nxs_sc_var($atts, $content = null, $name='')
 {
 	extract($atts);
 	
+	global $nxs_global_row_render_statebag;
+	if ($nxs_global_row_render_statebag["r_enabled"] != "" && $nxs_global_row_render_statebag["r_enabled"] != "true")
+	{
+		// do nothing
+		return $content;
+	}
+	
 	if (isset($sc_scope))
 	{
 		$scoperesult = nxs_sc_handlescope($atts, $content, $name);
@@ -2310,11 +2317,19 @@ function nxs_sc_var($atts, $content = null, $name='')
 		}
 		else if ($op == "get")
 		{
+			$var = $atts["var"];
 			global $nxs_gl_vars;
 			$input = $nxs_gl_vars[$var];
 		}
+		else if ($op == "set")
+		{
+			$var = $atts["var"];
+			global $nxs_gl_vars;
+			$nxs_gl_vars[$var] = $input;
+		}
 		else if ($op == "lte")
 		{
+			$var = $atts["var"];
 			$compareto = $atts["compareto"];
 			global $nxs_gl_vars;
 			$value = $nxs_gl_vars[$var];
