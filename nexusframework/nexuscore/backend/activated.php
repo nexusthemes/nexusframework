@@ -174,15 +174,21 @@
     	<?php 
     	if (!has_action("nxs_activation_finishedwrap"))
     	{
-    		$licensekey = nxs_license_getlicensekey();
-				if ($licensekey == "") {
-					$url = admin_url('admin.php?page=nxs_admin_license');
-					$button_text = nxs_l18n__("Enable update notifications", "nxs_td");
+    		$a = array
+				(
+					"applyfilters" => "no",
+				);
+				$nxs_license_getuserconsentid = nxs_license_getuserconsentid($a);
+				if ($nxs_license_getuserconsentid == "") 
+				{
+					// http://cpibqxqi.testgj.c1.us-e1.nexusthemes.com/wp-admin/admin.php?page=nxs_admin_terms
+					$url = admin_url('admin.php?page=nxs_admin_terms');
+					$button_text = nxs_l18n__("Next", "nxs_td");
 				}
 				else 
 				{
 					$url = nxs_geturl_home();
-					$button_text = nxs_l18n__("View Home", "nxs_td");
+					$button_text = nxs_l18n__("Next", "nxs_td");
 				}
 				?>
 				<div class='nxs-width100 nxs-align-center'>

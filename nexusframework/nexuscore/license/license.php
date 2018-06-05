@@ -285,7 +285,8 @@ function nxs_license_addadminpages()
 	else
 	{
 		add_submenu_page("nxs_backend_overview", 'Candy Shop', 'Candy Shop', 'switch_themes', 'nxs_admin_terms', 'nxs_license_theme_registered_page_content');
-	}
+		add_submenu_page("nxs_backend_overview", 'Profile', 'Profile', 'switch_themes', 'nxs_admin_profile', 'nxs_user_profile_content');
+	}	
 }
 
 function plugin_admin_init()
@@ -304,8 +305,12 @@ function plugin_admin_init()
 		add_action('admin_notices', 'nxs_license_notifyunregistersuccess');
 	}
 	
-	$licensekey = nxs_license_getlicensekey();
-	if ($licensekey == "")
+	$a = array
+	(
+		"applyfilters" => "no",
+	);
+	$nxs_license_getuserconsentid = nxs_license_getuserconsentid($a);
+	if ($nxs_license_getuserconsentid == "")
 	{
 		add_action('admin_notices', 'nxs_license_notifynolicense');
 	}
@@ -1203,6 +1208,306 @@ function nxs_license_getinappshopmeta()
 	return $response_data;
 }
 
+function nxs_license_ispluginactive($slug)
+{
+	$active_plugins = get_option( 'active_plugins', array() );
+	
+	$result = false;
+	foreach($active_plugins as $active_plugin)
+	{
+		if (nxs_stringcontains($active_plugin, "/{$slug}.php"))
+		{
+			$result = true;
+		}
+	}
+	return $result;
+}
+
+function nxs_user_profile_getfields()
+{
+	$result = array
+	(
+		array
+		(
+			"id" => "firstname",
+			"type" => "text",
+			"label" => "First name",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "lastname",
+			"type" => "text",
+			"label" => "Last name",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "company",
+			"type" => "text",
+			"label" => "Company",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "email",
+			"type" => "email",
+			"label" => "Email",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "phone",
+			"type" => "text",
+			"label" => "Phone",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "address_1",
+			"type" => "text",
+			"label" => "address_1",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "address_2",
+			"type" => "text",
+			"label" => "address_2",
+			"isrequiredforshop" => false,
+		),
+		array
+		(
+			"id" => "city",
+			"type" => "text",
+			"label" => "city",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "state",
+			"type" => "text",
+			"label" => "state",
+			"isrequiredforshop" => false,
+		),
+		array
+		(
+			"id" => "postcode",
+			"type" => "text",
+			"label" => "postcode",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "country",
+			"type" => "dropdown",
+			"items" => array
+			(
+				"AT" => "Austria",
+				"BE" => "Belgium",
+				"BG" => "Bulgaria",
+				"CY" => "Cyprus",
+				"CZ" => "Czech Republic",
+				"DE" => "Germany",
+				"DK" => "Denmark",
+				"EE" => "Estonia",
+				"EL" => "Greece",
+				"ES" => "Spain",
+				"FI" => "Finland",
+				"FR" => "France",
+				"GB" => "United Kingdom",
+				"HR" => "Croatia",
+				"HU" => "Hungary",
+				"IE" => "Ireland",
+				"IT" => "Italy",
+				"LT" => "Lithuania",
+				"LU" => "Luxembourg",
+				"LV" => "Latvia",
+				"MT" => "Malta",
+				"NL" => "The Netherlands",
+				"PL" => "Poland",
+				"PT" => "Portugal",
+				"RO" => "Romania",
+				"SE" => "Sweden",
+				"SI" => "Slovenia",
+				"SK" => "Slovakia",
+			),
+			"label" => "country",
+			"isrequiredforshop" => true,
+		),
+		array
+		(
+			"id" => "euvatnumber",
+			"type" => "text",
+			"label" => "euvatnumber",
+			"isrequiredforshop" => false,
+		),
+	
+	);
+	return $result;
+}
+
+function nxs_user_profile_content()
+{
+	$a = array
+	(
+		"applyfilters" => "no",
+	);
+	$nxs_license_getuserconsentid = nxs_license_getuserconsentid($a);
+	if ($nxs_license_getuserconsentid == "")
+	{
+		//
+		echo "to use this functionality a license is required";
+		die();
+	}
+	
+	if ($_POST["action"] == "updateprofile")
+	{
+		$updates = array();
+
+		$url = nxs_license_getlicenseserverurl("updatebillingdata");
+		$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "updatebillingdata", true, true);
+		$url = nxs_addqueryparametertourl_v2($url, "nxs_licensekey", $nxs_license_getuserconsentid, true, true);
+		
+		$fields = nxs_user_profile_getfields();
+		foreach ($fields as $field)
+		{
+			$id = $field["id"];
+			$value = $_REQUEST[$id];
+			$url = nxs_addqueryparametertourl_v2($url, $id, $value, true, true);
+		}
+		
+		$body = nxs_geturlcontents(array("url" => $url));
+		$response_data = json_decode($body, true);
+
+		$_REQUEST["nxs_msg"] = "MSG.PROFILEUPDATED";
+	}
+	
+	$url = nxs_license_getlicenseserverurl("billingdata");
+	$url = nxs_addqueryparametertourl_v2($url, "nxs_license_action", "getbillingdata", true, true);
+	$url = nxs_addqueryparametertourl_v2($url, "nxs_licensekey", $nxs_license_getuserconsentid, true, true);
+	
+	$body = nxs_geturlcontents(array("url" => $url));
+	
+	$response_data = json_decode($body, true);
+	?>
+	<div class="wrap">
+		<?php
+		$nxs_msg = $_REQUEST["nxs_msg"];
+		if (isset($nxs_msg))
+		{
+			if ($nxs_msg == "MSG.SHOPFIELDSMISSING")
+			{
+				$message = "Please fill in the fields below";
+			}
+			else if ($nxs_msg == "MSG.PROFILEUPDATED")
+			{
+				$message = "Profile updated";
+			}
+			else
+			{
+				$message = $_REQUEST["nxs_msg"];
+			}
+			?>
+			<div class="notice notice-success is-dismissible">
+	    	<p><?php echo $message; ?></p>
+	    </div>
+	    <?php
+	  }
+	  ?>
+			
+		<h2>Profile</h2>
+		<h3>Billing information</h3>
+		<style>
+			label
+			{
+				width:200px;
+  			display: inline-block;
+  		}
+		</style>
+		
+		<form method="POST">
+			<input type="hidden" name="action" value="updateprofile" />
+			<table class="form-table">
+				<tbody>
+					<?php
+					$fields = nxs_user_profile_getfields();
+					foreach ($fields as $field)
+					{
+						$id = $field["id"];
+						$label = $field["label"];
+						$type = $field["type"];
+						$value = $response_data["billingdata"][$id];
+						
+						if ($type == "text")
+						{
+							?>
+							<tr>
+								<th scope="row">
+									<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+								</th>
+								<td>
+									<input class="regular-text" type="text" name="<?php echo $id; ?>" value="<?php echo $value; ?>" />
+								</td>
+							</tr>
+							<?php
+						}
+						else if ($type == "email")
+						{
+							?>
+							<tr>
+								<th scope="row">
+									<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+								</th>
+								<td>
+									<input class="regular-text" type="email" name="<?php echo $id; ?>" value="<?php echo $value; ?>" />
+								</td>
+							</tr>
+							<?php
+						}
+						else if ($type == "dropdown")
+						{
+							$items = $field["items"];
+							
+							// order by the text
+							asort($items);
+							
+							?>
+							<tr>
+								<th scope="row">
+									<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+								</th>
+								<td>
+									<select name="<?php echo $id; ?>">
+										<?php
+										foreach ($items as $optionvalue => $optiontext)
+										{
+											$selected = "";
+											if ($optionvalue == $value)
+											{
+												$selected = "selected";
+											}
+											?>
+										  <option <?php echo $selected; ?> value="<?php echo $optionvalue; ?>"><?php echo $optiontext; ?></option>
+										  <?php
+										 }
+										 ?>
+									</select>
+								</td>
+							</tr>
+							<?php
+						}
+					}
+					?>
+				</tbody>
+			</table>
+			<br />
+			<input type="submit" value="SUBMIT" />
+		</form>
+	</div>
+	<?php
+}
+
 function nxs_license_theme_registered_page_content()
 {
 	if ($_REQUEST["action"] == "unregister")
@@ -1233,40 +1538,174 @@ function nxs_license_theme_registered_page_content()
 		die();
 	}
 	
+	
 	$unregisterurl = nxs_geturlcurrentpage();
 	$unregisterurl = nxs_addqueryparametertourl_v2($unregisterurl, "action", "unregister", true, true);
-
+	$inappshop = nxs_license_getinappshopmeta();
+	
+	
+	//
+	$allrequiredfieldsfilledin = true;
+	$fields = nxs_user_profile_getfields();
+	foreach ($fields as $field)
+	{
+		$id = $field["id"];
+		$isrequiredforshop = $field["isrequiredforshop"];
+		if ($isrequiredforshop)
+		{
+			$value = $inappshop["billingdata"][$id];
+			if (trim($value) == "")
+			{
+				$allrequiredfieldsfilledin = false;
+				break;
+			}
+		}
+	}
+	
 	?>
 	<div class="wrap">
-		<h2>Registered</h2>
+		<h2>Products and services</h2>
 	</div>
 	<p>
-		Registered using license key <?php echo $licensekey; ?><br />
-		To unregister the license use <a href='<?php echo $unregisterurl; ?>' />this link</a>
-	</p>
-	<p>
-		<h3>Candy shop</h3>
-		<p>
-			Bla bla bla
-		</p>
-		<h4>Products and services</h4>
-		<table>
-		<?php
-		$inappshop = nxs_license_getinappshopmeta();
-		foreach ($inappshop["items"] as $itemmeta)
-		{
-			$title = $itemmeta["title"];
-			$price = $itemmeta["price"];
-			echo "<tr><td>$title</td><td>$price</td></tr>";
-		}
-		?>
-		</table>
-		<?php
+		<div class="wp-list-table widefat plugin-install">
+			<div id="the-list">
+				<?php
+				foreach ($inappshop["items"] as $itemmeta)
+				{
+					$slug = $itemmeta["slug"];
+					$title = $itemmeta["title"];
+					$thumbnailurl = $itemmeta["thumbnailurl"];
+					$description = $itemmeta["description"];
+					$detailurl = $itemmeta["detailurl"];
+					$lastupdatedtext = $itemmeta["lastupdatedtext"];
+					$installstext = $itemmeta["installstext"];
+					$author = $itemmeta["author"];
+					$buttontext = $itemmeta["buttontext"];
+					
+					if (!$allrequiredfieldsfilledin)
+					{
+						$detailurl = admin_url('admin.php?page=nxs_admin_profile&nxs_msg=MSG.SHOPFIELDSMISSING');
+					}
+
+					$ispluginactive = nxs_license_ispluginactive($slug);
+
+					if (!$ispluginactive)
+					{
+						?>
+						<div class="plugin-card plugin-card-akismet">
+							<div class="plugin-card-top">
+								<div class="name column-name">
+									<h3>
+										<a target="_blank" href="<?php echo $detailurl; ?>" class="thickbox open-plugin-details-modal">
+											<?php echo $title; ?>
+											<img src="<?php echo $thumbnailurl; ?>" class="plugin-icon" alt="">
+										</a>
+									</h3>
+								</div>
+								<div class="action-links">
+									<ul class="plugin-action-buttons">
+										<li>
+											<a target="_blank" class="install-now button" data-slug="akismet" href="<?php echo $detailurl; ?>">
+												<?php echo $buttontext; ?>
+											</a>
+										</li>
+										<li>
+											<a target="_blank" href="<?php echo $detailurl; ?>" class="thickbox open-plugin-details-modal">
+												More Details
+											</a>
+										</li></ul>				</div>
+								<div class="desc column-description">
+									<p><?php echo $description; ?></p>
+									<p class="authors"> <cite>By <?php echo $author; ?></cite></p>
+								</div>
+							</div>
+							<div class="plugin-card-bottom">
+								<div class="vers column-rating">
+									<div class="star-rating"><span class="screen-reader-text"><!-- 5.0 rating based on 877 ratings --></span>
+										<div class="star star-full" aria-hidden="true"></div>
+										<div class="star star-full" aria-hidden="true"></div>
+										<div class="star star-full" aria-hidden="true"></div>
+										<div class="star star-full" aria-hidden="true"></div>
+										<div class="star star-full" aria-hidden="true"></div>
+									</div>
+									<span class="num-ratings" aria-hidden="true"><!-- (877) --></span>
+								</div>
+								<div class="column-updated">
+									<strong>Last Updated:</strong>&nbsp;<?php echo $lastupdatedtext; ?></div>
+								<div class="column-downloaded">
+									<?php echo $installstext; ?>
+								</div>
+								<div class="column-compatibility">
+									<span class="compatibility-compatible"><strong>Compatible</strong> with your version of WordPress</span>				</div>
+							</div>
+						</div>
+						<?php
+					}
+					else
+					{
+						?>
+						<div class="plugin-card plugin-card-akismet" style="opacity: 0.3">
+							<div class="plugin-card-top">
+								<div class="name column-name">
+									<h3>
+										<a href="<?php echo $detailurl; ?>" class="thickbox open-plugin-details-modal">
+											<?php echo $title; ?>
+											<img src="<?php echo $thumbnailurl; ?>" class="plugin-icon" alt="">
+										</a>
+									</h3>
+								</div>
+								<div class="action-links">
+									<ul class="plugin-action-buttons">
+										<li>
+											<a class="install-now button" data-slug="akismet" href="<?php echo $detailurl; ?>">
+												ALREADY INSTALLED
+											</a>
+										</li>
+										<li>
+											<a href="<?php echo $detailurl; ?>" class="thickbox open-plugin-details-modal">
+												More Details
+											</a>
+										</li></ul>				</div>
+								<div class="desc column-description">
+									<p><?php echo $description; ?></p>
+									<p class="authors"> <cite>By <a href="https://automattic.com/wordpress-plugins/"><?php echo $author; ?></a></cite></p>
+								</div>
+							</div>
+							<div class="plugin-card-bottom">
+								<div class="vers column-rating">
+									<div class="star-rating"><span class="screen-reader-text"><!-- 5.0 rating based on 877 ratings --></span>
+										<div class="star star-full" aria-hidden="true"></div>
+										<div class="star star-full" aria-hidden="true"></div>
+										<div class="star star-full" aria-hidden="true"></div>
+										<div class="star star-full" aria-hidden="true"></div>
+										<div class="star star-full" aria-hidden="true"></div>
+									</div>
+									<span class="num-ratings" aria-hidden="true"><!-- (877) --></span>
+								</div>
+								<div class="column-updated">
+									<strong>Last Updated:</strong><?php echo $lastupdatedtext; ?></div>
+								<div class="column-downloaded">
+									<?php echo $installstext; ?>
+								</div>
+								<div class="column-compatibility">
+									<span class="compatibility-compatible"><strong>Compatible</strong> with your version of WordPress</span>				</div>
+							</div>
+						</div>
+						<?php
+					}
+				}
+				?>
+			</div>
+		</div>
 		
+	
+		<?php
+		/*
 		echo "<hr />";
 		echo "<textarea style='width: 100%; height: 50vh;'>";
 		echo json_encode($inappshop);
 		echo "</textarea>";
+		*/
 		?>
 	</p>
 	<?php
@@ -1305,12 +1744,13 @@ function nxs_license_theme_register_for_free_page_content()
 			nxs_license_updateuserconsentid($userconsentid);
 						
 			$candystoreurl = admin_url('admin.php?page=nxs_admin_terms');
+			
 						
 			?>
 			 <div class="wrap">
-		    <h2>Registration completed</h2>
+		    <h2>User registration completed</h2>
 		    <p>
-		    	Hooray, this site is now registered :)
+		    	Hooray, your user registration succeeded :)
 		    </p>
 	    	<h3>Next steps from here</h3>
 	    	<ul>
@@ -1388,15 +1828,10 @@ function nxs_license_theme_register_for_free_page_content()
 	$editprofile = admin_url('profile.php');
 	?>
 	<div class="wrap">
-		<h2>Register your copy for free</h2>
+		<h2>Free Registration</h2>
 	</div>
-	<p>
-		Register your copy for free
-	</p>
 	<ul>
-		<li>Automatic notifications when a new version is release</li>
-		<li>Join our free community (per business type)</li>
-		<li>(todo list benefits)</li>
+		<li>To join our community and enable practical features (like for example update notifications and lots more)</li>
 	</ul>
 	<p>	
 		<form method="POST">
@@ -1413,7 +1848,8 @@ function nxs_license_theme_register_for_free_page_content()
 				<label for="email">Email</label><br />
 				<input type="email" name="email" id="email" value="<?php echo $email; ?>" readonly required /> <a href='<?php echo $editprofile; ?>'>Edit</a><br />
 				<br />
-					
+				
+				<!--
 				<label>Are you the website owner?</label><br />
 	
 				<input type="radio" id="itsformyownbusiness" name="whoownsthiswebsite" value="itsformyownbusiness" required>
@@ -1428,7 +1864,7 @@ function nxs_license_theme_register_for_free_page_content()
 	
 				<input type="radio" id="itsforafriendorrelative" name="whoownsthiswebsite" value="itsforafriendorrelative" required>
 				<label for="itsforafriendorrelative">No, I am building this for a friend of relative</label><br />
-	
+				-->
 				<br />
 				
 				<input type="checkbox" name="formtruecompleteandaccurate" id="formtruecompleteandaccurate" required />
