@@ -59,6 +59,30 @@ class nxs_g_modelmanager
 	function getmodeltaxonomyproperties($args)
 	{
 		$modeluri = $args["modeluri"];
+
+		$cachebehaviour = $args["cachebehaviour"];
+		if ($cachebehaviour == "")
+		{
+		}
+		else if ($cachebehaviour == "none")
+		{
+		}
+		else if ($cachebehaviour == "refreshfirstphpruntime")
+		{
+			// refreshes the cache the first time this is requested in the php runtime duration
+			global $nxs_g_modelrefreshphpruntime;
+			$schema = $this->getschema($modeluri);
+			if (!isset($nxs_g_modelrefreshphpruntime[$schema]))
+			{
+				$nxs_g_modelrefreshphpruntime[$schema] = true;
+				$this->cachebulkmodels($schema);
+			}
+		}
+		else
+		{
+			return "no, or invalid cachebehaviour (none|refreshfirstphpruntime)";
+		}
+		
 		$contentmodel = $this->getcontentmodel($modeluri);
 		$taxonomy = "properties";
 		$result = $contentmodel[$taxonomy]["taxonomy"];
