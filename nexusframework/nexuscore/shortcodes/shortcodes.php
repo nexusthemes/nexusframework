@@ -1425,6 +1425,14 @@ function nxs_sc_string($atts, $content = null, $name='')
 						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
 						$conditionevaluation = ($fieldvalue == $operatorvalue);
 					}
+					else if ($operator == "in_array" || $operator == "inarray")
+					{
+						$inarrayseperator = "|";
+						$acceptedoperatorvalues = explode($inarrayseperator, $operatorvalue);
+						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
+						$conditionevaluation = (in_array($fieldvalue, $acceptedoperatorvalues));
+						//error_log("in_array; modeluri $instanceuri property $operatorproperty; $fieldvalue; " . json_encode($acceptedoperatorvalues));
+					}
 					else if ($operator == "!equals")
 					{
 						$fieldvalue = $nxs_g_modelmanager->getmodeltaxonomyproperty(array("modeluri"=>$instanceuri, "property"=>$operatorproperty));
