@@ -18,7 +18,7 @@ class nxs_g_modelmanager
 	
 	function getnormalizedhumanmodelidentification($input)
 	{
-		$result = preg_replace('/[^A-Za-z0-9]/', '', $input); // Removes special chars.
+		$result = preg_replace('/[^A-Za-z0-9\_]/', '', $input); // Removes special chars.
 		return $result;
 	}
 	
@@ -1830,6 +1830,15 @@ class nxs_g_modelmanager
 				$refetchurl = nxs_addqueryparametertourl_v2($refetchurl, "bulkmodels", "true", true, true);
 				$refetchurl = nxs_addqueryparametertourl_v2($refetchurl, "singularschema", $dumpmodel, true, true);
 				echo "<a href='{$refetchurl}'>refetch</a>";
+				echo "<br />so far :)";
+				die();
+			}
+			if ($_REQUEST["nxs"] == "dumpmodeluriproperty")
+			{
+				$shortcodeinput = "[nxs_string errorlog=true ops=modelproperty modeluri=" . $_REQUEST["modeluri"] . " property=" . $_REQUEST["property"] . "]";
+				echo "processing: $shortcodeinput <br />";
+				$r = do_shortcode($shortcodeinput);
+				echo "results in: $r <br />";
 				echo "<br />so far :)";
 				die();
 			}
