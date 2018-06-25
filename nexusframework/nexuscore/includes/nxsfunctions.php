@@ -2642,9 +2642,19 @@ function url_get_contents($url)
 function nxs_geturlcontents($args) 
 {
 	$url = $args["url"];
+	
+	$usecurl = true;
+	if (!function_exists('curl_version'))
+	{
+		$usecurl = false;
+	}
+	if (get_option("nxs_geturlcontents_override") == "file_get_contents")
+	{
+		$usecurl = false;
+	}
 
 	// first try curl (as file_get_contents is more likely to be blocked on hosts)
-	if (function_exists('curl_version'))
+	if ($usecurl)
 	{
 		// error_log("nxs; invoking curl; $url");
 		
