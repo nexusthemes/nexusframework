@@ -1618,6 +1618,12 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
 						The geocode was successful but returned no results.<br />
 						This may occur if the geocoder was passed a non-existent address.<br />
 						Try using a different address instead.
+						<?php
+						echo "<!-- ";
+						var_dump($latlngavailable);
+						var_dump($latlng); 
+						echo " -->";
+						?>
 					</div>
 					<script>jQuery('#<?php echo $id; ?>').focus();</script>
 				</div>
