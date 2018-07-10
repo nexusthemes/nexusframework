@@ -12,7 +12,7 @@ class nxs_g_modelmanager
 {
 	function getnormalizedschema($input)
 	{
-		$result = preg_replace('/[^A-Za-z0-9\.]/', '', $input); // Removes special chars.
+		$result = preg_replace('/[^A-Za-z0-9\.\@]/', '', $input); // Removes special chars.
 		return $result;
 	}
 	
