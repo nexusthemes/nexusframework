@@ -1667,9 +1667,17 @@ function nxs_sc_string($atts, $content = null, $name='')
 			{
 				//var_dump($input);
 				//die();
+				if (isset($atts["limit"]))
+				{
+					$limit = (int) $atts["limit"];
+				}
+				else
+				{
+					$limit = PHP_INT_MAX;
+				}
 				
 				$index = $atts["index"];
-				$pieces = explode($delimiter, $input);
+				$pieces = explode($delimiter, $input, $limit);
 				$input = $pieces[$index];
 			}
 			else if ($return == "concatenateditemsblanksremoved")
