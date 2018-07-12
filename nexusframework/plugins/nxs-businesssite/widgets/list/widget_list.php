@@ -793,7 +793,7 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		
 		//
 		
-		$pieces = explode("@", $modeluri);
+		$pieces = explode("@", $modeluri, 2);	// only explode into a max of 2 pieces to support apis which have @'s in the schema part
 		$itemhumanmodelid = $pieces[0];
 		$itemschema = $pieces[1];
 
