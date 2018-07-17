@@ -1487,10 +1487,12 @@ div.jGrowl 											{ display: none; }
 	position: fixed;
 	right: 13px;
 	top: 60px;
-	z-index: 1030;
+	z-index: 1029;
 	background-color: #FCFCFC;
 	border-radius: 3px;
 	box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6);
+	pointer-events: none;
+	opacity: 0.5;
 }
 #nxs-version span { line-height: 45px; padding-left: 10px; padding-right: 10px; }
 
