@@ -88,11 +88,17 @@ function nxs_sc_string($atts, $content = null, $name='')
 	
 	$input = $content;
 	
-	$ops = $atts["ops"];
+	$ops = trim($atts["ops"]);
 	
 	$ops = str_replace(",","|", $ops);
 	$ops = str_replace(";","|", $ops);
 	$opslist = explode("|", $ops);
+	
+	if ($ops == "")
+	{
+		return "nxs_string;err;ops not specified";
+	}
+	
 	foreach ($opslist as $op)
 	{
 		$op = trim($op);
@@ -917,6 +923,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 				global $nxs_g_modelmanager;
 				$modeluri = $nxs_g_modelmanager->getnormalizedmodeluri($modeluri);
 				
+				//error_log("modelproperty; normalized modeluri: $modeluri");
+
 				if ($modeluri == "")
 				{
 					global $nxs_global_current_containerpostid_being_rendered;
@@ -1032,7 +1040,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 					$modeluri = "{$relationmodelid}@{$relationschema}";
 				}
 			}
-			
+						
 			// retrieve the property of the specified modeluri	
 			$args = array
 			(
@@ -1040,6 +1048,14 @@ function nxs_sc_string($atts, $content = null, $name='')
 				"property" => $property,
 			);
 			$input = $nxs_g_modelmanager->getmodeltaxonomyproperty($args);
+			
+			if ($atts["errorlog"] == "true")
+			{
+				error_log("modelproperty; modeluri: $modeluri");
+				error_log("modelproperty; property: $property");
+				error_log("modelproperty; result: $input");
+			}
+
 			
 			if ($atts["encode"] == "")
 			{
@@ -1770,6 +1786,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 	}
 	
 	$output = $input;
+	
+	
 		
 	return $output;
 }
@@ -1791,8 +1809,6 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		}
 	}
 	
-	nxs_ob_start();
-	
 	$input = $content;
 	if ($input == "")
 	{
@@ -1803,10 +1819,15 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		$input = $atts["value"];
 	}
 	
+
+	
+	nxs_ob_start();
+
 	$ops = $atts["ops"];
 	$ops = str_replace(",","|", $ops);
 	$ops = str_replace(";","|", $ops);
 	$opslist = explode("|", $ops);
+		
 	foreach ($opslist as $op)
 	{
 		$op = trim($op);
@@ -2090,23 +2111,11 @@ function nxs_sc_bool($atts, $content = null, $name='')
 	
 	$output = nxs_ob_get_contents();
 	nxs_ob_end_clean();
-	
-	/*
-	if (isset($sc_scope))
-	{
-		echo "prior to evaluation;";
-		var_dump($atts);
-		var_dump($content);
-		var_dump($output);
-		echo "----<br />";
-	}
-	*/
-		
+			
 	return $output;
 }
 add_shortcode('nxsbool', 'nxs_sc_bool');
 add_shortcode('nxs_bool', 'nxs_sc_bool');
-
 
 // for example [nxsint ops="add" p1="1" p2="2"]
 function nxs_sc_int($atts, $content = null, $name='') 
@@ -2167,6 +2176,8 @@ function nxs_sc_int($atts, $content = null, $name='')
 			}
 		}
 	}
+	
+	
 }
 add_shortcode("nxsint", "nxs_sc_int");
 add_shortcode("nxs_int", "nxs_sc_int");
