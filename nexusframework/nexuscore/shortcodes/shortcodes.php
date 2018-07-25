@@ -2242,11 +2242,28 @@ function nxs_sc_command($atts, $content = null, $name='')
 		}
 		else if ($op == "settemplateproperties")
 		{
+			if ($atts["errorlog"] == "true")
+			{
+				error_log("settemplateproperties");
+			}
+			
 			$title = $atts["content_post"];
+			
+			if ($atts["errorlog"] == "true")
+			{
+				error_log("title: $title");
+			}
+			
 			if ($title != "")
 			{
 				$wpposttype = "nxs_templatepart";
 				$postid = nxs_getpostid_for_title_and_wpposttype($title, $wpposttype);
+				
+				if ($atts["errorlog"] == "true")
+				{
+					error_log("postid: $postid");
+				}
+				
 				if ($postid != "")
 				{
 					add_filter
