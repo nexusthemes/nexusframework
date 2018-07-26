@@ -533,22 +533,6 @@ function nxs_handlerequestwithcaching($buffer)
 		}
 	}
 	
-	// dont store urls that are suspiciously long
-	if ($shouldstore)
-	{
-		$uri = nxs_geturicurrentpage();
-		$length = strlen($uri);
-		if ($length > 256)
-		{
-			// dont store urls with "weird" chars in them,
-			// most likely caused by incorrect links in e-mail or tel links
-			// that are followed by spiders, causing potential tremendous
-			// amount of data being stored on the cache
-			$shouldstore = false;
-			$nocacheexplanations[] = "is urltoolong";
-		}
-	}
-	
 	// dont store urls that dont exist
 	if ($shouldstore)
 	{
@@ -650,6 +634,18 @@ function nxs_handlerequestwithcaching($buffer)
 		}
 	}
 	
+	/*
+	// dont store if we are rebuilding the ttfbcache
+	if ($shouldstore)
+	{
+		if ($_REQUEST["ttfbcachebypass"] == "true")
+		{
+			$shouldstore = false;
+			$nocacheexplanations[] = "found key ttfbcachebypass with value true in query parameters";
+		}
+	}
+	*/
+		
 	if($shouldstore) 
 	{
 		$file = nxs_cache_getcachedfilename();
@@ -10069,6 +10065,7 @@ function nxs_sanitize_chars($chars)
 }
 
 // kudos to http://stackoverflow.com/questions/11267086/php-unlink-all-files-within-a-directory-and-then-deleting-that-directory
+// ak.a. deletefolder removefolder deletedirectory delete_folder remove_folder delete_directory remove_directory recursively
 function nxs_recursive_removedirectory($directory)
 {
 	if ($directory == "")
