@@ -638,7 +638,6 @@ function nxs_handlerequestwithcaching($buffer)
 		}
 	}
 	
-	/*
 	// dont store if we are rebuilding the ttfbcache
 	if ($shouldstore)
 	{
@@ -648,7 +647,6 @@ function nxs_handlerequestwithcaching($buffer)
 			$nocacheexplanations[] = "found key ttfbcachebypass with value true in query parameters";
 		}
 	}
-	*/
 		
 	if($shouldstore) 
 	{
