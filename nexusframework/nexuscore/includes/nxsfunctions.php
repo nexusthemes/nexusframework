@@ -225,8 +225,6 @@ function nxs_shouldusecache_stage0()
 // stage1; second consideration stage; whether or not to cache data on this site
 function nxs_shouldusecache_stage1()
 {
-	
-	
 	$result = false;
 	
 	if (!is_user_logged_in())
@@ -279,6 +277,12 @@ function nxs_shouldusecache_stage1()
 	}
 	
 	if ($_REQUEST["nxscache"] == "off")
+	{
+		// no cache is explicitly instructed not to use cache
+		$result = false;
+	}
+	
+	if ($_REQUEST["ttfbcachebypass"] == "true")
 	{
 		// no cache is explicitly instructed not to use cache
 		$result = false;
