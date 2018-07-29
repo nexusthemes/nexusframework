@@ -1619,6 +1619,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$input = url_encode($input);
 			}
 		}
+		else if ($op == "removequeryparametersignoredbyttfbcache")
+		{
+			$result = nxs_url_removequeryparametersignoredbyttfbcache($input);
+		}
 		else if ($op == "dumppost")
 		{
 			$postid = get_the_ID();

@@ -4476,6 +4476,48 @@ function nxs_f_wp_mail_from_name($result)
 	return $result;
 }
 
+function nxs_url_removequeryparametersignoredbyttfbcache($url = "")
+{
+	$queryparameters = nxs_url_getqueryparameters($url);
+	
+	// allow parameters of the url to be ignored when storing and retrieving the cache
+	$ignorekey = "nxs_cache_hash_ignoreparameters";
+	if (isset($queryparameters[$ignorekey]))
+	{
+		$nxs_cache_ignoreparameters_string = $queryparameters[$ignorekey];
+		$nxs_cache_ignoreparameters = explode(";", $nxs_cache_ignoreparameters_string);
+		foreach ($nxs_cache_ignoreparameters as $nxs_cache_ignoreparameter)
+		{
+			$url = nxs_removequeryparameterfromurl($url, $nxs_cache_ignoreparameter);
+		}
+	}	
+
+	$url = nxs_removequeryparameterfromurl($url, "gclid");	// adwords
+	$url = nxs_removequeryparameterfromurl($url, $ignorekey);
+	
+	return $url;
+}
+
+function nxs_url_getqueryparameters($url = "")
+{
+	$result = array();
+	
+	$parsed = parse_url($url);
+	if (isset($parsed['query'])) 
+	{	
+		foreach (explode('&', $parsed['query']) as $param) 
+		{
+		  $item = explode('=', $param);
+		  if ($item[0] != $parametertoremove) 
+		  {
+		  	$result[$item[0]] = $item[1];
+		  }
+		}
+	}
+	
+	return $result;
+}
+
 function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject, $body)
 {
 	$replytomail = "";
@@ -4555,6 +4597,10 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	if ($result == false)
 	{
 		error_log("Error sending mail $fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject");
+	}
+	else
+	{
+		// error_log("Mail sent $fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject");
 	}
 	
 	return $result;
