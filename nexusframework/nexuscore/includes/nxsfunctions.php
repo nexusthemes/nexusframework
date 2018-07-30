@@ -4508,10 +4508,7 @@ function nxs_url_getqueryparameters($url = "")
 		foreach (explode('&', $parsed['query']) as $param) 
 		{
 		  $item = explode('=', $param);
-		  if ($item[0] != $parametertoremove) 
-		  {
-		  	$result[$item[0]] = $item[1];
-		  }
+	  	$result[$item[0]] = $item[1];
 		}
 	}
 	

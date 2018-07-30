@@ -1621,7 +1621,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "removequeryparametersignoredbyttfbcache")
 		{
-			$result = nxs_url_removequeryparametersignoredbyttfbcache($input);
+			$input = nxs_url_removequeryparametersignoredbyttfbcache($input);
 		}
 		else if ($op == "dumppost")
 		{
