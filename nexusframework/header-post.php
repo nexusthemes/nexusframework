@@ -65,7 +65,7 @@
 	// dit wordt niet op goede plek ge-enqueued
 		
 	?>
-	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=12.0, minimum-scale=.25, user-scalable=yes" />
 	<?php
 	
 	nxs_render_headstyles();
