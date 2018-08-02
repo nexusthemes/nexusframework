@@ -2307,6 +2307,57 @@ function nxs_sc_command($atts, $content = null, $name='')
 				}
 			}
 		}
+		else if ($op == "setseoproperties")
+		{
+			if ($atts["errorlog"] == "true")
+			{
+				error_log("setseoproperties");
+			}
+			$prio = 999999;
+			if (isset($atts["prio"]))
+			{
+				$prio = $atts["prio"];
+			}
+			$items = array("title", "metadesc", "canonical", "robots");
+			foreach ($items as $item)
+			{
+				$value = $atts["{$item}"];
+	
+				$shoulderrorlog = $atts["errorlog"] == "true";
+				if ($shoulderrorlog)
+				{
+					error_log("setseoproperties; adding filter for $item value $value");
+				}
+				
+				if ($value != "")
+				{
+					add_filter
+					(
+						"wpseo_{$item}", 
+						function($result) use ($item, $value, $shoulderrorlog)
+						{
+							if ($shoulderrorlog)
+							{
+								error_log("setseoproperties; $item; was $result");
+							}
+
+							if ($value != "")
+							{
+								$result = $value;
+							}
+
+							if ($shoulderrorlog)
+							{
+								error_log("setseoproperties; $item; beame $result");
+							}						
+							
+							return $result;	
+						}, 
+						$prio
+					);
+				}
+			}
+		}
 	}
 	
 	return $output;
