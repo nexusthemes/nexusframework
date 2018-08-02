@@ -984,6 +984,7 @@ class nxs_g_modelmanager
 		}
 		
 		global $nxs_g_model;
+		
 		if (!isset($nxs_g_model[$cachekey]))
 		{
 			if ($modeluri != "")
@@ -1202,6 +1203,23 @@ class nxs_g_modelmanager
 		if ($shouldrefreshdbcache == false && $_REQUEST["transients"] == "refresh")
 		{
 			$shouldrefreshdbcache = true;
+		}
+		if ($shouldrefreshdbcache == false && $_REQUEST["transients"] == "refreshschemaforfirstphpruntime")
+		{
+			global $nxs_gl_refreshschemaforfirstphpruntime;
+			
+			$modeluriparts = explode("@", $modeluri, 2);
+			$schema = $modeluriparts[1];	// second half
+			
+			if (!isset($nxs_gl_refreshschemaforfirstphpruntime[$schema]))
+			{			
+				$shouldrefreshdbcache = true;
+				$nxs_gl_refreshschemaforfirstphpruntime[$schema] = "true";
+			}
+			else
+			{
+				// already refreshed it before during this runtime; use the cached result (if its there)
+			}
 		}
 		if ($shouldrefreshdbcache == false && $_REQUEST["transients"] == "refresh_modeluricontains")
 		{
@@ -1695,13 +1713,14 @@ class nxs_g_modelmanager
 		// a "seo widget" that is stored in the content template defined
 		// in the page template rules.
 		$runtimeseoproperties = $this->getruntimeseoproperties();
-		$title = $runtimeseoproperties["canonicalurl"];		
-		if ($title != "")
+		$canonicalurl = $runtimeseoproperties["canonicalurl"];		
+		if ($canonicalurl != "")
 		{
 			// 
 			
-			$result = $title;
+			$result = $canonicalurl;
 		}
+
 		return $result;
 	}
 	
