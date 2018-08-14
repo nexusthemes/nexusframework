@@ -487,7 +487,7 @@ function nxs_widgets_emptyallwidgetareas()
 if (function_exists('register_sidebar'))
 {
 	$count = nxs_widgets_gettotalwidgetareacount();
-	register_sidebars($count, array('name' => 'WordPress Backend Widget Area %d'));
+	register_sidebars($count, array('name' => 'WP Backend Widget Area %d'));
 }
 
 //

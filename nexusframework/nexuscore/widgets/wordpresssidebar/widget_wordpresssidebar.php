@@ -122,6 +122,11 @@ function nxs_widgets_wordpresssidebar_render_webpart_render_htmlvisualization($a
 		dynamic_sidebar(intval($wpsidebarid));
 		$sidebarcontent = nxs_ob_get_contents();
 		nxs_ob_end_clean();
+		
+		
+		
+		//
+		//$sidebarcontent = do_shortcode($sidebarcontent);
 
 		if ($sidebarcontent == "")
 		{
@@ -129,6 +134,14 @@ function nxs_widgets_wordpresssidebar_render_webpart_render_htmlvisualization($a
 		}			
 		else
 		{
+			if ( false !== strpos( $sidebarcontent, '[' ) )
+			{
+				// 
+				$sidebarcontent = str_replace("&#039;", "'", $sidebarcontent);
+				$sidebarcontent = str_replace("&quot;", '"', $sidebarcontent);
+				$sidebarcontent = do_shortcode($sidebarcontent);
+			}
+			
 			?>
 			<ul class='nxs-sidebar-widgets'>
 				<?php echo $sidebarcontent; ?>
@@ -160,14 +173,14 @@ function nxs_wordpresssidebar_wpsidebarid_popupcontent($optionvalues, $args, $ru
 	nxs_ob_start();
 	?>
 	<select onchange="jQuery('#<?php echo $altid; ?>').val(jQuery(this).val()); nxs_js_popup_sessiondata_make_dirty();">
-		<option <?php if ($value=='1') echo "selected='selected'"; ?> value='1'>WordPress Backend Widget area 1</option>
-		<option <?php if ($value=='2') echo "selected='selected'"; ?> value='2'>WordPress Backend Widget area 2</option>
-		<option <?php if ($value=='3') echo "selected='selected'"; ?> value='3'>WordPress Backend Widget area 3</option>
-		<option <?php if ($value=='4') echo "selected='selected'"; ?> value='4'>WordPress Backend Widget area 4</option>
-		<option <?php if ($value=='5') echo "selected='selected'"; ?> value='5'>WordPress Backend Widget area 5</option>
-		<option <?php if ($value=='6') echo "selected='selected'"; ?> value='6'>WordPress Backend Widget area 6</option>
-		<option <?php if ($value=='7') echo "selected='selected'"; ?> value='7'>WordPress Backend Widget area 7</option>
-		<option <?php if ($value=='8') echo "selected='selected'"; ?> value='8'>WordPress Backend Widget area 8</option>
+		<option <?php if ($value=='1') echo "selected='selected'"; ?> value='1'>WP Backend Widget area 1</option>
+		<option <?php if ($value=='2') echo "selected='selected'"; ?> value='2'>WP Backend Widget area 2</option>
+		<option <?php if ($value=='3') echo "selected='selected'"; ?> value='3'>WP Backend Widget area 3</option>
+		<option <?php if ($value=='4') echo "selected='selected'"; ?> value='4'>WP Backend Widget area 4</option>
+		<option <?php if ($value=='5') echo "selected='selected'"; ?> value='5'>WP Backend Widget area 5</option>
+		<option <?php if ($value=='6') echo "selected='selected'"; ?> value='6'>WP Backend Widget area 6</option>
+		<option <?php if ($value=='7') echo "selected='selected'"; ?> value='7'>WP Backend Widget area 7</option>
+		<option <?php if ($value=='8') echo "selected='selected'"; ?> value='8'>WP Backend Widget area 8</option>
 	</select>
 	<?php
 	$result = nxs_ob_get_contents();
