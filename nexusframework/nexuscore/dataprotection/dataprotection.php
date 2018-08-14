@@ -532,11 +532,9 @@ function nxs_dataprotection_showcookiewall()
 	$currenturl = nxs_geturlcurrentpage();
 	$url = nxs_addqueryparametertourl_v2($url, nxs_dataprotection_getreturnqueryparameter(), $currenturl, true, true);
 	?>
-	<!--
 	<script>
 		window.location = '<?php echo $url; ?>';
 	</script>
-	-->
 	<?php
 	wp_redirect($url, 307);	// note; don't use a 301 here, as it will be cache
 	die();
@@ -568,7 +566,7 @@ function nxs_dataprotection_iscookiewallpage()
 
 //
 function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
-{
+{	
 	// render cookie wall / privacy settings page if this request is for the privacy settings
 	if (true)
 	{
@@ -618,7 +616,7 @@ function nxs_dataprotection_enforcedataprotectiontypeatstartwebrequest()
 				// controller disabled the cookiewall, nothing to do here
 			}
 		}
-	}
+	}	
 }
 
 function nxs_dataprotection_renderwebsitevisitorprivacyoptions()

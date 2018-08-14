@@ -733,6 +733,7 @@
 				<?php
 			}
 			
+			
 			$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
 			if (nxs_dataprotection_isoperational($cookiewallactivity))
 			{
