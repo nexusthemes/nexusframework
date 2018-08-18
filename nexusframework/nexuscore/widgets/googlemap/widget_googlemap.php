@@ -962,7 +962,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 						<br />
 						Problem; Google Maps API key not (yet?) valid<br />
 						<br />
-						Please check <a target='_blank' href='http://oopssomethingwentwrong.com/'>oopssomethingwentwrong.com</a> on how to resolve this.
+						Please check <a target='_blank' href='https://www.wpsupporthelp.com/answer/oops-something-went-wrong-google-maps-solved-the-best-pla-1729/</a> on how to resolve this.
 						<?php
 					}
 				}
