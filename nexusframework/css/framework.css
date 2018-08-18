@@ -2026,19 +2026,6 @@ p.link {
   margin: 380px 0 0 15px;
 }
 
-
-
-
-
-
-
-@media (min-width: 100px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 140px; min-width: 70px; background-color: rgb(238, 238, 238);}}
-@media (min-width: 360px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 160px; }}
-@media (min-width: 414px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 180px; }}
-@media (min-width: 768px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 250px; }}
-@media (min-width: 900px) {.nxs-product-gallery, .nxs-product-gallery .photos > a img { height: 280px; }}
-
-
 /* kudos to https://gist.github.com/unruthless/413930 */
 sub, sup {
   /* Specified in % so that the sup/sup is the
