@@ -2231,11 +2231,22 @@ function nxs_sc_command($atts, $content = null, $name='')
 			{
 				// cleanup output that was possibly produced before,
 				// if we won't this could cause output to not be json compatible
-				$existingoutput = nxs_outputbuffer_popall();
-	
-				header("HTTP/1.1 301 Moved Permanently"); 
-				header("Location: {$value}"); 
-				exit();
+				
+				if (!headers_sent()) 
+				{
+					$existingoutput = nxs_outputbuffer_popall();
+					
+					header("HTTP/1.1 301 Moved Permanently"); 
+					header("Location: {$value}");
+					exit();
+				}
+				else
+				{
+					// probably here we should do a client side redirect, as the headers are already sent out....
+					header("HTTP/1.1 301 Moved Permanently"); 
+					header("Location: {$value}");
+					exit();
+				}
 			}
 		}
 		else if ($op == "nocache")
