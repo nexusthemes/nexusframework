@@ -2110,13 +2110,26 @@ function nxs_template_getfooter($name)
 	{
 		if (!defined('NXS_TEMPLATEINCLUDED'))
 		{
-			// if we reach this stage, it means some plugin used
-			// the template_redirect 
-			require_once(NXS_FRAMEWORKPATH . '/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php');
+			global $nxs_global_current_containerpostid_being_rendered;
+			$containerpostid = $nxs_global_current_containerpostid_being_rendered;
 			
-			nxs_pagetemplate_handlecontent_fraction("bottom");
-			
-			nxs_pagetemplate_handlefooter();
+			if (is_admin())
+			{
+				// this is the case with thrive architect
+			}
+			else if ($containerpostid === null)
+			{
+			}
+			else
+			{
+				// if we reach this stage, it means some plugin used
+				// the template_redirect 
+				require_once(NXS_FRAMEWORKPATH . '/nexuscore/pagetemplates/blogentry/pagetemplate_blogentry.php');
+				
+				nxs_pagetemplate_handlecontent_fraction("bottom");
+				
+				nxs_pagetemplate_handlefooter();
+			}
 		}
 		else
 		{
