@@ -108,13 +108,13 @@ function nxs_dataprotection_rendercookiewall_actual()
 				  padding: 0px;
 				}
 				#nxsdataprotectionback { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; overflow-y: scroll; }
-				@media only screen and ( max-width: 959px ) { #nxsdataprotectionback { display: block; } }
+				@media all and ( max-width: 959px ) { #nxsdataprotectionback { display: block; } }
 				
 				#nxsdataprotectionwrap { padding: 20px; border-radius: 3px;	color: white; font-size: 16px; box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75); max-width: 40%; overflow-y: scroll; }
 				
-				@media only screen and ( max-width: 1439px ) { #nxsdataprotectionwrap { max-width: 60%;} }
-				@media only screen and ( max-width: 1199px ) { #nxsdataprotectionwrap { max-width: 80%;} }
-				@media only screen and ( max-width: 959px ) { #nxsdataprotectionwrap { max-width: 100%;} }
+				@media all and ( max-width: 1439px ) { #nxsdataprotectionwrap { max-width: 60%;} }
+				@media all and ( max-width: 1199px ) { #nxsdataprotectionwrap { max-width: 80%;} }
+				@media all and ( max-width: 959px ) { #nxsdataprotectionwrap { max-width: 100%;} }
 				#nxsdataprotectionwrap p { margin: 1em; }
 				
 				::-webkit-scrollbar { -webkit-appearance: none; width: 0px;	}

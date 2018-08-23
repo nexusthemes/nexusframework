@@ -1230,12 +1230,12 @@ background-image: -webkit-gradient(
 .nxs-main .nxs-one-third .nxs-bio .wrapper,
 .nxs-main .nxs-one-half .nxs-bio .wrapper 					{ height: auto !important; }
 
-@media only screen and ( max-width: 1439px ) 				{ 
+@media all and ( max-width: 1439px ) 				{ 
 .nxs-one-third .nxs-bio .nxs-icon-left						{ float: none !important; } 
 .nxs-one-third .nxs-bio .wrapper 							{ height: auto !important; }
 }
 
-@media only screen and ( max-width: 1199px ) 				{ 
+@media all and ( max-width: 1199px ) 				{ 
 .nxs-one-half .nxs-bio .nxs-icon-left						{ float: none !important; } 
 .nxs-one-half .nxs-bio .wrapper 							{ height: auto !important; }
 }

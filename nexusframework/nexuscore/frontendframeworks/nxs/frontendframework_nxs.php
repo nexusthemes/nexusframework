@@ -442,7 +442,7 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 		if ($injects != "")
 		{
 			$result .= "<style type='text/css'>";
-			$result .= "@media only screen and ( max-width: {$maxwidth}px ){";
+			$result .= "@media all and ( max-width: {$maxwidth}px ){";
 			$result .= implode("", $injects);
 			$result .= "}";
 			$result .= "</style>";

@@ -17,7 +17,7 @@
 
 /* GENERAL RESPONSIVE STYLES
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( min-width: 0px ) { 
+@media all and ( min-width: 0px ) { 
 /* We don't want certain admin areas to be responsive, it makes no sense */
 #nxs-sidebaredit-container											{ width: 344px !important; }
 #nxs-sidebaredit-container .nxs-sitewide-element,
@@ -81,18 +81,18 @@
 } /* This is the end of the media query test for IE8 and older browsers */
 
 /* DEFAULT DISPLAY */
-@media only screen and ( max-width: 1439px ) 	{ .display1440 { display: none !important; } }
-@media only screen and ( max-width: 1199px ) 	{ .display1200 { display: none !important; } }
-@media only screen and ( max-width: 959px ) 	{ .display960 { display: none !important; } }
-@media only screen and ( max-width: 719px ) 	{ .display720 { display: none !important; } }
-@media only screen and ( max-width: 479px )		{ .display480 { display: none !important; } }
+@media all and ( max-width: 1439px ) 	{ .display1440 { display: none !important; } }
+@media all and ( max-width: 1199px ) 	{ .display1200 { display: none !important; } }
+@media all and ( max-width: 959px ) 	{ .display960 { display: none !important; } }
+@media all and ( max-width: 719px ) 	{ .display720 { display: none !important; } }
+@media all and ( max-width: 479px )		{ .display480 { display: none !important; } }
 
 /* RESPONSIVE DISPLAY */
-@media only screen and ( max-width: 1439px ) 	{ .responsive-display1440 { display: block !important; } }
-@media only screen and ( max-width: 1199px ) 	{ .responsive-display1200 { display: block !important; } }
-@media only screen and ( max-width: 959px ) 	{ .responsive-display960 { display: block !important; } }
-@media only screen and ( max-width: 719px ) 	{ .responsive-display720 { display: block !important; } }
-@media only screen and ( max-width: 479px )		{ .responsive-display480 { display: block !important; } }
+@media all and ( max-width: 1439px ) 	{ .responsive-display1440 { display: block !important; } }
+@media all and ( max-width: 1199px ) 	{ .responsive-display1200 { display: block !important; } }
+@media all and ( max-width: 959px ) 	{ .responsive-display960 { display: block !important; } }
+@media all and ( max-width: 719px ) 	{ .responsive-display720 { display: block !important; } }
+@media all and ( max-width: 479px )		{ .responsive-display480 { display: block !important; } }
 
 
 
@@ -105,19 +105,19 @@ For usability purposes we're currently curbing the responsive layout at 1440 pix
 we already support responsiveness for whatever resolution. These are currently commented out.
 Because we're working with ems we set a font-size for each viewport. */
 
-@media only screen and ( min-width: 0px )							{ body	{ font-size: 15.0px; } }
-@media only screen and ( max-width: 1439px ) 						{ body	{ font-size: 12.5px; } }
-@media only screen and ( max-width: 1199px ) 						{ body	{ font-size: 10.0px; } }
-@media only screen and ( max-width: 959px ) 						{ body	{ font-size: 7.5px; } }
-@media only screen and ( max-width: 719px )	 						{ body 	{ font-size: 5.0px; } }
-@media only screen and ( max-width: 479px )	 						{ body	{ font-size: 3.33px; } }
+@media all and ( min-width: 0px )							{ body	{ font-size: 15.0px; } }
+@media all and ( max-width: 1439px ) 						{ body	{ font-size: 12.5px; } }
+@media all and ( max-width: 1199px ) 						{ body	{ font-size: 10.0px; } }
+@media all and ( max-width: 959px ) 						{ body	{ font-size: 7.5px; } }
+@media all and ( max-width: 719px )	 						{ body 	{ font-size: 5.0px; } }
+@media all and ( max-width: 479px )	 						{ body	{ font-size: 3.33px; } }
 
 
 /* KITCHEN SINK RESPONSIVENESS */
-@media only screen and ( max-width: 959px ) {
+@media all and ( max-width: 959px ) {
 .nxs-placeholder 													{ display: list-item; float: left; }
 }
-@media only screen and ( max-width: 719px )	{
+@media all and ( max-width: 719px )	{
 /* removed css based on support question 
 removing desktop margins for mobile devices 
 
@@ -135,7 +135,7 @@ removing desktop margins for mobile devices
 .nxs-exceptional-responsive-row .nxs-placeholder					{ width: 88.8em; }
 html 																{ -webkit-text-size-adjust: none; }
 }
-@media only screen and ( max-width: 479px )	{ 
+@media all and ( max-width: 479px )	{ 
 
 }
 
@@ -152,11 +152,11 @@ For example: a fullwidth one-fourth will be promoted to a one-half when the view
 with a one-half and another one-fourth needs to scale at different viewports than a one-fourth paired with
 three other one-fourths. This is necessary for individual rows to be completely filled up. 
 */
-@media only screen and ( max-width: 1199px ) { 
+@media all and ( max-width: 1199px ) { 
 /* FULLWIDTH */
 .nxs-one-fourth														{ width: 19.5em; }
 }
-@media only screen and ( max-width: 959px ) {
+@media all and ( max-width: 959px ) {
 /* FULLWIDTH */
 .nxs-one-fourth														{ width: 42.6em; }
 .nxs-one-third														{ width: 88.8em; }
@@ -177,7 +177,7 @@ three other one-fourths. This is necessary for individual rows to be completely 
 
 .nxs-one-fourth.nxs-column-3-4										{ clear: left; }
 }
-@media only screen and ( max-width: 719px )	{
+@media all and ( max-width: 719px )	{
 .nxs-widescreen .nxs-main											{ width: 96em; }
 .nxs-widescreen .nxs-sidebar1										{ width: 88.8em; }
 
@@ -198,7 +198,7 @@ three other one-fourths. This is necessary for individual rows to be completely 
 /* SIDEBAR */
 .nxs-sidebar1 .nxs-one-whole										{ width: 88.8em; }
 }
-@media only screen and ( max-width: 479px )	{
+@media all and ( max-width: 479px )	{
 /* FULLWIDTH */
 .nxs-one-fourth,
 .nxs-one-third,
@@ -224,31 +224,31 @@ three other one-fourths. This is necessary for individual rows to be completely 
 
 /* TEXT
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 479px ) {
+@media all and ( max-width: 479px ) {
 .nxs-text .nxs-table .nxs-title.nxs-align-right { text-align: left; }
 }
 
 /* SLIDER
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 1199px ) { 
+@media all and ( max-width: 1199px ) { 
 .nxs-slide-description-content h2 									{ font-size: 23px; }
 .nxs-slide-description-content p 									{ font-size: 14px; }
 }
-@media only screen and ( max-width: 719px ) { 
+@media all and ( max-width: 719px ) { 
 .main-controllers-bg,
 .nxs-slider-controller												{ display: none; }
 }
 
 /* CONTAINER ALIGNMENT (middle and bottom)
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 959px ) { 
+@media all and ( max-width: 959px ) { 
 .nxs-valign-middle,
 .nxs-valign-bottom													{ margin-top: 0px !important; }
 }
 
 /* TABLES
 ------------------------------------------------------------------------------------------ */
-@media only screen and (max-width: 1199px) { 
+@media all and (max-width: 1199px) { 
 #nxs-container table th												{ font-size: 11px; }
 #nxs-container table td 											{ font-size: 11px; }
 
@@ -263,7 +263,7 @@ three other one-fourths. This is necessary for individual rows to be completely 
 .nxs-sidebar1 table.responsive th,
 .nxs-sidebar1 table.responsive td 									{ line-height: 36px !important; height: 36px; padding: 0px 15px !important; }
 }
-@media only screen and (max-width: 959px) { 
+@media all and (max-width: 959px) { 
 .nxs-main table.responsive 											{ display: block; position: relative; width: 100%; }
 .nxs-main table.responsive thead 									{ display: block; float: left; }
 .nxs-main table.responsive tbody 									{ display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
@@ -275,7 +275,7 @@ three other one-fourths. This is necessary for individual rows to be completely 
 .nxs-main table.responsive th,
 .nxs-main table.responsive td 										{ line-height: 36px !important; height: 36px; padding: 0px 15px !important; }
 }
-@media only screen and (max-width: 719px) { 
+@media all and (max-width: 719px) { 
 #nxs-container table.responsive 									{ display: block; position: relative; width: 100%; }
 #nxs-container table.responsive thead 								{ display: block; float: left; }
 #nxs-container table.responsive tbody 								{ display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
@@ -290,22 +290,22 @@ three other one-fourths. This is necessary for individual rows to be completely 
 
 /* THUMBNAIL
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 959px ) { 
+@media all and ( max-width: 959px ) { 
 .nxs-comments .nxs-width20,
 .nxs-comments .nxs-width80											{ width: 100% !important; }
 }
 
 /* THUMBNAIL
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 959px ) { 
+@media all and ( max-width: 959px ) { 
 .nxs-sidebar-container .nxs-speech-balloon img.nxs-icon-left 		{ margin: 0 200px 20px 0; } /* This is so thumbnail will be positioned above content in boxes */ 
 img.nxs-icon-left 													{ width: 60px; height: 60px; }
 }
-@media only screen and ( max-width: 719px )	{  
+@media all and ( max-width: 719px )	{  
 .nxs-sidebar-container .nxs-speech-balloon img.nxs-icon-left 		{ margin: 0 20px 20px 0; }
 img.nxs-icon-left 													{ width: 50px; height: 50px; }
 }
-@media only screen and ( max-width: 479px )	{  
+@media all and ( max-width: 479px )	{  
 .nxs-sidebar-container .nxs-speech-balloon img.nxs-icon-left 		{ margin: 0 200px 20px 0; }
 .nxs-comments img.nxs-icon-left,
 .nxs-general-box img.nxs-icon-left,
@@ -314,41 +314,41 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 
 /* SOCIAL SHARING
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 959px ) { 
+@media all and ( max-width: 959px ) { 
 .nxs-sharing div 							{ margin-bottom: 10px; }
 }
 
 /* SOCIAL SHARING
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 959px ) { 
+@media all and ( max-width: 959px ) { 
 .nxs-exceptional-responsive-row .nxs-one-fourth .nxs-social .nxs-applylinkvarcolor			{ display: table; margin: 0 auto; }
 .nxs-exceptional-responsive-row .nxs-one-fourth .nxs-social .nxs-float-right				{ float: none; }
 }
-@media only screen and ( max-width: 719px ) { 
+@media all and ( max-width: 719px ) { 
 .nxs-social .nxs-applylinkvarcolor			{ display: table; margin: 0 auto; }
 .nxs-social .nxs-float-right				{ float: none; } 
 }
 
 /* BLOG
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 959px )	 				{ #nxs-content-container.has-sidebar .nxs-widgettype-blog .nxs-blog-sharing		{ display: none; } }
-@media only screen and ( max-width: 719px )	 				{ .nxs-widgettype-blog .nxs-blog-sharing { display: none; } }
+@media all and ( max-width: 959px )	 				{ #nxs-content-container.has-sidebar .nxs-widgettype-blog .nxs-blog-sharing		{ display: none; } }
+@media all and ( max-width: 719px )	 				{ .nxs-widgettype-blog .nxs-blog-sharing { display: none; } }
 
 /* SUPERSIZED SLIDER
 ------------------------------------------------------------------------------------------ */
-@media only screen {
+@media all {
 .nxs-fullwidthslider .nxs-slider-controller							{ display: none; }
 .nxs-fullwidthslider .nxs-widget.nxs-slider							{ margin-bottom: 0px !important; }
 }
-@media only screen and ( max-width: 1199px ) { 
+@media all and ( max-width: 1199px ) { 
 .fixed #slidecaption .nxs-title			 							{ font-size: 40px !important; }
 }
-@media only screen and ( max-width: 959px ) {   
+@media all and ( max-width: 959px ) {   
 .caption-aligner													{ width: 680px !important; position: relative; margin: 0 auto; }
 .fixed #slidecaption .nxs-title			 							{ font-size: 35px !important; }
 .fixed #slidecaption p				 								{ font-size: 18px !important; }
 }
-@media only screen and ( max-width: 719px )	{
+@media all and ( max-width: 719px )	{
 #nxs-supersized .caption-aligner .nxs-title,
 #nxs-supersized .caption-aligner p,
 #nxs-supersized .caption-aligner .slidecaption-container			{ text-align: center !important; }
@@ -365,56 +365,56 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 #prevslide, 
 #nextslide 															{ display: none !important; }
 }
-@media only screen and ( max-width: 479px )	{ 
+@media all and ( max-width: 479px )	{ 
 .caption-aligner													{ width: 280px !important; }
 .fixed #slidecaption .nxs-title			 							{ font-size: 26px !important; }
 .fixed #slidecaption p					 							{ font-size: 16px !important; }
 }
 
 /* RESPONSIVE DISPLAY */
-@media only screen and ( max-width: 1439px ) { .pageslider1440 .caption-aligner { width: 90% !important; }}
-@media only screen and ( max-width: 1199px ) { .pageslider1200 .caption-aligner { width: 90% !important; }}
-@media only screen and ( max-width: 959px )  { .pageslider960 .caption-aligner { width: 90% !important; }}
-@media only screen and ( max-width: 719px )  { .pageslider720 .caption-aligner { width: 90% !important; }}
-@media only screen and ( max-width: 479px )	 { .pageslider480 .caption-aligner { width: 90% !important; }}
+@media all and ( max-width: 1439px ) { .pageslider1440 .caption-aligner { width: 90% !important; }}
+@media all and ( max-width: 1199px ) { .pageslider1200 .caption-aligner { width: 90% !important; }}
+@media all and ( max-width: 959px )  { .pageslider960 .caption-aligner { width: 90% !important; }}
+@media all and ( max-width: 719px )  { .pageslider720 .caption-aligner { width: 90% !important; }}
+@media all and ( max-width: 479px )	 { .pageslider480 .caption-aligner { width: 90% !important; }}
 
 
 
 /* GALLERY
 ------------------------------------------------------------------------------------------ */
 .nxs-gallery .nxs-galleryitem	{ margin-left: 3.6em; }
-@media only screen and ( max-width: 479px ) { 
+@media all and ( max-width: 479px ) { 
 .nxs-gallery .nxs-galleryitem.numofcolumns4,
 .nxs-gallery .nxs-galleryitem.numofcolumns2							{ margin-left: 0; } }
-@media only screen and ( max-width: 719px )			{ .nxs-gallery .nxs-galleryitem.numofcolumns3 { margin-left: 0; } }
-@media only screen and ( max-width: 719px ) 		{ .nxs-main .nxs-gallery .nxs-galleryitem.numofcolumns2	{ margin-left: 0; } }
-@media only screen and ( max-width: 719px )			{ .nxs-gallery .nxs-galleryitem.numofcolumns3 { margin-left: 0; } }
+@media all and ( max-width: 719px )			{ .nxs-gallery .nxs-galleryitem.numofcolumns3 { margin-left: 0; } }
+@media all and ( max-width: 719px ) 		{ .nxs-main .nxs-gallery .nxs-galleryitem.numofcolumns2	{ margin-left: 0; } }
+@media all and ( max-width: 719px )			{ .nxs-gallery .nxs-galleryitem.numofcolumns3 { margin-left: 0; } }
 
 /* multistep divider */
-@media only screen and ( max-width: 719px ) { 
+@media all and ( max-width: 719px ) { 
 .multi-step-divider 												{ display: block !important; } 
 .nxs-gallery .nxs-galleryitem.firstinrow-multistep					{ margin-left: 0; }
 }
-@media only screen and ( max-width: 959px ) { 
+@media all and ( max-width: 959px ) { 
 .nxs-main .nxs-gallery .nxs-galleryitem.firstinrow-multistep		{ margin-left: 0; }
 }
 
 /*
-@media only screen 	   ( min-width: 0px ) 			{ .nxs-gallery-image { max-width: 120em !important; max-height: 90em !important; } }*/
-@media only screen and ( max-width: 1439px ) 		{ .nxs-gallerypopup img { max-width: 1360px !important; } }
-@media only screen and ( max-width: 1199px ) 		{ .nxs-gallerypopup img { max-width: 1120px !important; } }
-@media only screen and ( max-width: 959px ) 		{ .nxs-gallerypopup img { max-width: 620px !important; } }
-@media only screen and ( max-width: 719px )	 		{ .nxs-gallerypopup img { max-width: 460px !important; } }
-@media only screen and ( max-width: 479px )	 		{ .nxs-gallerypopup img { max-width: 300px !important; } }
+@media all 	   ( min-width: 0px ) 			{ .nxs-gallery-image { max-width: 120em !important; max-height: 90em !important; } }*/
+@media all and ( max-width: 1439px ) 		{ .nxs-gallerypopup img { max-width: 1360px !important; } }
+@media all and ( max-width: 1199px ) 		{ .nxs-gallerypopup img { max-width: 1120px !important; } }
+@media all and ( max-width: 959px ) 		{ .nxs-gallerypopup img { max-width: 620px !important; } }
+@media all and ( max-width: 719px )	 		{ .nxs-gallerypopup img { max-width: 460px !important; } }
+@media all and ( max-width: 479px )	 		{ .nxs-gallerypopup img { max-width: 300px !important; } }
 
 .nxs-gallerypopup img { max-height: 800px; }
-@media only screen and ( max-width: 1439px ) 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
-@media only screen and ( max-width: 1199px ) 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
-@media only screen and ( max-width: 959px ) 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
-@media only screen and ( max-width: 719px )	 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
-@media only screen and ( max-width: 479px )	 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
+@media all and ( max-width: 1439px ) 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
+@media all and ( max-width: 1199px ) 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
+@media all and ( max-width: 959px ) 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
+@media all and ( max-width: 719px )	 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
+@media all and ( max-width: 479px )	 		{ .nxs-gallerypopup img { max-height: 80vh !important; } }
 
-@media only screen and ( min-width: 0px ) {
+@media all and ( min-width: 0px ) {
 /* default landscape orientation */
 .nxs-gallery .nxs-one-fourth,
 .nxs-gallery .nxs-one-fourth .image-wrapper,
@@ -453,7 +453,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .nxs-one-half img							{ width: 27.2em; height: 16.4em; }
 }
 
-@media only screen and ( max-width: 959px ) {
+@media all and ( max-width: 959px ) {
 .nxs-main .nxs-gallery .nxs-one-fourth,
 .nxs-main .nxs-gallery .nxs-one-fourth .image-wrapper,
 .nxs-main .nxs-gallery .nxs-one-fourth .image-border,
@@ -466,7 +466,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .nxs-one-third .image-cropper,
 .nxs-main .nxs-gallery .nxs-one-third img							{ width: 58.0em; height: 34.8em; }
 }
-@media only screen and ( max-width: 719px ) {
+@media all and ( max-width: 719px ) {
 .nxs-gallery														{ width: 92.4em; }
 	
 .nxs-gallery .nxs-one-fourth,
@@ -501,7 +501,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .nxs-one-half .image-cropper,
 .nxs-main .nxs-gallery .nxs-one-half img							{ width: 88.8em; height: 53.3em; }
 }
-@media only screen and ( max-width: 479px ) {
+@media all and ( max-width: 479px ) {
 .nxs-gallery .nxs-one-fourth,
 .nxs-gallery .nxs-one-fourth .image-wrapper,
 .nxs-gallery .nxs-one-fourth .image-border,
@@ -525,7 +525,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .nxs-one-fourth img							{ width: 88.8em; height: 53.3em; }
 }
 
-@media only screen and ( min-width: 0px ) {
+@media all and ( min-width: 0px ) {
 /* portrait orientation */
 .nxs-gallery .portrait .nxs-one-fourth,
 .nxs-gallery .portrait .nxs-one-fourth .image-wrapper,
@@ -563,7 +563,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .portrait .nxs-one-half .image-cropper,
 .nxs-main .nxs-gallery .portrait .nxs-one-half img					{ width: 27.2em; height: 43.5em; }
 }
-@media only screen and ( max-width: 959px ) {
+@media all and ( max-width: 959px ) {
 .nxs-main .nxs-gallery .portrait .nxs-one-fourth ,
 .nxs-main .nxs-gallery .portrait .nxs-one-fourth .image-wrapper,
 .nxs-main .nxs-gallery .portrait .nxs-one-fourth .image-border,
@@ -576,7 +576,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .portrait .nxs-one-third .image-cropper,
 .nxs-main .nxs-gallery .portrait .nxs-one-third img					{ width: 58.0em; height: 92.8em; }
 }
-@media only screen and ( max-width: 719px ) {
+@media all and ( max-width: 719px ) {
 .nxs-gallery														{ width: 92.4em; }
 	
 .nxs-gallery .portrait .nxs-one-fourth ,
@@ -611,7 +611,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-gallery .portrait .nxs-one-half .image-cropper,
 .nxs-main .nxs-gallery .portrait .nxs-one-half img					{ width: 88.8em; height: 142.1em; }
 }
-@media only screen and ( max-width: 479px ) {
+@media all and ( max-width: 479px ) {
 .nxs-gallery .portrait .nxs-one-fourth ,
 .nxs-gallery .portrait .nxs-one-fourth .image-wrapper,
 .nxs-gallery .portrait .nxs-one-fourth .image-border,
@@ -649,20 +649,20 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 ------------------------------------------------------------------------------------------ */
 
 /* RESPONSIVE DISPLAY */
-@media only screen and ( max-width: 1439px ) { .callout1440 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout1440 .gradient-wrapper { width: 100% !important; }}
-@media only screen and ( max-width: 1199px ) { .callout1200 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout1200 .gradient-wrapper { width: 100% !important; }}
-@media only screen and ( max-width: 959px )  { .callout960 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout960 .gradient-wrapper { width: 100% !important; }}
-@media only screen and ( max-width: 719px )  { .callout720 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout720 .gradient-wrapper { width: 100% !important; }}
-@media only screen and ( max-width: 479px )	 { .callout480 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout480 .gradient-wrapper { width: 100% !important; }}
+@media all and ( max-width: 1439px ) { .callout1440 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout1440 .gradient-wrapper { width: 100% !important; }}
+@media all and ( max-width: 1199px ) { .callout1200 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout1200 .gradient-wrapper { width: 100% !important; }}
+@media all and ( max-width: 959px )  { .callout960 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout960 .gradient-wrapper { width: 100% !important; }}
+@media all and ( max-width: 719px )  { .callout720 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout720 .gradient-wrapper { width: 100% !important; }}
+@media all and ( max-width: 479px )	 { .callout480 .gradient-wrapper > div { margin: 0px !important; padding: 30px !important; border-radius: 0px; } .callout480 .gradient-wrapper { width: 100% !important; }}
 /* Deprecated because of flexbox*/
-@media only screen and ( max-width: 1439px ) { .callout1440 .image-background { min-height: 0px !important; }}
-@media only screen and ( max-width: 1199px ) { .callout1200 .image-background { min-height: 0px !important; }}
-@media only screen and ( max-width: 959px )  { .callout960 .image-background { min-height: 0px !important; }}
-@media only screen and ( max-width: 719px )  { .callout720 .image-background { min-height: 0px !important; }}
-@media only screen and ( max-width: 479px )	 { .callout480 .image-background { min-height: 0px !important; }}
+@media all and ( max-width: 1439px ) { .callout1440 .image-background { min-height: 0px !important; }}
+@media all and ( max-width: 1199px ) { .callout1200 .image-background { min-height: 0px !important; }}
+@media all and ( max-width: 959px )  { .callout960 .image-background { min-height: 0px !important; }}
+@media all and ( max-width: 719px )  { .callout720 .image-background { min-height: 0px !important; }}
+@media all and ( max-width: 479px )	 { .callout480 .image-background { min-height: 0px !important; }}
 
 /* DEFAULT FONT SIZING */
-@media only screen and ( max-width: 719px ) {
+@media all and ( max-width: 719px ) {
 .fixed-font .nxs-title				 					{ font-size: 30px !important; }
 .fixed-font .nxs-subtitle					 			{ font-size: 20px !important; }
 }
@@ -670,7 +670,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 /* RADIAL
 ------------------------------------------------------------------------------------------ */
 /* we only provide support to render the radial for standard placeholders (1/4, 1/3, 1/2, 1) */
-@media only screen {
+@media all {
 .nxs-one-fourth .nxs-radial .nxs-default									{ height: 19.5em; }
 .nxs-one-third 	.nxs-radial .nxs-default									{ height: 27.2em; }
 .nxs-one-half 	.nxs-radial .nxs-default									{ height: 42.6em; }
@@ -684,13 +684,13 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default					{ height: 27.2em; }
 .nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default .radial			{ height: 27.2em; }
 }
-@media only screen and ( max-width: 959px ) {
+@media all and ( max-width: 959px ) {
 .nxs-one-fourth .nxs-radial .nxs-default									{ height: 42.6em; }
 .nxs-one-third 	.nxs-radial .nxs-default									{ height: 88.8em; }
 .nxs-main .nxs-one-third .nxs-radial .nxs-default,		
 .nxs-main .nxs-two-third .nxs-radial .nxs-default						{ height: 58.0em; }
 }
-@media only screen and ( max-width: 719px ) {
+@media all and ( max-width: 719px ) {
 .nxs-one-fourth .nxs-radial .nxs-default,
 .nxs-main .nxs-one-fourth .nxs-radial .nxs-default						{ height: 42.6em; }
 .nxs-one-third .nxs-radial .nxs-default,
@@ -703,7 +703,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default,
 .nxs-sidebar1 .nxs-one-whole .nxs-radial .nxs-default .radial			{ height: 88.8em; }
 }
-@media only screen and ( max-width: 479px ) {
+@media all and ( max-width: 479px ) {
 .nxs-one-fourth .nxs-radial .nxs-default,
 .nxs-one-third .nxs-radial .nxs-default,
 .nxs-one-half .nxs-radial .nxs-default,
@@ -733,7 +733,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 #nxs-container .nxs-one-fourth .nxs-target .icon-size-5-0 .content			{ margin-left: 0px; clear: both; }
 
 
-@media only screen and ( max-width: 1439px ) {
+@media all and ( max-width: 1439px ) {
 #nxs-container .nxs-one-third .nxs-target .nxs-icon-size-3-0 .icon			{ margin-bottom: 20px; clear: both; }
 
 #nxs-container .nxs-one-fourth .nxs-target .icon 							{ margin-bottom: 20px; }
@@ -745,15 +745,15 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 #nxs-container .nxs-one-half .nxs-target .icon-size-5-0 .icon				{ margin-bottom: 20px; }
 #nxs-container .nxs-one-half .nxs-target .icon-size-5-0 .content			{ margin-left: 0px; clear: both; }
 }
-@media only screen and ( max-width: 1199px ) {
+@media all and ( max-width: 1199px ) {
 #nxs-container .nxs-one-half .nxs-target .icon-size-4-0 .icon				{ margin-bottom: 20px; }
 #nxs-container .nxs-one-half .nxs-target .icon-size-4-0 .content			{ margin-left: 0px; clear: both; }
 }
-@media only screen and ( max-width: 959px ) {
+@media all and ( max-width: 959px ) {
 #nxs-container .nxs-one-half .nxs-target .icon-size-3-0 .icon				{ margin-bottom: 20px; }
 #nxs-container .nxs-one-half .nxs-target .icon-size-3-0 .content			{ margin-left: 0px; clear: both; }
 }
-@media only screen and ( max-width: 719px ) {
+@media all and ( max-width: 719px ) {
 #nxs-container .nxs-one-fourth .nxs-target .icon 							{ margin-bottom: 20px; }
 #nxs-container .nxs-one-fourth .nxs-target .content,
 #nxs-container .nxs-one-fourth .nxs-target .content.colored					{ margin-left: 0px; clear: both; }
@@ -767,13 +767,13 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 #nxs-container .nxs-one-whole .nxs-target .icon-size-5-0 .icon				{ margin-bottom: 20px; }
 #nxs-container .nxs-one-whole .nxs-target .icon-size-5-0 .content			{ margin-left: 0px; clear: both; }
 }
-@media only screen and ( max-width: 479px ) {
+@media all and ( max-width: 479px ) {
 .nxs-target .icon-top .icon															{ width: 295px; }
 }
 
 /* BANNER
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 719px ) {
+@media all and ( max-width: 719px ) {
 .nxs-banner .image-wrapper,
 .nxs-banner .image-wrapper .nxs-table								{ min-width: 27.2em; min-height: 27.2em; }
 .nxs-banner .image-wrapper img										{ min-width: 27.2em; }
@@ -797,7 +797,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-sidebar-container .nxs-banner .image-wrapper:nth-child(3n)		{ border-right: 0 !important; }
 }
 
-@media only screen and ( max-width: 959px ) {
+@media all and ( max-width: 959px ) {
 .has-no-sidebar .nxs-one-half .nxs-banner .image-wrapper:nth-child(3n),
 .has-no-sidebar .nxs-two-third .nxs-banner .image-wrapper:nth-child(4n),
 .has-no-sidebar .nxs-one-third .nxs-banner .image-wrapper:nth-child(2n),
@@ -818,24 +818,24 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 /* LOGO
 ------------------------------------------------------------------------------------------ */
 /* query for image and title subtitles filled */
-@media only screen and ( max-width: 1199px ) { 
+@media all and ( max-width: 1199px ) { 
 .nxs-logo .aligning-content .logo-image								{ width: 100%; }
 .nxs-logo .aligning-content .logo-image	img							{ margin: 0 auto !important; float: none !important; } 
 .nxs-logo .aligning-content .title-wrapper							{ width: 100%; height: auto !important; margin: 0; }
 .nxs-logo .aligning-content .title-wrapper span						{ text-align: center; }
 }
 
-@media only screen and ( max-width: 719px )  { 
+@media all and ( max-width: 719px )  { 
 .nxs-logo img 														{ margin: 0 auto !important; float: none !important; } 
 }
 
-@media only screen and ( max-width: 1199px ) { .nxs-logo .stop-absolute1200 { position: relative !important; top: 0px !important; left: 0px !important; } }
-@media only screen and ( max-width: 959px )  { .nxs-logo .stop-absolute960  { position: relative !important; top: 0px !important; left: 0px !important; } }
-@media only screen and ( max-width: 719px )  { .nxs-logo .stop-absolute720  { position: relative !important; top: 0px !important; left: 0px !important; } }
-@media only screen and ( max-width: 479px )  { .nxs-logo .stop-absolute480  { position: relative !important; top: 0px !important; left: 0px !important; } }
+@media all and ( max-width: 1199px ) { .nxs-logo .stop-absolute1200 { position: relative !important; top: 0px !important; left: 0px !important; } }
+@media all and ( max-width: 959px )  { .nxs-logo .stop-absolute960  { position: relative !important; top: 0px !important; left: 0px !important; } }
+@media all and ( max-width: 719px )  { .nxs-logo .stop-absolute720  { position: relative !important; top: 0px !important; left: 0px !important; } }
+@media all and ( max-width: 479px )  { .nxs-logo .stop-absolute480  { position: relative !important; top: 0px !important; left: 0px !important; } }
 /* we only provide support to render the logo for standard placeholders (1/4, 1/3, 1/2, 1) */
 
-@media only screen and ( min-width: 0px ) {
+@media all and ( min-width: 0px ) {
 /* FULLWIDTH */
 .nxs-one-fourth .nxs-logo img										{ max-width: 19.5em !important; }
 .nxs-one-third .nxs-logo img										{ max-width: 27.2em !important; }
@@ -853,11 +853,11 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-sidebar1 .nxs-one-whole .nxs-logo img							{ max-width: 27.2em !important; }
 }
 
-@media only screen and ( max-width: 1199px ) { 
+@media all and ( max-width: 1199px ) { 
 /* FULLWIDTH */
 .nxs-one-fourth .nxs-logo img										{ max-width: 19.5em !important; }
 }
-@media only screen and ( max-width: 959px ) {
+@media all and ( max-width: 959px ) {
 /* FULLWIDTH */
 .nxs-one-fourth .nxs-logo img,
 .nxs-one-third .nxs-logo img,
@@ -868,7 +868,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 .nxs-main .nxs-one-third .nxs-logo img,
 .nxs-main .nxs-two-third .nxs-logo img								{ max-width: 58.0em !important; }
 }
-@media only screen and ( max-width: 719px )	{
+@media all and ( max-width: 719px )	{
 /* MAIN */	
 .nxs-main .nxs-one-fourth .nxs-logo img,
 .nxs-main .nxs-one-third .nxs-logo img,
@@ -878,7 +878,7 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 /* SIDEBAR */
 .nxs-sidebar1 .nxs-one-whole .nxs-logo img							{ max-width: 88.8em !important; }
 }
-@media only screen and ( max-width: 479px )	{
+@media all and ( max-width: 479px )	{
 /* FULLWIDTH */
 .nxs-one-fourth .nxs-logo img,
 .nxs-one-third .nxs-logo img,
@@ -897,21 +897,21 @@ img.nxs-icon-left 													{ width: 50px; height: 50px; }
 
 /* WOOCOMMERCE
 ------------------------------------------------------------------------------------------ */
-@media only screen and ( max-width: 479px )	{
+@media all and ( max-width: 479px )	{
 .nxs-woocartpage .shop_table th:nth-child(3),
 .nxs-woocartpage .shop_table td:nth-child(3),
 .nxs-woocartpage .shop_table th:nth-child(5),
 .nxs-woocartpage .shop_table td:nth-child(5)						{ display: none; }
 }
-@media only screen and ( max-width: 959px )	{
+@media all and ( max-width: 959px )	{
 .woocommerce p.form-row label										{ width: 100%; }
 .woocommerce p.form-row input 										{ width: 100%; float: none; margin-bottom: 10px; }
 }
-@media only screen and ( max-width: 959px )	{
+@media all and ( max-width: 959px )	{
 .woocommerce-tabs .tabs-wrapper										{ padding-bottom: 0px; }
 .woocommerce-tabs .panel-wrapper									{ padding-top: 0px; }
 }
-@media only screen and (max-width: 959px) {
+@media all and (max-width: 959px) {
 .nxs-one-third.nxs-placeholder { border-right: none; }
 	
 }
