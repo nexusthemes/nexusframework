@@ -546,10 +546,12 @@ function nxs_sc_string($atts, $content = null, $name='')
 		else if ($op == "listify")
 		{
 			$seperator = $atts["seperator"];
+			$class = $atts["class"];
 			if ($seperator == "") { $seperator = "|"; }
 			$pieces = explode($seperator, $input);
 			$input = "";
-			$input .= "<ul class='nxs-default-p nxs-applylinkvarcolor nxs-padding-bottom0'>";
+			$class_string = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $class);
+			$input .= "<ul class='{$class_string}'>";
 			foreach ($pieces as $piece)
 			{
 				$piece = trim($piece);
