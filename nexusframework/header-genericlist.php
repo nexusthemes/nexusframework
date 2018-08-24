@@ -16,7 +16,7 @@
 	<script>
 		onload=function()
 		{
-			// refresh the screen when the user pushes the back button
+			/* refresh the screen when the user pushes the back button */
 			var e=document.getElementById("nxs-refreshed-indicator");
 			if(e.value=="no")e.value="yes";
 			else
