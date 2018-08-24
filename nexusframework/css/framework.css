@@ -637,6 +637,7 @@ h6															{ font-size: 15px; }
 .nxs-align-left												{ text-align: left; }
 .nxs-align-center											{ text-align: center; }
 .nxs-align-right											{ text-align: right; }
+.nxs-align-justify											{ text-align: justify; }
 
 /* MARGIN PERCENTAGE */
 .nxs-margin-5-percent										{ margin: 0 5%; }
