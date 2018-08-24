@@ -1605,6 +1605,8 @@ function nxs_frontendframework_nxs2_init()
 		
 	  return is_array($var) ? array() : '';
 	}
+	
+	add_shortcode('nxs_image', 'nxs_frontendframework_nxs2_sc_image');
 }
 
 function nxs_framework_theme_styles()
@@ -2483,6 +2485,14 @@ add_shortcode('nxsplaceholder', 'nxs_nxsplaceholder');
 function nxs_frontendframework_nxs2_setgenericwidgethovermenu($args)
 {
 	// do nothing (on purpose)
+}
+
+function nxs_frontendframework_nxs2_sc_image($attributes, $content = null, $name='') 
+{
+	extract($attributes);
+	
+	$result = nxs_frontendframework_nxs2_gethtmlforimage($attributes);
+	return $result;
 }
 
 function nxs_frontendframework_nxs2_gethtmlforimage($args)
