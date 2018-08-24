@@ -632,7 +632,7 @@ function nxs_pagetemplate_handleheader()
 	// dit wordt niet op goede plek ge-enqueued
 	
 	?>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=12.0, minimum-scale=.25, user-scalable=yes" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, minimum-scale=.25, user-scalable=yes" />
 	<?php
 
 	//
@@ -645,7 +645,7 @@ function nxs_pagetemplate_handleheader()
 	<script>
 		onload=function()
 		{
-			// refresh the screen when the user pushes the back button
+			/* refresh the screen when the user pushes the back button */
 			var e=document.getElementById("nxs-refreshed-indicator");
 			if(e.value=="no")e.value="yes";
 			else
