@@ -664,7 +664,7 @@ function nxs_js_register_windowresizedend_event()
 		  (
 		  	function() 
 		  	{
-		  		nxs_js_log('broadcasting nxs_event_resizeend');
+		  		// nxs_js_log('broadcasting nxs_event_resizeend');
 		  		jQ_nxs(document).trigger('nxs_event_resizeend');
 		  	}
 		  	, 

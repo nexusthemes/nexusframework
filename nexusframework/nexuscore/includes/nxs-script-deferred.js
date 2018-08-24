@@ -429,12 +429,12 @@ function nxs_js_popup_render_inner(waitgrowltoken, response)
 			}
 			
 			
-			nxs_js_log("broadcasting afterpopupshows");
+			// nxs_js_log("broadcasting afterpopupshows");
 			
 			// broadcast clientside trigger for dom elements to be notified when the popup shows
 			jQ_nxs(window).trigger('nxs_jstrigger_afterpopupshows');
 
-			nxs_js_log("unbinding broadcast receivers");
+			// nxs_js_log("unbinding broadcast receivers");
 			
 			// remove all listeners
 			jQ_nxs(window).unbind("nxs_jstrigger_afterpopupshows");
@@ -1007,13 +1007,13 @@ function nxs_js_broadcastpopupcloses()
 	}
 	
 	// broadcast clientside trigger for dom elements to be notified when the popup shows
-	nxs_js_log("broadcasting trigger: nxs_jstrigger_beforepopupcloses");
+	// nxs_js_log("broadcasting trigger: nxs_jstrigger_beforepopupcloses");
 	jQ_nxs(window).trigger('nxs_jstrigger_beforepopupcloses');
 }
 
 function nxs_js_teardownpopupdom()
 {
-	nxs_js_log("broadcast b");
+	// nxs_js_log("broadcast b");
 	nxs_js_broadcastpopupcloses();
 
 	jQ_nxs("#nxsbox_window").removeClass("nxs-active");
