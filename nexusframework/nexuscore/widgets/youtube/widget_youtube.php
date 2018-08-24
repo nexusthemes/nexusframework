@@ -292,8 +292,18 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	$result = array();
 	$result["result"] = "OK";
 	
-	$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
-	
+	// Every widget needs it's own unique id for all sorts of purposes
+	// The $postid and $placeholderid are used when building the HTML later on
+	if ($render_behaviour == "code")
+	{
+		//
+		$temp_array = $args;
+	}
+	else
+	{
+		$temp_array = nxs_getwidgetmetadata($postid, $placeholderid);
+	}
+		
 	$mixedattributes = array_merge($temp_array, $args);
 	
 	// Translate model magical fields
@@ -438,6 +448,10 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	{
 		$shouldrenderhover = false;
 	}
+	else if ($rendermode == "")
+	{
+		$shouldrenderhover = false;
+	}
 	else
 	{
 		echo "unsupported rendermode;" . $rendermode;
@@ -494,7 +508,14 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	
 	nxs_ob_start();
 
-	$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-youtube";
+	if ($render_behaviour == "code")
+	{
+		//
+	}
+	else
+	{
+		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-youtube";
+	}
 
 	?>
 
@@ -506,11 +527,11 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 			<?php
 		}
 		?>
-        <div class="video-container">
-            <iframe class="nxs-youtube-iframe" src="https://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" frameborder="0" allowfullscreen></iframe>
-        </div>
+    <div class="video-container">
+        <iframe class="nxs-youtube-iframe" src="https://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" frameborder="0" allowfullscreen></iframe>
     </div>
-    <?php
+  </div>
+  <?php
 	
 	if ($nxs_global_row_render_statebag == null)
 	{
