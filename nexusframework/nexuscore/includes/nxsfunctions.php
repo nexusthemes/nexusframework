@@ -8607,7 +8607,7 @@ function nxs_gethtmlforfiller()
 	return '<div class="nxs-clear nxs-filler"></div>';
 }
 
-function nxs_gethtmlfortext($text = "", $text_alignment = "", $text_showliftnote = "", $text_showdropcap = "", $wrappingelement = "", $text_heightiq = "", $text_fontzen = "")
+function nxs_gethtmlfortext($text = "", $text_alignment = "", $text_showliftnote = "", $text_showdropcap = "", $wrappingelement = "", $text_heightiq = "", $text_fontzen = "", $text_fontsize = "")
 {
 	$args = array
 	(
@@ -8619,6 +8619,7 @@ function nxs_gethtmlfortext($text = "", $text_alignment = "", $text_showliftnote
 		"wrappingelement" => $wrappingelement,
 		"text_heightiq" => $text_heightiq,
 		"text_fontzen" => $text_fontzen,
+		"fontsize" => $text_fontsize,
 	);
 	$result = nxs_gethtmlfortext_v2($args);
 	
