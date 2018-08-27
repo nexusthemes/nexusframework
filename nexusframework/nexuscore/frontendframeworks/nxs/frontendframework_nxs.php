@@ -1696,6 +1696,17 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 {
 	extract($args);
 	
+	if ($alt != "")
+	{
+		$image_alt = $alt;
+	}
+	
+	if ($align != "")
+	{
+		$image_alignment = $align;
+	}
+	
+	
 	$image_alt = trim($image_alt);
 	$image_title = trim($image_title);
 	$image_maxheight_cssclass = nxs_getcssclassesforlookup("nxs-maxheight-", $image_maxheight);
