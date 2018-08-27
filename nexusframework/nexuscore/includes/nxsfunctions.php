@@ -7559,32 +7559,13 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 		
 		if ($group == "")
 		{
-			/*
-			echo "options:";
-			var_dump($options);
-			echo "args:";
-			var_dump($args);			
-			nxs_webmethod_return_nack("group not set?!");
-			*/
+			//
 		}
 		else
 		{
 			// blend unistyle properties
 			$unistyledata = nxs_unistyle_getunistyleproperties($group, $unistyle);
-			
-			if (false) // $_SERVER['REQUEST_METHOD'] === 'POST') 
-			{
-				echo "lala;";
-				echo "unistyle_persisted:[$unistyle_persisted] | ";
-				echo "unistyle session:[$unistyle_session] ";
-				$json = json_encode($unistyledata);
-				
-				echo "json unistyle data: [$json] ";
-				
-				//echo "testgj";
-				die();
-			}
-			
+		
 			// NOTE; the unistyledata _CAN_ be overridden by the user,
 			// since the unistyledata is blended with clientpopupsessiondata and shortscopedata
 		}
@@ -7616,9 +7597,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 		$group = $options["unifiedcontent"]["group"];
 		if ($group == "")
 		{
-			//echo "aaaaaaaaa";
-			//var_dump($options);
-			//nxs_webmethod_return_nack("empty2;debug[" . $group . "]");
+			//
 		}
 		else
 		{
@@ -7652,6 +7631,12 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	{
 		$sheethelp = $options['sheethelp'];
 	}
+	$footertype = "default";
+	if (isset($options['footertype']))
+	{
+		$footertype = $options['footertype'];
+	}
+	
 	$footerfiller = false;
 	if (isset($options['footerfiller']))
 	{
@@ -7759,14 +7744,36 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 	      <?php } ?>
 	  	</div> <!-- nxs-popup-content-canvas -->
 	  </div> <!-- END nxs-popup-content-canvas-cropper -->
-	  <div class="content2 popup-footer-container">          
+	  <?php
+	  if ($footertype == "" || $footertype == "default")
+	  {
+	  	?>
+	  	<div class="content2 popup-footer-container">          
         <div class="box">
       	  <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_savegenericpopup(); return false;'>Save</a>
           <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'>OK</a>
           <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'>Cancel</a>
       	</div> <!-- END box -->
-      <div class="nxs-clear margin"></div>
-  	</div> <!-- END content2 -->
+	      <div class="nxs-clear margin"></div>
+	  	</div> <!-- END content2 -->
+      <?php
+    }
+    else if ($footertype == "unconditionalok")
+	  {
+	  	?>
+	  	<div class="content2 popup-footer-container">          
+        <div class="box">
+      	  <a id='nxs_popup_unconditionalokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally(); return false;'>OK</a>
+      	</div> <!-- END box -->
+	      <div class="nxs-clear margin"></div>
+  		</div> <!-- END content2 -->
+      <?php
+    }
+    else
+    {
+    	// not suppported ... 
+    }
+    ?>
   	</div> <!-- END block -->
 	</div> <!-- END nxs-admin-wrap -->
 	
