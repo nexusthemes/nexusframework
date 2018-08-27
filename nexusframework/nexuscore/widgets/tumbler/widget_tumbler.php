@@ -214,6 +214,18 @@ function nxs_widgets_tumbler_home_getoptions($args)
 				"unicontentablefield" => true,
 			),
 			array(
+				"id" 				=> "destination_target",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "destination_js",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Javascript", "nxs_td"),
