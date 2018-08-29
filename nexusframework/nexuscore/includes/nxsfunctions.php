@@ -13513,3 +13513,19 @@ function nxs_popup_factory_createnotificationoptions($sheettitle, $notification)
 	
 	return $options;
 }
+
+function nxs_ensure_slashesstripped()
+{
+	global $nxs_strippedlashes;
+	if (!isset($nxs_strippedlashes))
+	{
+		$nxs_strippedlashes = true;
+		
+		// see https://stackoverflow.com/questions/8949768/with-magic-quotes-disabled-why-does-php-wordpress-continue-to-auto-escape-my
+		$_GET       = array_map('stripslashes_deep', $_GET);
+		$_POST      = array_map('stripslashes_deep', $_POST);
+		$_COOKIE    = array_map('stripslashes_deep', $_COOKIE);
+		$_SERVER    = array_map('stripslashes_deep', $_SERVER);
+		$_REQUEST   = array_map('stripslashes_deep', $_REQUEST);
+	}
+}
