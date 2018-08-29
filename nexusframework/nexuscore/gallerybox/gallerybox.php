@@ -2,6 +2,8 @@
 
 function nxs_gallerybox_detail_rendersheet($args)
 {
+	//error_log("nxs_gallerybox_detail_rendersheet");
+	
 	//
 	extract($args);
 	
@@ -15,7 +17,14 @@ function nxs_gallerybox_detail_rendersheet($args)
 	$index = intval($index);
 
 	$structure = nxs_parsepoststructure($galleryid);
-	$moreitems = explode("|", $items_data);
+	if ($items_data != "")
+	{
+		$moreitems = explode("|", $items_data);
+	}
+	else
+	{
+		$moreitems = array();
+	}
 	
 	//	error_log("gallerbybox; items_data: $items_data");
 		
