@@ -1597,9 +1597,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = date("Y");
 		}
-		else if ($op == "urlencode")
+		else if ($op == "urlencode"|| $op == "rawurlencode")
 		{
-			$input = urlencode($input);
+			// rawurlencode is favored over urlencode; see https://stackoverflow.com/questions/996139/urlencode-vs-rawurlencode
+			$input = rawurlencode($input);
 		}
 		else if ($op == "the_ID")
 		{
