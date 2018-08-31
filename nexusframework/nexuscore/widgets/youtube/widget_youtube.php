@@ -376,7 +376,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	}	
 	if ($autoplay != "")
 	{
-		$additionalparameters .= "&autoplay=1";
+		$additionalparameters .= "&autoplay=1&mute=1";
 	}
 	else
 	{
