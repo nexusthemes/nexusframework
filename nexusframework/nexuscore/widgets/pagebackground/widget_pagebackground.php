@@ -15,8 +15,8 @@ function nxs_widgets_pagebackground_registerhooksforpagewidget($args)
 		
 	global $nxs_pagebackground_pagedecoratorid;
 	$nxs_pagebackground_pagedecoratorid = $pagedecoratorid;
-	global $nxs_pageslider_pagedecoratorwidgetplaceholderid;
-	$nxs_pageslider_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
+	global $nxs_pagebackground_pagedecoratorwidgetplaceholderid;
+	$nxs_pagebackground_pagedecoratorwidgetplaceholderid = $pagedecoratorwidgetplaceholderid;
 		
 	add_action('nxs_beforeend_head', 'nxs_widgets_pagebackground_beforeend_head');
 }
@@ -25,9 +25,9 @@ function nxs_widgets_pagebackground_registerhooksforpagewidget($args)
 function nxs_widgets_pagebackground_beforeend_head()
 {
 	global $nxs_pagebackground_pagedecoratorid;
-	global $nxs_pageslider_pagedecoratorwidgetplaceholderid;
+	global $nxs_pagebackground_pagedecoratorwidgetplaceholderid;
 	
-	$metadata = nxs_getwidgetmetadata($nxs_pagebackground_pagedecoratorid, $nxs_pageslider_pagedecoratorwidgetplaceholderid);
+	$metadata = nxs_getwidgetmetadata($nxs_pagebackground_pagedecoratorid, $nxs_pagebackground_pagedecoratorwidgetplaceholderid);
 	extract($metadata);
 	
 	$backgroundcolorhtml = "";

@@ -514,7 +514,7 @@ function nxs_widgets_pageslider_beforeend_head()
 	
 	// get meta of the slider itself (such as transition time, etc.)
 	global $nxs_pageslider_pagedecoratorid;
-	global $nxs_pageslider_pagedecoratorwidgetplaceholderid;	
+	global $nxs_pageslider_pagedecoratorwidgetplaceholderid;
 	$pageslider_metadata = nxs_getwidgetmetadata($nxs_pageslider_pagedecoratorid, $nxs_pageslider_pagedecoratorwidgetplaceholderid);
 	
 	// Lookup atts
