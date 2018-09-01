@@ -85,14 +85,27 @@ function nxs_license_notifynolicense()
 	{
 		// during the installation, we will skip this warning message
 	}
+	else if ($_REQUEST["page"] == "nxs_admin_license")
+	{
+		$readmore_url = "https://www.wpsupporthelp.com/wordpress-questions/license-wordpress-questions-82/";
+		?>
+		<div class="error">
+	    <p>
+	    	You are currently missing out on important features since you site is not yet (or no longer) connected
+	    	to a valid license. Enter the license below. <a target='_blank' href='<?php echo $url;?>'>Read more</a>
+	    </p>
+	  </div>
+		<?php
+	}
 	else
 	{
+		$readmore_url = "https://www.wpsupporthelp.com/wordpress-questions/license-wordpress-questions-82/";
 		$url = admin_url('admin.php?page=nxs_admin_license');
 	  ?>
 	  <div class="error">
 	    <p>
 	    	You are currently missing out on important features since you site is not yet (or no longer) connected
-	    	to a valid license. Have a valid license? <a href='<?php echo $url;?>'>Enter the license here</a>. <a href='<?php echo $url;?>'>Read more</a>
+	    	to a valid license. Have a valid license? <a href='<?php echo $url;?>'>Enter the license here</a>. <a target='_blank' href='<?php echo $readmore_url;?>'>Read more</a>
 	    </p>
 	  </div>
 	  <?php
