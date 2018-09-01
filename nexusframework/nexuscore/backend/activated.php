@@ -174,15 +174,10 @@
     	<?php 
     	if (!has_action("nxs_activation_finishedwrap"))
     	{
-    		$a = array
-				(
-					"applyfilters" => "no",
-				);
-				$nxs_license_getuserconsentid = nxs_license_getuserconsentid($a);
-				if ($nxs_license_getuserconsentid == "") 
+				$licensekey = nxs_license_getlicensekey();
+				if ($licensekey == "") 
 				{
-					// http://cpibqxqi.testgj.c1.us-e1.nexusthemes.com/wp-admin/admin.php?page=nxs_admin_terms
-					$url = admin_url('admin.php?page=nxs_admin_terms');
+					$url = admin_url('admin.php?page=nxs_admin_license');
 					$button_text = nxs_l18n__("Next", "nxs_td");
 				}
 				else 
