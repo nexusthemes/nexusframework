@@ -352,7 +352,15 @@ function nxs_webmethod_installoneclickcontent()
 					// todo: get this from a file in the theme's resources folder (if it exists)
 					$data = file_get_contents($filelocation);
 					$d = json_decode($data);
-					wie_import_data($d);
+					if (function_exists("wie_import_data"))
+					{
+						wie_import_data($d);
+					}
+					else
+					{
+						error_log("Event 63458976; function wie_import_data does not exist");
+						echo "<h3>Event 63458976 (logged)</h3>";
+					}
 					echo "<h3>widgets import wie - done</h3>";
 				}
 				else
