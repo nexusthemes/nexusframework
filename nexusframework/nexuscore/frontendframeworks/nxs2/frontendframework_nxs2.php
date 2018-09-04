@@ -732,7 +732,7 @@ function nxs_frontendframework_nxs2_compilestyle($styles)
 				//
 				
 				$fontsizevalue = $value * 10 + 4;
-				$rulesbypseudo[$pseudoselector][] = "font-size: {$fontsizevalue}px; origval: $val;";
+				$rulesbypseudo[$pseudoselector][] = "font-size: {$fontsizevalue}px;";
 
 				$paddinglrvalue = $value * 10;
 				$rulesbypseudo[$pseudoselector][] = "padding-left: {$paddinglrvalue}px;";
@@ -2740,7 +2740,7 @@ function nxs_frontendframework_nxs2_gethtmlfortext($args)
 	
 	$alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $align);
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
-	$class = $atts["class"];
+	$class = $args["class"];
 	
 	$cssclasses = nxs_concatenateargswithspaces($class, "nxs-default-p", /* "nxs-applylinkvarcolor", */ "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
 	

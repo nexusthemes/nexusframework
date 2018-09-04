@@ -1904,26 +1904,6 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 {
 	extract($args);
 	
-	/*
-	if ($_REQUEST["check"] == "atts")
-	{
-		foreach ($args as $k=>$v)
-		{
-			if ($k == "color")
-			{
-				echo "o no deprecated key found in shortcode?!"; 
-				echo $k . " / " . $v;
-			}
-			else if (nxs_stringstartswith($k, "text_"))
-			{
-				echo "o no deprecated key found in shortcode?!"; 
-				echo $k . " / " . $v;
-				//die();
-			}
-		}
-	}
-	*/
-	
 	if ($text == "")
 	{
 		return "";
@@ -1942,7 +1922,7 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 	
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	
-	$cssclasses = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
+	$cssclasses = nxs_concatenateargswithspaces($args["class"], "nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
 	
 	if ($text_heightiq != "") 
 	{
