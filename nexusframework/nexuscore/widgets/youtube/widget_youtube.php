@@ -528,7 +528,7 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		}
 		?>
     <div class="video-container">
-        <iframe class="nxs-youtube-iframe" src="https://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" frameborder="0" allowfullscreen></iframe>
+        <iframe style="style="border:0;" class="nxs-youtube-iframe" src="https://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" allowfullscreen></iframe>
     </div>
   </div>
   <?php
