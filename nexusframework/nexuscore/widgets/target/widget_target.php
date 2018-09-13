@@ -522,7 +522,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 		$textcssclasses = nxs_concatenateargswithspaces($cssclasses, "nxs-heightiq", "nxs-heightiq-{$heightiqprio}-{$text_heightiqgroup}");
 	}
 	
-	$keeptags = '<p><a><br>';
+	$keeptags = '<p><a><br><strong><b>';
 	$text = strip_tags($text, $keeptags);
 	// Text	
 	$text = '<div class="nxs-applylinkvarcolor sub nxs-text nxs-default-p nxs-padding-bottom0 '.$text_alignment_cssclass.' '.$textcssclasses.'">'.$text.'</div>';
