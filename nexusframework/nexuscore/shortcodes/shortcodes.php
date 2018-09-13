@@ -147,6 +147,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 					$parseinstructions["replicatelanguagedependentprops"] = array("formlabel", "placeholder", "initialtext");
 					$parseinstructions["replicatelanguageindependentprops"] = array("type", "isrequired", "isreadonly", "ishidden", "numofrows");
 				}
+				else if ($type == "contactitemdate")
+				{
+					$parseinstructions["replicatelanguagedependentprops"] = array("formlabel");
+					$parseinstructions["replicatelanguageindependentprops"] = array("type", "isrequired", "valid_dates");
+				}
 				else if ($type == "contactitemreplyto")
 				{
 					$parseinstructions["replicatelanguagedependentprops"] = array("formlabel", "placeholder", "initialtext");
