@@ -288,17 +288,6 @@ function nxs_widgets_contactitemdate_home_getoptions($args)
 				"label"    			=> nxs_l18n__("Valid Dates", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("valid_dates"),
 			),
-			/*
-			can only be set by code			
-			array
-			( 
-				"id" 				=> "overriddenelementid",
-				"type" 				=> "input",
-				"visibility"	=> "text",
-				"label" 			=> nxs_l18n__("Override default element ID", "nxs_td"),
-				"placeholder" => nxs_l18n__("Leave blank to use default", "nxs_td"),
-			),
-			*/
 			array
 			( 
 				"id" 				=> "isrequired",

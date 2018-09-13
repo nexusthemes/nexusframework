@@ -270,17 +270,6 @@ function nxs_widgets_contactitemtext_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Element ID", "nxs_td"),
 				"placeholder" => nxs_l18n__("Enter a unique ID for this element", "nxs_td"),
 			),
-			/*
-			can only be set by code			
-			array
-			( 
-				"id" 				=> "overriddenelementid",
-				"type" 				=> "input",
-				"visibility"	=> "text",
-				"label" 			=> nxs_l18n__("Override default element ID", "nxs_td"),
-				"placeholder" => nxs_l18n__("Leave blank to use default", "nxs_td"),
-			),
-			*/
 			array
 			( 
 				"id" 				=> "isrequired",
