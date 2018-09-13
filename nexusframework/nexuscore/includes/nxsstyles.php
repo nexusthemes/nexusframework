@@ -66,6 +66,7 @@ function nxs_getcssclassesforlookup($prefix, $value) {
 		}
 		$result = nxs_concatenateargswithspaces($result, $derived, $prefix . $value);
 	}
+	
 	return $result;
 }
 
