@@ -1236,6 +1236,9 @@ function nxs_frontendframework_nxs_sc_nxsphcontainer($atts, $content = null, $na
 		$output = "";
 		
 		$concatenated_css = nxs_concatenateargswithspaces($widthclass, $bottommarginclass, $ph_cssclass, $ph_text_fontsize, $ph_unistyle_cssclass, $ph_unistyleindicator_cssclass, $ph_unicontent_cssclass, $ph_unicontentindicator_cssclass, $ph_widgettype_cssclass, $ph_runtimecssclass);
+		// cleanup the CSS; ensures no invalid HTML is injected (which happens sometimes when clients put in incorrect values in the custom css field ...)
+		$concatenated_css = preg_replace('/[^A-Za-z0-9\.\@\_\-]/', ' ', $concatenated_css); // Removes special chars.
+		
 		
 		$output .= "<li class='nxs-placeholder nxs-containshovermenu1 nxs-runtime-autocellsize " . $concatenated_css . "' {$phdataattributeshtml}>";
 		$output .= $menutopleft;	// will be empty if not allowed, or not needed
@@ -1922,6 +1925,7 @@ function nxs_frontendframework_nxs_gethtmlfortext($args)
 	
 	$fontzen_cssclass = nxs_getcssclassesforlookup("nxs-fontzen-", $fontzen);
 	
+	$args["class"] = preg_replace('/[^A-Za-z0-9\.\@\_\-]/', '', $args["class"]); // Removes special chars.
 	$cssclasses = nxs_concatenateargswithspaces($args["class"], "nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $alignment_cssclass, $showliftnote_cssclass, $showdropcap_cssclass, $fontzen_cssclass);
 	
 	if ($text_heightiq != "") 
