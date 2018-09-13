@@ -177,7 +177,7 @@ function nxs_widgets_pagefixedheader_betweenheadandcontent()
 
 				function nxs_js_update_fixedheader_visualization() 
 				{
-					nxs_js_log("fixedheader;updating visualization");
+					// nxs_js_log("fixedheader;updating visualization");
 					
           var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     
