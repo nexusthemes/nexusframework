@@ -1757,7 +1757,7 @@ function nxs_addqueryparametertourl($url, $parameter, $value)
 }
 
 // return the url after setting/updating the parameter (other occurences of the same parameter are removed)
-function nxs_addqueryparametertourl_v2($url, $parameter, $value, $shouldurlencode, $shouldremoveparameterfirst = true)
+function nxs_addqueryparametertourl_v2($url, $parameter, $value, $shouldurlencode = true, $shouldremoveparameterfirst = true)
 {
 	if (!isset($shouldremoveparameterfirst))
 	{
@@ -1782,7 +1782,7 @@ function nxs_addqueryparametertourl_v2($url, $parameter, $value, $shouldurlencod
 	
 	if ($shouldurlencode === true)
 	{
-		$result = $result . $parameter . "=" . urlencode($value);
+		$result = $result . $parameter . "=" . rawurlencode($value);
 	}
 	else
 	{
