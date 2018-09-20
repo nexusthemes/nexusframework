@@ -243,24 +243,6 @@ function nxs_frontendframework_nxs_gethtmlforbutton($args)
 function nxs_frontendframework_nxs_gethtmlfortitle($args)
 {
 	extract($args);
-		
-	if ($_REQUEST["check"] == "atts")
-	{
-		foreach ($args as $k=>$v)
-		{
-			if ($k == "color")
-			{
-				echo "o no deprecated key found in shortcode?!"; 
-				echo $k . " / " . $v;
-			}
-			else if (nxs_stringstartswith($k, "text_"))
-			{
-				echo "o no deprecated key found in shortcode?!"; 
-				echo $k . " / " . $v;
-				//die();
-			}
-		}
-	}
 	
 	if ($title == "")
 	{
@@ -329,7 +311,7 @@ function nxs_frontendframework_nxs_gethtmlfortitle($args)
 		$colorzen_cssclass = nxs_getcssclassesforlookup("nxs-colorzen-", $colorzen);
 	}
 
-	$cssclasses = nxs_concatenateargswithspaces("nxs-title", $alignment_cssclass, $fontsize_cssclass, $margin_cssclass, $margin_bottom_cssclass, $fontzen_cssclass, $colorzen_cssclass);
+	$cssclasses = nxs_concatenateargswithspaces($args["class"], "nxs-title", $alignment_cssclass, $fontsize_cssclass, $margin_cssclass, $margin_bottom_cssclass, $fontzen_cssclass, $colorzen_cssclass);
 	if ($heightiq != "")
 	{
 		$heightiqprio = "p1";

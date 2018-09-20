@@ -1380,9 +1380,12 @@ function nxs_frontendframework_nxs2_gethtmlfortitle($args)
 	$styles["line_height"] = "0-8";
 	$styles["align"] = $align;
 	
+	
 	$compiled[0] = nxs_frontendframework_nxs2_compilestyle($styles);
 	$unique_style_combination_class_0 = $compiled[0]["id"];
 	
+	$unique_style_combination_class_0 = nxs_concatenateargswithspaces($args["class"], $unique_style_combination_class_0);
+		
 	$anchorattribute = "";
 	if ($anchor != "")
 	{
