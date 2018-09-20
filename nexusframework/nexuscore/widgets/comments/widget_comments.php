@@ -642,6 +642,13 @@ function nxs_widgets_comments_render_webpart_render_htmlvisualization($args)
 				  
 				</div> <!-- end template --> ';
 			}
+			else
+			{
+				if (is_user_logged_in())
+				{
+					nxs_renderplaceholderwarning("Comments are closed for post $postid");
+				}
+			}
 			
 			echo '</div> <!-- outer wrap -->';
 		
