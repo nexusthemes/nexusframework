@@ -1624,34 +1624,41 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 					---------------------------------------------------------------------------------------------------- */
 					
 					echo '
-						<div class="nxs-blogentry nxs-relative">
-							<div class="info-wrapper">';
-		
-								echo $blogtitel;
-								
-								echo '<div class="nxs-applylinkvarcolor">';
-								
-									// Meta data
-									echo '<div class="nxs-blog-meta">';
-										echo $date_of_current_post;
-										if ( $date_of_current_post != "" && $categorien != "" || $date_of_current_post != "" && $auteur != "" ) { echo '<span class="nxs-separator first"> | </span>'; }
-										echo $categorien;
-										if ( $categorien != "" && $auteur != ""	) { echo '<span class="nxs-separator"> | </span>'; }
-										echo $auteur;
-									echo '</div>';
-									
-									// (Sharing) Buttons
-									echo '<div class="nxs-blog-sharing">';	
-										echo $icon_font_list_sharing;
-										if ( $icon_font_list_comments != "" && $icon_font_list_sharing != "" ) { echo '<span class="nxs-separator nxs-float-right"> | </span>'; }
-										echo $icon_font_list_comments;
-									echo '</div>';
-									
-									echo '<div class="nxs-clear"></div>';
-								
-								echo '</div>
+						<div class="nxs-blogentry nxs-relative">';
 							
-							</div> ';
+							if 	($item_title_format != "none" || 
+								($item_showdate != "" || $toontijdstip != "" || $item_showcats != "" || $item_showauthor != "") || 
+								($twitter != "" || $facebook != "" || $linkedin!= "" || $googleplus != "")) { echo '
+							
+								<div class="info-wrapper">';
+			
+									echo $blogtitel;
+									
+									echo '<div class="nxs-applylinkvarcolor">';
+									
+										// Meta data
+										echo '<div class="nxs-blog-meta">';
+											echo $date_of_current_post;
+											if ( $date_of_current_post != "" && $categorien != "" || $date_of_current_post != "" && $auteur != "" ) { echo '<span class="nxs-separator first"> | </span>'; }
+											echo $categorien;
+											if ( $categorien != "" && $auteur != ""	) { echo '<span class="nxs-separator"> | </span>'; }
+											echo $auteur;
+										echo '</div>';
+										
+										// (Sharing) Buttons
+										echo '<div class="nxs-blog-sharing">';	
+											echo $icon_font_list_sharing;
+											if ( $icon_font_list_comments != "" && $icon_font_list_sharing != "" ) { echo '<span class="nxs-separator nxs-float-right"> | </span>'; }
+											echo $icon_font_list_comments;
+										echo '</div>';
+										
+										echo '<div class="nxs-clear"></div>';
+									
+									echo '</div>
+								
+								</div> ';
+							
+							}
 							
 							echo $htmlforimage;
 							echo $tekst;
