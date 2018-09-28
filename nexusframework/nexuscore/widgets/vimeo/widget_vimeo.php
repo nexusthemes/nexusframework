@@ -30,8 +30,8 @@ function nxs_widgets_vimeo_home_getoptions($args)
 				"id" 				=> "wrapper_title_begin",
 				"type" 				=> "wrapperbegin",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
-      	"initial_toggle_state" => "closed-if-empty",
-      	"initial_toggle_state_id" => "lookups",
+      			"initial_toggle_state" => "closed-if-empty",
+      			"initial_toggle_state_id" => "lookups",
 			),
 			array
       (
@@ -163,6 +163,18 @@ function nxs_widgets_vimeo_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Video ID", "nxs_td"),
 				"localizablefield"	=> true
 			),		
+			array
+			(
+				"id" 				=> "aspect_ratio",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Aspect Ratio", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"16_9" 	=> "16:9 (default)",
+					"21_9" 			=> "21:9",
+				),
+				"unistylablefield"	=> true
+			),
 			
 			
 			array( 
@@ -295,6 +307,11 @@ function nxs_widgets_vimeo_render_webpart_render_htmlvisualization($args)
 	);
 	$titlehtml = nxs_gethtmlfortitle_v4($a);
 	
+	// Aspect Ratio
+	if ($aspect_ratio == "") 		{ $aspect_ratio = "56.25%"; } else
+	if ($aspect_ratio == "16_9") 	{ $aspect_ratio = "56.25%"; } else
+	if ($aspect_ratio == "21_9") 	{ $aspect_ratio = "42.86%"; }
+	
 	// Filler
 	$htmlfiller = nxs_gethtmlforfiller();
 	
@@ -310,22 +327,20 @@ function nxs_widgets_vimeo_render_webpart_render_htmlvisualization($args)
 	else 
 	{
 		$src = "https://player.vimeo.com/video/{$videoid}";
-		?>
-		<div <?php echo $class; ?>>
-			<?php echo $titlehtml; ?>
-			<?php 
-			if ($titlehtml != "") 
-			{
-				?>
-				<div class="nxs-clear nxs-filler"></div>
-				<?php
-				}
-			?>
-	    <div class="video-container">
-	       <iframe class="nxs-vimeo-iframe nxs-youtube-iframe" src="<?php echo $src; ?>" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-	    </div>
-    </div>
-    <?php	
+		echo '
+		<div '.$class.'>';
+			
+			
+			echo $titlehtml;
+			
+			if ($titlehtml != "") { echo '<div class="nxs-clear nxs-filler"></div>'; }
+			
+			echo '
+			<div class="video-container" style="padding-bottom: '.$aspect_ratio.';">
+			   <iframe class="nxs-vimeo-iframe nxs-youtube-iframe" src="'.$src.'" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+			</div>
+    	</div>
+    ';
 	}
 	
 	$html = nxs_ob_get_contents();
