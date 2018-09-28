@@ -502,6 +502,9 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 		"fontzen" => $title_fontzen,
 	);
 	$htmltitle = nxs_gethtmlfortitle_v4($a);
+	
+	// Aspect Ratio
+	if ($aspect_ratio == "") 		{ $aspect_ratio = "56.25%"; }  
 
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -512,26 +515,24 @@ function nxs_widgets_youtube_render_webpart_render_htmlvisualization($args)
 	{
 		//
 	}
-	else
-	{
+	else {
 		$nxs_global_placeholder_render_statebag["widgetclass"] = "nxs-youtube";
 	}
 
-	?>
-
-	<div <?php echo $class; ?>>
-		<?php echo $htmltitle; ?>
-		<?php if ($htmltitle != "") {
-			?>
-			<div class="nxs-clear nxs-filler"></div>
-			<?php
-		}
-		?>
-    <div class="video-container">
-        <iframe style="style="border:0;" class="nxs-youtube-iframe" src="https://www.youtube.com/embed/<?php echo $videoid; ?>?wmode=transparent<?php echo $transcriptparameter . $additionalparameters; ?>" allowfullscreen></iframe>
-    </div>
-  </div>
-  <?php
+	echo '
+	<div '.$class.'>';
+		
+		echo $htmltitle;
+		
+		if ($htmltitle != "") { echo '<div class="nxs-clear nxs-filler"></div>'; }
+		
+		echo '
+		<div class="video-container" style="padding-bottom: '.$aspect_ratio.';">
+			<iframe style="style="border:0;" class="nxs-youtube-iframe" src="https://www.youtube.com/embed/'.$videoid.'?wmode=transparent'.$transcriptparameter . $additionalparameters.'" allowfullscreen></iframe>
+		</div>
+		
+  	</div>
+  	';
 	
 	if ($nxs_global_row_render_statebag == null)
 	{
