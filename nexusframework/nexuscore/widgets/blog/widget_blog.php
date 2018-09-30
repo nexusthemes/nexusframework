@@ -191,6 +191,7 @@ function nxs_widgets_blog_home_getoptions($args)
 					"title az"=>nxs_l18n__("title a-z", "nxs_td"),
 					"title za"=>nxs_l18n__("title z-a", "nxs_td"),
 					"random"=>nxs_l18n__("random", "nxs_td"),
+					"menu_order"=>nxs_l18n__("menu_order", "nxs_td"),
 				),
 				"unistylablefield"	=> true
 			),
@@ -1042,26 +1043,38 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		$publishedargs["category"] = $items_filter_catids;
 		
 		// Order of posts
-		if (!isset($items_order) || $items_order == "" || $items_order == "present to past") {
+		if (!isset($items_order) || $items_order == "" || $items_order == "present to past") 
+		{
 			$publishedargs["orderby"] = "post_date";
 			$publishedargs["order"] = "DESC";
-		} else if ($items_order == "past to present") {
+		} 
+		else if ($items_order == "past to present") 
+		{
 			$publishedargs["orderby"] = "post_date";
 			$publishedargs["order"] = "ASC"; 
-		} else if ($items_order == "title az") {
+		} 
+		else if ($items_order == "title az") 
+		{
 			$publishedargs["orderby"] = "title";
 			$publishedargs["order"] = "ASC"; 
-		} else if ($items_order == "title za") {
+		} 
+		else if ($items_order == "title za") 
+		{
 			$publishedargs["orderby"] = "title";
 			$publishedargs["order"] = "DESC"; 
-		} else if ($items_order == "random") {
+		} 
+		else if ($items_order == "random") 
+		{
 			$publishedargs["orderby"] = "rand";
+		} 
+		else if ($items_order == "menu_order")
+		{
+			$publishedargs["orderby"] = "menu_order";
 		}
 		else
 		{
 			// unknown
 		}
-		
 		
 		// Skip number of posts
 		$publishedargs["offset"] = $offset;	// start bij de eerste
