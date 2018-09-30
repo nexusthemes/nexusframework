@@ -8113,6 +8113,28 @@ function nxs_render_htmlcorescripts()
 	</script>
 	<noscript><?php do_action('nxs_ext_injectnoscript'); ?></noscript>
 	<?php 
+	if (is_user_logged_in())
+	{
+		// disabling rendering of hover menu's while page loads
+		?>
+		<style>.nxs-admin-wrap{display: none !important;}</style>
+		<style>html.nxs-loadfinished .nxs-admin-wrap{display: inherit !important;}</style>
+		<script>
+			document.addEventListener("DOMContentLoaded", function() 
+			{
+				setTimeout
+				(
+    			function() 
+    			{
+						var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
+						root.className += ' nxs-loadfinished';
+					},
+					500
+				);
+			});
+		</script>
+		<?php
+	}
 }
 
 function nxs_font_getcleanfontfam($fontfamily)
