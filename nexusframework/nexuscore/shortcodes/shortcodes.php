@@ -491,10 +491,12 @@ function nxs_sc_string($atts, $content = null, $name='')
 	    	//die();
 	    }
 			
+			nxs_requirewidget("youtube");
+			
 			// thanks to https://stackoverflow.com/questions/19050890/find-youtube-link-in-php-string-and-convert-it-into-embed-code
 			$input = preg_replace(
         "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
-        "<br /><div class=\"video-container\"><iframe class=\"video\" width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/$2{$start}\" allowfullscreen></iframe></div><br />",
+         "<br /><div class=\"video-container-youtubify\"><iframe class=\"video\" width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/$2{$start}\" allowfullscreen></iframe></div><br /><style>.video-container-youtubify{position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden; }</style>",
         $input
     	);
     	
@@ -555,7 +557,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 			if ($seperator == "") { $seperator = "|"; }
 			$pieces = explode($seperator, $input);
 			$input = "";
-			$class_string = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", $class);
+			$class_string = nxs_concatenateargswithspaces("nxs-default-p", "nxs-applylinkvarcolor", "nxs-padding-bottom0", "nxs-listify", $class);
 			$input .= "<ul class='{$class_string}'>";
 			foreach ($pieces as $piece)
 			{
@@ -1831,8 +1833,6 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		$input = $atts["value"];
 	}
 	
-
-	
 	nxs_ob_start();
 
 	$ops = $atts["ops"];
@@ -1911,11 +1911,21 @@ function nxs_sc_bool($atts, $content = null, $name='')
 			{
 				$needle = $atts["needle"];
 			}
-			$ignorecase = $atts["ignorecase"] === "true";
+		
+			if ($needle == "")
+			{
+				$evaluation = true;
+			}
+			else
+			{
+				$ignorecase = $atts["ignorecase"] === "true";
+				$evaluation = nxs_stringcontains_v2($input, $needle, $ignorecase);
+			}
 			
-			$evaluation = nxs_stringcontains_v2($input, $needle, $ignorecase);
 			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
 			$input = $evaluation ? "true": "false";
+
+			//error_log("contains debug; (needle:{$needle}) (result:{$input})");
 		}
 		else if ($op == "equals" || $op == "!equals" || $op == "notequals")
 		{
