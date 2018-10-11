@@ -441,6 +441,14 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 	//
 	$menuhtml = nxs_widgets_wpmenu_applylookups($menuhtml);
 	
+	$tuned_menu_fontsize = $menu_fontsize; // item-fontsize1.4x
+  $tuned_menu_fontsize = str_replace(".", "", $tuned_menu_fontsize);
+  $tuned_menu_fontsize = str_replace("x", "", $tuned_menu_fontsize);
+  
+  $tuned_submenu_fontsize = $submenu_fontsize; // item-fontsize1.4x
+  $tuned_submenu_fontsize = str_replace(".", "", $tuned_submenu_fontsize);
+  $tuned_submenu_fontsize = str_replace("x", "", $tuned_submenu_fontsize);
+	
 	// Colorization script
 	$script = '
 	<script>
@@ -451,7 +459,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 		jQ_nxs( "ul.menu li" ).addClass( "height' . $parent_height . ' ' . $font_variant . '" );
 		
 		// Enabling menu item colorization
-		jQ_nxs( ".nxs-native-menu ul.menu" ).addClass( "nxs-applymenucolors item-fontsize' . $menu_fontsize . '" );
+		jQ_nxs( ".nxs-native-menu ul.menu" ).addClass( "nxs-applymenucolors item-fontsize' . $tuned_menu_fontsize . '" );
 		
 		// Enabling default menu item colorization
 		jQ_nxs( ".nxs-native-menu ul.menu li" ).addClass( "nxs-inactive" );
@@ -474,7 +482,7 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
 			$menuitem_sub_active_color_cssclass . 
 			$menuitem_sub_hover_color_cssclass . 
 			$submenu_fontsize_cssclass . 
-			'item-fontsize' . $submenu_fontsize . 
+			'item-fontsize' . $tuned_submenu_fontsize . 
 		'" );
 	</script>';
 		
