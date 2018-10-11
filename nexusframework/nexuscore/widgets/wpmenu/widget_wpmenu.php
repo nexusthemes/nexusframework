@@ -449,35 +449,37 @@ function nxs_widgets_wpmenu_render_webpart_render_htmlvisualization($args)
   $tuned_submenu_fontsize = str_replace(".", "", $tuned_submenu_fontsize);
   $tuned_submenu_fontsize = str_replace("x", "", $tuned_submenu_fontsize);
 	
+	$widgetidselector = "#nxs-widget-{$placeholderid}";
+	
 	// Colorization script
 	$script = '
 	<script>
 		// Enabling default menu styling
-		jQ_nxs( ".nxs-menu ul.menu" ).addClass( "nxs-menu" );
+		jQ_nxs( "'.$widgetidselector.' .nxs-menu ul.menu" ).addClass( "nxs-menu" );
 		
 		// Enabling menu item height and font variant
-		jQ_nxs( "ul.menu li" ).addClass( "height' . $parent_height . ' ' . $font_variant . '" );
+		jQ_nxs( "'.$widgetidselector.' ul.menu li" ).addClass( "height' . $parent_height . ' ' . $font_variant . '" );
 		
 		// Enabling menu item colorization
-		jQ_nxs( ".nxs-native-menu ul.menu" ).addClass( "nxs-applymenucolors item-fontsize' . $tuned_menu_fontsize . '" );
+		jQ_nxs( "'.$widgetidselector.' .nxs-native-menu ul.menu" ).addClass( "nxs-applymenucolors item-fontsize' . $tuned_menu_fontsize . '" );
 		
 		// Enabling default menu item colorization
-		jQ_nxs( ".nxs-native-menu ul.menu li" ).addClass( "nxs-inactive" );
+		jQ_nxs( "'.$widgetidselector.' .nxs-native-menu ul.menu li" ).addClass( "nxs-inactive" );
 
 		// Enabling active menu item colorization	
-		jQ_nxs( ".nxs-native-menu ul.menu li.current-menu-item" ).addClass( "nxs-active" );
+		jQ_nxs( "'.$widgetidselector.' .nxs-native-menu ul.menu li.current-menu-item" ).addClass( "nxs-active" );
 		
 		// Enabling sub menu item colorization
-		jQ_nxs( ".nxs-native-menu ul.sub-menu" ).addClass( "nxs-sub-menu" );
+		jQ_nxs( "'.$widgetidselector.' .nxs-native-menu ul.sub-menu" ).addClass( "nxs-sub-menu" );
 		
 		// Injecting classes
-		jQ_nxs( ".nxs-native-menu ul.menu" ).addClass( "' . 
+		jQ_nxs( "'.$widgetidselector.' .nxs-native-menu ul.menu" ).addClass( "' . 
 			$menuitem_color_cssclass . 
 			$menuitem_hover_color_cssclass . 
 			$menuitem_active_color_cssclass . 
 		'" );
 		
-		jQ_nxs( ".nxs-native-menu ul.nxs-sub-menu" ).addClass( "' . 
+		jQ_nxs( "'.$widgetidselector.' .nxs-native-menu ul.nxs-sub-menu" ).addClass( "' . 
 			$menuitem_sub_color_cssclass . 
 			$menuitem_sub_active_color_cssclass . 
 			$menuitem_sub_hover_color_cssclass . 
