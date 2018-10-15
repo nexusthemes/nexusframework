@@ -1537,8 +1537,22 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "file_get_contents" || $op == "filegetcontents")
 		{
-			$url = $atts["url"];
-			$input = nxs_geturlcontents(array("url" => $url));
+			$filter_args = array
+			(
+				"atts" => $atts,
+				"content" => $content, 
+				"name" => $name
+			);
+			
+			$isenabled = apply_filters('nxs_string_file_get_contents_enabled', false, $filter_args);
+			if ($isenabled)
+			{
+				$input = nxs_geturlcontents(array("url" => $url));
+			}
+			else
+			{
+				$input = "nxs_string_file_get_contents_enabled is disabled, sorry";
+			}
 		}
 		else if ($op == "jsonsubvalues")
 		{
@@ -1948,82 +1962,96 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		}
 		else if ($op == "httpok")
 		{
-			$webmethodoverrideresult = $atts["webmethodoverrideresult"];
-			if (nxs_iswebmethodinvocation() && $webmethodoverrideresult != "")
-			{
-				// if the list is very long, its very annoying if the configuration of the list widget
-				// will cause the entire list to be reloaded (as this is a very resource heavy operation)
-				// to avoid the server from getting messed up, we return a static value here instead
-				// error_log("url httpok check for; $url; overriden as $webmethodoverrideresult");
-				$input = $webmethodoverrideresult;
-			}
-			else
-			{
-				$url = $atts["url"];
-				if ($url == "")
+			$filter_args = array
+			(
+				"atts" => $atts,
+				"content" => $content, 
+				"name" => $name
+			);
+			
+			if ($isenabled)
+			{		
+				$webmethodoverrideresult = $atts["webmethodoverrideresult"];
+				if (nxs_iswebmethodinvocation() && $webmethodoverrideresult != "")
 				{
-					// error_log("url httpok check for; $url; no url specified?");
-					return "false";
+					// if the list is very long, its very annoying if the configuration of the list widget
+					// will cause the entire list to be reloaded (as this is a very resource heavy operation)
+					// to avoid the server from getting messed up, we return a static value here instead
+					// error_log("url httpok check for; $url; overriden as $webmethodoverrideresult");
+					$input = $webmethodoverrideresult;
 				}
-				
-				$isactualretrievalrequired = true;
-				
-				$cache = $atts["cache"];
-				$key = "httpheaderresponse_" . md5($url);
-				if ($cache == "")
+				else
 				{
-					// ignore cache
-				}
-				else if ($cache == "200")
-				{
-					// check local cache
-					
-					$statuscode = get_transient($key);
-					if ($statuscode == 'HTTP/1.1 200 OK')
+					$url = $atts["url"];
+					if ($url == "")
 					{
-						$isactualretrievalrequired = false;
+						// error_log("url httpok check for; $url; no url specified?");
+						return "false";
+					}
+					
+					$isactualretrievalrequired = true;
+					
+					$cache = $atts["cache"];
+					$key = "httpheaderresponse_" . md5($url);
+					if ($cache == "")
+					{
+						// ignore cache
+					}
+					else if ($cache == "200")
+					{
+						// check local cache
+						
+						$statuscode = get_transient($key);
+						if ($statuscode == 'HTTP/1.1 200 OK')
+						{
+							$isactualretrievalrequired = false;
+						}
+						else
+						{
+							$isactualretrievalrequired = true;
+						}
 					}
 					else
 					{
-						$isactualretrievalrequired = true;
+						// not supported
+						error_log("url httpok; cache value has unsupported value; $cache");
 					}
-				}
-				else
-				{
-					// not supported
-					error_log("url httpok; cache value has unsupported value; $cache");
-				}
-				
-				
-				if ($isactualretrievalrequired)
-				{
-					// the resource heavy invocation ...
-					$headers = get_headers($url, 1);
-					$statuscode = $headers[0];
 					
-					// log this so we can see whats going on on the server
-					error_log("url httpok; actual; check for; $url; $statuscode");
-					
-					// update the cache if the cache is being used
-					if ($cache != "")
+					if ($isactualretrievalrequired)
 					{
-						set_transient($key, $statuscode);
+						// the resource heavy invocation ...
+						$headers = get_headers($url, 1);
+						$statuscode = $headers[0];
+						
+						// log this so we can see whats going on on the server
+						error_log("url httpok; actual; check for; $url; $statuscode");
+						
+						// update the cache if the cache is being used
+						if ($cache != "")
+						{
+							set_transient($key, $statuscode);
+						}
+					}
+					else
+					{
+						error_log("url httpok; cache; $url; $statuscode");
+					}
+					
+					if ($statuscode == 'HTTP/1.1 200 OK') 
+					{
+						// this indicates it went ok; no httpok
+						$input = "true";
+					}
+					else
+					{
+						$input = "false";
 					}
 				}
-				else
-				{
-					error_log("url httpok; cache; $url; $statuscode");
-				}
-				
-				if ($statuscode == 'HTTP/1.1 200 OK') 
-				{
-					// this indicates it went ok; no httpok
-					$input = "true";
-				}
-				else
-				{
-					$input = "false";
-				}
+			}
+			else
+			{
+				error_log("url httpok; disabled");
+				$input = "false";
 			}
 		}
 		else if ($op == "not")
@@ -2123,6 +2151,12 @@ function nxs_sc_bool($atts, $content = null, $name='')
 				$input = "false";
 			}
 		}
+		else if ($op == "ishandheld" || $op == "!ishandheld" || $op == "notishandheld")
+		{
+			$evaluation = (nxs_ishandheld());
+			if (nxs_stringstartswith($op, "!") || nxs_stringstartswith($op, "not")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
 		else
 		{
 			// bool operation to be implemented ...
@@ -2133,7 +2167,7 @@ function nxs_sc_bool($atts, $content = null, $name='')
 	
 	$output = nxs_ob_get_contents();
 	nxs_ob_end_clean();
-			
+	
 	return $output;
 }
 add_shortcode('nxsbool', 'nxs_sc_bool');
