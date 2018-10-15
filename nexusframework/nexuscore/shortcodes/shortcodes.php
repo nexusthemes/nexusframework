@@ -1969,6 +1969,7 @@ function nxs_sc_bool($atts, $content = null, $name='')
 				"name" => $name
 			);
 			
+			$isenabled = apply_filters('nxs_bool_httpok_enabled', false, $filter_args);
 			if ($isenabled)
 			{		
 				$webmethodoverrideresult = $atts["webmethodoverrideresult"];
