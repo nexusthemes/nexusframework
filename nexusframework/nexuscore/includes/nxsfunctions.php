@@ -8128,6 +8128,7 @@ function nxs_render_htmlcorescripts()
     			{
 						var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
 						root.className += ' nxs-loadfinished';
+						nxs_js_process_updated_menu_state_silent();
 					},
 					500
 				);
