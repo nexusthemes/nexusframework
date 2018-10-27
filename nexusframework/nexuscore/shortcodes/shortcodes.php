@@ -550,6 +550,15 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$input = str_replace("*NXS*PLACEHOLDER*HTTPEXAMPLEORG*", "http://example.org", $input);
 			$input = str_replace("*NXS*PLACEHOLDER*HTTPSEXAMPLEORG*", "https://example.org", $input);
 		}
+		else if ($op == "sanitize")
+		{
+			$keep = $atts["keep"];
+			if (!isset($keep))
+			{
+				$keep = "A-Za-z0-9";
+			}
+			$input = preg_replace('/[^' . $keep . ']/', '', $input); // Removes special chars.
+		}
 		else if ($op == "listify")
 		{
 			$seperator = $atts["seperator"];
@@ -617,6 +626,20 @@ function nxs_sc_string($atts, $content = null, $name='')
 			{
 				$input = trim($input);
 			}
+		}
+		else if ($op == "ellipsify")
+		{
+			$length = $atts["length"];
+			if (!isset($length))
+			{
+				$length = 10;
+			}
+			$placeholder = $atts["placeholder"];
+			if (!isset($placeholder))
+			{
+				$placeholder = "...";
+			}
+			$input = strlen($input) > $length ? substr($input,0,$length) . $placeholder : $input;
 		}
 		else if ($op == "replacemodellookupmismatch")
 		{
@@ -1584,6 +1607,9 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "map")
 		{
+			// sanitize the input first, as attributes don't support weird characters
+			$input = preg_replace('/[^A-Za-z]/', '', $input); // Removes all non alphabetical
+			
 			if ($input == "")
 			{
 				$alternativekey = "empty";
