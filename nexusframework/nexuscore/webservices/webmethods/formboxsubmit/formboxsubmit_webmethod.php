@@ -473,9 +473,11 @@ function nxs_webmethod_formboxsubmit()
 			}
 			$ccemail = "";
 			$bccemail = "";
-			$mailresult = nxs_sendhtmlmail_v3($sender_name, $sender_email, $internal_email, $ccemail, $bccemail, $replytoemailaddress, $subject_email, $body);
+			$nxs_sendhtmlmail_v3_result = nxs_sendhtmlmail_v3($sender_name, $sender_email, $internal_email, $ccemail, $bccemail, $replytoemailaddress, $subject_email, $body);
 			
-			if (!$mailresult)
+			$wp_mail_result = $nxs_sendhtmlmail_v3_result["wp_mail_result"];
+			
+			if (!$wp_mail_result)
 			{
 				global $ts_mail_errors;
 				global $phpmailer;

@@ -4589,9 +4589,9 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	
 	//
 	$headers .= 'Content-Type: text/html;' . "\r\n";
-	$result = wp_mail($toemail, $subject, $body, $headers);
+	$wp_mail_result = wp_mail($toemail, $subject, $body, $headers);
 	
-	if ($result == false)
+	if ($wp_mail_result == false)
 	{
 		error_log("Error sending mail $fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject");
 	}
@@ -4599,6 +4599,16 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	{
 		// error_log("Mail sent $fromname, $fromemail, $toemail, $ccemail, $bccemail, $subject");
 	}
+	
+	$result["wp_mail_result"] = $wp_mail_result;
+	$result["fromname"] = $fromname;
+	$result["fromemail"] = $fromemail;
+	$result["toemail"] = $toemail;
+	$result["ccemail"] = $ccemail;
+	$result["bccemail"] = $bccemail;
+	$result["replytomail"] = $replytomail;
+	$result["subject"] = $subject;
+	$result["body"] = $body;
 	
 	return $result;
 }
