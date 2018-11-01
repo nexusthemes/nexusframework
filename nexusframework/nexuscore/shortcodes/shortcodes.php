@@ -1608,7 +1608,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 		else if ($op == "map")
 		{
 			// sanitize the input first, as attributes don't support weird characters
-			$input = preg_replace('/[^A-Za-z]/', '', $input); // Removes all non alphabetical
+			$input = preg_replace('/[^A-Za-z0-9]/', '', $input); // Removes all non alphabetical
 			
 			if ($input == "")
 			{
