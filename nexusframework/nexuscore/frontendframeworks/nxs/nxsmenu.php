@@ -1071,8 +1071,82 @@
 		  
 		  
 		</ul>
+		
 	</div>
-	
+
+	<?php 
+	if (true)
+	{
+	  if 
+	  (
+	  	$nxsposttype == "post" ||
+	  	$nxsposttype == "sidebar" ||
+	  	$nxsposttype == "pagelet" ||
+	  	$nxsposttype == "subheader" ||
+	  	$nxsposttype == "subfooter" ||
+	  	$nxsposttype == "header" ||
+	  	$nxsposttype == "footer"
+	  )
+	  {
+	  ?>
+	  <style>
+	  	.reactivate-editor-wrap
+	  	{
+	  		display: none;
+	  		z-index: 120;
+	  		position: fixed;
+		    right: 13px;
+		    top: -1px;
+		    z-index: 1030;	  		
+	  	}
+	  	html.nxs-loadfinished.nxs-editor-inactive .reactivate-editor-wrap
+	  	{
+	  		display: inherit;
+	  	}
+	  	html.nxs-loadfinished.nxs-editor-inactive .reactivate-editor-wrap a span
+	  	{
+  	    font-size: 16px;
+		    line-height: 45px;
+		    -webkit-transition: all .2s;
+		    -moz-transition: all .2s;
+		    -o-transition: all .2s;
+		    transition: all .2s;
+		    color: black;
+		    text-shadow: 1px 1px 1px white;
+			}
+			
+			html.nxs-loadfinished.nxs-editor-inactive .reactivate-editor-wrap a
+			{
+			  z-index: 10;
+		    background-color: #FCFCFC;
+		    border-bottom-left-radius: 3px;
+		    border-bottom-right-radius: 3px;
+		    height: 45px;
+		    width: 46px;
+		    display: block;
+		    text-decoration: none;
+		    box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6);
+		    text-align: center;
+			}
+	  	
+	  </style>
+		<ul class="reactivate-editor-wrap">
+		  <li>
+		  	<a href="#" class='nxs-editor-toggler site'>
+		  		<span class='nxs-icon-pause' style='display: none;'></span>
+		  		<span class='nxs-icon-play blink' style='display: none;'></span>
+		  	</a>
+		  </li>
+		</ul>
+	  <?php 
+		}
+		else
+		{
+			
+		}
+	}
+  ?>
+  
 	<div class="nxs-hidewheneditorinactive">
 		<div class="nxs-hidewhenmenuinactive">
 			<div id="menufillerinlinecontent">

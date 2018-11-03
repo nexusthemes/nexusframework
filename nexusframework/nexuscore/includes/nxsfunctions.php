@@ -8128,7 +8128,7 @@ function nxs_render_htmlcorescripts()
 		// disabling rendering of hover menu's while page loads
 		?>
 		<style>.nxs-admin-wrap{display: none !important;}</style>
-		<style>html.nxs-loadfinished .nxs-admin-wrap{display: inherit !important;}</style>
+		<style>html.nxs-loadfinished.nxs-editor-active .nxs-admin-wrap{display: inherit !important;}</style>
 		<script>
 			document.addEventListener("DOMContentLoaded", function() 
 			{
