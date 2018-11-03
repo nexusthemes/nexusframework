@@ -8144,7 +8144,7 @@ d.length;++e)d[e].seq?d[e].level==g&&(f=!0,b[d[e].seq]=1,w(d[e].callback,c,d[e].
 			easing: 		'swing',
 			closer: 		true,
 			closeTemplate: '&times;',
-			closerTemplate: '<div>[ close all ]</div>',
+			closerTemplate: '<div style=\'pointer-events: none;\'><!-- [ close all] --></div>',
 			log: 			function(e,m,o) {},
 			beforeOpen: 	function(e,m,o) {},
 			afterOpen: 		function(e,m,o) {},
