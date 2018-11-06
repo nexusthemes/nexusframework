@@ -1,5 +1,19 @@
 <?php
 
+function nxs_widgets_googlemap_getgooglemapsapikey()
+{
+	$sitemeta = nxs_getsitemeta_internal(false);
+	$result = trim($sitemeta["googlemapsapikey"]);
+	
+	// allow plugins to overrule this
+	$filterargs = array
+	(
+	);
+	$result = apply_filters("nxs_f_googlemap_getgooglemapsapikey", $result, $filterargs);
+	
+	return $result;
+}
+
 function nxs_widgets_googlemap_geticonid()
 {
 	//$widget_name = basename(dirname(__FILE__));
@@ -684,8 +698,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	}
 	
-	$sitemeta = nxs_getsitemeta_internal(false);
-	$apikey = trim($sitemeta["googlemapsapikey"]);
+	$apikey = nxs_widgets_googlemap_getgooglemapsapikey();
 
 	/* OUTPUT
 	---------------------------------------------------------------------------------------------------- */
@@ -1360,8 +1373,7 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
     <div class="nxs-clear"></div>
     <?php
     
-		$sitemeta = nxs_getsitemeta_internal(false);
-		$apikey = trim($sitemeta["googlemapsapikey"]);
+		$apikey = nxs_widgets_googlemap_getgooglemapsapikey();
     if ($apikey == "")
     {
     	?>
