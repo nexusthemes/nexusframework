@@ -6071,7 +6071,7 @@ function nxs_js_displayStyleSheetProperties()
 // the stylesheetcontainer is an object that references the object of for example <style id="myObject"></style>
 function nxs_js_setcss(css, containerbaseid)
 {
-	nxs_js_log("* setting css for " + containerbaseid);
+	//nxs_js_log("* setting css for " + containerbaseid);
 	
 	if(jQuery.browser.msie)
   {
@@ -6233,7 +6233,7 @@ function nxs_js_updatecss_themecss_actualrequest(shouldusecacheifavailable, shou
 	
 	if (actualcss == null)
 	{
-		nxs_js_log("* Cached data is not available, (re)producing CSS the hard way");
+		// nxs_js_log("* Cached data is not available, (re)producing CSS the hard way");
 		
 		// get active colorscheme 
 		var colorschemelookup = nxs_js_getruntimecolorschemelookup();
@@ -6282,7 +6282,7 @@ function nxs_js_updatecss_themecss_actualrequest(shouldusecacheifavailable, shou
 	}
 	else
 	{
-		nxs_js_log("* Leaving CSS cache as is (no update) because localstorage is n/a or because CSS is not dirty");
+		// nxs_js_log("* Leaving CSS cache as is (no update) because localstorage is n/a or because CSS is not dirty");
 	}
 	
 	if (shouldupdatedom)
