@@ -206,7 +206,7 @@ input[type=submit]:hover										{ opacity: 0.8; }
 
 /* DEFAULT FORM STYLING */
 
-input[type=text], input[type=tel], input[type=email], input[type=password], textarea { border: 1px solid #ccc; padding: 1px; }
+input[type=text], input[type=tel], input[type=number], input[type=email], input[type=password], textarea { border: 1px solid #ccc; padding: 1px; }
 .nxs-form label a { text-decoration: underline; }
 .nxs-form input[type=submit] {text-indent: 0px; box-shadow: none; height: auto; font-size: inherit; }
 .nxs-form input[type=text],.nxs-form input[type=email] { width: 100%; }
