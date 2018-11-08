@@ -9824,6 +9824,19 @@ function nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixt
 	return $metadata;
 }
 
+function nxs_filter_translatesingle($inputstring, $prefixtoken, $postfixtoken, $lookup)
+{
+	$key = "value";
+	$metadata = array
+	(
+		$key => $inputstring,
+	);
+	$fields = array($key);
+	$result = nxs_filter_translategeneric($metadata, $fields, $prefixtoken, $postfixtoken, $lookup);
+	$result = $result[$key];
+	return $result;
+}
+
 // 
 function nxs_filter_translatelookup($metadata, $fields)
 {
