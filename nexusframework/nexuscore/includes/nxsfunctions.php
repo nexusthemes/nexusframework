@@ -4449,6 +4449,7 @@ function nxs_gettransientnexusservervalue($key, $subkey, $additionalparams)
 	return $value;
 }
 
+// sendmail send mail
 function nxs_sendhtmlmail($fromname, $fromemail, $toemail, $subject, $body)
 {
 	$ccemail = "";
