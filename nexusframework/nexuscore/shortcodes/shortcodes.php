@@ -789,7 +789,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 			}
 			if ($atts["debug"] == "true")
 			{
-				return "modelproperty; modeluri:$modeluri;property:$property";
+				global $nxs_global_current_containerpostid_being_rendered;
+				global $nxs_global_current_postid_being_rendered;
+				
+				return "modelproperty; modeluri:$modeluri;property:$property ($nxs_global_current_containerpostid_being_rendered) ($nxs_global_current_postid_being_rendered)";
 			}
 			
 			global $nxs_g_modelmanager;
@@ -950,14 +953,16 @@ function nxs_sc_string($atts, $content = null, $name='')
 				}
 				
 				$modeluri = $atts["modeluri"];		// the base modeluri for which the property will be retrieved
-				
+								
 				// normalize the input (foo bar@foobar => foobar@foobar)
 				global $nxs_g_modelmanager;
 				$modeluri = $nxs_g_modelmanager->getnormalizedmodeluri($modeluri);
+
+				
 				
 				//error_log("modelproperty; normalized modeluri: $modeluri");
 
-				if ($modeluri == "")
+				if ($modeluri == "" || $modeluri == "@")
 				{
 					global $nxs_global_current_containerpostid_being_rendered;
 					$modeluri = "{$nxs_global_current_containerpostid_being_rendered}@wp.post";
@@ -1086,6 +1091,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 				error_log("modelproperty; modeluri: $modeluri");
 				error_log("modelproperty; property: $property");
 				error_log("modelproperty; result: $input");
+			}
+			
+			if ($atts["debug2"] == "true")
+			{
+				return "modeluri; modeluri:$modeluri;property:$property ($input)";
 			}
 
 			
