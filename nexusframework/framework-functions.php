@@ -254,12 +254,13 @@ if (is_admin()){
 //
 nxs_mem_increasememifneeded();
 
-// tell WP SUPER CACHE to not cache any page;
+// tell cache plugins to not cache any page;
 // if caching is wanted, user should use the 
 // build in caching implementation we use
 // would be best to output a warning in that 
 // case in the WP backend...
-define('DONOTCACHEPAGE', 'true');
+if (!defined("DONOTCACHEPAGE")) { define('DONOTCACHEPAGE', 'true'); } // WP SUPER CACHE
+if (!defined("LSCACHE_NO_CACHE")) { define('LSCACHE_NO_CACHE', true);	} // LIGHT SPEED CACHE
 
 //
 // FEATURES IMAGES
