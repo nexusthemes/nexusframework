@@ -5287,6 +5287,9 @@ function nxs_outputbuffer_popall()
 // within this function, 
 function nxs_webmethod_return_nack($message)
 {
+	// log nack on file system
+	error_log("nxs_webmethod_return_nack; $message");
+	
 	// cleanup output that was possibly produced before,
 	// if we won't this could cause output to not be json compatible
 	$existingoutput = nxs_outputbuffer_popall();
@@ -5939,6 +5942,7 @@ function nxs_widgets_initplaceholderdatageneric_v2($widget, $args)
 
 function nxs_optiontype_getpersistbehaviour($type)
 {
+	$type = nxs_requirepopup_getactualoptiontype($type);
 	nxs_requirepopup_optiontype($type);
 	$functionnametoinvoke = "nxs_popup_optiontype_{$type}_getpersistbehaviour";
 	if (function_exists($functionnametoinvoke))
@@ -5947,7 +5951,7 @@ function nxs_optiontype_getpersistbehaviour($type)
 	}
 	else
 	{
-		nxs_webmethod_return_nack("missing function name $functionnametoinvoke");
+		$result = "readonly";
 	}
 	
 	return $result;
@@ -5974,6 +5978,8 @@ function nxs_genericpopup_getinitialoptionsvalues($args)
   	}
   	
   	$type = $optionvalues["type"];
+  	$type = nxs_requirepopup_getactualoptiontype($type);
+  	
   	$persistbehaviouroftype = nxs_optiontype_getpersistbehaviour($type);
   	if ($persistbehaviouroftype == "writeid")
   	{
@@ -6029,6 +6035,7 @@ function nxs_genericpopup_getderivedglobalmetadata($args, $metadata)
     	// the metadata has a value for this $id
     	// delegate behaviour to the specific option (pluggable)
 			$type = $currentoptionvalues["type"];
+			$type = nxs_requirepopup_getactualoptiontype($type);
     	nxs_requirepopup_optiontype($type);
 			
 			$functionnametoinvoke = 'nxs_popup_optiontype_' . $type . '_getitemstoextendbeforepersistoccurs';
@@ -7727,6 +7734,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
           	{
 		    	// delegate behaviour to the specific option (pluggable)
 				$type = $optionvalues["type"];
+				$type = nxs_requirepopup_getactualoptiontype($type);
 		    nxs_requirepopup_optiontype($type);
 		    	
 		    $functionnametoinvoke = "nxs_popup_optiontype_" . $type . "_renderhtmlinpopup";
@@ -7804,6 +7812,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 				
 	    	// delegate behaviour to the specific option (pluggable)
 				$type = $value["type"];
+				$type = nxs_requirepopup_getactualoptiontype($type);
 	    	nxs_requirepopup_optiontype($type);
 	    	$functionnametoinvoke = 'nxs_popup_optiontype_' . $type . '_renderstorestatecontroldata';
 				if (function_exists($functionnametoinvoke))

@@ -2348,14 +2348,14 @@ function nxs_sc_command($atts, $content = null, $name='')
 		{
 			if ($atts["errorlog"] == "true")
 			{
-				error_log("settemplateproperties");
+				//error_log("settemplateproperties");
 			}
 			
 			$title = $atts["content_post"];
 			
 			if ($atts["errorlog"] == "true")
 			{
-				error_log("title: $title");
+				//error_log("title: $title");
 			}
 			
 			if ($title != "")
@@ -2365,7 +2365,7 @@ function nxs_sc_command($atts, $content = null, $name='')
 				
 				if ($atts["errorlog"] == "true")
 				{
-					error_log("postid: $postid");
+					//error_log("postid: $postid");
 				}
 				
 				if ($postid != "")
