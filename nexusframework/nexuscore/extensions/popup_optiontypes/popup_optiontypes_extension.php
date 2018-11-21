@@ -25,31 +25,27 @@ function nxs_ext_inject_popup_optiontype($popup_optiontype)
 	require_once($filetobeincluded);
 }
 
+function nxs_optiontype_getactualoptiontype($result)
+{
+	$args = array();
+	$result = apply_filters("nxs_f_optiontype_getactualoptiontype", $result, $args);
+	return $result;
+}
+
 function nxs_requirepopup_optiontype($popup_optiontype)
 {
 	$result = array();
 
 	// loads popup_optiontype extensions in memory
 	$action = "nxs_ext_inject_popup_optiontype_" . $popup_optiontype;
-	if (!has_action($action))
-	{
-		// we gaan wel door, iemand kan per ongeluk of met opzet bijv. een plugin hebben uitgeschakeld
-		
-		if (nxs_has_adminpermissions())
-		{
-			echo "Warning; looks like popup_optiontype '" . $popup_optiontype . "' is missing (maybe you deactivated a required plugin?)";
-		}
-		else
-		{
-			echo "<!-- Warning; looks like popup_optiontype '" . $popup_optiontype . "' is missing (maybe you deactivated a required plugin?) -->";
-		}
-		
-		$result["result"] = "NACK";		
-	}
-	else
+	if (has_action($action))
 	{
 		do_action($action, $popup_optiontype);
 		
+		$result["result"] = "OK";
+	}
+	else
+	{
 		$result["result"] = "OK";
 	}
 	
