@@ -111,6 +111,7 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 										"categories",
 										"tumbler",
 										"vector",
+										"download",
 
 									);
 										
