@@ -440,9 +440,7 @@ function nxs_widget_googlemap_getlatlng($address, $latlngfetchbehaviour = "")
 	if ($address != "")
 	{
 		// get cached lat/lng
-		$licensekey = nxs_license_getlicensekey();
-		
-		if ($licensekey != "")
+		if (true)
 		{
 			$hardcoded = array
 			(
@@ -478,7 +476,7 @@ function nxs_widget_googlemap_getlatlng($address, $latlngfetchbehaviour = "")
 			}
 			else
 			{	
-				$key = "maplatlng_" . md5($address . $licensekey);
+				$key = "maplatlng_" . md5($address);
 				$latlng = get_transient($key);
 				
 				$shouldrefetch = false;
@@ -508,7 +506,6 @@ function nxs_widget_googlemap_getlatlng($address, $latlngfetchbehaviour = "")
 						"queryparameters" => array
 						(
 							"address" => $address,
-							"licensekey" => $licensekey,
 							"themeid" => $thememeta["id"],
 							"nxs" => "googlemaps-api",
 						),
@@ -517,8 +514,7 @@ function nxs_widget_googlemap_getlatlng($address, $latlngfetchbehaviour = "")
 					
 					if ($latlng["licensestatus"] == "NACK")
 					{
-						//
-						nxs_licenseresetkey();
+						// 
 					}
 					else
 					{
@@ -1383,18 +1379,6 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
       <div class="nxs-clear"></div>
     	<?php
   	}
-  	
-  	$licensekey = nxs_license_getlicensekey();
-		if ($licensekey == "")
-    {
-    	?>
-     	<div style='margin-top: 10px;'>
-     		Note; the maps feature requires a valid license. Your site is currently not connected to a valid Nexus license. <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://www.wpsupporthelp.com/answer/how-to-register-your-wordpress-theme-purchase-to-get-updates-1091/'>Learn more</a><br />
-     	</div>
-      <div class="nxs-clear"></div>
-    	<?php
-  	}
-  	
   	
     ?>
 	</div> <!--END content-->
