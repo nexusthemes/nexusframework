@@ -145,7 +145,7 @@
 		do_action("nxs_render_frontendeditor");
 		?>
 		<div class='nxs-width100 nxs-align-center nxs-margin-top40'>
-			<h1><?php echo nxs_l18n__("Activating your theme", "nxs_td"); ?></h1>
+			<h1><?php echo nxs_l18n__("Provisioning your theme", "nxs_td"); ?></h1>
 		</div>
         
     <div class='nxs-clear nxs-padding-top20'></div>
@@ -174,17 +174,8 @@
     	<?php 
     	if (!has_action("nxs_activation_finishedwrap"))
     	{
-				$licensekey = nxs_license_getlicensekey();
-				if ($licensekey == "") 
-				{
-					$url = admin_url('admin.php?page=nxs_admin_license');
-					$button_text = nxs_l18n__("Next", "nxs_td");
-				}
-				else 
-				{
-					$url = nxs_geturl_home();
-					$button_text = nxs_l18n__("Next", "nxs_td");
-				}
+				$url = nxs_geturl_home();
+				$button_text = nxs_l18n__("Next", "nxs_td");
 				?>
 				<div class='nxs-width100 nxs-align-center'>
 					<a href='<?php echo $url; ?>' class='nxs-big-button nxs-green nxs-border-radius5'><?php echo $button_text; ?></a>

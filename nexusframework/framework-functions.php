@@ -731,7 +731,7 @@ function nxs_init()
   		}
   		else if ($_REQUEST["nxs"] == "checklicenseserver")
   		{
-  			$urls = array("https://www.example.com", "http://www.ip-adress.eu/", nxs_license_getlicenseserverurl($purpose));
+  			$urls = array("https://www.example.com", "http://www.ip-adress.eu/");
   			if ($_REQUEST["url"] != "")
   			{
   				$urls = array($_REQUEST["url"]);
@@ -2027,7 +2027,7 @@ function nxs_framework_getheadmeta($result)
 	$val = esc_attr(get_option($option));
 	if ($val == "") 
 	{ 
-		$val = "-"; 
+		$val = "freemium"; 
 	}
 	else
 	{
