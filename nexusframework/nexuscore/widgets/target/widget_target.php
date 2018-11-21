@@ -199,6 +199,9 @@ function nxs_widgets_target_home_getoptions($args)
 			),
 			
 			
+			/*
+			See support thread #53528
+			
 			array
 			( 
 				"id" 				=> "icon_imageid",
@@ -209,6 +212,7 @@ function nxs_widgets_target_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			*/
 			
 			array( 
 				"id" 				=> "bgcolor",
@@ -485,7 +489,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 		$derived_imageurl = $imagemetadata[0];
 		$derived_imageurl = nxs_img_getimageurlthemeversion($derived_imageurl);
 		
-		$icon = "<img src='{$derived_imageurl}' class='nxs-border-width-1-0 {$color_cssclass} {$border_radius_cssclass}' style='padding: 16px; width: 32px; position: absolute;' /></span>";
+		$icon = '<img src="'.$derived_imageurl.'" class="nxs-border-width-1-0 '.$color_cssclass.' '.$border_radius_cssclass.'" style="padding: 18px; width: 32px; margin: 0 auto 20px; display: block;"/>';
 	}
 		
 	
