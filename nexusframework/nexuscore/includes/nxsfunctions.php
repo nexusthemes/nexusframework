@@ -7744,7 +7744,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 				}
 				else
 				{
-					nxs_webmethod_return_nack("missing function name $functionnametoinvoke");
+					// absorb
 				}
 			}
 			else
@@ -7821,7 +7821,7 @@ function nxs_genericpopup_getpopuphtml_basedonoptions($args)
 				}
 				else
 				{
-					nxs_webmethod_return_nack("missing function name $functionnametoinvoke");
+					// absorb
 				}
       }
       ?>
