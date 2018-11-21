@@ -1091,9 +1091,9 @@ a.nxs-slider-next 											{ position: absolute; width: 37px; height: 37px; z-
 .nxs-text .nxs-liftnote p:first-child 						{ font-weight: bold; letter-spacing: 1px; }
 .nxs-text span.nxs-dropcap p:first-child:first-letter 		{ float: left; display: block; margin: 0 7px 0 0; font-weight: normal; text-transform: uppercase; }
 .nxs-text ul, 
-.nxs-text ol 												{ margin: 0 0 16px 25px; display: inline-block; }
+.nxs-text ol 												{ margin: 0 0 16px 25px; display: inline; }
 .nxs-text ul li,
-.nxs-text ol li 											{ margin-top: 10px; line-height: 1.5em; list-style-position: inside; }
+.nxs-text ol li 											{ margin-top: 10px; line-height: 1.5em; list-style-position: outside; }
 .nxs-text ul li:first-child,
 .nxs-text ol li:first-child 								{ margin-top: 0px; }
 .nxs-text ul 												{ list-style: square; }
