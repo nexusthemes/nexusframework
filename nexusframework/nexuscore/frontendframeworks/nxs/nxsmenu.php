@@ -642,85 +642,6 @@
 			<?php
 			
 			//
-			$tag = "nxs_menu_renderlicensenotification";
-			if (has_action($tag))
-			{
-				do_action($tag);
-			}
-			else
-			{
-				// default framework generic
-			
-				$licensekey = nxs_license_getlicensekey();
-				if ($licensekey == "")
-				{
-					$shouldshow = true;
-					
-					if (NXS_FRAMEWORKSHARED === "true")
-					{
-						// nothing to do here
-						$shouldshow = false;
-					}
-					
-					if ($shouldshow)
-					{
-						$url = admin_url('admin.php?page=nxs_admin_license');
-						
-						$notificationargs = array
-						(
-							"circle_color" => "#FF0000", 
-							"text_color" => "#FFFFFF", 
-							"text" => "1"
-						);
-						$notification = nxs_gethtmlfornotification($notificationargs);
-						?>
-						<li class="nxs-hidewheneditorinactive">
-							<?php echo $notification; ?>
-							<a href="<?php echo $url;?>" class='site' title="<?php nxs_l18n_e("Register your purchase to receive free updates and support", "nxs_td"); ?>">
-								<span class='nxs-icon-key'></span>
-							</a>
-						</li>
-						<?php
-					}
-				}
-				else
-				{
-					$url = admin_url('admin.php?page=nxs_admin_update');
-					$themeupdate = get_transient("nxs_themeupdate");
-					
-					$shouldrender = false;
-					if ($themeupdate["nxs_updates"] == "yes")
-					{
-						$shouldrender = true;
-					}
-					if (NXS_FRAMEWORKSHARED === "true")
-					{
-						$shouldrender = false;
-					}
-					
-					if ($shouldrender)
-					{
-						$notificationargs = array
-						(
-							"circle_color" => "#FF0000", 
-							"text_color" => "#FFFFFF", 
-							"text" => "1"
-						);
-						$notification = nxs_gethtmlfornotification($notificationargs);
-						
-						?>
-						<li class="nxs-hidewheneditorinactive">
-							<?php echo $notification; ?>
-							<a href="<?php echo $url; ?>" class='site' title="<?php nxs_l18n_e("Theme update available", "nxs_td"); ?>">
-								<span class='nxs-icon-loop2'></span>
-							</a>
-						</li>
-						<?php
-					}
-				}
-			}
-			
-			//
 			
 			if (nxs_issiteinmaintenancemode())
 			{
@@ -732,7 +653,6 @@
 				</li>
 				<?php
 			}
-			
 			
 			$cookiewallactivity = nxs_dataprotection_getcookiewallactivity();
 			if (nxs_dataprotection_isoperational($cookiewallactivity))
