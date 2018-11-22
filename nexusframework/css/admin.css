@@ -257,11 +257,12 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 	background-image: -webkit-linear-gradient(top,#F9F9F9,#ECECEC);
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#ECECEC),to(#DFDFDF));
 }	
+/*
 .nxs-admin-wrap .content2.nxs-popup-heading.generic h4,
 .nxs-admin-wrap .content2.nxs-popup-heading.generic span	{ color: #518F1D; }
 .nxs-admin-wrap .content2.nxs-popup-heading.generic:hover h4,
 .nxs-admin-wrap .content2.nxs-popup-heading.generic:hover span { color: #D54E21; }
-
+*/
 .nxs-admin-wrap .content2.nxs-popup-heading .box-title		{ width: 90%; }
 .nxs-admin-wrap .content2.nxs-popup-heading .box-content	{ width: 10%; }
 
@@ -334,7 +335,7 @@ body.nxs-admin-wrap  								{ color: #333333; font-size: 12px; line-height: 1.4
 .nxs-admin-wrap li.placeholder-selected,
 .nxs-admin-wrap ul.square li:hover 					{ background-color: #E9F1F9; !important }
 .nxs-admin-wrap .placeholder3 li p,
-.nxs-admin-wrap ul.square li p 						{ width: 70px; margin-top: 80px !important; text-align: center; font-family: sans-serif !important; }
+.nxs-admin-wrap ul.square li p 						{ width: 70px; margin-top: 80px !important; text-align: center; font-family: sans-serif !important; line-height: 13px; }
 .nxs-admin-wrap .placeholder-warning p 				{ line-height: 25px; padding-left: 35px; background: url(../images/icon-warning.png) no-repeat; }
 
 /* "ADD NEW ROW" BUTTON */
