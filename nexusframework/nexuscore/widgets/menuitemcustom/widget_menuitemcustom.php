@@ -78,7 +78,7 @@ function nxs_widgets_menuitemcustom_home_getoptions($args) {
                 "id" 				=> "destination_url",
                 "type" 				=> "input",
                 "label" 			=> nxs_l18n__("URL", "nxs_td"),
-                "placeholder" => nxs_l18n__("http://www.example.org", "nxs_td"),
+                "placeholder" => nxs_l18n__("https://www.example.org", "nxs_td"),
                 "localizablefield"	=> true
             ),
             array(

@@ -195,7 +195,7 @@ function nxs_widgets_generic_link_getoptions($args)
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("External link", "nxs_td"),
-				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("https://www.example.org", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the image to an external source using the full url.", "nxs_td"),
 				"localizablefield"	=> true
 			),

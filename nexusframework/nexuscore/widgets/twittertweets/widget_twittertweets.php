@@ -120,13 +120,13 @@ function nxs_widgets_twittertweets_home_getoptions($args)
 			array( 
 				"id" 				=> "top_info_color",
 				"type" 				=> "colorzen",
-				"label" 			=> nxs_l18n__("Top info color", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title background color", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id"     			=> "top_info_padding",
 				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Top info padding", "nxs_td"),
+				"label"    			=> nxs_l18n__("Title padding", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
 				"unistylablefield"	=> true
 			),

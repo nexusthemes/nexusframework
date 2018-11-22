@@ -154,13 +154,13 @@ function nxs_widgets_text_home_getoptions($args)
 			array( 
 				"id" 				=> "top_info_color",
 				"type" 				=> "colorzen",
-				"label" 			=> nxs_l18n__("Top info color", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title background color", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id"     			=> "top_info_padding",
 				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Top info padding", "nxs_td"),
+				"label"    			=> nxs_l18n__("Title padding", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("padding"),
 				"unistylablefield"	=> true
 			),
@@ -385,7 +385,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Link (url)", "nxs_td"),
-				"placeholder"		=> nxs_l18n__("http://www.example.org", "nxs_td"),
+				"placeholder"		=> nxs_l18n__("https://www.example.org", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
