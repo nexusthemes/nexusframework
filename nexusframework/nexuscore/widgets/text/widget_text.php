@@ -48,7 +48,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array
 			( 
 				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
+				"type" 				=> "ext_loopups_wrapperbegin",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
 				"initial_toggle_state"	=> "closed-if-empty",
 				"initial_toggle_state_id" => "lookups",
@@ -56,12 +56,12 @@ function nxs_widgets_text_home_getoptions($args)
 			array
       (
 				"id" 					=> "lookups",
-				"type" 				=> "textarea",
+				"type" 				=> "ext_loopups_textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 			),
 			array( 
 				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
+				"type" 				=> "ext_loopups_wrapperend"
 			),
 			
 			// TITLE
@@ -88,7 +88,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
 			),
-			
+			/* phased out; use shortcodes instead
 			array
 			(
 				"id" 				=> "title_postprocessor",
@@ -99,20 +99,21 @@ function nxs_widgets_text_home_getoptions($args)
 					"@@@empty@@@" => "None",
 					"truncateall" => "Truncate all",
 				),
-			"unistylablefield"	=> true
+				"unistylablefield"	=> true
 			),
+			*/
 			array
 			(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id" 				=> "title_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
@@ -146,7 +147,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
@@ -172,7 +173,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array(
 				"id"     			=> "icon_scale",
 				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
+				"label"    			=> nxs_l18n__("Icon size", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
 				"unistylablefield"	=> true
 			),
@@ -202,7 +203,8 @@ function nxs_widgets_text_home_getoptions($args)
 				"id" 					=> "text_lookuppicker",
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
-			),			
+			),		
+			/* obsolete; if this is needed, use shortcodes and lookups instead
 			array(
 				"id" 				=> "text_truncatelength",
 				"type" 				=> "select",
@@ -214,6 +216,13 @@ function nxs_widgets_text_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+			*/
+			array(
+				"id" 				=> "text_fontzen",
+				"type" 				=> "fontzen",
+				"label" 			=> nxs_l18n__("Text font", "nxs_td"),
+				"unistylablefield"	=> true
+			),			
 			array(
 				"id" 				=> "text_alignment",
 				"type" 				=> "radiobuttons",
@@ -339,7 +348,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array(
 				"id" 				=> "button_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Button font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
@@ -385,7 +394,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array
 			( 
 				"id" 				=> "destination_data",
-				"type" 				=> "input",
+				"type" 				=> "ext_text_destination_data_input",
 				"label" 			=> nxs_l18n__("Link (programmatic)", "nxs_td"),
 				"unicontentablefield" => true,
 			),
@@ -399,7 +408,7 @@ function nxs_widgets_text_home_getoptions($args)
 			
 			array(
 				"id" 				=> "destination_js",
-				"type" 				=> "input",
+				"type" 				=> "ext_text_destination_js_input",
 				"label" 			=> nxs_l18n__("Javascript", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Apply javascript when the button is pressed.", "nxs_td"),
 				"unicontentablefield" => true,
@@ -410,7 +419,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array(
 				"id" 				=> "destination_target",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"label" 			=> nxs_l18n__("Target (where to open the linked document)", "nxs_td"),
 				"dropdown" 			=> array
 				(
 					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
@@ -437,7 +446,7 @@ function nxs_widgets_text_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_misc_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Miscellaneous", "nxs_td"),
+				"label" 			=> nxs_l18n__("Advanced", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 				"unistylablefield"	=> true
 			),
@@ -456,7 +465,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("When checked, the widget's text will participate in the text alignment of other partipating widgets in this row", "nxs_td"),
 				"unistylablefield"	=> true
 			),			
-			
+			/* phased out; too confusing
 			array( 
 				"id" 				=> "text_showliftnote",
 				"type" 				=> "checkbox",
@@ -471,12 +480,8 @@ function nxs_widgets_text_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("Enlarge the first character of the first paragraph with this option.", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			array(
-				"id" 				=> "text_fontzen",
-				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Text fontzen", "nxs_td"),
-				"unistylablefield"	=> true
-			),
+			*/
+			
 			
 			array( 
 				"id" 				=> "enlarge",
@@ -490,20 +495,14 @@ function nxs_widgets_text_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Grayscale hover effect", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			array(
-				"id" 				=> "fx",
-				"type" 				=> "effects",
-				"label" 			=> nxs_l18n__("Effects", "nxs_td"),
-			),
-
 			array( 
 				"id" 				=> "wrapper_misc_end",
 				"type" 				=> "wrapperend",
 				"unistylablefield"	=> true
 			),
 			
+			/*
 			// CALLOUT BANNER
-			
 			array( 
 				"id" 				=> "wrapper_misc_begin",
 				"type" 				=> "wrapperbegin",
@@ -535,6 +534,7 @@ function nxs_widgets_text_home_getoptions($args)
 				"id" 				=> "wrapper_misc_end",
 				"type" 				=> "wrapperend",
 			),
+			*/
 		)
 	);
 	

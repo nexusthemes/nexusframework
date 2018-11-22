@@ -43,22 +43,21 @@ function nxs_widgets_csv_home_getoptions()
 			array
 			( 
 				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
+				"type" 				=> "ext_loopups_wrapperbegin",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
-      	"initial_toggle_state" => "closed-if-empty",
-      	"initial_toggle_state_id" => "lookups",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "lookups",
 			),
 			array
       (
 				"id" 					=> "lookups",
-				"type" 				=> "textarea",
+				"type" 				=> "ext_loopups_textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 			),
 			array( 
 				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
+				"type" 				=> "ext_loopups_wrapperend"
 			),
-					
 		
 			// SEPARATOR
 			
@@ -126,7 +125,7 @@ function nxs_widgets_csv_home_getoptions()
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),	
@@ -174,7 +173,7 @@ function nxs_widgets_csv_home_getoptions()
 			array(
 				"id"     			=> "icon_scale",
 				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
+				"label"    			=> nxs_l18n__("Icon size", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
 				"unistylablefield"	=> true
 			),

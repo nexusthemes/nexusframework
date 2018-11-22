@@ -53,20 +53,20 @@ function nxs_widgets_blog_home_getoptions($args)
 			array
 			( 
 				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
+				"type" 				=> "ext_loopups_wrapperbegin",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
-      	"initial_toggle_state" => "closed-if-empty",
-      	"initial_toggle_state_id" => "lookups",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "lookups",
 			),
 			array
       (
 				"id" 					=> "lookups",
-				"type" 				=> "textarea",
+				"type" 				=> "ext_loopups_textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 			),
 			array( 
 				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
+				"type" 				=> "ext_loopups_wrapperend"
 			),
 			
 			// TITLE
@@ -97,7 +97,7 @@ function nxs_widgets_blog_home_getoptions($args)
 			array(
 				"id" 				=> "title_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
@@ -111,7 +111,7 @@ function nxs_widgets_blog_home_getoptions($args)
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
@@ -137,7 +137,7 @@ function nxs_widgets_blog_home_getoptions($args)
 			array(
 				"id"     			=> "icon_scale",
 				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
+				"label"    			=> nxs_l18n__("Icon size", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
 				"unistylablefield"	=> true
 			),
@@ -262,7 +262,7 @@ function nxs_widgets_blog_home_getoptions($args)
 			array(
 				"id" 				=> "item_title_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
@@ -543,6 +543,8 @@ function nxs_widgets_blog_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
+			/*
+			
 			// LAZYLOADING
 			
 			array( 
@@ -596,6 +598,8 @@ function nxs_widgets_blog_home_getoptions($args)
 				"type" 				=> "wrapperend",
 				"unistylablefield"	=> true
 			),
+			
+			*/
 			
 			
 			// MISCELLANEOUS

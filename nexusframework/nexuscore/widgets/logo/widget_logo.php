@@ -128,7 +128,7 @@ function nxs_widgets_logo_home_getoptions($args)
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
@@ -142,13 +142,13 @@ function nxs_widgets_logo_home_getoptions($args)
 			array(
 				"id" 				=> "title_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id" 				=> "subtitle_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Subtitle fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Subtitle font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(

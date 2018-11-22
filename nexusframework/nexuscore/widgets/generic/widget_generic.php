@@ -94,7 +94,7 @@ function nxs_widgets_generic_title_getoptions($args)
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
@@ -340,7 +340,7 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 			
 			array( 
 				"id" 				=> "wrapper_begin",
-				"type" 				=> "wrapperbegin",
+				"type" 				=> "ext_widget_generic_css_wrapperbegin",
 				"heading_cssclass"	=> "generic",
 				
 				"label" 			=> nxs_l18n__("Advanced properties: CSS class", "nxs_td"),
@@ -349,7 +349,7 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 			),
 			array(
 				"id" 				=> "ph_cssclass",
-				"type" 				=> "input",
+				"type" 				=> "ext_widget_generic_css_input",
 				"label" 			=> "CSS class",
 				"placeholder"		=> nxs_l18n__("class1 class2 class3", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Seperate the items with a space to add multiple ones.", "nxs_td"),
@@ -357,9 +357,10 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 			),
 			array( 
 				"id" 				=> "wrapper_end",
-				"type" 				=> "wrapperend",
+				"type" 				=> "ext_widget_generic_css_wrapperend",
 			),
 
+			/*
 			// LOCK
 			
 			array( 
@@ -381,7 +382,9 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 				"type" 				=> "wrapperend",
 				"requirecapability" => nxs_cap_getdesigncapability(),
 			),
-
+			*/
+			
+			/*
 			// SHORTCODE
 			
 			array( 
@@ -403,6 +406,7 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 				"type" 				=> "wrapperend",
 				"requirecapability" => nxs_cap_getdesigncapability(),
 			),
+			*/
 
 		)
 	);

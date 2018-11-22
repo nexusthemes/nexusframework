@@ -143,26 +143,26 @@ function nxs_widgets_list_home_getoptions($args)
 		"footerfiller" => true,	// add some space at the bottom
 		"fields" => array
 		(
+			// LOOKUPS
+			
 			array
-			(
-        "id" 				=> "wrapper_items_begin",
-        "type" 				=> "wrapperbegin",
-        "label" 			=> nxs_l18n__("Lookups", "nxs_td"),
-      	"initial_toggle_state" => "closed-if-empty",
-      	"initial_toggle_state_id" => "lookups",
-      ),
+			( 
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "ext_loopups_wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "lookups",
+			),
 			array
       (
 				"id" 					=> "lookups",
-				"type" 				=> "textarea",
+				"type" 				=> "ext_loopups_textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
-				// "footer" => "Want to use a grid? Use nxs_list_layout=flexauto columnsmin=3 columnsmax=4",
 			),
-				array
-			(
-        "id" 				=> "wrapper_items_end",
-        "type" 				=> "wrapperend",
-      ),
+			array( 
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "ext_loopups_wrapperend"
+			),
 			
 			// datasource
 			array

@@ -56,20 +56,20 @@ function nxs_widgets_callout_home_getoptions($args)
 			array
 			( 
 				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
+				"type" 				=> "ext_loopups_wrapperbegin",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
-      	"initial_toggle_state" => "closed-if-empty",
-      	"initial_toggle_state_id" => "lookups",
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "lookups",
 			),
 			array
       (
 				"id" 					=> "lookups",
-				"type" 				=> "textarea",
+				"type" 				=> "ext_loopups_textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 			),
 			array( 
 				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
+				"type" 				=> "ext_loopups_wrapperend"
 			),
 					
 			// TITLES
@@ -98,21 +98,21 @@ function nxs_widgets_callout_home_getoptions($args)
 			),			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title heading", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),	
 			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title fontsize", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id" 				=> "title_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
@@ -133,21 +133,21 @@ function nxs_widgets_callout_home_getoptions($args)
 			array(
 				"id" 				=> "subtitle_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Subtitle heading", "nxs_td"),
+				"label" 			=> nxs_l18n__("Subtitle heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),		
 			array(
 				"id" 				=> "subtitle_fontsize",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Subtitle fontsize", "nxs_td"),
+				"label" 			=> nxs_l18n__("Subtitle size", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id" 				=> "subtitle_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Subtitle fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Subtitle font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(

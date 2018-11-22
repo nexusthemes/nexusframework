@@ -52,7 +52,7 @@ function nxs_widgets_signpost_home_getoptions($args)
 			array
 			( 
 				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
+				"type" 				=> "ext_loopups_wrapperbegin",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
 				"initial_toggle_state"	=> "closed-if-empty",
 				"initial_toggle_state_id" => "lookups",
@@ -60,12 +60,12 @@ function nxs_widgets_signpost_home_getoptions($args)
 			array
       (
 				"id" 					=> "lookups",
-				"type" 				=> "textarea",
+				"type" 				=> "ext_loopups_textarea",
 				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 			),
 			array( 
 				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
+				"type" 				=> "ext_loopups_wrapperend"
 			),
 		
 			// TITLE
@@ -88,7 +88,7 @@ function nxs_widgets_signpost_home_getoptions($args)
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title heading", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),

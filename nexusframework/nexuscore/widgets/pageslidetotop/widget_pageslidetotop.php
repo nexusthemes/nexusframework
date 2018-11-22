@@ -215,7 +215,7 @@ function nxs_widgets_pageslidetotop_home_getoptions($args)
 			(
 				"id"     			=> "icon_scale",
 				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Icon scale", "nxs_td"),
+				"label"    			=> nxs_l18n__("Icon size", "nxs_td"),
 				"dropdown"   		=> nxs_style_getdropdownitems("icon_scale"),
 				"unistylablefield"	=> true
 			),

@@ -45,7 +45,7 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 			array(
 				"id" 				=> "title_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 
@@ -68,7 +68,7 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 			array(
 				"id" 				=> "items_title_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Title fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(

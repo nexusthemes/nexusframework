@@ -73,7 +73,7 @@ function nxs_widgets_eventsbox_home_getoptions($args)
 			array(
 				"id"     			=> "title_fontsize",
 				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Override title fontsize", "nxs_td"),
+				"label"    			=> nxs_l18n__("Title size", "nxs_td"),
 				"dropdown"    		=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true,
 			),
