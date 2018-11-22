@@ -716,11 +716,6 @@
 					  		<span class='nxs-icon-wand'></span>
 					  	</a>
 			      </li>
-			      <li>
-			      	<a href="<?php echo home_url('/'); ?>?nxs_admin=admin&backendpagetype=forms" title="<?php nxs_l18n_e("Forms", "nxs_td"); ?>" class="site">
-			      		<span class='nxs-icon-pencil2'></span>
-			      	</a>
-			      </li>
 			      <?php
 			    }
 			    ?>
