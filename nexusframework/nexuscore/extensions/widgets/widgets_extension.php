@@ -206,7 +206,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 		// Social
 		$result[] = array("widgetid" => "fblikebox", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "social", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "socialsharing", "tags" => array("nexus"));
+		// $result[] = array("widgetid" => "socialsharing", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "twittertweets", "tags" => array("nexus"));
 		
 		// Google
@@ -221,30 +221,29 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "quote", "tags" => array("nexus"));
 		
 		// Reference
-		$result[] = array("widgetid" => "signpost", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "tumbler", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "radial", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "target", "tags" => array("nexus"));
+		//$result[] = array("widgetid" => "signpost", "tags" => array("nexus"));
+		//$result[] = array("widgetid" => "tumbler", "tags" => array("nexus"));
+		//$result[] = array("widgetid" => "radial", "tags" => array("nexus"));
+		//$result[] = array("widgetid" => "target", "tags" => array("nexus"));
 		
 		// Miscellaneous
 		$result[] = array("widgetid" => "logo", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "callout", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "csv", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "section", "tags" => array("nexus"));
+		// $result[] = array("widgetid" => "section", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "search", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "eventsbox", "tags" => array("nexus"));
 		
 		$result[] = array("widgetid" => "banner", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "flickr", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "seo", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "lang", "tags" => array("nexus"));
-		
+		// $result[] = array("widgetid" => "flickr", "tags" => array("nexus"));
+		// $result[] = array("widgetid" => "seo", "tags" => array("nexus"));
+				
 		// Never
 		$result[] = array("widgetid" => "wordpresssidebar", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "categories", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "archive", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "htmlcustom", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "rssfeed", "tags" => array("nexus"));	
+		//$result[] = array("widgetid" => "categories", "tags" => array("nexus"));
+		//$result[] = array("widgetid" => "archive", "tags" => array("nexus"));
+		//$result[] = array("widgetid" => "htmlcustom", "tags" => array("nexus"));
+		//$result[] = array("widgetid" => "rssfeed", "tags" => array("nexus"));	
 		$result[] = array("widgetid" => "breadcrumb", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "wpmenu", "tags" => array("nexus"));
 		
@@ -315,18 +314,18 @@ function nxs_getwidgets_functions_AF($result, $args)
 		// FORM
 		if ($nxssubposttype == "form") 
 		{
+			$result[] = array("widgetid" => "contactitemreplyto", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemtext", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemdate", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "formitemcheckbox", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemselect", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemmultiselect", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemdatetime", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "formitemcaptcha", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "formitemcheckbox", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "formitemprivacyconsent", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "contactitemreplyto", "tags" => array("nexus"));
+			// $result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "formitemhtml", "tags" => array("nexus"));
+			// $result[] = array("widgetid" => "formitemhtml", "tags" => array("nexus", "nexus"));
+			$result[] = array("widgetid" => "formitemcaptcha", "tags" => array("nexus"));
+			$result[] = array("widgetid" => "formitemprivacyconsent", "tags" => array("nexus"));
 		}
 		
 		// DEFINITION LIST
@@ -598,6 +597,8 @@ function nxs_getobsoletewidgetids()
 	$result = array();
 	
 	$result[] = "busrulesemanticlayout";
+	$result[] = "twittertweets";
+	$result[] = "googledoc";
 	
 	if (!nxs_enableconceptualwidgets())
 	{
