@@ -32,7 +32,7 @@ function nxs_pagerow_home_getoptions($args)
 			array
 			( 
 				"id" 				=> "wrapper_title_begin",
-				"type" 				=> "wrapperbegin",
+				"type" 				=> "ext_loopups_wrapperbegin",
 				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
       	"initial_toggle_state" => "closed-if-empty",
       	"initial_toggle_state_id" => "r_lookups",
@@ -40,13 +40,13 @@ function nxs_pagerow_home_getoptions($args)
 			array
       (
 				"id" 					=> "r_lookups",
-				"type" 				=> "textarea",
+				"type" 				=> "ext_loopups_textarea",
 				"label" 			=> nxs_l18n__("Lookup table", "nxs_td"),
 				"footer"			=> "Evaluated line by line when the row renders",
 			),
 			array( 
 				"id" 				=> "wrapper_title_end",
-				"type" 				=> "wrapperend"
+				"type" 				=> "ext_loopups_wrapperend"
 			),
 		
 			// -------------------------------------------------------
