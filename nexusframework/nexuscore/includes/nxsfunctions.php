@@ -4933,12 +4933,6 @@ function nxs_get_localids_categories_v2($globalcatidsinbrackets)
 	return $result;
 }
 
-function nxs_getplaceholdericonid($placeholdertemplate)
-{
-	$options = nxs_widget_getoptions($placeholdertemplate);
-	$result = $options["sheeticonid"];
- 	return $result;
-}
 
 function nxs_widget_getsupporturl($widgettype)
 {
@@ -4969,22 +4963,30 @@ function nxs_widget_getoptions($widgettype)
 
 function nxs_getwidgeticonid($widgetname)
 {
- 	// inject widget if not already loaded, implements *dsfvjhgsdfkjh*
- 	nxs_requirewidget($widgetname);
+	$options = nxs_widget_getoptions($widgetname);
+	$result = $options["sheeticonid"];
 	
-	$functionnametoinvoke = 'nxs_widgets_' . $widgetname . '_geticonid';
-	if (function_exists($functionnametoinvoke))
+	// backwards compatibility, to be removed eventually
+	if ($result == "")
 	{
-		$args = array();
-		$result = call_user_func($functionnametoinvoke, $args);
-	}
-	else
-	{
-		$result = "";
+		// inject widget if not already loaded, implements *dsfvjhgsdfkjh*
+	 	nxs_requirewidget($widgetname);
+		
+		$functionnametoinvoke = 'nxs_widgets_' . $widgetname . '_geticonid';
+		if (function_exists($functionnametoinvoke))
+		{
+			$args = array();
+			$result = call_user_func($functionnametoinvoke, $args);
+		}
+		else
+		{
+			$result = "";
+		}
 	}
 	
-	return $result;
+ 	return $result;
 }
+
 
 function nxs_getunifiedstylinggroup($widgetname)
 {

@@ -84,7 +84,7 @@ function nxs_pagerowtemplate_render_one($args)
 		$rowidattribute="id=\"" . $rowid . "\"";
 	}
 	
-	$imageclassattribute_slot1 = "class=\"" . $imageclass . " " . nxs_getplaceholdericonid($slot1_placeholdertemplate) . "\" ";
+	$imageclassattribute_slot1 = "class=\"" . $imageclass . " " . nxs_getwidgeticonid($slot1_placeholdertemplate) . "\" ";
 		
 	?>
 		<li <?php echo $rowidattribute; ?>>

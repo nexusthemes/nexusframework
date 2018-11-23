@@ -22,7 +22,7 @@ function nxs_widgets_googlemap_geticonid()
 
 function nxs_widgets_googlemap_gettitle()
 {
-	return nxs_l18n__("Google Map", "nxs_td");
+	return nxs_l18n__("Google maps", "nxs_td");
 }
 
 // Unistyle
@@ -93,7 +93,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),
@@ -309,7 +309,7 @@ function nxs_widgets_googlemap_home_getoptions($args)
 			array(
 				"id" 				=> "button_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Button font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(

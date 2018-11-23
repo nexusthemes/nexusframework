@@ -2,12 +2,12 @@
 
 function nxs_widgets_banner_geticonid() {
 	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-dollar";
+	return "nxs-icon-trophy";
 }
 
 // Setting the widget title
 function nxs_widgets_banner_gettitle() {
-	return nxs_l18n__("Banner", "nxs_td");
+	return nxs_l18n__("Trust icons", "nxs_td");
 }
 
 // Unistyle

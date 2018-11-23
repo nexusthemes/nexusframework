@@ -78,7 +78,7 @@ function nxs_widgets_generic_title_getoptions($args)
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),
@@ -222,7 +222,7 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"heading_cssclass"	=> "generic",
-				"label" 			=> nxs_l18n__("Advanced properties: background & alignment", "nxs_td"),
+				"label" 			=> nxs_l18n__("Background & alignment", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 				"unistylablefield"	=> true
 			),
@@ -274,7 +274,7 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"heading_cssclass"	=> "generic",
-				"label" 			=> nxs_l18n__("Advanced properties: colors & text", "nxs_td"),
+				"label" 			=> nxs_l18n__("Colors & text", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 				"unistylablefield"	=> true
 			),
@@ -314,7 +314,7 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
 				"heading_cssclass"	=> "generic",
-				"label" 			=> nxs_l18n__("Advanced properties: unistyle & unicontent", "nxs_td"),
+				"label" 			=> nxs_l18n__("Unistyle & unicontent", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 				"requirecapability" => nxs_cap_getdesigncapability(),
 			),
@@ -343,7 +343,7 @@ function nxs_widgets_generic_backgroundstyle_getoptions($args)
 				"type" 				=> "ext_widget_generic_css_wrapperbegin",
 				"heading_cssclass"	=> "generic",
 				
-				"label" 			=> nxs_l18n__("Advanced properties: CSS class", "nxs_td"),
+				"label" 			=> nxs_l18n__("CSS class", "nxs_td"),
 				"initial_toggle_state"	=> "closed-if-empty",
 				"initial_toggle_state_id" => "ph_cssclass",
 			),

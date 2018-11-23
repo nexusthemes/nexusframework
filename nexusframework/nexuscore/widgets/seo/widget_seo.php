@@ -9,7 +9,7 @@ function nxs_widgets_seo_geticonid()
 
 // Setting the widget title
 function nxs_widgets_seo_gettitle() {
-	return nxs_l18n__("seo", "nxs_td");
+	return nxs_l18n__("Seo", "nxs_td");
 }
 
 // 

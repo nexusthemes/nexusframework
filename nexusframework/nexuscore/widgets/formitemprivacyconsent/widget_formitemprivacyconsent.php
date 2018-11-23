@@ -2,8 +2,7 @@
 
 function nxs_widgets_formitemprivacyconsent_geticonid()
 {
-	$widget_name = basename(dirname(__FILE__));
-	return "nxs-icon-handshake";
+	return "nxs-icon-publicrelations";
 }
 
 function nxs_widgets_formitemprivacyconsent_gettitle()

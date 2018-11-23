@@ -54,6 +54,13 @@ function nxs_ajax_webmethods()
 	$_POST = nxs_urldecodearrayvalues($_POST);
 	$_REQUEST = nxs_urldecodearrayvalues($_REQUEST);
 
+	if ($webmethod == "getsheet")
+	{
+		// allow plugins to tune the sheet
+		$filter_args = array();
+		$_REQUEST["clientpopupsessioncontext"]["sheet"] = apply_filters("nxs_f_webmethod_getsheet_sheet", $_REQUEST["clientpopupsessioncontext"]["sheet"], $filter_args);
+	}
+
 	// check permissions
 	if (!nxs_has_adminpermissions())
 	{
@@ -65,7 +72,9 @@ function nxs_ajax_webmethods()
 			// getsheet doesnt use POST so we don't have to check for that
 			$clientpopupsessioncontext = $_REQUEST["clientpopupsessioncontext"];			
 			$contextprocessor = $clientpopupsessioncontext["contextprocessor"];
+
 			$sheet = $clientpopupsessioncontext["sheet"];
+			
 			
 			// load the context processor if its not yet loaded
 			nxs_requirepopup_contextprocessor($contextprocessor);

@@ -2,13 +2,13 @@
 
 // Setting the widget image
 function nxs_widgets_csv_geticonid() {
-	return "nxs-icon-csv";
+	return "nxs-icon-calendar-2";
 }
 
 // Setting the widget title
-function nxs_widgets_csv_gettitle() {
-	$widget_name = basename(dirname(__FILE__));
-	return __($widget_name);
+function nxs_widgets_csv_gettitle() 
+{
+	return "Table";
 }
 
 // Unistyling
@@ -31,6 +31,7 @@ function nxs_widgets_csv_home_getoptions()
 {
 	$options = array
 	(
+	
 		"sheettitle" 		=> "CSV table",
 		"sheeticonid" 		=> nxs_widgets_csv_geticonid(),
 		"supporturl" => "https://www.wpsupporthelp.com/wordpress-questions/widgets-csv-wordpress-questions-21/",
@@ -118,7 +119,7 @@ function nxs_widgets_csv_home_getoptions()
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),

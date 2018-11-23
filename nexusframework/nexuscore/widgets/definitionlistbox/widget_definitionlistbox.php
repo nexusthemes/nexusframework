@@ -1,12 +1,12 @@
 <?php
 
 function nxs_widgets_definitionlistbox_geticonid() {
-	return "nxs-icon-drawer";
+	return "nxs-icon-list";
 }
 
 // Setting the widget title
 function nxs_widgets_definitionlistbox_gettitle() {
-	return nxs_l18n__("Definition list box", "nxs_td");
+	return nxs_l18n__("List", "nxs_td");
 }
 
 /* WIDGET STRUCTURE
@@ -74,7 +74,7 @@ function nxs_widgets_definitionlistbox_home_getoptions($args)
 			array(
 				"id" 				=> "items_description_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Description fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Description font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array( 

@@ -194,78 +194,26 @@ function nxs_widgets_formbox_home_getoptions($args)
 		"unifiedstyling" 	=> array("group" => nxs_widgets_formbox_getunifiedstylinggroup(),),		
 		"fields" 			=> array
 		(
+			// LOOKUPS
+			
 			array
 			( 
-				"id" 				=> "wrapper_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> "Lookups",
+				"id" 				=> "wrapper_title_begin",
+				"type" 				=> "ext_loopups_wrapperbegin",
+				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
 				"initial_toggle_state"	=> "closed-if-empty",
 				"initial_toggle_state_id" => "lookups",
 			),
 			array
-			(
-				"id" 				=> "lookups",
-				"type" 				=> "textarea",
-				"label" 			=> nxs_l18n__("Lookups", "nxs_td"),
+      (
+				"id" 					=> "lookups",
+				"type" 				=> "ext_loopups_textarea",
+				"label" 			=> nxs_l18n__("Lookup table (evaluated one time when the widget renders)", "nxs_td"),
 			),
 			array( 
-				"id" 				=> "wrapper_end",
-				"type" 				=> "wrapperend"
+				"id" 				=> "wrapper_title_end",
+				"type" 				=> "ext_loopups_wrapperend"
 			),
-			
-			/*
-			
-			// DATA PROTECTION
-			
-			array
-			( 
-				"id" 				=> "wrapper_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> "Control processing of Personal Data",
-			),
-			array
-			(
-				"id" 				=> "dataprotection_controller_label",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Controller label", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "dataprotection_control_option",
-				"type" 				=> "select",
-				"dropdown" => nxs_widgets_formbox_getcontroloptions(),
-				"label" 			=> nxs_l18n__("Control option", "nxs_td"),
-			),			
-			array
-			(
-				"id" 				=> "dataprotection_data_retention",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Data retention", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
-			),
-
-			array
-			(
-				"id" 				=> "dataprotection_why",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Why", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
-			),
-			array
-			(
-				"id" 				=> "dataprotection_security",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Security", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("", "nxs_td"),
-			),
-			
-			array( 
-				"id" 				=> "wrapper_end",
-				"type" 				=> "wrapperend"
-			),
-			
-			*/
 												
 			// TITLE	
 			
@@ -288,7 +236,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),
@@ -387,7 +335,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 			array
 			(
 				"id" 				=> "items_data",
-				"type" 				=> "input",
+				"type" 				=> "ext_widget_formbox_items_data_input",
 				"label" 			=> nxs_l18n__("Form fields (programmatic)", "nxs_td"),
 				"unicontentablefield" => true,
 			),

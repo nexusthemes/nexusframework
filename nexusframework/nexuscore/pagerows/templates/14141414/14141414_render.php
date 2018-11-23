@@ -93,10 +93,10 @@ function nxs_pagerowtemplate_render_14141414($args)
 		$rowidattribute="id=\"" . $rowid . "\"";
 	}
 	
-	$imageclassattribute_slot1 = "class=\"" . $imageclass . " " . nxs_getplaceholdericonid($slot1_placeholdertemplate) . "\" ";
-	$imageclassattribute_slot2 = "class=\"" . $imageclass . " " . nxs_getplaceholdericonid($slot2_placeholdertemplate) . "\" ";
-	$imageclassattribute_slot3 = "class=\"" . $imageclass . " " . nxs_getplaceholdericonid($slot3_placeholdertemplate) . "\" ";
-	$imageclassattribute_slot4 = "class=\"" . $imageclass . " " . nxs_getplaceholdericonid($slot4_placeholdertemplate) . "\" ";
+	$imageclassattribute_slot1 = "class=\"" . $imageclass . " " . nxs_getwidgeticonid($slot1_placeholdertemplate) . "\" ";
+	$imageclassattribute_slot2 = "class=\"" . $imageclass . " " . nxs_getwidgeticonid($slot2_placeholdertemplate) . "\" ";
+	$imageclassattribute_slot3 = "class=\"" . $imageclass . " " . nxs_getwidgeticonid($slot3_placeholdertemplate) . "\" ";
+	$imageclassattribute_slot4 = "class=\"" . $imageclass . " " . nxs_getwidgeticonid($slot4_placeholdertemplate) . "\" ";
 
 	
 	?>

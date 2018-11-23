@@ -7,7 +7,7 @@ function nxs_widgets_social_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_social_gettitle() {
-	return nxs_l18n__("Social[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Social icons", "nxs_td");
 }
 
 // Unistyle
@@ -60,7 +60,7 @@ function nxs_widgets_social_home_getoptions($args)
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),

@@ -223,7 +223,7 @@ function nxs_widgets_pageslider_home_getoptions($args)
 			array(
 				"id" 				=> "description_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Description fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Description font", "nxs_td"),
 				"unistylablefield"	=> true
 			),			
 			

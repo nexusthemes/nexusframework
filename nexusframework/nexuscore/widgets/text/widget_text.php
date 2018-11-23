@@ -302,6 +302,20 @@ function nxs_widgets_text_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
 			),
+
+			array( 
+				"id" 				=> "enlarge",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Enlarge hover effect", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array( 
+				"id" 				=> "grayscale",
+				"type" 				=> "checkbox",
+				"label" 			=> nxs_l18n__("Grayscale hover effect", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "wrapper_image_begin",
 				"type" 				=> "wrapperend"
@@ -441,65 +455,22 @@ function nxs_widgets_text_home_getoptions($args)
 				"type" 				=> "wrapperend",
 			),
 			
-			// MISCELLANEOUS
-			
-			array( 
-				"id" 				=> "wrapper_misc_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Advanced", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
-				"unistylablefield"	=> true
-			),
 			
 			array(
 				"id" 				=> "title_heightiq",
-				"type" 				=> "checkbox",
+				"type" 				=> "ext_widget_text_title_heightiq_checkbox",
 				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(
 				"id" 				=> "text_heightiq",
-				"type" 				=> "checkbox",
+				"type" 				=> "ext_widget_text_text_heightiq_checkbox",
 				"label" 			=> nxs_l18n__("Row align texts", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("When checked, the widget's text will participate in the text alignment of other partipating widgets in this row", "nxs_td"),
 				"unistylablefield"	=> true
-			),			
-			/* phased out; too confusing
-			array( 
-				"id" 				=> "text_showliftnote",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Liftnote", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("You can make the first paragraph stand out with this option.", "nxs_td"),
-				"unistylablefield"	=> true
 			),
-			array( 
-				"id" 				=> "text_showdropcap",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Dropcap", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("Enlarge the first character of the first paragraph with this option.", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			*/
-			
-			
-			array( 
-				"id" 				=> "enlarge",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Enlarge hover effect", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array( 
-				"id" 				=> "grayscale",
-				"type" 				=> "checkbox",
-				"label" 			=> nxs_l18n__("Grayscale hover effect", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array( 
-				"id" 				=> "wrapper_misc_end",
-				"type" 				=> "wrapperend",
-				"unistylablefield"	=> true
-			),
+
 			
 			/*
 			// CALLOUT BANNER

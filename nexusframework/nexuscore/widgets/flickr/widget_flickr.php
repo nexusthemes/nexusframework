@@ -7,7 +7,7 @@ function nxs_widgets_flickr_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_flickr_gettitle() {
-	return nxs_l18n__("flickr", "nxs_td");
+	return nxs_l18n__("Flickr", "nxs_td");
 }
 
 // Unistyle
@@ -53,7 +53,7 @@ function nxs_widgets_flickr_home_getoptions($args)
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),

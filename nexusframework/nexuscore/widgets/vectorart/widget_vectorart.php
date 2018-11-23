@@ -6,7 +6,7 @@ function nxs_widgets_vectorart_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_vectorart_gettitle() {
-	return nxs_l18n__("Vectorart", "nxs_td");
+	return nxs_l18n__("Vector art", "nxs_td");
 }
 
 // Unistyle

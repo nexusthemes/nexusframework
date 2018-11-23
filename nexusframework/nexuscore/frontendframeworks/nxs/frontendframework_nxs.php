@@ -1573,7 +1573,7 @@ function nxs_frontendframework_nxs_setgenericwidgethovermenu($args)
       		<?php
       		if ($enable_movewidget === true)
       		{
-      			$widgeticonid = nxs_getplaceholdericonid($placeholdertemplate);
+      			$widgeticonid = nxs_getwidgeticonid($placeholdertemplate);
       			?>
 		        <li title='<?php nxs_l18n_e("Move[tooltip]", "nxs_td"); ?>' class='nxs-draggable nxs-existing-pageitem nxs-dragtype-placeholder' id='draggableplaceholderid_<?php echo $placeholderid; ?>'>
 		        	<span class='nxs-icon-move'></span>

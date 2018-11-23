@@ -90,7 +90,7 @@ function nxs_widgets_blog_home_getoptions($args)
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),
@@ -292,7 +292,7 @@ function nxs_widgets_blog_home_getoptions($args)
 			array(
 				"id" 				=> "item_text_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Text fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Text font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 

@@ -90,8 +90,8 @@ function nxs_pagerowtemplate_render_1212($args)
 		$rowidattribute="id=\"" . $rowid . "\"";
 	}
 	
-	$imageclassattribute_slot1 = "class=\"" . $imageclass . " " . nxs_getplaceholdericonid($slot1_placeholdertemplate) . "\" ";
-	$imageclassattribute_slot2 = "class=\"" . $imageclass . " " . nxs_getplaceholdericonid($slot2_placeholdertemplate) . "\" ";
+	$imageclassattribute_slot1 = "class=\"" . $imageclass . " " . nxs_getwidgeticonid($slot1_placeholdertemplate) . "\" ";
+	$imageclassattribute_slot2 = "class=\"" . $imageclass . " " . nxs_getwidgeticonid($slot2_placeholdertemplate) . "\" ";
 	
 	?>
 		<li <?php echo $rowidattribute; ?>>

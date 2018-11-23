@@ -181,7 +181,7 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 			array(
 				"id" 				=> "text_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Text fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Text font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
             array(
@@ -200,7 +200,7 @@ function nxs_widgets_sliderbox_home_getoptions($args)
 			array(
 				"id" 				=> "button_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Button font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(

@@ -6331,7 +6331,6 @@ function nxs_js_getlineairgradientcss(colora, colorb)
 	return result;
 }
 
-// kudos to http://stackoverflow.com/questions/11333150/twitter-bootstrap-how-to-remove-gradient-mixin-in-subclass
 function nxs_js_getflatbackgroundnogradientcss(hexcolor, alphafactor)
 {
 	var result = "";

@@ -146,7 +146,7 @@ function nxs_widgets_slide_home_getoptions($args)
 			array(
 				"id" 				=> "button_fontzen",
 				"type" 				=> "fontzen",
-				"label" 			=> nxs_l18n__("Button fontzen", "nxs_td"),
+				"label" 			=> nxs_l18n__("Button font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
 			array(

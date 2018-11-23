@@ -8,7 +8,7 @@ function nxs_widgets_wordpresstitle_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_wordpresstitle_gettitle() {
-	return nxs_l18n__("Title[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Post title", "nxs_td");
 }
 
 // Unistyle
@@ -66,7 +66,7 @@ function nxs_widgets_wordpresstitle_home_getoptions($args)
 			array(
 				"id" 				=> "title_heading",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title importance", "nxs_td"),
+				"label" 			=> nxs_l18n__("Title heading markup", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("title_heading"),
 				"unistylablefield"	=> true
 			),

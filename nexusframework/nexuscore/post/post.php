@@ -517,8 +517,22 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 	$phtargs["pagetemplate"] = $pagetemplate;
 	
 	$widgets = nxs_getwidgets($phtargs);
-	?>
 	
+	$distincttags = array("all");
+	
+	// find distinct tags (where applicable)
+	foreach ($widgets as $currentwidget)
+	{
+		$tags = $currentwidget["tags"];	// array
+		foreach ($tags as $currenttag)
+		{
+			if (!in_array($currenttag, $distincttags))
+			{
+				$distincttags[] = $currenttag;
+			}
+		}
+	}
+	?>
 	<div class="nxs-admin-wrap">
 		<div class="block">	
 
@@ -534,13 +548,33 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 		          </div>
 		        </div>
 		        <div class="nxs-clear"></div>
+		        
+		        <?php
+		      	if (count($distincttags) > 2)
+		      	{
+		      		?>
+			      	<div class="nxsfiltercontainer">
+			      		Filters: 
+			      		<?php
+			      		foreach ($distincttags as $currenttag)
+			      		{
+			      			?>
+				      		<a class="nxsbutton1 isotope-filter isotope-filter-<?php echo $currenttag; ?>" href="#" onclick="nxs_js_undefinedupdatefilter(this, '<?php echo $currenttag; ?>'); return false;"><?php echo $currenttag; ?></a>
+				      		<?php
+			      		}
+			      		?>
+			      	</div>
+			      	<?php
+			      }
+			      ?>
 		      </div> <!--END content-->
 		
 		      <div class="content2">
 		        <div class="box">
-		        	<ul class="placeholder3">
-		        		<style>	
-									li .nxs-widgetitem-submenu { display: none; position: absolute; z-index: 99999; }
+		        	<ul class="placeholder3 nxs-applylinkvarcolor isotope-grid">
+		          	<style>	
+		          		.isotope-item { cursor: pointer; } 
+									li .nxs-widgetitem-submenu { display: none; position: absolute; z-index: 99999; box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75); }
 									li .nxs-widgetitem-submenu li { width: auto !important;; height: auto !important; margin: 0 !important; padding: 2px;}
 									li:hover .nxs-widgetitem-submenu { display: block; }
 								</style>
@@ -548,31 +582,69 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 									// for each placeholder -->
 									foreach ($widgets as $currentwidget)
 									{
-										$title = $currentwidget["title"];
 										$widgetid = $currentwidget["widgetid"];
-										$iconid = nxs_getplaceholdericonid($widgetid);
+										$iconid = nxs_getwidgeticonid($widgetid);
 										$supporturl = nxs_widget_getsupporturl($widgetid);
-										?>
+										$title = $currentwidget["title"];
+										$tags = $currentwidget["tags"];	// array
 										
-										<li onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;" style="cursor: pointer;">
-											<?php
-											//$lookups = nxs_lookuptable_getlookup();
-											if ($supporturl != "") // $lookups["test"] == "test")
+										$abbreviatedtitle = $title;
+										$breakuplength = 12;
+										if (strlen($abbreviatedtitle) > $breakuplength)
+										{
+											if (!nxs_stringcontains($abbreviatedtitle, " "))
 											{
-												//$supporturl = "http://example.org";
+												// te lang...
+												$abbreviatedtitle = substr($abbreviatedtitle, 0, $breakuplength - 1) . "-" . substr($abbreviatedtitle, $breakuplength - 1);
+											}
+										}
+										
+										$maxlength = 14;
+										if (strlen($abbreviatedtitle) > $maxlength)
+										{
+											// chop!
+											$abbreviatedtitle = substr($abbreviatedtitle, 0, $maxlength - 1) . "..";
+										}
+										
+										
+										$elementclass = "";
+										foreach ($tags as $currenttag)
+										{
+											$elementclass .= $currenttag . " ";
+										}
+										?>
+										<li class="isotope-item <?php echo $elementclass; ?>" href="#" onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;">
+											<?php
+											if (isset($iconid) && $iconid != "")
+											{
 												?>
-												<ul class='nxs-widgetitem-submenu'>
-													<li title='Support'>
-														<a href='<?php echo $supporturl; ?>' target='_blank'>
-															<span class='nxs-icon-info'></span>
-														</a>
-													</li>
-												</ul>
+												<?php
+												if ($supporturl != "")
+												{
+													?>
+													<ul class='nxs-widgetitem-submenu'>
+														<li title='Support'>
+															<a href='<?php echo $supporturl; ?>' target='_blank'>
+																<span class='nxs-icon-info'></span>
+															</a>
+														</li>
+													</ul>
+													<?php
+												}
+												?>
+												<span class='nxs-widget-icon <?php echo $iconid; ?>'></span>
+												<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
+												<?php
+											}
+											else
+											{
+												$iconid = nxs_getwidgeticonid($widgetid);
+												?>
+												<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='<?php echo $iconid; ?>'></span>
+												<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
 												<?php
 											}
 											?>
-											<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='nxs-widget-icon <?php echo $iconid; ?>'></span>
-											<p><?php echo $title; ?></p>
 										</li>
 										<?php
 									}
@@ -593,6 +665,32 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
          </div>
          <div class="nxs-clear"></div>
       </div> <!--END content-->
+    	
+    	<script src='<?php echo nxs_getframeworkurl(); ?>/js/isotope/isotope.pkgd.min.js'></script>
+    	<script>
+    		function nxs_js_undefinedupdatefilter(element, filter)
+    		{
+    			jQuery(".isotope-filter").removeClass("nxsbutton").addClass("nxsbutton1");
+    			jQuery(element).addClass("nxsbutton").removeClass("nxsbutton1");
+    			
+    			var thefilter = "." + filter;
+    			if (filter == "all")
+    			{
+    				thefilter = "*";
+    			}
+    			
+  				$('.isotope-grid').isotope
+  				(
+  					{
+						  // options
+						  itemSelector: '.isotope-item',
+						  //layoutMode: 'fitRows',
+						  filter: thefilter
+						}
+					); 
+    		}
+				jQuery(".isotope-filter-all").addClass("nxsbutton").removeClass("nxsbutton1");
+    	</script>
     	
     </div>
   </div>
@@ -844,7 +942,7 @@ function nxs_post_dialogappendbusrulessetitem_rendersheet($args)
 											}
 											else
 											{
-												$iconid = nxs_getplaceholdericonid($widgetid);
+												$iconid = nxs_getwidgeticonid($widgetid);
 												?>
 												<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='<?php echo $iconid; ?>'></span>
 												<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
@@ -1013,6 +1111,22 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
 	$phtargs["pagetemplate"] = $pagetemplate;
 	
 	$widgets = nxs_getwidgets($phtargs);
+	
+	$distincttags = array("all");
+	
+	// find distinct tags (where applicable)
+	foreach ($widgets as $currentwidget)
+	{
+		$tags = $currentwidget["tags"];	// array
+		foreach ($tags as $currenttag)
+		{
+			if (!in_array($currenttag, $distincttags))
+			{
+				$distincttags[] = $currenttag;
+			}
+		}
+	}
+	
 	?>
 	
 	<div class="nxs-admin-wrap">
@@ -1022,7 +1136,9 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
 
 			<div class="nxs-popup-content-canvas-cropper">
 				<div class="nxs-popup-content-canvas">
-		
+					<style>
+						.nxsfiltercontainer { margin-bottom: 20px;}
+					</style>
 					<div class="content2">
 		        <div class="box">
 		          <div class="box-title" style='width: 400px;'>
@@ -1030,26 +1146,95 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
 		          </div>
 		        </div>
 		        <div class="nxs-clear"></div>
+		        <?php
+		      	if (count($distincttags) > 2)
+		      	{
+		      		?>
+			      	<div class="nxsfiltercontainer">
+			      		Filters: 
+			      		<?php
+			      		foreach ($distincttags as $currenttag)
+			      		{
+			      			?>
+				      		<a class="nxsbutton1 isotope-filter isotope-filter-<?php echo $currenttag; ?>" href="#" onclick="nxs_js_undefinedupdatefilter(this, '<?php echo $currenttag; ?>'); return false;"><?php echo $currenttag; ?></a>
+				      		<?php
+			      		}
+			      		?>
+			      	</div>
+			      	<?php
+			      }
+			      ?>
 		      </div> <!--END content-->
 		
 		      <div class="content2">
 		        <div class="box">
-		        	<ul class="placeholder3">
+		        	<ul class="placeholder3 nxs-applylinkvarcolor isotope-grid">
+		          	<style>	
+		          		.isotope-item { cursor: pointer; } 
+									li .nxs-widgetitem-submenu { display: none; position: absolute; z-index: 99999; box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75); }
+									li .nxs-widgetitem-submenu li { width: auto !important;; height: auto !important; margin: 0 !important; padding: 2px;}
+									li:hover .nxs-widgetitem-submenu { display: block; }
+								</style>
 								<?php
 									// for each placeholder -->
 									foreach ($widgets as $currentwidget)
 									{
-										$title = $currentwidget["title"];
 										$widgetid = $currentwidget["widgetid"];
-										$iconid = nxs_getplaceholdericonid($widgetid);
-										?>
+										$title = $currentwidget["title"];										
+										$iconid = nxs_getwidgeticonid($widgetid);
+										$tags = $currentwidget["tags"];	// array
 										
-		        				<a href="#" onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;">
-											<li>
-												<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='nxs-widget-icon <?php echo $iconid; ?>'></span>
-												<p><?php echo $title; ?></p>
-											</li>
-										</a>
+										$abbreviatedtitle = $title;
+										$breakuplength = 12;
+										if (strlen($abbreviatedtitle) > $breakuplength)
+										{
+											if (!nxs_stringcontains($abbreviatedtitle, " "))
+											{
+												// te lang...
+												$abbreviatedtitle = substr($abbreviatedtitle, 0, $breakuplength - 1) . "-" . substr($abbreviatedtitle, $breakuplength - 1);
+											}
+										}
+										
+										$maxlength = 14;
+										if (strlen($abbreviatedtitle) > $maxlength)
+										{
+											// chop!
+											$abbreviatedtitle = substr($abbreviatedtitle, 0, $maxlength - 1) . "..";
+										}
+										?>
+										<li class="isotope-item <?php echo $elementclass; ?>" href="#" onclick="selectplaceholdertype(this, '<?php echo $widgetid; ?>'); return false;">
+											<?php
+											if (isset($iconid) && $iconid != "")
+											{
+												?>
+												<?php
+												if ($supporturl != "")
+												{
+													?>
+													<ul class='nxs-widgetitem-submenu'>
+														<li title='Support'>
+															<a href='<?php echo $supporturl; ?>' target='_blank'>
+																<span class='nxs-icon-info'></span>
+															</a>
+														</li>
+													</ul>
+													<?php
+												}
+												?>
+												<span class='nxs-widget-icon <?php echo $iconid; ?>'></span>
+												<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
+												<?php
+											}
+											else
+											{
+												$iconid = nxs_getwidgeticonid($widgetid);
+												?>
+												<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='<?php echo $iconid; ?>'></span>
+												<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
+												<?php
+											}
+											?>
+										</li>
 										<?php
 									}
 								?>
@@ -1070,6 +1255,31 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
          <div class="nxs-clear"></div>
       </div> <!--END content-->
     	
+    	<script src='<?php echo nxs_getframeworkurl(); ?>/js/isotope/isotope.pkgd.min.js'></script>
+    	<script>
+    		function nxs_js_undefinedupdatefilter(element, filter)
+    		{
+    			jQuery(".isotope-filter").removeClass("nxsbutton").addClass("nxsbutton1");
+    			jQuery(element).addClass("nxsbutton").removeClass("nxsbutton1");
+    			
+    			var thefilter = "." + filter;
+    			if (filter == "all")
+    			{
+    				thefilter = "*";
+    			}
+    			
+  				$('.isotope-grid').isotope
+  				(
+  					{
+						  // options
+						  itemSelector: '.isotope-item',
+						  //layoutMode: 'fitRows',
+						  filter: thefilter
+						}
+					); 
+    		}
+				jQuery(".isotope-filter-all").addClass("nxsbutton").removeClass("nxsbutton1");
+    	</script>
     </div>
   </div>
 	

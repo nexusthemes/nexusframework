@@ -134,7 +134,7 @@
 					}
 					else
 					{
-						$iconid = nxs_getplaceholdericonid($widgetid);
+						$iconid = nxs_getwidgeticonid($widgetid);
 						?>
 						
 						html += "<span id=\"placeholdertemplate_<?php echo $widgetid; ?>\" class=\"<?php echo $iconid; ?>\"></span>";

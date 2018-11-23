@@ -14,7 +14,7 @@ function nxs_webmethod_getplaceholderbytemplate()
  	
 	$placeholdertemplate = nxs_getplaceholdertemplate($postid, $placeholderid);
 
- 	$result = "<span class='draggable_placeholder' id='nxs_x_ph_" . $placeholderid . "' class='" . nxs_getplaceholdericonid($placeholdertemplate) . "'></span>";
+ 	$result = "<span class='draggable_placeholder' id='nxs_x_ph_" . $placeholderid . "' class='" . nxs_getwidgeticonid($placeholdertemplate) . "'></span>";
 	
 	$args = array
 	(

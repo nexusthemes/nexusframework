@@ -6,7 +6,7 @@ function nxs_widgets_section_geticonid() {
 
 function nxs_widgets_section_gettitle()
 {
-	return nxs_l18n__("section", "nxs_td");
+	return nxs_l18n__("Page Section", "nxs_td");
 }
 
 // rendert de placeholder zoals deze uiteindelijk door een gebruiker zichtbaar is,

@@ -2147,6 +2147,7 @@ function nxs_site_dashboardhome_rendersheet($args)
 	        </div> <!--END content-->
 
 					<!-- wp management -->
+					<!--
 	        <div class="content2">
             <div class="box">
               <div class="box-title">
@@ -2157,7 +2158,8 @@ function nxs_site_dashboardhome_rendersheet($args)
               </div>
             </div>
             <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
+	        </div> 
+	       	-->
 
 					<!-- integrations -->
 	        <div class="content2">
@@ -2286,6 +2288,7 @@ function nxs_site_dashboardhome_rendersheet($args)
 	        </div> <!--END content-->
 	       
 	        <!-- e-mail -->
+	        <!--
 	        <div class="content2">
             <div class="box">
               <div class="box-title"><h4><?php nxs_l18n_e("E-mail[nxs:popup,label]", "nxs_td"); ?></h4></div>
@@ -2296,7 +2299,8 @@ function nxs_site_dashboardhome_rendersheet($args)
               </div>
             </div>
             <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
+	        </div>
+	        -->
 	        
 	        <?php
 	        $widescreenfields = array();
@@ -2596,7 +2600,8 @@ function nxs_site_webfontshome_getoptions($args)
 			array( 
 				"id" 			=> "googlewebfonts",
 				"label"			=> nxs_l18n__("Google Webfonts", "nxs_td"),
-				"type" 			=> "textarea",
+				"customcontent" => "This feature requires the google fonts management plugin",
+				"type" 			=> "custom",
 			),
 		)
 	);

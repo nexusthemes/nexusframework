@@ -174,35 +174,43 @@ function nxs_widgets_undefined_home_rendersheet($args)
 						.nxsfiltercontainer { margin-bottom: 20px;}
 					</style>
 		      <div class="content2">
-		      	<div class="nxsfiltercontainer">
-		      		Filters: 
-		      		<?php
-		      		foreach ($distincttags as $currenttag)
-		      		{
-		      			?>
-			      		<a class="nxsbutton1 isotope-filter isotope-filter-<?php echo $currenttag; ?>" href="#" onclick="nxs_js_undefinedupdatefilter(this, '<?php echo $currenttag; ?>'); return false;"><?php echo $currenttag; ?></a>
-			      		<?php
-		      		}
+		      	<?php
+		      	if (count($distincttags) > 2)
+		      	{
 		      		?>
-		      	</div>
+			      	<div class="nxsfiltercontainer">
+			      		Filters: 
+			      		<?php
+			      		foreach ($distincttags as $currenttag)
+			      		{
+			      			?>
+				      		<a class="nxsbutton1 isotope-filter isotope-filter-<?php echo $currenttag; ?>" href="#" onclick="nxs_js_undefinedupdatefilter(this, '<?php echo $currenttag; ?>'); return false;"><?php echo $currenttag; ?></a>
+				      		<?php
+			      		}
+			      		?>
+			      	</div>
+			      	<?php
+			      }
+			      ?>
 		        <div class="box nxs-linkcolorvar-base2-m">
 		          <ul class="placeholder3 nxs-applylinkvarcolor isotope-grid">
 		          	<style>	
 		          		.isotope-item { cursor: pointer; } 
-									li .nxs-widgetitem-submenu { display: none; position: absolute; z-index: 99999; }
+									li .nxs-widgetitem-submenu { display: none; position: absolute; z-index: 99999; box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75); }
 									li .nxs-widgetitem-submenu li { width: auto !important;; height: auto !important; margin: 0 !important; padding: 2px;}
 									li:hover .nxs-widgetitem-submenu { display: block; }
-									
 								</style>
 								<?php
 									// for each placeholder -->
 									foreach ($widgets as $currentwidget)
 									{
+										$widgetid = $currentwidget["widgetid"];
+										$iconid = nxs_getwidgeticonid($widgetid);
+										$supporturl = nxs_widget_getsupporturl($widgetid);
 										$title = $currentwidget["title"];
 										$tags = $currentwidget["tags"];	// array
 										
 										$abbreviatedtitle = $title;
-										
 										$breakuplength = 12;
 										if (strlen($abbreviatedtitle) > $breakuplength)
 										{
@@ -220,9 +228,6 @@ function nxs_widgets_undefined_home_rendersheet($args)
 											$abbreviatedtitle = substr($abbreviatedtitle, 0, $maxlength - 1) . "..";
 										}
 										
-										$widgetid = $currentwidget["widgetid"];
-										$iconid = nxs_getwidgeticonid($widgetid);
-										$supporturl = nxs_widget_getsupporturl($widgetid);
 										
 										$elementclass = "";
 										foreach ($tags as $currenttag)
@@ -255,7 +260,7 @@ function nxs_widgets_undefined_home_rendersheet($args)
 											}
 											else
 											{
-												$iconid = nxs_getplaceholdericonid($widgetid);
+												$iconid = nxs_getwidgeticonid($widgetid);
 												?>
 												<span id='placeholdertemplate_<?php echo $widgetid; ?>' class='<?php echo $iconid; ?>'></span>
 												<p title='<?php echo $title; ?>'><?php echo $abbreviatedtitle; ?></p>
@@ -263,7 +268,6 @@ function nxs_widgets_undefined_home_rendersheet($args)
 											}
 											?>
 										</li>
-									
 										<?php
 									}
 								?>
@@ -302,12 +306,6 @@ function nxs_widgets_undefined_home_rendersheet($args)
 
 		  <script src='<?php echo nxs_getframeworkurl(); ?>/js/isotope/isotope.pkgd.min.js'></script>
     	<script>
-    		function onAnimationFinished()
-    		{
-				  // code to be executed after the animation finishes
-				  nxs_js_alert("wop");
-				};
-					
     		function nxs_js_undefinedupdatefilter(element, filter)
     		{
     			jQuery(".isotope-filter").removeClass("nxsbutton").addClass("nxsbutton1");
@@ -319,8 +317,6 @@ function nxs_widgets_undefined_home_rendersheet($args)
     				thefilter = "*";
     			}
     			
-    			
-    			
   				$('.isotope-grid').isotope
   				(
   					{
@@ -329,12 +325,8 @@ function nxs_widgets_undefined_home_rendersheet($args)
 						  //layoutMode: 'fitRows',
 						  filter: thefilter
 						}
-					);
-					
-					// 
+					); 
     		}
-
-				//nxs_js_undefinedupdatefilter(null, "all");
 				jQuery(".isotope-filter-all").addClass("nxsbutton").removeClass("nxsbutton1");
     	</script>
     </div>

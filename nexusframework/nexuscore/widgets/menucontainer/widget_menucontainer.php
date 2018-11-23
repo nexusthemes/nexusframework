@@ -350,7 +350,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
                         <span class='nxs-icon-move'></span>
                         <div class="nxs-drag-helper" style='display: none;'>
                             <div class='placeholder'>
-                                <span id='placeholdertemplate_<?php echo $placeholdertemplate; ?>' class='<?php echo nxs_getplaceholdericonid($placeholdertemplate); ?>'></span>
+                                <span id='placeholdertemplate_<?php echo $placeholdertemplate; ?>' class='<?php echo nxs_getwidgeticonid($placeholdertemplate); ?>'></span>
                             </div>
                         </div>
                     </li>

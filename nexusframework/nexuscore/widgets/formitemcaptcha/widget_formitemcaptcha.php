@@ -2,7 +2,6 @@
 
 function nxs_widgets_formitemcaptcha_geticonid()
 {
-	$widget_name = basename(dirname(__FILE__));
 	return "nxs-icon-user";
 }
 

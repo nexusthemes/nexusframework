@@ -723,7 +723,7 @@
 		  </li>
 		  <?php
 		  	// comments icon => delegate implementation to active comments provider
-				echo nxs_commentsprovider_getflyoutmenuhtml();
+				// echo nxs_commentsprovider_getflyoutmenuhtml();
 		  ?>
 
 		  <li class="nxs-hidewheneditorinactive">

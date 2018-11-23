@@ -7,7 +7,7 @@ function nxs_widgets_wordpresssidebar_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_wordpresssidebar_gettitle() {
-	return nxs_l18n__("WP Backend Content Area", "nxs_td");
+	return nxs_l18n__("Widget Area", "nxs_td");
 }
 
 // Unistyle

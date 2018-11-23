@@ -8,8 +8,9 @@ function nxs_widgets_lang_geticonid()
 }
 
 // Setting the widget title
-function nxs_widgets_lang_gettitle() {
-	return nxs_l18n__("lang", "nxs_td");
+function nxs_widgets_lang_gettitle() 
+{
+	return nxs_l18n__("Lang", "nxs_td");
 }
 
 // 
