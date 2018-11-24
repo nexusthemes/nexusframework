@@ -117,15 +117,22 @@ function nxs_widgets_callout_home_getoptions($args)
 			),
 			array(
 				"id" 				=> "subtitle",
-				"type" 				=> "textarea",
+				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Subtitle", "nxs_td"),
 				"placeholder" 		=> nxs_l18n__("Subtitle goes here", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("Place a descriptive teaser, if available, with this option.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			array(
+				"id" 				=> "text",
+				"type" 				=> "textarea",
+				"label" 			=> nxs_l18n__("Text", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Text goes here", "nxs_td"),
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
 			array
-      (
+      		(
 				"id" 					=> "subtitle_lookuppicker",
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
@@ -560,7 +567,7 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	$mixedattributes = array_merge($temp_array, $args);
 	
 	// Lookup atts
-	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","subtitle", "button_text","destination_url", "image_src"));
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","subtitle", "text", "button_text","destination_url", "image_src"));
 	
 	// Translate model magical fields
 	if (true)
@@ -845,6 +852,9 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 	// Subitle
 	$htmlsubtitle = '<'.$subtitle_heading.' class="' . $cssclasses .'">'.$subtitle.'</'.$subtitle_heading.'>';	
 	
+	// Text	
+	$htmltext = '<div class="nxs-text nxs-default-p nxs-padding-bottom0">'.$text.'</div>';
+	
 	// Image metadata
 	if ($image_imageid != "") 
 	{
@@ -1053,7 +1063,9 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 				echo '<div class="nxs-clear nxs-filler"></div>';
 			}
 			
-			if ($url != "")		{echo $htmlbutton;}
+			if ($text != "") 		{echo $htmltext;}
+			
+			if ($url != "")			{echo $htmlbutton;}
 		
 			echo '<div class="nxs-clear"></div>';
 	
