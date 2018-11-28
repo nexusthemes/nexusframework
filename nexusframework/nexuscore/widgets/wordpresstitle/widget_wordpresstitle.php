@@ -252,11 +252,7 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 	extract($mixedattributes);
 	
 	$posttype = nxs_getwpposttype($nxs_global_current_postid_being_rendered);
-	if ($posttype == "nxs_templatepart")
-	{
-		$title = "Template (title)";
-	}
-	else if (is_tax())
+	if (is_tax())
 	{
 		// $title = "Taxonomy";
 		$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
@@ -279,6 +275,10 @@ function nxs_widgets_wordpresstitle_render_webpart_render_htmlvisualization($arg
 			$title = "Archive";//get_the_title(); // $term->name;
 		}
 	}
+	else if ($posttype == "nxs_templatepart")
+	{
+		$title = "Template (title)";
+	} 
 	else
 	{
 		
