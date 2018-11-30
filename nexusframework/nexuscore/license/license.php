@@ -69,6 +69,7 @@ function nxs_site_wipe()
 add_action('admin_menu', 'nxs_license_addadminpages', 11);
 function nxs_license_addadminpages()
 {
+	add_submenu_page("nxs_backend_overview", 'Updates', 'Updates', 'switch_themes', 'nxs_admin_updates', 'nxs_admin_updates_page_content', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'Restart', 'Restart', 'switch_themes', 'nxs_admin_restart', 'nxs_license_restart_page_content', '', 81 );
 	add_submenu_page("nxs_backend_overview", 'ThemeSwitch', 'ThemeSwitch', 'switch_themes', 'nxs_admin_themeswitch', 'nxs_license_themeswitch_page_content', '', 81 );
 }
@@ -77,6 +78,41 @@ function plugin_admin_init()
 {
 }
 add_action( 'admin_init', 'plugin_admin_init' );
+
+function nxs_admin_updates_page_content()
+{
+	$thememeta = nxs_theme_getmeta();
+	$version = $thememeta["version"];
+	
+	$latestversionurl = "https://s3.amazonaws.com/devices.nexusthemes.com/!api/latestthemeversion.txt";
+	$args = array
+	(
+		"url" => $latestversionurl,
+	);
+	$latestversion = nxs_geturlcontents($args);
+
+	if ($version == $latestversion)
+	{
+		?>
+		<div class="wrap">
+    <h2>Updates</h2>
+    <p>
+    	Your site is using the latest version of the theme.
+    </p>
+    <?php
+	}
+	else
+	{
+		?>
+		<div class="wrap">
+	    <h2>Updates</h2>
+	    <p>
+	    	A new version of the theme has been released.<br />
+	    </p>
+	  </div>
+	  <?php
+	}
+}
 
 function nxs_license_restart_page_content()
 {

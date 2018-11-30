@@ -414,6 +414,20 @@ if (is_admin)
 	?>
 	<script data-cfasync="false" type='text/javascript'> var nxsboxL10n = { loadingAnimation: "<?php echo nxs_getframeworkurl(); ?>/images/loadingnxsbox.png" }; </script>	
 	<?php 
+}	
+
+if (!has_action("nxs_clientsidesupport"))	
+{	
+	if (nxs_has_adminpermissions())	
+	{	
+		// only logged in users can ask questions	
+		?>	
+		<script data-cfasync="false" type="text/javascript" src="<?php echo nxs_getframeworkurl(); ?>/nexuscore/includes/support-deferred.js.php?v=<?php echo nxs_getthemeversion(); ?>" defer></script>	
+		<?php	
+	}	
+}	
+else	
+{
 	do_action("nxs_clientsidesupport");
 }
 ?>
@@ -440,6 +454,8 @@ if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
 		$fontfams = nxs_getmappedfontfams($vg_fontfam);
 		foreach ($fontfams as $fontfam)
 		{
+			$fontfam = nxs_font_getfixedgooglewebfontspiece($fontfam);
+			
 			$fontsbeingused[]= $fontfam;
 		}
 	}
@@ -448,12 +464,14 @@ if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
 	if (count($fontsbeingused) > 0)
 	{
 		?>
+		<!-- fee -->
 		<script>
 			WebFont.load
 			(
 				{
 					google: 
 					{ 
+						
 		      	families: 
 		      	[
 		      		<?php

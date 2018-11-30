@@ -30,7 +30,7 @@ function nxs_popup_contextprocessor_widgets_getcustompopuphtml($args)
 		// could be a generic implementation, so we won't crash in a fatal way here...
 	}
 	
-	$functionnametoinvoke = 'nxs_widgets_' . $widget . '_' . $sheet . '_rendersheet';
+	$functionnametoinvoke = "nxs_widgets_{$widget}_{$sheet}_rendersheet";
 	if (function_exists($functionnametoinvoke))
 	{
 		$result = call_user_func($functionnametoinvoke, $args);

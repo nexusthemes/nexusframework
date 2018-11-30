@@ -176,20 +176,6 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 		        <div class="nxs-clear"></div>
 		      </div> <!--END content-->
 
-					<!-- layout -->
-					<div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-	          		<h4><?php nxs_l18n_e("Layout", "nxs_td"); ?></h4>
-		           </div>
-		          <div class="box-content">
-		          	<span><?php echo $currentlayout; ?></span>
-					      <a class='nxsbutton1 nxs-float-right' href='<?php echo $editurl; ?>'>Change</a>
-					    </div>
-					  </div>
-					  <div class="nxs-clear"></div>
-					</div>
-
 					<!-- design -->
 					<div class="content2">
 		        <div class="box">
@@ -203,21 +189,6 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 					  <div class="nxs-clear"></div>
 					</div>
 
-		      <div class="content2">
-		        <div class="box">
-		          <div class="box-title">
-	          		<h4><?php nxs_l18n_e("Type", "nxs_td"); ?></h4>
-		           </div>
-		          <div class="box-content">
-					      <a class='nxsbutton1 nxs-float-right' title="<?php nxs_l18n_e("Change template[nxs:title]", "nxs_td"); ?>" href='#' onclick="nxs_js_popup_page_neweditsession('<?php echo $postid;?>', 'home'); return false;">
-					      	<?php nxs_l18n_e("Change type", "nxs_td"); ?>
-					      </a>
-					      <?php nxs_l18n_e("Page (webpage)[nxs:popup,header]", "nxs_td"); ?>
-					    </div>
-					  </div>
-					  <div class="nxs-clear"></div>
-					</div>
-					
 		      <div class="content2">
 		        <div class="box">
 		

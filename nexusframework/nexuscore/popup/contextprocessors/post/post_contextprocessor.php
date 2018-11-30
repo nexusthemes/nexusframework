@@ -17,7 +17,7 @@ function nxs_popup_contextprocessor_post_getcustompopuphtml($args)
 	$filetobeincluded = NXS_FRAMEWORKPATH . "/nexuscore/post/post.php";
 	require_once($filetobeincluded);
 	
-	$functionnametoinvoke = 'nxs_post_' . $sheet . '_rendersheet';
+	$functionnametoinvoke = "nxs_post_{$sheet}_rendersheet";
 	if (function_exists($functionnametoinvoke))
 	{
 		$result = call_user_func($functionnametoinvoke, $args);

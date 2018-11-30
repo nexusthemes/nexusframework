@@ -2,8 +2,6 @@
 
 function nxs_gallerybox_detail_rendersheet($args)
 {
-	//error_log("nxs_gallerybox_detail_rendersheet");
-	
 	//
 	extract($args);
 	
@@ -26,8 +24,6 @@ function nxs_gallerybox_detail_rendersheet($args)
 		$moreitems = array();
 	}
 	
-	//	error_log("gallerbybox; items_data: $items_data");
-		
 	if ($galleryaction == "next")
 	{
 		//echo $index;

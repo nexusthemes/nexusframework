@@ -18,7 +18,7 @@ function nxs_popup_contextprocessor_site_getcustompopuphtml($args)
 	do_action($action, "site", $sheet);
 	
 	// invoke
-	$functionnametoinvoke = 'nxs_site_' . $sheet . '_rendersheet';
+	$functionnametoinvoke = "nxs_site_{$sheet}_rendersheet";
 	if (function_exists($functionnametoinvoke))
 	{
 		$result = call_user_func($functionnametoinvoke, $args);

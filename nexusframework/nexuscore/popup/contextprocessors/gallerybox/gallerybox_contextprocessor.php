@@ -14,7 +14,7 @@ function nxs_popup_contextprocessor_gallerybox_getcustompopuphtml($args)
  	
  	require_once(NXS_FRAMEWORKPATH . '/nexuscore/gallerybox/gallerybox.php');
 	
-	$functionnametoinvoke = 'nxs_gallerybox_' . $sheet . '_rendersheet';
+	$functionnametoinvoke = "nxs_gallerybox_{$sheet}_rendersheet";
 	if (function_exists($functionnametoinvoke))
 	{
 		$result = call_user_func($functionnametoinvoke, $args);

@@ -13,7 +13,7 @@ function nxs_popup_contextprocessor_rowscontainer_getcustompopuphtml($args)
  	// downwards compatibility...
  	$args["postid"] = $postid;
 
-	$functionnametoinvoke = 'nxs_rowscontainer_' . $sheet . '_rendersheet';
+	$functionnametoinvoke = "nxs_rowscontainer_{$sheet}_rendersheet";
 	if (function_exists($functionnametoinvoke))
 	{
 		$result = call_user_func($functionnametoinvoke, $args);

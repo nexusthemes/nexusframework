@@ -140,30 +140,15 @@ function nxs_getwidgets_functions_AF($result, $args)
 	{
 		$result[] = array("widgetid" => "busrulepostid", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busrulecategory", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busrulepostauthor", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busrulearchivetype", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busrulecatchall", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busrulehome", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busrule404", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busrulearchivecat", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busrulearchive", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulehome", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "busrulesearch", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busrulemaintenance", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busruleposttype", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busrulehaspostcontent", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busruleauthentication", "tags" => array("nexus"));		
-		
-		if ($enableconceptualwidgets)
-		{
-			// obsolete widget
-			$result[] = array("widgetid" => "busrulesemanticlayout", "tags" => array("nexus"));
-		}
-		
-		$result[] = array("widgetid" => "busruleurl", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "busruledeclarativecondition", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrule404", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "busrulecatchall", "tags" => array("nexus"));
 	}
 	
-	if ($nxsposttype == "subheader" || $nxsposttype == "header") {
+	if ($nxsposttype == "subheader" || $nxsposttype == "header") 
+	{
 		$result[] = array("widgetid" => "wordpresstitle", "tags" => array("nexus"));
 	}
 	
@@ -363,18 +348,7 @@ function nxs_getwidgets_functions_AF($result, $args)
 	if ($pagetemplate == "pagedecorator") {
 		$result[] = array("widgetid" => "pageslider", "tags" => array("nexus"));
 		$result[] = array("widgetid" => "pagebackground", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "pagepopup", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "pageslidetotop", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "pageinpagesectionmenu", "tags" => array("nexus"));
-		$result[] = array("widgetid" => "pagefixedheader", "tags" => array("nexus"));
-
-		if ( $enableconceptualwidgets )
-		{
-			
-		}
 	}
-	
-	
 	
 	/* CAPABILITIES WIDGET FILTER
 	---------------------------------------------------------------------------------------------------- */

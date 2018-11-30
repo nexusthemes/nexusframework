@@ -1176,7 +1176,26 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 	nxs_webmethod_return_ok($result);
 }
 
-function nxs_site_dashboardfaviconhome_rendersheet($args)
+function nxs_site_dashboardfaviconhome_getoptions($args)
+{	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("FavIcon", "nxs_td"),
+		
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "favicontip",
+				"type" 				=> "custom",
+				"customcontent" => "FavIcon requires the favicon extension",
+			),
+		)
+	);
+	return $options;
+}
+
+function nxs_site_dashboardfaviconhomev2_rendersheet($args)
 {
 	//
 	//
@@ -2023,7 +2042,255 @@ function nxs_site_newposthome_rendersheet($args)
 	nxs_webmethod_return_ok($result);
 }
 
-/* DASHBOARD POPUP
+/* SITE DASHBOARD
+---------------------------------------------------------------------------------------------------- */
+function nxs_site_dashboardextensions_rendersheet($args)
+{
+	$clientshortscopedata = array(); // will/can be overriden bij extract line below
+	$collectanonymousdata = "";
+	$faviconurl = "";
+	
+	extract($args);
+	
+	$sitemeta = nxs_getsitemeta();
+
+	if (isset($sitemeta["faviconid"]))
+	{
+		$faviconid = $sitemeta["faviconid"];
+		$favicondata = get_post($faviconid);
+		$faviconlookup = nxs_wp_get_attachment_image_src($faviconid, 'thumbnail', true);
+		$faviconurl = $faviconlookup[0];
+		$faviconurl = nxs_img_getimageurlthemeversion($faviconurl);
+	}
+		
+	$current_user = wp_get_current_user();
+  $nxs_user_email = $current_user->user_email;
+  	
+	extract($clientpopupsessiondata);
+	extract($clientshortscopedata);
+
+	$sitemeta = nxs_getsitemeta();
+	$collectanonymousdata = $sitemeta["collectanonymousdata"];
+	
+	if ($toggledatacollection == "true")
+	{
+		if ($collectanonymousdata == "" || $collectanonymousdata == "true")
+		{
+			$collectanonymousdata = "false";
+		}
+		else
+		{
+			// true
+			$collectanonymousdata = "";
+		}
+		$sitemeta["collectanonymousdata"] = $collectanonymousdata;		
+		nxs_mergesitemeta($sitemeta);
+	}
+	
+	if ($togglewidescreen == "triggered")
+	{
+		$currentwidescreenvalue = nxs_iswidescreen($sitewideelement);
+		$newwidescreenvalue = !$currentwidescreenvalue;
+		nxs_setwidescreensetting($sitewideelement, $newwidescreenvalue);
+		$currentwidescreenvalue = nxs_iswidescreen($sitewideelement);
+		// refresh page
+		$shouldrefresh = true;
+	}
+	
+	$result = array();
+	
+	$meta = nxs_getsitemeta();
+	//$someproperty = $meta["someproperty"];
+	
+	nxs_ob_start();
+	?>
+	
+	<div class="nxs-admin-wrap">
+		<div class="block">	
+
+     	<?php nxs_render_popup_header(nxs_l18n__("Extensions", "nxs_td")); ?>
+
+			<div class="nxs-popup-content-canvas-cropper">
+				<div class="nxs-popup-content-canvas">
+
+					<!-- maintenance -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Maintenance mode", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('maintenancehome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        	        
+	        <!-- webfonts -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Webfonts", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('webfontshome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	       
+	        	        
+					<!-- cache management -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Cache management", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('cachemanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        	        
+	       	<!-- favicon -->
+	       	<div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("FavIcon[nxs:popup,label]", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dashboardfaviconhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change[nxs:popup,button]", "nxs_td"); ?></a>
+              	<div>
+              		<?php 
+              		if ($faviconid == "" || $faviconid == 0)
+              		{
+              			?>
+              			-
+              			<?php
+              		}
+              		else
+              		{
+              			?>
+			                <div>
+			                	<p><?php echo $faviconurl; ?></p>
+			               	</div>
+			              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dashboardfaviconhome'); return false;" class="nxs-float-left">
+			              		
+			                  <img src="<?php echo $faviconurl; ?>">
+			                </a>
+              			<?php
+              		}
+              		?>
+	              </div>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+
+					<!-- cookie wall -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Cookie wall", "nxs_td"); ?></h4>              	
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectioncookiewallhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->	       	        
+	        
+	         <!-- data protection component control -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Data Protection Component Control", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectioncomponentcontrolhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        
+					<!-- access restrictions -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Access restrictions", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('accessrestrictionhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        
+	        <!-- header scripts -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Header scripts", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('headerscriptshome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        
+	      </div>
+	    </div>
+		        
+      <div class="content2">
+        <div class="box">
+          <a id='nxs_popup_genericsavebutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>
+          <a id='nxs_popup_genericokbutton' href='#' class="nxsbutton nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("OK[nxs:popup,button]", "nxs_td"); ?></a>
+          <a id='nxs_popup_genericcancelbutton' href='#' class="nxsbutton2 nxs-float-right" onclick='nxs_js_closepopup_unconditionally_if_not_dirty(); return false;'><?php nxs_l18n_e("Cancel[nxs:popup,button]", "nxs_td"); ?></a>
+        </div>
+        <div class="nxs-clear"></div>
+      </div> <!--END content-->
+		            
+		</div>
+	</div>
+	
+	<script>
+
+		function nxs_js_popup_get_initialbuttonstate() 
+		{ 
+			return 'showokifnotdirty'; 
+		}
+
+		function nxs_js_execute_after_popup_shows()
+		{
+			//jQuery('#gebruikersnaam').focus();
+			<?php
+			if ($shouldrefresh)
+			{
+				?>
+				nxs_js_refreshcurrentpage();
+				<?php
+			}
+			?>
+		}
+		
+		// overriden
+		function nxs_js_showwarning_when_trying_to_close_dirty_popup()
+		{
+			return false;
+		}
+		
+	</script>	
+	
+	<?php
+	$html = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	$result["html"] = $html;
+	nxs_webmethod_return_ok($result);
+}
+
+/* SITE DASHBOARD
 ---------------------------------------------------------------------------------------------------- */
 function nxs_site_dashboardhome_rendersheet($args)
 {
@@ -2093,59 +2360,35 @@ function nxs_site_dashboardhome_rendersheet($args)
 
 			<div class="nxs-popup-content-canvas-cropper">
 				<div class="nxs-popup-content-canvas">
-					
-					<!-- background styling -->
-					<div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Generic styling", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href='#' onclick='nxs_js_popup_navigateto("sitestyling"); return false;' class='nxsbutton1 nxs-float-right'><?php echo nxs_l18n__("Change", "nxs_td"); ?></a>
-            	</div>
-            </div>
-            <div class="nxs-clear margin"></div>
-          </div>
-          
-          <!-- maintenance -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Maintenance mode", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('maintenancehome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-					
-					<!-- header footer -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Header footer", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('headerfooter'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-					
-					<!-- access restrictions -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Access restrictions", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('accessrestrictionhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
 
+	        <!-- lookup table management -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Lookup table management", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('lookuptablemanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        
+	        
+          
+					<!-- footer template -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4><?php nxs_l18n_e("Footer template", "nxs_td"); ?></h4>
+              </div>
+              <div class="box-content">
+              	<a href="#" onclick="nxs_js_popup_site_neweditsession('footertemplatehome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change", "nxs_td"); ?></a>
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+					
 					<!-- wp management -->
 					<!--
 	        <div class="content2">
@@ -2174,46 +2417,7 @@ function nxs_site_dashboardhome_rendersheet($args)
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
 	        
-	        <!-- data protection -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Cookie wall", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectioncookiewallhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-	        
-	        <!-- data protection component control -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Component control", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dataprotectioncomponentcontrolhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-	        
-					<!-- cache management -->
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("Cache management", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('cachemanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-
-					<!-- uni styling management -->
+	        <!-- uni styling management -->
 	        <div class="content2">
             <div class="box">
               <div class="box-title">
@@ -2239,68 +2443,18 @@ function nxs_site_dashboardhome_rendersheet($args)
             <div class="nxs-clear margin"></div>
 	        </div> <!--END content-->
 	        
-	        <!-- lookup table management -->
-	        <div class="content2">
+	        <!-- generic styling -->
+					<div class="content2">
             <div class="box">
               <div class="box-title">
-              	<h4><?php nxs_l18n_e("Lookup table management", "nxs_td"); ?></h4>
+              	<h4><?php nxs_l18n_e("Generic styling", "nxs_td"); ?></h4>
               </div>
               <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('lookuptablemanagementhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
-              </div>
+              	<a href='#' onclick='nxs_js_popup_navigateto("sitestyling"); return false;' class='nxsbutton1 nxs-float-right'><?php echo nxs_l18n__("Change", "nxs_td"); ?></a>
+            	</div>
             </div>
             <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-	        
-	       	<!-- favicon -->
-	       	<div class="content2">
-            <div class="box">
-              <div class="box-title">
-              	<h4><?php nxs_l18n_e("FavIcon[nxs:popup,label]", "nxs_td"); ?></h4>
-              </div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dashboardfaviconhome'); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change[nxs:popup,button]", "nxs_td"); ?></a>
-              	<div>
-              		<?php 
-              		if ($faviconid == "" || $faviconid == 0)
-              		{
-              			?>
-              			-
-              			<?php
-              		}
-              		else
-              		{
-              			?>
-			                <div>
-			                	<p><?php echo $faviconurl; ?></p>
-			               	</div>
-			              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dashboardfaviconhome'); return false;" class="nxs-float-left">
-			              		
-			                  <img src="<?php echo $faviconurl; ?>">
-			                </a>
-              			<?php
-              		}
-              		?>
-	              </div>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div> <!--END content-->
-	       
-	        <!-- e-mail -->
-	        <!--
-	        <div class="content2">
-            <div class="box">
-              <div class="box-title"><h4><?php nxs_l18n_e("E-mail[nxs:popup,label]", "nxs_td"); ?></h4></div>
-              <div class="box-content">
-              	<a href="#" onclick="nxs_js_popup_site_neweditsession('dashboarduserhome'); return false;" class="nxsbutton1 nxs-float-right nxs-margin-top5"><?php nxs_l18n_e("Change[nxs:popup,button]", "nxs_td"); ?></a> 
-                <span class='title'><?php echo $nxs_user_email; ?></span>
-                <div class="nxs-clear margin"></div>
-              </div>
-            </div>
-            <div class="nxs-clear margin"></div>
-	        </div>
-	        -->
+          </div>
 	        
 	        <?php
 	        $widescreenfields = array();
@@ -2315,9 +2469,9 @@ function nxs_site_dashboardhome_rendersheet($args)
 		        <!-- header widescreen or none widescreen -->
 		        <div class="content2">
 	            <div class="box">
-	              <div class="box-title"><h4><?php echo $currentwidescreenfield; ?> <?php nxs_l18n_e("Widescreen[nxs:popup,label]", "nxs_td"); ?></h4>
+	              <div class="box-title"><h4><?php echo ucwords($currentwidescreenfield); ?> <?php nxs_l18n_e("Widescreen[nxs:popup,label]", "nxs_td"); ?></h4>
 	              </div>
-	              <div class="box-content">
+	              <div class="box-content"> 
 	              	<a href="#" onclick="nxs_js_popup_setshortscopedata('togglewidescreen', 'triggered'); nxs_js_popup_setshortscopedata('sitewideelement', '<?php echo $currentwidescreenfield; ?>'); nxs_js_popup_refresh(); return false;" class="nxsbutton1 nxs-float-right"><?php nxs_l18n_e("Change[nxs:popup,button]", "nxs_td"); ?></a>
 	              	<?php if ($iswidescreen == true) { ?>
 	              		<span class='title'><?php nxs_l18n_e("Active[nxs:popup,button]", "nxs_td"); ?></span>
@@ -2333,6 +2487,20 @@ function nxs_site_dashboardhome_rendersheet($args)
 	        	<?php
 	        }
 	        ?>
+	        
+	        <!-- spacer -->
+	        <div class="content2">
+            <div class="box">
+              <div class="box-title">
+              	<h4>&nbsp;</h4>
+              </div>
+              <div class="box-content">
+              	&nbsp;
+              </div>
+            </div>
+            <div class="nxs-clear margin"></div>
+	        </div> <!--END content-->
+	        
 	      </div>
 	    </div>
 		        
@@ -2608,36 +2776,29 @@ function nxs_site_webfontshome_getoptions($args)
 	return $options;
 }
 
-/* CACHE MANAGEMENT
----------------------------------------------------------------------------------------------------- */
 
-function nxs_site_cachemanagementhome_clearcache_popupcontent($optionvalues, $args, $runtimeblendeddata) 
-{
-	nxs_ob_start();
-	if ($runtimeblendeddata["cacheaction"] == "clear")
-	{
-		$path = nxs_cache_getcachefolder();
-		nxs_cache_clear();
-		?>
-		Cache cleared <?php echo $path; ?>
-		<?php
-	}
-	?>
-	<a href="#" class='nxsbutton1 nxs-float-right' onclick='nxs_js_triggerclearcache(); return false;'><?php nxs_l18n_e('Clear', 'nxs_td'); ?></a>
-	<script>
-		function nxs_js_triggerclearcache()
-		{
-			nxs_js_popup_setshortscopedata("cacheaction","clear");
-			nxs_js_popup_refresh();
-		}
-	</script>
-	<?php
-	$result = nxs_ob_get_contents();
-	nxs_ob_end_clean();
-	return $result;
-}
 
 function nxs_site_dataprotectioncomponentcontrolhome_getoptions($args)
+{
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Data Protection Component Control", "nxs_td"),
+		
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "tip",
+				"type" 				=> "custom",
+				"customcontent" => "This requires the data protection component control extension",
+			),
+		)
+	);
+	return $options;
+}
+
+
+function nxs_site_dataprotectioncomponentcontrolhomev2_getoptions($args)
 {
 	/*
 	if (!nxs_dataprotection_isprivacysupported())
@@ -2784,7 +2945,7 @@ function nxs_site_dataprotectioncomponentcontrolhome_getoptions($args)
 	
 	$options = array
 	(
-		"sheettitle" => nxs_l18n__("Component Control", "nxs_td"),
+		"sheettitle" => nxs_l18n__("Data Protection Component Control", "nxs_td"),
 		"footerfiller" => true,
 		"fields" => $fields,
 	);
@@ -2793,6 +2954,25 @@ function nxs_site_dataprotectioncomponentcontrolhome_getoptions($args)
 }
 
 function nxs_site_dataprotectioncookiewallhome_getoptions($args)
+{
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Cookie wall", "nxs_td"),
+		
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "cookiewalltip",
+				"type" 				=> "custom",
+				"customcontent" => "Cookie wall requires the cookie wall extension",
+			),
+		)
+	);
+	return $options;
+}
+
+function nxs_site_dataprotectioncookiewallhomev2_getoptions($args)
 {
 	if (!nxs_dataprotection_isprivacysupported())
 	{
@@ -2987,8 +3167,31 @@ function nxs_site_dataprotectioncookiewallhome_getoptions($args)
 	return $options;	
 }
 
+/* CACHE MANAGEMENT
+---------------------------------------------------------------------------------------------------- */
+
+
 function nxs_site_cachemanagementhome_getoptions($args)
 {	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Cache management", "nxs_td"),
+		
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "cachemanagementtip",
+				"type" 				=> "custom",
+				"customcontent" => "Cache management requires the cachemanagement extension",
+			),
+		)
+	);
+	return $options;
+}
+
+function nxs_site_cachemanagementhomev2_getoptions($args)
+{
 	$options = array
 	(
 		"sheettitle" => nxs_l18n__("Cache management", "nxs_td"),
@@ -3020,13 +3223,39 @@ function nxs_site_cachemanagementhome_getoptions($args)
 			( 
 				"id" 				=> "clearcache",
 				"type" 				=> "custom",
-				"customcontenthandler"	=> "nxs_site_cachemanagementhome_clearcache_popupcontent",
+				"customcontenthandler"	=> "nxs_site_cachemanagementhomev2_clearcache_popupcontent",
 				"label" 			=> nxs_l18n__("Clear cache", "nxs_td"),
 				"placeholder" 		=> "Clears any existing items in the cache",
 			),
 		)
 	);
 	return $options;
+}
+
+function nxs_site_cachemanagementhomev2_clearcache_popupcontent($optionvalues, $args, $runtimeblendeddata) 
+{
+	nxs_ob_start();
+	if ($runtimeblendeddata["cacheaction"] == "clear")
+	{
+		$path = nxs_cache_getcachefolder();
+		nxs_cache_clear();
+		?>
+		Cache cleared <?php echo $path; ?>
+		<?php
+	}
+	?>
+	<a href="#" class='nxsbutton1 nxs-float-right' onclick='nxs_js_triggerclearcache(); return false;'><?php nxs_l18n_e('Clear', 'nxs_td'); ?></a>
+	<script>
+		function nxs_js_triggerclearcache()
+		{
+			nxs_js_popup_setshortscopedata("cacheaction","clear");
+			nxs_js_popup_refresh();
+		}
+	</script>
+	<?php
+	$result = nxs_ob_get_contents();
+	nxs_ob_end_clean();
+	return $result;
 }
 
 /* GENERIC STYLING
@@ -3196,7 +3425,28 @@ function nxs_site_wpmanagementhome_getoptions($args)
 
 /* ACCESS RESTRICTIONS
 ---------------------------------------------------------------------------------------------------- */
+
+
 function nxs_site_accessrestrictionhome_getoptions($args)
+{	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Site access restrictions", "nxs_td"),
+		
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "tip",
+				"type" 				=> "custom",
+				"customcontent" => "This requires the Site access restrictions extension",
+			),
+		)
+	);
+	return $options;
+}
+
+function nxs_site_accessrestrictionhomev2_getoptions($args)
 {	
 	$options = array
 	(
@@ -3795,17 +4045,32 @@ function nxs_site_unicontentmanagementhome_getoptions($args) {
 	return $result;
 }
 
-
-
-
-
-
 /* MAINTENANCE MODE
 ---------------------------------------------------------------------------------------------------- */
 
 function nxs_site_maintenancehome_getoptions($args)
 {	
-	$options = array (
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Site maintenance mode", "nxs_td"),
+		
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "tip",
+				"type" 				=> "custom",
+				"customcontent" => "Maintenance mode requires the maintenance mode extension",
+			),
+		)
+	);
+	return $options;
+}
+
+function nxs_site_maintenancehomev2_getoptions($args)
+{	
+	$options = array 
+	(
 		"sheettitle" => nxs_l18n__("Site maintenance mode", "nxs_td"),
 		"footerfiller" => true,	// fills footer since the ddl at bottom wont be accessible otherwise
 		"fields" => array(
@@ -3841,15 +4106,64 @@ function nxs_site_maintenancehome_getoptions($args)
 	return $options;
 }
 
-/* MAINTENANCE MODE
----------------------------------------------------------------------------------------------------- */
-
-function nxs_site_headerfooter_getoptions($args)
+function nxs_site_footertemplatehome_getoptions($args)
 {	
-	$options = array (
-		"sheettitle" => nxs_l18n__("Header and footer options", "nxs_td"),
-		"fields" => array(
-			
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Footer template", "nxs_td"),
+		"fields" => array
+		(			
+			array( 
+				"id"			=> "wrapper_header_begin",
+				"type" 			=> "wrapperbegin",
+				"label" 		=> nxs_l18n__("Footer HTML template", "nxs_td"),
+			),
+			array
+			( 
+				"id" 			=> "footerhtmltemplate",
+				"label"			=> nxs_l18n__("Footer html template", "nxs_td"),
+				"type" 			=> "textarea",
+				"valueadapters" => array("" => "{{{themelink}}} | {{{authenticatelink}}}"),
+				"placeholder" 		=> nxs_l18n__("{{{themelink}}} | {{{authenticatelink}}}", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("The html to show in the footer. You can use {{{nexuslink}}} {{{themelink}}} and {{{authenticatelink}}} placeholders.", "nxs_td"),
+				"localizablefield"	=> true
+			),
+			array( 
+				"id" 			=> "wrapper_header_end",
+				"type" 			=> "wrapperend"
+			),
+		)
+	);
+	
+	return $options;
+}
+
+function nxs_site_headerscriptshome_getoptions($args)
+{
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Header scripts", "nxs_td"),
+		
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "tip",
+				"type" 				=> "custom",
+				"customcontent" => "This requires the Header scripts extension",
+			),
+		)
+	);
+	return $options;
+}
+
+function nxs_site_headerscriptshomev2_getoptions($args)
+{	
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Header scripts", "nxs_td"),
+		"fields" => array
+		(			
 			array( 
 				"id"			=> "wrapper_header_begin",
 				"type" 			=> "wrapperbegin",
@@ -3861,15 +4175,6 @@ function nxs_site_headerfooter_getoptions($args)
 				"type" 			=> "textarea",
 				"placeholder" 		=> nxs_l18n__("Script to insert within the &gt;head&lt; tag", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Script to insert within the &gt;head&lt; tag", "nxs_td"),
-				"localizablefield"	=> true
-			),
-			array( 
-				"id" 			=> "footerhtmltemplate",
-				"label"			=> nxs_l18n__("Footer html template", "nxs_td"),
-				"type" 			=> "textarea",
-				"valueadapters" => array("" => "{{{themelink}}} | {{{authenticatelink}}}"),
-				"placeholder" 		=> nxs_l18n__("{{{themelink}}} | {{{authenticatelink}}}", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("The html to show in the footer. You can use {{{nexuslink}}} {{{themelink}}} and {{{authenticatelink}}} placeholders.", "nxs_td"),
 				"localizablefield"	=> true
 			),
 			array( 

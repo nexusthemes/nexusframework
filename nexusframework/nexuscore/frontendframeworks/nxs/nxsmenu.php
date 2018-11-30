@@ -925,6 +925,11 @@
 		  {
 		  	?>
 		  	<li class="nxs-sub-menu nxs-hidewheneditorinactive">    
+			  	<a href="#" title="Extensions" onclick="nxs_js_popup_site_neweditsession('dashboardextensions'); return false;"  class="site">
+			  		<span class='nxs-icon-plug'></span>
+			  	</a>
+			  </li>
+		  	<li class="nxs-sub-menu nxs-hidewheneditorinactive">    
 		  	<a href="#" title="<?php nxs_l18n_e("Dashboard[nxs:adminmenu,tooltip]", "nxs_td"); ?>" onclick="nxs_js_popup_site_neweditsession('dashboardhome'); return false;"  class="site">
 		  		<span class='nxs-icon-dashboard'></span>
 		  	</a>
