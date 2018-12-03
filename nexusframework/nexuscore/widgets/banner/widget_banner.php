@@ -85,13 +85,13 @@ function nxs_widgets_banner_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("banner items", "nxs_td"),
+				"label" 			=> nxs_l18n__("Banner items", "nxs_td"),
 			),
 			
 			array(
 				"id" 				=> "items_genericlistid",
 				"type" 				=> "staticgenericlist_link",
-				"label" 			=> nxs_l18n__("banner items", "nxs_td"),
+				"label" 			=> nxs_l18n__("Banner items", "nxs_td"),
 			),
 
 			/*
