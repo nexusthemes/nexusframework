@@ -2312,32 +2312,41 @@ function nxs_sc_command($atts, $content = null, $name='')
 		$op = trim($op);
 		if ($op == "redirect301")
 		{
-			if (is_user_logged_in())
+			$isenabled = true;
+			if (isset($atts["enabled"]))
 			{
-				$output = "if you would not be logged in, this would redirect to <a href='$value'>$value</a>";
+				$isenabled = ($atts["enabled"] == "true");
 			}
-			else
+			if ($isenabled)
 			{
-				// cleanup output that was possibly produced before,
-				// if we won't this could cause output to not be json compatible
-				
-				if (!headers_sent()) 
+				if (is_user_logged_in())
 				{
-					$existingoutput = nxs_outputbuffer_popall();
-					
-					header("HTTP/1.1 301 Moved Permanently"); 
-					header("Location: {$value}");
-					exit();
+					$output = "if you would not be logged in, this would redirect to <a href='$value'>$value</a>";
 				}
 				else
 				{
-					// probably here we should do a client side redirect, as the headers are already sent out....
-					header("HTTP/1.1 301 Moved Permanently"); 
-					header("Location: {$value}");
-					exit();
+					// cleanup output that was possibly produced before,
+					// if we won't this could cause output to not be json compatible
+					
+					if (!headers_sent()) 
+					{
+						$existingoutput = nxs_outputbuffer_popall();
+						
+						header("HTTP/1.1 301 Moved Permanently"); 
+						header("Location: {$value}");
+						exit();
+					}
+					else
+					{
+						// probably here we should do a client side redirect, as the headers are already sent out....
+						header("HTTP/1.1 301 Moved Permanently"); 
+						header("Location: {$value}");
+						exit();
+					}
 				}
 			}
 		}
+
 		else if ($op == "nocache")
 		{
 			global $nxs_gl_cache_pagecache;
