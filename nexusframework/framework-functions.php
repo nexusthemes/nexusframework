@@ -2321,7 +2321,7 @@ function nxs_browser_iscrawler()
 {
 	$result = false;
 	
-  if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) 
+  if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|Qwantify|qwant|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) 
   {
     $result = true;
   }
