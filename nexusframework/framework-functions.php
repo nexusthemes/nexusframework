@@ -443,7 +443,16 @@ function nxs_ensure_sessionstarted()
   	// 20130329 the next line should fix issue identified by Jessica
   	// see http://www.php.net/manual/en/session.configuration.php#ini.session.save-handler
   	// see http://forums.cpanel.net/f5/error-php-fatal-error-session_start-failed-initialize-storage-module-17100-p3.html
-  	session_start();
+  	$r = session_start();
+  	if ($r == false)
+  	{
+  		// it fails, one (most likely) reason is that the program has already outputted content to the user, 
+  		// meaning its too late to send the cookie value
+  		$msg = "nxs_ensure_sessionstarted; unable to start session; most likely some other script already outputted to the browser";
+  		error_log($msg);
+  		echo $msg;
+  		die();
+  	}
   }
 }
 
