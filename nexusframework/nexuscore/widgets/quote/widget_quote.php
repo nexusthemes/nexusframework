@@ -7,7 +7,7 @@ function nxs_widgets_quote_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_quote_gettitle() {
-	return nxs_l18n__("Quote[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Testimonial", "nxs_td");
 }
 
 
