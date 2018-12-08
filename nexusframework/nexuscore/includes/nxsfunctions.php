@@ -2312,6 +2312,7 @@ function nxs_urlencodearrayvalues($array)
 
 
 // kudos to http://stackoverflow.com/questions/6232846/best-email-validation-function-in-general-and-specific-college-domain
+// verify email mail validmail verifymail verifyemail
 function nxs_isvalidemailaddress($email) 
 {
   // First, we check that there's one @ symbol, and that the lengths are right
@@ -4525,6 +4526,15 @@ function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemai
 
 function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemail, $replytomail, $subject, $body)
 {
+	if (!nxs_isvalidemailaddress($fromemail))
+	{
+		nxs_webmethod_return_nack("fromemail is not valid; $fromemail");
+	}
+	else if (!nxs_isvalidemailaddress($toemail))
+	{
+		nxs_webmethod_return_nack("toemail is not valid; $toemail");
+	}
+	
 	$headers = "";
 	$headers .= 'From: ' . $fromname . ' <' . $fromemail . '>' . "\r\n";
 	if ($replytomail != "")
