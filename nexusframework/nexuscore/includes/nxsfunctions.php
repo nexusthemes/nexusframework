@@ -6069,7 +6069,7 @@ function nxs_genericpopup_getderivedglobalmetadata($args, $metadata)
 			}
 			else
 			{
-				nxs_webmethod_return_nack("missing function name $functionnametoinvoke");
+				// nxs_webmethod_return_nack("missing function name $functionnametoinvoke");
 			}
 		}
 		else
