@@ -776,15 +776,15 @@ html.nxs-pageslider p#nxs-copyright												{ padding-bottom: 60px; }
 
 /* TABLES & DATEPICKER
 ----------------------------------------------------------------------------------------------------*/
-#nxs-container table,
+#nxs-container table.nxs-table,
 .nxs-datepicker table 										{ border: 1px solid #DFDFDF !important; background-color: #F9F9F9; width: 100%; border-collapse: separate !important; }
-#nxs-container table th,
-#nxs-container table td,
+#nxs-container table.nxs-table th,
+#nxs-container table.nxs-table td,
 .nxs-datepicker th 											{ color: #333333; text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0; overflow: hidden; text-align: left; line-height: 36px; font-size: 15px; }
-#nxs-container thead,
+#nxs-container table.nxs-table thead,
 .nxs-datepicker thead,
-#nxs-container table td.header 								{ font-weight: bold; }
-#nxs-container thead,
+#nxs-container table.nxs-table td.header 								{ font-weight: bold; }
+#nxs-container table.nxs-table thead,
 .nxs-datepicker thead {
 	background-color: #F1F1F1;
 	background: 						   -o-linear-gradient(#F9F9F9,     #ECECEC);
@@ -793,16 +793,16 @@ html.nxs-pageslider p#nxs-copyright												{ padding-bottom: 60px; }
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F9F9F9), to(#ECECEC));
 	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#F9F9F9,EndColorStr=#ECECEC);
 }
-#nxs-container table tr.highlight td						{ font-weight: bold; }
-#nxs-container table th										{ padding: 0 15px; }
-#nxs-container table td,
+#nxs-container table.nxs-table tr.highlight td						{ font-weight: bold; }
+#nxs-container table.nxs-table th										{ padding: 0 15px; }
+#nxs-container table.nxs-table td,
 .nxs-datepicker table th,
 .nxs-datepicker table td 									{ border-top: 1px solid white;  padding: 0 15px; }
-#nxs-container table td,
+#nxs-container table.nxs-table td,
 .nxs-datepicker table td									{ line-height: 1.5em; padding: 8px 15px; font-size: 15px; }
-#nxs-container table a,
+#nxs-container table.nxs-table a,
 .nxs-datepicker table a 									{ text-decoration: none; line-height: 30px; }
-#nxs-container table tr:nth-child(even),
+#nxs-container table.nxs-table tr:nth-child(even),
 .nxs-datepicker table tr:nth-child(even) 					{ background: #F6F6F6; } 
 
 /* RECAPTCHA */
