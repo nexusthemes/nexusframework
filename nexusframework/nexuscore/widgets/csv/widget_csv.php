@@ -583,7 +583,7 @@ function nxs_widgets_csv_render_webpart_render_htmlvisualization($args)
 		/* Rendering of individual table
 		---------------------------------------------------------------------------------------------------- */
 	
-		$html .= '<table id="table-' . $placeholderid . '" class="' . $responsive . ' nxs-applylinkvarcolor">';
+		$html .= '<table id="table-' . $placeholderid . '" class="' . $responsive . ' nxs-applylinkvarcolor nxs-table">';
 	  $html .= '<thead class="' . $headcssclass . '">';
 	    
 	    //
