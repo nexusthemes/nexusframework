@@ -287,6 +287,21 @@ function nxs_widgets_target_home_getoptions($args)
 				"unicontentablefield" => true,
 				"localizablefield"	=> true
 			),
+			
+			array
+			(
+				"id" 				=> "destination_target",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Target (where to open the linked document)", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
+					"_blank"=>nxs_l18n__("New window", "nxs_td"),
+					"_self"=>nxs_l18n__("Current window", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+						
 			array(
 				"id" 				=> "transition",
 				"type" 				=> "checkbox",
@@ -451,6 +466,34 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	/* LINK
 	---------------------------------------------------------------------------------------------------- */
 	
+	if ($destination_target == "_self") 
+	{
+		$destination_target_html = 'target="_self"';
+	} 
+	else if ($destination_target == "_blank") 
+	{
+		$destination_target_html = 'target="_blank"';
+	} 
+	else 
+	{
+		if ($destination_articleid != "") 
+		{
+			$destination_target_html = 'target="_self"';
+		} 
+		else 
+		{
+			$homeurl = nxs_geturl_home();
+ 			if (nxs_stringstartswith($destination_url, $homeurl)) 
+ 			{
+ 				$destination_target_html = 'target="_self"';
+ 			} 
+ 			else 
+ 			{
+ 				$destination_target_html = 'target="_blank"';
+ 			}
+		}
+	}
+	
 	// Article link
 	if ($destination_articleid != "") {
 		$destination_url = nxs_geturl_for_postid($destination_articleid);
@@ -547,15 +590,18 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	// Button scale
 	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
 	
+	
+	// 
+	
 	// Button	
-	if ($destination_articleid != "") {
+	if ($destination_articleid != "" || $destination_url != "") 
+	{
 		$button = '<a href="'.$destination_url .'" class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.'">'.$button_text.'</a>';
-	} else if ($destination_url != "") {
-		$button = '<a href="'.$destination_url .'" class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.'" target="_blank">'.$button_text.'</a>';
 	}
 	
 	// Applying alignment to button
-	if ($button_text != "") {
+	if ($button_text != "") 
+	{
 		$button = '<p class="'.$button_alignment.' nxs-padding-bottom0">'.$button.'</p>';
 	} else {
 		$button = "";	
