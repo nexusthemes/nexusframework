@@ -309,8 +309,8 @@ function nxs_getwidgets_functions_AF($result, $args)
 			// $result[] = array("widgetid" => "contactitemsecret", "tags" => array("nexus"));
 			$result[] = array("widgetid" => "contactitemfileattachment", "tags" => array("nexus"));
 			// $result[] = array("widgetid" => "formitemhtml", "tags" => array("nexus", "nexus"));
-			$result[] = array("widgetid" => "formitemcaptcha", "tags" => array("nexus"));
-			$result[] = array("widgetid" => "formitemprivacyconsent", "tags" => array("nexus"));
+			// $result[] = array("widgetid" => "formitemcaptcha", "tags" => array("nexus"));
+			// $result[] = array("widgetid" => "formitemprivacyconsent", "tags" => array("nexus"));
 		}
 		
 		// DEFINITION LIST
