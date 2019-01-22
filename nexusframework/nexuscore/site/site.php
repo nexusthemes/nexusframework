@@ -2044,7 +2044,27 @@ function nxs_site_newposthome_rendersheet($args)
 
 /* SITE DASHBOARD
 ---------------------------------------------------------------------------------------------------- */
-function nxs_site_dashboardextensions_rendersheet($args)
+
+function nxs_site_dashboardextensions_getoptions($args)
+{
+	$options = array
+	(
+		"sheettitle" => nxs_l18n__("Extensions", "nxs_td"),
+		"fields" => array
+		(
+			array
+			(
+				"id" 			=> "wporgextensions",
+				"label"			=> "",
+				"type" 				=> "custom",
+				"customcontent" => "<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://wordpress.org/plugins/'>Find WordPress extensions</a><br />For support on the use of plugins contact the author of the plugin<br />",
+			),
+		)
+	);
+	return $options;
+}
+
+function nxs_site_dashboardextensionsv2_rendersheet($args)
 {
 	$clientshortscopedata = array(); // will/can be overriden bij extract line below
 	$collectanonymousdata = "";
