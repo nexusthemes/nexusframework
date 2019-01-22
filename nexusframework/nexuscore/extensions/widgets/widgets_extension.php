@@ -206,10 +206,10 @@ function nxs_getwidgets_functions_AF($result, $args)
 		$result[] = array("widgetid" => "quote", "tags" => array("nexus"));
 		
 		// Reference
-		//$result[] = array("widgetid" => "signpost", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "signpost", "tags" => array("nexus"));
 		//$result[] = array("widgetid" => "tumbler", "tags" => array("nexus"));
-		//$result[] = array("widgetid" => "radial", "tags" => array("nexus"));
-		//$result[] = array("widgetid" => "target", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "radial", "tags" => array("nexus"));
+		$result[] = array("widgetid" => "target", "tags" => array("nexus"));
 		
 		// Miscellaneous
 		$result[] = array("widgetid" => "logo", "tags" => array("nexus"));
