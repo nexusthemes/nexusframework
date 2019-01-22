@@ -64,11 +64,11 @@ blockquote {
 .nxs-m-no-csstransitions .transition.nxs-fallback			{ display: block; }
 .nxs-m-no-csstransitions .transition.nxs-default			{ display: none; } */
 
-/* 3d transforms 
+/* 3d transforms */
 .nxs-m-csstransforms3d .transform.nxs-default				{ display: block; }
 .nxs-m-csstransforms3d .transform.nxs-fallback 				{ display: none; }
 .nxs-m-no-csstransforms3d .transform.nxs-fallback			{ display: block; }
-.nxs-m-no-csstransforms3d .transform.nxs-default			{ display: none; } */
+.nxs-m-no-csstransforms3d .transform.nxs-default			{ display: none; } 
 
 /* touchdevices 
 .nxs-m-touch .nxs-default									{ display: none !important; }
