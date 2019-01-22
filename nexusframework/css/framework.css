@@ -58,22 +58,22 @@ blockquote {
 
 .nxs-fallback 				{ display: none; }
 
-/* transitions */
+/* transitions 
 .nxs-m-csstransitions .transition.nxs-default				{ display: block; }
 .nxs-m-csstransitions .transition.nxs-fallback 				{ display: none; }
 .nxs-m-no-csstransitions .transition.nxs-fallback			{ display: block; }
-.nxs-m-no-csstransitions .transition.nxs-default			{ display: none; }
+.nxs-m-no-csstransitions .transition.nxs-default			{ display: none; } */
 
-/* 3d transforms */
+/* 3d transforms 
 .nxs-m-csstransforms3d .transform.nxs-default				{ display: block; }
 .nxs-m-csstransforms3d .transform.nxs-fallback 				{ display: none; }
 .nxs-m-no-csstransforms3d .transform.nxs-fallback			{ display: block; }
-.nxs-m-no-csstransforms3d .transform.nxs-default			{ display: none; }
+.nxs-m-no-csstransforms3d .transform.nxs-default			{ display: none; } */
 
-/* touchdevices */
+/* touchdevices 
 .nxs-m-touch .nxs-default									{ display: none !important; }
-.nxs-m-touch .nxs-fallback									{ display: block !important; }
-/* align the fallback content to the left */
+.nxs-m-touch .nxs-fallback									{ display: block !important; } */
+/* align the fallback content to the left 
 .nxs-m-touch .nxs-fallback .nxs-title,
 .nxs-m-touch .nxs-fallback p,
 .nxs-m-touch .nxs-fallback .nxs-button,
@@ -82,7 +82,7 @@ blockquote {
 .nxs-m-no-csstransitions .nxs-fallback .nxs-button,
 .nxs-m-no-csstransforms3d .nxs-fallback .nxs-title,
 .nxs-m-no-csstransforms3d .nxs-fallback p,
-.nxs-m-no-csstransforms3d .nxs-fallback .nxs-button 		{ text-align: left !important; }
+.nxs-m-no-csstransforms3d .nxs-fallback .nxs-button 		{ text-align: left !important; } */
 
 /* DEFAULT IMAGE STYLING */
 .nxs-shadow 												{ box-shadow: 0 2px 6px rgba(10, 10, 10, 0.6); }
