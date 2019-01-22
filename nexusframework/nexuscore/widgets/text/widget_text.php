@@ -145,6 +145,13 @@ function nxs_widgets_text_home_getoptions($args)
 				"enable_deselect" => true,
 			),
 			array(
+				"id" 				=> "title_heightiq",
+				"type" 				=> "ext_widget_text_title_heightiq_checkbox",
+				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Title size", "nxs_td"),
@@ -230,6 +237,14 @@ function nxs_widgets_text_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Text alignment", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			array(
+				"id" 				=> "text_heightiq",
+				"type" 				=> "ext_widget_text_text_heightiq_checkbox",
+				"label" 			=> nxs_l18n__("Row align texts", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("When checked, the widget's text will participate in the text alignment of other partipating widgets in this row", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "wrapper_text_end",
 				"type" 				=> "wrapperend"
@@ -456,21 +471,8 @@ function nxs_widgets_text_home_getoptions($args)
 			),
 			
 			
-			array(
-				"id" 				=> "title_heightiq",
-				"type" 				=> "ext_widget_text_title_heightiq_checkbox",
-				"label" 			=> nxs_l18n__("Row align titles", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("When checked, the widget's title will participate in the title alignment of other partipating widgets in this row", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array(
-				"id" 				=> "text_heightiq",
-				"type" 				=> "ext_widget_text_text_heightiq_checkbox",
-				"label" 			=> nxs_l18n__("Row align texts", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("When checked, the widget's text will participate in the text alignment of other partipating widgets in this row", "nxs_td"),
-				"unistylablefield"	=> true
-			),
 
+			
 			
 			/*
 			// CALLOUT BANNER
