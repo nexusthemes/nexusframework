@@ -7,7 +7,7 @@ function nxs_widgets_target_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_target_gettitle() {
-	return nxs_l18n__("Target", "nxs_td");
+	return nxs_l18n__("Icon", "nxs_td");
 }
 
 // Unistyle
