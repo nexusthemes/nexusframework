@@ -1492,12 +1492,12 @@
 
 .nxs-sidebar-container .nxs-one-whole .nxs-radial .nxs-default 	{	height: 272px; }
 
-/* fallback triggers */
+/* fallback triggers 
 .nxs-ie .nxs-radial .nxs-default,
 .nxs-vendor-o .nxs-radial .nxs-default							{ display: none; }
 .nxs-ie .nxs-radial .nxs-fallback,
 .nxs-vendor-o .nxs-radial .nxs-fallback 						{ display: block; }
-.nxs-radial .nxs-fallback .nxs-title							{ text-align: left; }
+.nxs-radial .nxs-fallback .nxs-title							{ text-align: left; } */
 
 /* mozilla overflow:hidden; with position:absolute; fix */
 .nxs-vendor-mozilla .nxs-radial .radial:last-of-type 			{ display: block; }
