@@ -923,28 +923,6 @@
 		  <?php
 		  if (nxs_cap_hasdesigncapabilities())
 		  {
-		  	$myaccountenabled = apply_filters("nxs_f_myaccountenabled", true);
-		  	if ($myaccountenabled) 
-		  	{
-		  		?>
-			  	<li class="nxs-sub-menu nxs-hidewheneditorinactive">    
-				  	<a href="https://my.nexusthemes.com/" target='_blank' title="My Account" class="site">
-				  		<span class='nxs-icon-key'></span>
-				  	</a>
-				  </li>
-		  		<?php
-		  	}
-		  	$extensionsenabled = apply_filters("nxs_f_extensionsenabled", true);
-				if ($extensionsenabled)
-				{
-			  	?>
-			  	<li class="nxs-sub-menu nxs-hidewheneditorinactive">    
-				  	<a href="#" title="Extensions" onclick="nxs_js_popup_site_neweditsession('dashboardextensions'); return false;"  class="site">
-				  		<span class='nxs-icon-plug'></span>
-				  	</a>
-				  </li>
-				  <?php
-				}
 				?>
 		  	<li class="nxs-sub-menu nxs-hidewheneditorinactive">    
 		  	<a href="#" title="<?php nxs_l18n_e("Dashboard[nxs:adminmenu,tooltip]", "nxs_td"); ?>" onclick="nxs_js_popup_site_neweditsession('dashboardhome'); return false;"  class="site">
@@ -969,6 +947,28 @@
 				</ul>
 				</li>
 				<?php
+				$extensionsenabled = apply_filters("nxs_f_extensionsenabled", true);
+				if ($extensionsenabled)
+				{
+			  	?>
+			  	<li class="nxs-sub-menu nxs-hidewheneditorinactive">    
+				  	<a href="#" title="Extensions" onclick="nxs_js_popup_site_neweditsession('dashboardextensions'); return false;"  class="site">
+				  		<span class='nxs-icon-plug'></span>
+				  	</a>
+				  </li>
+				  <?php
+				}
+				$myaccountenabled = apply_filters("nxs_f_myaccountenabled", true);
+		  	if ($myaccountenabled) 
+		  	{
+		  		?>
+			  	<li class="nxs-sub-menu nxs-hidewheneditorinactive">    
+				  	<a href="https://my.nexusthemes.com/" target='_blank' title="My Account" class="site">
+				  		<span class='nxs-icon-key'></span>
+				  	</a>
+				  </li>
+		  		<?php
+		  	}
 			}
 			?>
 		  <li class="nxs-hidewheneditorinactive">
