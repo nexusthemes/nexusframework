@@ -7,7 +7,7 @@ function nxs_widgets_signpost_geticonid() {
 
 // Setting the widget title
 function nxs_widgets_signpost_gettitle() {
-	return nxs_l18n__("Signpost[nxs:widgettitle]", "nxs_td");
+	return nxs_l18n__("Reference", "nxs_td");
 }
 
 // Unistyle
