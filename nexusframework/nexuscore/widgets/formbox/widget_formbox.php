@@ -355,7 +355,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Form fields color", "nxs_td"),
 				"unistylablefield"	=> true
 			),
-			
+								
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend"

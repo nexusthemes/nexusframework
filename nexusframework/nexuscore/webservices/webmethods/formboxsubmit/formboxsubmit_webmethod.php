@@ -52,6 +52,14 @@ function nxs_webmethod_formboxsubmit()
  	// ensure the widget exists
  	$mixedattributes = nxs_getwidgetmetadata($postid, $placeholderid);
  	
+ 	// if configured to do so, unescape the quotes
+ 	$form_field_processing = apply_filters("nxs_f_form_field_processing", "");
+ 	if ($form_field_processing == "unescape_quotes")
+ 	{
+ 		nxs_ensure_slashesstripped();
+ 		extract($_POST);
+ 	}
+ 	
 	// Translate model magical fields
 	if (true)
 	{
