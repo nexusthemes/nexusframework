@@ -590,7 +590,6 @@
 		                  
 		                  		<div class="nxs-clear padding"></div>
 		                  		
-		                  		<a href="#" onclick="nxs_js_popup_site_neweditsession('webfontshome'); return false;" class="nxsbutton1 nxs-float-left"><?php nxs_l18n_e("Manage", "nxs_td"); ?></a>
 		     		              <a id='nxs_menu_savelettertypenbutton' style='display: none;' href='#' class="nxsbutton nxs-float-left" onclick='nxs_js_font_savefonts(); return false;'><?php nxs_l18n_e("Save[nxs:btn]", "nxs_td"); ?></a>
 		     		              
 		     		              <div class="nxs-clear"></div>

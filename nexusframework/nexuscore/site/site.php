@@ -2785,11 +2785,12 @@ function nxs_site_webfontshome_getoptions($args)
 		"sheettitle" => nxs_l18n__("Google webfonts management", "nxs_td"),
 		"fields" => array
 		(
-			array( 
-				"id" 			=> "googlewebfonts",
-				"label"			=> nxs_l18n__("Google Webfonts", "nxs_td"),
-				"customcontent" => "This feature requires the google fonts management plugin",
-				"type" 			=> "custom",
+			array
+			(
+				"id" 			=> "wporgextensions",
+				"label"			=> "",
+				"type" 				=> "custom",
+				"customcontent" => "<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://wordpress.org/plugins/'>Find WordPress extensions</a><br />For support on the use of plugins contact the author of the plugin<br />",
 			),
 		)
 	);
