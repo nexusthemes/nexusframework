@@ -114,6 +114,9 @@ function nxs_widgets_contactitemreplyto_renderinformbox($args)
 		$colorzencssclass = "nxs-colorzen nxs-colorzen-" . $form_metadata["items_colorzen"];
 	}
 
+	// todo: add support for "pattern" attribute
+	// todo: add support for "required" attribute
+
 	?>
   <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
   <input type="email" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" value="<?php echo $value;?>" />

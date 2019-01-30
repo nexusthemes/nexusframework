@@ -435,6 +435,9 @@ function nxs_webmethod_formboxsubmit()
 			// no output writing to file
 		}
 		
+		// allow shortcodes to tune the recipient
+		$internal_email = do_shortcode($internal_email);
+		
 		$validationerrors = array();
 		
 		if ($internal_email == "info@example.org")
@@ -442,8 +445,22 @@ function nxs_webmethod_formboxsubmit()
 	 		$responseargs = array();
 	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to the dummy e-mail address info@example.org", "nxs_td");
 		}
-		
-		if (nxs_stringcontains($internal_email, "{"))
+
+		if (false)
+		{
+			//
+		}		
+		else if (nxs_stringcontains($internal_email, "["))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid e-mail address (SQUARE OPEN)", "nxs_td");
+		}
+		else if (nxs_stringcontains($internal_email, "]"))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid e-mail address (SQUARE CLOSE)", "nxs_td");
+		}
+		else if (nxs_stringcontains($internal_email, "{"))
 		{
 	 		$responseargs = array();
 	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid e-mail address (ACCOLADE OPEN)", "nxs_td");
@@ -529,10 +546,16 @@ function nxs_webmethod_formboxsubmit()
 	 	else
 	 	{
 	 		$responseargs = array();
+	 		
+	 		$msg = nxs_l18n__("Cannot submit this form; the recipient is not configured correctly", "nxs_td");
+	 		if (is_super_admin())
+	 		{
+		 		$msg .= " ({$internal_email})";
+		 	}
  		
-	 		$responseargs["validationerrorhead"] = nxs_l18n__("Cannot submit this form; the recipient is not configured correctly", "nxs_td");
+	 		$responseargs["validationerrorhead"] = $msg;
 	 		$validationerrors = array();
-	 		$validationerrors []= nxs_l18n__("Please notify the site administrator the form is not configured correctly", "nxs_td");
+	 		$validationerrors []= $msg;
 		 	$responseargs["validationerrors"] = $validationerrors;
 		 	$responseargs["markclientsideelements"] = $markclientsideelements;
 			nxs_webmethod_return_ok($responseargs);

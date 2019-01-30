@@ -434,7 +434,7 @@ function nxs_widgets_formbox_home_getoptions($args)
 			array(
 				"id" 				=> "internal_email",
 				"type" 				=> "input",
-				"label" 			=> "Email address to notify",
+				"label" 			=> "Recipient (Email address to notify)",
 				"placeholder" 		=> "Internal email",
 				"tooltip" 			=> nxs_l18n__("Enter here a valid existing e-mail address (most likely: your e-mail address) that should be notified when this form is submitted, for example yourname@yourdomain.com", "nxs_td"),
 				"footernote" => "<div class='content' style='font-size: smaller; font-style: italic;'><a target='_blank' href='https://www.wpsupporthelp.com/answer/the-e-mail-is-not-working-sending-i-m-not-receiving-emails-from-294/'>Not receiving e-mails? Click here</a></div>",
@@ -653,6 +653,9 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		$alternativemessage = nxs_l18n__("Warning: thank you page is not set", "nxs_td");
 	}
 	
+	// allow shortcodes to tune the recipient
+	$internal_email = do_shortcode($internal_email);
+			
 	if ($internal_email == "") 
 	{
 		$alternativemessage = nxs_l18n__("Warning: internal email is not set", "nxs_td");
@@ -662,7 +665,7 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 		// ensure its valid
 		if (!nxs_isvalidemailaddress($internal_email))
 		{
-			$alternativemessage = nxs_l18n__("Warning: internal email is not filled with a valid email address", "nxs_td") . " ($internal_email)";
+			$alternativemessage = nxs_l18n__("Warning: recipient email is not filled with a valid email address", "nxs_td") . " ($internal_email)";
 		}	
 	}
 	
@@ -688,8 +691,6 @@ function nxs_widgets_formbox_render_webpart_render_htmlvisualization($args)
 	{
 		$alternativemessage = nxs_l18n__("Warning: add at least one form field", "nxs_td");
 	}
-	
-	
 		
 	$button_scale_cssclass = nxs_getcssclassesforlookup("nxs-button-scale-", $button_scale);
 	$button_alignment_cssclass = nxs_getcssclassesforlookup("nxs-align-", $button_alignment);
