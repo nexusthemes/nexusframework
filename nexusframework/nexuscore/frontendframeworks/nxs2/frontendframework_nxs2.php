@@ -1585,9 +1585,6 @@ function nxs2_f_optimize_getoptimizedbuffer($result)
 	return $result;
 }
 
-
-
-
 function nxs_frontendframework_nxs2_init()
 {
 	disable_wp_emojicons();
@@ -1600,13 +1597,7 @@ function nxs_frontendframework_nxs2_init()
 	add_filter('page_css_class', 'my_css_attributes_filter', 100, 1);
 	function my_css_attributes_filter($var) 
 	{
-		if ($_REQUEST["d"] == "d")
-		{
-			var_dump($var);
-			die();
-		}
-		
-	  return is_array($var) ? array() : '';
+		return is_array($var) ? array() : '';
 	}
 	
 	add_shortcode('nxs_image', 'nxs_frontendframework_nxs2_sc_image');
