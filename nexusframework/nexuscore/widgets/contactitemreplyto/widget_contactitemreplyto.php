@@ -97,7 +97,9 @@ function nxs_widgets_contactitemreplyto_renderinformbox($args)
 	
 	if (!isset($value) || $value == "")
 	{
-		$value = $metadata_initialtext;
+		// first apply any shortcodes if applicable
+		$pimped_initialtext = do_shortcode($metadata_initialtext);
+		$value = $pimped_initialtext;
 	}
 	
 	//
@@ -114,7 +116,7 @@ function nxs_widgets_contactitemreplyto_renderinformbox($args)
 
 	?>
   <label class="field_name"><?php echo $metadata_formlabel;?><?php if ($metadata_isrequired != "") { ?>*<?php } ?></label>
-  <input type="text" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" value="<?php echo $value;?>" />
+  <input type="email" id="<?php echo $key; ?>" name="<?php echo $key; ?>" class="field_name <?php echo $colorzencssclass; ?>" value="<?php echo $value;?>" />
 	<?php 
 	
 	// var_dump($args);

@@ -938,13 +938,15 @@ function nxs_widgets_menucontainer_initplaceholderdata($args)
   $subargs["postwizard"] = "defaultmenu";
 
   $response = nxs_addnewarticle($subargs);
-  if ($response["result"] == "OK") {
-      $args["menu_menuid"] = $response["postid"];
-      $args["menu_menuid_globalid"] = nxs_get_globalid($response["postid"], true);
+  if ($response["result"] == "OK") 
+  {
+    $args["menu_menuid"] = $response["postid"];
+    $args["menu_menuid_globalid"] = nxs_get_globalid($response["postid"], true);
   }
-  else {
-      var_dump($response);
-      nxs_webmethod_return_nack("unexpected response");
+  else 
+  {
+    var_dump($response);
+    nxs_webmethod_return_nack("unexpected response");
   }
 
   $args['orientation'] = "horizontal";
