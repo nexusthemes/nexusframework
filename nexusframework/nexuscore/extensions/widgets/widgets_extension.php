@@ -226,7 +226,10 @@ function nxs_getwidgets_functions_AF($result, $args)
 		// Never
 		$result[] = array("widgetid" => "wordpresssidebar", "tags" => array("nexus"));
 		//$result[] = array("widgetid" => "categories", "tags" => array("nexus"));
+		
+		// perhaps allow this using a filter?
 		//$result[] = array("widgetid" => "archive", "tags" => array("nexus"));
+		
 		//$result[] = array("widgetid" => "htmlcustom", "tags" => array("nexus"));
 		//$result[] = array("widgetid" => "rssfeed", "tags" => array("nexus"));	
 		$result[] = array("widgetid" => "breadcrumb", "tags" => array("nexus"));
