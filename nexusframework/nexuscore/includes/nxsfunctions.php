@@ -13704,3 +13704,30 @@ function nxs_ensure_slashesstripped()
 		$_REQUEST   = array_map('stripslashes_deep', $_REQUEST);
 	}
 }
+
+function nxs_ensure_proper_permalinks()
+{
+	$shouldautofix = true;
+	
+	if ($shouldautofix)
+	{
+		$permalink_structure = get_option( 'permalink_structure' );
+		$wrong = "";
+		$right = "/%postname%/";
+		$waswrong = ($permalink_structure == $wrong);
+		if ($waswrong)
+		{
+  		global $wp_rewrite;
+  		
+			$hard = true;
+			
+			$wp_rewrite->set_permalink_structure( '' );
+			$wp_rewrite->flush_rules( true );
+			$wp_rewrite->set_permalink_structure($right);
+			$wp_rewrite->flush_rules( $hard );
+			$wp_rewrite->set_permalink_structure($right );
+			
+			$wp_rewrite->flush_rules( $hard );
+		}
+	}
+}

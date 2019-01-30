@@ -607,7 +607,6 @@ function nxs_init()
   			
   			$permalink_structure = get_option( 'permalink_structure' );
   			$category_base = get_option( 'category_base' );
-  			$category_base = get_option( 'category_base' );
   			$wp_rewrite->set_permalink_structure($permalink_structure);
   			$wp_rewrite->set_category_base($category_base);
   			
@@ -1650,10 +1649,9 @@ function nxs_render_postfooterlink()
 	}
 }
 
-//add_action('init', 'nxs_performdataconsistencycheck');
+add_action('init', 'nxs_ensure_proper_permalinks', 1);
 add_action('init', 'nxs_register_menus');
 add_action('init', 'nxs_create_post_types_and_taxonomies');
-
 
 function nxs_performdataconsistencycheck()
 {
@@ -1814,27 +1812,6 @@ function nxs_create_post_types_and_taxonomies()
 		// the list of custom post types that should not get a slug in the
 		// url in the permalinks (i.e. which should behave like pages/posts)
 		$result = array();
-		
-		/*
-		global $nxs_g_modelmanager;
-		$taxonomiesmeta = $nxs_g_modelmanager->getcontentschema();
-		
-		foreach ($taxonomiesmeta as $taxonomy => $taxonomymeta)
-		{
-		 	if ($taxonomymeta["arity"] == "n")
-		 	{
-				if ($taxonomymeta["wpcreateinstructions"] != "")
-				{
-			 		$instances = $taxonomymeta["wpcreateinstructions"]["instances"]["type"];
-			 		if (in_array($instances, array("post", "page")))
-			 		{
-			 			// $singular = $taxonomymeta["singular"];
-			 			$result[] = $taxonomy; // "nxs_" . $singular;
-			 		}
-			 	}
-		 	}
-		}
-		*/
 		
 		return $result;
 	}
