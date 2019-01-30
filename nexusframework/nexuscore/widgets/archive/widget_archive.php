@@ -600,6 +600,9 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 		$hovermenuargs["placeholderid"] = $placeholderid;
 		$hovermenuargs["placeholdertemplate"] = $placeholdertemplate;
 		$hovermenuargs["metadata"] = $mixedattributes;
+		// don't allow people to delete the archive widget
+		$hovermenuargs["enable_deletewidget"] = false;
+		$hovermenuargs["enable_deleterow"] = false;		
 		nxs_widgets_setgenericwidgethovermenu_v2($hovermenuargs);
 	}
 	
