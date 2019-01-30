@@ -61,7 +61,7 @@ function nxs_sc_handlescope($atts, $content = null, $name='')
 
 // for example [nxsstring ops="lo;x_"]plumber_wordpress_theme[/nxsstring]
 function nxs_sc_string($atts, $content = null, $name='') 
-{
+{ 
 	extract($atts);
 	
 	if (isset($sc_scope))
@@ -296,9 +296,17 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = md5($input);
 		}
+		else if ($op == "guid")
+		{
+			$input = nxs_create_guid();
+		}
 		else if ($op == "time")
 		{
 			$input = time();
+		}
+		else if ($op == "timemsecs")
+		{
+			$input = round(microtime(true) * 1000);
 		}
 		else if ($op == "nxs_getplaceholderwarning")
 		{
