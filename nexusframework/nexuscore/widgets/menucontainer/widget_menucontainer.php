@@ -816,7 +816,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
 
     <?php
 
-  } // if (count == 0)
+  }
 
   echo "</div> <!-- menu aligner -->";
   echo "<div class='nxs-clear'></div>";
