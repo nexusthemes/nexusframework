@@ -2067,6 +2067,13 @@ function nxs_stringendswith($haystack, $needle)
   return (substr($haystack, -$length) === $needle);
 }
 
+// kudos to http://php.net/manual/en/function.substr.php
+function nxs_string_getbetween($input, $start, $end) 
+{ 
+  $substr = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1)); 
+  return $substr; 
+} 
+
 function nxs_stringcontains($haystack, $needle)
 {
 	$ignorecasing = false;

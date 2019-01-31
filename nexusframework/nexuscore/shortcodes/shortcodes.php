@@ -300,6 +300,15 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = nxs_create_guid();
 		}
+		else if ($op == "date")
+		{
+			$format = $atts["format"];
+			if ($format == "")
+			{
+				$format = "Ymd";
+			}
+			$input = date($format, time());
+		}
 		else if ($op == "time")
 		{
 			$input = time();
