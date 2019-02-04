@@ -2644,7 +2644,7 @@ function url_get_contents($url)
 	return nxs_geturlcontents($args) ;
 }
 
-// nxs_file_get_contents
+// nxs_file_get_contents, httppost, http post, post http, posthttp, put request, post request
 function nxs_geturlcontents($args) 
 {
 	$url = $args["url"];
@@ -2658,6 +2658,8 @@ function nxs_geturlcontents($args)
 	{
 		$usecurl = false;
 	}
+	
+	$method = $args["method"];
 
 	// first try curl (as file_get_contents is more likely to be blocked on hosts)
 	if ($usecurl)
@@ -2689,10 +2691,26 @@ function nxs_geturlcontents($args)
 		//curl_setopt($session, CURLOPT_REFERER, $url);	//
 		curl_setopt($session, CURLOPT_ENCODING, '');	// no weird encodings to be returned please, thanks :)
 		
+		
+		if (isset($method))
+		{
+			// kudos to https://lornajane.net/posts/2009/putting-data-fields-with-php-curl
+			// for example "PUT" to make a put request
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+		}
+		
 		$postargs = $args["postargs"];
 		if (isset($postargs))
 		{
-			curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
+			if ($method == "PUT")
+			{
+				// for PUT requests, http_build_query is required according to https://stackoverflow.com/questions/5043525/php-curl-http-put
+				curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($postargs));
+			}
+			else
+			{
+				curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
+			}
 		}
 		$output = curl_exec($session);
 		
@@ -2733,6 +2751,19 @@ function nxs_geturlcontents($args)
 	}
 	else
 	{
+		if (false)
+		{
+			//
+		}
+		else if ($method == "" || $method == "GET")
+		{
+			// ok
+		}
+		else
+		{
+			nxs_webmethod_return_nack("method not supported for non-curl requests ($method)");
+		}
+		
 		// if curl not available, try file_get_contents
 		$output = file_get_contents($url);
 	}
