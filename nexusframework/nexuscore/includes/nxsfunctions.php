@@ -2691,12 +2691,19 @@ function nxs_geturlcontents($args)
 		//curl_setopt($session, CURLOPT_REFERER, $url);	//
 		curl_setopt($session, CURLOPT_ENCODING, '');	// no weird encodings to be returned please, thanks :)
 		
+		$username = $args["username"];
+		$password = $args["password"];
+		if (isset($username) && isset($password))
+		{
+			curl_setopt($session, CURLOPT_USERPWD, "$username:$password");
+			curl_setopt($session, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		}
 		
 		if (isset($method))
 		{
 			// kudos to https://lornajane.net/posts/2009/putting-data-fields-with-php-curl
 			// for example "PUT" to make a put request
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+			curl_setopt($session, CURLOPT_CUSTOMREQUEST, $method);
 		}
 		
 		$postargs = $args["postargs"];
