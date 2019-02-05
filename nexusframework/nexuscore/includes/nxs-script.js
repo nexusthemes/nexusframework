@@ -1287,6 +1287,21 @@ function nxs_js_redirect_top(url)
 		  nxs_js_process_updated_editor_state();
 		}
 		
+		function nxs_js_ensureeditoractive()
+		{
+			if (nxs_js_userhasadminpermissions())
+			{
+				if (!nxs_js_nxseditoractive)
+				{
+					nxs_js_toggle_editor_state();
+				}
+			}
+			else
+			{
+				nxs_js_log("unable to activate editor; no permission");
+			}
+		}
+		
 		function nxs_js_initiateeditorstate()
 		{
 			if (!nxs_js_userhasadminpermissions())

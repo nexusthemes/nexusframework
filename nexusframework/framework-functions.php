@@ -1605,7 +1605,18 @@ function nxs_render_postfooterlink()
 			
 			if (is_user_logged_in())
 			{
-				$authenticatelink = "<a href=\"#\" onclick=\"nxs_js_popup_site_neweditsession('logouthome'); return false;\">Logout</a>";
+				$text = "Logout";
+				
+				if (nxs_has_adminpermissions())
+				{
+					$authenticatelink = "<a href=\"#\" onclick=\"nxs_js_ensureeditoractive(); nxs_js_popup_site_neweditsession('logouthome'); return false;\">{$text}</a>";
+				}
+				else
+				{
+					// cannot use the fancier popup, as subscribers don't see the popup
+					$url = wp_logout_url();
+					$authenticatelink = "<a href=\"{$url}\" return false;\">{$text}</a>";
+				}
 			}
 			else
 			{
