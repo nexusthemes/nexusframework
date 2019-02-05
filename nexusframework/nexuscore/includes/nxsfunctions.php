@@ -2647,6 +2647,8 @@ function url_get_contents($url)
 // nxs_file_get_contents, httppost, http post, post http, posthttp, put request, post request
 function nxs_geturlcontents($args) 
 {
+	
+	
 	$url = $args["url"];
 	
 	$usecurl = true;
@@ -2661,10 +2663,13 @@ function nxs_geturlcontents($args)
 	
 	$method = $args["method"];
 
+	//error_log("curl_exec; $usecurl" . $usecurl);
+
+
 	// first try curl (as file_get_contents is more likely to be blocked on hosts)
 	if ($usecurl)
 	{
-		// error_log("nxs; invoking curl; $url");
+		//error_log("nxs; invoking curl; $url");
 		
 		// note; function.php already ensures curl is available
 	  $session = curl_init();
@@ -2707,18 +2712,30 @@ function nxs_geturlcontents($args)
 		}
 		
 		$postargs = $args["postargs"];
+		$postargswithmultiidenticalformfields = $args["postargswithmultiidenticalformfields"];
+		
+		if (isset($postargs) && isset($postargswithmultiidenticalformfields)) { nxs_webmethod_return_nack("postargs and postargswithmultiidenticalformfields cannot be combined"); }
+		
 		if (isset($postargs))
 		{
-			if ($method == "PUT")
-			{
-				// for PUT requests, http_build_query is required according to https://stackoverflow.com/questions/5043525/php-curl-http-put
-				curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($postargs));
-			}
-			else
-			{
-				curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
-			}
+			// for PUT requests, http_build_query is required according to https://stackoverflow.com/questions/5043525/php-curl-http-put
+			curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($postargs));
 		}
+		
+		// if you need to post multiple values for the same key, then use
+		// kudos to https://stackoverflow.com/questions/51164837/sending-multiple-values-with-the-same-name-key-in-http-curl-post
+		// $postargswithmultiidenticalformfields = array
+		// (
+		//   array('color'=>'green'),
+		//   array('color'=>'red'),
+		//   array('third'=>'3'),
+		// );
+		if (isset($postargswithmultiidenticalformfields))
+		{
+			$postfields = implode('&', array_map('http_build_query', $postargswithmultiidenticalformfields));
+			curl_setopt($session, CURLOPT_POSTFIELDS, $postfields);
+		}
+		
 		$output = curl_exec($session);
 		
 		$haserror = false;	
@@ -2726,15 +2743,17 @@ function nxs_geturlcontents($args)
 		if (FALSE === $output)
 		{
 			$haserror = true;
-			$curlerror = curl_error($session);
-			$curlerrorno = curl_errno($session);
+			global $nxs_gl_curlerror;
+			global $nxs_gl_curlerrorno;
+			$nxs_gl_curlerror = curl_error($session);
+			$nxs_gl_curlerrorno = curl_errno($session);
 	  }
 		
 	  curl_close($session);
 	  
 	  if ($haserror)
 	  {
-	  	if ($curlerrorno == 28)
+	  	if ($nxs_gl_curlerrorno == 28)
 	  	{
 	  		//echo "connection timeout, retrying";
 	  		
@@ -13734,6 +13753,7 @@ function nxs_popup_factory_createnotificationoptions($sheettitle, $notification)
 	return $options;
 }
 
+// escape post
 function nxs_ensure_slashesstripped()
 {
 	global $nxs_strippedlashes;
