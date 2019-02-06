@@ -1562,7 +1562,7 @@ h3#order_review_heading,
 .woocommerce ul 											{ list-style: none; }
 .woocommerce ul.woocommerce-error							{ margin-bottom: 10px !important; }
 .woocommerce input[type=radio]								{ -webkit-appearance: radio !important; width: inherit !important; box-shadow: none; }
-.woocommerce input[type=checkbox]							{ -webkit-appearance: checkbox !important; width: inherit !important; box-shadow: none !important; float: left !important; 	margin: 3px !important; }
+.woocommerce input[type=checkbox]							{ -webkit-appearance: checkbox !important; width: inherit !important; box-shadow: none !important; float: left !important; 	margin-right: 10px !important; }
 .woocommerce input[type=submit]								{ height: inherit !important; line-height: 1 !important; clear: both !important; display: block !important; }
 .woocommerce .chosen-container a span						{ color: black !important; }
 .woocommerce .quantity .minus,
@@ -1643,12 +1643,56 @@ table.shop_attributes .nxs-default-p						{ padding-bottom: 0px; }
 
 /* WOOCOMMERCE CART PAGE 
 ---------------------------------------------------------------------------------------------------- */
-.nxs-woocartpage .shop_table .nxs-image						{ min-width: 40px; }
+.nxs-woocartpage .shop_table .nxs-image							{ min-width: 40px; }
+.nxs-woocartpage table.cart {
+    border: 1px solid #DFDFDF !important;
+    background-color: #F9F9F9;
+    width: 100%;
+}
+.nxs-woocartpage table.cart	thead {
+    background-color: #F1F1F1;
+    background: -o-linear-gradient(#F9F9F9, #ECECEC);
+    background: -moz-linear-gradient(#F9F9F9, #ECECEC);
+    background: -webkit-linear-gradient(#F9F9F9, #ECECEC);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F9F9F9), to(#ECECEC));
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#F9F9F9,EndColorStr=#ECECEC);
+}
+.nxs-woocartpage table.cart	thead th							{ padding: 1.618em; }
+.nxs-woocartpage table.cart	tbody tr:nth-child(even)			{ background-color: #F6F6F6; }
+.nxs-woocartpage table.cart	tbody td							{ padding: 1.618em; line-height: 1.8em; }
+.nxs-woocartpage table.cart	tbody td .nxs-icon-cancel-circle	{ color: #DF4128; font-size: 27px !important; }
+
+.nxs-woocartpage .cart-collaterals .cross-sells .products .product { background-color: #F6F6F6 !important; border: none !important; margin-right: 30px; padding: 1.618em; }
+.nxs-woocartpage .cart-collaterals .cross-sells .nxs-image		{ width: 65% !important; }
 
 /* WOOCOMMERCE CHECKOUT
 ---------------------------------------------------------------------------------------------------- */
-.woocommerce .nxs-default-p span .nxs-default-p				{ padding-bottom: 0px; }
-.nxs-woocheckout li.payment_method_paypal a					{ margin-left: 10px; }
+.nxs-woocheckout .checkout span.select2 						{ margin-left: 10px; width: 80% !important; }
+.nxs-woocheckout #select2-billing_country-container				{ font-size: 15px !important; }
+.nxs-woocheckout .woocommerce-billing-fields					{ margin-bottom: 60px; }
+.nxs-woocheckout .nxs-default-p .nxs-default-p					{ padding-bottom: 0px; margin-bottom: -4px; }
+
+.nxs-woocheckout .woocommerce-checkout-review-order-table {
+    border: 1px solid #DFDFDF !important;
+    background-color: #F9F9F9;
+    width: 100%;
+}
+.nxs-woocheckout .woocommerce-checkout-review-order-table thead {
+    background-color: #F1F1F1;
+    background: -o-linear-gradient(#F9F9F9, #ECECEC);
+    background: -moz-linear-gradient(#F9F9F9, #ECECEC);
+    background: -webkit-linear-gradient(#F9F9F9, #ECECEC);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F9F9F9), to(#ECECEC));
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#F9F9F9,EndColorStr=#ECECEC);
+}
+.nxs-woocheckout .woocommerce-checkout-review-order-table th					{ padding: 1.618em; }
+.nxs-woocheckout .woocommerce-checkout-review-order-table tr:nth-child(even)	{ background-color: #F6F6F6; }
+.nxs-woocheckout .woocommerce-checkout-review-order-table td					{ padding: 1.618em; line-height: 1.8em; }
+
+.nxs-woocheckout .payment_method_paypal .nxs-default-p { padding-bottom: 0px; margin-top: 10px; }
+.nxs-woocheckout .payment_method_paypal p,
+.nxs-woocheckout .terms span { font-size: 15px !important; }
+.nxs-woocheckout #place_order { float: right; }
 
 
 /* WOOCOMMERCE SIDEBAR WIDGETS
