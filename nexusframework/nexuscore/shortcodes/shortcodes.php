@@ -870,19 +870,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 						}
 						else if ($operator == "equals")
 						{
-							//echo "<br />found equals operator<br />";
-							//echo "<br />operatorproperty is<br />";
-							//var_dump($operatorproperty);
-							//echo "<br />possibility is<br />";
-							//var_dump($possibility);
-							
 							$fieldvalue = $possibility[$operatorproperty];
-							//echo "<br />fieldvalue is<br />";
-							//var_dump($fieldvalue);
-							
 							$conditionevaluation = ($fieldvalue == $operatorvalue);
-							//echo "<br />conditionevaluation is<br />";
-							//var_dump($conditionevaluation);
 						}
 						else
 						{
@@ -910,6 +899,12 @@ function nxs_sc_string($atts, $content = null, $name='')
 				// grab the indexer
 				
 				$max = count($possibilities);
+				if ($max == 0)
+				{
+					// impossible, not allowed
+					nxs_webmethod_return_nack("unable to proceed; unable to find indexer; no items match for schema;" . $schema);
+				}
+					
 				//error_log("modelproperty;md5indexer;max;".$max);
 
 				$indexer = $atts["indexer"];
