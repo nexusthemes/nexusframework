@@ -414,7 +414,7 @@ function nxs_widgets_callout_home_getoptions($args)
 				"placeholder" 		=> nxs_l18n__("300px", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("You can set the minimum height of your callout widget. Make sure to end with 'px'.", "nxs_td"),
 				"unistylablefield"	=> true
-			),*/
+			), */
 			
 			array(
 				"id" 				=> "flex_box_height",
@@ -1064,6 +1064,10 @@ function nxs_widgets_callout_render_webpart_render_htmlvisualization($args)
 			}
 			
 			if ($text != "") 		{echo $htmltext;}
+			
+			if ($text != "" && $htmlbutton != "") {
+				echo '<div class="nxs-clear nxs-filler"></div>';
+			}
 			
 			if ($url != "")			{echo $htmlbutton;}
 		
