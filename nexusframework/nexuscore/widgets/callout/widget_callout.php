@@ -423,6 +423,7 @@ function nxs_widgets_callout_home_getoptions($args)
 				"dropdown" 			=> array
 				(
 					"@@@nxsempty@@@" => nxs_l18n__("Select an Option", "nxs_td"),
+					"nxs-flex-box0" 	=> nxs_l18n__("0%", "nxs_td"),
 					"nxs-flex-box40" 	=> nxs_l18n__("40%", "nxs_td"),
 					"nxs-flex-box50" 	=> nxs_l18n__("50%", "nxs_td"),
 					"nxs-flex-box60" 	=> nxs_l18n__("60%", "nxs_td"),

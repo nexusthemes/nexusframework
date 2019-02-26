@@ -687,6 +687,7 @@ h6															{ font-size: 15px; }
 .nxs-right													{ right: 0px; }
 
 /* FLEX BOX */
+.nxs-flex-box0												{ min-height: 0vh; }
 .nxs-flex-box40												{ min-height: 40vh; }
 .nxs-flex-box50												{ min-height: 50vh; }
 .nxs-flex-box60												{ min-height: 60vh; }
