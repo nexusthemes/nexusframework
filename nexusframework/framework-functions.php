@@ -418,7 +418,7 @@ add_action('edited_terms', 'nxs_dataconsistency_after_edited_terms');
 nxs_addfeedsupport();
 
 // compliance with popular third party plugins
-nxs_addyoastseosupport();
+// nxs_addyoastseosupport();
 nxs_addwoocommercesupport();
 
 function nxs_session_hasstartedactivesession()

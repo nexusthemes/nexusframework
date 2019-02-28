@@ -2646,7 +2646,7 @@ function url_get_contents($url)
 
 // nxs_file_get_contents, httppost, http post, post http, posthttp, put request, post request
 function nxs_geturlcontents($args) 
-{
+{	
 	
 	
 	$url = $args["url"];
@@ -3127,6 +3127,12 @@ function nxs_getwidgetsmetadatainsite($filter)
 			"postid" => $postid,
 			"widgettype" => $widgettype,
 		);
+		if (isset($filter["havingkey1"]))
+		{
+			$subfilter["havingkey1"] = $filter["havingkey1"];
+			$subfilter["havingvalue1"] = $filter["havingvalue1"];
+			$subfilter["havingoperator1"] = $filter["havingoperator1"];
+		}
 		$subresult = nxs_getwidgetsmetadatainpost_v2($subfilter);
 		if (count($subresult) > 0)
 		{
@@ -11363,6 +11369,38 @@ function nxs_getwidgetsmetadatainpost_v2($filter)
 				{
 					// wrong type; ignore!
 					$shouldinclude = false;
+				}
+			}
+			
+			if ($shouldinclude)
+			{
+				$havingkey1 = $filter["havingkey1"];
+				if ($havingkey1 != "")
+				{
+					$havingoperator1 = $filter["havingoperator1"];
+					if ($havingoperator1 == "equals")
+					{
+						$havingvalue1 = $filter["havingvalue1"];
+						if ($placeholdermetadata[$havingkey1] != $havingvalue1)
+						{
+							// wrong key/value; ignore!
+							$shouldinclude = false;
+						}
+					}
+					else if ($havingoperator1 == "!equals")
+					{
+						$value = (string) $placeholdermetadata[$havingkey1];
+						$havingvalue1 = $filter["havingvalue1"];
+						if ($value == $havingvalue1)
+						{
+							// wrong key/value; ignore!
+							$shouldinclude = false;
+						}
+					}
+					else
+					{
+						nxs_webmethod_return_nack("havingoperator1; not supported ($havingoperator1)");
+					}
 				}
 			}
 			
