@@ -334,7 +334,9 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 			"fields" => $magicfields,
 		);
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
-	}	
+	}
+	
+	
 	
 	
 	// Output the result array and setting the "result" position to "OK"
@@ -343,6 +345,9 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 	
 	// Widget specific variables
 	extract($mixedattributes);
+	
+	
+	
 	
 	if ($render_behaviour == "code")
 	{
@@ -394,8 +399,11 @@ function nxs_widgets_quote_render_webpart_render_htmlvisualization($args)
 		$alternativehint = "The widget isn't configured enough to render properly. Define more options.";
 	}
 	
-	// Text
 	if ($show_quote_icon != "") { $show_quote_icon = '<span class="nxs-icon-quotes-left"></span>'; }
+	
+	$text = str_replace("\r\n", "<br />", $text);
+	$text = str_replace("\n", "<br />", $text);
+	$text = str_replace("\r", "<br />", $text);
 	
 	// Text
 	if ($text != "") { 

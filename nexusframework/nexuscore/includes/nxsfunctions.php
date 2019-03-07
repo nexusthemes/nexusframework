@@ -2036,6 +2036,7 @@ function nxs_cutstring($string, $length)
 	return (strlen($string) > ($length + 3)) ? substr($string,0,$length).'...' : $string;
 }
 
+// alias nxs_stringbeginswith
 function nxs_stringstartswith($haystack, $needle)
 {
 	$length = strlen($needle);

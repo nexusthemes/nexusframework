@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/javascript');
 error_reporting(E_ERROR | E_PARSE);
 ?>function nxs_js_supporthandlequestion()
 {

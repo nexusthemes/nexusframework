@@ -171,7 +171,7 @@ function nxs_webmethod_installoneclickcontent()
 	{
 		if (nxs_webmethod_installoneclickcontent_enablev2())
 		{
-			if (function_exists("nxs_theme_getmeta_v2"))
+			if (false) // function_exists("nxs_theme_getmeta_v2"))
 			{
 				$thememeta = nxs_theme_getmeta_v2();
 				$plugins = $thememeta["activation"]["dependencies"]["plugins"];
