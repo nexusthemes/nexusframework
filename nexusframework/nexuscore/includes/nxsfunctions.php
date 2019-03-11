@@ -5371,7 +5371,8 @@ function nxs_outputbuffer_popall()
 function nxs_webmethod_return_nack($message)
 {
 	// log nack on file system
-	error_log("nxs_webmethod_return_nack; $message");
+	$stacktrace = debug_backtrace();
+	error_log("nxs_webmethod_return_nack; $message; stacktrace: " . json_encode($stacktrace));
 	
 	// cleanup output that was possibly produced before,
 	// if we won't this could cause output to not be json compatible
