@@ -27,10 +27,63 @@ function nxs_sc_reconstructshortcode($atts, $content, $name)
 	return $reconstructed;
 }
 
+// 
+
+function nxs_sc_handleconditional($atts, $content = null, $name='')
+{
+	extract($atts);
+	
+	$shouldapply = false;
+	
+	if (isset($sc_conditional))
+	{
+		if (nxs_stringstartswith($sc_conditional, "apply_if_hostname_not_equals:"))
+		{
+			if (true)
+			{
+				$hostname_to_check = str_replace("apply_if_hostname_not_equals:", "", $sc_conditional);
+
+				$homeurl = nxs_geturl_home();
+				$actual_hostname = parse_url($homeurl, PHP_URL_HOST);
+
+				if ($actual_hostname != $hostname_to_check)
+				{
+					//echo "SHOULD_APPLY: hostname_to_check:{$hostname_to_check} actual_hostname: {$actual_hostname}<br />";
+					$shouldapply = true;
+				}
+				else
+				{
+					//echo "SHOULD_NOT_APPLY: hostname_to_check:{$hostname_to_check} actual_hostname: {$actual_hostname}<br />";
+				}
+			}
+		}
+		else
+		{
+			// not supported
+		}
+	}
+	
+	if ($shouldapply)
+	{
+		// we are inside the scope that should process/apply the shortcode
+		$result = false;
+	}
+	else
+	{
+		// wrong scope, wont execute
+		// NOTE; we don't "just" return the value, we  return the entire shortcode as-is
+		// such that it can be re-evaluated by this same shortcode when we -are- executing in
+		// the right scope
+		$result = nxs_sc_reconstructshortcode($atts, $content, $name);
+	}
+	
+	return $result;
+}
+
 //
 // sometimes we want to process certain shortcodes conditionally
 // meaning, it should keep the shortcode as-is if the condition is not met,
-// and it shsould transform the shortcode when the condition is met
+// and it should transform the shortcode when the condition is met
 // to facilitate this we use the following function
 // sample; sc_scope="list.iterator.filter"
 function nxs_sc_handlescope($atts, $content = null, $name='')
@@ -71,6 +124,16 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			// we are outside the scope, exit
 			return $scoperesult;
+		}
+	}
+	
+	if (isset($sc_conditional))
+	{
+		$conditionalresult = nxs_sc_handleconditional($atts, $content, $name);
+		if ($conditionalresult !== false)
+		{
+			// condition does apply, return it
+			return $conditionalresult;
 		}
 	}
 	
@@ -298,7 +361,23 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "guid")
 		{
-			$input = nxs_create_guid();
+			$singleton = $atts["singleton"];
+			if (isset($singleton))
+			{
+				// returns the same (random) guid for the singleton within the runtime 
+				// for the specified singleton (the singleton identifies the group)
+				global $nxs_guids;
+				if (!isset($nxs_guids[$singleton]))
+				{
+					$nxs_guids[$singleton] = nxs_create_guid();
+				}
+				$input = $nxs_guids[$singleton];
+			}
+			else
+			{
+				// returns a unique guid each time its invoked
+				$input = nxs_create_guid();
+			}
 		}
 		else if ($op == "date")
 		{
