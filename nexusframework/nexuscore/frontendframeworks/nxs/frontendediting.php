@@ -278,8 +278,15 @@
 		?>
 	}
 	
+	<?php
+	$serverprotocol = nxs_ishttps() ? "https:" : "http:";
+	//if ($_REQUEST["serverprotocol"] != "") { $serverprotocol = $_REQUEST["serverprotocol"]; }
+	?>
+	
 	// see #2389724
 	function nxs_js_geturlencodedjsonencodedquery_vars() { return "<?php echo $urlencodedjsonencodedquery_vars; ?>"; }
+	function nxs_js_getserverprotocol() { return "<?php echo $serverprotocol; ?>"; }
+	function nxs_js_getclientprotocol() { return window.location.protocol; }
 	function nxs_js_isinfrontend() { return <?php echo (!is_admin()); ?>; }
 	function nxs_js_isuserloggedin() { return <?php if (is_user_logged_in()) { echo "true"; } else { echo "false"; } ?>; } 
 	function nxs_js_getlocale() { return "<?php echo get_locale(); ?>"; }
@@ -531,6 +538,14 @@ if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
 		{
 			nxs_js_colorshake();
 			nxs_js_refreshtopmenufillerheight();
+			
+			<?php if (is_user_logged_in()) { ?>
+			if (nxs_js_getserverprotocol() != nxs_js_getclientprotocol())
+			{
+				nxs_js_alert_sticky("This website will not function properly as your website's environment is not properly setup; the server and browser should use the same protocol (http/https).");
+			}
+			
+			<?php } ?>
 		}
 	);
 </script>
