@@ -845,6 +845,14 @@ function nxs_date_gettotaldaysinterval($timestamp)
 	return $result;
 }
 
+//kudos to https://stackoverflow.com/questions/8273804/convert-seconds-into-days-hours-minutes-and-seconds
+function nxs_time_getsecondstohumanreadable($seconds)
+{
+  $dtF = new \DateTime('@0');
+  $dtT = new \DateTime("@$seconds");
+  return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+}
+
 function nxs_getlocalizedmonth($monthleadingzeros)
 {
 	$result = "";
@@ -2158,11 +2166,13 @@ if(!function_exists('mb_detect_encoding'))
 	{ 	    
     static $list = array('utf-8', 'iso-8859-1', 'windows-1251');
     
-    foreach ($list as $item) {
-        $sample = iconv($item, $item, $string);
-        if (md5($sample) == md5($string)) { 
-            if ($enc == $item) { return true; }    else { return $item; } 
-        }
+    foreach ($list as $item) 
+    {
+    	// iconv is a PHP extension, in some very exotic cases the hosting provider hasnt installed it
+      $sample = iconv($item, $item, $string);
+      if (md5($sample) == md5($string)) { 
+          if ($enc == $item) { return true; } else { return $item; } 
+      }
     }
     return null;
 	}
