@@ -5399,13 +5399,16 @@ function nxs_webmethod_return_nack($message)
 		"stacktrace" => nxs_getstacktrace(),
 	);
 	
-	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
+	if (defined('NXS_DEFINE_NXSDEBUGWEBSERVICES'))
 	{
-		// very practical; the stacktrace and request are returned too,
-		// see the js console window to ease the debugging
-		$output["outputbeforenack"] = $existingoutput;
-		$output["request"] = $_REQUEST;
-		$output["stacktrace"] = nxs_getstacktrace();
+		if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
+		{
+			// very practical; the stacktrace and request are returned too,
+			// see the js console window to ease the debugging
+			$output["outputbeforenack"] = $existingoutput;
+			$output["request"] = $_REQUEST;
+			$output["stacktrace"] = nxs_getstacktrace();
+		}
 	}
 
 	if (nxs_is_nxswebservice())
@@ -5535,13 +5538,16 @@ function nxs_webmethod_return_raw($args)
 	nxs_set_jsonheader(); 
 	http_response_code(200);
 
-	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
+	if (defined('NXS_DEFINE_NXSDEBUGWEBSERVICES'))
 	{
-		// very practical; the stacktrace and request are returned too,
-		// see the js console window to ease the debugging
-		$args["outputbeforeok"] = $existingoutput;
-		$args["request"] = $_REQUEST;
-		$args["stacktrace"] = nxs_getstacktrace();
+		if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
+		{
+			// very practical; the stacktrace and request are returned too,
+			// see the js console window to ease the debugging
+			$args["outputbeforeok"] = $existingoutput;
+			$args["request"] = $_REQUEST;
+			$args["stacktrace"] = nxs_getstacktrace();
+		}
 	}
 
 	// add 'result' to array
@@ -5609,13 +5615,16 @@ function nxs_webmethod_return_raw_async($args)
 	ignore_user_abort(true);
 	set_time_limit(0);
 
-	if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
+	if (defined('NXS_DEFINE_NXSDEBUGWEBSERVICES'))
 	{
-		// very practical; the stacktrace and request are returned too,
-		// see the js console window to ease the debugging
-		$args["outputbeforeok"] = $existingoutput;
-		$args["request"] = $_REQUEST;
-		$args["stacktrace"] = nxs_getstacktrace();
+		if (NXS_DEFINE_NXSDEBUGWEBSERVICES)
+		{
+			// very practical; the stacktrace and request are returned too,
+			// see the js console window to ease the debugging
+			$args["outputbeforeok"] = $existingoutput;
+			$args["request"] = $_REQUEST;
+			$args["stacktrace"] = nxs_getstacktrace();
+		}
 	}
 
 	// add 'result' to array
