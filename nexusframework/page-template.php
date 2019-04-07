@@ -151,7 +151,9 @@ function nxs_handle_404()
 		}
 		else
 		{
-			nxs_webmethod_return_nack("Page not found; add a 404 business rule, or move it up in the hierarchy display to customize this message");
+			header("HTTP/1.0 404 Not Found");
+			echo "HTTP/1.0 404 Not Found";
+			die();
 		}
 	}
 	else
