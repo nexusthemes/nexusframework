@@ -43,40 +43,13 @@ function nxs_widgets_logo_home_getoptions($args)
 		"unifiedcontent" 	=> array ("group" => nxs_widgets_logo_getunifiedcontentgroup(),),
 		"fields" 			=> array
 		(
-			// LOGO			
-			
-			array( 
-				"id" 				=> "wrapper_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Logo properties", "nxs_td"),
-			),
-			
 			array
 			( 
-				"id"				=> "image_imageid",
-				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Choose logo image", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your logo use this option.", "nxs_td"),
-				"unicontentablefield" => true,
-				"localizablefield"	=> true
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Layout", "nxs_td"),
 			),
-			array(
-				"id" 				=> "image_alt",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Image alt text", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("imagealtplaceholder", "nxs_td"),
-				"unicontentablefield" => true,
-				"localizablefield"	=> true,
-				"requirecapability" => nxs_cap_getdesigncapability(),
-			),
-			array(
-				"id" 				=> "image_maxheight",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Max height", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("maxheight"),
-				"tooltip" 			=> nxs_l18n__("Maximize the height of the image.", "nxs_td"),
-				"unistylablefield"	=> true
-			),
+
 			array(
 				"id" 				=> "halign",
 				"type" 				=> "radiobuttons",
@@ -84,6 +57,37 @@ function nxs_widgets_logo_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Logo alignment", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("Align your logo to the left, center or right from the placeholder.", "nxs_td"),
 				"unistylablefield"	=> true
+			),		
+			
+			array(
+				"id"     			=> "logo_margin",
+				"type"     			=> "select",
+				"label"    			=> nxs_l18n__("Spacing", "nxs_td"),
+				"dropdown"   		=> nxs_style_getdropdownitems("margin"),
+				"unistylablefield"	=> true
+			),
+
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+			),
+		
+			// LOGO			
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Image", "nxs_td"),
+			),
+			
+			array
+			( 
+				"id"				=> "image_imageid",
+				"type" 				=> "image",
+				"label" 			=> nxs_l18n__("Choose image", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to upload an image for your logo use this option.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
 			),
 			array
 			( 
@@ -93,18 +97,40 @@ function nxs_widgets_logo_home_getoptions($args)
 				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
 				"unicontentablefield" => true,
 			),			
+			array(
+				"id" 				=> "image_alt",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Image alt text", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("imagealtplaceholder", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true,
+				"requirecapability" => nxs_cap_getdesigncapability(),
+			),
+			
+
+			array(
+				"id" 				=> "image_maxheight",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Image max height", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("maxheight"),
+				"tooltip" 			=> nxs_l18n__("Maximize the height of the image.", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
 			),
+			
 			
 			// MISCELLANEOUS
 
 			array( 
 				"id" 				=> "wrapper_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Miscellaneous", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
+				"label" 			=> nxs_l18n__("Title", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "title",
 			),
 			
 			array(
@@ -117,25 +143,9 @@ function nxs_widgets_logo_home_getoptions($args)
 				"localizablefield"	=> true
 			),
 			array(
-				"id" 				=> "subtitle",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Logo subtitle", "nxs_td"),
-				"placeholder" 		=> nxs_l18n__("Logo subtitle goes here", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("If your logo has a subtitle put it here.", "nxs_td"),
-				"unicontentablefield" => true,
-				"localizablefield"	=> true
-			),
-			array(
 				"id" 				=> "title_fontsize",
 				"type" 				=> "select",
 				"label" 			=> nxs_l18n__("Title size", "nxs_td"),
-				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
-				"unistylablefield"	=> true
-			),
-			array(
-				"id" 				=> "subtitle_fontsize",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Override subtitle fontsize", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
 				"unistylablefield"	=> true
 			),
@@ -145,32 +155,74 @@ function nxs_widgets_logo_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Title font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+			),
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Subtitle", "nxs_td"),
+				"initial_toggle_state"	=> "closed-if-empty",
+				"initial_toggle_state_id" => "subtitle",
+			),
+			
+			array(
+				"id" 				=> "subtitle",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Logo subtitle", "nxs_td"),
+				"placeholder" 		=> nxs_l18n__("Logo subtitle goes here", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If your logo has a subtitle put it here.", "nxs_td"),
+				"unicontentablefield" => true,
+				"localizablefield"	=> true
+			),
+			array(
+				"id" 				=> "subtitle_fontsize",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Override subtitle fontsize", "nxs_td"),
+				"dropdown" 			=> nxs_style_getdropdownitems("fontsize"),
+				"unistylablefield"	=> true
+			),
 			array(
 				"id" 				=> "subtitle_fontzen",
 				"type" 				=> "fontzen",
 				"label" 			=> nxs_l18n__("Subtitle font", "nxs_td"),
 				"unistylablefield"	=> true
 			),
+
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+			),
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Link", "nxs_td"),
+				// "initial_toggle_state"	=> "closed",
+			),
+
 			array(
 				"id" 				=> "destination_articleid",
 				"type" 				=> "article_link",
-				"label" 			=> nxs_l18n__("Article link", "nxs_td"),
+				"label" 			=> nxs_l18n__("Link", "nxs_td"),
 				"tooltip" 			=> nxs_l18n__("It's a best practice to give a logo a link to the homepage, but you're free to let it point to another page.", "nxs_td"),
 				"unicontentablefield" => true
 			),
 			array(
 				"id" 				=> "destination_url",
 				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("External link", "nxs_td"),
+				"label" 			=> nxs_l18n__("Link (url)", "nxs_td"),
 				"placeholder"		=> nxs_l18n__("https://www.example.org", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("Link the button to an external source using the full url.", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("Link to an external source using the full url.", "nxs_td"),
 				"unicontentablefield" => true
 			),
 
 			array(
 				"id" 				=> "destination_target",
 				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Target", "nxs_td"),
+				"label" 			=> nxs_l18n__("Target (where to open the linked document)", "nxs_td"),
 				"dropdown" 			=> array
 				(
 					"@@@empty@@@"=>nxs_l18n__("Auto", "nxs_td"),
@@ -185,13 +237,68 @@ function nxs_widgets_logo_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Link relation", "nxs_td"),
 				"dropdown" 			=> nxs_style_getdropdownitems("link_relation"),
 			),	
-
+			
 			array( 
 				"id" 				=> "wrapper_end",
 				"type" 				=> "wrapperend",
 			),
 			
-			// ABSOLUTE POSITIONING
+			
+			
+			
+			// BACKGROUND IMAGE
+			
+			array( 
+				"id" 				=> "wrapper_begin",
+				"type" 				=> "wrapperbegin",
+				"label" 			=> nxs_l18n__("Wrapper", "nxs_td"),
+				"initial_toggle_state"	=> "closed",
+			),
+			
+			
+			array( 
+				"id" 				=> "bg_image_imageid",
+				"type" 				=> "image",
+				"label" 			=> nxs_l18n__("Wrapper background image", "nxs_td"),
+			),
+			array
+			( 
+				"id" 				=> "bg_image_src",
+				"type" 				=> "input",
+				"label" 			=> nxs_l18n__("Wrapper background image src", "nxs_td"),
+				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
+				"unicontentablefield" => true,
+			),			
+			array( 
+				"id" 				=> "bgcolor",
+				"type" 				=> "colorzen",
+				"label" 			=> nxs_l18n__("Wrapper background color", "nxs_td"),
+				"unistylablefield"	=> true
+			),
+			array(
+				"id" 				=> "min_height",
+				"type" 				=> "select",
+				"label" 			=> nxs_l18n__("Wrapper minimum height", "nxs_td"),
+				"dropdown" 			=> array
+				(
+					"0px" => nxs_l18n__("0px", "nxs_td"),
+					"100px" => nxs_l18n__("100px", "nxs_td"),
+					"200px" => nxs_l18n__("200px", "nxs_td"),
+					"300px" => nxs_l18n__("300px", "nxs_td"),
+					"400px" => nxs_l18n__("400px", "nxs_td"),
+					"500px" => nxs_l18n__("500px", "nxs_td"),
+					"600px" => nxs_l18n__("600px", "nxs_td"),
+				),
+				"unistylablefield"	=> true
+			),
+			
+
+			array( 
+				"id" 				=> "wrapper_end",
+				"type" 				=> "wrapperend",
+			),
+
+// ABSOLUTE POSITIONING
 
 			array( 
 				"id" 				=> "wrapper_begin",
@@ -235,64 +342,6 @@ function nxs_widgets_logo_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			
-			
-			// BACKGROUND IMAGE
-			
-			array( 
-				"id" 				=> "wrapper_begin",
-				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Background image", "nxs_td"),
-				"initial_toggle_state"	=> "closed",
-			),
-			
-			
-			array( 
-				"id" 				=> "bg_image_imageid",
-				"type" 				=> "image",
-				"label" 			=> nxs_l18n__("Background image", "nxs_td"),
-			),
-			array(
-				"id" 				=> "min_height",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Minimum height", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"0px" => nxs_l18n__("0px", "nxs_td"),
-					"100px" => nxs_l18n__("100px", "nxs_td"),
-					"200px" => nxs_l18n__("200px", "nxs_td"),
-					"300px" => nxs_l18n__("300px", "nxs_td"),
-					"400px" => nxs_l18n__("400px", "nxs_td"),
-					"500px" => nxs_l18n__("500px", "nxs_td"),
-					"600px" => nxs_l18n__("600px", "nxs_td"),
-				),
-				"unistylablefield"	=> true
-			),
-			array(
-				"id"     			=> "logo_margin",
-				"type"     			=> "select",
-				"label"    			=> nxs_l18n__("Logo margin", "nxs_td"),
-				"dropdown"   		=> nxs_style_getdropdownitems("margin"),
-				"unistylablefield"	=> true
-			),
-			array( 
-				"id" 				=> "bgcolor",
-				"type" 				=> "colorzen",
-				"label" 			=> nxs_l18n__("Logo wrapper background", "nxs_td"),
-				"unistylablefield"	=> true
-			),
-			array
-			( 
-				"id" 				=> "bg_image_src",
-				"type" 				=> "input",
-				"label" 			=> nxs_l18n__("Image src", "nxs_td"),
-				"tooltip" 			=> nxs_l18n__("If you want to reference an external image, use this field.", "nxs_td"),
-				"unicontentablefield" => true,
-			),			
-			array( 
-				"id" 				=> "wrapper_end",
-				"type" 				=> "wrapperend",
-			),
-
 		)
 	);
 	
