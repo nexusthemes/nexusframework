@@ -3803,7 +3803,7 @@ function nxs_wipe_sitemetakey_internal($keytoberemoved, $performsanitycheck)
 	{
 		if (count($postids) != 1)
 		{
-			nxs_webmethod_return_nack("no or multiple active site settings not found?! (C)");
+			nxs_webmethod_return_nack("no or multiple active site settings not found?! (C.2)");
 		}
 	}
 
@@ -3829,7 +3829,7 @@ function nxs_wipe_sitemetakeys_internal($keystoberemoved, $performsanitycheck)
 	{
 		if (count($postids) != 1)
 		{
-			nxs_webmethod_return_nack("no or multiple active site settings not found?! (C)");
+			nxs_webmethod_return_nack("no or multiple active site settings not found?! (C.3)");
 		}
 	}
 
@@ -5691,13 +5691,18 @@ function webmethod_return_alternativeflow($altflowid, $args)
 function nxs_webmethod_return_alternativeflow($altflowid, $args)
 {
 	nxs_set_jsonheader();
-		
+	
 	// add 'result' to array
 	$args["result"] = "ALTFLOW";
 	$args["altflowid"] = $altflowid;
 	// sanitize malformed utf8 (if the case)
 	$args = nxs_array_toutf8string($args);
-	$output=json_encode($args);
+	
+	// only works in PHP 5.4 and above
+	$options = 0;
+	$options = $options | JSON_PRETTY_PRINT;
+	$output = json_encode($args, $options);
+
 	echo $output;
 	die();
 }
