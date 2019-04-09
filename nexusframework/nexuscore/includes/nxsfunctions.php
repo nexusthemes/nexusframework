@@ -9625,11 +9625,6 @@ function nxs_the_excerpt_rss($content)
 	$content = wp_strip_all_tags($content, true);
 	
 	$content = wp_trim_words( $content, 5*40, '<a href="'. get_permalink() .'"> ...Read More</a>' );
-	
-	//$content = preg_replace('/[^A-Za-z0-9()!:.\' ]/', '', $content); // Removes special chars.
-	// prefix the image
-	
-	//$content = "GJGJ";
 
 	return $content;
 }
