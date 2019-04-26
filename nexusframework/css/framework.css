@@ -36,8 +36,12 @@ body														{ height: 100%; }
 .nxs-postrows {
 	/* the "padding-top and margin-top; property is necessary to prevent parent div's to move when a margin is set on the child div */
 	/* normally the overflow: auto; on the nxs-container should fix this problem, but not in firefox */
+	
+	/* Apr 25 2019: removed option, creates unwanted single white line atop homepage sliders. We'll see if it still creates the aforementioned issue.
 	padding-top: 1px;
     margin-top: -1px;
+	*/
+
 }
 
 a { 
