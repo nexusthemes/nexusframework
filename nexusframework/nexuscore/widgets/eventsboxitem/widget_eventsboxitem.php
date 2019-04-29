@@ -162,9 +162,11 @@ function nxs_widgets_eventsboxitem_home_getoptions($args)
 			array( 
 				"id" 				=> "wrapper_button_begin",
 				"type" 				=> "wrapperbegin",
-				"label" 			=> nxs_l18n__("Button", "nxs_td"),
+				"label" 			=> nxs_l18n__("Link", "nxs_td"),
 				"initial_toggle_state"	=> "closed",
 			),
+			
+			/* Button functionality isn't working correctly > button text isn't shown
 			
 			array(
 				"id" 				=> "button_text",
@@ -201,7 +203,8 @@ function nxs_widgets_eventsboxitem_home_getoptions($args)
 				"label" 			=> nxs_l18n__("Button alignment", "nxs_td"),
 				"unistylablefield"	=> true,
 			),
-				
+			
+			*/
 			
 			
 			array(
@@ -221,6 +224,7 @@ function nxs_widgets_eventsboxitem_home_getoptions($args)
 				"localizablefield"	=> true
 			),
 			
+			/*
 			array(
 				"id" 				=> "destination_js",
 				"type" 				=> "input",
@@ -243,6 +247,7 @@ function nxs_widgets_eventsboxitem_home_getoptions($args)
 				),
 				"unistylablefield"	=> true
 			),
+			*/
 			
 			array( 
 				"id" 				=> "wrapper_button_end",
