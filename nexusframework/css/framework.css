@@ -1307,6 +1307,9 @@ ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 .nxs-blog-meta												{ margin-bottom: 15px; font-size: 15px; float: left; line-height: 36px; }
 .nxs-blog-sharing											{ font-size: 18px; }
 
+/* display flex fix which causes image not to stretch */
+.nxs-blog .nxs-icon-center									{ display: block !important; }
+
 /* TEXT
 ---------------------------------------------------------------------------------------------------- */
 .nxs-text .nxs-liftnote > p:first-child 					{ font-weight: bold; letter-spacing: 1px; }
