@@ -377,6 +377,7 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
     </ul>
 
     <?php $menu = nxs_ob_get_contents();
+    
     nxs_ob_end_clean();
 
     $nxs_global_placeholder_render_statebag["menutopright"] = $menu;
@@ -822,6 +823,9 @@ function nxs_widgets_menucontainer_render_webpart_render_htmlvisualization($args
   echo "<div class='nxs-clear'></div>";
 
   $html = nxs_ob_get_contents();
+  
+  // apply lookups
+  $html = do_shortcode("[nxs_string ops='applylookups']{$html}[/nxs_string]");
 
   nxs_ob_end_clean();
 
