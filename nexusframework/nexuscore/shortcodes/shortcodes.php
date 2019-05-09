@@ -1668,10 +1668,23 @@ function nxs_sc_string($atts, $content = null, $name='')
 				"name" => $name
 			);
 			
+			
+			
 			$isenabled = apply_filters('nxs_string_file_get_contents_enabled', false, $filter_args);
 			if ($isenabled)
 			{
-				$input = nxs_geturlcontents(array("url" => $url));
+				if ($atts["method"] == "file_get_contents")
+				{
+					$input = file_get_contents($url);
+				}
+				else if ($atts["method"] == "file_get_contents_utf8")
+				{
+					$input = file_get_contents_utf8($url);
+				}
+				else
+				{
+					$input = nxs_geturlcontents(array("url" => $url));
+				}
 			}
 			else
 			{
@@ -2437,12 +2450,15 @@ function nxs_sc_command($atts, $content = null, $name='')
 				}
 			}
 		}
-
 		else if ($op == "nocache")
 		{
 			global $nxs_gl_cache_pagecache;
 			$nxs_gl_cache_pagecache = false;
 			echo "<div>(not cached; " . time() . ")</div>";
+		}
+		else if ($op == "ensure_sessionstarted")
+		{
+			nxs_ensure_sessionstarted();	
 		}
 		else if ($op == "settemplateproperties")
 		{
