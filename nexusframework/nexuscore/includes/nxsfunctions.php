@@ -5424,10 +5424,9 @@ function nxs_webmethod_return_nack($message)
 		echo "raw print:<br />";
 		var_dump($output);
 		echo "pretty print:<br />";
-		if ($_REQUEST["pp"] == "false")
+		if (isset($_REQUEST["pp"]) && $_REQUEST["pp"] == "false")
 		{
 			// in some situation the prettyprint can stall
-			
 		}
 		else
 		{
