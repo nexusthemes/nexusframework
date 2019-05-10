@@ -201,6 +201,9 @@ a .nxs-title,
 	-moz-transition: 	opacity 0.1s linear;
 	-webkit-transition: opacity 0.1s linear;
 }
+.nxs-button:hover {
+    cursor: pointer;
+}
 a.nxs-button:hover,
 a:hover .nxs-title,
 .nxs-blog a:hover,
