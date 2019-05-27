@@ -468,9 +468,6 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 		if ($halign == "left") 
 		{	
 			$alignment_image 		= "float: left; margin-right: 15px;";
-			$alignment_table_text 	= "display: table; float: left;";
-			$alignment_cell_text 	= "display: table-cell; vertical-align: middle; text-align: left;";
-			$alignment_imageheight	= $imageheight;
 		} 
 		else if ($halign == "center") 
 		{
@@ -480,9 +477,6 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 		else if ($halign == "right") 
 		{	
 			$alignment_image 		= "float: right; margin-left: 15px;";
-			$alignment_table_text 	= "display: table; float: right;";
-			$alignment_cell_text 	= "display: table-cell; vertical-align: middle; text-align: right;";
-			$alignment_imageheight	= $imageheight;
 		}
 	}
  
@@ -549,28 +543,9 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 	if ($image_imageid != "" || $image_src != "") {
 		$image_maxheight_cssclass = nxs_getcssclassesforlookup("nxs-maxheight-", $image_maxheight);
 		
-		$inlinemaxheightstyle = '';
-		if ($image_maxheight != '') 
-		{
-			$inlinemaxheightstyle = '';
-			$inlineheightstyle = '';
-		}
-		
-		//$htmlofimage = '<img '.$image_alt_attribute.' src="'.$imageurl.'" class="nxs-ratio-original '.$image_maxheight_cssclass.' '.$logo_margin_cssclass.' '.$border_radius_cssclass.'" style="'.$alignment_image.' " />';
-		$a = array
-		(
-			"image_src" => $imageurl,
-			"image_alt" => $image_alt,
-			"image_maxheight" => $image_maxheight,
-			"image_margin" => $logo_margin,
-			"border_radius" => $border_radius,
-			//"align" => $halign,	// not fully compatible i think?
-			"image_alignment" => $halign,	// not fully compatible i think?
-			"image_size" => "orig@contain",
-		);
-		$htmlofimage = nxs_gethtmlforimage_v3($a);
+		$htmlofimage = '<img '.$image_alt_attribute.' src="'.$imageurl.'" class="nxs-ratio-original '.$image_maxheight_cssclass.' '.$logo_margin_cssclass.' '.$border_radius_cssclass.'" style="'.$alignment_image.' " />';
 
-		$logo = "<div class='logo-image'>{$htmlofimage}</div>";
+		$logo = "<div class='logo-image'>".$htmlofimage."</div>";
 	}
 	
 	// Image background
@@ -643,13 +618,11 @@ function nxs_widgets_logo_render_webpart_render_htmlvisualization($args)
 				if ($title != "" || $subtitle != "") 
 				{
 					echo '
-					<div class="title-wrapper '.$image_maxheight_cssclass.' '.$logo_margin_cssclass.'" style="height: '.$alignment_imageheight.'; '.$inlinemaxheightstyle.' '.$alignment_table_text.'">
-						<div style="'. $alignment_cell_text.'">';
-							echo $title;
-							echo $subtitle;
-						echo 
-						'</div>
-					</div>';
+					<div class="'.$logo_margin_cssclass.'" style="'. $alignment_cell_text.'">';
+						echo $title;
+						echo $subtitle;
+					echo 
+					'</div>';
 				}
 				
 				if ($url != "") { echo '</a>'; }
