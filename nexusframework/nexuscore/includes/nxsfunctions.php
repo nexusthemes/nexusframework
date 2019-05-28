@@ -2993,7 +2993,7 @@ function nxs_storemedia_remotehttpdownload($args)
 	}
 	else
 	{
-		error_log("nxs_storemedia_remotehttpdownload; using timeouts;" . $args["timeoutsecs"]);
+		// error_log("nxs_storemedia_remotehttpdownload; using timeouts;" . $args["timeoutsecs"]);
 	}
 	
 	if (!isset($args["connectiontimeoutretriesleft"]))
