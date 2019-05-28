@@ -596,7 +596,8 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 	// Button	
 	if ($destination_articleid != "" || $destination_url != "") 
 	{
-		$button = '<a href="'.$destination_url .'" class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.'">'.$button_text.'</a>';
+		// $button = '<a href="'.$destination_url .'" class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.'">'.$button_text.'</a>';
+		$button = '<a '.$destination_target_html.' '.'href="'.$destination_url .'" class="nxs-button '.$button_color_cssclass.' '.$button_scale_cssclass.'">'.$button_text.'</a>';
 	}
 	
 	// Applying alignment to button
@@ -629,7 +630,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 		<div class=" nxs-width100 '.$layout.' '.$hover_state.' icon-size-'.$icon_size.'">';
 				
 			// Icon			
-			if ($destination_url != "") { echo '<a href="'.$destination_url.'">'; }
+			if ($destination_url != "") { echo '<a '.$destination_target_html.' '. 'href="'.$destination_url.'">'; }
 				echo $icon;
 			if ($destination_url != "") { echo '</a>'; }
 
@@ -638,7 +639,7 @@ function nxs_widgets_target_render_webpart_render_htmlvisualization($args)
 				// Title
 				echo '<div class="nxs-applylinkvarcolor">';
 				
-					if ($destination_url != "") { echo '<a href="'.$destination_url.'">'; }
+					if ($destination_url != "") { echo '<a '.$destination_target_html.' '. 'href="'.$destination_url.'">'; }
 						echo $title;
 					if ($destination_url != "") { echo '</a>'; }
 				
