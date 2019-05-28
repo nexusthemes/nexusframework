@@ -2442,10 +2442,7 @@ function nxs_sc_command($atts, $content = null, $name='')
 					}
 					else
 					{
-						// probably here we should do a client side redirect, as the headers are already sent out....
-						header("HTTP/1.1 301 Moved Permanently"); 
-						header("Location: {$value}");
-						exit();
+						return "<script>nxs_js_redirect('{$value}');</script>";
 					}
 				}
 			}
