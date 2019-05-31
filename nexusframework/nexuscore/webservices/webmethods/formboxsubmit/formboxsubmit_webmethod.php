@@ -82,7 +82,11 @@ function nxs_webmethod_formboxsubmit()
 		);
 		$mixedattributes = nxs_filter_translate_v2($translateargs);
 	}
- 	
+	
+	// allows plugins to tune the properties prior to sending		
+	// for example the sender_email for white listing from email addresses
+	$mixedattributes = apply_filters('nxs_formboxsubmit_tuneprops', $mixedattributes);
+	
  	$widgetmetadata = $mixedattributes;
  	$items_genericlistid = $widgetmetadata["items_genericlistid"];
  	$items_data = $widgetmetadata["items_data"];
@@ -290,9 +294,7 @@ function nxs_webmethod_formboxsubmit()
 		{
 			// empty widget is ignored
 		}
-		
 		// =======
-		
 	}
 	
 	if ($atleastoneerrorfound === false)
@@ -324,7 +326,11 @@ function nxs_webmethod_formboxsubmit()
 			);
 			$mixedattributes = nxs_filter_translate_v2($translateargs);
 		}
-
+		
+		// allows plugins to tune the properties prior to sending		
+		// for example the sender_email for white listing from email addresses
+		$mixedattributes = apply_filters('nxs_formboxsubmit_tuneprops', $mixedattributes);
+		
 	 	extract($mixedattributes);
 	 	
 	 	// upload files
@@ -365,7 +371,7 @@ function nxs_webmethod_formboxsubmit()
 				}
 			}
 		}
-
+		
 		// store data in csv
 		$shouldstoreonfs = nxs_widgets_formbox_shouldstoreonfilesystem($mixedattributes);
 		if ($shouldstoreonfs)
