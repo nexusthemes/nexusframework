@@ -43,7 +43,7 @@ function nxs_webmethod_pagepopup()
 		}
 		else
 		{
-			nxs_webmethod_return_nack("unexpected repeatpopup_scope?" . $repeatpopup_scope);
+			nxs_webmethod_return_nack("nxs_webmethod_pagepopup; subaction=prefetch; unexpected repeatpopup_scope?" . $repeatpopup_scope);
 		}
 		
 		if (nxs_isdebug())
@@ -94,7 +94,7 @@ function nxs_webmethod_pagepopup()
 		}
 		else
 		{
-			nxs_webmethod_return_nack("unexpected repeatpopup_scope?" . $repeatpopup_scope);
+			nxs_webmethod_return_nack("nxs_webmethod_pagepopup;subaction=tag;unexpected repeatpopup_scope?" . $repeatpopup_scope);
 		}
 	}
 	else
