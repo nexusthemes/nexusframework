@@ -100,7 +100,8 @@ function nxs_handle_maintenancemode()
 			}
 			else
 			{
-				nxs_webmethod_return_nack("Website is in maintenance mode; add a maintenance business rule, or move it up in the hierarchy display to customize this message");
+				$currenturl = nxs_geturlcurrentpage();
+				nxs_webmethod_return_nack("Website is in maintenance mode; add a maintenance business rule, or move it up in the hierarchy display to customize this message ($currenturl)");
 			}
 		}
 		else
