@@ -317,7 +317,7 @@ function nxs_webmethod_formboxsubmit()
 			//error_log("formboxsubmit; combined_lookups; " . json_encode($combined_lookups));
 			
 			// replace values in mixedattributes with the lookup dictionary
-			$magicfields = array("internal_email", "sender_email", "destination_url");
+			$magicfields = array("internal_email", "sender_email", "cc_email", "destination_url");
 			$translateargs = array
 			(
 				"lookup" => $combined_lookups,
@@ -443,6 +443,7 @@ function nxs_webmethod_formboxsubmit()
 		
 		// allow shortcodes to tune the recipient
 		$internal_email = do_shortcode($internal_email);
+		$cc_email = do_shortcode($cc_email);
 		
 		$validationerrors = array();
 		
@@ -477,6 +478,37 @@ function nxs_webmethod_formboxsubmit()
 	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid e-mail address (ACCOLADE CLOSE)", "nxs_td");
 		}
 		
+		// cc_email validations
+		if (false)
+		{
+			//
+		}		
+		else if (nxs_stringcontains($cc_email, "["))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid cc e-mail address (SQUARE OPEN)", "nxs_td");
+		}
+		else if (nxs_stringcontains($cc_email, "]"))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid cc e-mail address (SQUARE CLOSE)", "nxs_td");
+		}
+		else if (nxs_stringcontains($cc_email, "{"))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid cc e-mail address (ACCOLADE OPEN)", "nxs_td");
+		}
+		else if (nxs_stringcontains($cc_email, "}"))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid cc e-mail address (ACCOLADE CLOSE)", "nxs_td");
+		}
+		else if ($cc_email != "" && !nxs_isvalidemailaddress($cc_email))
+		{
+	 		$responseargs = array();
+	 		$validationerrors []= nxs_l18n__("The form is configured to deliver to an invalid cc e-mail address", "nxs_td");
+		}
+		
 		// allow plugins to also validate the form
 		$validationerrors = apply_filters('nxs_formboxsubmit_verify', $validationerrors, $mixedattributes);
 		if (count($validationerrors) > 0)
@@ -503,8 +535,10 @@ function nxs_webmethod_formboxsubmit()
 				$body .= $tunedcurrentoutputline . "<br /><br />";
 			}
 			$ccemail = "";
+			
+			
 			$bccemail = "";
-			$nxs_sendhtmlmail_v3_result = nxs_sendhtmlmail_v3($sender_name, $sender_email, $internal_email, $ccemail, $bccemail, $replytoemailaddress, $subject_email, $body);
+			$nxs_sendhtmlmail_v3_result = nxs_sendhtmlmail_v3($sender_name, $sender_email, $internal_email, $cc_email, $bccemail, $replytoemailaddress, $subject_email, $body);
 			
 			$wp_mail_result = $nxs_sendhtmlmail_v3_result["wp_mail_result"];
 			

@@ -441,6 +441,15 @@ function nxs_widgets_formbox_home_getoptions($args)
 				"unicontentablefield" => true,
 			),
 			array(
+				"id" 				=> "cc_email",
+				"type" 				=> "input",
+				"label" 			=> "Recipient CC",
+				"placeholder" 		=> "",
+				// "tooltip" 			=> nxs_l18n__("Enter here a valid existing e-mail address (most likely: your e-mail address) that should be notified when this form is submitted, for example yourname@yourdomain.com", "nxs_td"),
+				"footernote" => "<div class='content' style='font-size: smaller; font-style: italic;'><a target='_blank' href='https://www.wpsupporthelp.com/answer/the-e-mail-is-not-working-sending-i-m-not-receiving-emails-from-294/'>Not receiving e-mails? Click here</a></div>",
+				"unicontentablefield" => true,
+			),
+			array(
 				"id" 				=> "subject_email",
 				"type" 				=> "input",
 				"label" 			=> "Subject email",
@@ -1119,6 +1128,7 @@ function nxs_widgets_formbox_initplaceholderdata($args)
 	$args["sender_name"] = "Website name";
 	$args['mail_body_includesourceurl'] = "true";
 	$args["subject_email"] = nxs_l18n__("form submit", "nxs_td");
+	$args["cc_email"] = "";	// empty	
 		
 	// Button
 	$args["button_text"] = nxs_l18n__("Send", "nxs_td");
