@@ -440,9 +440,6 @@ function nxs_ensure_sessionstarted()
 	// init session
   if (!session_id()) 
   {
-  	// 20130329 the next line should fix issue identified by Jessica
-  	// see http://www.php.net/manual/en/session.configuration.php#ini.session.save-handler
-  	// see http://forums.cpanel.net/f5/error-php-fatal-error-session_start-failed-initialize-storage-module-17100-p3.html
   	$r = session_start();
   	if ($r == false)
   	{

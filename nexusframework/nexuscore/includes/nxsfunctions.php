@@ -13811,7 +13811,7 @@ function nxs_popup_factory_createnotificationoptions($sheettitle, $notification)
 	return $options;
 }
 
-// escape post
+// escape post, request
 function nxs_ensure_slashesstripped()
 {
 	global $nxs_strippedlashes;
