@@ -107,7 +107,7 @@ function nxs_admin_updates_page_content()
 		<div class="wrap">
 	    <h2>Updates</h2>
 	    <p>
-	    	A new version of the theme has been released.<br />
+	    	A new version of the theme has been released. Use the portal (link: <a target='_blank' href='https://my.nexusthemes.com/'>https://my.nexusthemes.com/</a>) to update.<br />
 	    </p>
 	  </div>
 	  <?php
