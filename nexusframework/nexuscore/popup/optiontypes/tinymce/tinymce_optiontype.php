@@ -67,11 +67,17 @@ function nxs_popup_optiontype_tinymce_renderhtmlinpopup($optionvalues, $args, $r
 							{
 								nxs_js_log("Received nxs_jstrigger_afterpopupshows");
 								// nxs_js_log("detected: nxs_jstrigger_afterpopupshows for <?php echo $internaltextareaid; ?>");
-								var scripturl = '//cdn.tinymce.com/4.0/tinymce.min.js';
+								
+								// old implementation was to use the CDN;
+								// var scripturl = '//cdn.tinymce.com/4.0/tinymce.min.js';
 								// 4.0 (4.0.28 is the one that works ok)
 								// we cannot use /4/, as that one fails (unable to change alignments)
 								// we cannot use https://cloud.tinymce.com/stable/tinymce.min.js
 								// as that one starts to nag about a registration key
+								// but some browsers somehow block the CDN, so we use a local copy of that file now instead
+								
+								var scripturl = '<?php echo nxs_getframeworkurl(); ?>/js/tinymcev4/tinymce.min.js';
+								
 								var functiontoinvoke = 'nxs_loadplugins_tinymce_editor()';
 								nxs_js_lazyexecute(scripturl, false, functiontoinvoke);
 								nxs_js_log("lazyexecuted " + scripturl);
