@@ -225,6 +225,29 @@ function nxs_widgets_radial_render_webpart_render_htmlvisualization($args)
 	// The $mixedattributes is an array which will be used to set various widget specific variables (and non-specific).
 	$mixedattributes = array_merge($temp_array, $args);
 	
+	// Lookup atts
+	$mixedattributes = nxs_filter_translatelookup($mixedattributes, array("title","text","button_text", "destination_url"));
+	
+	// Translate model magical fields
+	if (true)
+	{
+		global $nxs_g_modelmanager;
+		
+		$combined_lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$combined_lookups = array_merge($combined_lookups, nxs_parse_keyvalues($mixedattributes["lookups"]));
+		$combined_lookups = nxs_lookups_evaluate_linebyline($combined_lookups);
+		
+		// replace values in mixedattributes with the lookup dictionary
+		$magicfields = array("title", "text", "button_text", "destination_url", "image_src", "destination_data");
+		$translateargs = array
+		(
+			"lookup" => $combined_lookups,
+			"items" => $mixedattributes,
+			"fields" => $magicfields,
+		);
+		$mixedattributes = nxs_filter_translate_v2($translateargs);
+	}
+	
 	// Output the result array and setting the "result" position to "OK"
 	$result = array();
 	$result["result"] = "OK";
