@@ -1,5 +1,8 @@
 <?php 
-// bump
+
+// escape post, request, n ensure, escape
+// see nxs_ensure_slashesstripped()
+
 if (defined('NXS_FRAMEWORKLOADED'))
 {
 	echo "NXS_FRAMEWORKLOADED was already loaded?!";
