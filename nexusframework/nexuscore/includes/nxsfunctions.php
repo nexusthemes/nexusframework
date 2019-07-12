@@ -2361,6 +2361,21 @@ function nxs_isvalidemailaddress($email)
   return true;
 }
 
+function nxs_mail_getdomainforemail($email)
+{
+	if ($email == "")
+	{
+		$result = "";
+	}
+	else
+	{
+		$pieces = explode("@", $email);
+		$result = strtolower($pieces[1]);
+	}
+	
+	return $result;
+}
+
 // newguid createguid
 function nxs_create_guid($namespace = '') 
 {
@@ -5380,9 +5395,13 @@ function nxs_outputbuffer_popall()
 // within this function, 
 function nxs_webmethod_return_nack($message)
 {
+	$lasterror = json_encode(error_get_last());
+	
 	// log nack on file system
 	$stacktrace = debug_backtrace();
-	error_log("nxs_webmethod_return_nack; $message; stacktrace: " . json_encode($stacktrace));
+	$stacktrace_json = json_encode($stacktrace);
+	$stacktrace_json_cut = substr($stacktrace_json, 0, 500);
+	error_log("nxs_webmethod_return_nack;\r\n lasterror: $lasterror\r\nmessage: $message\r\ncut stacktrace: " . $stacktrace_json_cut ."\r\n\r\n");
 	
 	// cleanup output that was possibly produced before,
 	// if we won't this could cause output to not be json compatible
