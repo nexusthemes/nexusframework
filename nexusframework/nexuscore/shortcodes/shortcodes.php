@@ -2374,7 +2374,7 @@ function nxs_sc_int($atts, $content = null, $name='')
 		}
 	}
 	
-	
+	return $input;
 }
 add_shortcode("nxsint", "nxs_sc_int");
 add_shortcode("nxs_int", "nxs_sc_int");
