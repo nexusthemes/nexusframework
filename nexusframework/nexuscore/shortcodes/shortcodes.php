@@ -2002,9 +2002,19 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		{
 			//
 		}
-		
 		else if ($op == "isempty" || $op == "isnotempty" || $op == "notempty" || $op == "!isempty")
 		{
+			if ($atts["interpret_any_accolades_as_empty"] == "true")
+			{
+				if (nxs_stringcontains($input, "{")) 
+				{
+					$input = "";
+				}
+				else if (nxs_stringcontains($input, "}")) 
+				{
+					$input = "";
+				}
+			}
 			$evaluation = trim($input) == "";
 			if (nxs_stringstartswith($op, "!") || nxs_stringstartswith($op, "not") || nxs_stringstartswith($op, "isnot")) { $evaluation = !$evaluation; }
 			$input = $evaluation ? "true": "false";
