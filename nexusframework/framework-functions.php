@@ -1428,7 +1428,7 @@ function nxs_init()
 					window.location.href="<?php echo $url; ?>";
 				</script>
 				<?php
-				wp_redirect($url, 301);
+				wp_redirect($url, 302);
 				exit;
 			}
 		}
