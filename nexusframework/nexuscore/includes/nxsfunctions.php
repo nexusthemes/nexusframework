@@ -848,9 +848,17 @@ function nxs_date_gettotaldaysinterval($timestamp)
 //kudos to https://stackoverflow.com/questions/8273804/convert-seconds-into-days-hours-minutes-and-seconds
 function nxs_time_getsecondstohumanreadable($seconds)
 {
-  $dtF = new \DateTime('@0');
-  $dtT = new \DateTime("@$seconds");
-  return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+	if (is_nan($seconds))
+	{
+		$result = "not a number";
+	}
+	else
+	{
+	  $dtF = new \DateTime('@0');
+	  $dtT = new \DateTime("@$seconds");
+  	$result = $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+  }
+  return $result;
 }
 
 function nxs_getlocalizedmonth($monthleadingzeros)
@@ -2670,11 +2678,33 @@ function url_get_contents($url)
 	return nxs_geturlcontents($args) ;
 }
 
-// nxs_file_get_contents, httppost, http post, post http, posthttp, put request, post request
+//
+// nxs_file_get_contents, httppost, http post, post http, posthttp, put request, post request, http post request
+//
+// usage:
+// 	$args["url"] = $action_url;
+// 	$args["method"] = "POST";	
+// 	$args["postargs"] = $postargs;
+// 	$action_string = nxs_geturlcontents($args);
+// 	
+// 	$action_result = json_decode($action_string, true);
+// 	if ($action_result["result"] != "OK") 
+// 	{
+// 		$last_error = error_get_last();
+// 		$result = array
+// 		(
+// 			"result" => "NACK",
+// 			"details" => "unable to fetch action_url (nxs_tasks); $action_url",
+// 			"lasterror" => json_encode($last_error),
+// 		);
+// 	}
+// 	else
+// 	{
+// 		$result["result"] = "OK";	
+// 	}
+// 
 function nxs_geturlcontents($args) 
 {	
-	
-	
 	$url = $args["url"];
 	
 	$usecurl = true;
@@ -4628,7 +4658,7 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	}
 	else if (!nxs_isvalidemailaddress($toemail))
 	{
-		nxs_webmethod_return_nack("toemail is not valid; $toemail");
+		nxs_webmethod_return_nack("toemail is not valid; '$toemail'");
 	}
 	
 	$headers = "";
