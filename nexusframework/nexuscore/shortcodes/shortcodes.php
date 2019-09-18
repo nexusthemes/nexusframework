@@ -2068,6 +2068,34 @@ function nxs_sc_bool($atts, $content = null, $name='')
 			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
 			$input = $evaluation ? "true": "false";
 		}
+		else if ($op == "startswith" || $op == "!startswith")
+		{
+			$needle = $atts["needle"];
+			
+			if ($atts["interpret_any_accolades_as_empty"] == "true")
+			{
+				if (nxs_stringcontains($input, "{")) 
+				{
+					$input = "";
+				}
+				else if (nxs_stringcontains($input, "}")) 
+				{
+					$input = "";
+				}
+			}
+			
+			if ($needle == "")
+			{
+				$evaluation = true;
+			}
+			else
+			{
+				$evaluation = nxs_stringstartswith($input, $needle);
+			}
+
+			if (nxs_stringstartswith($op, "!")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
+		}
 		else if ($op == "contains" || $op == "!contains")
 		{
 			$needle = $atts["containsneedle"];
