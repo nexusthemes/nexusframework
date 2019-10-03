@@ -1190,6 +1190,14 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 		</div>
 		<?php
 	}
+	else if ($latlng["licensestatus"] == "OK" && $latlng["found"] == "false" && $latlng["reason"] == "NEXUS_REQUEST_DENIED")
+	{
+		?>
+		<div>
+			Service failed (2). Please try again tomorrow.
+		</div>
+		<?php
+	}
 	else if ($address == "")
 	{
 		?>
