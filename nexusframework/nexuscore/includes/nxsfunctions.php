@@ -1741,6 +1741,24 @@ function nxs_getpostidbyslug($slug)
 	return $result;
 }
 
+// kudos to https://stackoverflow.com/questions/9546181/flatten-multidimensional-array-concatenating-keys
+function nxs_array_flattenarray($array, $prefix = '', $seperator = "_")
+{
+  $result = array();
+  foreach($array as $key=>$value) 
+  {
+    if (is_array($value)) 
+    {
+			$result = $result + nxs_array_flattenarray($value, $prefix . $key . $seperator, $seperator);
+    }
+    else 
+    {
+			$result[$prefix . $key] = $value;
+    }
+  }
+  return $result;
+}
+
 function nxs_getcategoryidbyname($name)
 {
 	$term = get_term_by('name', $name, 'category');
@@ -3682,6 +3700,14 @@ function nxs_ensure_validsitemeta()
 {
 	// following line will crash if 0 or multiple sitemeta's exist
 	$sitemeta = nxs_getsitemeta();
+}
+
+// kudos to https://stackoverflow.com/questions/1755144/how-to-validate-domain-name-in-php
+function is_valid_domain_name($domain_name)
+{
+  return (preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain_name) //valid chars check
+          && preg_match("/^.{1,253}$/", $domain_name) //overall length check
+          && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain_name)   ); //length of each label
 }
 
 function nxs_getsitemeta()
