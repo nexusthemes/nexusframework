@@ -172,10 +172,12 @@ function nxs_widgets_pageinpagesectionmenu_betweenheadandcontent()
 			}, 1000);
 		});
 
-		function nxs_js_init_inpagesectionmenu() {
+		function nxs_js_init_inpagesectionmenu() 
+		{
 			sections = jQ_nxs('.nxs-section').get();
 			sectionsLength = sections.length;
 
+			/*
 			// order sections on section position
 			var tempSections = [], tempTop;
 			for (var i = 0; i < sectionsLength; i++) {
@@ -185,9 +187,15 @@ function nxs_widgets_pageinpagesectionmenu_betweenheadandcontent()
 			}
 
 			var tempSections = tempSections.filter(function(){return true;});
-			for (var i = 0; i < sectionsLength; i++) {
-				sections[i] = jQ_nxs(tempSections[i]).get(0);
+			for (var i = 0; i < sectionsLength; i++) 
+			{
+				var temp = jQ_nxs(tempSections[i]).get(0);
+				if (temp != null)
+				{
+					sections[i] = temp;
+				}
 			}
+			*/
 
 			// remove all events if they were set earlier and empty the inpagesectionmenu
 			jQ_nxs(document).off("nxs_event_windowscrolling.inpagesectionmenu");
@@ -213,8 +221,16 @@ function nxs_widgets_pageinpagesectionmenu_betweenheadandcontent()
 			
 			// create all the list items for each section point
 			var title, displayTitle, hash;
-			for (var i = 0; i < sectionsLength; i++) {
+			for (var i = 0; i < sectionsLength; i++) 
+			{
 				title = jQ_nxs(sections[i]).find('.nxs-section-title').html();
+				
+				if (sections[i] == null)
+				{
+					console.log("inpagesectionmenu;err;" + i + ";null");
+					continue;
+				}
+				
 				hash = sections[i].id;			
 				elem+= '<li class="item nxs-applyhovercolors <?php echo $items_color_cssclass; ?>">';
 				elem+= '<a href="#' + hash + '" class="link <?php echo $concatenatedcssclasses_a; ?>" style="<?php echo $items_scale_style; ?>">'
@@ -352,11 +368,15 @@ function nxs_widgets_pageinpagesectionmenu_betweenheadandcontent()
 			screenHeight = jQ_nxs(window).height();
 			sectionStart = [];
 			s = 0;
-			for (var i = 0; i < sectionsLength; i++) {
-				sectionStart[i] = Math.round(jQ_nxs(sections[i]).offset().top - screenHeight / 2 );
-				if (sectionStart[i] < 0) {
-					sectionStart[i] = s;
-					s++;
+			for (var i = 0; i < sectionsLength; i++) 
+			{
+				if (sections[i] != null)
+				{
+					sectionStart[i] = Math.round(jQ_nxs(sections[i]).offset().top - screenHeight / 2 );
+					if (sectionStart[i] < 0) {
+						sectionStart[i] = s;
+						s++;
+					}
 				}
 			}
 		}
