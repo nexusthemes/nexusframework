@@ -448,7 +448,8 @@ function nxs_ensure_sessionstarted()
   	{
   		// it fails, one (most likely) reason is that the program has already outputted content to the user, 
   		// meaning its too late to send the cookie value
-  		$msg = "nxs_ensure_sessionstarted; unable to start session; most likely some other script already outputted to the browser";
+			$url = nxs_geturlcurrentpage();
+  		$msg = "nxs_ensure_sessionstarted; unable to start session; most likely some other script already outputted to the browser ($url)";
   		error_log($msg);
   		echo $msg;
   		die();
