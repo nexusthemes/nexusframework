@@ -392,6 +392,27 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = time();
 		}
+		else if ($op == "email_to_hostname")
+		{
+			// info@sub.example.org => sub.example.org
+			$email = $input;
+			$pieces = explode("@", $email);
+			$input = $pieces[1];
+			$input = strtolower($input);
+		}
+		else if ($op == "hostname_to_domain")
+		{
+			// sub.example.org => example.org
+			$hostname = $input;
+			$hostname = strtolower($hostname);
+			$pieces = explode(".", $hostname);
+			$count = count($pieces); // for example 3 for sub.example.org
+			$input = $pieces[$count - 2] . "." . $pieces[$count - 1];
+			if ($input == "co.uk")
+			{
+				$input = $pieces[$count - 3] . "." . $pieces[$count - 2] . "." . $pieces[$count - 1];
+			}
+		}
 		else if ($op == "timemsecs")
 		{
 			$input = round(microtime(true) * 1000);
