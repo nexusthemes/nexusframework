@@ -1747,9 +1747,17 @@ function nxs_array_flattenarray($array, $prefix = '', $seperator = "_")
   $result = array();
   foreach($array as $key=>$value) 
   {
-    if (is_array($value)) 
+  	if (false)
+  	{
+  		//
+  	}
+  	else if (is_array($value)) 
     {
 			$result = $result + nxs_array_flattenarray($value, $prefix . $key . $seperator, $seperator);
+    }
+    else if (is_bool($value))
+    {
+    	$result[$prefix . $key] = $value ? 'true' : 'false';
     }
     else 
     {
@@ -2701,6 +2709,7 @@ function url_get_contents($url)
 //
 // usage:
 // 	$args["url"] = $action_url;
+//  $args["timeoutsecs"] = 300;	// default is 300
 // 	$args["method"] = "POST";	
 // 	$args["postargs"] = $postargs;
 // 	$action_string = nxs_geturlcontents($args);
