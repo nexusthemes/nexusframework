@@ -565,6 +565,20 @@ add_action('init', 'nxs_init', 200);
 add_action('admin_init', 'nxs_init', 200);
 function nxs_init() 
 {
+	// support for ads.txt
+	$uricurrentpage = nxs_geturicurrentpage();
+	if (nxs_stringendswith($uricurrentpage, "ads.txt"))
+	{
+		$lookups = nxs_lookups_getcombinedlookups_for_currenturl();
+		$value = $lookups["ads.txt"];
+		if ($value != "")
+		{
+			echo $value;
+			//echo "ads.txt :)";
+			die();
+		}
+	}
+	
 	if (nxs_has_adminpermissions())
   {
   	if (isset($_REQUEST["nxs"]))
