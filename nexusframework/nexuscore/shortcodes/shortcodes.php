@@ -317,6 +317,23 @@ function nxs_sc_string($atts, $content = null, $name='')
 				}
 			}
 		}
+		else if ($op == "replace_non_alpha_numeric_unicode")
+		{
+			$replacement = $atts["replace_non_alpha_numeric_unicode_replacement"];
+			
+			// replace non alpha numeric unicode
+			$input = preg_replace("/[^[:alnum:][:space:]]/u", $replacement, $input);	
+		}
+		else if ($op == "replace_multi_occurence_of_same_symbol")
+		{
+			$symbol = $atts["symbol"];
+			if ($symbol == "") { return "symbol not specified"; }
+			if ($symbol == ".") { $symbol = "\."; }
+			
+			$symbol_replacement = $atts["symbol_replacement"];
+			$pattern = '/' . $symbol . '+/';
+			$input = preg_replace($pattern, $symbol_replacement, $input);
+		}
 		else if ($op == "str_replace")
 		{
 			//error_log("str_replace;input;$input");
@@ -381,6 +398,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "date")
 		{
+			// for example format="ymdHis" for yymmddhhmmss
 			$format = $atts["format"];
 			if ($format == "")
 			{
@@ -2186,6 +2204,13 @@ function nxs_sc_bool($atts, $content = null, $name='')
 			{
 				$input = "false";
 			}
+		}
+		else if ($op == "isinfuture" || $op == "!isinfuture" || $op == "notisinfuture")
+		{
+			$now = time();
+			$evaluation = ($input > $now);
+			if (nxs_stringstartswith($op, "!") || nxs_stringstartswith($op, "not")) { $evaluation = !$evaluation; }
+			$input = $evaluation ? "true": "false";
 		}
 		else if ($op == "httpok")
 		{
