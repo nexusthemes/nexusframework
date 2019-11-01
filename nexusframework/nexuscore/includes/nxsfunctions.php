@@ -2705,7 +2705,7 @@ function url_get_contents($url)
 }
 
 //
-// nxs_file_get_contents, httppost, http post, post http, posthttp, put request, post request, http post request, post_request
+// nxs_file_get_contents, httppost, http post, post http, posthttp, put request, post request, http post request, post_request, post url, invoke url
 //
 // usage:
 // 	$args["url"] = $action_url;

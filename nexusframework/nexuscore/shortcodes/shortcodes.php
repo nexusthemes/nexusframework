@@ -486,7 +486,16 @@ function nxs_sc_string($atts, $content = null, $name='')
 			{
 				$length = $atts["length"];
 			}
-			$input = nxs_generaterandomstring($length);
+			if (isset($atts["characters"]))
+			{
+				$characters = $atts["characters"];
+			}
+			else
+			{
+				// fallback
+				$characters = "abcdefghijklmnopqrstuvwxyz";
+			}
+			$input = nxs_generaterandomstring($length, $characters);
 		}
 		else if ($op == "md5stringpicker")
 		{
