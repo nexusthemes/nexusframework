@@ -482,7 +482,6 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 		else if ($halign == 'center') 	{ $alignment = 'nxs-center'; } 
 		else if ($halign == 'right') 	{ $alignment = 'nxs-float-right'; }
 		
-		
 		if ($render_behaviour == "code")
 		{
 			$wrapperbegin = '';
@@ -494,8 +493,6 @@ function nxs_widgets_social_render_webpart_render_htmlvisualization($args)
 			$wrapperend = '</div>';
 		}
 		
-		
-
 		$icon_font_list ='
 				<ul class="icon-font-list">'
 					. $rss_url  

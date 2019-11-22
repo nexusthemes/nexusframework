@@ -643,8 +643,6 @@ function nxs_sc_string($atts, $content = null, $name='')
          "<br /><div class=\"video-container-youtubify\"><iframe class=\"video\" width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/$2{$start}\" allowfullscreen></iframe></div><br /><style>.video-container-youtubify{position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden; }</style>",
         $input
     	);
-    	
-    	
 		}
 		else if ($op == "linkify")
 		{
@@ -2382,16 +2380,50 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		  	}
 		  }
 		}
-		else if ($op == "lte")
+		else if ($op == "lte" || $op == "lessthanorequals")
 		{
 			$compareto = $atts["compareto"];
 			
-			
-			//var_dump($input);
-			//var_dump($compareto);
-			//die();
-			
 			if ((int) $input <= (int) $compareto)
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+		}
+		else if ($op == "gte" || $op == "greaterthanorequals")
+		{
+			$compareto = $atts["compareto"];
+			
+			if ((int) $input >= (int) $compareto)
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+		}
+		else if ($op == "gt" || $op == "greaterthan")
+		{
+			$compareto = $atts["compareto"];
+			
+			if ((int) $input > (int) $compareto)
+			{
+				$input = "true";
+			}
+			else
+			{
+				$input = "false";
+			}
+		}
+		else if ($op == "lt" || $op == "lessthan")
+		{
+			$compareto = $atts["compareto"];
+			
+			if ((int) $input < (int) $compareto)
 			{
 				$input = "true";
 			}
@@ -2432,8 +2464,8 @@ function nxs_sc_bool($atts, $content = null, $name='')
 	
 	return $output;
 }
-add_shortcode('nxsbool', 'nxs_sc_bool');
-add_shortcode('nxs_bool', 'nxs_sc_bool');
+add_shortcode("nxsbool", "nxs_sc_bool");
+add_shortcode("nxs_bool", "nxs_sc_bool");
 
 // for example [nxsint ops="add" p1="1" p2="2"]
 function nxs_sc_int($atts, $content = null, $name='') 
