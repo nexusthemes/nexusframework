@@ -286,6 +286,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 			
 			$input = json_encode($result);
 		}
+		else if ($op == "remote_address")
+		{
+			$input = $_SERVER['REMOTE_ADDR'];
+		}
 		else if ($op == "lo")
 		{
 			$input = strtolower($input);
@@ -321,8 +325,16 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$replacement = $atts["replace_non_alpha_numeric_unicode_replacement"];
 			
-			// replace non alpha numeric unicode
-			$input = preg_replace("/[^[:alnum:][:space:]]/u", $replacement, $input);	
+			if ($atts["replacespacestoo"] == "true")
+			{
+				// replace non alpha numeric unicode
+				$input = preg_replace("/[^[:alnum:]]/u", $replacement, $input);
+			}
+			else
+			{
+				// replace non alpha numeric unicode
+				$input = preg_replace("/[^[:alnum:][:space:]]/u", $replacement, $input);					
+			}
 		}
 		else if ($op == "replace_multi_occurence_of_same_symbol")
 		{
@@ -405,6 +417,11 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$format = "Ymd";
 			}
 			$input = date($format, time());
+		}
+		else if ($op == "localpart_of_email")
+		{
+			$parts = explode("@", $input, 2);
+			$input = $parts[0];
 		}
 		else if ($op == "time")
 		{
@@ -607,6 +624,13 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$input = str_replace("--", "-", $input);
 			}
 		}
+		else if ($op == "parse_youtube_id")
+		{
+			// kudos to https://gist.github.com/ghalusa/6c7f3a00fd2383e5ef33
+			// https://youtu.be/FLbvpQBK_vM => FLbvpQBK_vM
+			preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $input, $match);
+			$input = $match[1];
+		}
 		else if ($op == "youtubeify")
 		{
 			if (true) // $_REQUEST["yt"] == "yt")
@@ -720,6 +744,34 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$input .= "<li>{$piece}</li>";
 			}
 			$input .= "</ul>";
+		}
+		else if ($op == "prefix_postfix_each_line")
+		{
+			$prefix = $atts["prefix"];
+			if (!isset($atts["prefix"]))
+			{
+				$prefix = "PREFIX_NOT_SPECIFIED";
+			}
+			$postfix = $atts["postfix"];
+			if (!isset($atts["postfix"]))
+			{
+				$postfix = "POSTFIX_NOT_SPECIFIED";
+			}
+			
+			$seperator = $atts["seperator"];
+
+			if ($seperator == "") { $seperator = "|"; }
+			$pieces = explode($seperator, $input);
+			$input = "";
+			foreach ($pieces as $piece)
+			{
+				$piece = trim($piece);
+				if ($piece == "")
+				{
+					continue;
+				}
+				$input .= "{$prefix}{$piece}{$postfix}";
+			}
 		}
 		else if ($op == "smartlinks")
 		{
