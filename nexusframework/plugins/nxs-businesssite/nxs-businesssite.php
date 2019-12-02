@@ -117,52 +117,6 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	function getserializedmodel($schema, $modeluri = "")
-	{
-		$default_container_path = NXS_FRAMEWORKPATH . "/models";
-		
-		$filterargs = array
-		(
-			"schema" => $schema,
-		);
-		
-		$default = array
-		(
-			"container_path" => $default_container_path,
-		);
-		$serializedmodelmeta = apply_filters("nxs_f_getserializedmodelmeta", $default, $filterargs);
-		
-		$container_path = $serializedmodelmeta["container_path"];
-		$path = "{$container_path}/{$schema}.serialized";
-		if (!file_exists($path))
-		{
-			nxs_webmethod_return_nack("schema not found; $schema ($path)");
-		}
-		$c = file_get_contents($path);
-	 	$u = unserialize($c);
-		
-		if ($modeluri == "")
-		{
-			$result = $u;
-		}
-		else
-		{
-			$result = false;
-			$humanid = $this->gethumanid($modeluri);
-			$id_column = "{$schema}_id";
-			foreach ($u as $meta)
-			{
-				if ($meta[$id_column] == $humanid)
-				{
-					$result = $meta;
-					break;
-				}
-			}
-		}
-		
-		return $result;
-	}
-	
 	function evaluatereferencedmodelsinmodeluris($modeluris)
 	{
 		//error_log("evaluatereferencedmodelsinmodeluris (" . $modeluris . ")");
@@ -1035,23 +989,12 @@ class nxs_g_modelmanager
 		{
 			if ($modeluri != "")
 			{
-				$referencetype = $this->getmodelreferencetype($modeluri);
-				
-				if (false)
+				if ($this->islocalmodelreference($modeluri))
 				{
-					//
-				}
-				else if ($referencetype == "wp")
-				{
-					$nxs_g_model[$cachekey] = $this->get_wp_model($modeluri);
-				}
-				else if ($referencetype == "ixplatform")
-				{
-					$nxs_g_model[$cachekey] = $this->getmodel_dbcache_v2($args);
+					$nxs_g_model[$cachekey] = $this->getmodel_local($modeluri);
 				}
 				else
 				{
-					// fallback
 					$nxs_g_model[$cachekey] = $this->getmodel_dbcache_v2($args);
 				}
 			}
@@ -1065,35 +1008,18 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
-	function getmodelreferencetype($modeluri = "")
+	function islocalmodelreference($modeluri = "")
 	{
-		if (false)
-		{
-		}
-		else if (nxs_stringcontains($modeluri, "@wp."))
+		$result = false;
+		if (nxs_stringcontains($modeluri, "@wp."))
 		{
 			// for example 10@wp.post
-			$result = "wp";
+			$result = true;
 		}
-		else if (nxs_stringcontains($modeluri, "@function."))
-		{			
-			$result = "function";
-		}
-		else if (nxs_stringcontains($modeluri, "@listoffunction."))
-		{
-			$result = "function";
-		}
-		else
-		{
-			$result = "ixplatform";
-		}
-		
-		// error_log("getmodelreferencetype; $modeluri becomes $result");
-		
 		return $result;
 	}
 	
-	function get_wp_model($modeluri)
+	function getmodel_local($modeluri)
 	{
 		$pieces = explode("@", $modeluri);
 		$postid = $pieces[0];
@@ -2058,6 +1984,51 @@ class nxs_g_modelmanager
 		return $result;
 	}
 	
+	function getserializedmodel($schema, $modeluri = "")
+	{
+		$default_container_path = NXS_FRAMEWORKPATH . "/models";
+		
+		$filterargs = array
+		(
+			"schema" => $schema,
+		);
+		
+		$default = array
+		(
+			"container_path" => $default_container_path,
+		);
+		$serializedmodelmeta = apply_filters("nxs_f_getserializedmodelmeta", $default, $filterargs);
+		
+		$container_path = $serializedmodelmeta["container_path"];
+		$path = "{$container_path}/{$schema}.serialized";
+		if (!file_exists($path))
+		{
+			nxs_webmethod_return_nack("schema not found; $schema ($path)");
+		}
+		$c = file_get_contents($path);
+	 	$u = unserialize($c);
+		
+		if ($modeluri == "")
+		{
+			$result = $u;
+		}
+		else
+		{
+			$result = false;
+			$humanid = $this->gethumanid($modeluri);
+			$id_column = "{$schema}_id";
+			foreach ($u as $meta)
+			{
+				if ($meta[$id_column] == $humanid)
+				{
+					$result = $meta;
+					break;
+				}
+			}
+		}
+		
+		return $result;
+	}
 	
 	function nxs_f_lookups_context($result = array(), $context = array())
 	{
