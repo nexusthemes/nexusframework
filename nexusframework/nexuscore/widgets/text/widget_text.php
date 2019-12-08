@@ -74,7 +74,8 @@ function nxs_widgets_text_home_getoptions($args)
 				"initial_toggle_state"	=> "closed-if-empty",
 				"initial_toggle_state_id" => "title",
 			),
-			array(
+			array
+			(
 				"id" 				=> "title",
 				"type" 				=> "input",
 				"label" 			=> nxs_l18n__("Title", "nxs_td"),
@@ -88,20 +89,6 @@ function nxs_widgets_text_home_getoptions($args)
 				"type" 				=> "custom",
 				"customcontenthandler"	=> "nxs_generic_modeltaxfieldpicker_popupcontent",
 			),
-			/* phased out; use shortcodes instead
-			array
-			(
-				"id" 				=> "title_postprocessor",
-				"type" 				=> "select",
-				"label" 			=> nxs_l18n__("Title max length", "nxs_td"),
-				"dropdown" 			=> array
-				(
-					"@@@empty@@@" => "None",
-					"truncateall" => "Truncate all",
-				),
-				"unistylablefield"	=> true
-			),
-			*/
 			array
 			(
 				"id" 				=> "title_heading",
