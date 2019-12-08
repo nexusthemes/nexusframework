@@ -4199,66 +4199,52 @@ function nxs_analytics_getanalytics_ua_internal()
 
 //
 
-function nxs_yoast_backend_enqueuescript()
-{	
-	$path = nxs_getframeworkurl() . '/js/seo/yoastbackendbridge.js';
-	wp_enqueue_script( 'yoastbackendbridge', $path, array('yoast-seo-admin-script'), nxs_getthemeversion(), TRUE );	
+function nxs_seo_adminfooterpost()
+{
+	$id = $_GET['post'];
+	if (! defined( 'WPSEO_VERSION' ) ) 
+	{
+		// if the yoast seo plugin is not installed
+		return false;
+	}
+	
+	global $nxs_global_current_containerpostid_being_rendered;
+	$before = $nxs_global_current_containerpostid_being_rendered;
+	$nxs_global_current_containerpostid_being_rendered = $containerpostid;		
+			
+	$rendermode = "anonymous";
+	
+	$result = array();
+	$data = nxs_getrenderedhtml($id, $rendermode);
+	$data = strip_tags($data, '<p><a><img>');
+	$data = str_replace("\r\n", " ", $data);
+	$data = str_replace("\r", " ", $data);
+	$data = str_replace("\n", " ", $data);
+	
+	$nxs_global_current_containerpostid_being_rendered = $before;
+	?>
+<script>
+(function($){
+	$(document).ready(function(){
+
+		NexusFrameworkSeoJsPlugin = function() {
+			window.YoastSEO.app.registerPlugin( 'nexusFrameworkSeoJsPlugin', {status: 'ready'} );
+			window.YoastSEO.app.registerModification( 'content', this.myContentModification, 'nexusFrameworkSeoJsPlugin', 5 );
+		}
+		NexusFrameworkSeoJsPlugin.prototype.myContentModification = function(data) 
+		{
+			return data + ' <?php echo $data; ?>';
+		};
+		new NexusFrameworkSeoJsPlugin();
+	});
+})(jQuery);
+</script>
+	<?php
 }
 
 function nxs_addyoastseosupport()
 {
-	// for the page analysis, note that for the video content, a different patch is applied,
-	// since the video plugin doesn't apply the wpseo_pre_analysis_post_content filter, see #438957387
-
-	add_action("admin_enqueue_scripts", "nxs_yoast_backend_enqueuescript");
-	add_action( 'admin_head', 'nxs_admin_addyoastv3support' );
-	
-	function nxs_admin_addyoastv3support() 
-	{
-		if (is_admin() && defined('WPSEO_VERSION') && version_compare(WPSEO_VERSION, '3.0.0') > 0)
-		{
-			global $post;
-			$postid = $post->ID;
-			if ($postid != "")
-			{
-				?>
-				<script>
-					var nxs_seo_backend_context = 'post';
-					var nxs_seo_backend_id = '<?php echo $postid; ?>';
-					var nxs_seo_backend_content = '';
-					
-					function nxs_js_get_adminurladminajax() 
-					{ 
-						return "<?php 	
-						// fix 20141002; we should use the wpurl instead of url
-						$result = get_bloginfo("wpurl");
-						if (!nxs_stringendswith($result, '/'))
-						{
-							// fix bug detected on Gerbers server
-							$result = $result . "/";
-						}
-						$result .= "index.php?nxs-webmethod-queryparameter=true";
-						$result .= "&uricurrentpage=" . urlencode(nxs_geturicurrentpage());
-						echo $result;
-						?>";
-					}
-					
-					function nxs_js_log(s)
-					{
-						if ('console' in self && 'log' in console) 
-						{
-							console.log(s);
-							//var stacktrace = nxs_js_getqueryparametervalue("stacktrace");
-							
-							// practical debug tool; if ctrl is pressed, output the stacktrac
-							try { throw new Error("Stracktrace"); } catch (e) { console.log(e.stack); }
-						}
-					}
-				</script>
-				<?php
-			}
-		}
-	}
+	add_action('admin_footer-post.php', 'nxs_seo_adminfooterpost');
 }
 
 function nxs_getpagecssclass($pagemeta)
