@@ -421,7 +421,6 @@ add_action('edited_terms', 'nxs_dataconsistency_after_edited_terms');
 nxs_addfeedsupport();
 
 // compliance with popular third party plugins
-// nxs_addyoastseosupport();
 nxs_addwoocommercesupport();
 
 function nxs_session_hasstartedactivesession()
@@ -1292,8 +1291,6 @@ function nxs_init()
 					echo "<hr />";
 				}
 				
-				
-				
 				echo "post_meta_all: $needleglobalid<br />";
 				$origpost_meta_all = nxs_get_post_meta_all($postid);
 				foreach ($origpost_meta_all as $key => $val)
@@ -1313,6 +1310,8 @@ function nxs_init()
 					echo "<hr />";
 				}
 				
+				$post_content = get_post_field('post_content', $postid);
+				echo "post_content: $post_content";
 				
 				die();
 			}

@@ -425,7 +425,6 @@ function nxs_getstyletypeoptions() {
 	return $options;
 }
 
-
 function nxs_font_getfontidentifiers() {
 	$result = array();
 	$result[] = "1";

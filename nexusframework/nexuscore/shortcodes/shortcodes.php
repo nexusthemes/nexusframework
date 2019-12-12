@@ -411,6 +411,14 @@ function nxs_sc_string($atts, $content = null, $name='')
 		else if ($op == "date")
 		{
 			// for example format="ymdHis" for yymmddhhmmss
+			// for available format options see https://www.php.net/manual/en/function.date.php
+			// d = Day of the month, 2 digits with leading zeros
+			// j = Day of the month without leading zeros	(1 - 31)
+			// M = A short textual representation of a month, three letters	(Jan - Dec)
+			// n = Numeric representation of a month, without leading zeros	(1 - 12)
+			// m = Numeric representation of a month, with leading zeros (01 - 12)
+			// Y = A full numeric representation of a year, 4 digits (2019)
+			
 			$format = $atts["format"];
 			if ($format == "")
 			{
@@ -1633,6 +1641,8 @@ function nxs_sc_string($atts, $content = null, $name='')
 			{
 				nxs_webmethod_return_nack("unsupported cachebehaviour; $cachebehaviour");
 			}
+			
+			
 			
 			// todo: rewrite using the new getall function 
 			

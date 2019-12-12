@@ -4197,56 +4197,6 @@ function nxs_analytics_getanalytics_ua_internal()
 	return $result;
 }
 
-//
-
-function nxs_seo_adminfooterpost()
-{
-	$id = $_GET['post'];
-	if (! defined( 'WPSEO_VERSION' ) ) 
-	{
-		// if the yoast seo plugin is not installed
-		return false;
-	}
-	
-	global $nxs_global_current_containerpostid_being_rendered;
-	$before = $nxs_global_current_containerpostid_being_rendered;
-	$nxs_global_current_containerpostid_being_rendered = $containerpostid;		
-			
-	$rendermode = "anonymous";
-	
-	$result = array();
-	$data = nxs_getrenderedhtml($id, $rendermode);
-	$data = strip_tags($data, '<p><a><img>');
-	$data = str_replace("\r\n", " ", $data);
-	$data = str_replace("\r", " ", $data);
-	$data = str_replace("\n", " ", $data);
-	
-	$nxs_global_current_containerpostid_being_rendered = $before;
-	?>
-<script>
-(function($){
-	$(document).ready(function(){
-
-		NexusFrameworkSeoJsPlugin = function() {
-			window.YoastSEO.app.registerPlugin( 'nexusFrameworkSeoJsPlugin', {status: 'ready'} );
-			window.YoastSEO.app.registerModification( 'content', this.myContentModification, 'nexusFrameworkSeoJsPlugin', 5 );
-		}
-		NexusFrameworkSeoJsPlugin.prototype.myContentModification = function(data) 
-		{
-			return data + ' <?php echo $data; ?>';
-		};
-		new NexusFrameworkSeoJsPlugin();
-	});
-})(jQuery);
-</script>
-	<?php
-}
-
-function nxs_addyoastseosupport()
-{
-	add_action('admin_footer-post.php', 'nxs_seo_adminfooterpost');
-}
-
 function nxs_getpagecssclass($pagemeta)
 {
 	if (isset($pagemeta["cssclass"]))
