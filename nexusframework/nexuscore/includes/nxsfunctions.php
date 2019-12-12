@@ -4197,6 +4197,26 @@ function nxs_analytics_getanalytics_ua_internal()
 	return $result;
 }
 
+function nxs_seo_getfrontendcontent($postid)
+{
+	global $nxs_global_current_containerpostid_being_rendered;
+	$before = $nxs_global_current_containerpostid_being_rendered;
+	$nxs_global_current_containerpostid_being_rendered = $containerpostid;		
+	
+	$rendermode = "anonymous";
+	
+	$result = array();
+	$data = nxs_getrenderedhtml($id, $rendermode);
+	$data = strip_tags($data, '<p><a><img>');
+	$data = str_replace("\r\n", " ", $data);
+	$data = str_replace("\r", " ", $data);
+	$data = str_replace("\n", " ", $data);
+	
+	$nxs_global_current_containerpostid_being_rendered = $before;
+	
+	return $data;
+}
+
 function nxs_getpagecssclass($pagemeta)
 {
 	if (isset($pagemeta["cssclass"]))
