@@ -4206,7 +4206,7 @@ function nxs_seo_getfrontendcontent($postid)
 	$rendermode = "anonymous";
 	
 	$result = array();
-	$data = nxs_getrenderedhtml($id, $rendermode);
+	$data = nxs_getrenderedhtml($postid, $rendermode);
 	$data = strip_tags($data, '<p><a><img>');
 	$data = str_replace("\r\n", " ", $data);
 	$data = str_replace("\r", " ", $data);
