@@ -177,6 +177,16 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = nxs_dataprotection_getprivacypolicytext();
 		}
+		else if ($op == "first_month_of_quarter")
+		{
+			$quarter = $atts["quarter"];
+			$input = (($quarter - 1) * 3) + 1;
+		}
+		else if ($op == "last_month_of_quarter")
+		{
+			$quarter = $atts["quarter"];
+			$input = (($quarter - 1) * 3) + 3;
+		}
 		else if ($op == "privacypolicy_url")
 		{
 			$input = nxs_dataprotection_getprivacypolicyurl();
@@ -412,6 +422,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			// for example format="ymdHis" for yymmddhhmmss
 			// for available format options see https://www.php.net/manual/en/function.date.php
+			// W = week
 			// d = Day of the month, 2 digits with leading zeros
 			// j = Day of the month without leading zeros	(1 - 31)
 			// M = A short textual representation of a month, three letters	(Jan - Dec)
