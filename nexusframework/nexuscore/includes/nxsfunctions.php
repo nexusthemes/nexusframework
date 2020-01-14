@@ -13868,6 +13868,16 @@ function nxs_ensure_slashesstripped()
 	}
 }
 
+// kudos to https://stackoverflow.com/questions/5573334/remove-a-part-of-a-string-but-only-when-it-is-at-the-end-of-the-string
+function nxs_rtrimsubstring($str, $substring)
+{
+	if (substr($str,-strlen($substring))===$substring) 
+	{
+		$str = substr($str, 0, strlen($str)-strlen($substring));
+	}
+	return $str;
+}
+
 function nxs_ensure_proper_permalinks()
 {
 	$shouldautofix = true;
