@@ -453,7 +453,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$pieces = explode("@", $email);
 			$input = $pieces[1];
 			$input = strtolower($input);
-		}
+		}	
 		else if ($op == "hostname_to_domain")
 		{
 			// sub.example.org => example.org
@@ -466,6 +466,14 @@ function nxs_sc_string($atts, $content = null, $name='')
 			{
 				$input = $pieces[$count - 3] . "." . $pieces[$count - 2] . "." . $pieces[$count - 1];
 			}
+		}
+		else if ($op == "email_to_domain")
+		{
+			//
+			$email = $input;
+			$hostname = do_shortcode("[nxs_string ops=email_to_hostname input='{$email}']");
+			$domain = do_shortcode("[nxs_string ops=hostname_to_domain input='{$hostname}']");
+			$input = $domain;
 		}
 		else if ($op == "timemsecs")
 		{
