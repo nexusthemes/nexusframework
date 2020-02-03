@@ -1885,6 +1885,10 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = date("Y");
 		}
+		else if ($op == "previousyear")
+		{
+			$input = date("Y") - 1;
+		}
 		else if ($op == "urlencode"|| $op == "rawurlencode")
 		{
 			// rawurlencode is favored over urlencode; see https://stackoverflow.com/questions/996139/urlencode-vs-rawurlencode
