@@ -959,7 +959,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 						<br />
 						Problem; Google Maps API key not yet configured<br />
 						<br />
-						<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://www.wpsupporthelp.com/answer/i-rsquo-m-having-issues-with-the-google-maps-api-plugin-i-have-follow-1257/'>Click here to learn how to configure the Google Maps API key</a><br />
+						<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support-1008/google-maps-36/'>Click here to learn how to configure the Google Maps API key</a><br />
 						<a href='#' style='color: blue; text-decoration: underline;' onclick='nxs_js_popup_site_neweditsession("integrationshome"); return false;'>Click here to configure your Google Maps API Key</a>
 						<?php
 					}
@@ -1382,7 +1382,7 @@ function nxs_googlemap_map_popupcontent($optionvalues, $args, $runtimeblendeddat
     {
     	?>
      	<div style='margin-top: 10px;'>
-     		Note; to use the Google Maps function a (free) <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://www.wpsupporthelp.com/answer/i-rsquo-m-having-issues-with-the-google-maps-api-plugin-i-have-follow-1257/'>Google Maps API key is required (learn more)</a><br />
+     		Note; to use the Google Maps function a (free) <a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support-1008/google-maps-36/'>Google Maps API key is required (learn more)</a><br />
      	</div>
       <div class="nxs-clear"></div>
     	<?php

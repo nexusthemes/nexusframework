@@ -2768,7 +2768,7 @@ function nxs_site_integrationshome_getoptions($args)
 				"id" 			=> "googlemapsapikeyhint",
 				"label"			=> "",
 				"type" 				=> "custom",
-				"customcontent" => "<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://www.wpsupporthelp.com/answer/i-rsquo-m-having-issues-with-the-google-maps-api-plugin-i-have-follow-1257/'>Click here to learn how to configure the Google Maps API key</a>",
+				"customcontent" => "<a target='_blank' style='backgroundcolor: white; color: blue; text-decoration: underline;' href='https://nexusthemes.com/support-1008/google-maps-36/'>Click here to learn how to configure the Google Maps API key</a>",
 			),
 			
 		)
