@@ -7799,9 +7799,11 @@ function nxs_js_get_frameworkcsstemplate(csslookup)
         	scale: fontscale,
         	factor: factor_textfontsize, 
           csstemplate: '\
+          #nxs-container.nxs-text-fontsize-$nxs_identification; .nxs-default-p, \
         	#nxs-container.nxs-text-fontsize-$nxs_identification; .nxs-default-p p, \
         	#nxs-container.nxs-text-fontsize-$nxs_identification; .nxs-default-p li, \
         	#nxs-container.nxs-text-fontsize-$nxs_identification; .nxs-default-p span, \
+        	#nxs-container .nxs-placeholder.nxs-text-fontsize-$nxs_identification; .nxs-default-p, \
 	       	#nxs-container .nxs-placeholder.nxs-text-fontsize-$nxs_identification; .nxs-default-p p, \
 	       	#nxs-container .nxs-placeholder.nxs-text-fontsize-$nxs_identification; .nxs-default-p li, \
         	#nxs-container .nxs-placeholder.nxs-text-fontsize-$nxs_identification; .nxs-default-p span, \

@@ -249,7 +249,6 @@ function nxs_widgets_galleryitem_renderingallery($args)
 {
 	extract($args);
 		
-	// hardcoded implementation... to be moved to the galleryitem widget eventually ...
 	$imageid = $placeholdermetadata['image_imageid'];
 	if ($orientation == "landscape"  || $orientation == "") 
 	{
