@@ -1841,7 +1841,7 @@ class nxs_g_modelmanager
 					$itemmodeluri = "{$itemhumanmodelid}@$dumpmodel";
 					echo "output for entry $itemmodeluri:<br />";
 					$d = $this->getmodel($itemmodeluri);
-					echo json_encode($d);
+					echo htmlentities(json_encode($d));
 					echo "<br /><br />";
 				}
 				echo "<br />";
