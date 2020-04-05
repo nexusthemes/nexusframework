@@ -461,7 +461,7 @@ function nxs_widgets_gettotalwidgetareacount()
 	//
 	// sidebars (could have been any number, but 8 sounds like sufficient ...)
 	//
-	$result = 8;
+	$result = 12;
 	$result = apply_filters("nxs_f_widgets_gettotalwidgetareacount", $result);
 	return $result;
 }
