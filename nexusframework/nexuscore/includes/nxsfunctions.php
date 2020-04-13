@@ -3540,6 +3540,9 @@ function nxs_img_getimageurlthemeversion($result)
 		// to trick Photon
 		$result = nxs_addqueryparametertourl_v2($result, "quality", "100." . $decimals, true, true);
 	}
+	
+	$result = apply_filters("nxs_f_img_getimageurlthemeversion", $result, $args);	
+
 	return $result;
 }
 
