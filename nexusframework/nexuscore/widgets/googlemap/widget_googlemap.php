@@ -449,6 +449,9 @@ function nxs_widgets_googlemap_home_getoptions($args)
 
 function nxs_widget_googlemap_getlatlng($address, $latlngfetchbehaviour = "")
 {
+	$result = array();
+	return $result;
+	
 	$address = trim($address);
 	if ($address == "")
 	{
@@ -676,7 +679,7 @@ function nxs_widgets_googlemap_render_webpart_render_htmlvisualization($args)
 	// convert address to latlng
 	$latlng = nxs_widget_googlemap_getlatlng($address);
 	
-	$ismapsavailable = false; 
+	$ismapsavailable = true; 
 	if ($latlng["licensestatus"] == "OK" && $latlng["found"] == "true")
 	{
 		$ismapsavailable = true;
