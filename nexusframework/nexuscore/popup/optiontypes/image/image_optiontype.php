@@ -136,13 +136,14 @@ function nxs_popup_optiontype_image_renderhtmlinpopup($optionvalues, $args, $run
 								echo '<p>height : <span class="blink" style="color: orange; font-weight: bold">'.$imagemetadata[2].'</span> px</p>'; 
 								echo '<p>The image you\'ve uploaded exceeds the width of <span style="font-weight: bold">1366</span> px and / or height of <span style="font-weight: bold">768</span> px. This is larger than the most commonly used screen resolution. You might consider resizing it.</p>'; 
 							
-							} 
-							else 
-							{
+							} else if ($imagemetadata[1] > 0 || $imagemetadata[2] > 0) {	
 								$posttitle = nxs_gettitle_for_postid($imgidtopreview);
 								echo "<p>title : {$posttitle}</p>";
 								echo '<p>width : '.$imagemetadata[1].' px</p>';
 								echo '<p>height : '.$imagemetadata[2].' px</p>';
+							} else {
+								$posttitle = nxs_gettitle_for_postid($imgidtopreview);
+								echo "<p>title : {$posttitle}</p>";
 							}
 						}
 					}
