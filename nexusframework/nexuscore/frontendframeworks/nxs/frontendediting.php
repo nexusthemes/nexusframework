@@ -448,10 +448,22 @@ if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
 {
 	?>
 	<script data-cfasync="false" type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script data-cfasync="false" type="text/javascript">
-		google.load('webfont','1');
-	</script>
 	<?php
+	if (true)
+	{
+		// 
+		?>
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
+		<?php
+	}
+	else
+	{
+		?>
+		<script data-cfasync="false" type="text/javascript">
+			google.load('webfont','1');
+		</script>
+		<?php
+	}
 
 	$fontsbeingused = array();
 	$fontidentifiers = nxs_font_getfontidentifiers();
@@ -473,6 +485,7 @@ if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
 		?>
 		<!-- fee -->
 		<script>
+
 			WebFont.load
 			(
 				{
@@ -520,7 +533,7 @@ if (nxs_dataprotection_isactivityonforuser($googlewebfont_activity))
 		      	] 
 		      }
 				}
-			); 
+			);
 		</script>
 		<?php
 	}

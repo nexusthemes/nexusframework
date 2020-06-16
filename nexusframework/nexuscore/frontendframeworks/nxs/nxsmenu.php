@@ -65,10 +65,23 @@
 		<!-- loading all fonts -->
 		
 		<script data-cfasync="false"  src="https://www.google.com/jsapi"></script>
-		<script data-cfasync="false" >
-			google.load('webfont','1');
-		</script>
 		<?php
+		if (true) 
+		{
+			// 
+			?>
+			<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
+			<?php
+		}
+		else
+		{
+			?>
+			<script data-cfasync="false" type="text/javascript">
+				google.load('webfont','1');
+			</script>
+			<?php
+		}
+		
 		/* FONT HANDLING v2 START */
 		// alle fonts worden hier ingeladen, anders kan gebruiker niet zien welke keuze hij maakt
 		$allfontfams = array();
