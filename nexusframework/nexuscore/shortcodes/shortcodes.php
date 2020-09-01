@@ -310,6 +310,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "a_or_an")
 		{
+			// kudos to https://stackoverflow.com/questions/23933910/add-prefix-a-or-an-to-a-word-using-php
 			$input = trim($input);
 			$vowelArry = array('a','e','i','o','u');  // array of vowel
 			$prefix = in_array(strtolower(substr($input, 0, 1)),$vowelArry)? "an" : "a"; // logic to add prefix
