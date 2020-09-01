@@ -308,6 +308,13 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = strtoupper($input);
 		}
+		else if ($op == "a_or_an")
+		{
+			$input = trim($input);
+			$vowelArry = array('a','e','i','o','u');  // array of vowel
+			$prefix = in_array(strtolower(substr($input, 0, 1)),$vowelArry)? "an" : "a"; // logic to add prefix
+			$input = $prefix . " " . $input; // updated word
+		}
 		else if ($op == "empty")
 		{
 			$input = "";
