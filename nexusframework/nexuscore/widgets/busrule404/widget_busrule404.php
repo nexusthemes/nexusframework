@@ -160,7 +160,11 @@ function nxs_busrule_busrule404_process($args, &$statebag)
 	$p = $wp_query->posts;
 	
 	$isnotfound = false;
-	if (count($p) == 0)
+	if (!is_array($p))
+	{
+		$isnotfound = true;
+	}
+	else if (count($p) == 0)
 	{
 		$isnotfound = true;
 	}
