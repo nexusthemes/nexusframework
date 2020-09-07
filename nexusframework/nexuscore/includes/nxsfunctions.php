@@ -7121,11 +7121,14 @@ function nxs_lookups_getcombinedlookups_for_currenturl()
 function nxs_f_lookups_context_includedynamiclookups($result = array(), $context = array())
 {
 	global $nxs_gl_dynamiclookups;
-	foreach ($nxs_gl_dynamiclookups as $key => $lookups)
+	if (is_array($nxs_gl_dynamiclookups))
 	{
-		if ($lookups != "")
+		foreach ($nxs_gl_dynamiclookups as $key => $lookups)
 		{
-			$result = array_merge($result, $lookups);
+			if ($lookups != "")
+			{
+				$result = array_merge($result, $lookups);
+			}
 		}
 	}
 	return $result;

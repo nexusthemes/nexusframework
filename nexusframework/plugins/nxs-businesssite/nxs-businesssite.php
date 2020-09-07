@@ -211,12 +211,15 @@ class nxs_g_modelmanager
 				$url_fragment_variables = $templateproperties["url_fragment_variables"];
 				
 				$fragmentslookup = array();
-				foreach ($url_fragment_variables as $key => $value)
+				if (is_array($url_fragment_variables))
 				{
-					// $key = "@@url.{$key}";	// for example {{@@url.id}}} would become 1234
-					$key = $key;	// for example {{@@url.id}}} would become 1234
-					$value = $value;
-					$fragmentslookup[$key] = $value;
+					foreach ($url_fragment_variables as $key => $value)
+					{
+						// $key = "@@url.{$key}";	// for example {{@@url.id}}} would become 1234
+						$key = $key;	// for example {{@@url.id}}} would become 1234
+						$value = $value;
+						$fragmentslookup[$key] = $value;
+					}
 				}
 				
 				// add the hostname
