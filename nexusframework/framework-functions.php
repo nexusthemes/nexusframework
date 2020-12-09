@@ -1237,6 +1237,11 @@ function nxs_init()
 					$poststatus = get_post_status($postid);
 					echo "poststatus: $poststatus<br />";
 					
+					echo "post: $poststatus<br />";
+					$the_post = get_post($postid);
+					var_dump($the_post);
+					echo "<br />";
+					
 					$posttype = get_post_type($postid);
 					if ($posttype == "attachment")
 					{
