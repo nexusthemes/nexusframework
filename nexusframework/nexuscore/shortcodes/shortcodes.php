@@ -1879,6 +1879,32 @@ function nxs_sc_string($atts, $content = null, $name='')
 				}
 			}
 		}
+		else if ($op == "intmap")
+		{
+			// sanitize the input first, as attributes don't support weird characters
+			$input = preg_replace('/[^A-Za-z0-9]/', '', $input); // Removes all non alphabetical
+			
+			if ($input == "")
+			{
+				$alternativekey = "empty";
+				if (array_key_exists($alternativekey, $atts))
+				{
+					$input = $atts[$alternativekey];
+				}
+			}
+			else
+			{
+				$key = "i{$input}";
+				if (isset($atts[$key]))
+				{
+					$input = $atts[$key];
+				}
+				else
+				{
+					$input = $atts["fallback"];
+				}
+			}
+		}
 		else if ($op == "strip_tags")
 		{
 			$orig = $input;
