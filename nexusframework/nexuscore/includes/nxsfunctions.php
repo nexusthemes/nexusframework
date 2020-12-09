@@ -195,6 +195,8 @@ function nxs_after_theme_setup()
 		nxs_setupcache();
 	}
 	
+	nxs_enableoutputpostprocessor();
+	
 	if (!nxs_shouldshowadminbar())
 	{
 		// we disable the admin bar, as 
@@ -683,6 +685,44 @@ function nxs_handlerequestwithcaching($buffer)
 	{
 		$buffer = nxs_prettyprint_array($nocacheexplanations);
 	}
+	
+	return $buffer;
+}
+
+function nxs_enableoutputpostprocessor()
+{
+	global $wp_version;
+	
+	$postprocessfunctionname = "nxs_postprocessoutput_" . str_replace(".", "_", $wp_version);
+	//error_log("postprocessfunctionname: $postprocessfunctionname");
+	
+	if (function_exists($postprocessfunctionname))
+	{
+		nxs_ob_start($postprocessfunctionname);		
+	}
+	
+}
+
+function nxs_postprocessoutput_5_6($buffer)
+{
+	$buffer = nxs_patch_jquery_migrate_1_4_1($buffer);
+	
+	return $buffer;
+}
+
+function nxs_patch_jquery_migrate_1_4_1($buffer)
+{
+	// remove jquery migrate as injected by wp
+	$home_url = nxs_geturl_home();
+	$wrong_url = "{$home_url}/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2";
+	$wrong_url = str_replace("//wp-includes", "/wp-includes", $wrong_url);
+	$inproper_migrate_script = "<script type='text/javascript' src='{$wrong_url}' id='jquery-migrate-js'></script>";
+	
+	$fixed_url = nxs_getframeworkurl() . '/js/migrate/jquery-migrate-1-4-1.js';
+	$proper_migrate_script = "<!-- nxs_patch_jquery_migrate_1_4_1_begin--><script type='text/javascript' src='{$fixed_url}'></script><!-- nxs_patch_jquery_migrate_1_4_1_end-->";
+	
+	$buffer = str_replace($inproper_migrate_script, $proper_migrate_script, $buffer);
+	$buffer = str_replace("</body>", "<!-- nxs_patch_jquery_migrate_1_4_1 applied --></body>", $buffer);
 	
 	return $buffer;
 }
@@ -1834,6 +1874,8 @@ function nxs_addqueryparametertourl_v2($url, $parameter, $value, $shouldurlencod
 	return $result;
 }
 
+
+/// nxsparsekeyvalues
 function nxs_parse_keyvalues($lookups)
 {
 	$result = array();
