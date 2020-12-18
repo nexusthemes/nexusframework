@@ -693,7 +693,10 @@ function nxs_enableoutputpostprocessor()
 {
 	global $wp_version;
 	
-	$postprocessfunctionname = "nxs_postprocessoutput_" . str_replace(".", "_", $wp_version);
+	$pieces = explode(".", $wp_version);
+	$major_minor_version = $pieces[0] . "." . $pieces[1];
+	
+	$postprocessfunctionname = "nxs_postprocessoutput_" . str_replace(".", "_", $major_minor_version);
 	//error_log("postprocessfunctionname: $postprocessfunctionname");
 	
 	if (function_exists($postprocessfunctionname))
@@ -721,8 +724,18 @@ function nxs_patch_jquery_migrate_1_4_1($buffer)
 	$fixed_url = nxs_getframeworkurl() . '/js/migrate/jquery-migrate-1-4-1.js';
 	$proper_migrate_script = "<!-- nxs_patch_jquery_migrate_1_4_1_begin--><script type='text/javascript' src='{$fixed_url}'></script><!-- nxs_patch_jquery_migrate_1_4_1_end-->";
 	
-	$buffer = str_replace($inproper_migrate_script, $proper_migrate_script, $buffer);
-	$buffer = str_replace("</body>", "<!-- nxs_patch_jquery_migrate_1_4_1 applied --></body>", $buffer);
+	if (nxs_stringcontains($buffer, $wrong_url))
+	{
+		$buffer = str_replace($inproper_migrate_script, $proper_migrate_script, $buffer);
+		$buffer = str_replace("</body>", "<!-- nxs_patch_jquery_migrate_1_4_1 applied --></body>", $buffer);
+	}
+	else
+	{
+		// use alternative approach
+		$buffer = str_replace("jquery-migrate.min.js", "jquery-migrate.min.404.js", $buffer);	// will result in a 404 which is what we want
+		$buffer = str_replace("</body>", "{$proper_migrate_script}</body>", $buffer);
+		$buffer = str_replace("</body>", "<!-- nxs_patch_jquery_migrate_1_4_1 applied --></body>", $buffer);
+	}
 	
 	return $buffer;
 }
