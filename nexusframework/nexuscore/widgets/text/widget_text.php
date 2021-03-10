@@ -211,12 +211,14 @@ function nxs_widgets_text_home_getoptions($args)
 				"unistylablefield"	=> true
 			),
 			*/
+			/*
 			array(
 				"id" 				=> "text_fontzen",
 				"type" 				=> "fontzen",
 				"label" 			=> nxs_l18n__("Text font", "nxs_td"),
 				"unistylablefield"	=> true
-			),			
+			),
+			*/
 			array(
 				"id" 				=> "text_alignment",
 				"type" 				=> "radiobuttons",

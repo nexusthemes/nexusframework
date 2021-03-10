@@ -713,6 +713,14 @@ function nxs_postprocessoutput_5_6($buffer)
 	return $buffer;
 }
 
+function nxs_postprocessoutput_5_7($buffer)
+{
+	$buffer = nxs_patch_jquery_migrate_1_4_1($buffer);
+	
+	return $buffer;
+}
+
+
 function nxs_patch_jquery_migrate_1_4_1($buffer)
 {
 	// remove jquery migrate as injected by wp
