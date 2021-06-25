@@ -744,7 +744,9 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 						//before: nxs_js_slidebox_slideupdated_<?php echo $placeholderid; ?>,
 						after: nxs_js_slidebox_slideupdated_<?php echo $placeholderid; ?>
 					}
-					jQuery(theSlider).cycle(options);
+					if (typeof theSlider.cycle === 'function') {
+						jQ_nxs(theSlider).cycle(options);
+					}
 					
 					var shouldPauseOnHover = <?php echo $pause_transition; ?>;
 					if (shouldPauseOnHover) {
@@ -753,11 +755,11 @@ function nxs_widgets_sliderbox_render_webpart_render_htmlvisualization($args)
 						jQuery('#nxs-widget-<?php echo $placeholderid; ?>').hover (
 							function()  {
 								//nxs_js_log("hover; pausing slider...");
-								jQuery(theSlider).cycle('pause');
+								jQ_nxs(theSlider).cycle('pause');
 							},  
 							function()  {
 								//nxs_js_log("mouse out, resuming slider...");
-							 	jQuery(theSlider).cycle('resume');
+							 	jQ_nxs(theSlider).cycle('resume');
 							}  
 		    			);
 		    		} else {

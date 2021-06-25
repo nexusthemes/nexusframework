@@ -2458,7 +2458,14 @@ function nxs_isvalidemailaddress($email)
   return true;
 }
 
+// obsolete; use nxs_mail_gethostnameforemail instead
 function nxs_mail_getdomainforemail($email)
+{
+	$result = nxs_mail_gethostnameforemail($email);
+	return $result;
+}
+
+function nxs_mail_gethostnameforemail($email)
 {
 	if ($email == "")
 	{
@@ -6075,9 +6082,32 @@ function nxs_geturlcurrentpage()
 		"rewritewebmethods" => "true",
 	);
   $serverrequri = nxs_geturicurrentpage($args);
-  $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
+  if (empty($_SERVER["HTTPS"]))
+  {
+  	$s = "";
+  }
+  else
+  {
+  	if ($_SERVER["HTTPS"] == "on")
+  	{
+  		$s = "s";
+  	}
+  	else
+  	{
+  		$s = "";
+  	}
+  }
   $protocol = nxs_strleft(strtolower($_SERVER["SERVER_PROTOCOL"]), "/").$s;
-  $port = ($_SERVER["SERVER_PORT"] == "80" || $_SERVER["SERVER_PORT"] == "443") ? "" : (":".$_SERVER["SERVER_PORT"]);
+  
+  if ($_SERVER["SERVER_PORT"] == "80" || $_SERVER["SERVER_PORT"] == "443")
+  {
+  	$port = "";
+  }
+  else
+  {
+  	$port = ":".$_SERVER["SERVER_PORT"];
+  }
+  
   return $protocol."://".$_SERVER['HTTP_HOST'].$port.$serverrequri;   
 }
 
@@ -11807,21 +11837,29 @@ function nxs_get_images_in_post_v2($args)
 		foreach ($placeholderids as $placeholderid)
 		{
 			$placeholdermetadata = nxs_getwidgetmetadata($postid, $placeholderid);
-			
 			$item = strip_tags($placeholdermetadata["thumbid"]);
 			if ($item != "")
 			{
-				if (!in_array($item, $result))
-				{
-					$result[] = $item;
-				}
+				$result[] = $item;
 			}			
 			$item = strip_tags($placeholdermetadata["image_imageid"]);
 			if ($item != "")
 			{
-				if (!in_array($item, $result))
+				$result[] = $item;
+			}
+			
+			// sliderbox
+			$items_genericlistid = strip_tags($placeholdermetadata["items_genericlistid"]);
+			if ($items_genericlistid != "")
+			{
+				$sub_items = nxs_get_images_in_post($items_genericlistid);
+				
+				foreach ($sub_items as $sub_item)
 				{
-					$result[] = $item;
+					if ($sub_item != "")
+					{
+						$result[] = $sub_item;
+					}
 				}
 			}
 			
@@ -11841,6 +11879,68 @@ function nxs_get_images_in_post_v2($args)
 		}
 		$rowindex++;
 	}
+	
+	$includelastheaderimg = $args["includelastheaderimg"];
+	if ($includelastheaderimg == true)
+	{
+		// ensure this postid refers to a page or post
+		$wpposttype = nxs_getwpposttype($postid);
+		if (!in_array($wpposttype, array("post", "page")))
+		{
+			nxs_webmethod_return_nack("includeheaderimgs is only allowed for pulling images of posts and pages, not for $wpposttype");
+		}
+		
+		// derive the postid of the header
+		$header_postid = nxs_get_headerpostid_for_postid($postid);
+		$sub_images = nxs_get_images_in_post($header_postid);
+		$num_sub_images = count($sub_images);
+		if ($num_sub_images > 0)
+		{
+			// include the last one
+			$result[] = $sub_images[$num_sub_images - 1];
+		}
+	}
+
+	// strip duplicate items
+	$result = array_unique($result);	
+					
+	return $result;
+}
+
+// this function returns the headerpostid for a given postid
+// TODO: the current implemenation is not optimal; it only returns the header id if
+// there is a specific business rule for the specific given postid (i.e. it will ignore other rules like 'always')
+// also it doesn't allow 'cascading' rules at this moment in time
+function nxs_get_headerpostid_for_postid($postid)
+{
+	$result = false;
+	
+	// loop over businessrules
+	$businessrules = nxs_rules_getpagetemplaterules();
+	
+	if ($result == false)
+	{
+		$pagetemplaterulesset_id = $businessrules["pagetemplaterulesset_id"];
+		$index = 0;
+		foreach ($businessrules as $currentbusinessrule) 
+		{
+			$content = $currentbusinessrule["content"];
+			$businessruleelementid = nxs_parsepagerow($content);
+			$placeholdermetadata = nxs_getwidgetmetadata($pagetemplaterulesset_id, $businessruleelementid);
+			$placeholdertype = $placeholdermetadata["type"];
+			if ($placeholdertype == "busrulepostid")
+			{
+				// for now the only one we support
+				$filter_postid = $placeholdermetadata["filter_postid"];
+				if ($filter_postid == $postid)
+				{
+					$result = $placeholdermetadata["header_postid"];
+				}
+			}
+		}
+	}
+	
+	// todo: extend to add support for the 'always' rule
 	
 	return $result;
 }
