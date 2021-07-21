@@ -720,6 +720,12 @@ function nxs_postprocessoutput_5_7($buffer)
 	return $buffer;
 }
 
+function nxs_postprocessoutput_5_8($buffer)
+{
+	$buffer = nxs_patch_jquery_migrate_1_4_1($buffer);
+	
+	return $buffer;
+}
 
 function nxs_patch_jquery_migrate_1_4_1($buffer)
 {
