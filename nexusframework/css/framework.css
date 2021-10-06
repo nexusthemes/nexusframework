@@ -1,5 +1,5 @@
 /*  
-	Name: Framework
+	Name: Framework (20210909)
 	Version: 2.2.0
 	Author: Nexus Studios
 	Author URI: https://nexusthemes.com/ 
@@ -1261,7 +1261,6 @@ ul.nxs-social-list a										{ float: left; width: 32px; height: 32px; margin: 
 ul.nxs-social-list a:first-child 							{ margin-left: 0px; }
 
 .nxs-social-rss												{ background: url('../images/icon-rss.png') no-repeat center; }
-.nxs-social-website											{ background: url('../images/icon-website.png') no-repeat center; }
 .nxs-social-facebook										{ background: url('../images/icon-facebook.png') no-repeat center; }
 .nxs-social-twitter											{ background: url('../images/icon-twitter.png') no-repeat center; }
 .nxs-social-linkedin										{ background: url('../images/icon-linkedin.png') no-repeat center; }
