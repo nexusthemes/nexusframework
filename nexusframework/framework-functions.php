@@ -1553,6 +1553,16 @@ function nxs_add_metaboxes()
 	}
 }
 
+function nxs_theme_getversion()
+{
+	$meta = nxs_theme_getmeta();
+	$version = $meta["version"];
+	
+	$version = apply_filters('nxs_f_theme_getversion', $version);	
+
+	return $version;
+}
+
 add_action('nxs_action_postfooterlink', 'nxs_render_postfooterlink');
 function nxs_render_postfooterlink()
 {

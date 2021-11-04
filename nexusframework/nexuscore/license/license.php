@@ -82,7 +82,7 @@ add_action( 'admin_init', 'plugin_admin_init' );
 function nxs_admin_updates_page_content()
 {
 	$thememeta = nxs_theme_getmeta();
-	$version = $thememeta["version"];
+	$version = nxs_theme_getversion();
 	
 	$latestversionurl = "https://s3.amazonaws.com/devices.nexusthemes.com/!api/latestthemeversion.txt";
 	$args = array

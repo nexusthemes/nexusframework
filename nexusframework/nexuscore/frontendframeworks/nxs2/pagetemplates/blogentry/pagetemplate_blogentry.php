@@ -630,7 +630,7 @@ function nxs_pagetemplate_handleheader()
 	}
 
 	$meta = nxs_theme_getmeta();
-	$version = $meta["version"];
+	$version = nxs_theme_getversion();
 	
 	$headmeta = trim(nxs_getheadmeta()) . " v1";
 ?>

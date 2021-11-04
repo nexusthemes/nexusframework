@@ -32,7 +32,7 @@
 		$faviconid = "";
 	}
 	$meta = nxs_theme_getmeta();
-	$version = $meta["version"];
+	$version = nxs_theme_getversion();
 	
 	$headmeta = nxs_getheadmeta();
 ?>
@@ -43,7 +43,7 @@
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo nxs_getcharset(); ?>" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<!-- Nexus Framework | https://nexusthemes.com -->
-	<!-- Nexus Meta | v1 | <?php echo $headmeta; ?> -->
+	<!-- Nexus Meta | v1 | <?php echo $headmeta; ?> x -->
 	<meta name="generator" content="Nexus Themes | <?php echo nxs_getthemeid(); ?> | <?php echo $version; ?>" />
 	<?php nxs_render_htmlcorescripts(); ?>
 	<?php 

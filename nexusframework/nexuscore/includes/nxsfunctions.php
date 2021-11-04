@@ -3610,7 +3610,8 @@ function nxs_img_getimageurlthemeversion($result)
 	if (function_exists("nxs_theme_getmeta"))
 	{
 		$meta = nxs_theme_getmeta();
-		$version = $meta["version"] . nxs_img_getstamp();
+		$version = nxs_theme_getversion();
+		$version = $version . nxs_img_getstamp();
 		$decimals = preg_replace("/[^0-9]/","",$version);
 		// we use the quality parameter, since that's the only one 
 		// to trick Photon
@@ -5281,8 +5282,7 @@ function nxs_getthemeversion()
 	{
 		if (function_exists("nxs_theme_getmeta"))
 		{
-			$thememeta = nxs_theme_getmeta();
-			$value = $thememeta["version"];
+			$value = nxs_theme_getversion();
 		}
 		else
 		{
