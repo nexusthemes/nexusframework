@@ -415,7 +415,7 @@
 </script>
 
 <?php 
-if (is_admin) 
+if (is_admin()) 
 { 
 	// WP backend is showing
 	?>

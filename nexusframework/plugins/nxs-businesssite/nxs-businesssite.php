@@ -2085,7 +2085,8 @@ class nxs_g_modelmanager
   {
   	add_filter('init', array($this, "instance_init"), 5, 1);
 		// add_action('nxs_getwidgets',array( $this, "getwidgets"), 20, 2);
-		add_action('admin_head', array($this, "instance_admin_head"), 30, 1);
+		// add_action('admin_head', array($this, "instance_admin_head"), 30, 1);
+		
 		add_filter('wp_nav_menu_objects', array($this, 'wp_nav_menu_objects'), 10, 3);
 		add_filter("the_posts", array($this, "businesssite_the_posts"), 1000, 2);
 		
