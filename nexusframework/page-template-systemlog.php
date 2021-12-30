@@ -6,7 +6,7 @@
 	// process meta data
 	$meta = nxs_get_corepostmeta($postid);
 
-	if (!is_super_admin)
+	if (!is_super_admin())
 	{
 		$url = wp_login_url(get_permalink());
 		$url = nxs_addqueryparametertourl($url, "nxsnosuperadmin", "no");
