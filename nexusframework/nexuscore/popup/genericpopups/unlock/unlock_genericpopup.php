@@ -12,9 +12,9 @@ function nxs_popup_genericpopup_unistylepersister_getpopup($args)
 	// array die wordt gevoed door de clientside variabele "popupsessiondata",
 	// die gedefinieerd is in de file 'frontendediting.php'
 	
-	extract($clientpopupsessioncontext);
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	if ($nxs_unistylepersister_group == "")
 	{

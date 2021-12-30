@@ -113,8 +113,8 @@ function nxs_widgets_undefined_home_rendersheet($args)
 	$type = $temp_array['type'];
 
 	// clientpopupsessiondata bevat key values van de client side, deze overschrijven reeds bestaande variabelen
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	//
 	//

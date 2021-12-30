@@ -988,8 +988,8 @@ function nxs_pagetemplate_blogentry_home_getsheethtml($args)
 		$selectedcategoryids .= $additional;
 	}
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$result = array();
 	
@@ -1279,8 +1279,8 @@ function nxs_pagetemplate_blogentry_edittitle_getsheethtml($args)
 	$pagedata = get_post($postid);
 	$titel = $pagedata->post_title;
 
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 		
@@ -1401,8 +1401,8 @@ function nxs_pagetemplate_blogentry_dialogappendrow_getsheethtml($args)
 			
 	$result = array();
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	nxs_ob_start();
 
@@ -1538,8 +1538,8 @@ function nxs_pagetemplate_blogentry_appendstruct_getsheethtml($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$fileuploadurl = admin_url( 'admin-ajax.php');
 	

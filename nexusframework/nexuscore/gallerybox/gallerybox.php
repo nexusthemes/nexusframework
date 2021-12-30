@@ -5,9 +5,9 @@ function nxs_gallerybox_detail_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientpopupsessioncontext);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	global $nxs_global_current_containerpostid_being_rendered;
 	$nxs_global_current_containerpostid_being_rendered = $containerpostid;

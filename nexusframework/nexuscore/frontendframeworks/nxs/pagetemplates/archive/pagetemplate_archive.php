@@ -877,8 +877,8 @@ function nxs_pagetemplate_archive_home_getsheethtml($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$result = array();
 	

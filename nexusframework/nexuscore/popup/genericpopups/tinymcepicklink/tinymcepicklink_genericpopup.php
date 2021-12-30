@@ -38,8 +38,8 @@ function nxs_popup_genericpopup_tinymcepicklink_getpopup($args)
 	}
 
 	// clientpopupsessiondata bevat key values van de client side, deze overschrijven reeds bestaande variabelen
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	if ($linktype == "autoderive")
 	{

@@ -4,8 +4,8 @@ function nxs_popup_genericpopup_iconpicker_getpopup($args)
 {
 	extract($args);
 	
-	extract($clientpopupsessiondata);	
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }	
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 
 	$result = array();
 	$result["result"] = "OK";

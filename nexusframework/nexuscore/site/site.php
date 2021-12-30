@@ -96,8 +96,8 @@ function nxs_site_loginhome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -252,8 +252,8 @@ function nxs_site_nieuwfooterhome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -335,8 +335,8 @@ function nxs_site_nieuwheaderhome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -416,8 +416,8 @@ function nxs_site_nieuwsubheaderhome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -498,8 +498,8 @@ function nxs_site_nieuwsubfooterhome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -580,8 +580,8 @@ function nxs_site_newcontentparthome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -661,8 +661,8 @@ function nxs_site_newpagedecoratorhome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -743,8 +743,8 @@ function nxs_site_nieuwsidebarhome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -824,8 +824,8 @@ function nxs_site_nieuwmenuhome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -906,8 +906,8 @@ function nxs_site_nieuwlisthome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -988,8 +988,8 @@ function nxs_site_nieuwslidesethome_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -1072,8 +1072,8 @@ function nxs_site_dashboarduserhome_rendersheet($args)
 	$current_user = wp_get_current_user();
   $nxs_user_email = $current_user->user_email;
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -1211,8 +1211,8 @@ function nxs_site_dashboardfaviconhomev2_rendersheet($args)
 	// array die wordt gevoed door de clientside variabele "popupsessiondata",
 	// die gedefinieerd is in de file 'frontendediting.php'
 	//
-	extract($clientpopupsessiondata);	
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }	
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$fileuploadurl = admin_url( 'admin-ajax.php');
 		
@@ -1587,8 +1587,8 @@ function nxs_site_logouthome_rendersheet($args)
 	
 	//
 		
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	
@@ -1661,8 +1661,8 @@ function nxs_site_mediamanagerupload_rendersheet($args)
 	// array die wordt gevoed door de clientside variabele "popupsessiondata",
 	// die gedefinieerd is in de file 'frontendediting.php'
 	//
-	extract($clientpopupsessiondata);	
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }	
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$fileuploadurl = admin_url( 'admin-ajax.php');
 		
@@ -1887,9 +1887,9 @@ function nxs_site_newposthome_rendersheet($args)
 
 	$meta = nxs_getsitemeta();
 	
-	extract($clientpopupsessiondata);
-	extract($clientpopupsessioncontext);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$result = array();
 	
@@ -2086,8 +2086,8 @@ function nxs_site_dashboardextensionsv2_rendersheet($args)
 	$current_user = wp_get_current_user();
   $nxs_user_email = $current_user->user_email;
   	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 
 	$sitemeta = nxs_getsitemeta();
 	$collectanonymousdata = $sitemeta["collectanonymousdata"];
@@ -2334,8 +2334,8 @@ function nxs_site_dashboardhome_rendersheet($args)
 	$current_user = wp_get_current_user();
   $nxs_user_email = $current_user->user_email;
   	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 
 	$sitemeta = nxs_getsitemeta();
 	$collectanonymousdata = $sitemeta["collectanonymousdata"];
@@ -2578,8 +2578,8 @@ function nxs_site_supportoptions_rendersheet($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 	

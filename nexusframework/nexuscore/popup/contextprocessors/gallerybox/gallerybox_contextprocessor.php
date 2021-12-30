@@ -5,7 +5,7 @@ function nxs_popup_contextprocessor_gallerybox_getcustompopuphtml($args)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	if ($galleryid == "") { nxs_webmethod_return_nack("galleryid not set"); }
  	if ($imageid == "") { nxs_webmethod_return_nack("imageid not set"); }

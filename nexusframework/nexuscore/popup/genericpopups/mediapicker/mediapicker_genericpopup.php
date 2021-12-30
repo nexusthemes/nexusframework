@@ -46,9 +46,9 @@ function nxs_popup_genericpopup_mediapicker_getpopup($args)
 	// pagina's state te laten delen. De inhoud van clientpopupsessiondata is een
 	// array die wordt gevoed door de clientside variabele "popupsessiondata",
 	// die gedefinieerd is in de file 'frontendediting.php'
-	extract($clientpopupsessioncontext);
-	extract($clientpopupsessiondata);	
-	extract($clientshortscopedata);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }	
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$fileuploadurl = admin_url('admin-ajax.php');
 		

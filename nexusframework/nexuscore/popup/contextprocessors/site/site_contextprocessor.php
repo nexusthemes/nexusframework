@@ -5,7 +5,7 @@ function nxs_popup_contextprocessor_site_getcustompopuphtml($args)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
  	if ($sheet == "") { nxs_webmethod_return_nack("sheet not set"); }
 
@@ -45,7 +45,7 @@ function nxs_popup_contextprocessor_site_supportsoptions($args)
 	$result = false;
 	
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
  	if ($sheet == "") { nxs_webmethod_return_nack("sheet not set"); }
 	
@@ -72,7 +72,7 @@ function nxs_popup_contextprocessor_site_getoptions($args)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
  	if ($sheet == "") { nxs_webmethod_return_nack("sheet not set"); }
 	
@@ -103,7 +103,7 @@ function nxs_popup_contextprocessor_site_getpersisteddata($args)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 	
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	// delegate
 	$result = nxs_getsitemeta();
@@ -117,7 +117,7 @@ function nxs_popup_contextprocessor_site_mergedata_internal($args, $metadata)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 	
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	// delegate
 	nxs_mergesitemeta($metadata);
@@ -133,7 +133,7 @@ function nxs_popup_contextprocessor_site_render_nxs_js_savegenericpopup($args)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 	
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	?>
 	function nxs_js_savegenericpopup()

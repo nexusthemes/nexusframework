@@ -303,8 +303,8 @@ function nxs_widgets_socialsharing_home_rendersheet($args)
 	$allshares = nxs_widgets_socialsharing_getallshares();
 	
 	// clientpopupsessiondata bevat key values van de client side, deze overschrijven reeds bestaande variabelen
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 
 
 	$result = array();

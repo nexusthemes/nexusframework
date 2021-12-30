@@ -41,8 +41,8 @@ function nxs_postwizard_pdt3_home_getsheethtml($args)
 
 	$meta = nxs_getsitemeta();
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$result = array();
 	

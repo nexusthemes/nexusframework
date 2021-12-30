@@ -7,8 +7,8 @@ function nxs_popup_genericpopup_datepicker_getpopup($args)
 	//
 	$nxs_datepicker_currentvalue = $clientpopupsessioncontext["nxs_datepicker_currentvalue"];
 	
-	extract($clientpopupsessiondata);	
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }	
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 
 	$result = array();
 	$result["result"] = "OK";

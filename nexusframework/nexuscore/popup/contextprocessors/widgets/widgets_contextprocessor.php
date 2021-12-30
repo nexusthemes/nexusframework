@@ -5,7 +5,7 @@ function nxs_popup_contextprocessor_widgets_getcustompopuphtml($args)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); }
  	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
@@ -57,7 +57,7 @@ function nxs_popup_contextprocessor_widgets_supportsoptions($args)
 	$result = false;
 	
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); }
  	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
@@ -99,7 +99,7 @@ function nxs_popup_contextprocessor_widgets_getoptions($args)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set"); }
  	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set"); }
@@ -175,7 +175,7 @@ function nxs_popup_contextprocessor_widgets_getpersisteddata($args)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 	
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set in context"); }
@@ -191,7 +191,7 @@ function nxs_popup_contextprocessor_widgets_mergedata_internal($args, $metadata)
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 	
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set in context"); }
@@ -210,7 +210,7 @@ function nxs_popup_contextprocessor_widgets_render_nxs_js_savegenericpopup($args
 	if (!isset($args["clientpopupsessioncontext"]))	{	nxs_webmethod_return_nack("clientpopupsessioncontext not set"); }
 	
 	$clientpopupsessioncontext = $args["clientpopupsessioncontext"];
-	extract($clientpopupsessioncontext);
+	if ($clientpopupsessioncontext != null) { if ($clientpopupsessioncontext != null) { extract($clientpopupsessioncontext); } }
 	
 	if ($postid == "") { nxs_webmethod_return_nack("postid not set in context"); }
 	if ($placeholderid == "") { nxs_webmethod_return_nack("placeholderid not set in context"); }

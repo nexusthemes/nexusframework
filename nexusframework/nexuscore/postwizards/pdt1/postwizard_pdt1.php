@@ -42,8 +42,8 @@ function nxs_postwizard_pdt1_home_getsheethtml($args)
 	$selectedcategoryids = "";
 	$selectedmenuids = "";
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$result = array();
 	

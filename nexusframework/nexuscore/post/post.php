@@ -52,8 +52,8 @@ function nxs_post_home_rendersheet($args)
 	$prtargs["pagetemplate"] = $pagetemplate;
   $pagetemplates = nxs_getpagetemplates($prtargs);
 
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$result = array();
 	
@@ -188,8 +188,8 @@ function nxs_post_dialogappendrow_rendersheet($args)
 			
 	$result = array();
 	
-	if (isset($clientpopupsessiondata)) { extract($clientpopupsessiondata); }
-	if (isset($clientshortscopedata)) { extract($clientshortscopedata); }
+	if (isset($clientpopupsessiondata)) { if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); } }
+	if (isset($clientshortscopedata)) { if ($clientshortscopedata != null) { extract($clientshortscopedata); } }
 	
 	nxs_ob_start();
 
@@ -335,8 +335,8 @@ function nxs_post_edittitle_rendersheet($args)
 	$pagedata = get_post($postid);
 	$titel = $pagedata->post_title;
 
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 		
@@ -495,8 +495,8 @@ function nxs_post_dialogappendgenericlistitem_rendersheet($args)
 			
 	$result = array();
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	nxs_ob_start();
 
@@ -790,8 +790,8 @@ function nxs_post_dialogappendbusrulessetitem_rendersheet($args)
 			
 	$result = array();
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	nxs_ob_start();
 
@@ -1089,8 +1089,8 @@ function nxs_post_dialogappendtemplateitem_rendersheet($args)
 			
 	$result = array();
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	nxs_ob_start();
 
@@ -1363,8 +1363,8 @@ function nxs_post_dialogappendbulkgenericlistitems_rendersheet($args)
 			
 	$result = array();
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$nxssubposttype = nxs_get_nxssubposttype($postid);
 	if ($nxssubposttype == "gallery")

@@ -60,8 +60,8 @@ function nxs_pagetemplate_webpage_home_getsheethtml($args)
 		$selectedcategoryids .= $additional;
 	}
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$result = array();
 	
@@ -400,8 +400,8 @@ function nxs_pagetemplate_webpage_edittitle_getsheethtml($args)
 	$pagedata = get_post($postid);
 	$titel = $pagedata->post_title;
 
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 		
 	$result = array();
 		
@@ -525,8 +525,8 @@ function nxs_pagetemplate_webpage_headerhome_getsheethtml($args)
 	$meta = nxs_get_corepostmeta($postid);
 	$header_postid = $meta["header_postid"];
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	if ($nieuweheader == "true")
 	{
@@ -736,8 +736,8 @@ function nxs_pagetemplate_webpage_pagedecoratorhome_getsheethtml($args)
 	$meta = nxs_get_corepostmeta($postid);
 	$pagedecorator_postid = $meta["pagedecorator_postid"];
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	if ($nieuwepagedecorator == "true")
 	{
@@ -961,8 +961,8 @@ function nxs_pagetemplate_webpage_sidebarhome_getsheethtml($args)
 	$meta = nxs_get_corepostmeta($postid);
 	$sidebar_postid = $meta["sidebar_postid"];
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	if ($nieuwesidebar == "true")
 	{
@@ -1171,8 +1171,8 @@ function nxs_pagetemplate_webpage_footerhome_getsheethtml($args)
 	$meta = nxs_get_corepostmeta($postid);
 	$footer_postid = $meta["footer_postid"];
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	if ($nieuwefooter == "true")
 	{
@@ -1381,8 +1381,8 @@ function nxs_pagetemplate_webpage_dialogappendrow_getsheethtml($args)
 			
 	$result = array();
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	nxs_ob_start();
 
@@ -1518,8 +1518,8 @@ function nxs_pagetemplate_webpage_appendstruct_getsheethtml($args)
 	//
 	extract($args);
 	
-	extract($clientpopupsessiondata);
-	extract($clientshortscopedata);
+	if ($clientpopupsessiondata != null) { extract($clientpopupsessiondata); }
+	if ($clientshortscopedata != null) { extract($clientshortscopedata); }
 	
 	$fileuploadurl = admin_url( 'admin-ajax.php');
 	
