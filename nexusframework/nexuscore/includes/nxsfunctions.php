@@ -692,11 +692,15 @@ function nxs_handlerequestwithcaching($buffer)
 function nxs_enableoutputpostprocessor()
 {
 	global $wp_version;
+	$version = $wp_version;
 	
-	$pieces = explode(".", $wp_version);
+	$version = str_replace("-", ".", $version);
+		
+	$pieces = explode(".", $version);
 	$major_minor_version = $pieces[0] . "." . $pieces[1];
 	
 	$postprocessfunctionname = "nxs_postprocessoutput_" . str_replace(".", "_", $major_minor_version);
+	
 	//error_log("postprocessfunctionname: $postprocessfunctionname");
 	
 	if (function_exists($postprocessfunctionname))
@@ -11906,6 +11910,9 @@ function nxs_get_images_in_post_v2($args)
 			$result[] = $sub_images[$num_sub_images - 1];
 		}
 	}
+	
+	//
+	
 
 	// strip duplicate items
 	$result = array_unique($result);	
@@ -14078,4 +14085,11 @@ function nxs_ensure_proper_permalinks()
 			$wp_rewrite->flush_rules( $hard );
 		}
 	}
+}
+
+function nxs_postprocessoutput_5_9($buffer)
+{
+	$buffer = nxs_patch_jquery_migrate_1_4_1($buffer);
+	
+	return $buffer;
 }
