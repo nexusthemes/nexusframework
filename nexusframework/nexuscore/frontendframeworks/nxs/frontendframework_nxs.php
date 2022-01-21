@@ -1786,8 +1786,6 @@ function nxs_frontendframework_nxs_gethtmlforimage($args)
 	
 	$classes = nxs_concatenateargswithspaces($grayscale, $enlarge, $image_maxheight_cssclass, $border_radius_cssclass, $margin_bottom_cssclass, $image_margin_cssclass, $class); 
 	 
-	$class_att = implode(" ", $classes);
-	
 	$image_border .= '<img ' . $id_att . ' style="' . $img_style . '" class="'.$classes.'" ';
 	$image_border .= 'src="' . $imageurl . '" ';
 	if ($image_alt != "")
