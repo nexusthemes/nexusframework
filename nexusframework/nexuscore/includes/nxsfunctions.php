@@ -2199,6 +2199,12 @@ function nxs_stringcontains($haystack, $needle)
 
 function nxs_stringcontains_v2($haystack, $needle, $ignorecasing)
 {
+	if (is_array($haystack))
+	{
+		// only strings are supported
+		return false;
+	}
+	
 	if ($ignorecasing === true)
 	{
 		$pos = stripos($haystack,$needle);
@@ -9855,7 +9861,7 @@ function nxs_busrules_get_popuphtml($id, $posttype, $subposttype, $remotesingula
 	?>
 	<div id='<?php echo $id; ?>_options'>
 		<?php
-		if (count($remoteitems) > 0)
+		if ($remoteitems != null && count($remoteitems) > 0)
 		{
 			?>	
 			Remote:<br />

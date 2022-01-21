@@ -53,8 +53,7 @@
 		nxs_ob_start();
 		?>
 		<p>
-			<a href='https://www.wpsupporthelp.com/' target='_blank'>https://www.wpsupporthelp.com/</a><br />
-			<iframe style="width: 100%; height: 70vh;" src="https://www.wpsupporthelp.com/answer/how-to-find-the-best-answer-to-my-wordpress-questions-1624/" />
+			<a href='https://www.facebook.com/groups/NexusThemes.and.WP.Help/' target='_blank'>Join our FB group</a><br />
 		</p>
 		<?php
 		$result["support_htmlid"] = "support";
