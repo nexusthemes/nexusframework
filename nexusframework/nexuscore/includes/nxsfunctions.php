@@ -2201,7 +2201,7 @@ function nxs_stringcontains_v2($haystack, $needle, $ignorecasing)
 {
 	if (is_array($haystack))
 	{
-		// only strings are supported
+		// only strings are supported, if array is passed we will assume the result should be false
 		return false;
 	}
 	

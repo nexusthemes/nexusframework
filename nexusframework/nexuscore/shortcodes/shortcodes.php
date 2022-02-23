@@ -650,7 +650,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$input = nxs_url_prettyfy($input, $homeurl);
 			}
 		}
-		else if ($op == "urlfraction")
+		else if ($op == "urlfraction" || $op == "toslug" || $op == "slug")
 		{
 			$input = strtolower($input);
 			$input = preg_replace('/[^A-Za-z0-9]/', '-', $input); // Replaces any non alpha numeric with -

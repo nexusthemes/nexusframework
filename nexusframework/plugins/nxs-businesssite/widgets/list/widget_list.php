@@ -1,5 +1,23 @@
 <?php
 
+/*
+datasource accepts modeluri's, and json format. Json example listed here;
+datasource=json:[{"title":"my title","url":"https://google.com/?q=1","image_src":"https://s3.amazonaws.com/devices.nexusthemes.com/%21resources/projects/20180820_restaurant_website_template_examples/website_templates_restaurant_premium_400.jpg"},{"title":"another title","url":"https://google.com/?q=2","image_src":"https://s3.amazonaws.com/devices.nexusthemes.com/%21resources/projects/20180820_restaurant_website_template_examples/restaurant_website_design_templates_with_css_400.jpg"},{"title":"third title","url":"https://google.com/?q=3","image_src":"https://s3.amazonaws.com/devices.nexusthemes.com/%21resources/projects/20180820_restaurant_website_template_examples/premium_restaurant_website_templates_400.jpg"}]
+In the iterator input field, use:
+{{datasource}}
+In the widget start html, use:
+<div style="display: flex;flex-direction: row;">
+In the template of the item, use:
+<div>
+{{iterator:properties.title}}<br />
+<div style="height: 400px; overflow: hidden;">
+[nxs_image image_src="{{iterator:properties.image_src}}" destination_url="{{iterator:properties.url}}"]<br />
+</div>
+</div>
+In the widget footer html, use:
+</div>
+*/
+
 nxs_requirewidget("generic");
 
 function nxs_widgets_list_geticonid() {
@@ -848,6 +866,8 @@ function nxs_widgets_list_render_webpart_render_htmlvisualization($args)
 		if ($item_lookups != "")
 		{
 			$lookup = array_merge($lookup, nxs_parse_keyvalues($item_lookups));
+			
+			// 
 		}
 		
 		// apply lookups to one-self

@@ -844,7 +844,7 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 		---------------------------------------------------------------------------------------------------- */
 		
 		// Warning
-		if (count($items_filter_catidsarray) == 1 && $items_filter_catidsarray[0] == "") {
+		if ($items_filter_catidsarray != null && count($items_filter_catidsarray) == 1 && $items_filter_catidsarray[0] == "") {
 			// implements 1148
 			$pages = array();
 			nxs_renderplaceholderwarning(nxs_l18n__("No categories selected[nxs:warning]", "nxs_td"));	
