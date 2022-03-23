@@ -308,6 +308,18 @@ function nxs_sc_string($atts, $content = null, $name='')
 		{
 			$input = strtoupper($input);
 		}
+		else if ($op == "number_format")
+		{
+			$defaults = array
+			(
+				"decimals" => 0,
+				"decimal_separator" => ".",
+				"thousands_separator" => ","
+			);
+			$pimped_atts = wp_parse_args($atts, $defaults);
+
+			$input = number_format($value, $pimped_atts["decimals"], $pimped_atts["decimal_separator"], $pimped_atts["thousands_separator"]);
+		}
 		else if ($op == "a_or_an")
 		{
 			// kudos to https://stackoverflow.com/questions/23933910/add-prefix-a-or-an-to-a-word-using-php
@@ -548,6 +560,60 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$characters = "abcdefghijklmnopqrstuvwxyz";
 			}
 			$input = nxs_generaterandomstring($length, $characters);
+		}
+		else if ($op == "pickfirstlegitoption")
+		{
+			$defaults = array
+			(
+				"fallback" => "pickfirstlegitoption fallback not set",
+				"reject_accolades" => true,
+				"reject_empty" => true,
+			);
+			$args = wp_parse_args($atts, $defaults);
+			
+			$fallback = $args["fallback"];
+			$reject_accolades = $args["reject_accolades"];
+			$reject_empty = $args["reject_empty"];
+			
+			$result = $fallback;
+			
+			// option_1='' option_2='' option_3=''
+			foreach ($args as $attribute => $attribute_value)
+			{
+				if (nxs_stringstartswith($attribute, "option_"))
+				{
+					$islegit = true;
+					
+					// check all possible rules to see if the value is legit or not
+					if (true)
+					{
+						if ($islegit && $reject_accolades && (nxs_stringcontains($attribute_value, "{") || nxs_stringcontains($attribute_value, "}")))
+						{
+							$islegit = false;
+						}
+						if ($islegit && $reject_empty && $attribute_value == "")
+						{
+							$islegit = false;
+						}
+					}
+					
+					if ($islegit)
+					{
+						// if we come here, it means we found a legit option, we won't consider picking any of the other options
+						$result = $attribute_value;
+						break;
+					}
+					
+					// if its not legit, proceed with the next option					
+				}
+				else
+				{
+					// this attribute is not an option, we ignore it
+				}
+			}
+			
+			// return the result
+			$input = $result;
 		}
 		else if ($op == "md5stringpicker")
 		{
@@ -2625,7 +2691,6 @@ function nxs_sc_int($atts, $content = null, $name='')
 		{
 			//
 		}
-		
 		else if ($op == "add")
 		{
 			$input = intval($atts["p1"]) + intval($atts["p2"]);
@@ -2652,7 +2717,7 @@ add_shortcode("nxsint", "nxs_sc_int");
 add_shortcode("nxs_int", "nxs_sc_int");
 
 function nxs_sc_command($atts, $content = null, $name='') 
-{
+{	
 	extract($atts);
 	
 	if (isset($sc_scope))
