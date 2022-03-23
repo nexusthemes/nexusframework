@@ -561,7 +561,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 			}
 			$input = nxs_generaterandomstring($length, $characters);
 		}
-		else if ($op == "pickfirstlegitoption")
+		else if ($op == "cherrypick")
 		{
 			$defaults = array
 			(
