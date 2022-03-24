@@ -561,55 +561,68 @@ function nxs_sc_string($atts, $content = null, $name='')
 			}
 			$input = nxs_generaterandomstring($length, $characters);
 		}
-		else if ($op == "cherrypick")
+		else if ($op == "pickcandidate")
 		{
 			$defaults = array
 			(
 				"fallback" => "pickfirstlegitoption fallback not set",
 				"reject_accolades" => true,
 				"reject_empty" => true,
+				"strategy" => "survivalofthefittest",
 			);
 			$args = wp_parse_args($atts, $defaults);
 			
-			$fallback = $args["fallback"];
+			$strategy = $args["strategy"];
 			$reject_accolades = $args["reject_accolades"];
 			$reject_empty = $args["reject_empty"];
+			$fallback = $args["fallback"];
 			
 			$result = $fallback;
 			
-			// option_1='' option_2='' option_3=''
-			foreach ($args as $attribute => $attribute_value)
+			if (false)
 			{
-				if (nxs_stringstartswith($attribute, "option_"))
+				//
+			}
+			else if ($strategy == "survivalofthefittest")
+			{
+				// [nxs_string op=pickcandidate candidate_foo='' candidate_bar='{{x}}' candidate_fun='legit' reject_accolades=true reject_empty=true fallback='oops']
+				foreach ($args as $attribute => $attribute_value)
 				{
-					$islegit = true;
-					
-					// check all possible rules to see if the value is legit or not
-					if (true)
+					if (nxs_stringstartswith($attribute, "candidate_"))
 					{
-						if ($islegit && $reject_accolades && (nxs_stringcontains($attribute_value, "{") || nxs_stringcontains($attribute_value, "}")))
+						$islegit = true;
+						
+						// check all possible rules to see if the value is legit or not
+						if (true)
 						{
-							$islegit = false;
+							if ($islegit && $reject_accolades && (nxs_stringcontains($attribute_value, "{") || nxs_stringcontains($attribute_value, "}")))
+							{
+								$islegit = false;
+							}
+							if ($islegit && $reject_empty && $attribute_value == "")
+							{
+								$islegit = false;
+							}
 						}
-						if ($islegit && $reject_empty && $attribute_value == "")
+						
+						if ($islegit)
 						{
-							$islegit = false;
+							// if we come here, it means we found a legit option, we won't consider picking any of the other options
+							$result = $attribute_value;
+							break;
 						}
+						
+						// if its not legit, proceed with the next option					
 					}
-					
-					if ($islegit)
+					else
 					{
-						// if we come here, it means we found a legit option, we won't consider picking any of the other options
-						$result = $attribute_value;
-						break;
+						// this attribute is not an option, we ignore it
 					}
-					
-					// if its not legit, proceed with the next option					
 				}
-				else
-				{
-					// this attribute is not an option, we ignore it
-				}
+			}
+			else
+			{
+				nxs_webmethod_return_nack("nxs_string; pickcandidate operator; unable to proceed; unsupported strategy; $strategy");
 			}
 			
 			// return the result
