@@ -699,36 +699,8 @@ function nxs_enableoutputpostprocessor()
 	$pieces = explode(".", $version);
 	$major_minor_version = $pieces[0] . "." . $pieces[1];
 	
-	$postprocessfunctionname = "nxs_postprocessoutput_" . str_replace(".", "_", $major_minor_version);
-	
-	//error_log("postprocessfunctionname: $postprocessfunctionname");
-	
-	if (function_exists($postprocessfunctionname))
-	{
-		nxs_ob_start($postprocessfunctionname);		
-	}
-	
-}
-
-function nxs_postprocessoutput_5_6($buffer)
-{
-	$buffer = nxs_patch_jquery_migrate_1_4_1($buffer);
-	
-	return $buffer;
-}
-
-function nxs_postprocessoutput_5_7($buffer)
-{
-	$buffer = nxs_patch_jquery_migrate_1_4_1($buffer);
-	
-	return $buffer;
-}
-
-function nxs_postprocessoutput_5_8($buffer)
-{
-	$buffer = nxs_patch_jquery_migrate_1_4_1($buffer);
-	
-	return $buffer;
+	// 
+	nxs_ob_start("nxs_postprocessoutput_any");
 }
 
 function nxs_patch_jquery_migrate_1_4_1($buffer)
@@ -14093,7 +14065,7 @@ function nxs_ensure_proper_permalinks()
 	}
 }
 
-function nxs_postprocessoutput_5_9($buffer)
+function nxs_postprocessoutput_any($buffer)
 {
 	$buffer = nxs_patch_jquery_migrate_1_4_1($buffer);
 	

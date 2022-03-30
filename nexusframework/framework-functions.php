@@ -439,6 +439,12 @@ function nxs_initializesessionfrombrowsercookieifexists()
 
 function nxs_ensure_sessionstarted()
 {
+	// don't start session for wp cron
+	if ( defined( 'DOING_CRON' ) )
+	{
+		return;
+	}
+	
 	// init session
   if (!session_id()) 
   {
