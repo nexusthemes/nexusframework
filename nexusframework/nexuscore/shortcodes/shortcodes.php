@@ -1875,34 +1875,42 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "file_get_contents" || $op == "filegetcontents")
 		{
-			$filter_args = array
-			(
-				"atts" => $atts,
-				"content" => $content, 
-				"name" => $name
-			);
+			$url = $atts["url"];
 			
-			
-			
-			$isenabled = apply_filters('nxs_string_file_get_contents_enabled', false, $filter_args);
-			if ($isenabled)
+			$method = $atts["method"];
+			$return = $atts["return"];
+		
+			if (false)
 			{
-				if ($atts["method"] == "file_get_contents")
-				{
-					$input = file_get_contents($url);
-				}
-				else if ($atts["method"] == "file_get_contents_utf8")
-				{
-					$input = file_get_contents_utf8($url);
-				}
-				else
-				{
-					$input = nxs_geturlcontents(array("url" => $url));
-				}
+				//
+			}
+			else if ($method == null|| $method == ""|| $method== "file_get_contents")
+			{
+				$content = file_get_contents($url);
+			}
+			else if ($method == "file_get_contents_utf8")
+			{
+				$content = file_get_contents_utf8($url);
 			}
 			else
 			{
-				$input = "nxs_string_file_get_contents_enabled is disabled, sorry";
+				$content = nxs_geturlcontents(array("url" => $url));
+			}
+			
+			if (false)
+			{
+			}
+			else if ($return == "content")
+			{
+				$input = $content;
+			}
+			else if ($return == "content-length")
+			{
+				$input = strlen($content);
+			}
+			else
+			{
+				nxs_webmethod_return_nack("nxs_string; $op; unsupported return attribute; $return");
 			}
 		}
 		else if ($op == "jsonsubvalues")
@@ -2594,8 +2602,12 @@ function nxs_sc_bool($atts, $content = null, $name='')
 		else if ($op == "gte" || $op == "greaterthanorequals")
 		{
 			$compareto = $atts["compareto"];
+			$debug = $atts["debug"];
 			
-			if ((int) $input >= (int) $compareto)
+			$a = (int) $input;
+			$b = (int) $compareto;
+			
+			if ($a >= $b)
 			{
 				$input = "true";
 			}
@@ -2603,6 +2615,9 @@ function nxs_sc_bool($atts, $content = null, $name='')
 			{
 				$input = "false";
 			}
+			
+			//error_log("debug: evaluated: is '$a' gte '$b'? answer:$input" . json_encode($atts));
+
 		}
 		else if ($op == "gt" || $op == "greaterthan")
 		{

@@ -4705,6 +4705,35 @@ function nxs_sendhtmlmail_v2($fromname, $fromemail, $toemail, $ccemail, $bccemai
 
 function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemail, $replytomail, $subject, $body)
 {
+	$args = array
+	(
+		"fromname" => $fromname,
+		"fromemail" => $fromemail,
+		"toemail" => $toemail,
+		"ccemail" => $ccemail,
+		"bccemail" => $bccemail,
+		"replytomail" => $replytomail,
+		"subject"=> $subject,
+		"body" => $body,
+	);
+	
+	$result = nxs_sendhtmlmail_v4($args);
+	
+	return $result;
+}
+
+function nxs_sendhtmlmail_v4($args)
+{
+	$fromname = $args["fromname"];
+	$fromemail = $args["fromemail"];
+	$toemail = $args["toemail"];
+	$ccemail = $args["ccemail"];
+	$bccemail = $args["bccemail"];
+	$in_reply_to = $args["in_reply_to"];
+	$replytomail = $args["replytomail"];
+	$subject = $args["subject"];
+	$body = $args["body"];
+	
 	if (!nxs_isvalidemailaddress($fromemail))
 	{
 		nxs_webmethod_return_nack("fromemail is not valid; $fromemail");
@@ -4719,6 +4748,10 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	if ($replytomail != "")
 	{	
 		$headers .= "Reply-to: {$replytomail}\r\n";
+	}
+	if ($in_reply_to != "")
+	{	
+		$headers .= "In-Reply-To: {$in_reply_to}\r\n";
 	}
 	
 	if ($ccemail != "")
@@ -4771,9 +4804,7 @@ function nxs_sendhtmlmail_v3($fromname, $fromemail, $toemail, $ccemail, $bccemai
 	$nxs_global_mail_fromname = $fromname;
 	global $nxs_global_mail_fromemail;
 	$nxs_global_mail_fromemail = $fromemail;
-	
-	//error_log("nxs_sendhtmlmail_v3 adding filters 999 $nxs_global_mail_fromname $nxs_global_mail_fromemail");
-	
+		
 	add_filter('wp_mail_from', 'nxs_f_wp_mail_from', 999, 1);
 	add_filter('wp_mail_from_name', 'nxs_f_wp_mail_from_name', 999, 1);
 	
