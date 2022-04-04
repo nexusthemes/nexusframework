@@ -1313,9 +1313,11 @@ class nxs_g_modelmanager
 			return $json;
 		}
 		
-		// if modeluri is specified retrieve the model through the modeluri
-		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/model-by-uri/{$modeluri}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
-		$url = nxs_addqueryparametertourl_v2($url, "referer", nxs_geturlcurrentpage(), true, true);
+		$filterargs = array
+		(
+			"modeluri" => $modeluri,
+		);
+		$url = apply_filters("nxs_f_getcontentproviderurl_for_model_by_uri", "https://www.example.org/", $filterargs);
 		
 		$content = nxs_geturlcontents(array("url" => $url));
 
@@ -1395,12 +1397,14 @@ class nxs_g_modelmanager
 	
 	function cachebulkmodels_internal($singularschema)
 	{
-		error_log("cachebulkmodels for $singularschema");
+		// error_log("cachebulkmodels for $singularschema");
 		
-		// step 1; load the bulk model information
-		$url = "https://turnkeypagesprovider.websitesexamples.com/api/1/prod/bulkmodels/{$singularschema}/?nxs=contentprovider-api&licensekey={$licensekey}&nxs_json_output_format=prettyprint";
-		$url = nxs_addqueryparametertourl_v2($url, "referer", nxs_geturlcurrentpage(), true, true);
-		
+		$filterargs = array
+		(
+			"singularschema" => $singularschema,
+		);
+		$url = apply_filters("nxs_f_getcontentproviderurl_for_bulkmodels", "https://www.example.org/", $filterargs);
+				
 		$content = nxs_geturlcontents(array("url" => $url));
 		$json = json_decode($content, true);
 		
