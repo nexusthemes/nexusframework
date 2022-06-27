@@ -2160,7 +2160,26 @@ function nxs_string_getbetween($input, $start, $end)
 { 
   $substr = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1)); 
   return $substr; 
-} 
+}
+
+function nxs_string_getcamelcase($input)
+{
+	$input = ucwords($input);
+	$stopwords = array("for", "a", "and", "the", "if", "then", "than", "to", "most", "but", "how", "or", "what", "on", "of", "with");
+	foreach ($stopwords as $stopword)
+	{
+		$find = " " . ucwords($stopword) . " ";
+		$replace = " " . strtolower($stopword) . " ";
+		$input = str_replace($find, $replace, $input);
+	}
+	$exceptions = array("WordPress", "IDX", "USD");
+	foreach ($exceptions as $exception)
+	{
+		$input = str_ireplace($exception, $exception, $input);
+	}
+	
+	return $input;
+}
 
 function nxs_stringcontains($haystack, $needle)
 {
@@ -6595,6 +6614,32 @@ function nxs_localization_getlocalizablefieldids($options)
 
 /* COLOR PALETTE */
 
+function nxs_colorization_rgb2hex($rgb = array(0, 0, 0))
+{
+    $f = function ($x) {
+        return str_pad(dechex($x), 2, "0", STR_PAD_LEFT);
+    };
+
+    return "#" . implode("", array_map($f, $rgb));
+}
+
+function nxs_colorization_mix_colors($color_1 = array(0, 0, 0), $color_2 = array(0, 0, 0), $weight = 0.5)
+{
+    $f = function ($x) use ($weight) {
+        return $weight * $x;
+    };
+
+    $g = function ($x) use ($weight) {
+        return (1 - $weight) * $x;
+    };
+
+    $h = function ($x, $y) {
+        return round($x + $y);
+    };
+
+    return array_map($h, array_map($f, $color_1), array_map($g, $color_2));
+}
+
 function nxs_colorization_hextorgb($hex) 
 {
 	$hex = str_replace("#", "", $hex);
@@ -10411,6 +10456,23 @@ function nxs_filter_translate_v2($args)
 		}
 	}
 	
+	return $result;
+}
+
+function nxs_url_slugify($input)
+{
+	$input = strtolower($input);
+	// $5 = 5 dollar
+	$input = str_replace('$', '-dollar-', $input);
+	$input = preg_replace('/[^A-Za-z0-9]/', '-', $input); // Replaces any non alpha numeric with -
+	for ($cnt = 0; $cnt < 3; $cnt++)
+	{
+		$input = str_replace("--", "-", $input);
+	}
+	// 
+	$input = trim($input, "-");
+	
+	$result = $input;
 	return $result;
 }
 

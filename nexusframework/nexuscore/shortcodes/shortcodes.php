@@ -495,6 +495,13 @@ function nxs_sc_string($atts, $content = null, $name='')
 			$domain = do_shortcode("[nxs_string ops=hostname_to_domain input='{$hostname}']");
 			$input = $domain;
 		}
+		else if ($op == "nameandemail_to_email")
+		{
+			// John Doe <email@example.org>
+			$pieces = explode("<", $input, 2);
+			$input = $pieces[1];
+			$input = str_replace(">", "", $input);
+		}
 		else if ($op == "timemsecs")
 		{
 			$input = round(microtime(true) * 1000);
@@ -651,19 +658,7 @@ function nxs_sc_string($atts, $content = null, $name='')
 		}
 		else if ($op == "camelcase")
 		{
-			$input = ucwords($input);
-			$stopwords = array("for", "a", "and", "the", "if", "then", "than", "to", "most", "but", "how", "or", "what");
-			foreach ($stopwords as $stopword)
-			{
-				$find = " " . ucwords($stopword) . " ";
-				$replace = " " . strtolower($stopword) . " ";
-				$input = str_replace($find, $replace, $input);
-			}
-			$exceptions = array("WordPress");
-			foreach ($exceptions as $exception)
-			{
-				$input = str_ireplace($exception, $exception, $input);
-			}
+			$input = nxs_string_getcamelcase($input);
 		}
 		else if ($op == "ucfirst" || $op == "ucfirstchar")
 		{
@@ -729,14 +724,9 @@ function nxs_sc_string($atts, $content = null, $name='')
 				$input = nxs_url_prettyfy($input, $homeurl);
 			}
 		}
-		else if ($op == "urlfraction" || $op == "toslug" || $op == "slug")
+		else if ($op == "urlfraction" || $op == "toslug" || $op == "slug" || $op == "slugify")
 		{
-			$input = strtolower($input);
-			$input = preg_replace('/[^A-Za-z0-9]/', '-', $input); // Replaces any non alpha numeric with -
-			for ($cnt = 0; $cnt < 3; $cnt++)
-			{
-				$input = str_replace("--", "-", $input);
-			}
+			$input = nxs_url_slugify($input);
 		}
 		else if ($op == "parse_youtube_id")
 		{
