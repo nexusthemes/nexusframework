@@ -781,7 +781,7 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 		$nxsqueryvars["posts_per_archive_page"] = $items_filter_maxcount;
 				
 		$possiblesearchphrase = $_REQUEST["s"];
-		if (!isset($possiblesearchphrase) || count($possiblesearchphrase) == 0)
+		if (!isset($possiblesearchphrase) || strlen($possiblesearchphrase) == 0)
 		{
 			if (isset($_REQUEST["clientqueryparameters"]))
 			{
@@ -790,7 +790,7 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 			}
 		}
 		
-		if (isset($possiblesearchphrase) && count($possiblesearchphrase) > 0)
+		if (isset($possiblesearchphrase) && strlen($possiblesearchphrase) > 0)
 		{
 			$searchargs = array();
 			$searchargs["phrase"] = $possiblesearchphrase;
@@ -836,7 +836,7 @@ function nxs_widgets_archive_render_webpart_render_htmlvisualization($args)
 		
 		if ($pagingpagination_enable != "") 
 		{
-			if (isset($possiblesearchphrase) && count($possiblesearchphrase) > 0)
+			if (isset($possiblesearchphrase) && strlen($possiblesearchphrase) > 0)
 			{
 				// paginate search request
 				$searchargs = array();

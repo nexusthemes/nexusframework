@@ -2162,17 +2162,15 @@ function nxs_string_getbetween($input, $start, $end)
   return $substr; 
 }
 
-function nxs_string_getcamelcase($input)
+function nxs_string_getcamelcase($input, $stopwords = array("for", "a", "and", "the", "if", "then", "than", "to", "most", "but", "how", "or", "what", "on", "of", "with", "that"), $exceptions = array("WordPress", "IDX", "USD"))
 {
 	$input = ucwords($input);
-	$stopwords = array("for", "a", "and", "the", "if", "then", "than", "to", "most", "but", "how", "or", "what", "on", "of", "with");
 	foreach ($stopwords as $stopword)
 	{
 		$find = " " . ucwords($stopword) . " ";
 		$replace = " " . strtolower($stopword) . " ";
 		$input = str_replace($find, $replace, $input);
 	}
-	$exceptions = array("WordPress", "IDX", "USD");
 	foreach ($exceptions as $exception)
 	{
 		$input = str_ireplace($exception, $exception, $input);
