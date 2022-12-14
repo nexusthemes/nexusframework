@@ -1147,6 +1147,15 @@ function nxs_widgets_blog_render_webpart_render_htmlvisualization($args)
 			} else {
 				$urlpreviouspage = nxs_addqueryparametertourl($currenturl, $queryparameter, 0);
 			}
+
+			if ($paging_page == "")
+			{
+				$paging_page = 0;
+			}
+			if ($totalpages == "")
+			{
+				$totalpages = 0;
+			}
 			
 			if (($paging_page + 1) < $totalpages - 1) {
 				$urlnextpage = nxs_addqueryparametertourl($currenturl, $queryparameter, $paging_page + 1);
